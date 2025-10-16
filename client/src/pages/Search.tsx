@@ -245,6 +245,20 @@ export const Search = (): JSX.Element => {
         </div>
       </div>
 
+      {/* Login Button (top right) */}
+      <Link href="/login">
+        <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-login-header">
+          <img
+            className="absolute left-[13px] size-[34px] top-[9px]"
+            alt="Login"
+            src="/figmaAssets/vuesax-bold-setting-2.svg"
+          />
+          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
+            Login
+          </p>
+        </div>
+      </Link>
+
       {/* Left Sidebar */}
       <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
         {/* Discover */}
