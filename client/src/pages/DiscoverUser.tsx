@@ -249,7 +249,7 @@ export const DiscoverUser = (): JSX.Element => {
                 <div className="absolute top-0 left-0 w-8 h-8 rounded-[20.27px] border-[2.67px] border-solid border-white" />
               </div>
             ) : (
-              <img className="w-8 h-8" alt={item.label} src={item.icon} />
+              <img className="w-8 h-8" alt={item.label} src={item.icon || ""} />
             )}
             <span className="[font-family:'Ubuntu',Helvetica] font-medium text-white text-lg">
               {item.label}
