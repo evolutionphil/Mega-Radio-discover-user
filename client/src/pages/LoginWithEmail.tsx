@@ -1,19 +1,16 @@
 import { Link } from "wouter";
+import { Undo2, Mail, Lock } from "lucide-react";
 
 export const LoginWithEmail = (): JSX.Element => {
   return (
     <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-login-email">
       {/* Back Button */}
       <Link href="/login">
-        <div className="absolute left-[476px] top-[50px] w-[71px] h-[24px] cursor-pointer" data-testid="button-back">
-        <p className="absolute left-[28px] top-[1px] font-['Ubuntu',Helvetica] font-medium text-[19.027px] text-[#c8c8c8] leading-normal">
-          Back
-        </p>
-        <img
-          className="absolute left-0 top-0 w-[24px] h-[24px]"
-          alt="Back"
-          src="/figmaAssets/vuesax-linear-undo.svg"
-        />
+        <div className="absolute left-[476px] top-[50px] w-[71px] h-[24px] cursor-pointer hover:opacity-80 transition-opacity" data-testid="button-back">
+          <p className="absolute left-[28px] top-[1px] font-['Ubuntu',Helvetica] font-medium text-[19.027px] text-[#c8c8c8] leading-normal">
+            Back
+          </p>
+          <Undo2 className="absolute left-0 top-0 w-[24px] h-[24px] text-[#c8c8c8]" />
         </div>
       </Link>
 
@@ -24,15 +21,10 @@ export const LoginWithEmail = (): JSX.Element => {
 
       {/* Email Input */}
       <div 
-        className="absolute left-[476px] top-[205px] w-[968px] h-[75px] bg-[rgba(255,255,255,0.2)] rounded-[12px] border-[5.59px] border-solid border-[#d2d2d2] overflow-clip"
-        style={{ backdropFilter: 'blur(13.621px)' }}
+        className="absolute left-[476px] top-[205px] w-[968px] h-[75px] bg-[rgba(255,255,255,0.2)] rounded-[12px] border-[5.59px] border-solid border-[#d2d2d2] overflow-clip backdrop-blur-[13.621px]"
         data-testid="input-email"
       >
-        <img
-          className="absolute left-[20px] top-[18px] w-[38px] h-[38px]"
-          alt="Email"
-          src="/figmaAssets/vuesax-bold-sms.svg"
-        />
+        <Mail className="absolute left-[20px] top-[18px] w-[38px] h-[38px] text-white" />
         <p className="absolute left-[77px] top-[21.84px] font-['Ubuntu',Helvetica] font-medium text-[25.945px] text-white leading-normal">
           talhacay@gm
         </p>
@@ -40,15 +32,10 @@ export const LoginWithEmail = (): JSX.Element => {
 
       {/* Password Input */}
       <div 
-        className="absolute left-[476px] top-[300px] w-[968px] h-[75px] bg-[rgba(255,255,255,0.2)] rounded-[12px] border-[2.594px] border-solid border-[#717171] overflow-clip"
-        style={{ backdropFilter: 'blur(13.621px)' }}
+        className="absolute left-[476px] top-[300px] w-[968px] h-[75px] bg-[rgba(255,255,255,0.2)] rounded-[12px] border-[2.594px] border-solid border-[#717171] overflow-clip backdrop-blur-[13.621px]"
         data-testid="input-password"
       >
-        <img
-          className="absolute left-[20px] top-[18px] w-[38px] h-[38px]"
-          alt="Lock"
-          src="/figmaAssets/vuesax-bold-lock.svg"
-        />
+        <Lock className="absolute left-[20px] top-[18px] w-[38px] h-[38px] text-[#7e7e7e]" />
         <p className="absolute left-[77px] top-[21.84px] font-['Ubuntu',Helvetica] font-medium text-[25.945px] text-[#7e7e7e] leading-normal">
           Password
         </p>
@@ -57,20 +44,19 @@ export const LoginWithEmail = (): JSX.Element => {
       {/* Login Button */}
       <Link href="/guide-1">
         <div 
-          className="absolute left-[476px] top-[395px] w-[968px] h-[75px] bg-[#ff4199] rounded-[12px] overflow-clip cursor-pointer hover:bg-[#e6398a] transition-colors"
-          style={{ backdropFilter: 'blur(13.621px)' }}
+          className="absolute left-[476px] top-[395px] w-[968px] h-[75px] bg-[#ff4199] rounded-[12px] overflow-clip cursor-pointer hover:bg-[#e6398a] transition-colors backdrop-blur-[13.621px]"
           data-testid="button-login"
         >
-        <p className="absolute left-[451px] top-[21.84px] font-['Ubuntu',Helvetica] font-medium text-[25.945px] text-white leading-normal">
-          Login
-        </p>
+          <p className="absolute left-[451px] top-[21.84px] font-['Ubuntu',Helvetica] font-medium text-[25.945px] text-white leading-normal">
+            Login
+          </p>
         </div>
       </Link>
 
       {/* Forgot Password Link */}
       <Link href="/forgot-password">
         <p className="absolute left-[476px] top-[530px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal cursor-pointer hover:text-[#ff4199] transition-colors" data-testid="link-forgot-password">
-        Forgot your password?
+          Forgot your password?
         </p>
       </Link>
 
