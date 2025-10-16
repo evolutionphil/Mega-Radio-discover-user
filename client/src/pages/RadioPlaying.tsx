@@ -1,42 +1,59 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { SkipBack, Pause, SkipForward, Heart } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 
 export const RadioPlaying = (): JSX.Element => {
+  const [location] = useLocation();
+  const searchParams = new URLSearchParams(location.split('?')[1]);
+  const stationId = searchParams.get('station');
+
   const sidebarItems = [
-    { icon: "/figmaAssets/vuesax-bold-radio.svg", label: "Discover", active: true, href: "/discover" },
+    { icon: "/figmaAssets/vuesax-bold-radio.svg", label: "Discover", active: true, href: "/discover-no-user" },
     { icon: "/figmaAssets/vuesax-bold-musicnote.svg", label: "Genres", active: false, href: "/genres" },
     { icon: "/figmaAssets/vuesax-bold-search-normal.svg", label: "Search", active: false, href: "/search" },
     { icon: "/figmaAssets/vuesax-bold-heart.svg", label: "Favorites", active: false, href: "/favorites" },
-    { icon: null, label: "Records", active: false, customIcon: true, href: "/discover" },
+    { icon: null, label: "Records", active: false, customIcon: true, href: "/discover-no-user" },
     { icon: "/figmaAssets/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
   ];
 
-  const similarRadios = [
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/android-default-logo-1-3.png", featured: true },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/meta-image--1--1-4.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/meta-image--1--1-4.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-  ];
+  // Fetch station details
+  const { data: stationData } = useQuery({
+    queryKey: ['/api/station', stationId],
+    queryFn: () => megaRadioApi.getStationById(stationId!),
+    enabled: !!stationId,
+  });
 
-  const popularRadios = [
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/android-default-logo-1-3.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/android-default-logo-1-3.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/meta-image--1--1-4.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/meta-image--1--1-4.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-    { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-  ];
+  const station = stationData?.station;
+
+  // Fetch similar stations (from same tags/genre)
+  const { data: similarStationsData } = useQuery({
+    queryKey: ['/api/stations/similar', station?.tags?.[0]],
+    queryFn: () => megaRadioApi.searchStations({ 
+      q: station?.tags?.[0] || station?.country || 'music', 
+      limit: 7 
+    }),
+    enabled: !!station,
+  });
+
+  // Fetch popular stations
+  const { data: popularStationsData } = useQuery({
+    queryKey: ['/api/stations/popular-radio-playing'],
+    queryFn: () => megaRadioApi.getPopularStations({ limit: 14 }),
+  });
+
+  const similarStations = similarStationsData?.results || [];
+  const popularStations = popularStationsData?.stations || [];
+
+  // Helper function to get station image
+  const getStationImage = (station: Station) => {
+    if (station.favicon) {
+      return station.favicon.startsWith('http') 
+        ? station.favicon 
+        : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
+    }
+    return '/figmaAssets/powerturk-tv-logosu-1.png';
+  };
 
   return (
     <div className="relative w-[1920px] min-h-[1080px] bg-[#0e0e0e] overflow-y-auto pb-[50px]">
@@ -45,7 +62,7 @@ export const RadioPlaying = (): JSX.Element => {
         <img
           className="w-full h-full object-cover opacity-20 blur-[80px] scale-110"
           alt="Background"
-          src="/figmaAssets/meta-image--1--1-4.png"
+          src={station ? getStationImage(station) : '/figmaAssets/meta-image--1--1-4.png'}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0e0e0e]/60 to-[#0e0e0e]/90" />
       </div>
@@ -142,13 +159,16 @@ export const RadioPlaying = (): JSX.Element => {
         <img
           className="w-full h-full object-cover"
           alt="Radio Logo"
-          src="/figmaAssets/meta-image--1--1-4.png"
+          src={station ? getStationImage(station) : '/figmaAssets/meta-image--1--1-4.png'}
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+          }}
         />
       </div>
 
       {/* Station Name */}
       <p className="absolute left-[596px] top-[293px] font-['Ubuntu',Helvetica] font-medium text-[48px] text-white leading-normal" data-testid="text-station-name">
-        Metro FM
+        {station?.name || 'Loading...'}
       </p>
 
       {/* Equalizer Icon (next to station name) */}
@@ -160,7 +180,7 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Song Name */}
       <p className="absolute left-[596px] top-[356.71px] font-['Ubuntu',Helvetica] font-medium text-[32px] text-white leading-normal" data-testid="text-song-name">
-        Starboy - The Weeknd
+        {station?.tags?.[0] || station?.country || 'Radio Station'}
       </p>
 
       {/* Station Info Label */}
@@ -171,36 +191,38 @@ export const RadioPlaying = (): JSX.Element => {
       {/* Country Flag */}
       <img
         className="absolute left-[596px] top-[479.48px] w-[34.783px] h-[34.783px]"
-        alt="Austria"
+        alt={station?.country || "Country"}
         src="/figmaAssets/austria-1.png"
       />
 
       {/* Station Info Tags */}
-      <div className="absolute left-[646.43px] top-[476px] h-[40px] w-[93.913px] bg-[#242424] rounded-[5.217px]" data-testid="tag-bitrate">
-        <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
-          128kb
+      <div className="absolute left-[646.43px] top-[476px] h-[40px] min-w-[93.913px] px-3 bg-[#242424] rounded-[5.217px]" data-testid="tag-bitrate">
+        <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2 whitespace-nowrap">
+          {station?.bitrate ? `${station.bitrate}kb` : 'N/A'}
         </p>
       </div>
-      <div className="absolute left-[757.74px] top-[476px] h-[40px] w-[93.913px] bg-[#242424] rounded-[5.217px]" data-testid="tag-format">
-        <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
-          MP3
+      <div className="absolute left-[757.74px] top-[476px] h-[40px] min-w-[93.913px] px-3 bg-[#242424] rounded-[5.217px]" data-testid="tag-format">
+        <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2 whitespace-nowrap">
+          {station?.codec || 'N/A'}
         </p>
       </div>
-      <div className="absolute left-[869.04px] top-[476px] h-[40px] w-[93.913px] bg-[#242424] rounded-[5.217px]" data-testid="tag-country">
-        <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
-          AT
+      <div className="absolute left-[869.04px] top-[476px] h-[40px] min-w-[93.913px] px-3 bg-[#242424] rounded-[5.217px]" data-testid="tag-country">
+        <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2 whitespace-nowrap">
+          {station?.countrycode || 'N/A'}
         </p>
       </div>
-      <div className="absolute left-[980.35px] top-[476px] h-[40px] w-[109.565px] bg-[#242424] rounded-[5.217px]" data-testid="tag-genre-rock">
-        <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
-          Rock
-        </p>
-      </div>
-      <div className="absolute left-[1107.3px] top-[476px] h-[40px] w-[109.565px] bg-[#242424] rounded-[5.217px]" data-testid="tag-genre-classic">
-        <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
-          Classic
-        </p>
-      </div>
+      {station?.tags?.slice(0, 2).map((tag, index) => (
+        <div 
+          key={index}
+          className="absolute h-[40px] min-w-[109.565px] px-3 bg-[#242424] rounded-[5.217px]" 
+          style={{ left: `${980.35 + (index * 126.95)}px`, top: '476px' }}
+          data-testid={`tag-genre-${tag}`}
+        >
+          <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2 whitespace-nowrap">
+            {tag}
+          </p>
+        </div>
+      ))}
 
       {/* Playback Controls */}
       <div className="absolute left-[1372px] top-[356px] w-[469px] h-[90.192px]">
@@ -234,31 +256,38 @@ export const RadioPlaying = (): JSX.Element => {
       </p>
 
       <div className="absolute left-[236px] top-[733px] flex gap-[19px]">
-        {similarRadios.map((radio, index) => (
-          <div
-            key={index}
-            className={`bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] ${
-              radio.featured
-                ? "w-[209.091px] h-[276px] border-[5.75px] border-solid border-[#d2d2d2]"
-                : "w-[200px] h-[264px]"
-            }`}
-            data-testid={`card-similar-${index}`}
-          >
-            <div className={`bg-white ${radio.featured ? "w-[138px] h-[138px] mt-[35.55px] ml-[35.55px]" : "w-[132px] h-[132px] mt-[34px] ml-[34px]"} rounded-[6.6px] overflow-clip`}>
-              <img
-                className="w-full h-full object-cover"
-                alt={radio.name}
-                src={radio.image}
-              />
-            </div>
-            <p className={`font-['Ubuntu',Helvetica] font-medium ${radio.featured ? "text-[22px] mt-[22px]" : "text-[22px] mt-[21px]"} text-center text-white leading-normal`}>
-              {radio.name}
-            </p>
-            <p className={`font-['Ubuntu',Helvetica] font-light ${radio.featured ? "text-[18.818px] mt-[7.6px]" : "text-[18px] mt-[6.2px]"} text-center text-white leading-normal`}>
-              {radio.location}
-            </p>
-          </div>
-        ))}
+        {similarStations.map((station, index) => {
+          const isFeatured = index === 2;
+          return (
+            <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+              <div
+                className={`bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${
+                  isFeatured
+                    ? "w-[209.091px] h-[276px] border-[5.75px] border-solid border-[#d2d2d2]"
+                    : "w-[200px] h-[264px]"
+                }`}
+                data-testid={`card-similar-${station._id}`}
+              >
+                <div className={`bg-white ${isFeatured ? "w-[138px] h-[138px] mt-[35.55px] ml-[35.55px]" : "w-[132px] h-[132px] mt-[34px] ml-[34px]"} rounded-[6.6px] overflow-clip`}>
+                  <img
+                    className="w-full h-full object-cover"
+                    alt={station.name}
+                    src={getStationImage(station)}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                    }}
+                  />
+                </div>
+                <p className={`font-['Ubuntu',Helvetica] font-medium ${isFeatured ? "text-[22px] mt-[22px]" : "text-[22px] mt-[21px]"} text-center text-white leading-normal truncate px-2`}>
+                  {station.name}
+                </p>
+                <p className={`font-['Ubuntu',Helvetica] font-light ${isFeatured ? "text-[18.818px] mt-[7.6px]" : "text-[18px] mt-[6.2px]"} text-center text-white leading-normal truncate px-2`}>
+                  {station.tags?.[0] || station.country || 'Radio'}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
       </div>
 
       {/* Popular Radios Section */}
@@ -270,26 +299,30 @@ export const RadioPlaying = (): JSX.Element => {
       </p>
 
       <div className="absolute left-[236px] top-[1169px] grid grid-cols-6 gap-x-[19px] gap-y-[19px] w-[1580px]">
-        {popularRadios.map((radio, index) => (
-          <div
-            key={index}
-            className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]"
-            data-testid={`card-popular-${index}`}
-          >
-            <div className="w-[132px] h-[132px] mt-[34px] mx-auto bg-white rounded-[6.6px] overflow-clip">
-              <img
-                className="w-full h-full object-cover"
-                alt={radio.name}
-                src={radio.image}
-              />
+        {popularStations.map((station, index) => (
+          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+            <div
+              className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              data-testid={`card-popular-${station._id}`}
+            >
+              <div className="w-[132px] h-[132px] mt-[34px] mx-auto bg-white rounded-[6.6px] overflow-clip">
+                <img
+                  className="w-full h-full object-cover"
+                  alt={station.name}
+                  src={getStationImage(station)}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                  }}
+                />
+              </div>
+              <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
+                {station.name}
+              </p>
+              <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
+                {station.tags?.[0] || station.country || 'Radio'}
+              </p>
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px]">
-              {radio.name}
-            </p>
-            <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px]">
-              {radio.location}
-            </p>
-          </div>
+          </Link>
         ))}
         <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] flex items-center justify-center" data-testid="button-see-more">
           <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal">
