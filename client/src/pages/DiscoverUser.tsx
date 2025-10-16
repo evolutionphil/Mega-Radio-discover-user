@@ -1,85 +1,24 @@
 import { Link } from "wouter";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-
-const recentlyPlayedStations = [
-  { name: "BBC Radio", location: "United Kingdom", image: "/figmaAssets/-hdd91mb-400x400-1.png" },
-  { name: "WEEU", location: "USA", image: "/figmaAssets/830-weeu-1-1.png" },
-  { name: "CNN", location: "Internatinal", image: "/figmaAssets/cnn-international-logo-1.png", featured: true },
-  { name: "NBC News", location: "USA", image: "/figmaAssets/2616697-nbc-news-logo-stacked--1--1.png" },
-  { name: "Power Türk", location: "Turkey", image: "/figmaAssets/meta-image--1--1-4.png" },
-  { name: "Cheddar", location: "USA", image: "/figmaAssets/cheddar-news-1.png" },
-  { name: "WNYC", location: "USA, New York", image: "/figmaAssets/c175--1--1.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-];
-
-const genres = [
-  { name: "Pop" },
-  { name: "Rock" },
-  { name: "Hip Hop" },
-  { name: "News" },
-  { name: "Country" },
-  { name: "Hip Hop" },
-  { name: "News" },
-  { name: "Country" },
-];
-
-const popularRadios = [
-  { name: "VIBRA", location: "Italy, Rome", image: "/figmaAssets/logo-1.png" },
-  { name: "VOA", location: "USA, New York", image: "/figmaAssets/c175-1.png" },
-  { name: "Radio L", location: "Turkey", image: "/figmaAssets/ebg3ye6-1.png" },
-  { name: "Power Türk", location: "Turkey, Istanbul", image: "/figmaAssets/android-default-logo-1-3.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/meta-image--1--1-4.png" },
-  { name: "Soul Radio", location: "USA, Washington D.C", image: "/figmaAssets/washington-d-1.png" },
-  { name: "ON 70'S", location: "Germany, Bavaria", image: "/figmaAssets/germany-bavaria-1.png" },
-  { name: "WEEU", location: "USA", image: "/figmaAssets/830-weeu-1-1.png" },
-  { name: "Metro FM", location: "Turkey, Istanbul", image: "/figmaAssets/meta-image--1--1-4.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/meta-image--1--1-4.png" },
-  { name: "Zeno", location: "Italy", image: "/figmaAssets/apple-icon-120x120-1.png" },
-  { name: "Radio 80'S", location: "USA, New York", image: "/figmaAssets/80s-radio-1.png" },
-];
-
-const moreFromAustria = [
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/alem-fm-1-4.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/alem-fm-1-4.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/alem-fm-1-4.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-  { name: "Power Türk", location: "Türkçe Pop", image: "/figmaAssets/alem-fm-1-4.png" },
-];
-
-const sidebarItems = [
-  { icon: "/figmaAssets/vuesax-bold-radio.svg", label: "Discover", active: true, href: "/discover" },
-  { icon: "/figmaAssets/vuesax-bold-musicnote.svg", label: "Genres", active: false, href: "/genres" },
-  { icon: "/figmaAssets/vuesax-bold-search-normal.svg", label: "Search", active: false, href: "/search" },
-  { icon: "/figmaAssets/vuesax-bold-heart.svg", label: "Favorites", active: false, href: "/favorites" },
-  { icon: null, label: "Records", active: false, customIcon: true, href: "/discover" },
-  { icon: "/figmaAssets/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
-];
+import { Radio, Music, Search, Heart, Settings } from "lucide-react";
 
 export const DiscoverUser = (): JSX.Element => {
   return (
-    <div className="relative w-[1920px] h-[1080px] overflow-hidden">
+    <div className="relative w-[1920px] h-[1080px] bg-white overflow-hidden" data-testid="page-discover">
       {/* Background Image */}
-      <img
-        className="absolute left-[-10px] top-[-523px] w-[1939px] h-[1292px] object-cover"
-        alt="Hand crowd disco"
-        src="/figmaAssets/hand-crowd-disco-1.png"
-      />
+      <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
+        <img
+          alt=""
+          className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+          src="/figmaAssets/hand-crowd-disco-1.png"
+        />
+      </div>
 
       {/* Gradient Overlay */}
-      <div className="absolute left-0 top-0 w-[1920px] h-[1080px] bg-gradient-to-b from-[rgba(14,14,14,0)] from-[0.88%] to-[#0e0e0e] to-[48.611%]" />
+      <div className="absolute bg-gradient-to-b from-[0.88%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[48.611%] top-0 w-[1920px]" />
 
       {/* Logo */}
-      <div className="absolute left-[30px] top-[64px] w-[164.421px] h-[57px]">
-        <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[27.029px] text-white leading-normal whitespace-pre-wrap">
+      <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px]">
+        <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
         <img
@@ -89,199 +28,634 @@ export const DiscoverUser = (): JSX.Element => {
         />
       </div>
 
-      {/* Top Right Controls */}
-      <div className="absolute left-[1281px] top-[67px] w-[51px] h-[51px] bg-[rgba(255,255,255,0.1)] rounded-[30px]">
-        <div className="absolute left-[13.75px] top-[13px] w-[23.75px] h-[25px]">
-          <div className="absolute left-0 top-0 w-[6.25px] h-[25px] bg-white rounded-[10px]" />
-          <div className="absolute left-[8.75px] top-[7.5px] w-[6.25px] h-[17.5px] bg-white rounded-[10px]" />
-          <div className="absolute left-[17.5px] top-[3.75px] w-[6.25px] h-[21.25px] bg-white rounded-[10px]" />
+      {/* Top Right - Equalizer */}
+      <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1281px] overflow-clip rounded-[30px] size-[51px] top-[67px]">
+        <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
+          <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
+          <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
+          <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
         </div>
       </div>
 
-      <div className="absolute left-[1351px] top-[67px] w-[223px] h-[51px] bg-[rgba(255,255,255,0.1)] rounded-[30px]">
-        <div className="absolute left-[15px] top-[11px] w-[193.684px] h-[29px]">
-          <img
-            className="absolute left-0 top-0 w-[28.421px] h-[28.421px]"
-            alt="Austria"
-            src="/figmaAssets/austria-1.png"
-          />
-          <p className="absolute left-[39.08px] top-[1px] font-['Ubuntu',Helvetica] font-bold text-[24px] text-white leading-normal">
+      {/* Country Selector */}
+      <div className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1351px] overflow-clip rounded-[30px] top-[67px] w-[223px]">
+        <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
+          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
             Austria
           </p>
-          <div className="absolute left-[170px] top-[3.32px] rotate-[270deg]">
+          <div className="absolute left-0 size-[28.421px] top-0">
             <img
-              className="w-[23.684px] h-[23.684px]"
-              alt="Arrow"
-              src="/figmaAssets/vuesax-outline-arrow-left.svg"
+              alt="Austria"
+              className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+              src="/figmaAssets/austria-1.png"
             />
+          </div>
+          <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
+            <div className="flex-none rotate-[270deg]">
+              <div className="relative size-[23.684px]">
+                <img
+                  alt=""
+                  className="block max-w-none size-full"
+                  src="/figmaAssets/vuesax-outline-arrow-left.svg"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="absolute left-[1648px] top-[59px] w-[193px] h-[66px]">
-        <p className="absolute left-[54.5px] top-[19px] font-['Ubuntu',Helvetica] font-bold text-[24px] text-center text-white leading-normal -translate-x-1/2">
+      {/* User Profile */}
+      <div className="absolute h-[66px] left-[1648px] top-[59px] w-[193px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[54.5px] not-italic text-[24px] text-center text-white top-[19px] translate-x-[-50%]">
           Talha Çay
         </p>
-        <Avatar className="absolute left-[127px] top-0 w-[66px] h-[66px]">
-          <AvatarImage src="/figmaAssets/frame-218.png" />
-          <AvatarFallback>TC</AvatarFallback>
-        </Avatar>
+        <div className="absolute left-[127px] rounded-[73.333px] size-[66px] top-0">
+          <img
+            alt=""
+            className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[73.333px] size-full"
+            src="/figmaAssets/frame-218.png"
+          />
+        </div>
       </div>
 
       {/* Left Sidebar */}
-      <div className="absolute left-[64px] top-[242px] w-[98px] h-[638px]">
-        {sidebarItems.map((item, index) => (
-          <Link key={index} href={item.href}>
-            <div
-              className={`absolute left-0 w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors ${
-                item.active ? "bg-[rgba(255,255,255,0.2)]" : ""
-              }`}
-              style={{ top: `${index * 108}px` }}
-              data-testid={`button-${item.label.toLowerCase()}`}
-            >
-              <div className="absolute left-1/2 top-[19px] -translate-x-1/2">
-                {item.customIcon ? (
-                  <div className="w-[32px] h-[32px] relative">
-                    <div className="absolute left-[5.33px] top-[5.33px] w-[21.334px] h-[21.334px] bg-white rounded-[10.667px]" />
-                    <div className="absolute left-0 top-0 w-[32px] h-[32px] rounded-[20.267px] border-[2.667px] border-solid border-white" />
-                  </div>
-                ) : (
-                  <img className="w-[32px] h-[32px]" alt={item.label} src={item.icon || ""} />
-                )}
-              </div>
-              <p className="absolute left-1/2 top-[59px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal -translate-x-1/2">
-                {item.label}
+      <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
+        {/* Discover - Active */}
+        <Link href="/discover">
+          <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover">
+            <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Discover
               </p>
+              <div className="absolute left-[20px] size-[32px] top-0">
+                <Radio className="size-full text-white" fill="white" />
+              </div>
             </div>
-          </Link>
-        ))}
+          </div>
+        </Link>
+
+        {/* Genres */}
+        <Link href="/genres">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres">
+            <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Genres
+              </p>
+              <div className="absolute left-[13px] size-[32px] top-0">
+                <Music className="size-full text-white" fill="white" />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Search */}
+        <Link href="/search">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search">
+            <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Search
+              </p>
+              <div className="absolute left-[12px] size-[32px] top-0">
+                <Search className="size-full text-white" strokeWidth={2.5} />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Favorites */}
+        <Link href="/favorites">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites">
+            <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Favorites
+              </p>
+              <div className="absolute left-[22px] size-[32px] top-0">
+                <Heart className="size-full text-white" fill="white" />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Records */}
+        <Link href="/discover">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records">
+            <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Records
+              </p>
+              <div className="absolute left-[17px] size-[32px] top-0">
+                <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
+                <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Settings */}
+        <Link href="/settings">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings">
+            <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Settings
+              </p>
+              <div className="absolute left-[18px] size-[32px] top-0">
+                <Settings className="size-full text-white" fill="white" />
+              </div>
+            </div>
+          </div>
+        </Link>
       </div>
 
-      {/* Recently Played Section */}
-      <p className="absolute left-[236px] top-[242px] font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">
+      {/* Recently Played Title */}
+      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
         Recently Played
       </p>
-      <p className="absolute left-[1792.5px] top-[248px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal -translate-x-1/2">
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[248px] translate-x-[-50%]">
         See More
       </p>
 
-      <div className="absolute left-[236px] top-[316px] flex gap-[19px]">
-        {recentlyPlayedStations.map((station, index) => (
-          <Link key={index} href="/radio-playing">
-            <div
-              className={`bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${
-                station.featured
-                  ? "w-[209.091px] h-[276px] border-[5.75px] border-solid border-[#d2d2d2]"
-                  : "w-[200px] h-[264px]"
-              }`}
-              data-testid={`card-station-${index}`}
-            >
-            <div className={`bg-white ${station.featured ? "w-[138px] h-[138px] mt-[35.55px] ml-[35.55px]" : "w-[132px] h-[132px] mt-[34px] ml-[34px]"} rounded-[6.6px] overflow-clip`}>
-              <img
-                className="w-full h-full object-cover"
-                alt={station.name}
-                src={station.image}
-              />
-            </div>
-            <p className={`font-['Ubuntu',Helvetica] font-medium ${station.featured ? "text-[22px] mt-[22px]" : "text-[22px] mt-[21px]"} text-center text-white leading-normal`}>
-              {station.name}
-            </p>
-            <p className={`font-['Ubuntu',Helvetica] font-light ${station.featured ? "text-[18.818px] mt-[7.6px]" : "text-[18px] mt-[6.2px]"} text-center text-white leading-normal`}>
-              {station.location}
-            </p>
-            </div>
-          </Link>
-        ))}
-      </div>
+      {/* Recently Played Cards */}
+      {/* Card 1 - BBC Radio */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-0">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/-hdd91mb-400x400-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102.5px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
+            BBC Radio
+          </p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[99.5px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">
+            United Kingdom
+          </p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
 
-      {/* Popular Genres Section */}
-      <p className="absolute left-[236px] top-[639px] font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">
+      {/* Card 2 - WEEU */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-1">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/830-weeu-1-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
+            WEEU
+          </p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">
+            USA
+          </p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* Card 3 - CNN Featured */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] border-[#d2d2d2] border-[5.75px] border-solid h-[276px] left-[691.46px] rounded-[11.5px] top-[310px] w-[209.091px]" data-testid="card-station-2">
+          <div className="h-[276px] overflow-clip relative rounded-[inherit] w-[209.091px]">
+            <div className="absolute bg-white left-[35.55px] overflow-clip rounded-[6.9px] size-[138px] top-[35.55px]">
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/cnn-international-logo-1.png" />
+            </div>
+            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[106.73px] not-italic text-[22px] text-center text-white top-[195.5px] translate-x-[-50%]">
+              CNN
+            </p>
+            <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[104.55px] not-italic text-[18.818px] text-center text-white top-[228.12px] translate-x-[-50%]">
+              Internatinal
+            </p>
+          </div>
+          <div className="absolute inset-[-5.75px] pointer-events-none shadow-[inset_1.15px_1.15px_12.65px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* Card 4 - NBC News */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-3">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/2616697-nbc-news-logo-stacked--1--1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
+            NBC News
+          </p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">
+            USA
+          </p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* Card 5 - Power Türk */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-4">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
+            Power Türk
+          </p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">
+            Turkey
+          </p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* Card 6 - Cheddar */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-5">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/cheddar-news-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102.5px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
+            Cheddar
+          </p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">
+            USA
+          </p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* Card 7 - WNYC */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1616px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-6">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/c175--1--1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
+            WNYC
+          </p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">
+            <span className="font-['Ubuntu',Helvetica] font-medium">USA</span>, New York
+          </p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* Card 8 - Power Türk */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1846px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-7">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/0b75jzrr-400x400-1-8.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
+            Power Türk
+          </p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">
+            Türkçe Pop
+          </p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* Popular Genres Title */}
+      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[639px]">
         Popular Genres
       </p>
 
-      <div className="absolute left-[236px] top-[713px] flex gap-[18px]">
-        {genres.map((genre, index) => (
-          <Link key={index} href="/genres">
-            <div
-              className="bg-[rgba(255,255,255,0.14)] rounded-[20px] px-[72px] py-[28px] shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              data-testid={`button-genre-${index}`}
-            >
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal">
-              {genre.name}
-            </p>
-            </div>
-          </Link>
-        ))}
-      </div>
+      {/* Genre Pills */}
+      <Link href="/genres">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[236px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-0">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
 
-      {/* Popular Radios Section */}
-      <p className="absolute left-[236px] top-[863px] font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">
+      <Link href="/genres">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[445px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-1">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Rock</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/genres">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[664px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-2">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Hip Hop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/genres">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[916px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-3">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">News</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/genres">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1142px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-4">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Country</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/genres">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1394px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-5">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Hip Hop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/genres">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1646px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-6">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">News</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/genres">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1872px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-7">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Country</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* Popular Radios Title */}
+      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[863px]">
         Popular Radios
       </p>
-      <p className="absolute left-[1792.5px] top-[869px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal -translate-x-1/2">
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[869px] translate-x-[-50%]">
         See More
       </p>
 
-      <div className="absolute left-[236px] top-[936px] grid grid-cols-6 gap-x-[19px] gap-y-[19px] w-[1580px]">
-        {popularRadios.map((station, index) => (
-          <Link key={index} href="/radio-playing">
-            <div
-              className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              data-testid={`card-popular-${index}`}
-            >
-            <div className="w-[132px] h-[132px] mt-[34px] mx-auto bg-white rounded-[6.6px] overflow-clip">
-              <img
-                className="w-full h-full object-cover"
-                alt={station.name}
-                src={station.image}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px]">
-              {station.name}
-            </p>
-            <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px]">
-              {station.location}
-            </p>
-            </div>
-          </Link>
-        ))}
-        <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] flex items-center justify-center" data-testid="button-see-more">
-          <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal">
-            See More
-          </p>
+      {/* Popular Radios Cards - Row 1 */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-0">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/logo-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">VIBRA</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">Italy</span>, Rome</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-1">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/c175-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102.5px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">VOA</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">USA</span>, New York</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-2">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/ebg3ye6-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Radio L</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Turkey</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-3">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/android-default-logo-1-3.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Turkey, Istanbul</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-4">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18.818px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">USA</span>, New York</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-5">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/washington-d-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Soul Radio</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100.5px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">USA</span>, Washington D.C</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* Popular Radios Cards - Row 2 */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-6">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/germany-bavaria-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">ON 70'S</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[99px] not-italic text-[18px] text-center text-white top-[218px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">Germany</span>, Bavaria</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-7">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/830-weeu-1-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">WEEU</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">USA</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-8">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Metro FM</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">Turkey</span>, Istanbul</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-9">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100.5px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-10">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/apple-icon-120x120-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Zeno</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Italy</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-11">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/80s-radio-1.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Radio 80'S</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">USA</span>, New York</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* See More Card */}
+      <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1616px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="button-see-more">
+        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100.5px] not-italic text-[22px] text-center text-white top-[120px] translate-x-[-50%]">See More</p>
+        <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
       </div>
 
-      {/* More From Austria Section */}
-      <p className="absolute left-[236px] top-[1578px] font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">
+      {/* More From Austria Title */}
+      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[1578px]">
         More From Austria
       </p>
-      <p className="absolute left-[1792.5px] top-[1584px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal -translate-x-1/2">
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[1584px] translate-x-[-50%]">
         See More
       </p>
 
-      <div className="absolute left-[236px] top-[1652px] grid grid-cols-6 gap-x-[19px] gap-y-[19px] w-[1580px]">
-        {moreFromAustria.map((station, index) => (
-          <div
-            key={index}
-            className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]"
-          >
-            <div className="w-[132px] h-[132px] mt-[34px] mx-auto bg-white rounded-[6.6px] overflow-clip">
-              <img
-                className="w-full h-full object-cover"
-                alt={station.name}
-                src={station.image}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px]">
-              {station.name}
-            </p>
-            <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px]">
-              {station.location}
-            </p>
+      {/* More From Austria Cards - Row 1 */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/powertu-rk-tv-logosu-1-12.png" />
           </div>
-        ))}
-      </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/0b75jzrr-400x400-1-8.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/android-default-logo-1-3.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      {/* More From Austria Cards - Row 2 */}
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/powertu-rk-tv-logosu-1-12.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/0b75jzrr-400x400-1-8.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/android-default-logo-1-3.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
+
+      <Link href="/radio-playing">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+          <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+          </div>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        </div>
+      </Link>
     </div>
   );
 };
