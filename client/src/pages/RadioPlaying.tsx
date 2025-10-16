@@ -2,11 +2,16 @@ import { Link, useLocation } from "wouter";
 import { SkipBack, Pause, SkipForward, Heart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
+import { useMemo } from "react";
 
 export const RadioPlaying = (): JSX.Element => {
   const [location] = useLocation();
-  const searchParams = new URLSearchParams(location.split('?')[1]);
-  const stationId = searchParams.get('station');
+  
+  // Parse station ID from URL query params - useMemo ensures it updates when location changes
+  const stationId = useMemo(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    return searchParams.get('station');
+  }, [location]); // Re-calculate when location changes
 
   const sidebarItems = [
     { icon: "/figmaAssets/vuesax-bold-radio.svg", label: "Discover", active: true, href: "/discover-no-user" },
@@ -35,32 +40,38 @@ export const RadioPlaying = (): JSX.Element => {
   };
 
   // Fetch station details
-  const { data: stationData } = useQuery({
-    queryKey: ['/api/station', stationId],
+  const { data: stationData, isLoading: isLoadingStation } = useQuery({
+    queryKey: ['station', stationId],
     queryFn: () => megaRadioApi.getStationById(stationId!),
     enabled: !!stationId,
   });
 
   const station = stationData?.station;
 
-  // Fetch similar stations (from same tags/genre)
+  // Fetch station metadata (now playing)
+  const { data: metadataData } = useQuery({
+    queryKey: ['metadata', stationId],
+    queryFn: () => megaRadioApi.getStationMetadata(stationId!),
+    enabled: !!stationId,
+    refetchInterval: 30000, // Refetch every 30 seconds
+  });
+
+  const metadata = metadataData?.metadata;
+
+  // Fetch similar stations using the dedicated API endpoint
   const { data: similarStationsData } = useQuery({
-    queryKey: ['/api/stations/similar', station?._id],
-    queryFn: () => {
-      const tags = station ? getStationTags(station) : [];
-      const searchTerm = tags[0] || station?.country || 'music';
-      return megaRadioApi.searchStations({ q: searchTerm, limit: 7 });
-    },
-    enabled: !!station,
+    queryKey: ['similar', stationId],
+    queryFn: () => megaRadioApi.getSimilarStations(stationId!, 7),
+    enabled: !!stationId,
   });
 
   // Fetch popular stations
   const { data: popularStationsData } = useQuery({
-    queryKey: ['/api/stations/popular-radio-playing'],
+    queryKey: ['popular-stations'],
     queryFn: () => megaRadioApi.getPopularStations({ limit: 14 }),
   });
 
-  const similarStations = similarStationsData?.results || [];
+  const similarStations = similarStationsData?.stations || [];
   const popularStations = popularStationsData?.stations || [];
 
   return (

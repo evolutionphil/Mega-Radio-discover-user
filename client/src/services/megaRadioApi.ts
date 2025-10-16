@@ -136,8 +136,30 @@ export const megaRadioApi = {
 
   getStationById: async (identifier: string): Promise<{ station: Station }> => {
     const response = await fetch(`${BASE_URL}/api/station/${identifier}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch station: ${response.statusText}`);
+    }
     const data = await response.json();
     return { station: data };
+  },
+
+  getSimilarStations: async (stationId: string, limit?: number): Promise<{ stations: Station[] }> => {
+    const queryParams = limit ? `?limit=${limit}` : '';
+    const response = await fetch(`${BASE_URL}/api/stations/similar/${stationId}${queryParams}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch similar stations: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return { stations: Array.isArray(data) ? data : data.stations || [] };
+  },
+
+  getStationMetadata: async (stationId: string): Promise<{ metadata: { title?: string; artist?: string; album?: string } }> => {
+    const response = await fetch(`${BASE_URL}/api/stations/${stationId}/metadata`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch station metadata: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
   },
 
   // Genres

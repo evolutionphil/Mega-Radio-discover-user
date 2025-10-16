@@ -86,12 +86,22 @@ The schema uses Drizzle's PostgreSQL adapter with type inference for Insert and 
 4. Guide 4: Favorites feature (yellow button)
 
 **Main Application Pages**
-- Discover: Home page with recently played and popular stations
-- Genres: Browse stations by music/content genre
-- Search: Search stations with recently played suggestions
-- Favorites: User's saved stations
-- Settings: User preferences and country selection
-- Radio Playing: Full-screen playback interface with similar stations
+- Discover: Home page with popular stations from API and genre discovery
+- Genres: Browse all genres with real station counts from API
+- GenreList: View stations filtered by specific genre
+- Search: Real-time search with API integration
+- Favorites: User's saved stations (UI ready, requires authentication)
+- Settings: User preferences and country selection (UI ready, requires authentication)
+- Radio Playing: Full-screen playback with real station data, similar stations, and metadata
+
+**API Integration (Mega Radio API - themegaradio.com)**
+- All pages use real API data from themegaradio.com
+- Station endpoints: getStationById, getSimilarStations, getPopularStations, searchStations
+- Genre endpoints: getAllGenres, getDiscoverableGenres, getStationsByGenre
+- Metadata endpoint: getStationMetadata (now playing info with 30s refresh)
+- Helper functions handle API response formats (stations wrapped in {stations:[]}, genres in {data:[]})
+- Tags field parsed from comma-separated string to array
+- Station images use favicon field or fallback to proxy endpoint
 
 ### External Dependencies
 
