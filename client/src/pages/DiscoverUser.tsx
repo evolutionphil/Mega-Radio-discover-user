@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "wouter";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -56,12 +56,12 @@ const moreFromAustria = [
 ];
 
 const sidebarItems = [
-  { icon: "/figmaAssets/vuesax-bold-radio.svg", label: "Discover", active: true },
-  { icon: "/figmaAssets/vuesax-bold-musicnote.svg", label: "Genres", active: false },
-  { icon: "/figmaAssets/vuesax-bold-search-normal.svg", label: "Search", active: false },
-  { icon: "/figmaAssets/vuesax-bold-heart.svg", label: "Favorites", active: false },
-  { icon: null, label: "Records", active: false, customIcon: true },
-  { icon: "/figmaAssets/vuesax-bold-setting-2.svg", label: "Settings", active: false },
+  { icon: "/figmaAssets/vuesax-bold-radio.svg", label: "Discover", active: true, href: "/discover" },
+  { icon: "/figmaAssets/vuesax-bold-musicnote.svg", label: "Genres", active: false, href: "/genres" },
+  { icon: "/figmaAssets/vuesax-bold-search-normal.svg", label: "Search", active: false, href: "/search" },
+  { icon: "/figmaAssets/vuesax-bold-heart.svg", label: "Favorites", active: false, href: "/favorites" },
+  { icon: null, label: "Records", active: false, customIcon: true, href: "/discover" },
+  { icon: "/figmaAssets/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
 ];
 
 export const DiscoverUser = (): JSX.Element => {
@@ -131,27 +131,29 @@ export const DiscoverUser = (): JSX.Element => {
       {/* Left Sidebar */}
       <div className="absolute left-[64px] top-[242px] w-[98px] h-[638px]">
         {sidebarItems.map((item, index) => (
-          <div
-            key={index}
-            className={`absolute left-0 w-[98px] h-[98px] rounded-[10px] overflow-clip ${
-              item.active ? "bg-[rgba(255,255,255,0.2)]" : ""
-            }`}
-            style={{ top: `${index * 108}px` }}
-          >
-            <div className="absolute left-1/2 top-[19px] -translate-x-1/2">
-              {item.customIcon ? (
-                <div className="w-[32px] h-[32px] relative">
-                  <div className="absolute left-[5.33px] top-[5.33px] w-[21.334px] h-[21.334px] bg-white rounded-[10.667px]" />
-                  <div className="absolute left-0 top-0 w-[32px] h-[32px] rounded-[20.267px] border-[2.667px] border-solid border-white" />
-                </div>
-              ) : (
-                <img className="w-[32px] h-[32px]" alt={item.label} src={item.icon || ""} />
-              )}
+          <Link key={index} href={item.href}>
+            <div
+              className={`absolute left-0 w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors ${
+                item.active ? "bg-[rgba(255,255,255,0.2)]" : ""
+              }`}
+              style={{ top: `${index * 108}px` }}
+              data-testid={`button-${item.label.toLowerCase()}`}
+            >
+              <div className="absolute left-1/2 top-[19px] -translate-x-1/2">
+                {item.customIcon ? (
+                  <div className="w-[32px] h-[32px] relative">
+                    <div className="absolute left-[5.33px] top-[5.33px] w-[21.334px] h-[21.334px] bg-white rounded-[10.667px]" />
+                    <div className="absolute left-0 top-0 w-[32px] h-[32px] rounded-[20.267px] border-[2.667px] border-solid border-white" />
+                  </div>
+                ) : (
+                  <img className="w-[32px] h-[32px]" alt={item.label} src={item.icon || ""} />
+                )}
+              </div>
+              <p className="absolute left-1/2 top-[59px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal -translate-x-1/2">
+                {item.label}
+              </p>
             </div>
-            <p className="absolute left-1/2 top-[59px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal -translate-x-1/2">
-              {item.label}
-            </p>
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -165,14 +167,15 @@ export const DiscoverUser = (): JSX.Element => {
 
       <div className="absolute left-[236px] top-[316px] flex gap-[19px]">
         {recentlyPlayedStations.map((station, index) => (
-          <div
-            key={index}
-            className={`bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] ${
-              station.featured
-                ? "w-[209.091px] h-[276px] border-[5.75px] border-solid border-[#d2d2d2]"
-                : "w-[200px] h-[264px]"
-            }`}
-          >
+          <Link key={index} href="/radio-playing">
+            <div
+              className={`bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${
+                station.featured
+                  ? "w-[209.091px] h-[276px] border-[5.75px] border-solid border-[#d2d2d2]"
+                  : "w-[200px] h-[264px]"
+              }`}
+              data-testid={`card-station-${index}`}
+            >
             <div className={`bg-white ${station.featured ? "w-[138px] h-[138px] mt-[35.55px] ml-[35.55px]" : "w-[132px] h-[132px] mt-[34px] ml-[34px]"} rounded-[6.6px] overflow-clip`}>
               <img
                 className="w-full h-full object-cover"
@@ -186,7 +189,8 @@ export const DiscoverUser = (): JSX.Element => {
             <p className={`font-['Ubuntu',Helvetica] font-light ${station.featured ? "text-[18.818px] mt-[7.6px]" : "text-[18px] mt-[6.2px]"} text-center text-white leading-normal`}>
               {station.location}
             </p>
-          </div>
+            </div>
+          </Link>
         ))}
       </div>
 
@@ -197,14 +201,16 @@ export const DiscoverUser = (): JSX.Element => {
 
       <div className="absolute left-[236px] top-[713px] flex gap-[18px]">
         {genres.map((genre, index) => (
-          <div
-            key={index}
-            className="bg-[rgba(255,255,255,0.14)] rounded-[20px] px-[72px] py-[28px] shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]"
-          >
+          <Link key={index} href="/genres">
+            <div
+              className="bg-[rgba(255,255,255,0.14)] rounded-[20px] px-[72px] py-[28px] shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              data-testid={`button-genre-${index}`}
+            >
             <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal">
               {genre.name}
             </p>
-          </div>
+            </div>
+          </Link>
         ))}
       </div>
 
@@ -218,10 +224,11 @@ export const DiscoverUser = (): JSX.Element => {
 
       <div className="absolute left-[236px] top-[936px] grid grid-cols-6 gap-x-[19px] gap-y-[19px] w-[1580px]">
         {popularRadios.map((station, index) => (
-          <div
-            key={index}
-            className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]"
-          >
+          <Link key={index} href="/radio-playing">
+            <div
+              className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              data-testid={`card-popular-${index}`}
+            >
             <div className="w-[132px] h-[132px] mt-[34px] mx-auto bg-white rounded-[6.6px] overflow-clip">
               <img
                 className="w-full h-full object-cover"
@@ -235,9 +242,10 @@ export const DiscoverUser = (): JSX.Element => {
             <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px]">
               {station.location}
             </p>
-          </div>
+            </div>
+          </Link>
         ))}
-        <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] flex items-center justify-center">
+        <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] flex items-center justify-center" data-testid="button-see-more">
           <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal">
             See More
           </p>
