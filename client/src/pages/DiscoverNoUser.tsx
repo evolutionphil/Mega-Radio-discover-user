@@ -271,56 +271,60 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Popular Radio Station Cards - Row 1 */}
         {popularStations.slice(0, 7).map((station, index) => (
-          <div 
-            key={station._id || index} 
-            className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[539px] w-[200px]"
-            style={{ left: `${stationRow1Positions[index]}px` }}
-          >
-            <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-              <img
-                alt={station.name}
-                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                src={getStationImage(station)}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
-                }}
-              />
+          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+            <div 
+              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[539px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              style={{ left: `${stationRow1Positions[index]}px` }}
+              data-testid={`card-station-${station._id}`}
+            >
+              <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+                <img
+                  alt={station.name}
+                  className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                  src={getStationImage(station)}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                  }}
+                />
+              </div>
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                {station.name}
+              </p>
+              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                {station.tags?.[0] || station.country || 'Radio'}
+              </p>
+              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
             </div>
-            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-              {station.name}
-            </p>
-            <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-              {station.tags?.[0] || station.country || 'Radio'}
-            </p>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-          </div>
+          </Link>
         ))}
 
         {/* Popular Radio Station Cards - Row 2 */}
         {popularStations.slice(7, 14).map((station, index) => (
-          <div 
-            key={station._id || index} 
-            className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[833px] w-[200px]"
-            style={{ left: `${stationRow2Positions[index]}px` }}
-          >
-            <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-              <img
-                alt={station.name}
-                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                src={getStationImage(station)}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
-                }}
-              />
+          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+            <div 
+              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[833px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              style={{ left: `${stationRow2Positions[index]}px` }}
+              data-testid={`card-station-${station._id}`}
+            >
+              <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+                <img
+                  alt={station.name}
+                  className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                  src={getStationImage(station)}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                  }}
+                />
+              </div>
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                {station.name}
+              </p>
+              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                {station.tags?.[0] || station.country || 'Radio'}
+              </p>
+              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
             </div>
-            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-              {station.name}
-            </p>
-            <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-              {station.tags?.[0] || station.country || 'Radio'}
-            </p>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-          </div>
+          </Link>
         ))}
 
         {/* See More Card */}
@@ -342,39 +346,11 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Austria Stations - Row 1 */}
         {austriaStations.slice(0, 7).map((station, index) => (
-          <div 
-            key={station._id || index} 
-            className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1255px] w-[200px]"
-            style={{ left: `${stationRow1Positions[index]}px` }}
-          >
-            <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-              <img
-                alt={station.name}
-                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                src={getStationImage(station)}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
-                }}
-              />
-            </div>
-            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-              {station.name}
-            </p>
-            <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-              {station.tags?.[0] || station.country || 'Radio'}
-            </p>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-          </div>
-        ))}
-
-        {/* Austria Stations - Row 2 */}
-        {austriaStations.slice(7, 15).map((station, index) => {
-          const positions = [236, 466, 696, 926, 1156, 1386, 1616, 1846];
-          return (
+          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
             <div 
-              key={station._id || index} 
-              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1549px] w-[200px]"
-              style={{ left: `${positions[index]}px` }}
+              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1255px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              style={{ left: `${stationRow1Positions[index]}px` }}
+              data-testid={`card-station-${station._id}`}
             >
               <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                 <img
@@ -394,6 +370,38 @@ export const DiscoverNoUser = (): JSX.Element => {
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
             </div>
+          </Link>
+        ))}
+
+        {/* Austria Stations - Row 2 */}
+        {austriaStations.slice(7, 15).map((station, index) => {
+          const positions = [236, 466, 696, 926, 1156, 1386, 1616, 1846];
+          return (
+            <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+              <div 
+                className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1549px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+                style={{ left: `${positions[index]}px` }}
+                data-testid={`card-station-${station._id}`}
+              >
+                <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+                  <img
+                    alt={station.name}
+                    className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                    src={getStationImage(station)}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                    }}
+                  />
+                </div>
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                  {station.name}
+                </p>
+                <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                  {station.tags?.[0] || station.country || 'Radio'}
+                </p>
+                <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+              </div>
+            </Link>
           );
         })}
       </div>
