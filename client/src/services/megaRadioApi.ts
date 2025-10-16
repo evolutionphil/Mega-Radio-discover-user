@@ -141,8 +141,8 @@ export const megaRadioApi = {
   // Genres
   getAllGenres: async (): Promise<{ genres: Genre[] }> => {
     const response = await fetch(`${BASE_URL}/api/genres`);
-    const data = await response.json();
-    return { genres: Array.isArray(data) ? data : [] };
+    const result = await response.json();
+    return { genres: result.data || [] };
   },
 
   getGenreBySlug: async (slug: string): Promise<{ genre: Genre }> => {
