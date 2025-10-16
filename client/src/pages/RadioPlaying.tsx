@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { SkipBack, Pause, SkipForward, Heart } from "lucide-react";
 
 export const RadioPlaying = (): JSX.Element => {
   const sidebarItems = [
@@ -38,7 +39,7 @@ export const RadioPlaying = (): JSX.Element => {
   ];
 
   return (
-    <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden">
+    <div className="relative w-[1920px] min-h-[1080px] bg-[#0e0e0e] overflow-y-auto pb-[50px]">
       {/* Logo */}
       <div className="absolute left-[31px] top-[64px] w-[164.421px] h-[57px]">
         <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[27.029px] text-white leading-normal whitespace-pre-wrap">
@@ -146,12 +147,12 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
 
       {/* Song Name */}
-      <p className="absolute left-[596px] top-[356.71px] font-['Ubuntu',Helvetica] font-medium text-[32px] text-white leading-normal">
+      <p className="absolute left-[596px] top-[356.71px] font-['Ubuntu',Helvetica] font-medium text-[32px] text-white leading-normal" data-testid="text-song-name">
         Starboy - The Weeknd
       </p>
 
       {/* Station Info Label */}
-      <p className="absolute left-[596px] top-[425px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
+      <p className="absolute left-[596px] top-[425px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal" data-testid="text-station-info">
         Station Info
       </p>
 
@@ -163,27 +164,27 @@ export const RadioPlaying = (): JSX.Element => {
       />
 
       {/* Station Info Tags */}
-      <div className="absolute left-[646.43px] top-[476px] h-[40px] w-[93.913px] bg-[#242424] rounded-[5.217px]">
+      <div className="absolute left-[646.43px] top-[476px] h-[40px] w-[93.913px] bg-[#242424] rounded-[5.217px]" data-testid="tag-bitrate">
         <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
           128kb
         </p>
       </div>
-      <div className="absolute left-[757.74px] top-[476px] h-[40px] w-[93.913px] bg-[#242424] rounded-[5.217px]">
+      <div className="absolute left-[757.74px] top-[476px] h-[40px] w-[93.913px] bg-[#242424] rounded-[5.217px]" data-testid="tag-format">
         <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
           MP3
         </p>
       </div>
-      <div className="absolute left-[869.04px] top-[476px] h-[40px] w-[93.913px] bg-[#242424] rounded-[5.217px]">
+      <div className="absolute left-[869.04px] top-[476px] h-[40px] w-[93.913px] bg-[#242424] rounded-[5.217px]" data-testid="tag-country">
         <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
           AT
         </p>
       </div>
-      <div className="absolute left-[980.35px] top-[476px] h-[40px] w-[109.565px] bg-[#242424] rounded-[5.217px]">
+      <div className="absolute left-[980.35px] top-[476px] h-[40px] w-[109.565px] bg-[#242424] rounded-[5.217px]" data-testid="tag-genre-rock">
         <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
           Rock
         </p>
       </div>
-      <div className="absolute left-[1107.3px] top-[476px] h-[40px] w-[109.565px] bg-[#242424] rounded-[5.217px]">
+      <div className="absolute left-[1107.3px] top-[476px] h-[40px] w-[109.565px] bg-[#242424] rounded-[5.217px]" data-testid="tag-genre-classic">
         <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2">
           Classic
         </p>
@@ -193,38 +194,22 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute left-[1372px] top-[356px] w-[469px] h-[90.192px]">
         {/* Previous Button */}
         <button className="absolute left-0 top-0 w-[90.192px] h-[90.192px] bg-black rounded-[45.096px] flex items-center justify-center" data-testid="button-previous">
-          <img
-            className="w-[54.115px] h-[54.115px]"
-            alt="Previous"
-            src="/figmaAssets/vuesax-bold-previous.svg"
-          />
+          <SkipBack className="w-[40px] h-[40px] text-white" fill="white" />
         </button>
 
         {/* Pause Button */}
         <button className="absolute left-[126.27px] top-0 w-[90.192px] h-[90.192px] bg-black rounded-[45.096px] flex items-center justify-center" data-testid="button-pause">
-          <img
-            className="w-[54.115px] h-[54.115px]"
-            alt="Pause"
-            src="/figmaAssets/vuesax-bold-pause.svg"
-          />
+          <Pause className="w-[40px] h-[40px] text-white" fill="white" />
         </button>
 
         {/* Next Button */}
         <button className="absolute left-[252.54px] top-0 w-[90.192px] h-[90.192px] bg-black rounded-[45.096px] flex items-center justify-center" data-testid="button-next">
-          <img
-            className="w-[54.115px] h-[54.115px]"
-            alt="Next"
-            src="/figmaAssets/vuesax-bold-next.svg"
-          />
+          <SkipForward className="w-[40px] h-[40px] text-white" fill="white" />
         </button>
 
         {/* Favorite Button */}
         <button className="absolute left-[378.81px] top-0 w-[90.192px] h-[90.192px] border-[3.608px] border-black border-solid rounded-[72.655px] flex items-center justify-center" data-testid="button-favorite">
-          <img
-            className="w-[50.508px] h-[50.508px]"
-            alt="Favorite"
-            src="/figmaAssets/vuesax-bold-heart.svg"
-          />
+          <Heart className="w-[40px] h-[40px] text-white" fill="white" />
         </button>
       </div>
 
