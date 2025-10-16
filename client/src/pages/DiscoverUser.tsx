@@ -3,7 +3,7 @@ import { Radio, Music, Search, Heart, Settings } from "lucide-react";
 
 export const DiscoverUser = (): JSX.Element => {
   return (
-    <div className="relative w-[1920px] min-h-[1080px] bg-white overflow-y-auto" data-testid="page-discover">
+    <div className="relative w-[1920px] h-[2240px] bg-white overflow-y-auto" data-testid="page-discover">
       {/* Background Image */}
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
         <img
