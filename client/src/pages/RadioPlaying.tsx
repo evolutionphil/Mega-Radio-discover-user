@@ -40,6 +40,18 @@ export const RadioPlaying = (): JSX.Element => {
 
   return (
     <div className="relative w-[1920px] min-h-[1080px] bg-[#0e0e0e] overflow-y-auto pb-[50px]">
+      {/* Blurred Background */}
+      <div className="absolute inset-0 z-0">
+        <img
+          className="w-full h-full object-cover opacity-20 blur-[80px] scale-110"
+          alt="Background"
+          src="/figmaAssets/meta-image--1--1-4.png"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0e0e0e]/60 to-[#0e0e0e]/90" />
+      </div>
+
+      {/* Content wrapper */}
+      <div className="relative z-10">
       {/* Logo */}
       <div className="absolute left-[31px] top-[64px] w-[164.421px] h-[57px]">
         <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[27.029px] text-white leading-normal whitespace-pre-wrap">
@@ -284,6 +296,7 @@ export const RadioPlaying = (): JSX.Element => {
             See More
           </p>
         </div>
+      </div>
       </div>
     </div>
   );
