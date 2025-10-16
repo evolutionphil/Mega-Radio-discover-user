@@ -1,7 +1,32 @@
 import { Link } from "wouter";
 import { Radio, Music, Search, Heart, Settings } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { megaRadioApi, type Genre } from "@/services/megaRadioApi";
 
 export const Genres = (): JSX.Element => {
+  // Fetch all genres
+  const { data: genresData } = useQuery({
+    queryKey: ['/api/genres'],
+    queryFn: () => megaRadioApi.getAllGenres(),
+  });
+
+  // Fetch discoverable/popular genres
+  const { data: discoverableGenresData } = useQuery({
+    queryKey: ['/api/genres/discoverable'],
+    queryFn: () => megaRadioApi.getDiscoverableGenres(),
+  });
+
+  const allGenres = genresData?.genres || [];
+  const popularGenres = discoverableGenresData?.genres?.slice(0, 8) || [];
+
+  // Card positions
+  const row1Positions = [
+    { left: 237, width: 386 },
+    { left: 644, width: 387 },
+    { left: 1052, width: 386 },
+    { left: 1459, width: 382 },
+  ];
+
   return (
     <div className="relative w-[1920px] min-h-[1080px] bg-white overflow-y-auto" data-testid="page-genres">
       {/* Background Image */}
@@ -81,7 +106,7 @@ export const Genres = (): JSX.Element => {
       {/* Left Sidebar */}
       <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
         {/* Discover */}
-        <Link href="/discover">
+        <Link href="/discover-no-user">
           <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover">
             <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
@@ -95,7 +120,7 @@ export const Genres = (): JSX.Element => {
         </Link>
 
         {/* Genres - Active */}
-        <Link href="/genre-list">
+        <Link href="/genres">
           <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres">
             <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
@@ -137,7 +162,7 @@ export const Genres = (): JSX.Element => {
         </Link>
 
         {/* Records */}
-        <Link href="/discover">
+        <Link href="/discover-no-user">
           <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records">
             <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
@@ -172,70 +197,42 @@ export const Genres = (): JSX.Element => {
       </p>
 
       {/* Popular Genres - Row 1 */}
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[237px] px-[40px] py-[28px] rounded-[20px] top-[309px] w-[386px]" data-testid="card-genre-0">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[644px] px-[40px] py-[28px] rounded-[20px] top-[309px] w-[387px]" data-testid="card-genre-1">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1052px] px-[40px] py-[28px] rounded-[20px] top-[309px] w-[386px]" data-testid="card-genre-2">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1459px] px-[40px] py-[28px] rounded-[20px] top-[309px] w-[382px]" data-testid="card-genre-3">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
+      {popularGenres.slice(0, 4).map((genre, index) => (
+        <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+          <div 
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[309px]" 
+            data-testid={`card-genre-${index}`}
+            style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+          >
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
+              {genre.name}
+            </p>
+            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
+              {genre.stationCount || 0} Stations
+            </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+          </div>
+        </Link>
+      ))}
 
       {/* Popular Genres - Row 2 */}
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[237px] px-[40px] py-[28px] rounded-[20px] top-[467px] w-[386px]" data-testid="card-genre-4">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[644px] px-[40px] py-[28px] rounded-[20px] top-[467px] w-[387px]" data-testid="card-genre-5">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1052px] px-[40px] py-[28px] rounded-[20px] top-[467px] w-[386px]" data-testid="card-genre-6">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1459px] px-[40px] py-[28px] rounded-[20px] top-[467px] w-[382px]" data-testid="card-genre-7">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
+      {popularGenres.slice(4, 8).map((genre, index) => (
+        <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+          <div 
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[467px]" 
+            data-testid={`card-genre-${index + 4}`}
+            style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+          >
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
+              {genre.name}
+            </p>
+            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
+              {genre.stationCount || 0} Stations
+            </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+          </div>
+        </Link>
+      ))}
 
       {/* All Section Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-[670px]">
@@ -243,103 +240,61 @@ export const Genres = (): JSX.Element => {
       </p>
 
       {/* All Genres - Row 1 */}
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[237px] px-[40px] py-[28px] rounded-[20px] top-[737px] w-[386px]" data-testid="card-genre-8">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[644px] px-[40px] py-[28px] rounded-[20px] top-[737px] w-[387px]" data-testid="card-genre-9">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1052px] px-[40px] py-[28px] rounded-[20px] top-[737px] w-[386px]" data-testid="card-genre-10">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1459px] px-[40px] py-[28px] rounded-[20px] top-[737px] w-[382px]" data-testid="card-genre-11">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
+      {allGenres.slice(0, 4).map((genre, index) => (
+        <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+          <div 
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[737px]" 
+            data-testid={`card-genre-${index + 8}`}
+            style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+          >
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
+              {genre.name}
+            </p>
+            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
+              {genre.stationCount || 0} Stations
+            </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+          </div>
+        </Link>
+      ))}
 
       {/* All Genres - Row 2 */}
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[237px] px-[40px] py-[28px] rounded-[20px] top-[895px] w-[386px]" data-testid="card-genre-12">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[644px] px-[40px] py-[28px] rounded-[20px] top-[895px] w-[387px]" data-testid="card-genre-13">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1052px] px-[40px] py-[28px] rounded-[20px] top-[895px] w-[386px]" data-testid="card-genre-14">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1459px] px-[40px] py-[28px] rounded-[20px] top-[895px] w-[382px]" data-testid="card-genre-15">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
+      {allGenres.slice(4, 8).map((genre, index) => (
+        <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+          <div 
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[895px]" 
+            data-testid={`card-genre-${index + 12}`}
+            style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+          >
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
+              {genre.name}
+            </p>
+            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
+              {genre.stationCount || 0} Stations
+            </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+          </div>
+        </Link>
+      ))}
 
       {/* All Genres - Row 3 */}
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[237px] px-[40px] py-[28px] rounded-[20px] top-[1055px] w-[386px]" data-testid="card-genre-16">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[644px] px-[40px] py-[28px] rounded-[20px] top-[1055px] w-[387px]" data-testid="card-genre-17">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1052px] px-[40px] py-[28px] rounded-[20px] top-[1055px] w-[386px]" data-testid="card-genre-18">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
-
-      <Link href="/genre-list">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center left-[1459px] px-[40px] py-[28px] rounded-[20px] top-[1055px] w-[382px]" data-testid="card-genre-19">
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">Hip Hop</p>
-          <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">56 Stations</p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-      </Link>
+      {allGenres.slice(8, 12).map((genre, index) => (
+        <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+          <div 
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[1055px]" 
+            data-testid={`card-genre-${index + 16}`}
+            style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+          >
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
+              {genre.name}
+            </p>
+            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
+              {genre.stationCount || 0} Stations
+            </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+          </div>
+        </Link>
+      ))}
     </div>
   );
 };

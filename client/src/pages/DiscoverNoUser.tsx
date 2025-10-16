@@ -21,9 +21,9 @@ export const DiscoverNoUser = (): JSX.Element => {
     queryFn: () => megaRadioApi.getAllStations({ country: 'AT', limit: 24 }),
   });
 
-  const genres = genresData?.genres || [];
-  const popularStations = popularStationsData?.stations || [];
-  const austriaStations = austriaStationsData?.stations || [];
+  const genres = genresData?.genres?.slice(0, 8) || [];
+  const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
+  const austriaStations = austriaStationsData?.stations?.slice(0, 15) || [];
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
@@ -32,31 +32,15 @@ export const DiscoverNoUser = (): JSX.Element => {
         ? station.favicon 
         : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
     }
-    return '/figmaAssets/powerturk-tv-logosu-1.png'; // fallback
+    return '/figmaAssets/powerturk-tv-logosu-1.png';
   };
 
-  // Helper function to render a station card
-  const StationCard = ({ station, top }: { station: Station; top: number }) => (
-    <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[${236 + (Math.floor((top - 539) / 294) % 7) * 230}px] overflow-clip rounded-[11px] top-[${top}px] w-[200px]`}>
-      <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-        <img
-          alt={station.name}
-          className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-          src={getStationImage(station)}
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
-          }}
-        />
-      </div>
-      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2">
-        {station.name}
-      </p>
-      <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2">
-        {station.tags?.[0] || station.country || 'Radio'}
-      </p>
-      <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-    </div>
-  );
+  // Genre positions
+  const genrePositions = [236, 445, 664, 916, 1142, 1394, 1646, 1872];
+
+  // Station card positions
+  const stationRow1Positions = [236, 466, 696, 926, 1156, 1386, 1616];
+  const stationRow2Positions = [236, 466, 696, 926, 1156, 1386, 1616];
 
   return (
     <div className="relative w-[1920px] min-h-[1080px] bg-[#0e0e0e] overflow-y-auto" data-testid="page-discover-no-user">
@@ -259,14 +243,13 @@ export const DiscoverNoUser = (): JSX.Element => {
         </p>
 
         {/* Genre Pills - Dynamic from API */}
-        {genres.slice(0, 8).map((genre, index) => {
-          const positions = [236, 445, 664, 916, 1142, 1394, 1646, 1872];
-          const isHighlighted = index === 2; // Hip Hop highlighted
-
+        {genres.map((genre, index) => {
+          const isHighlighted = index === 2;
           return (
             <div 
-              key={genre.slug}
-              className={`absolute bg-[rgba(255,255,255,0.14)] ${isHighlighted ? 'border-[#b4b4b4] border-[5.5px] border-solid' : ''} box-border content-stretch flex gap-[10px] items-start left-[${positions[index]}px] px-[72px] py-[28px] rounded-[20px] top-[316px]`}
+              key={genre.slug || index}
+              className={`absolute bg-[rgba(255,255,255,0.14)] ${isHighlighted ? 'border-[#b4b4b4] border-[5.5px] border-solid' : ''} box-border content-stretch flex gap-[10px] items-start px-[72px] py-[28px] rounded-[20px] top-[316px]`}
+              style={{ left: `${genrePositions[index]}px` }}
             >
               <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
                 {genre.name}
@@ -286,56 +269,58 @@ export const DiscoverNoUser = (): JSX.Element => {
         </p>
 
         {/* Popular Radio Station Cards - Row 1 */}
-        {popularStations.slice(0, 7).map((station, index) => {
-          const leftPositions = [236, 466, 696, 926, 1156, 1386, 1616];
-          return (
-            <div key={station._id || index} className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[${leftPositions[index]}px] overflow-clip rounded-[11px] top-[539px] w-[200px]`}>
-              <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-                <img
-                  alt={station.name}
-                  className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                  src={getStationImage(station)}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
-                  }}
-                />
-              </div>
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.name}
-              </p>
-              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.tags?.[0] || station.country || 'Radio'}
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        {popularStations.slice(0, 7).map((station, index) => (
+          <div 
+            key={station._id || index} 
+            className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[539px] w-[200px]"
+            style={{ left: `${stationRow1Positions[index]}px` }}
+          >
+            <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+              <img
+                alt={station.name}
+                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                src={getStationImage(station)}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                }}
+              />
             </div>
-          );
-        })}
+            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+              {station.name}
+            </p>
+            <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+              {station.tags?.[0] || station.country || 'Radio'}
+            </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+          </div>
+        ))}
 
         {/* Popular Radio Station Cards - Row 2 */}
-        {popularStations.slice(7, 14).map((station, index) => {
-          const leftPositions = [236, 466, 696, 926, 1156, 1386, 1616];
-          return (
-            <div key={station._id || index} className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[${leftPositions[index]}px] overflow-clip rounded-[11px] top-[833px] w-[200px]`}>
-              <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-                <img
-                  alt={station.name}
-                  className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                  src={getStationImage(station)}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
-                  }}
-                />
-              </div>
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.name}
-              </p>
-              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.tags?.[0] || station.country || 'Radio'}
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        {popularStations.slice(7, 14).map((station, index) => (
+          <div 
+            key={station._id || index} 
+            className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[833px] w-[200px]"
+            style={{ left: `${stationRow2Positions[index]}px` }}
+          >
+            <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+              <img
+                alt={station.name}
+                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                src={getStationImage(station)}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                }}
+              />
             </div>
-          );
-        })}
+            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+              {station.name}
+            </p>
+            <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+              {station.tags?.[0] || station.country || 'Radio'}
+            </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+          </div>
+        ))}
 
         {/* See More Card */}
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1616px] overflow-clip rounded-[11px] top-[833px] w-[200px]">
@@ -355,36 +340,41 @@ export const DiscoverNoUser = (): JSX.Element => {
         </p>
 
         {/* Austria Stations - Row 1 */}
-        {austriaStations.slice(0, 7).map((station, index) => {
-          const leftPositions = [236, 466, 696, 926, 1156, 1386, 1616];
-          return (
-            <div key={station._id || index} className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[${leftPositions[index]}px] overflow-clip rounded-[11px] top-[1255px] w-[200px]`}>
-              <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-                <img
-                  alt={station.name}
-                  className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                  src={getStationImage(station)}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
-                  }}
-                />
-              </div>
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.name}
-              </p>
-              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.tags?.[0] || station.country || 'Radio'}
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+        {austriaStations.slice(0, 7).map((station, index) => (
+          <div 
+            key={station._id || index} 
+            className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1255px] w-[200px]"
+            style={{ left: `${stationRow1Positions[index]}px` }}
+          >
+            <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+              <img
+                alt={station.name}
+                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                src={getStationImage(station)}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                }}
+              />
             </div>
-          );
-        })}
+            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+              {station.name}
+            </p>
+            <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+              {station.tags?.[0] || station.country || 'Radio'}
+            </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+          </div>
+        ))}
 
         {/* Austria Stations - Row 2 */}
         {austriaStations.slice(7, 15).map((station, index) => {
-          const leftPositions = [236, 466, 696, 926, 1156, 1386, 1616, 1846];
+          const positions = [236, 466, 696, 926, 1156, 1386, 1616, 1846];
           return (
-            <div key={station._id || index} className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[${leftPositions[index]}px] overflow-clip rounded-[11px] top-[1549px] w-[200px]`}>
+            <div 
+              key={station._id || index} 
+              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1549px] w-[200px]"
+              style={{ left: `${positions[index]}px` }}
+            >
               <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                 <img
                   alt={station.name}
@@ -395,10 +385,10 @@ export const DiscoverNoUser = (): JSX.Element => {
                   }}
                 />
               </div>
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
                 {station.name}
               </p>
-              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
                 {station.tags?.[0] || station.country || 'Radio'}
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />

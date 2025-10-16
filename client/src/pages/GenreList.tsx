@@ -1,34 +1,32 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Radio, Music, Search, Heart, Settings, ArrowLeft } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 
 export const GenreList = (): JSX.Element => {
-  // Radio stations matching Figma design pattern
-  const radioStations = [
-    // Row 1
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/cnn-international-logo-1.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/meta-image--1--1-4.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/cnn-international-logo-1.png" },
-    // Row 2
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/cnn-international-logo-1.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/android-default-logo-1-3.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/meta-image--1--1-4.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-    // Row 3
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/powertu-rk-tv-logosu-1-12.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/cnn-international-logo-1.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/android-default-logo-1-3.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/meta-image--1--1-4.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/alem-fm-1-4.png" },
-    { name: "Power Türk", genre: "Türkçe Pop", logo: "/figmaAssets/0b75jzrr-400x400-1-8.png" },
-  ];
+  const [location] = useLocation();
+  
+  // Extract genre slug from URL query params
+  const urlParams = new URLSearchParams(location.split('?')[1] || '');
+  const genreSlug = urlParams.get('genre') || 'pop';
+
+  // Fetch stations by genre
+  const { data: stationsData } = useQuery({
+    queryKey: ['/api/stations', { genre: genreSlug, limit: 21 }],
+    queryFn: () => megaRadioApi.getAllStations({ genre: genreSlug, limit: 21 }),
+  });
+
+  const stations = stationsData?.stations || [];
+
+  // Helper function to get station image
+  const getStationImage = (station: Station) => {
+    if (station.favicon) {
+      return station.favicon.startsWith('http') 
+        ? station.favicon 
+        : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
+    }
+    return '/figmaAssets/powerturk-tv-logosu-1.png';
+  };
 
   const positions = [
     // Row 1
@@ -137,7 +135,7 @@ export const GenreList = (): JSX.Element => {
 
         {/* Page Title */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
-          Popular Radios
+          {genreSlug.charAt(0).toUpperCase() + genreSlug.slice(1)} Radios
         </p>
       </div>
 
@@ -158,9 +156,9 @@ export const GenreList = (): JSX.Element => {
 
           {/* Left Sidebar */}
           <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
-            {/* Discover - Active */}
-            <Link href="/discover">
-              <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover">
+            {/* Discover */}
+            <Link href="/discover-no-user">
+              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover">
                 <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
                   <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                     Discover
@@ -172,9 +170,9 @@ export const GenreList = (): JSX.Element => {
               </div>
             </Link>
 
-            {/* Genres */}
+            {/* Genres - Active */}
             <Link href="/genres">
-              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres">
+              <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres">
                 <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
                   <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                     Genres
@@ -215,7 +213,7 @@ export const GenreList = (): JSX.Element => {
             </Link>
 
             {/* Records */}
-            <Link href="/discover">
+            <Link href="/discover-no-user">
               <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records">
                 <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
                   <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
@@ -245,25 +243,28 @@ export const GenreList = (): JSX.Element => {
           </div>
 
           {/* Radio Station Cards */}
-          {radioStations.map((station, index) => (
-            <Link key={index} href="/radio-playing">
+          {stations.slice(0, 21).map((station, index) => (
+            <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
               <div 
-                className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px]" 
-                style={{ left: `${positions[index].left}px`, top: `${positions[index].top}px` }}
-                data-testid={`card-station-${index}`}
+                className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px]"
+                style={{ left: `${positions[index]?.left}px`, top: `${positions[index]?.top}px` }}
+                data-testid={`station-card-${index}`}
               >
                 <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                   <img
-                    alt=""
+                    alt={station.name}
                     className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                    src={station.logo}
+                    src={getStationImage(station)}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                    }}
                   />
                 </div>
-                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
                   {station.name}
                 </p>
-                <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">
-                  {station.genre}
+                <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                  {station.tags?.[0] || station.country || 'Radio'}
                 </p>
                 <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
               </div>
