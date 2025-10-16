@@ -4,46 +4,15 @@ import { Radio } from "lucide-react";
 export const Guide1 = (): JSX.Element => {
   return (
     <Link href="/guide-2">
-      <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden cursor-pointer" data-testid="page-guide-1">
-        {/* Background - Discover Page Layout */}
-        <div className="absolute inset-0">
-          {/* Recreate Discover Page as Background */}
-          <div className="absolute inset-0 bg-[#0e0e0e]">
-            {/* Logo */}
-            <div className="absolute left-[30px] top-[64px] w-[164.421px] h-[57px]">
-              <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[27.029px] text-white leading-normal whitespace-pre-wrap opacity-50">
-                <span className="font-bold">mega</span>radio
-              </p>
-              <img
-                className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%] opacity-50"
-                alt="Path"
-                src="/figmaAssets/path-8.svg"
-              />
-            </div>
-
-            {/* Left Sidebar with buttons */}
-            <div className="absolute left-[64px] top-[242px] w-[98px] flex flex-col gap-[10px]">
-              {/* Other sidebar items dimmed */}
-              <div className="w-[98px] h-[98px] rounded-[10px] bg-[rgba(255,255,255,0.05)]" />
-              <div className="w-[98px] h-[98px] rounded-[10px] bg-[rgba(255,255,255,0.05)]" />
-              <div className="w-[98px] h-[98px] rounded-[10px] bg-[rgba(255,255,255,0.05)]" />
-              <div className="w-[98px] h-[98px] rounded-[10px] bg-[rgba(255,255,255,0.05)]" />
-              <div className="w-[98px] h-[98px] rounded-[10px] bg-[rgba(255,255,255,0.05)]" />
-            </div>
-
-            {/* Main content area - Recently Played */}
-            <div className="absolute left-[236px] top-[242px]">
-              <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white opacity-50 mb-4">
-                Recently Played
-              </p>
-              <div className="flex gap-[19px] mt-8">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.1)] rounded-[11px]" />
-                ))}
-              </div>
-            </div>
-
-            {/* Dark overlay */}
+      <div className="relative w-[1920px] h-[1080px] bg-white overflow-hidden cursor-pointer" data-testid="page-guide-1">
+        {/* Background Image with Overlay */}
+        <div className="absolute h-[1897px] left-0 top-0 w-[1920px]">
+          <div className="absolute inset-0 pointer-events-none">
+            <img
+              className="absolute inset-0 w-full h-full object-cover max-w-none"
+              alt="Background"
+              src="/figmaAssets/guide1-background.jpg"
+            />
             <div className="absolute inset-0 bg-[rgba(0,0,0,0.7)]" />
           </div>
         </div>
