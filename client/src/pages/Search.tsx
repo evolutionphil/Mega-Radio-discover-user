@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 
 export const Search = (): JSX.Element => {
-  const [searchQuery, setSearchQuery] = useState("Kral Ra");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Search for stations based on query
   const { data: searchData } = useQuery({
@@ -50,15 +50,17 @@ export const Search = (): JSX.Element => {
   return (
     <div className="relative w-[1920px] h-[1080px] bg-black overflow-hidden" data-testid="page-search">
       {/* Search Input */}
-      <button 
-        className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid cursor-pointer h-[91px] left-[308px] rounded-[14px] top-[136px] w-[968px]" 
-        data-testid="input-search"
-      >
+      <div className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[308px] rounded-[14px] top-[136px] w-[968px]">
         <div className="h-[91px] overflow-clip relative rounded-[inherit] w-[968px]">
-          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic text-[25.94px] text-white top-[29.84px]">
-            {searchQuery}
-          </p>
-          <div className="absolute left-[32.43px] size-[31.134px] top-[29.84px]">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search for stations..."
+            className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[850px] placeholder:text-[rgba(255,255,255,0.5)]"
+            data-testid="input-search"
+          />
+          <div className="absolute left-[32.43px] size-[31.134px] top-[29.84px] pointer-events-none">
             <img
               alt=""
               className="block max-w-none size-full"
@@ -66,7 +68,7 @@ export const Search = (): JSX.Element => {
             />
           </div>
         </div>
-      </button>
+      </div>
 
       {/* Search Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[308px] not-italic text-[32px] text-white top-[58px]">
@@ -81,7 +83,7 @@ export const Search = (): JSX.Element => {
       </div>
 
       {/* Search Results */}
-      {searchResults.map((station, index) => {
+      {searchQuery.length > 0 && searchResults.map((station, index) => {
         const isFirst = index === 0;
         const topPositions = [259, 344, 429, 514];
         
@@ -104,6 +106,13 @@ export const Search = (): JSX.Element => {
           </Link>
         );
       })}
+
+      {/* No results message */}
+      {searchQuery.length > 0 && searchResults.length === 0 && (
+        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[308px] not-italic text-[22px] text-[rgba(255,255,255,0.5)] top-[259px]">
+          No stations found for "{searchQuery}"
+        </p>
+      )}
 
       {/* Recently Played Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[1394px] not-italic text-[32px] text-white top-[58px]">
