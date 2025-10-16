@@ -17,6 +17,23 @@ export const RadioPlaying = (): JSX.Element => {
     { icon: "/figmaAssets/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
   ];
 
+  // Helper function to get station image
+  const getStationImage = (station: Station) => {
+    if (station.favicon) {
+      return station.favicon.startsWith('http') 
+        ? station.favicon 
+        : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
+    }
+    return '/figmaAssets/powerturk-tv-logosu-1.png';
+  };
+
+  // Helper function to get tags as array
+  const getStationTags = (station: Station): string[] => {
+    if (!station.tags) return [];
+    if (Array.isArray(station.tags)) return station.tags;
+    return station.tags.split(',').map(tag => tag.trim());
+  };
+
   // Fetch station details
   const { data: stationData } = useQuery({
     queryKey: ['/api/station', stationId],
@@ -45,23 +62,6 @@ export const RadioPlaying = (): JSX.Element => {
 
   const similarStations = similarStationsData?.results || [];
   const popularStations = popularStationsData?.stations || [];
-
-  // Helper function to get station image
-  const getStationImage = (station: Station) => {
-    if (station.favicon) {
-      return station.favicon.startsWith('http') 
-        ? station.favicon 
-        : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
-    }
-    return '/figmaAssets/powerturk-tv-logosu-1.png';
-  };
-
-  // Helper function to get tags as array
-  const getStationTags = (station: Station): string[] => {
-    if (!station.tags) return [];
-    if (Array.isArray(station.tags)) return station.tags;
-    return station.tags.split(',').map(tag => tag.trim());
-  };
 
   return (
     <div className="relative w-[1920px] min-h-[1080px] bg-[#0e0e0e] overflow-y-auto pb-[50px]">
