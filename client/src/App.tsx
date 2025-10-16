@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 
 import { DiscoverUser } from "@/pages/DiscoverUser";
 import { DiscoverNoUser } from "@/pages/DiscoverNoUser";
+import { Search } from "@/pages/Search";
 
 function Router() {
   return (
@@ -14,6 +15,7 @@ function Router() {
       {/* Add pages below */}
       <Route path="/" component={DiscoverUser} />
       <Route path="/discover-no-user" component={DiscoverNoUser} />
+      <Route path="/search" component={Search} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
