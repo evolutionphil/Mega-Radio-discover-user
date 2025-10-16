@@ -15,15 +15,16 @@ export const DiscoverNoUser = (): JSX.Element => {
     queryFn: () => megaRadioApi.getPopularStations({ limit: 24 }),
   });
 
-  // Fetch stations by country (Austria for "More From Austria" section)
+  // Fetch more popular stations for "More From Austria" section
+  // Note: API country filter doesn't work reliably, using search instead
   const { data: austriaStationsData } = useQuery({
-    queryKey: ['/api/stations', { country: 'AT', limit: 24 }],
-    queryFn: () => megaRadioApi.getAllStations({ country: 'AT', limit: 24 }),
+    queryKey: ['/api/stations/search-austria', { limit: 15 }],
+    queryFn: () => megaRadioApi.searchStations({ q: 'austria', limit: 15 }),
   });
 
   const genres = genresData?.genres?.slice(0, 8) || [];
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
-  const austriaStations = austriaStationsData?.stations?.slice(0, 15) || [];
+  const austriaStations = austriaStationsData?.results?.slice(0, 15) || [];
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
