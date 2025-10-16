@@ -11,9 +11,10 @@ export interface Station {
   url_resolved?: string;
   homepage?: string;
   favicon?: string;
-  tags?: string[];
+  tags?: string | string[];
   country?: string;
   countrycode?: string;
+  countryCode?: string;
   state?: string;
   language?: string;
   languagecodes?: string;
@@ -135,7 +136,8 @@ export const megaRadioApi = {
 
   getStationById: async (identifier: string): Promise<{ station: Station }> => {
     const response = await fetch(`${BASE_URL}/api/station/${identifier}`);
-    return response.json();
+    const data = await response.json();
+    return { station: data };
   },
 
   // Genres

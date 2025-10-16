@@ -28,11 +28,12 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Fetch similar stations (from same tags/genre)
   const { data: similarStationsData } = useQuery({
-    queryKey: ['/api/stations/similar', station?.tags?.[0]],
-    queryFn: () => megaRadioApi.searchStations({ 
-      q: station?.tags?.[0] || station?.country || 'music', 
-      limit: 7 
-    }),
+    queryKey: ['/api/stations/similar', station?._id],
+    queryFn: () => {
+      const tags = station ? getStationTags(station) : [];
+      const searchTerm = tags[0] || station?.country || 'music';
+      return megaRadioApi.searchStations({ q: searchTerm, limit: 7 });
+    },
     enabled: !!station,
   });
 
@@ -53,6 +54,13 @@ export const RadioPlaying = (): JSX.Element => {
         : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
     }
     return '/figmaAssets/powerturk-tv-logosu-1.png';
+  };
+
+  // Helper function to get tags as array
+  const getStationTags = (station: Station): string[] => {
+    if (!station.tags) return [];
+    if (Array.isArray(station.tags)) return station.tags;
+    return station.tags.split(',').map(tag => tag.trim());
   };
 
   return (
@@ -180,7 +188,7 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Song Name */}
       <p className="absolute left-[596px] top-[356.71px] font-['Ubuntu',Helvetica] font-medium text-[32px] text-white leading-normal" data-testid="text-song-name">
-        {station?.tags?.[0] || station?.country || 'Radio Station'}
+        {station ? (getStationTags(station)[0] || station?.country || 'Radio Station') : 'Loading...'}
       </p>
 
       {/* Station Info Label */}
@@ -208,10 +216,10 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
       <div className="absolute left-[869.04px] top-[476px] h-[40px] min-w-[93.913px] px-3 bg-[#242424] rounded-[5.217px]" data-testid="tag-country">
         <p className="absolute left-1/2 top-[6.96px] font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-center text-white leading-normal -translate-x-1/2 whitespace-nowrap">
-          {station?.countrycode || 'N/A'}
+          {station?.countryCode || station?.countrycode || 'N/A'}
         </p>
       </div>
-      {station?.tags?.slice(0, 2).map((tag, index) => (
+      {station && getStationTags(station).slice(0, 2).map((tag, index) => (
         <div 
           key={index}
           className="absolute h-[40px] min-w-[109.565px] px-3 bg-[#242424] rounded-[5.217px]" 
@@ -282,7 +290,7 @@ export const RadioPlaying = (): JSX.Element => {
                   {station.name}
                 </p>
                 <p className={`font-['Ubuntu',Helvetica] font-light ${isFeatured ? "text-[18.818px] mt-[7.6px]" : "text-[18px] mt-[6.2px]"} text-center text-white leading-normal truncate px-2`}>
-                  {station.tags?.[0] || station.country || 'Radio'}
+                  {getStationTags(station)[0] || station.country || 'Radio'}
                 </p>
               </div>
             </Link>
@@ -319,7 +327,7 @@ export const RadioPlaying = (): JSX.Element => {
                 {station.name}
               </p>
               <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
-                {station.tags?.[0] || station.country || 'Radio'}
+                {getStationTags(station)[0] || station.country || 'Radio'}
               </p>
             </div>
           </Link>
