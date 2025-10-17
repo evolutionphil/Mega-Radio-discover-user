@@ -20,11 +20,23 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch countries from API
-  const { data: countriesData, isLoading } = useQuery({
+  const { data: countriesData, isLoading, error } = useQuery({
     queryKey: ['/api/countries'],
-    queryFn: () => megaRadioApi.getAllCountries(),
+    queryFn: async () => {
+      console.log('[CountrySelector] Fetching countries...');
+      const result = await megaRadioApi.getAllCountries();
+      console.log('[CountrySelector] Countries received:', result.countries?.length || 0);
+      return result;
+    },
     enabled: isOpen,
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      console.log('[CountrySelector] Modal opened, query should trigger');
+      console.log('[CountrySelector] isLoading:', isLoading, 'error:', error);
+    }
+  }, [isOpen, isLoading, error]);
 
   // Initialize TV navigation when modal opens
   useEffect(() => {
@@ -48,15 +60,18 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   if (!isOpen) return null;
 
   // Map API countries to component format with flag URLs
-  const countries: Country[] = (countriesData?.countries || []).map(country => ({
-    name: country.name,
-    code: country.iso_3166_1,
-    flag: `https://flagcdn.com/w40/${country.iso_3166_1.toLowerCase()}.png`,
-    stationcount: country.stationcount,
-  }));
+  const countries: Country[] = (countriesData?.countries || [])
+    .filter(country => country.name && country.iso_3166_1) // Filter out invalid countries
+    .map(country => ({
+      name: country.name,
+      code: country.iso_3166_1,
+      flag: `https://flagcdn.com/w40/${country.iso_3166_1.toLowerCase()}.png`,
+      stationcount: country.stationcount,
+    }))
+    .sort((a, b) => (b.stationcount || 0) - (a.stationcount || 0)); // Sort by station count
 
   const filteredCountries = countries.filter(country =>
-    country.name.toLowerCase().includes(searchQuery.toLowerCase())
+    country.name && country.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleCountryClick = (country: Country) => {

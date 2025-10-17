@@ -289,9 +289,21 @@ export const megaRadioApi = {
 
   // Countries
   getAllCountries: async (): Promise<{ countries: Country[] }> => {
-    const url = buildApiUrl('/countries');
-    const response = await fetch(url);
-    return response.json();
+    try {
+      const url = buildApiUrl('/countries');
+      console.log('[API] getAllCountries:', url);
+      const response = await fetch(url);
+      console.log('[API] getAllCountries response:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('[API] getAllCountries fetched:', data.length || 0);
+      return { countries: data || [] };
+    } catch (error) {
+      console.error('[API] getAllCountries failed:', error);
+      return { countries: [] };
+    }
   },
 
   // Languages
