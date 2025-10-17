@@ -232,7 +232,12 @@ export const Search = (): JSX.Element => {
       </p>
 
       {/* Search Input */}
-      <div className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px]">
+      <div 
+        className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px]"
+        data-testid="input-search"
+        data-tv-focusable="true"
+        onClick={() => inputRef.current?.focus()}
+      >
         <div className="h-[91px] overflow-clip relative rounded-[inherit] w-[774px]">
           <input
             ref={inputRef}
@@ -242,8 +247,6 @@ export const Search = (): JSX.Element => {
             onFocus={handleInputFocus}
             placeholder="Kral Ra"
             className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[650px] placeholder:text-[rgba(255,255,255,0.5)]"
-            data-testid="input-search"
-            data-tv-focusable="true"
           />
           <div className="absolute left-[32.43px] size-[31.134px] top-[29.84px] pointer-events-none">
             <img
