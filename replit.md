@@ -71,4 +71,27 @@ The `tv-app/` directory is the complete Samsung Tizen project. A build script (`
 -   **Routing:** Wouter.
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family (via Google Fonts).
--   **API Integration:** themegaradio.com API (for station data, genres, metadata).
+-   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+
+## Localization & Internationalization
+
+**Auto Language Detection:**
+-   Detects device language on startup using Samsung Tizen (`webapis.tv.info.getLanguage()`), LG webOS (`webOS.systemInfo.locale`), or browser navigator.
+-   Supports 48 languages via API: en, es, fr, de, it, pt, ru, ja, zh, ar, tr, pl, nl, sv, no, da, fi, cs, hu, ro, el, th, ko, vi, id, ms, hi, bn, ta, te, ur, fa, he, uk, bg, sr, hr, sk, sl, et, lv, lt, is, ga, sq, mk, am, sw.
+-   Maps detected language to default country for station filtering.
+
+**Translation System:**
+-   `LocalizationProvider` context wraps the app, providing `t()` function and language state.
+-   `useLocalization()` hook provides: `language`, `translations`, `setLanguage()`, `t()`, `detectedCountry`, `detectedCountryCode`.
+-   Translations fetched from `/api/translations/:lang` endpoint.
+-   Language preference saved to localStorage.
+
+**Usage Example:**
+```tsx
+import { useLocalization } from '@/contexts/LocalizationContext';
+
+const { t, language, setLanguage, detectedCountryCode } = useLocalization();
+// Use translations: {t('popular_genres')}
+// Change language: setLanguage('es')
+// Get detected country: detectedCountryCode
+```

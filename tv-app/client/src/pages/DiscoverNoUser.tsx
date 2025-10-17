@@ -4,13 +4,23 @@ import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
 import { CountrySelector } from "@/components/CountrySelector";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { useLocalization } from "@/contexts/LocalizationContext";
 
 export const DiscoverNoUser = (): JSX.Element => {
   useTVNavigation();
+  const { t, detectedCountry, detectedCountryCode } = useLocalization();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState('Austria');
-  const [selectedCountryCode, setSelectedCountryCode] = useState('AT');
+  const [selectedCountry, setSelectedCountry] = useState(detectedCountry);
+  const [selectedCountryCode, setSelectedCountryCode] = useState(detectedCountryCode);
   const [selectedCountryFlag, setSelectedCountryFlag] = useState('/images/austria-1.png');
+  
+  // Update country when localization detects it
+  useEffect(() => {
+    if (detectedCountry && detectedCountryCode) {
+      setSelectedCountry(detectedCountry);
+      setSelectedCountryCode(detectedCountryCode);
+    }
+  }, [detectedCountry, detectedCountryCode]);
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
@@ -382,7 +392,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         >
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
-          Popular Genres
+          {t('popular_genres') || 'Popular Genres'}
         </p>
 
         {/* Genre Pills - Horizontal Scrollable - All genres from API */}
@@ -409,11 +419,11 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Popular Radios Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[223px]">
-          Popular Radios
+          {t('popular_radios') || 'Popular Radios'}
         </p>
 
         <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1630.5px] not-italic text-[22px] text-center text-white top-[242px] translate-x-[-50%]">
-          See More
+          {t('see_more') || 'See More'}
         </p>
 
         {/* Popular Radio Station Cards - Row 1 */}
@@ -486,7 +496,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* More From [Country] Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[939px]">
-          More From {selectedCountry}
+          {t('more_from')} {selectedCountry}
         </p>
 
         <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1630.5px] not-italic text-[22px] text-center text-white top-[944px] translate-x-[-50%]">

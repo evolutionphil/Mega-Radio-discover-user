@@ -356,4 +356,14 @@ export const megaRadioApi = {
     const response = await fetch(url);
     return response.json();
   },
+
+  // Translations
+  getTranslations: async (lang: string): Promise<{ language: string; translations: Record<string, string> }> => {
+    const url = buildApiUrl(`/translations/${lang}`);
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch translations: ${response.statusText}`);
+    }
+    return response.json();
+  },
 };
