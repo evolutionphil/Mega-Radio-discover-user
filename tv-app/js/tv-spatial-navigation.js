@@ -114,24 +114,40 @@
                 
                 switch(direction) {
                     case 'UP':
-                        // Element must be above current
+                        // Element must be above current AND have horizontal overlap
                         if (candidate.y < current.y - 10) {
-                            isValidDirection = true;
-                            const verticalDist = current.y - candidate.y;
-                            const horizontalDist = Math.abs(current.x - candidate.x);
-                            // Prefer elements directly above
-                            score = verticalDist + (horizontalDist * 2);
+                            // Check horizontal overlap with tolerance (150px)
+                            const tolerance = 150;
+                            const hasHorizontalOverlap = 
+                                candidate.rect.right >= current.rect.left - tolerance &&
+                                candidate.rect.left <= current.rect.right + tolerance;
+                            
+                            if (hasHorizontalOverlap) {
+                                isValidDirection = true;
+                                const verticalDist = current.y - candidate.y;
+                                const horizontalDist = Math.abs(current.x - candidate.x);
+                                // Prefer elements directly above
+                                score = verticalDist + (horizontalDist * 2);
+                            }
                         }
                         break;
                         
                     case 'DOWN':
-                        // Element must be below current
+                        // Element must be below current AND have horizontal overlap
                         if (candidate.y > current.y + 10) {
-                            isValidDirection = true;
-                            const verticalDist = candidate.y - current.y;
-                            const horizontalDist = Math.abs(current.x - candidate.x);
-                            // Prefer elements directly below
-                            score = verticalDist + (horizontalDist * 2);
+                            // Check horizontal overlap with tolerance (150px)
+                            const tolerance = 150;
+                            const hasHorizontalOverlap = 
+                                candidate.rect.right >= current.rect.left - tolerance &&
+                                candidate.rect.left <= current.rect.right + tolerance;
+                            
+                            if (hasHorizontalOverlap) {
+                                isValidDirection = true;
+                                const verticalDist = candidate.y - current.y;
+                                const horizontalDist = Math.abs(current.x - candidate.x);
+                                // Prefer elements directly below
+                                score = verticalDist + (horizontalDist * 2);
+                            }
                         }
                         break;
                         
