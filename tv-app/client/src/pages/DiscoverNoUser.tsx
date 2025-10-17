@@ -69,7 +69,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const stationRow2Positions = [236, 466, 696, 926, 1156, 1386, 1616];
 
   return (
-    <div className="relative w-[1920px] min-h-[1080px] bg-[#0e0e0e] overflow-y-auto" data-testid="page-discover-no-user">
+    <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-discover-no-user">
       {/* Background Image - Fixed */}
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px] z-0">
         <img

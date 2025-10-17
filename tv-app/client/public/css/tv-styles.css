@@ -925,11 +925,11 @@
     display: none !important;
 }
 
-/* TV Focus Indicator - Clean Outside Border Only */
+/* TV Focus Indicator - Rounded Border that Follows Element Shape */
 .tv-focused {
-    outline: 6px solid #ff4199 !important;
-    outline-offset: 4px !important;
-    box-shadow: 0 0 25px rgba(255, 65, 153, 0.8) !important;
+    box-shadow: 
+        0 0 0 6px #ff4199,
+        0 0 25px rgba(255, 65, 153, 0.8) !important;
     z-index: 9999 !important;
     position: relative !important;
     transition: all 0.2s ease !important;
@@ -938,10 +938,14 @@
 /* Pulsing glow animation */
 @keyframes pulse-glow {
     0%, 100% {
-        box-shadow: 0 0 25px rgba(255, 65, 153, 0.8);
+        box-shadow: 
+            0 0 0 6px #ff4199,
+            0 0 25px rgba(255, 65, 153, 0.8);
     }
     50% {
-        box-shadow: 0 0 40px rgba(255, 65, 153, 1);
+        box-shadow: 
+            0 0 0 6px #ff4199,
+            0 0 40px rgba(255, 65, 153, 1);
     }
 }
 
