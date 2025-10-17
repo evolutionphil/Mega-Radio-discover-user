@@ -1,0 +1,297 @@
+[Fetch] xhr.responseText type: string
+index-DEkUFJuR.js:154 [API] getAllGenres response: 200
+fetch-polyfill-samsung.js:83 [Fetch] Empty response body for: https://themegaradio.com/api/genres
+json @ fetch-polyfill-samsung.js:83
+(anonymous) @ index-DEkUFJuR.js:154
+ja @ index-DEkUFJuR.js:1
+Promise.then (async)
+Kt @ index-DEkUFJuR.js:1
+Promise @ index-DEkUFJuR.js:1
+ne @ index-DEkUFJuR.js:1
+getAllGenres @ index-DEkUFJuR.js:154
+queryFn @ index-DEkUFJuR.js:154
+s @ index-DEkUFJuR.js:49
+w @ index-DEkUFJuR.js:49
+start @ index-DEkUFJuR.js:49
+fetch @ index-DEkUFJuR.js:49
+ya @ index-DEkUFJuR.js:49
+onSubscribe @ index-DEkUFJuR.js:49
+subscribe @ index-DEkUFJuR.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-DEkUFJuR.js:49
+Rp @ index-DEkUFJuR.js:39
+bs @ index-DEkUFJuR.js:41
+Vr @ index-DEkUFJuR.js:41
+e1 @ index-DEkUFJuR.js:41
+or @ index-DEkUFJuR.js:41
+zf @ index-DEkUFJuR.js:41
+kn @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:41
+Promise.then (async)
+Ev @ index-DEkUFJuR.js:39
+Xe @ index-DEkUFJuR.js:41
+Et @ index-DEkUFJuR.js:41
+Op @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:39
+aa.v.forEach.e @ index-DEkUFJuR.js:49
+dx @ index-DEkUFJuR.js:49
+hashchange (async)
+D1 @ index-DEkUFJuR.js:49
+Ms.qf @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+f @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+wg @ index-DEkUFJuR.js:38
+yg @ index-DEkUFJuR.js:38
+jg @ index-DEkUFJuR.js:38
+op @ index-DEkUFJuR.js:38
+ap @ index-DEkUFJuR.js:38
+(anonymous) @ index-DEkUFJuR.js:38
+hc @ index-DEkUFJuR.js:41
+dd @ index-DEkUFJuR.js:38
+hl @ index-DEkUFJuR.js:38
+Xi @ index-DEkUFJuR.js:38
+Ig @ index-DEkUFJuR.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+index-DEkUFJuR.js:154 [API] getAllGenres failed: TypeError: Cannot read property 'data' of null
+    at index-DEkUFJuR.js:154
+    at Generator.next (<anonymous>)
+    at ja (index-DEkUFJuR.js:1)
+(anonymous) @ index-DEkUFJuR.js:154
+ja @ index-DEkUFJuR.js:1
+Promise.then (async)
+Kt @ index-DEkUFJuR.js:1
+ja @ index-DEkUFJuR.js:1
+Promise.then (async)
+Kt @ index-DEkUFJuR.js:1
+Promise @ index-DEkUFJuR.js:1
+ne @ index-DEkUFJuR.js:1
+getAllGenres @ index-DEkUFJuR.js:154
+queryFn @ index-DEkUFJuR.js:154
+s @ index-DEkUFJuR.js:49
+w @ index-DEkUFJuR.js:49
+start @ index-DEkUFJuR.js:49
+fetch @ index-DEkUFJuR.js:49
+ya @ index-DEkUFJuR.js:49
+onSubscribe @ index-DEkUFJuR.js:49
+subscribe @ index-DEkUFJuR.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-DEkUFJuR.js:49
+Rp @ index-DEkUFJuR.js:39
+bs @ index-DEkUFJuR.js:41
+Vr @ index-DEkUFJuR.js:41
+e1 @ index-DEkUFJuR.js:41
+or @ index-DEkUFJuR.js:41
+zf @ index-DEkUFJuR.js:41
+kn @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:41
+Promise.then (async)
+Ev @ index-DEkUFJuR.js:39
+Xe @ index-DEkUFJuR.js:41
+Et @ index-DEkUFJuR.js:41
+Op @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:39
+aa.v.forEach.e @ index-DEkUFJuR.js:49
+dx @ index-DEkUFJuR.js:49
+hashchange (async)
+D1 @ index-DEkUFJuR.js:49
+Ms.qf @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+f @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+wg @ index-DEkUFJuR.js:38
+yg @ index-DEkUFJuR.js:38
+jg @ index-DEkUFJuR.js:38
+op @ index-DEkUFJuR.js:38
+ap @ index-DEkUFJuR.js:38
+(anonymous) @ index-DEkUFJuR.js:38
+hc @ index-DEkUFJuR.js:41
+dd @ index-DEkUFJuR.js:38
+hl @ index-DEkUFJuR.js:38
+Xi @ index-DEkUFJuR.js:38
+Ig @ index-DEkUFJuR.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/popular?limit=24&country=AT
+fetch-polyfill-samsung.js:51 [Fetch] CORS Headers: {Access-Control-Allow-Origin: null, Access-Control-Allow-Methods: null, Content-Type: null, Content-Length: null}
+fetch-polyfill-samsung.js:60 [Fetch] Response text length: 0
+fetch-polyfill-samsung.js:61 [Fetch] xhr.response type: string
+fetch-polyfill-samsung.js:62 [Fetch] xhr.responseText type: string
+fetch-polyfill-samsung.js:83 [Fetch] Empty response body for: https://themegaradio.com/api/stations/popular?limit=24&country=AT
+json @ fetch-polyfill-samsung.js:83
+(anonymous) @ index-DEkUFJuR.js:154
+ja @ index-DEkUFJuR.js:1
+Promise.then (async)
+Kt @ index-DEkUFJuR.js:1
+Promise @ index-DEkUFJuR.js:1
+ne @ index-DEkUFJuR.js:1
+getPopularStations @ index-DEkUFJuR.js:154
+queryFn @ index-DEkUFJuR.js:154
+s @ index-DEkUFJuR.js:49
+w @ index-DEkUFJuR.js:49
+start @ index-DEkUFJuR.js:49
+fetch @ index-DEkUFJuR.js:49
+ya @ index-DEkUFJuR.js:49
+onSubscribe @ index-DEkUFJuR.js:49
+subscribe @ index-DEkUFJuR.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-DEkUFJuR.js:49
+Rp @ index-DEkUFJuR.js:39
+bs @ index-DEkUFJuR.js:41
+Vr @ index-DEkUFJuR.js:41
+e1 @ index-DEkUFJuR.js:41
+or @ index-DEkUFJuR.js:41
+zf @ index-DEkUFJuR.js:41
+kn @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:41
+Promise.then (async)
+Ev @ index-DEkUFJuR.js:39
+Xe @ index-DEkUFJuR.js:41
+Et @ index-DEkUFJuR.js:41
+Op @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:39
+aa.v.forEach.e @ index-DEkUFJuR.js:49
+dx @ index-DEkUFJuR.js:49
+hashchange (async)
+D1 @ index-DEkUFJuR.js:49
+Ms.qf @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+f @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+wg @ index-DEkUFJuR.js:38
+yg @ index-DEkUFJuR.js:38
+jg @ index-DEkUFJuR.js:38
+op @ index-DEkUFJuR.js:38
+ap @ index-DEkUFJuR.js:38
+(anonymous) @ index-DEkUFJuR.js:38
+hc @ index-DEkUFJuR.js:41
+dd @ index-DEkUFJuR.js:38
+hl @ index-DEkUFJuR.js:38
+Xi @ index-DEkUFJuR.js:38
+Ig @ index-DEkUFJuR.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/working?limit=500&country=AT
+fetch-polyfill-samsung.js:51 [Fetch] CORS Headers: {Access-Control-Allow-Origin: null, Access-Control-Allow-Methods: null, Content-Type: null, Content-Length: null}
+fetch-polyfill-samsung.js:60 [Fetch] Response text length: 0
+fetch-polyfill-samsung.js:61 [Fetch] xhr.response type: string
+fetch-polyfill-samsung.js:62 [Fetch] xhr.responseText type: string
+index-DEkUFJuR.js:154 [API] Response status: 200
+fetch-polyfill-samsung.js:83 [Fetch] Empty response body for: https://themegaradio.com/api/stations/working?limit=500&country=AT
+json @ fetch-polyfill-samsung.js:83
+(anonymous) @ index-DEkUFJuR.js:154
+ja @ index-DEkUFJuR.js:1
+Promise.then (async)
+Kt @ index-DEkUFJuR.js:1
+Promise @ index-DEkUFJuR.js:1
+ne @ index-DEkUFJuR.js:1
+getWorkingStations @ index-DEkUFJuR.js:154
+queryFn @ index-DEkUFJuR.js:154
+s @ index-DEkUFJuR.js:49
+w @ index-DEkUFJuR.js:49
+start @ index-DEkUFJuR.js:49
+fetch @ index-DEkUFJuR.js:49
+ya @ index-DEkUFJuR.js:49
+onSubscribe @ index-DEkUFJuR.js:49
+subscribe @ index-DEkUFJuR.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-DEkUFJuR.js:49
+Rp @ index-DEkUFJuR.js:39
+bs @ index-DEkUFJuR.js:41
+Vr @ index-DEkUFJuR.js:41
+e1 @ index-DEkUFJuR.js:41
+or @ index-DEkUFJuR.js:41
+zf @ index-DEkUFJuR.js:41
+kn @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:41
+Promise.then (async)
+Ev @ index-DEkUFJuR.js:39
+Xe @ index-DEkUFJuR.js:41
+Et @ index-DEkUFJuR.js:41
+Op @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:39
+aa.v.forEach.e @ index-DEkUFJuR.js:49
+dx @ index-DEkUFJuR.js:49
+hashchange (async)
+D1 @ index-DEkUFJuR.js:49
+Ms.qf @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+f @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+wg @ index-DEkUFJuR.js:38
+yg @ index-DEkUFJuR.js:38
+jg @ index-DEkUFJuR.js:38
+op @ index-DEkUFJuR.js:38
+ap @ index-DEkUFJuR.js:38
+(anonymous) @ index-DEkUFJuR.js:38
+hc @ index-DEkUFJuR.js:41
+dd @ index-DEkUFJuR.js:38
+hl @ index-DEkUFJuR.js:38
+Xi @ index-DEkUFJuR.js:38
+Ig @ index-DEkUFJuR.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+index-DEkUFJuR.js:154 [API] Failed to fetch working stations: TypeError: Cannot read property 'stations' of null
+    at index-DEkUFJuR.js:154
+    at Generator.next (<anonymous>)
+    at ja (index-DEkUFJuR.js:1)
+(anonymous) @ index-DEkUFJuR.js:154
+ja @ index-DEkUFJuR.js:1
+Promise.then (async)
+Kt @ index-DEkUFJuR.js:1
+ja @ index-DEkUFJuR.js:1
+Promise.then (async)
+Kt @ index-DEkUFJuR.js:1
+Promise @ index-DEkUFJuR.js:1
+ne @ index-DEkUFJuR.js:1
+getWorkingStations @ index-DEkUFJuR.js:154
+queryFn @ index-DEkUFJuR.js:154
+s @ index-DEkUFJuR.js:49
+w @ index-DEkUFJuR.js:49
+start @ index-DEkUFJuR.js:49
+fetch @ index-DEkUFJuR.js:49
+ya @ index-DEkUFJuR.js:49
+onSubscribe @ index-DEkUFJuR.js:49
+subscribe @ index-DEkUFJuR.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-DEkUFJuR.js:49
+Rp @ index-DEkUFJuR.js:39
+bs @ index-DEkUFJuR.js:41
+Vr @ index-DEkUFJuR.js:41
+e1 @ index-DEkUFJuR.js:41
+or @ index-DEkUFJuR.js:41
+zf @ index-DEkUFJuR.js:41
+kn @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:41
+Promise.then (async)
+Ev @ index-DEkUFJuR.js:39
+Xe @ index-DEkUFJuR.js:41
+Et @ index-DEkUFJuR.js:41
+Op @ index-DEkUFJuR.js:39
+(anonymous) @ index-DEkUFJuR.js:39
+aa.v.forEach.e @ index-DEkUFJuR.js:49
+dx @ index-DEkUFJuR.js:49
+hashchange (async)
+D1 @ index-DEkUFJuR.js:49
+Ms.qf @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+f @ index-DEkUFJuR.js:49
+b.useRef.n @ index-DEkUFJuR.js:49
+wg @ index-DEkUFJuR.js:38
+yg @ index-DEkUFJuR.js:38
+jg @ index-DEkUFJuR.js:38
+op @ index-DEkUFJuR.js:38
+ap @ index-DEkUFJuR.js:38
+(anonymous) @ index-DEkUFJuR.js:38
+hc @ index-DEkUFJuR.js:41
+dd @ index-DEkUFJuR.js:38
+hl @ index-DEkUFJuR.js:38
+Xi @ index-DEkUFJuR.js:38
+Ig @ index-DEkUFJuR.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+index-DEkUFJuR.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 8 focusable elements
+index-DEkUFJuR.js:154 [useTVNavigation] Initialization complete
+index-DEkUFJuR.js:154 Country changed: Austria, total stations: 0

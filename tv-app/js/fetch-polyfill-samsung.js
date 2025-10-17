@@ -22,11 +22,12 @@
                 
                 xhr.open(method, url, true);
                 
-                // DON'T set responseType - Samsung TV has issues with it
-                // xhr.responseType = 'text';
+                // CRITICAL for Samsung TV: Must set responseType to get response body
+                xhr.responseType = 'text';
                 
-                // Set headers
+                // Set headers - Samsung TV User-Agent for backend detection
                 xhr.setRequestHeader('Accept', 'application/json');
+                xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (SMART-TV; Linux; Tizen 5.5) AppleWebKit/537.36');
                 if (options.headers) {
                     Object.keys(options.headers).forEach(function(key) {
                         xhr.setRequestHeader(key, options.headers[key]);
@@ -48,18 +49,18 @@
                 
                 function handleResponse() {
                     console.log('[Fetch] Response status:', xhr.status, 'for', url);
-                    console.log('[Fetch] CORS Headers:', {
-                        'Access-Control-Allow-Origin': xhr.getResponseHeader('Access-Control-Allow-Origin'),
-                        'Access-Control-Allow-Methods': xhr.getResponseHeader('Access-Control-Allow-Methods'),
-                        'Content-Type': xhr.getResponseHeader('Content-Type'),
-                        'Content-Length': xhr.getResponseHeader('Content-Length')
-                    });
+                    console.log('[Fetch] Response ready state:', xhr.readyState);
                     
-                    // Try both response and responseText for Samsung TV compatibility
-                    var responseText = xhr.response || xhr.responseText || '';
+                    // Samsung TV: responseType='text' makes xhr.response the string response
+                    var responseText = xhr.response;
+                    
+                    // Fallback to responseText if response is empty
+                    if (!responseText || responseText === '') {
+                        responseText = xhr.responseText || '';
+                    }
+                    
                     console.log('[Fetch] Response text length:', responseText ? responseText.length : 0);
-                    console.log('[Fetch] xhr.response type:', typeof xhr.response);
-                    console.log('[Fetch] xhr.responseText type:', typeof xhr.responseText);
+                    console.log('[Fetch] Response preview:', responseText ? responseText.substring(0, 100) + '...' : 'EMPTY');
                     
                     if (typeof responseText !== 'string') {
                         responseText = String(responseText);
