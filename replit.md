@@ -10,6 +10,51 @@ The application is built as a single-page application (SPA) with a React fronten
 
 Preferred communication style: Simple, everyday language.
 
+## Project Structure
+
+**tv-app is the Project Root**
+
+All source code, configs, and Samsung Tizen project files are consolidated in the `tv-app/` directory:
+
+```
+tv-app/                      # Project root (Samsung Tizen project)
+├── client/                  # React frontend source
+│   ├── src/                # Components, pages, hooks, lib
+│   └── index.html          # Frontend entry point
+├── server/                  # Express backend source
+│   ├── index.ts           # Server entry point
+│   └── routes.ts          # API routes
+├── shared/                  # Shared schemas and types
+│   └── schema.ts          # Drizzle schemas + Zod validation
+├── config.xml               # Samsung Tizen configuration
+├── .project                 # Tizen Studio project file
+├── .tproject                # Platform specification (tv-samsung-9.0)
+├── vite.config.ts          # Vite build configuration
+├── tsconfig.json           # TypeScript configuration
+├── tailwind.config.ts      # Tailwind CSS configuration
+├── build-samsung-tv.sh     # Samsung TV build script
+├── assets/                  # Built React app (after build)
+├── js/                      # TV platform scripts
+│   ├── platform-detect.js
+│   ├── tv-remote-keys.js
+│   └── tv-audio-player.js
+├── css/                     # TV-specific styles
+└── index.html               # Generated TV app entry (after build)
+```
+
+**Replit Workspace Root**
+
+For Replit compatibility, the filesystem root contains:
+- `package.json` - NPM package configuration
+- `node_modules/` - Dependencies
+- Symlinks to `tv-app/` for source directories (client → tv-app/client, server → tv-app/server, shared → tv-app/shared)
+- Symlinks to `tv-app/` for config files (vite.config.ts, tsconfig.json, tailwind.config.ts, postcss.config.js)
+
+This structure allows:
+1. **tv-app/** to be the complete Samsung Tizen project (open in Tizen Studio)
+2. Replit workflow to run from root using symlinks
+3. All source code and configs to live in one place (tv-app/)
+
 ## System Architecture
 
 ### Frontend Architecture
