@@ -195,27 +195,30 @@ The schema uses Drizzle's PostgreSQL adapter with type inference for Insert and 
 ### TV App Deployment
 
 **Samsung Tizen TV App (Primary)**
-The `tv-app/` folder contains the official Samsung Tizen TV project extracted from `MegaRadioTVAPP.zip`:
+The `tv-app/` folder contains the official Samsung Tizen TV project (MegaRadioTVAPP) with complete structure from LGTV-master reference:
 
 ```
 tv-app/
 ├── config.xml          # Samsung Tizen configuration (lJoKY533ah.MegaRadioTVAPP)
-├── .project            # Tizen Studio project file
+├── .project            # Tizen Studio project file (Project: MegaRadioTVAPP)
 ├── .tproject           # Platform: tv-samsung-9.0
 ├── .settings/          # Eclipse/Tizen Studio settings
+├── appinfo.json        # LG webOS configuration
 ├── index.html          # Main entry point (auto-generated)
-├── icon.png            # App icon (57KB)
+├── icon.png            # App icon
 ├── assets/             # Built React app
 │   ├── index-[hash].js
 │   └── index-[hash].css
-├── css/
-│   └── style.css       # TV styles
+├── css/                # TV-specific styles
 ├── js/                 # Platform scripts
 │   ├── platform-detect.js
 │   ├── tv-remote-keys.js
 │   └── tv-audio-player.js
-├── webOSTVjs-1.2.0/    # LG webOS SDK (cross-platform support)
-└── images/             # Additional images
+├── images/             # App images and icons
+├── pages/              # Additional pages
+├── tools/              # Development tools
+├── webOSTVjs-1.2.0/    # LG webOS SDK
+└── main.js             # Entry point
 ```
 
 **Build Process**
