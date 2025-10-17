@@ -1,14 +1,16 @@
 import { Link } from "wouter";
 import { Undo2, Mail, Lock } from "lucide-react";
+import { useLocalization } from "@/contexts/LocalizationContext";
 
 export const LoginWithEmail = (): JSX.Element => {
+  const { t } = useLocalization();
   return (
     <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-login-email">
       {/* Back Button */}
       <Link href="/login">
         <div className="absolute left-[476px] top-[50px] w-[71px] h-[24px] cursor-pointer hover:opacity-80 transition-opacity" data-testid="button-back">
           <p className="absolute left-[28px] top-[1px] font-['Ubuntu',Helvetica] font-medium text-[19.027px] text-[#c8c8c8] leading-normal">
-            Back
+            {t('back')}
           </p>
           <Undo2 className="absolute left-0 top-0 w-[24px] h-[24px] text-[#c8c8c8]" />
         </div>
@@ -16,7 +18,7 @@ export const LoginWithEmail = (): JSX.Element => {
 
       {/* Title */}
       <p className="absolute left-[960.5px] top-[119px] -translate-x-1/2 font-['Ubuntu',Helvetica] font-bold text-[32px] text-center text-white leading-normal" data-testid="title-login-email">
-        Login with email
+        {t('auth_login_with_email')}
       </p>
 
       {/* Email Input */}
@@ -37,7 +39,7 @@ export const LoginWithEmail = (): JSX.Element => {
       >
         <Lock className="absolute left-[20px] top-[18px] w-[38px] h-[38px] text-[#7e7e7e]" />
         <p className="absolute left-[77px] top-[21.84px] font-['Ubuntu',Helvetica] font-medium text-[25.945px] text-[#7e7e7e] leading-normal">
-          Password
+          {t('auth_password_label')}
         </p>
       </div>
 
@@ -48,7 +50,7 @@ export const LoginWithEmail = (): JSX.Element => {
           data-testid="button-login"
         >
           <p className="absolute left-[451px] top-[21.84px] font-['Ubuntu',Helvetica] font-medium text-[25.945px] text-white leading-normal">
-            Login
+            {t('login')}
           </p>
         </div>
       </Link>
@@ -56,13 +58,13 @@ export const LoginWithEmail = (): JSX.Element => {
       {/* Forgot Password Link */}
       <Link href="/forgot-password">
         <p className="absolute left-[476px] top-[530px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal cursor-pointer hover:text-[#ff4199] transition-colors" data-testid="link-forgot-password">
-          Forgot your password?
+          {t('auth_forgot_password')}
         </p>
       </Link>
 
       {/* Sign Up Link */}
       <p className="absolute left-[1444px] top-[530px] -translate-x-full font-['Ubuntu',Helvetica] font-medium text-[24px] text-right text-[#ff4199] leading-normal cursor-pointer hover:opacity-80 transition-opacity" data-testid="link-signup">
-        Don't you have an account?
+        {t('auth_no_account_signup')}
       </p>
 
       {/* Native Keyboard Placeholder */}

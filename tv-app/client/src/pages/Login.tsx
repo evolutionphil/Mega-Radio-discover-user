@@ -2,10 +2,12 @@ import { Link } from "wouter";
 import { Apple, Facebook, Mail } from "lucide-react";
 import { SiGoogle } from "react-icons/si";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { useLocalization } from "@/contexts/LocalizationContext";
 import { useEffect } from "react";
 
 export const Login = (): JSX.Element => {
   useTVNavigation();
+  const { t } = useLocalization();
 
   // Set initial focus on Login with Apple button
   useEffect(() => {
@@ -45,7 +47,7 @@ export const Login = (): JSX.Element => {
                 <Apple className="w-[32px] h-[32px] text-white" fill="white" />
               </div>
               <p className="absolute left-[152px] top-[33.6px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                Login With Apple
+                {t('auth_continue_with_apple')}
               </p>
             </div>
           </Link>
@@ -58,7 +60,7 @@ export const Login = (): JSX.Element => {
                 <Facebook className="w-[32px] h-[32px] text-white" fill="white" />
               </div>
               <p className="absolute left-[131.2px] top-[33.6px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                Login With Facebook
+                {t('auth_continue_with_facebook')}
               </p>
             </div>
           </Link>
@@ -71,7 +73,7 @@ export const Login = (): JSX.Element => {
                 <SiGoogle className="w-[32px] h-[32px] text-[#4285f4]" />
               </div>
               <p className="absolute left-[145.6px] top-[33.6px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                Login With Google
+                {t('auth_continue_with_google')}
               </p>
             </div>
           </Link>
@@ -84,7 +86,7 @@ export const Login = (): JSX.Element => {
                 <Mail className="w-[32px] h-[32px] text-white" />
               </div>
               <p className="absolute left-[161.6px] top-[33.6px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                Login With Mail
+                {t('auth_continue_with_email')}
               </p>
             </div>
           </Link>
@@ -93,7 +95,7 @@ export const Login = (): JSX.Element => {
           <Link href="/discover-no-user">
             <div className="absolute left-0 top-[512px] w-[496px] h-[96px] rounded-[48px] bg-[rgba(255,255,255,0.1)] overflow-clip cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-continue-without-login" data-tv-focusable="true">
               <p className="absolute left-1/2 top-[33.6px] -translate-x-1/2 font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                Continue without login
+                {t('continue_without_login')}
               </p>
             </div>
           </Link>

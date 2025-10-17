@@ -17,15 +17,18 @@
 - "See More" → **"homepage_see_all"** (exists in Homepage)
 - "More From [Country]" → **"more_from"** (exists in General)
 
-### ✅ Authentication Pages
-- "Continue with Apple" → **"auth_continue_with_apple"**
-- "Continue with Facebook" → **"auth_continue_with_facebook"**
-- "Continue with Google" → **"auth_continue_with_google"**
-- "Or continue with email" → **"auth_continue_with_email"**
-- "Email Address" → **"auth_email_label"**
-- "Password" → **"auth_password_label"**
-- "Forgot Password?" → **"auth_forgot_password"**
-- "Sign In" → **"auth_sign_in"**
+### ✅ Authentication Pages (Login.tsx, LoginWithEmail.tsx) ✅
+- "Continue with Apple" → **"auth_continue_with_apple"** ✅
+- "Continue with Facebook" → **"auth_continue_with_facebook"** ✅
+- "Continue with Google" → **"auth_continue_with_google"** ✅
+- "Or continue with email" → **"auth_continue_with_email"** ✅
+- "Continue without login" → **"continue_without_login"** ✅
+- "Back" → **"back"** ✅
+- "Login with email" → **"auth_login_with_email"** ✅
+- "Password" → **"auth_password_label"** ✅
+- "Login" → **"login"** ✅
+- "Forgot your password?" → **"auth_forgot_password"** ✅
+- "Don't you have an account?" → **"auth_no_account_signup"** ✅
 
 ### ✅ Audio Player
 - "Play" → **"player.play"**
