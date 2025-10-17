@@ -23,8 +23,13 @@ export function useTVNavigation() {
       // Update focusable elements
       window.tvSpatialNav.updateFocusableElements();
       
-      // Focus first element if nothing is focused
-      if (!window.tvSpatialNav.focusedElement && window.tvSpatialNav.focusableElements.length > 0) {
+      // Check if focused element still exists in DOM
+      const focusedStillExists = window.tvSpatialNav.focusedElement && 
+                                 document.body.contains(window.tvSpatialNav.focusedElement);
+      
+      // Focus first element if nothing is focused OR focused element is gone
+      if ((!focusedStillExists || !window.tvSpatialNav.focusedElement) && window.tvSpatialNav.focusableElements.length > 0) {
+        console.log('[useTVNavigation] Initializing focus (focused element exists in DOM:', focusedStillExists, ')');
         window.tvSpatialNav.init(); // Use init which has smart focus logic
         initialized = true;
       }
@@ -63,11 +68,16 @@ export function useTVNavigation() {
             console.log('[useTVNavigation] Element count changed:', previousCount, '->', newCount);
           }
           
-          // Re-focus if focus was lost
-          if (!window.tvSpatialNav.focusedElement && window.tvSpatialNav.focusableElements.length > 0) {
+          // Check if focused element still exists in DOM
+          const focusedStillExists = window.tvSpatialNav.focusedElement && 
+                                     document.body.contains(window.tvSpatialNav.focusedElement);
+          
+          // Re-focus if focus was lost or focused element is no longer in DOM
+          if ((!focusedStillExists || !window.tvSpatialNav.focusedElement) && window.tvSpatialNav.focusableElements.length > 0) {
+            console.log('[useTVNavigation] Re-initializing focus (focused element in DOM:', focusedStillExists, ')');
             window.tvSpatialNav.init();
           }
-        }, 200); // Increased delay for React rendering
+        }, 300); // Increased delay for React rendering
       }
     });
 

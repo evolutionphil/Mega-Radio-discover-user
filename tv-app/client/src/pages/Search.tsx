@@ -36,10 +36,11 @@ export const Search = (): JSX.Element => {
   useEffect(() => {
     // Small delay to ensure DOM is updated with search results
     const timeout = setTimeout(() => {
-      if ((window as any).TVNavigation) {
-        (window as any).TVNavigation.update();
+      if ((window as any).tvSpatialNav) {
+        console.log('[Search] Updating TV navigation for search results');
+        (window as any).tvSpatialNav.updateFocusableElements();
       }
-    }, 100);
+    }, 300);
     return () => clearTimeout(timeout);
   }, [searchResults.length]);
 

@@ -1,0 +1,120 @@
+[Fetch Polyfill] Loading Samsung TV fetch handler...
+fetch-polyfill-samsung.js:135 [Fetch Polyfill] Samsung TV fetch handler loaded
+polyfills.js:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js:20 [Polyfills] Added globalThis
+polyfills.js:36 [Polyfills] Added Object.fromEntries
+polyfills.js:86 [Polyfills] Added String.prototype.replaceAll
+polyfills.js:105 [Polyfills] Added Promise.allSettled
+polyfills.js:108 [Polyfills] All polyfills loaded successfully
+platform-detect.js:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js:5 [TV Spatial Nav] Script loaded and executing...
+index-U-XghF7I.js:154 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-U-XghF7I.js:154 [MegaRadio API] BASE_URL: https://themegaradio.com
+tv-spatial-navigation.js:219 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js:185 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js:189 [TV Remote Keys] Key handler attached, waiting for React...
+index-U-XghF7I.js:154 [Localization] Browser language detected: de-DE
+index-U-XghF7I.js:154 [Localization] Using language: de
+index-U-XghF7I.js:154 [Localization] Detected country: Germany DE
+index-U-XghF7I.js:154 [Localization] Fetching translations for: de
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/translations/de?tv=1
+index-U-XghF7I.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:52 [TV Nav] Found 0 focusable elements
+index-U-XghF7I.js:154 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/translations/de?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 24395
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 24395
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"mood_energetic":"Energisch","mood_relaxed":"Entspannt","mood_focused":"Konzentriert","mood_nostalg...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+Array(602)
+index-U-XghF7I.js:154 [Localization] API response received
+index-U-XghF7I.js:154 [Localization] Loaded 602 translations
+index-U-XghF7I.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:52 [TV Nav] Found 5 focusable elements
+tv-spatial-navigation.js:61 [TV Nav] Element types: 
+{button-login-apple: 1, button-login-facebook: 1, button-login-google: 1, button-login-email: 1, button-continue-without-login: 1}
+tv-spatial-navigation.js:52 [TV Nav] Found 5 focusable elements
+tv-spatial-navigation.js:61 [TV Nav] Element types: 
+{button-login-apple: 1, button-login-facebook: 1, button-login-google: 1, button-login-email: 1, button-continue-without-login: 1}
+tv-spatial-navigation.js:15 [TV Nav] Initialized with 5 focusable elements
+tv-spatial-navigation.js:27 [TV Nav] Initial focus on first element
+tv-spatial-navigation.js:80 [TV Nav] Focused: button-login-apple
+index-U-XghF7I.js:154 [useTVNavigation] Initialization complete
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:189 [TV Nav] Moving DOWN to: button-login-facebook
+tv-spatial-navigation.js:80 [TV Nav] Focused: button-login-facebook
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:189 [TV Nav] Moving DOWN to: button-login-google
+tv-spatial-navigation.js:80 [TV Nav] Focused: button-login-google
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:189 [TV Nav] Moving DOWN to: button-login-email
+tv-spatial-navigation.js:80 [TV Nav] Focused: button-login-email
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:189 [TV Nav] Moving DOWN to: button-continue-without-login
+tv-spatial-navigation.js:80 [TV Nav] Focused: button-continue-without-login
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+index-U-XghF7I.js:154 [DiscoverNoUser] Setting country from localization: Germany DE
+index-U-XghF7I.js:154 [API] getAllGenres: https://themegaradio.com/api/genres?tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres?tv=1
+index-U-XghF7I.js:154 [DiscoverNoUser] Fetching popular stations for country: DE
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/popular?limit=24&country=DE&tv=1
+index-U-XghF7I.js:154 [API] Fetching working stations: https://themegaradio.com/api/stations/working?limit=500&country=DE&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/working?limit=500&country=DE&tv=1
+index-U-XghF7I.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:52 [TV Nav] Found 8 focusable elements
+tv-spatial-navigation.js:61 [TV Nav] Element types: 
+{button-country-selector: 1, button-login-header: 1, button-discover: 1, button-genres: 1, button-search: 1, …}
+index-U-XghF7I.js:154 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/genres?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 2119
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 2119
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5...
+index-U-XghF7I.js:154 [API] getAllGenres response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(5) ["data", "count", "currentPage", "perPage", "totalPages"]
+index-U-XghF7I.js:154 [API] getAllGenres fetched: 9
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/popular?limit=24&country=DE&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 24433
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 24433
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: [{"_id":"68a8c46dbd66579311aafbda","stationuuid":"9622cd46-0601-11e8-ae97-52543be04c81","name":"Euro...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(24) ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/working?limit=500&country=DE&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 519127
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 519127
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c4adbd66579311ab962c","stationuuid":"be116145-ad80-4656-b45f-6e1ce4231ec5",...
+index-U-XghF7I.js:154 [API] Response status: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(2) ["stations", "pagination"]
+index-U-XghF7I.js:154 [API] Working stations fetched: 500
+index-U-XghF7I.js:154 Country changed: Germany, total stations: 500
+index-U-XghF7I.js:154 Initial load: showing 56 stations, hasMore=true
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:189 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:80 [TV Nav] Focused: button-discover
+null:1 GET https://themegaradio.com/api/image/null 400
+images%2FIMG_20240915_192138227.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0240915_192138227.jpg?alt=media&token=3c605f74-292e-405e-bd07-2d10b89f06e8 402
+images%2FIMG_20241202_225640295.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0241202_225640295.jpg?alt=media&token=4aa635b1-53ef-4e52-b95d-0b29fa8625fe 402
+images%2FIMG_20240625_152544005.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0240625_152544005.jpg?alt=media&token=91554641-4245-4a6f-b152-fd0c2ad2680c 402
+images%2FIMG_20241120_200537271.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0241120_200537271.jpg?alt=media&token=22d50f28-7634-418d-b9bb-16913f6a6c52 402
+images%2FIMG_20240916_224800675.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0240916_224800675.jpg?alt=media&token=e6ac10bb-c8f1-43da-85ec-0ae9ead2f082 402
+images%2FIMG_20250429_125353615.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0250429_125353615.jpg?alt=media&token=97e56b51-a1ad-476e-9151-b323286f645d 402
+firebasestorage.goog…9c93-e19a4c0cae40:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0241221_114023108.jpg?alt=media&token=0d63489c-10a2-4b96-9c93-e19a4c0cae40 402
+images%2FIMG_20240925_210216676.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0240925_210216676.jpg?alt=media&token=2de3423a-bd95-4fd3-bd5c-e22065d3ae88 402
+images%2FIMG_20240821_190716237.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0240821_190716237.jpg?alt=media&token=86fe572f-2108-4084-aa67-212ab381c653 402
+images%2FIMG_20241030_183643753.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0241030_183643753.jpg?alt=media&token=43dfba1b-00ac-4b93-a800-476c9e0e509a 402
+images%2FIMG_20241022_205818099.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0241022_205818099.jpg?alt=media&token=311a6fb2-bd1d-470d-ab41-e8274fd8356c 402
+images%2FIMG_20250111_212802425.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0250111_212802425.jpg?alt=media&token=a88102da-4ba4-450f-9ea1-38ce79f8115b 402
+images%2FIMG_20240814_163259899.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0240814_163259899.jpg?alt=media&token=3a7379b1-c013-4496-b78b-6027fb246e38 402
+images%2FIMG_20241214_232536766.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0241214_232536766.jpg?alt=media&token=f482aaad-c9e8-4d07-be7b-9cbb46086c51 402
+images%2FIMG_20241004_230222322.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o…0241004_230222322.jpg?alt=media&token=9ec4c39b-bac0-428c-9b69-f88ae73ddad9 402
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:189 [TV Nav] Moving RIGHT to: button-country-selector
+tv-spatial-navigation.js:80 [TV Nav] Focused: button-country-selector
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:192 [TV Nav] No element found in direction: DOWN - keeping current focus
+﻿
