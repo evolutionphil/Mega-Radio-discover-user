@@ -1,0 +1,307 @@
+Authentication & User Management
+Count: 49 keys
+
+{
+  "auth_account_created": "Konto erfolgreich erstellt! Sie können sich jetzt anmelden.",
+  "auth_choose_unique_username": "Choose a unique username",
+  "auth_confirm_password": "Auth Confirm Password",
+  "auth_confirm_password_placeholder": "Auth Confirm Password Placeholder",
+  "auth_continue_apple": "Auth Continue Apple",
+  "auth_continue_facebook": "Auth Continue Facebook",
+  "auth_continue_google": "Auth Continue Google",
+  "auth_continue_with": "Continue with",
+  "auth_continue_with_apple": "Continue with Apple",
+  "auth_continue_with_email": "Or continue with email",
+  "auth_continue_with_facebook": "Continue with Facebook",
+  "auth_continue_with_google": "Continue with Google",
+  "auth_create_account": "Create Account",
+  "auth_create_account_description": "Join our radio community and discover amazing stations",
+  "auth_email_label": "Email Address",
+  "auth_email_placeholder": "E-Mail",
+  "auth_email_required": "Email is required",
+  "auth_enjoy_listening": "Enjoy",
+  "auth_enter_email": "Enter your email address",
+  "auth_enter_full_name": "Gib deinen vollständigen Namen ein"
+  ...
+  // Total: 49 keys in this category
+}
+Navigation (Header, Footer, Menus)
+Count: 42 keys
+
+{
+  "footer_about_us": "About Us",
+  "footer_add_station": "Add Your Station",
+  "footer_all_regions": "All Regions",
+  "footer_applications": "Applications",
+  "footer_austria": " Austria",
+  "footer_company": "Company",
+  "footer_contact": "Contact",
+  "footer_copyright": "Footer Copyright",
+  "footer_discover_music": "Discover Music",
+  "footer_feedback": "Feedback",
+  "footer_france": " France",
+  "footer_germany": " Germany",
+  "footer_italy": " Italy",
+  "footer_privacy": "Privacy",
+  "footer_privacy_policy": "Privacy Policy",
+  "footer_regions": "Regions",
+  "footer_request": "Request",
+  "footer_social_media": " Social Media",
+  "footer_spain": " Spain",
+  "footer_terms": "Terms & Conditions"
+  ...
+  // Total: 42 keys in this category
+}
+Homepage & Hero Section
+Count: 20 keys
+
+{
+  "hero_listen_everywhere": "Listen for free anytime, anywhere",
+  "hero_over_100_countries": "More than 100 countries",
+  "hero_search_placeholder": "Search for radio stations...",
+  "hero_worlds_best_radio": "The world's best radio apps",
+  "homepage_add_station": "Add Station",
+  "homepage_all_stations": "All Stations",
+  "homepage_community_favorites": "Community Favorites",
+  "homepage_description": "Back to main page",
+  "homepage_discover_genres": "Discover Genres",
+  "homepage_genres": "Genres",
+  "homepage_in_country": "In Country",
+  "homepage_over_countries": "Over Countries",
+  "homepage_personalized_recommendations": "Personalized Recommendations",
+  "homepage_popular_stations": "Popular Stations",
+  "homepage_request_station": "Request Station",
+  "homepage_search_placeholder": "Search stations...",
+  "homepage_see_all": "See All",
+  "homepage_stations_near_you": "Stations Near You",
+  "homepage_tagline_best_radio": "Best Radio Stations",
+  "homepage_tagline_listen_everywhere": "Listen Everywhere"
+}
+Regions & Geography
+Count: 43 keys
+
+{
+  "continent_africa": "Africa",
+  "continent_antarctica": "Antarctica",
+  "continent_asia": "Asia",
+  "continent_europe": "Europe",
+  "continent_north_america": "North America",
+  "continent_oceania": "Oceania",
+  "continent_south_america": "South America",
+  "regions_all_genres": "All genres",
+  "regions_back_to_cities": "Back to Cities",
+  "regions_back_to_countries": "Back to Countries",
+  "regions_back_to_regions": "Back to Regions",
+  "regions_browse_by_region": "Browse by Region",
+  "regions_cities_description": "Discover local radio stations in different cities",
+  "regions_cities_title": "Cities in {country}",
+  "regions_city_stations_count": "stations",
+  "regions_continent_title": "Continents",
+  "regions_countries_description": "Choose a country to discover local radio stations",
+  "regions_countries_title": "Countries in {region}",
+  "regions_country_stations_count": "stations",
+  "regions_explore_worldwide": "Explore Worldwide"
+  ...
+  // Total: 43 keys in this category
+}
+Moods & Personalization
+Count: 25 keys
+
+{
+  "avg_listen_time": "Average Listen Time",
+  "mood_all": "All Moods",
+  "mood_chill": "Chill",
+  "mood_description": "Select your mood to get better recommendations",
+  "mood_energetic": "Energetic",
+  "mood_focused": "Focused",
+  "mood_nostalgic": "Nostalgic",
+  "mood_party": "Party",
+  "mood_relaxed": "Relaxed",
+  "mood_selector": "How are you feeling?",
+  "personalized_description": "Based on your listening patterns and preferences",
+  "personalized_for_you": "Personalized for You",
+  "preferred_countries": "Your Preferred Countries",
+  "preferred_genres": "Your Preferred Genres",
+  "profile_complete": "Profile Complete",
+  "profile_description": "Based on your listening history",
+  "profile_nav_discover": "Profile Discover",
+  "profile_nav_favorites": "Profile Favorites",
+  "profile_nav_profile": "Profile Profile",
+  "profile_nav_records": "Profile Records"
+  ...
+  // Total: 25 keys in this category
+}
+Trending & Popular Content
+Count: 9 keys
+
+{
+  "trending_community_favorites_title": "Community Favorites",
+  "trending_description": "Popular stations everyone is talking about",
+  "trending_hot_right_now": "Hot Right Now",
+  "trending_most_loved_by_users": "The most loved stations by our users",
+  "trending_no_stations_message": "No trending stations are currently available. Check back later!",
+  "trending_no_trending_stations": "No Trending Stations",
+  "trending_now": "Trending Now",
+  "trending_stations_count": "Stations",
+  "trending_updated": "Updated"
+}
+About Page
+Count: 21 keys
+
+{
+  "about_feature_all_genres_description": "From classical to electronic, find every music style",
+  "about_feature_all_genres_title": "All Genres",
+  "about_feature_global_coverage_description": "Access stations from over 100 countries worldwide",
+  "about_feature_global_coverage_title": "Global Coverage",
+  "about_feature_global_reach_description": "Access to thousands of radio stations from over 100 countries, broadcasting in various languages and genres.",
+  "about_feature_global_reach_title": "Global Reach",
+  "about_features_title": "What Sets Us Apart",
+  "about_hero_description": "Discover thousands of radio stations from around the world. From local news to international music, everything is just a click away.",
+  "about_hero_subtitle": "Your ultimate destination for online radio streaming",
+  "about_hero_title": "About Mega Radio",
+  "about_intro_paragraph_1": "Welcome to Mega Radio, your ultimate destination for discovering and streaming radio stations from around the world.",
+  "about_intro_paragraph_2": "We connect you with thousands of live radio stations, offering everything from local news to international music.",
+  "about_intro_paragraph_3": "Our platform is designed to provide the best listening experience with high-quality streams and personalized recommendations.",
+  "about_mega_radio": "About Mega Radio",
+  "about_mega_radio_cta": "Start exploring the world of radio broadcasting today - completely free!",
+  "about_mega_radio_description_1": "Mega Radio is your gateway to over 60,000 live radio stations from more than 120 countries worldwide. Experience unlimited access to music, news, talk shows, and sports broadcasting without any subscription fees or restrictions.",
+  "about_mega_radio_description_2": "Built with cutting-edge technology and optimized for all devices, Mega Radio delivers crystal-clear audio streaming with intelligent recommendations powered by machine learning to help you discover your next favorite station.",
+  "about_mega_radio_subtitle": "Your ultimate destination for global radio streaming",
+  "about_our_mission_text": "At Mega Radio, we believe that great music and content should be accessible to everyone. Our platform connects listeners with thousands of radio stations worldwide, providing a seamless, high-quality streaming experience without borders.",
+  "about_our_mission_title": "Our Mission"
+  ...
+  // Total: 21 keys in this category
+}
+Modal Dialogs
+Count: 20 keys
+
+{
+  "modal_add_station_description": "Share your radio station with the world",
+  "modal_add_station_title": "Add Your Station",
+  "modal_cancel_button": " Cancel Button",
+  "modal_description_placeholder": "Description",
+  "modal_email_placeholder": "Your Email",
+  "modal_error": "Error",
+  "modal_error_try_again": "Something went wrong. Please try again.",
+  "modal_request_station_description": "Request a radio station to be added",
+  "modal_request_station_title": "Request Station",
+  "modal_select_country": "Select Country",
+  "modal_select_genre": " Select Genre",
+  "modal_sending": " Sending",
+  "modal_state_placeholder": " State Placeholder",
+  "modal_station_logo": " Station Logo",
+  "modal_station_name_placeholder": "Station Name",
+  "modal_station_url_placeholder": "Station URL",
+  "modal_stream_url_placeholder": "Stream URL",
+  "modal_submit_button": " Submit Button",
+  "modal_success": "Success",
+  "modal_website_placeholder": " Website Placeholder"
+}
+Search & Filters
+Count: 12 keys
+
+{
+  "filter_by": "Filter by",
+  "search_genre": "Search Genre",
+  "search_languages_placeholder": "Search languages...",
+  "search_placeholder": "Search...",
+  "search_stations": "Search Stations",
+  "sort_a_to_z": "A to Z",
+  "sort_az": "A bis Z",
+  "sort_by": "Sort by",
+  "sort_newest_first": "Newest First",
+  "sort_oldest_first": "Oldest First",
+  "sort_z_to_a": "Z to A",
+  "sort_za": "Z bis A"
+}
+Audio Player
+Count: 9 keys
+
+{
+  "listen_now": "Listen Now",
+  "mute": "Mute",
+  "pause_button": "Pause Button",
+  "play_button": "Play Button",
+  "player.pause": "Pause",
+  "player.play": "Play",
+  "stop_button": "Stop Button",
+  "unmute": "Unmute",
+  "volume": "Volume"
+}
+User Profile & Menu
+Count: 8 keys
+
+{
+  "user_menu_discover": "User Discover",
+  "user_menu_logging_out": "User Logging Out",
+  "user_menu_logout": "User Logout",
+  "user_menu_profile": "User Profile",
+  "user_menu_records": "User Records",
+  "user_menu_settings": "User Settings",
+  "user_menu_signed_in_as": "User Signed In As",
+  "user_menu_your_favorites": "User Your Favorites"
+}
+Error Messages & Debugging
+Count: 12 keys
+
+{
+  "404_description": "The page you are looking for does not exist or has been moved.",
+  "404_help_text": "Don't worry! Here are some helpful links to get you back to the music.",
+  "404_page_not_found": "Page Not Found",
+  "debug_discovery_stations_fetched": "Discovery stations fetched:",
+  "debug_discovery_strategy_failed": "Discovery strategy failed:",
+  "debug_genre_based_stations_fetched": "Debug Based Stations Fetched",
+  "debug_personalized_fallback_fetched": "Personalized fallback stations fetched:",
+  "debug_personalized_stations_fetched": "Personalized stations fetched:",
+  "debug_trending_stations_fetched": "Trending stations fetched:",
+  "error_fetch_genre_based_stations": "Error Fetch Based Stations",
+  "error_fetch_personalized_stations": "Failed to fetch personalized stations",
+  "error_fetch_trending_stations": "Failed to fetch trending stations"
+}
+SEO Content
+Count: 15 keys
+
+{
+  "seo_all_stations": "Seo All Stations",
+  "seo_browse_genres": "Seo Browse Genres",
+  "seo_community_favorites": "Seo Community Favorites",
+  "seo_discover_genres": "Seo Discover Genres",
+  "seo_global_desc": "Seo Global Desc",
+  "seo_global_title": "Seo Global Title",
+  "seo_local_stations": "Seo Local Stations",
+  "seo_no_registration_desc": "Seo No Registration Desc",
+  "seo_no_registration_title": "Seo No Registration Title",
+  "seo_popular_stations": "Seo Popular Stations",
+  "seo_quality_desc": "Seo Quality Desc",
+  "seo_quality_title": "Seo Quality Title",
+  "seo_services_title": "Seo Services Title",
+  "seo_unlimited_desc": "Seo Unlimited Desc",
+  "seo_unlimited_title": "Seo Unlimited Title"
+}
+General & Common Words
+Count: 317 keys
+
+{
+  "a": "A",
+  "about": "About",
+  "above": "Above",
+  "active": "Active",
+  "add": "Add",
+  "after": "After",
+  "again": "Again",
+  "all": "All",
+  "all_radio_stations": "Alle Radiosender",
+  "all_radios": "All Radio Stations",
+  "an": "An",
+  "and": "And",
+  "apply": "Apply",
+  "at": "At",
+  "audio": "Audio",
+  "available": "Available",
+  "back": "Back",
+  "back_to_radio": "Back to Radio",
+  "based_on_genres": "Based on Your Genres",
+  "before": "Before"
+  ...
+  // Total: 317 keys in this category
+}

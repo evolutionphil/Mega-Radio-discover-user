@@ -392,7 +392,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         >
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
-          {t('popular_genres') || 'Popular Genres'}
+          {t('popular_genres')}
         </p>
 
         {/* Genre Pills - Horizontal Scrollable - All genres from API */}
@@ -419,11 +419,11 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Popular Radios Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[223px]">
-          {t('popular_radios') || 'Popular Radios'}
+          {t('homepage_popular_stations')}
         </p>
 
         <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1630.5px] not-italic text-[22px] text-center text-white top-[242px] translate-x-[-50%]">
-          {t('see_more') || 'See More'}
+          {t('homepage_see_all')}
         </p>
 
         {/* Popular Radio Station Cards - Row 1 */}
@@ -500,7 +500,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         </p>
 
         <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1630.5px] not-italic text-[22px] text-center text-white top-[944px] translate-x-[-50%]">
-          See More
+          {t('homepage_see_all')}
         </p>
 
         {/* Country Stations - Dynamic Rows with Infinite Scroll */}
