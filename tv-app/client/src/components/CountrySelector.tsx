@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { megaRadioApi } from '@/services/megaRadioApi';
 
@@ -18,6 +18,7 @@ interface CountrySelectorProps {
 
 export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry }: CountrySelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Fetch countries from API
   const { data: countriesData, isLoading, error } = useQuery({
@@ -42,6 +43,14 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       console.log('[CountrySelector] isLoading:', isLoading, 'error:', error);
     }
   }, [isOpen, isLoading, error]);
+
+  // Reset scroll position when search query changes
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+      console.log('[CountrySelector] Scroll reset to top for search:', searchQuery);
+    }
+  }, [searchQuery]);
 
   // Initialize TV navigation when modal opens
   useEffect(() => {
@@ -173,7 +182,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           </div>
 
           {/* Countries List - Scrollable */}
-          <div className="absolute left-[20px] top-[119px] w-[967px] h-[395px] overflow-y-auto">
+          <div 
+            ref={scrollContainerRef}
+            className="absolute left-[20px] top-[119px] w-[967px] h-[395px] overflow-y-auto"
+          >
             {isLoading ? (
               <div className="flex items-center justify-center h-full">
                 <p className="font-['Ubuntu',Helvetica] font-medium text-white text-[20px]">Loading countries...</p>
