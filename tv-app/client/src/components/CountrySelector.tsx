@@ -156,8 +156,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         data-testid="country-selector-backdrop"
       />
 
-      {/* Modal Container - Centered using absolute positioning for TV compatibility */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      {/* Modal Container - Centered with fixed pixel positioning for Samsung TV */}
+      <div className="absolute" style={{ left: '457px', top: '273px' }}>
         {/* Back Button */}
         <div 
           className="absolute left-0 top-[-43px] h-[24px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity"
