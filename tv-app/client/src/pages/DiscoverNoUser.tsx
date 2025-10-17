@@ -37,7 +37,10 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Fetch ALL genres from API filtered by country
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres/all', selectedCountryCode],
-    queryFn: () => megaRadioApi.getAllGenres(selectedCountryCode),
+    queryFn: () => {
+      console.log('[DiscoverNoUser] Fetching genres for country code:', selectedCountryCode);
+      return megaRadioApi.getAllGenres(selectedCountryCode);
+    },
   });
 
   // Fetch popular stations filtered by selected country
@@ -52,7 +55,10 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Fetch ALL stations for the country (we'll paginate on frontend)
   const { data: allCountryStationsData } = useQuery({
     queryKey: ['/api/stations/country', selectedCountryCode],
-    queryFn: () => megaRadioApi.getWorkingStations({ limit: 500, country: selectedCountryCode }),
+    queryFn: () => {
+      console.log('[DiscoverNoUser] Fetching stations for country code:', selectedCountryCode);
+      return megaRadioApi.getWorkingStations({ limit: 500, country: selectedCountryCode });
+    },
   });
 
   // Initialize country stations when data is loaded or country changes
@@ -575,6 +581,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         onClose={() => setIsCountrySelectorOpen(false)}
         selectedCountry={selectedCountry}
         onSelectCountry={(country) => {
+          console.log('[DiscoverNoUser] Country selected:', country.name, 'Code:', country.code);
           setSelectedCountry(country.name);
           setSelectedCountryCode(country.code);
           setSelectedCountryFlag(country.flag);
