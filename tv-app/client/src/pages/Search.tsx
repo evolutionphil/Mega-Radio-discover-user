@@ -250,26 +250,21 @@ export const Search = (): JSX.Element => {
 
       {/* Search Results */}
       {searchQuery.length > 0 && searchResults.map((station, index) => {
-        const isFirst = index === 0;
         const topPositions = [259, 344, 429, 514];
         
         return (
           <div
             key={station._id || index}
-            className={`absolute ${isFirst ? 'bg-[rgba(255,255,255,0.28)] border-[#b4b4b4] border-[5.5px] border-solid' : 'bg-[rgba(255,255,255,0.14)]'} box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors`}
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
             style={{ top: `${topPositions[index]}px` }}
             data-testid={`search-result-${index}`}
             data-tv-focusable="true"
             onClick={() => window.location.href = `/radio-playing?station=${station._id}`}
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px]">
-              {isFirst ? (
-                <span className="text-white">{station.name}</span>
-              ) : (
-                highlightText(station.name, searchQuery)
-              )}
+              {highlightText(station.name, searchQuery)}
             </p>
-            <div className={`absolute ${isFirst ? 'inset-[-5.5px]' : 'inset-0'} pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]`} />
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]" />
           </div>
         );
       })}
