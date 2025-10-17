@@ -1,0 +1,907 @@
+Refused to load the stylesheet 'https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap' because it violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline'".
+
+fetch-polyfill-samsung.js:5 [Fetch Polyfill] Loading Samsung TV fetch handler...
+fetch-polyfill-samsung.js:135 [Fetch Polyfill] Samsung TV fetch handler loaded
+polyfills.js:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js:20 [Polyfills] Added globalThis
+polyfills.js:36 [Polyfills] Added Object.fromEntries
+polyfills.js:86 [Polyfills] Added String.prototype.replaceAll
+polyfills.js:105 [Polyfills] Added Promise.allSettled
+polyfills.js:108 [Polyfills] All polyfills loaded successfully
+platform-detect.js:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js:5 [TV Spatial Nav] Script loaded and executing...
+index-BwRzSsne.js:154 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-BwRzSsne.js:154 [MegaRadio API] BASE_URL: https://themegaradio.com
+tv-spatial-navigation.js:185 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js:185 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js:189 [TV Remote Keys] Key handler attached, waiting for React...
+index-BwRzSsne.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 0 focusable elements
+index-BwRzSsne.js:154 [useTVNavigation] Initialization complete
+index.html:1 Refused to load the stylesheet 'https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap' because it violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline'".
+
+index-BwRzSsne.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 5 focusable elements
+tv-spatial-navigation.js:44 [TV Nav] Found 5 focusable elements
+tv-spatial-navigation.js:15 [TV Nav] Initialized with 5 focusable elements
+tv-spatial-navigation.js:27 [TV Nav] Initial focus on first element
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-apple
+index-BwRzSsne.js:154 [useTVNavigation] Initialization complete
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-login-facebook
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-facebook
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-login-google
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-google
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-login-email
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-email
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-continue-without-login
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-continue-without-login
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+index-BwRzSsne.js:154 [API] getAllGenres: https://themegaradio.com/api/genres?tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres?tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/popular?limit=24&country=AT&tv=1
+index-BwRzSsne.js:154 [API] Fetching working stations: https://themegaradio.com/api/stations/working?limit=500&country=AT&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/working?limit=500&country=AT&tv=1
+index-BwRzSsne.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 8 focusable elements
+index-BwRzSsne.js:154 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/genres?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 2119
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 2119
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5...
+index-BwRzSsne.js:154 [API] getAllGenres response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (5) ["data", "count", "currentPage", "perPage", "totalPages"]
+index-BwRzSsne.js:154 [API] getAllGenres fetched: 9
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/popular?limit=24&country=AT&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 25748
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 25748
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: [{"_id":"68a8c490bd66579311ab5033","stationuuid":"9617a958-0601-11e8-ae97-52543be04c81","name":"Radi...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (24) ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"]
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/working?limit=500&country=AT&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 519337
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 519337
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c4abbd66579311ab961d","stationuuid":"67a42dc7-b4b2-40b8-9142-aabb2305d96f",...
+index-BwRzSsne.js:154 [API] Response status: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (2) ["stations", "pagination"]
+index-BwRzSsne.js:154 [API] Working stations fetched: 500
+index-BwRzSsne.js:154 Country changed: Austria, total stations: 500
+index-BwRzSsne.js:154 Initial load: showing 56 stations, hasMore=true
+images%2FIMG_20240108_163234165.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240108_163234165.jpg?alt=media&token=7cec1618-4457-43ee-9dd0-ff6373b9f7bf 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+null:1 GET https://themegaradio.com/api/image/null 400
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+nasradio.fm/images/logo.png:1 GET https://nasradio.fm/images/logo.png net::ERR_SSL_VERSION_OR_CIPHER_MISMATCH
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240915_192138227.jpg?alt=media&token=3c605f74-292e-405e-bd07-2d10b89f06e8:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240915_192138227.jpg?alt=media&token=3c605f74-292e-405e-bd07-2d10b89f06e8 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241120_200537271.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241120_200537271.jpg?alt=media&token=22d50f28-7634-418d-b9bb-16913f6a6c52 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240625_152544005.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240625_152544005.jpg?alt=media&token=91554641-4245-4a6f-b152-fd0c2ad2680c 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241202_225640295.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241202_225640295.jpg?alt=media&token=4aa635b1-53ef-4e52-b95d-0b29fa8625fe 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20250429_125353615.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20250429_125353615.jpg?alt=media&token=97e56b51-a1ad-476e-9151-b323286f645d 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241221_114023108.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241221_114023108.jpg?alt=media&token=0d63489c-10a2-4b96-9c93-e19a4c0cae40 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20250111_212802425.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20250111_212802425.jpg?alt=media&token=a88102da-4ba4-450f-9ea1-38ce79f8115b 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240916_224800675.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240916_224800675.jpg?alt=media&token=e6ac10bb-c8f1-43da-85ec-0ae9ead2f082 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240821_190716237.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240821_190716237.jpg?alt=media&token=86fe572f-2108-4084-aa67-212ab381c653 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240925_210216676.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240925_210216676.jpg?alt=media&token=2de3423a-bd95-4fd3-bd5c-e22065d3ae88 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241030_183643753.jpg?alt=media&token=43dfba1b-00ac-4b93-a800-476c9e0e509a:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241030_183643753.jpg?alt=media&token=43dfba1b-00ac-4b93-a800-476c9e0e509a 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241022_205818099.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241022_205818099.jpg?alt=media&token=311a6fb2-bd1d-470d-ab41-e8274fd8356c 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+favicon.png:1 GET https://rusradio.hostingradio.ru/favicon.png 404 (Not Available)
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-country-selector
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-country-selector
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-favorites
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-favorites
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-country-selector
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-country-selector
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-login-header
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-header
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-country-selector
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-country-selector
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-login-header
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-header
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: RIGHT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-header
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: LEFT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/popular?limit=6&tv=1
+index-BwRzSsne.js:154 Samsung TV detected - native keyboard will appear
+index-BwRzSsne.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 7 focusable elements
+index-BwRzSsne.js:154 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/popular?limit=6&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 7015
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 7015
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: [{"_id":"68a8c47dbd66579311ab228c","stationuuid":"78012206-1aa1-11e9-a80b-52543be04c81","name":"MANG...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (6) ["0", "1", "2", "3", "4", "5"]
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 k
+index-BwRzSsne.js:154 [API] searchStations: https://themegaradio.com/api/stations?search=k&limit=4&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=k&limit=4&tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=k&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 3571
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 3571
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68ac2f80921adb4dbe8c2aa6","changeUuid":"","stationuuid":"user-1756114816860-hcp...
+index-BwRzSsne.js:154 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (4) ["stations", "totalCount", "count", "pagination"]
+index-BwRzSsne.js:154 [API] searchStations fetched: 4
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 r
+index-BwRzSsne.js:154 [API] searchStations: https://themegaradio.com/api/stations?search=kr&limit=4&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=kr&limit=4&tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kr&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 3950
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 3950
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c4a8bd66579311ab8d50","stationuuid":"b0daaa2a-0e4c-42ec-83fb-220f96f8d41d",...
+index-BwRzSsne.js:154 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (4) ["stations", "totalCount", "count", "pagination"]
+index-BwRzSsne.js:154 [API] searchStations fetched: 4
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 a
+index-BwRzSsne.js:154 [API] searchStations: https://themegaradio.com/api/stations?search=kra&limit=4&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=kra&limit=4&tv=1
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 a
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kra&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 4066
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 4066
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c4a8bd66579311ab8d50","stationuuid":"b0daaa2a-0e4c-42ec-83fb-220f96f8d41d",...
+index-BwRzSsne.js:154 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (4) ["stations", "totalCount", "count", "pagination"]
+index-BwRzSsne.js:154 [API] searchStations fetched: 4
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 l
+index-BwRzSsne.js:154 [API] searchStations: https://themegaradio.com/api/stations?search=kral&limit=4&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=kral&limit=4&tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kral&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 4351
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 4351
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c491bd66579311ab55bc","stationuuid":"7814e0ca-ea58-419a-bcce-881c5db77036",...
+index-BwRzSsne.js:154 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (4) ["stations", "totalCount", "count", "pagination"]
+index-BwRzSsne.js:154 [API] searchStations fetched: 4
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 unknown
+tv-remote-keys.js:136 [TV Keys] Key pressed: 65385 Cancel
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: input-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: input-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: input-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: input-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-favorites
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-favorites
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-records
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-records
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: input-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: input-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: RIGHT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: input-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: RIGHT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: input-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: RIGHT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: input-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:155 [TV Nav] Moving LEFT to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 65385 Cancel
+tv-remote-keys.js:136 [TV Keys] Key pressed: 10009 XF86Back
+index-BwRzSsne.js:154 Country changed: Austria, total stations: 500
+index-BwRzSsne.js:154 Initial load: showing 56 stations, hasMore=true
+index-BwRzSsne.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 96 focusable elements
+index-BwRzSsne.js:154 [useTVNavigation] Initialization complete
+nasradio.fm/images/logo.png:1 GET https://nasradio.fm/images/logo.png net::ERR_SSL_VERSION_OR_CIPHER_MISMATCH
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240625_152544005.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240625_152544005.jpg?alt=media&token=91554641-4245-4a6f-b152-fd0c2ad2680c 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241202_225640295.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241202_225640295.jpg?alt=media&token=4aa635b1-53ef-4e52-b95d-0b29fa8625fe 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240915_192138227.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240915_192138227.jpg?alt=media&token=3c605f74-292e-405e-bd07-2d10b89f06e8 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241120_200537271.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241120_200537271.jpg?alt=media&token=22d50f28-7634-418d-b9bb-16913f6a6c52 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240108_163234165.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240108_163234165.jpg?alt=media&token=7cec1618-4457-43ee-9dd0-ff6373b9f7bf 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+null:1 GET https://themegaradio.com/api/image/null 400
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20250429_125353615.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20250429_125353615.jpg?alt=media&token=97e56b51-a1ad-476e-9151-b323286f645d 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240916_224800675.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240916_224800675.jpg?alt=media&token=e6ac10bb-c8f1-43da-85ec-0ae9ead2f082 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240821_190716237.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240821_190716237.jpg?alt=media&token=86fe572f-2108-4084-aa67-212ab381c653 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20250111_212802425.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20250111_212802425.jpg?alt=media&token=a88102da-4ba4-450f-9ea1-38ce79f8115b 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241221_114023108.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241221_114023108.jpg?alt=media&token=0d63489c-10a2-4b96-9c93-e19a4c0cae40 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241030_183643753.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241030_183643753.jpg?alt=media&token=43dfba1b-00ac-4b93-a800-476c9e0e509a 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240925_210216676.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240925_210216676.jpg?alt=media&token=2de3423a-bd95-4fd3-bd5c-e22065d3ae88 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241022_205818099.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241022_205818099.jpg?alt=media&token=311a6fb2-bd1d-470d-ab41-e8274fd8356c 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+favicon.png:1 GET https://rusradio.hostingradio.ru/favicon.png 404 (Not Available)
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: A
+tv-spatial-navigation.js:62 [TV Nav] Focused: Pop
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: A
+tv-spatial-navigation.js:62 [TV Nav] Focused: Music
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+index-BwRzSsne.js:154 [API] getAllStations: https://themegaradio.com/api/stations?limit=21&genre=pop&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?limit=21&genre=pop&tv=1
+index-BwRzSsne.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 8 focusable elements
+index-BwRzSsne.js:154 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?limit=21&genre=pop&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 21600
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 21600
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c4abbd66579311ab95c0","stationuuid":"dd50f576-4d20-46a1-a95c-4a4e53137085",...
+index-BwRzSsne.js:154 [API] getAllStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (4) ["stations", "totalCount", "count", "pagination"]
+index-BwRzSsne.js:154 [API] getAllStations fetched: 21
+tv-remote-keys.js:136 [TV Keys] Key pressed: 10009 XF86Back
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: UP - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: Music
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: UP - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: Music
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-back
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-back
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:155 [TV Nav] Moving UP to: button-login-header
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-header
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:155 [TV Nav] Moving LEFT to: button-back
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-back
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+index-BwRzSsne.js:154 [API] getAllGenres: https://themegaradio.com/api/genres?tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres?tv=1
+index-BwRzSsne.js:154 [API] getDiscoverableGenres: https://themegaradio.com/api/genres/discoverable?tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres/discoverable?tv=1
+index-BwRzSsne.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 7 focusable elements
+index-BwRzSsne.js:154 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/genres?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 2119
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 2119
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5...
+index-BwRzSsne.js:154 [API] getAllGenres response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (5) ["data", "count", "currentPage", "perPage", "totalPages"]
+index-BwRzSsne.js:154 [API] getAllGenres fetched: 9
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/genres/discoverable?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 2200
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 2200
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: [{"_id":"genre-pop","name":"Pop","slug":"pop","posterImage":"","discoverableImage":"","description":...
+index-BwRzSsne.js:154 [API] getDiscoverableGenres response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (13) ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+index-BwRzSsne.js:154 [API] getDiscoverableGenres fetched: 13
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+index-BwRzSsne.js:154 Country changed: Austria, total stations: 500
+index-BwRzSsne.js:154 Initial load: showing 56 stations, hasMore=true
+index-BwRzSsne.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 96 focusable elements
+index-BwRzSsne.js:154 [useTVNavigation] Initialization complete
+nasradio.fm/images/logo.png:1 GET https://nasradio.fm/images/logo.png net::ERR_SSL_VERSION_OR_CIPHER_MISMATCH
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240108_163234165.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240108_163234165.jpg?alt=media&token=7cec1618-4457-43ee-9dd0-ff6373b9f7bf 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+null:1 GET https://themegaradio.com/api/image/null 400
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241120_200537271.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241120_200537271.jpg?alt=media&token=22d50f28-7634-418d-b9bb-16913f6a6c52 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240625_152544005.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240625_152544005.jpg?alt=media&token=91554641-4245-4a6f-b152-fd0c2ad2680c 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20250429_125353615.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20250429_125353615.jpg?alt=media&token=97e56b51-a1ad-476e-9151-b323286f645d 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240915_192138227.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240915_192138227.jpg?alt=media&token=3c605f74-292e-405e-bd07-2d10b89f06e8 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241202_225640295.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241202_225640295.jpg?alt=media&token=4aa635b1-53ef-4e52-b95d-0b29fa8625fe 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240916_224800675.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240916_224800675.jpg?alt=media&token=e6ac10bb-c8f1-43da-85ec-0ae9ead2f082 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241221_114023108.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241221_114023108.jpg?alt=media&token=0d63489c-10a2-4b96-9c93-e19a4c0cae40 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240821_190716237.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240821_190716237.jpg?alt=media&token=86fe572f-2108-4084-aa67-212ab381c653 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20240925_210216676.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240925_210216676.jpg?alt=media&token=2de3423a-bd95-4fd3-bd5c-e22065d3ae88 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241022_205818099.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241022_205818099.jpg?alt=media&token=311a6fb2-bd1d-470d-ab41-e8274fd8356c 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20250111_212802425.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20250111_212802425.jpg?alt=media&token=a88102da-4ba4-450f-9ea1-38ce79f8115b 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+images%2FIMG_20241030_183643753.jpg:1 GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20241030_183643753.jpg?alt=media&token=43dfba1b-00ac-4b93-a800-476c9e0e509a 402
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+favicon.png:1 GET https://rusradio.hostingradio.ru/favicon.png 404 (Not Available)
+Image (async)
+Sf @ index-BwRzSsne.js:41
+kf @ index-BwRzSsne.js:41
+qv @ index-BwRzSsne.js:41
+t1 @ index-BwRzSsne.js:41
+rr @ index-BwRzSsne.js:41
+Ef @ index-BwRzSsne.js:41
+C @ index-BwRzSsne.js:26
+D @ index-BwRzSsne.js:26
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-favorites
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-favorites
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-records
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-records
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-settings
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-settings
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: card-station-68a8c45abd66579311aacaa3
+tv-spatial-navigation.js:62 [TV Nav] Focused: card-station-68a8c45abd66579311aacaa3
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/station/68a8c45abd66579311aacaa3?tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/68a8c45abd66579311aacaa3/metadata?tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/similar/68a8c45abd66579311aacaa3?limit=7&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/popular?limit=14&tv=1
+index-BwRzSsne.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 4 focusable elements
+index-BwRzSsne.js:154 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/station/68a8c45abd66579311aacaa3?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 1032
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 1032
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"_id":"68a8c45abd66579311aacaa3","stationuuid":"d28420a4-eccf-47a2-ace1-088c7e7cb7e0","name":"101 S...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (36) ["_id", "stationuuid", "name", "url", "urlResolved", "homepage", "favicon", "tags", "country", "countryCode", "state", "votes", "averageRating", "totalRatings", "ratingBreakdown", "lastChangeTime", "codec", "bitrate", "hls", "lastCheckOk", "lastCheckTime", "clickCount", "clickTrend", "sslError", "geoLat", "geoLong", "hasExtendedInfo", "isManuallyEdited", "hasCustomFavicon", "mergedUrls", "mergedStationUuids", "slug", "playbackSuccessCount", "createdAt", "updatedAt", "__v"]
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/similar/68a8c45abd66579311aacaa3?limit=7&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 8431
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 8431
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: [{"_id":"68a8c490bd66579311ab5033","stationuuid":"9617a958-0601-11e8-ae97-52543be04c81","name":"Radi...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (7) ["0", "1", "2", "3", "4", "5", "6"]
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/68a8c45abd66579311aacaa3/metadata?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 231
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 231
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"station":{"id":"68a8c45abd66579311aacaa3","name":"101 SMOOTH JAZZ","url":"http://jking.cdnstream1....
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (2) ["station", "metadata"]
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/popular?limit=14&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 15806
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 15806
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: [{"_id":"68a8c47dbd66579311ab228c","stationuuid":"78012206-1aa1-11e9-a80b-52543be04c81","name":"MANG...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (14) ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
+VM230:1 adding listener
+VM230:1 Entered AVPlayManager.prepareAsync()
+tv-audio-player.js:44 Buffering started
+tv-audio-player.js:48 Buffering complete
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-previous
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-previous
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-pause
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-pause
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-next
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-next
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:155 [TV Nav] Moving LEFT to: button-pause
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-pause
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:155 [TV Nav] Moving LEFT to: button-previous
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-previous
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: LEFT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-previous
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: LEFT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-previous
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: DOWN - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-previous
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: DOWN - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-previous
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: DOWN - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-previous
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/68a8c45abd66579311aacaa3/metadata?tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/68a8c45abd66579311aacaa3/metadata?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 236
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 236
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"station":{"id":"68a8c45abd66579311aacaa3","name":"101 SMOOTH JAZZ","url":"http://jking.cdnstream1....
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (2) ["station", "metadata"]
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/68a8c45abd66579311aacaa3/metadata?tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/68a8c45abd66579311aacaa3/metadata?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 236
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 236
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"station":{"id":"68a8c45abd66579311aacaa3","name":"101 SMOOTH JAZZ","url":"http://jking.cdnstream1....
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: (2) ["station", "metadata"]

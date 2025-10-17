@@ -34,14 +34,32 @@
         
         updateFocusableElements: function() {
             // Get all focusable elements with spatial data
-            this.focusableElements = Array.from(document.querySelectorAll(
-                'button:not([disabled]), a[href], [data-tv-focusable="true"], [tabindex]:not([tabindex="-1"])'
-            )).filter(el => {
-                const rect = el.getBoundingClientRect();
-                return rect.width > 0 && rect.height > 0 && el.offsetParent !== null;
-            });
+            // Include both direct focusable elements AND their parent links
+            const selector = 'button:not([disabled]), a[href], [data-tv-focusable="true"], [tabindex]:not([tabindex="-1"])';
+            
+            this.focusableElements = Array.from(document.querySelectorAll(selector))
+                .filter(el => {
+                    const rect = el.getBoundingClientRect();
+                    const isVisible = rect.width > 0 && rect.height > 0;
+                    const hasParent = el.offsetParent !== null;
+                    
+                    // Also check if element is inside scrollable container
+                    const isInScrollable = el.closest('[class*="overflow"]') !== null;
+                    
+                    return isVisible && (hasParent || isInScrollable);
+                });
             
             console.log('[TV Nav] Found', this.focusableElements.length, 'focusable elements');
+            
+            // Debug: Log what types of elements we found
+            if (this.focusableElements.length > 0) {
+                const types = this.focusableElements.reduce((acc, el) => {
+                    const type = el.dataset.testid || el.tagName.toLowerCase();
+                    acc[type] = (acc[type] || 0) + 1;
+                    return acc;
+                }, {});
+                console.log('[TV Nav] Element types:', types);
+            }
         },
         
         focus: function(element) {

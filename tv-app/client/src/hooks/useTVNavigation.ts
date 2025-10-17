@@ -53,13 +53,21 @@ export function useTVNavigation() {
     // Update on any changes (route changes, etc.)
     const observer = new MutationObserver(() => {
       if (initialized && window.tvSpatialNav) {
+        // Debounce updates to avoid excessive re-scans
         setTimeout(() => {
+          const previousCount = window.tvSpatialNav.focusableElements.length;
           window.tvSpatialNav.updateFocusableElements();
+          const newCount = window.tvSpatialNav.focusableElements.length;
+          
+          if (newCount !== previousCount) {
+            console.log('[useTVNavigation] Element count changed:', previousCount, '->', newCount);
+          }
+          
           // Re-focus if focus was lost
           if (!window.tvSpatialNav.focusedElement && window.tvSpatialNav.focusableElements.length > 0) {
             window.tvSpatialNav.init();
           }
-        }, 50);
+        }, 200); // Increased delay for React rendering
       }
     });
 
