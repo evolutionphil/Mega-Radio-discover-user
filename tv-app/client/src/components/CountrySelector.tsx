@@ -172,6 +172,17 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    // Handle DOWN arrow to exit input and focus first country
+                    if (e.key === 'ArrowDown' || e.keyCode === 40) {
+                      e.preventDefault();
+                      const firstCountry = document.querySelector('[data-testid^="country-option-"]') as HTMLElement;
+                      if (firstCountry && (window as any).tvSpatialNav) {
+                        console.log('[CountrySelector] DOWN pressed in input, focusing first country');
+                        (window as any).tvSpatialNav.focus(firstCountry);
+                      }
+                    }
+                  }}
                   placeholder="Country"
                   className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[25.945px] text-white bg-transparent border-none outline-none placeholder:text-white/60 w-[800px]"
                   data-testid="input-country-search"
@@ -190,32 +201,45 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
               <div className="flex items-center justify-center h-full">
                 <p className="font-['Ubuntu',Helvetica] font-medium text-white text-[20px]">Loading countries...</p>
               </div>
-            ) : filteredCountries.map((country, index) => {
-              const isSelected = country.name === selectedCountry;
-              return (
-                <div
-                  key={country.code}
-                  className={`bg-[#2b2b2b] ${isSelected ? 'border-[#d2d2d2] border-[5px]' : ''} border-solid h-[70px] rounded-[10px] w-[967px] cursor-pointer hover:bg-[#3b3b3b] transition-colors`}
-                  style={{ marginTop: index === 0 ? 0 : '15px' }}
-                  onClick={() => handleCountryClick(country)}
-                  data-testid={`country-option-${country.code}`}
-                  data-tv-focusable="true"
-                >
-                  <div className="h-[70px] overflow-clip relative rounded-[inherit] w-[967px]">
-                    <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[70px] not-italic text-[15px] text-white top-[26px]">
-                      {country.name}
+            ) : (
+              <>
+                {/* Debug info */}
+                {filteredCountries.length === 0 && (
+                  <div className="flex items-center justify-center h-full">
+                    <p className="font-['Ubuntu',Helvetica] font-medium text-white text-[20px]">
+                      No countries found for "{searchQuery}"
                     </p>
-                    <div className="absolute bg-[#979797] left-[15px] overflow-clip rounded-[20px] size-[40px] top-[15px]">
-                      <img
-                        alt={country.name}
-                        className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                        src={country.flag}
-                      />
-                    </div>
                   </div>
-                </div>
-              );
-            })}
+                )}
+                {filteredCountries.map((country, index) => {
+                  const isSelected = country.name === selectedCountry;
+                  console.log(`[CountrySelector] Rendering country ${index}:`, country.name, country.code);
+                  return (
+                    <div
+                      key={country.code}
+                      className={`bg-[#2b2b2b] ${isSelected ? 'border-[#d2d2d2] border-[5px]' : ''} border-solid h-[70px] rounded-[10px] w-[967px] cursor-pointer hover:bg-[#3b3b3b] transition-colors`}
+                      style={{ marginTop: index === 0 ? 0 : '15px' }}
+                      onClick={() => handleCountryClick(country)}
+                      data-testid={`country-option-${country.code}`}
+                      data-tv-focusable="true"
+                    >
+                      <div className="h-[70px] overflow-clip relative rounded-[inherit] w-[967px]">
+                        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[70px] not-italic text-[15px] text-white top-[26px]">
+                          {country.name}
+                        </p>
+                        <div className="absolute bg-[#979797] left-[15px] overflow-clip rounded-[20px] size-[40px] top-[15px]">
+                          <img
+                            alt={country.name}
+                            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                            src={country.flag}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
         </div>
       </div>
