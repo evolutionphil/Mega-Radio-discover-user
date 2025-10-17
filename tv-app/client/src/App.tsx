@@ -25,10 +25,17 @@ import { Favorites } from "@/pages/Favorites";
 import { Settings } from "@/pages/Settings";
 
 function Router() {
+  // Debug: Log current path on Samsung TV
+  if (typeof window !== 'undefined') {
+    console.log('Current path:', window.location.pathname);
+    console.log('Current href:', window.location.href);
+  }
+  
   return (
     <Switch>
       {/* Authentication Flow */}
       <Route path="/" component={Splash} />
+      <Route path="/index.html" component={Splash} />
       <Route path="/login" component={Login} />
       <Route path="/login-with-email" component={LoginWithEmail} />
       <Route path="/forgot-password" component={ForgotPassword} />
