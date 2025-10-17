@@ -493,7 +493,7 @@ export const RadioPlaying = (): JSX.Element => {
               key={similarStation._id || index}
               className={`bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${
                 isFeatured
-                  ? "w-[209.091px] h-[276px] border-[5.75px] border-solid border-[#d2d2d2]"
+                  ? "w-[209.091px] h-[276px]"
                   : "w-[200px] h-[264px]"
               }`}
               data-testid={`card-similar-${similarStation._id}`}
