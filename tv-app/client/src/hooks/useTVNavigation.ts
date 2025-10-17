@@ -57,7 +57,7 @@ export function useTVNavigation() {
 
     // Update on any changes (route changes, etc.)
     const observer = new MutationObserver(() => {
-      if (initialized && window.tvSpatialNav) {
+      if (window.tvSpatialNav) {
         // Debounce updates to avoid excessive re-scans
         setTimeout(() => {
           const previousCount = window.tvSpatialNav.focusableElements.length;
@@ -76,8 +76,9 @@ export function useTVNavigation() {
           if ((!focusedStillExists || !window.tvSpatialNav.focusedElement) && window.tvSpatialNav.focusableElements.length > 0) {
             console.log('[useTVNavigation] Re-initializing focus (focused element in DOM:', focusedStillExists, ')');
             window.tvSpatialNav.init();
+            initialized = true;
           }
-        }, 300); // Increased delay for React rendering
+        }, 500); // Longer delay for React rendering
       }
     });
 
