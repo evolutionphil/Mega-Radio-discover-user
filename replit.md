@@ -63,6 +63,8 @@ This structure allows:
 - React 18 with TypeScript as the core UI framework
 - Wouter for lightweight client-side routing
 - TV-optimized interface with large touch targets and fixed dimensions (1920x1080px)
+- Auto-hide header on scroll down (hides country selector, login button after 50px scroll)
+- Smooth header transitions (300ms) for better UX on TV platforms
 
 **UI Component System**
 - Shadcn/ui components built on Radix UI primitives

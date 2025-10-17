@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
 import { CountrySelector } from "@/components/CountrySelector";
@@ -11,6 +11,9 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [selectedCountry, setSelectedCountry] = useState('Austria');
   const [selectedCountryCode, setSelectedCountryCode] = useState('AT');
   const [selectedCountryFlag, setSelectedCountryFlag] = useState('/figmaAssets/austria-1.png');
+  const [showHeader, setShowHeader] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
 
   // Fetch ALL genres from API
   const { data: genresData } = useQuery({
@@ -33,6 +36,30 @@ export const DiscoverNoUser = (): JSX.Element => {
   const genres = genresData?.genres || [];
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
   const countryStations = countryStationsData?.stations?.slice(0, 14) || [];
+
+  // Auto-hide header on scroll down, show on scroll up
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      const currentScrollY = scrollContainer.scrollTop;
+      
+      // If scrolling down and past 50px threshold, hide header
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        setShowHeader(false);
+      } 
+      // If scrolling up, show header
+      else if (currentScrollY < lastScrollY.current) {
+        setShowHeader(true);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll);
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Fallback image as SVG data URI
   const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#01d7fb"/><text x="100" y="120" font-size="80" fill="white" text-anchor="middle" font-family="Arial">R</text></svg>')}`;
@@ -94,8 +121,11 @@ export const DiscoverNoUser = (): JSX.Element => {
       {/* Gradient Overlay - Fixed */}
       <div className="fixed bg-gradient-to-b from-[0.88%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[48.611%] top-0 w-[1920px] z-0" />
 
-      {/* Fixed Header Section - Always on top, never scrolls */}
-      <div className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none">
+      {/* Fixed Header Section - Auto-hides on scroll down */}
+      <div 
+        className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
+        style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
+      >
         {/* Logo */}
         <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] pointer-events-auto">
           <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
@@ -279,7 +309,10 @@ export const DiscoverNoUser = (): JSX.Element => {
         </div>
 
       {/* Scrollable Content Area - Starts below header, only this scrolls */}
-      <div className="absolute top-[242px] left-[162px] w-[1758px] h-[838px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide">
+      <div 
+        ref={scrollContainerRef}
+        className="absolute top-[242px] left-[162px] w-[1758px] h-[838px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide"
+      >
         <div className="relative pb-[30px]">
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
