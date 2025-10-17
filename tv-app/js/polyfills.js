@@ -4,6 +4,22 @@
     
     console.log('[Polyfills] Loading polyfills for Samsung Tizen TV...');
     
+    // globalThis polyfill (ES2020) - MUST BE FIRST
+    if (typeof globalThis === 'undefined') {
+        (function() {
+            if (typeof self !== 'undefined') { 
+                self.globalThis = self; 
+            } else if (typeof window !== 'undefined') { 
+                window.globalThis = window; 
+            } else if (typeof global !== 'undefined') { 
+                global.globalThis = global; 
+            } else { 
+                this.globalThis = this; 
+            }
+        }).call(this);
+        console.log('[Polyfills] Added globalThis');
+    }
+    
     // Object.fromEntries polyfill (ES2019)
     if (!Object.fromEntries) {
         Object.fromEntries = function(entries) {

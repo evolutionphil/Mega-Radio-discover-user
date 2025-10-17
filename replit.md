@@ -35,6 +35,7 @@ tv-app/                      # Project root (Samsung Tizen project)
 ├── build-samsung-tv.sh     # Samsung TV build script
 ├── assets/                  # Built React app (after build)
 ├── js/                      # TV platform scripts
+│   ├── polyfills.js         # ES2019+ polyfills for Samsung Tizen
 │   ├── platform-detect.js
 │   ├── tv-remote-keys.js
 │   └── tv-audio-player.js
@@ -109,6 +110,18 @@ This structure allows:
 - ESM module system throughout
 - Separate build processes for client (Vite) and server (esbuild)
 - Hot module replacement in development
+
+**Samsung Tizen TV Compatibility**
+- Chromium 76 engine (ES2015/ES6 support only)
+- Polyfills for ES2019+ features:
+  - globalThis (ES2020)
+  - Object.fromEntries (ES2019)
+  - Array.prototype.flat/flatMap (ES2019)
+  - String.prototype.replaceAll (ES2021)
+  - Promise.allSettled (ES2020)
+- No optional chaining (?.) - uses && checks instead
+- IIFE bundle format (not ES modules)
+- All polyfills load before React app in index.html
 
 ### Database Schema
 
