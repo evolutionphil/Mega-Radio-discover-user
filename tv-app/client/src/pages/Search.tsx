@@ -32,19 +32,12 @@ export const Search = (): JSX.Element => {
     }
   }, []);
 
-  // Re-initialize TV navigation when search results change and auto-focus first result
+  // Re-initialize TV navigation when search results change
   useEffect(() => {
     // Small delay to ensure DOM is updated with search results
     const timeout = setTimeout(() => {
-      if (window.TVNavigation) {
-        window.TVNavigation.update();
-        // Auto-focus first search result when results appear
-        if (searchResults.length > 0) {
-          const firstResult = document.querySelector('[data-testid="search-result-0"]') as HTMLElement;
-          if (firstResult && window.TVNavigation.focusElement) {
-            window.TVNavigation.focusElement(firstResult);
-          }
-        }
+      if ((window as any).TVNavigation) {
+        (window as any).TVNavigation.update();
       }
     }, 100);
     return () => clearTimeout(timeout);
