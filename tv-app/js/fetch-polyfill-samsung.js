@@ -22,6 +22,9 @@
                 
                 xhr.open(method, url, true);
                 
+                // Set response type for Samsung TV
+                xhr.responseType = 'text';
+                
                 // Set headers
                 xhr.setRequestHeader('Accept', 'application/json');
                 if (options.headers) {
@@ -30,8 +33,24 @@
                     });
                 }
                 
-                xhr.onload = function() {
+                // Use onreadystatechange for better Samsung TV compatibility
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState !== 4) return;
+                    
+                    if (xhr.status === 0) {
+                        console.error('[Fetch] Network error (status 0) for:', url);
+                        reject(new TypeError('Network request failed'));
+                        return;
+                    }
+                    
+                    handleResponse();
+                };
+                
+                function handleResponse() {
                     console.log('[Fetch] Response status:', xhr.status, 'for', url);
+                    console.log('[Fetch] Response text length:', xhr.responseText ? xhr.responseText.length : 0);
+                    
+                    var responseText = xhr.responseText || '';
                     
                     var response = {
                         ok: xhr.status >= 200 && xhr.status < 300,
@@ -43,20 +62,27 @@
                             }
                         },
                         text: function() {
-                            return Promise.resolve(xhr.responseText);
+                            return Promise.resolve(responseText);
                         },
                         json: function() {
                             try {
-                                return Promise.resolve(JSON.parse(xhr.responseText));
+                                if (!responseText || responseText.trim() === '') {
+                                    console.error('[Fetch] Empty response body for:', url);
+                                    return Promise.resolve(null);
+                                }
+                                var parsed = JSON.parse(responseText);
+                                console.log('[Fetch] JSON parsed successfully, keys:', Object.keys(parsed || {}));
+                                return Promise.resolve(parsed);
                             } catch(e) {
                                 console.error('[Fetch] JSON parse error:', e);
+                                console.error('[Fetch] Response text was:', responseText.substring(0, 200));
                                 return Promise.reject(e);
                             }
                         }
                     };
                     
                     resolve(response);
-                };
+                }
                 
                 xhr.onerror = function() {
                     console.error('[Fetch] Network error for:', url);
