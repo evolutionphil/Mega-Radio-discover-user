@@ -1,6 +1,8 @@
 import { Link } from "wouter";
+import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const Settings = (): JSX.Element => {
+  useTVNavigation();
   const sidebarItems = [
     { icon: "/figmaAssets/vuesax-bold-radio.svg", label: "Discover", active: false, href: "/discover" },
     { icon: "/figmaAssets/vuesax-bold-musicnote.svg", label: "Genres", active: false, href: "/genres" },

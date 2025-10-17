@@ -15,6 +15,24 @@ export function useTVNavigation() {
       }
     };
 
+    // Mouse hover handler - update TV focus on hover
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      
+      // Check if the element is focusable
+      if (window.tvNavigation && window.platformInfo?.isTV()) {
+        const isFocusable = 
+          target.tagName === 'BUTTON' ||
+          target.tagName === 'A' ||
+          target.hasAttribute('data-tv-focusable') ||
+          (target.hasAttribute('tabindex') && target.getAttribute('tabindex') !== '-1');
+        
+        if (isFocusable && window.tvNavigation.focusableElements.includes(target)) {
+          window.tvNavigation.focus(target);
+        }
+      }
+    };
+
     // Run after component mounts and DOM updates
     setTimeout(initNavigation, 100);
 
@@ -28,7 +46,13 @@ export function useTVNavigation() {
       subtree: true,
     });
 
-    return () => observer.disconnect();
+    // Add mouse hover listener
+    document.addEventListener('mouseover', handleMouseOver);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('mouseover', handleMouseOver);
+    };
   }, []);
 }
 

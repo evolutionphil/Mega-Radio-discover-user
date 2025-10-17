@@ -1,8 +1,10 @@
 import { Link } from "wouter";
 import { Apple, Facebook, Mail } from "lucide-react";
 import { SiGoogle } from "react-icons/si";
+import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const Login = (): JSX.Element => {
+  useTVNavigation();
   return (
     <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-login">
       <div className="absolute left-[712px] top-[235px] w-[496px] h-[609px]">

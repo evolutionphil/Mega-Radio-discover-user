@@ -2,8 +2,10 @@ import { Link } from "wouter";
 import { Radio, Music, Search, Heart, Settings } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Genre } from "@/services/megaRadioApi";
+import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const Genres = (): JSX.Element => {
+  useTVNavigation();
   // Fetch all genres
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres'],

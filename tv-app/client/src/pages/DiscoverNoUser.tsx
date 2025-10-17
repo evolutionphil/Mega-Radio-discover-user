@@ -3,8 +3,10 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
 import { CountrySelector } from "@/components/CountrySelector";
+import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const DiscoverNoUser = (): JSX.Element => {
+  useTVNavigation();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('Austria');
   const [selectedCountryCode, setSelectedCountryCode] = useState('AT');

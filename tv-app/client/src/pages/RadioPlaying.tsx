@@ -3,8 +3,10 @@ import { SkipBack, Pause, Play, SkipForward, Heart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 import { useMemo, useEffect, useRef, useState } from "react";
+import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const RadioPlaying = (): JSX.Element => {
+  useTVNavigation();
   const [location] = useLocation();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);

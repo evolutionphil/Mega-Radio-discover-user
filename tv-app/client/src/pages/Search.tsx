@@ -2,8 +2,10 @@ import { Link } from "wouter";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
+import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const Search = (): JSX.Element => {
+  useTVNavigation();
   const [searchQuery, setSearchQuery] = useState("");
 
   // Search for stations based on query

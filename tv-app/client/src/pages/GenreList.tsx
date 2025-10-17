@@ -2,8 +2,10 @@ import { Link, useLocation } from "wouter";
 import { Radio, Music, Search, Heart, Settings, ArrowLeft } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
+import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const GenreList = (): JSX.Element => {
+  useTVNavigation();
   const [location] = useLocation();
   
   // Extract genre slug from URL query params
