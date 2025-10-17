@@ -190,4 +190,54 @@ The schema uses Drizzle's PostgreSQL adapter with type inference for Insert and 
   - Genres: Genre cards, sidebar navigation
   - GenreList: Station cards, back button, sidebar navigation
   - Search: Search input, station cards, sidebar navigation
-  - (Favorites & Settings: Partial support, pending completion)
+  - Favorites & Settings: Full TV navigation support with all interactive elements
+
+### TV App Deployment
+
+**Deployment Package Structure**
+The `tv-app/` folder contains a deployable package for both LG webOS and Samsung Tizen platforms with proper flat structure required by TV SDKs:
+
+```
+tv-app/
+├── index.html          # Main entry point
+├── config.xml          # Samsung Tizen configuration
+├── appinfo.json        # LG webOS configuration
+├── .project            # Tizen Studio project file
+├── .tproject           # Tizen platform configuration
+├── images/             # App icons
+│   ├── icon.png
+│   └── largeIcon.png
+├── css/                # TV-specific styles
+├── js/                 # Platform scripts
+├── webOSTVjs-1.2.0/    # LG webOS SDK
+└── assets/             # Built React app (after build)
+```
+
+**Build Process**
+1. Run `./build-tv-app.sh` to build and prepare the TV app
+2. The script builds the React app with Vite
+3. Copies built assets from `dist/public/` to `tv-app/assets/`
+4. Creates a deployable package ready for TV IDEs
+
+**Opening in Tizen Studio (Samsung)**
+1. Open Tizen Studio
+2. File > Open Projects from File System
+3. Select the `tv-app` folder
+4. Platform will be detected as `tv-samsung-6.0`
+5. The `.project` and `.tproject` files enable proper platform detection
+
+**Opening in webOS TV IDE (LG)**
+1. Open webOS TV IDE
+2. Import the `tv-app` folder as a webOS TV project
+3. The `appinfo.json` will be automatically recognized
+
+**Platform Detection Requirements**
+- Samsung Tizen: Requires `config.xml`, `.project`, `.tproject` at root
+- LG webOS: Requires `appinfo.json` at root
+- Both: Require `index.html` at root with flat asset structure
+
+**Key Configuration Files**
+- `config.xml`: Samsung Tizen widget configuration (app ID, package, privileges)
+- `appinfo.json`: LG webOS app metadata (app ID, resolution, permissions)
+- `.project`: Eclipse project file for Tizen Studio recognition
+- `.tproject`: Tizen platform version specification (tv-samsung-6.0)
