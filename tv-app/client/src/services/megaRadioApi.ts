@@ -76,56 +76,67 @@ export interface PaginationResponse<T> {
 }
 
 // Map country names to ISO 3166-1 codes
+const COUNTRY_NAME_TO_CODE: Record<string, string> = {
+  'Afghanistan': 'AF', 'Albania': 'AL', 'Algeria': 'DZ', 'American Samoa': 'AS',
+  'Andorra': 'AD', 'Angola': 'AO', 'Argentina': 'AR', 'Armenia': 'AM',
+  'Australia': 'AU', 'Austria': 'AT', 'Azerbaijan': 'AZ', 'Bahrain': 'BH',
+  'Bangladesh': 'BD', 'Belarus': 'BY', 'Belgium': 'BE', 'Belize': 'BZ',
+  'Benin': 'BJ', 'Bermuda': 'BM', 'Bhutan': 'BT', 'Bolivia': 'BO',
+  'Bosnia And Herzegovina': 'BA', 'Botswana': 'BW', 'Brazil': 'BR', 'Brunei Darussalam': 'BN',
+  'Bulgaria': 'BG', 'Burkina Faso': 'BF', 'Burundi': 'BI', 'Cambodia': 'KH',
+  'Cameroon': 'CM', 'Canada': 'CA', 'Chad': 'TD', 'Chile': 'CL',
+  'China': 'CN', 'Colombia': 'CO', 'Costa Rica': 'CR', 'Croatia': 'HR',
+  'Cuba': 'CU', 'Cyprus': 'CY', 'Czechia': 'CZ', 'Denmark': 'DK',
+  'Djibouti': 'DJ', 'Dominica': 'DM', 'Ecuador': 'EC', 'Egypt': 'EG',
+  'El Salvador': 'SV', 'Estonia': 'EE', 'Ethiopia': 'ET', 'Fiji': 'FJ',
+  'Finland': 'FI', 'France': 'FR', 'Gabon': 'GA', 'Georgia': 'GE',
+  'Germany': 'DE', 'Ghana': 'GH', 'Gibraltar': 'GI', 'Greece': 'GR',
+  'Greenland': 'GL', 'Grenada': 'GD', 'Guadeloupe': 'GP', 'Guam': 'GU',
+  'Guatemala': 'GT', 'Guinea': 'GN', 'Guyana': 'GY', 'Haiti': 'HT',
+  'Honduras': 'HN', 'Hong Kong': 'HK', 'Hungary': 'HU', 'Iceland': 'IS',
+  'India': 'IN', 'Indonesia': 'ID', 'Iraq': 'IQ', 'Ireland': 'IE',
+  'Islamic Republic Of Iran': 'IR', 'Israel': 'IL', 'Italy': 'IT', 'Jamaica': 'JM',
+  'Japan': 'JP', 'Jordan': 'JO', 'Kazakhstan': 'KZ', 'Kenya': 'KE',
+  'Kosovo': 'XK', 'Kuwait': 'KW', 'Kyrgyzstan': 'KG', 'Latvia': 'LV',
+  'Lebanon': 'LB', 'Lesotho': 'LS', 'Liberia': 'LR', 'Libya': 'LY',
+  'Liechtenstein': 'LI', 'Lithuania': 'LT', 'Luxembourg': 'LU', 'Macao': 'MO',
+  'Madagascar': 'MG', 'Malawi': 'MW', 'Malaysia': 'MY', 'Maldives': 'MV',
+  'Mali': 'ML', 'Malta': 'MT', 'Mauritania': 'MR', 'Mauritius': 'MU',
+  'Mexico': 'MX', 'Monaco': 'MC', 'Mongolia': 'MN', 'Montenegro': 'ME',
+  'Morocco': 'MA', 'Mozambique': 'MZ', 'Myanmar': 'MM', 'Namibia': 'NA',
+  'Nepal': 'NP', 'New Zealand': 'NZ', 'Nicaragua': 'NI', 'Nigeria': 'NG',
+  'Norway': 'NO', 'Oman': 'OM', 'Pakistan': 'PK', 'Palau': 'PW',
+  'Panama': 'PA', 'Papua New Guinea': 'PG', 'Paraguay': 'PY', 'Peru': 'PE',
+  'Poland': 'PL', 'Portugal': 'PT', 'Puerto Rico': 'PR', 'Qatar': 'QA',
+  'Republic Of North Macedonia': 'MK', 'Reunion': 'RE', 'Romania': 'RO', 'Rwanda': 'RW',
+  'San Marino': 'SM', 'Saudi Arabia': 'SA', 'Senegal': 'SN', 'Serbia': 'RS',
+  'Seychelles': 'SC', 'Sierra Leone': 'SL', 'Singapore': 'SG', 'Slovakia': 'SK',
+  'Slovenia': 'SI', 'Solomon Islands': 'SB', 'Somalia': 'SO', 'South Africa': 'ZA',
+  'South Sudan': 'SS', 'Spain': 'ES', 'Sri Lanka': 'LK', 'Suriname': 'SR',
+  'Sweden': 'SE', 'Switzerland': 'CH', 'Taiwan, Republic Of China': 'TW', 'Tajikistan': 'TJ',
+  'Thailand': 'TH', 'The Bahamas': 'BS', 'The Congo': 'CG', 'The Democratic Republic Of The Congo': 'CD',
+  'The Dominican Republic': 'DO', 'The Gambia': 'GM', 'The Netherlands': 'NL', 'The Philippines': 'PH',
+  'The Republic Of Korea': 'KR', 'The Republic Of Moldova': 'MD', 'The Russian Federation': 'RU', 'The Sudan': 'SD',
+  'The United Arab Emirates': 'AE', 'The United Kingdom Of Great Britain And Northern Ireland': 'GB',
+  'The United States Of America': 'US', 'Togo': 'TG', 'Tonga': 'TO',
+  'Trinidad And Tobago': 'TT', 'Tunisia': 'TN', 'Türkiye': 'TR', 'Turkmenistan': 'TM',
+  'Uganda': 'UG', 'Ukraine': 'UA', 'United Republic Of Tanzania': 'TZ', 'Uruguay': 'UY',
+  'Uzbekistan': 'UZ', 'Vanuatu': 'VU', 'Vietnam': 'VN', 'Yemen': 'YE',
+  'Zambia': 'ZM', 'Zimbabwe': 'ZW'
+};
+
+// Reverse mapping: CODE to NAME (for API calls)
+const CODE_TO_COUNTRY_NAME: Record<string, string> = Object.entries(COUNTRY_NAME_TO_CODE).reduce(
+  (acc, [name, code]) => ({ ...acc, [code]: name }),
+  {} as Record<string, string>
+);
+
 const getCountryCode = (countryName: string): string => {
-  const mapping: Record<string, string> = {
-    'Afghanistan': 'AF', 'Albania': 'AL', 'Algeria': 'DZ', 'American Samoa': 'AS',
-    'Andorra': 'AD', 'Angola': 'AO', 'Argentina': 'AR', 'Armenia': 'AM',
-    'Australia': 'AU', 'Austria': 'AT', 'Azerbaijan': 'AZ', 'Bahrain': 'BH',
-    'Bangladesh': 'BD', 'Belarus': 'BY', 'Belgium': 'BE', 'Belize': 'BZ',
-    'Benin': 'BJ', 'Bermuda': 'BM', 'Bhutan': 'BT', 'Bolivia': 'BO',
-    'Bosnia And Herzegovina': 'BA', 'Botswana': 'BW', 'Brazil': 'BR', 'Brunei Darussalam': 'BN',
-    'Bulgaria': 'BG', 'Burkina Faso': 'BF', 'Burundi': 'BI', 'Cambodia': 'KH',
-    'Cameroon': 'CM', 'Canada': 'CA', 'Chad': 'TD', 'Chile': 'CL',
-    'China': 'CN', 'Colombia': 'CO', 'Costa Rica': 'CR', 'Croatia': 'HR',
-    'Cuba': 'CU', 'Cyprus': 'CY', 'Czechia': 'CZ', 'Denmark': 'DK',
-    'Djibouti': 'DJ', 'Dominica': 'DM', 'Ecuador': 'EC', 'Egypt': 'EG',
-    'El Salvador': 'SV', 'Estonia': 'EE', 'Ethiopia': 'ET', 'Fiji': 'FJ',
-    'Finland': 'FI', 'France': 'FR', 'Gabon': 'GA', 'Georgia': 'GE',
-    'Germany': 'DE', 'Ghana': 'GH', 'Gibraltar': 'GI', 'Greece': 'GR',
-    'Greenland': 'GL', 'Grenada': 'GD', 'Guadeloupe': 'GP', 'Guam': 'GU',
-    'Guatemala': 'GT', 'Guinea': 'GN', 'Guyana': 'GY', 'Haiti': 'HT',
-    'Honduras': 'HN', 'Hong Kong': 'HK', 'Hungary': 'HU', 'Iceland': 'IS',
-    'India': 'IN', 'Indonesia': 'ID', 'Iraq': 'IQ', 'Ireland': 'IE',
-    'Islamic Republic Of Iran': 'IR', 'Israel': 'IL', 'Italy': 'IT', 'Jamaica': 'JM',
-    'Japan': 'JP', 'Jordan': 'JO', 'Kazakhstan': 'KZ', 'Kenya': 'KE',
-    'Kosovo': 'XK', 'Kuwait': 'KW', 'Kyrgyzstan': 'KG', 'Latvia': 'LV',
-    'Lebanon': 'LB', 'Lesotho': 'LS', 'Liberia': 'LR', 'Libya': 'LY',
-    'Liechtenstein': 'LI', 'Lithuania': 'LT', 'Luxembourg': 'LU', 'Macao': 'MO',
-    'Madagascar': 'MG', 'Malawi': 'MW', 'Malaysia': 'MY', 'Maldives': 'MV',
-    'Mali': 'ML', 'Malta': 'MT', 'Mauritania': 'MR', 'Mauritius': 'MU',
-    'Mexico': 'MX', 'Monaco': 'MC', 'Mongolia': 'MN', 'Montenegro': 'ME',
-    'Morocco': 'MA', 'Mozambique': 'MZ', 'Myanmar': 'MM', 'Namibia': 'NA',
-    'Nepal': 'NP', 'New Zealand': 'NZ', 'Nicaragua': 'NI', 'Nigeria': 'NG',
-    'Norway': 'NO', 'Oman': 'OM', 'Pakistan': 'PK', 'Palau': 'PW',
-    'Panama': 'PA', 'Papua New Guinea': 'PG', 'Paraguay': 'PY', 'Peru': 'PE',
-    'Poland': 'PL', 'Portugal': 'PT', 'Puerto Rico': 'PR', 'Qatar': 'QA',
-    'Republic Of North Macedonia': 'MK', 'Reunion': 'RE', 'Romania': 'RO', 'Rwanda': 'RW',
-    'San Marino': 'SM', 'Saudi Arabia': 'SA', 'Senegal': 'SN', 'Serbia': 'RS',
-    'Seychelles': 'SC', 'Sierra Leone': 'SL', 'Singapore': 'SG', 'Slovakia': 'SK',
-    'Slovenia': 'SI', 'Solomon Islands': 'SB', 'Somalia': 'SO', 'South Africa': 'ZA',
-    'South Sudan': 'SS', 'Spain': 'ES', 'Sri Lanka': 'LK', 'Suriname': 'SR',
-    'Sweden': 'SE', 'Switzerland': 'CH', 'Taiwan, Republic Of China': 'TW', 'Tajikistan': 'TJ',
-    'Thailand': 'TH', 'The Bahamas': 'BS', 'The Congo': 'CG', 'The Democratic Republic Of The Congo': 'CD',
-    'The Dominican Republic': 'DO', 'The Gambia': 'GM', 'The Netherlands': 'NL', 'The Philippines': 'PH',
-    'The Republic Of Korea': 'KR', 'The Republic Of Moldova': 'MD', 'The Russian Federation': 'RU', 'The Sudan': 'SD',
-    'The United Arab Emirates': 'AE', 'The United Kingdom Of Great Britain And Northern Ireland': 'GB',
-    'The United States Of America': 'US', 'Togo': 'TG', 'Tonga': 'TO',
-    'Trinidad And Tobago': 'TT', 'Tunisia': 'TN', 'Türkiye': 'TR', 'Turkmenistan': 'TM',
-    'Uganda': 'UG', 'Ukraine': 'UA', 'United Republic Of Tanzania': 'TZ', 'Uruguay': 'UY',
-    'Uzbekistan': 'UZ', 'Vanuatu': 'VU', 'Vietnam': 'VN', 'Yemen': 'YE',
-    'Zambia': 'ZM', 'Zimbabwe': 'ZW'
-  };
-  return mapping[countryName] || 'XX';
+  return COUNTRY_NAME_TO_CODE[countryName] || 'XX';
+};
+
+const getCountryNameFromCode = (code: string): string => {
+  return CODE_TO_COUNTRY_NAME[code] || code;
 };
 
 // Helper to add TV parameter for Samsung TV (signals backend to skip compression)
@@ -186,15 +197,24 @@ export const megaRadioApi = {
     genre?: string;
   }): Promise<{ stations: Station[] }> => {
     const queryParams = new URLSearchParams();
+    queryParams.append('search', '');
     if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.country) queryParams.append('country', params.country);
+    if (params?.country) {
+      const countryName = getCountryNameFromCode(params.country);
+      queryParams.append('country', countryName);
+      console.log(`[API] getPopularStations: Converting ${params.country} -> ${countryName}`);
+    }
     if (params?.language) queryParams.append('language', params.language);
     if (params?.genre) queryParams.append('genre', params.genre);
+    queryParams.append('sort', 'votes');
 
-    const url = buildApiUrl('/stations/popular', queryParams);
+    const url = buildApiUrl('/stations', queryParams);
+    console.log('[API] getPopularStations URL:', url);
     const response = await fetch(url);
     const data = await response.json();
-    return { stations: Array.isArray(data) ? data : [] };
+    const stations = data.stations || (Array.isArray(data) ? data : []);
+    console.log('[API] getPopularStations fetched:', stations.length, 'stations');
+    return { stations };
   },
 
   getWorkingStations: async (params?: {
@@ -202,12 +222,17 @@ export const megaRadioApi = {
     country?: string;
   }): Promise<{ stations: Station[] }> => {
     const queryParams = new URLSearchParams();
+    queryParams.append('search', '');
     if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.country) queryParams.append('country', params.country);
+    if (params?.country) {
+      const countryName = getCountryNameFromCode(params.country);
+      queryParams.append('country', countryName);
+      console.log(`[API] getWorkingStations: Converting ${params.country} -> ${countryName}`);
+    }
 
     try {
-      const url = buildApiUrl('/stations/working', queryParams);
-      console.log('[API] Fetching working stations:', url);
+      const url = buildApiUrl('/stations', queryParams);
+      console.log('[API] getWorkingStations URL:', url);
       const response = await fetch(url, {
         headers: {
           'Accept': 'application/json',
@@ -218,8 +243,9 @@ export const megaRadioApi = {
         throw new Error(`API error: ${response.status} ${response.statusText}`);
       }
       const data = await response.json();
-      console.log('[API] Working stations fetched:', data.stations?.length || 0);
-      return data;
+      const stations = data.stations || [];
+      console.log('[API] Working stations fetched:', stations.length);
+      return { stations };
     } catch (error) {
       console.error('[API] Failed to fetch working stations:', error);
       return { stations: [] };
@@ -278,9 +304,14 @@ export const megaRadioApi = {
   // Genres
   getAllGenres: async (country?: string): Promise<{ genres: Genre[] }> => {
     try {
-      const params = country ? new URLSearchParams({ country }) : undefined;
+      let params: URLSearchParams | undefined = undefined;
+      if (country) {
+        const countryName = getCountryNameFromCode(country);
+        params = new URLSearchParams({ country: countryName });
+        console.log(`[API] getAllGenres: Converting ${country} -> ${countryName}`);
+      }
       const url = buildApiUrl('/genres', params);
-      console.log('[API] getAllGenres:', url);
+      console.log('[API] getAllGenres URL:', url);
       const response = await fetch(url);
       console.log('[API] getAllGenres response:', response.status);
       if (!response.ok) {
