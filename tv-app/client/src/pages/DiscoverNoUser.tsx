@@ -252,7 +252,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         <Link href="/login">
           <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors pointer-events-auto" data-testid="button-login-header" data-tv-focusable="true">
             <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
-              Login
+              {t('login')}
             </p>
             <div className="absolute left-[13px] size-[34px] top-[9px]">
               <img
@@ -272,7 +272,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  Discover
+                  {t('discover')}
                 </p>
                 <div className="absolute left-[20px] size-[32px] top-0">
                   <img
@@ -290,7 +290,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  Genres
+                  {t('genres')}
                 </p>
                 <div className="absolute left-[13px] size-[32px] top-0">
                   <img
@@ -308,7 +308,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  Search
+                  {t('search')}
                 </p>
                 <div className="absolute left-[12px] size-[32px] top-0">
                   <img
@@ -326,7 +326,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  Favorites
+                  {t('favorites')}
                 </p>
                 <div className="absolute left-[22px] size-[32px] top-0">
                   <img
@@ -344,7 +344,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  Records
+                  {t('profile_nav_records')}
                 </p>
                 <div className="absolute left-[17px] size-[32px] top-0">
                   <div className="absolute left-0 size-[32px] top-0">
@@ -361,7 +361,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  Settings
+                  {t('settings')}
                 </p>
                 <div className="absolute left-[18px] size-[32px] top-0">
                   <img

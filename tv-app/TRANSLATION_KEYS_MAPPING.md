@@ -1,13 +1,15 @@
 # Translation Keys Mapping for Mega Radio TV App
 
-## Keys Currently Used (Need to Update)
+## Keys Currently Used (✅ UPDATED)
 
-### ✅ Sidebar Navigation
-- Discover → **"discover"** (exists in General)
-- Genres → **"genres"** (exists in General)
-- Search → **"search"** (exists in General)
-- Favorites → **"favorites"** (exists in General)
-- Settings → **"settings"** (exists in General)
+### ✅ Sidebar Navigation (DiscoverNoUser.tsx)
+- Discover → **"discover"** ✅
+- Genres → **"genres"** ✅
+- Search → **"search"** ✅
+- Favorites → **"favorites"** ✅
+- Records → **"profile_nav_records"** ✅
+- Settings → **"settings"** ✅
+- Login → **"login"** ✅
 
 ### ✅ DiscoverNoUser Page
 - "Popular Genres" → **"popular_genres"** (exists in General)
