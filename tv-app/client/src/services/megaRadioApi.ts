@@ -7,7 +7,10 @@ const isSamsungTV = typeof window !== 'undefined' && (
   navigator.userAgent.toLowerCase().includes('samsung')
 );
 
-console.log('[MegaRadio API] Platform:', isSamsungTV ? 'Samsung TV' : 'Web Browser');
+// Add ?tv=1 query parameter for Samsung TV to signal backend to skip compression
+const TV_PARAM = isSamsungTV ? '?tv=1' : '';
+
+console.log('[MegaRadio API] Platform:', isSamsungTV ? 'Samsung TV (adding ?tv=1)' : 'Web Browser');
 console.log('[MegaRadio API] BASE_URL:', BASE_URL);
 
 export interface Station {
@@ -72,6 +75,20 @@ export interface PaginationResponse<T> {
   };
 }
 
+// Helper to add TV parameter for Samsung TV (signals backend to skip compression)
+function buildApiUrl(path: string, existingParams?: URLSearchParams): string {
+  const url = `${BASE_URL}${API_PREFIX}${path}`;
+  
+  if (!isSamsungTV) {
+    return existingParams ? `${url}?${existingParams}` : url;
+  }
+  
+  // Samsung TV: add tv=1 to signal backend to skip compression
+  const params = existingParams || new URLSearchParams();
+  params.append('tv', '1');
+  return `${url}?${params}`;
+}
+
 export const megaRadioApi = {
   // Stations
   getAllStations: async (params?: {
@@ -93,7 +110,7 @@ export const megaRadioApi = {
     if (params?.sort) queryParams.append('sort', params.sort);
 
     try {
-      const url = `${BASE_URL}${API_PREFIX}/stations?${queryParams}`;
+      const url = buildApiUrl('/stations', queryParams);
       console.log('[API] getAllStations:', url);
       const response = await fetch(url);
       console.log('[API] getAllStations response:', response.status);
@@ -121,7 +138,8 @@ export const megaRadioApi = {
     if (params?.language) queryParams.append('language', params.language);
     if (params?.genre) queryParams.append('genre', params.genre);
 
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/stations/popular?${queryParams}`);
+    const url = buildApiUrl('/stations/popular', queryParams);
+    const response = await fetch(url);
     const data = await response.json();
     return { stations: Array.isArray(data) ? data : [] };
   },
@@ -135,7 +153,7 @@ export const megaRadioApi = {
     if (params?.country) queryParams.append('country', params.country);
 
     try {
-      const url = `${BASE_URL}${API_PREFIX}/stations/working?${queryParams}`;
+      const url = buildApiUrl('/stations/working', queryParams);
       console.log('[API] Fetching working stations:', url);
       const response = await fetch(url, {
         headers: {
@@ -168,12 +186,14 @@ export const megaRadioApi = {
     if (params?.radius) queryParams.append('radius', params.radius.toString());
     if (params?.limit) queryParams.append('limit', params.limit.toString());
 
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/stations/nearby?${queryParams}`);
+    const url = buildApiUrl('/stations/nearby', queryParams);
+    const response = await fetch(url);
     return response.json();
   },
 
   getStationById: async (identifier: string): Promise<{ station: Station }> => {
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/station/${identifier}`);
+    const url = buildApiUrl(`/station/${identifier}`);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch station: ${response.statusText}`);
     }
@@ -182,8 +202,9 @@ export const megaRadioApi = {
   },
 
   getSimilarStations: async (stationId: string, limit?: number): Promise<{ stations: Station[] }> => {
-    const queryParams = limit ? `?limit=${limit}` : '';
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/stations/similar/${stationId}${queryParams}`);
+    const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
+    const url = buildApiUrl(`/stations/similar/${stationId}`, params);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch similar stations: ${response.statusText}`);
     }
@@ -192,7 +213,8 @@ export const megaRadioApi = {
   },
 
   getStationMetadata: async (stationId: string): Promise<{ metadata: { title?: string; artist?: string; album?: string } }> => {
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/stations/${stationId}/metadata`);
+    const url = buildApiUrl(`/stations/${stationId}/metadata`);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch station metadata: ${response.statusText}`);
     }
@@ -203,7 +225,7 @@ export const megaRadioApi = {
   // Genres
   getAllGenres: async (): Promise<{ genres: Genre[] }> => {
     try {
-      const url = `${BASE_URL}${API_PREFIX}/genres`;
+      const url = buildApiUrl('/genres');
       console.log('[API] getAllGenres:', url);
       const response = await fetch(url);
       console.log('[API] getAllGenres response:', response.status);
@@ -220,7 +242,8 @@ export const megaRadioApi = {
   },
 
   getGenreBySlug: async (slug: string): Promise<{ genre: Genre }> => {
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/genres/slug/${slug}`);
+    const url = buildApiUrl(`/genres/slug/${slug}`);
+    const response = await fetch(url);
     const data = await response.json();
     return { genre: data };
   },
@@ -240,13 +263,14 @@ export const megaRadioApi = {
     if (params?.country) queryParams.append('country', params.country);
     if (params?.sort) queryParams.append('sort', params.sort);
 
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/genres/${slug}/stations?${queryParams}`);
+    const url = buildApiUrl(`/genres/${slug}/stations`, queryParams);
+    const response = await fetch(url);
     return response.json();
   },
 
   getDiscoverableGenres: async (): Promise<{ genres: Genre[] }> => {
     try {
-      const url = `${BASE_URL}${API_PREFIX}/genres/discoverable`;
+      const url = buildApiUrl('/genres/discoverable');
       console.log('[API] getDiscoverableGenres:', url);
       const response = await fetch(url);
       console.log('[API] getDiscoverableGenres response:', response.status);
@@ -264,13 +288,15 @@ export const megaRadioApi = {
 
   // Countries
   getAllCountries: async (): Promise<{ countries: Country[] }> => {
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/countries`);
+    const url = buildApiUrl('/countries');
+    const response = await fetch(url);
     return response.json();
   },
 
   // Languages
   getAllLanguages: async (): Promise<{ languages: Language[] }> => {
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/languages`);
+    const url = buildApiUrl('/languages');
+    const response = await fetch(url);
     return response.json();
   },
 
@@ -293,7 +319,7 @@ export const megaRadioApi = {
     if (params?.limit) queryParams.append('limit', params.limit.toString());
 
     try {
-      const url = `${BASE_URL}${API_PREFIX}/stations?${queryParams}`;
+      const url = buildApiUrl('/stations', queryParams);
       console.log('[API] searchStations:', url);
       const response = await fetch(url);
       console.log('[API] searchStations response:', response.status);
@@ -311,20 +337,23 @@ export const megaRadioApi = {
 
   // Discovery
   getTopClicked: async (limit?: number): Promise<{ stations: Station[] }> => {
-    const queryParams = limit ? `?limit=${limit}` : '';
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/radio-browser/top-clicked${queryParams}`);
+    const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
+    const url = buildApiUrl('/radio-browser/top-clicked', params);
+    const response = await fetch(url);
     return response.json();
   },
 
   getTopVoted: async (limit?: number): Promise<{ stations: Station[] }> => {
-    const queryParams = limit ? `?limit=${limit}` : '';
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/radio-browser/top-voted${queryParams}`);
+    const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
+    const url = buildApiUrl('/radio-browser/top-voted', params);
+    const response = await fetch(url);
     return response.json();
   },
 
   getRecentStations: async (limit?: number): Promise<{ stations: Station[] }> => {
-    const queryParams = limit ? `?limit=${limit}` : '';
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/radio-browser/recent${queryParams}`);
+    const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
+    const url = buildApiUrl('/radio-browser/recent', params);
+    const response = await fetch(url);
     return response.json();
   },
 };
