@@ -16,10 +16,12 @@ export const DiscoverNoUser = (): JSX.Element => {
   const lastScrollY = useRef(0);
   
   // Infinite scroll state for country stations
-  const [countryStations, setCountryStations] = useState<Station[]>([]);
-  const [countryPage, setCountryPage] = useState(1);
+  const [allCountryStations, setAllCountryStations] = useState<Station[]>([]);
+  const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
+  const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
+  const STATIONS_PER_LOAD = 56;
 
   // Fetch ALL genres from API
   const { data: genresData } = useQuery({
@@ -33,28 +35,46 @@ export const DiscoverNoUser = (): JSX.Element => {
     queryFn: () => megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode }),
   });
 
-  // Fetch initial stations for "More From [Country]" section
-  const { data: initialCountryStationsData } = useQuery({
-    queryKey: ['/api/stations/country', selectedCountryCode, { page: 1 }],
+  // Fetch ALL stations for the country (we'll paginate on frontend)
+  const { data: allCountryStationsData } = useQuery({
+    queryKey: ['/api/stations/country', selectedCountryCode],
     queryFn: () => megaRadioApi.getWorkingStations({ limit: 500, country: selectedCountryCode }),
   });
 
   // Initialize country stations when data is loaded or country changes
   useEffect(() => {
-    if (initialCountryStationsData?.stations) {
-      setCountryStations(initialCountryStationsData.stations);
-      setCountryPage(1);
-      setHasMoreCountryStations(false); // Load all stations at once for now
+    if (allCountryStationsData?.stations) {
+      setAllCountryStations(allCountryStationsData.stations);
+      // Show only first 56 stations initially
+      setDisplayedStations(allCountryStationsData.stations.slice(0, STATIONS_PER_LOAD));
+      setCurrentOffset(STATIONS_PER_LOAD);
+      setHasMoreCountryStations(allCountryStationsData.stations.length > STATIONS_PER_LOAD);
     }
-  }, [initialCountryStationsData, selectedCountryCode]);
+  }, [allCountryStationsData, selectedCountryCode]);
 
   const genres = genresData?.genres || [];
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
 
-  // Load more country stations (disabled for now - loads all at once)
-  const loadMoreCountryStations = async () => {
-    // All stations loaded at once with getWorkingStations
-    return;
+  // Load more country stations from already fetched data
+  const loadMoreCountryStations = () => {
+    if (isLoadingMore || !hasMoreCountryStations) return;
+
+    setIsLoadingMore(true);
+    
+    // Simulate loading delay for better UX
+    setTimeout(() => {
+      const nextStations = allCountryStations.slice(currentOffset, currentOffset + STATIONS_PER_LOAD);
+      
+      if (nextStations.length > 0) {
+        setDisplayedStations(prev => [...prev, ...nextStations]);
+        setCurrentOffset(prev => prev + STATIONS_PER_LOAD);
+        setHasMoreCountryStations(currentOffset + STATIONS_PER_LOAD < allCountryStations.length);
+      } else {
+        setHasMoreCountryStations(false);
+      }
+      
+      setIsLoadingMore(false);
+    }, 300);
   };
 
   // Auto-hide header on scroll down + infinite scroll for country stations
@@ -87,7 +107,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
     scrollContainer.addEventListener('scroll', handleScroll);
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, [isLoadingMore, hasMoreCountryStations, countryPage, selectedCountryCode]);
+  }, [isLoadingMore, hasMoreCountryStations, currentOffset, allCountryStations.length]);
 
   // Fallback image as SVG data URI
   const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#01d7fb"/><text x="100" y="120" font-size="80" fill="white" text-anchor="middle" font-family="Arial">R</text></svg>')}`;
@@ -348,7 +368,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         <div 
           className="relative pb-[100px]"
           style={{
-            minHeight: `${1013 + (Math.ceil(countryStations.length / 7) * 294) + 364}px`
+            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 364}px`
           }}
         >
         {/* Popular Genres Section */}
@@ -465,7 +485,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         </p>
 
         {/* Country Stations - Dynamic Rows with Infinite Scroll */}
-        {countryStations.map((station, index) => {
+        {displayedStations.map((station, index) => {
           const row = Math.floor(index / 7);
           const col = index % 7;
           const positions = [236, 466, 696, 926, 1156, 1386, 1616];
@@ -507,20 +527,20 @@ export const DiscoverNoUser = (): JSX.Element => {
         {/* Loading Indicator */}
         {isLoadingMore && (
           <div 
-            className="absolute left-[900px] text-white font-['Ubuntu',Helvetica] text-[20px]"
-            style={{ top: `${1013 + (Math.ceil(countryStations.length / 7) * 294) + 20}px` }}
+            className="absolute left-[860px] text-white font-['Ubuntu',Helvetica] text-[20px]"
+            style={{ top: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 20}px` }}
           >
             Loading more stations...
           </div>
         )}
 
         {/* No More Stations Message */}
-        {!hasMoreCountryStations && countryStations.length > 0 && (
+        {!hasMoreCountryStations && displayedStations.length > 0 && (
           <div 
-            className="absolute left-[860px] text-white/50 font-['Ubuntu',Helvetica] text-[18px]"
-            style={{ top: `${1013 + (Math.ceil(countryStations.length / 7) * 294) + 20}px` }}
+            className="absolute left-[820px] text-white/50 font-['Ubuntu',Helvetica] text-[18px]"
+            style={{ top: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 20}px` }}
           >
-            No more stations available
+            All stations from {selectedCountry} loaded
           </div>
         )}
         </div>
