@@ -126,8 +126,25 @@
                                 isValidDirection = true;
                                 const verticalDist = current.y - candidate.y;
                                 const horizontalDist = Math.abs(current.x - candidate.x);
-                                // Prefer elements directly above
-                                score = verticalDist + (horizontalDist * 2);
+                                
+                                // SPECIAL RULE: Prioritize player controls (play/pause/next/previous) over sidebar
+                                // when navigating UP from station cards
+                                const isPlayerControl = el.dataset.testid && 
+                                    (el.dataset.testid === 'button-play-pause' || 
+                                     el.dataset.testid === 'button-previous' || 
+                                     el.dataset.testid === 'button-next' ||
+                                     el.dataset.testid === 'button-favorite');
+                                const isFromStationCard = this.focusedElement.dataset.testid && 
+                                    (this.focusedElement.dataset.testid.startsWith('card-similar-') ||
+                                     this.focusedElement.dataset.testid.startsWith('card-popular-'));
+                                
+                                if (isFromStationCard && isPlayerControl) {
+                                    // Heavily prioritize player controls when coming from station cards
+                                    score = verticalDist + (horizontalDist * 0.5);
+                                } else {
+                                    // Normal scoring
+                                    score = verticalDist + (horizontalDist * 2);
+                                }
                             }
                         }
                         break;

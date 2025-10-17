@@ -44,6 +44,14 @@ export const RadioPlaying = (): JSX.Element => {
   const [similarStationsPage, setSimilarStationsPage] = useState(1);
   const similarScrollRef = useRef<HTMLDivElement>(null);
   const SIMILAR_STATIONS_PER_LOAD = 40;
+
+  // Infinite scroll state for popular stations
+  const [allPopularStations, setAllPopularStations] = useState<Station[]>([]);
+  const [displayedPopularStations, setDisplayedPopularStations] = useState<Station[]>([]);
+  const [isLoadingMorePopular, setIsLoadingMorePopular] = useState(false);
+  const [hasMorePopular, setHasMorePopular] = useState(true);
+  const [popularStationsPage, setPopularStationsPage] = useState(1);
+  const POPULAR_STATIONS_PER_LOAD = 21; // 3 rows of 7
   
   // Parse station ID from URL query params
   const stationId = useMemo(() => {
@@ -166,38 +174,64 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Auto-scroll to top when focus moves to top elements (player controls, sidebar)
   useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (!scrollContainer) return;
+    // Wait for scroll container to be available
+    if (!scrollContainerRef.current) {
+      console.log('[RadioPlaying] Scroll container not ready, waiting...');
+      return;
+    }
 
-    const handleFocusChange = (e: FocusEvent) => {
-      const target = e.target as HTMLElement;
+    const scrollContainer = scrollContainerRef.current;
+    console.log('[RadioPlaying] Auto-scroll monitor started');
+    let lastFocusedTestId = '';
+
+    const checkAndScrollToTop = () => {
+      // Get the currently focused element using tv-focused class
+      const focusedElement = document.querySelector('.tv-focused');
       
-      // Check if focused element is in the top fixed area (sidebar, header, or player controls)
-      const isTopElement = target.closest('[data-testid^="button-"]') && 
-        (target.closest('[data-testid^="button-discover"]') ||
-         target.closest('[data-testid^="button-genres"]') ||
-         target.closest('[data-testid^="button-search"]') ||
-         target.closest('[data-testid^="button-favorites"]') ||
-         target.closest('[data-testid^="button-records"]') ||
-         target.closest('[data-testid^="button-settings"]') ||
-         target.closest('[data-testid^="button-country-selector"]') ||
-         target.closest('[data-testid^="button-login-header"]') ||
-         target.closest('[data-testid^="button-previous"]') ||
-         target.closest('[data-testid^="button-play-pause"]') ||
-         target.closest('[data-testid^="button-next"]') ||
-         target.closest('[data-testid^="button-favorite"]'));
+      if (!focusedElement) return;
       
-      if (isTopElement && scrollContainer.scrollTop > 100) {
-        // Smooth scroll to top
+      const testId = focusedElement.getAttribute('data-testid') || '';
+      
+      // Only act if focus changed
+      if (testId === lastFocusedTestId) return;
+      lastFocusedTestId = testId;
+      
+      console.log('[RadioPlaying] Focus changed to:', testId, 'Scroll position:', scrollContainer.scrollTop);
+      
+      // List of top elements that should trigger scroll to top
+      const topElementTestIds = [
+        'button-discover', 'button-genres', 'button-search', 
+        'button-favorites', 'button-records', 'button-settings',
+        'button-country-selector', 'button-login-header',
+        'button-previous', 'button-play-pause', 'button-next', 'button-favorite'
+      ];
+      
+      const isTopElement = topElementTestIds.some(id => testId === id);
+      const isSimilarRadioCard = testId.startsWith('card-similar-');
+      
+      // Scroll to top for player controls, sidebar buttons, AND similar radio cards
+      if ((isTopElement || isSimilarRadioCard) && scrollContainer.scrollTop > 50) {
+        console.log('[RadioPlaying] Scrolling to top for element:', testId);
         scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
         setShowHeader(true);
       }
+      
+      // Auto-load more popular stations when focusing on last row
+      const isLastRowCard = focusedElement.getAttribute('data-is-last-row') === 'true';
+      if (isLastRowCard && hasMorePopular && !isLoadingMorePopular) {
+        console.log('[RadioPlaying] Detected focus on last row, loading more popular stations');
+        loadMorePopular();
+      }
     };
 
-    // Listen to focus events on the document
-    document.addEventListener('focusin', handleFocusChange, true);
-    return () => document.removeEventListener('focusin', handleFocusChange, true);
-  }, []);
+    // Check on interval (TV navigation doesn't emit standard events)
+    const intervalId = setInterval(checkAndScrollToTop, 200);
+    
+    return () => {
+      console.log('[RadioPlaying] Auto-scroll monitor stopped');
+      clearInterval(intervalId);
+    };
+  }, []); // Empty deps - interval runs continuously
 
   // Load more similar stations - client-side pagination from pre-loaded data
   const loadMoreSimilar = async () => {
@@ -246,14 +280,56 @@ export const RadioPlaying = (): JSX.Element => {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [hasMoreSimilar, isLoadingMoreSimilar, station]);
 
-  // Fetch popular stations
+  // Fetch popular stations (large batch for client-side pagination)
   const { data: popularStationsData } = useQuery({
-    queryKey: ['popular-stations'],
-    queryFn: () => megaRadioApi.getPopularStations({ limit: 14 }),
+    queryKey: ['popular-stations-all', selectedCountryCode],
+    queryFn: () => megaRadioApi.getPopularStations({ 
+      limit: 200,
+      country: selectedCountryCode 
+    }),
   });
 
+  // Initialize popular stations when data loads
+  useEffect(() => {
+    if (popularStationsData?.stations) {
+      setAllPopularStations(popularStationsData.stations);
+      // Display first batch (21 stations = 3 rows of 7)
+      setDisplayedPopularStations(popularStationsData.stations.slice(0, POPULAR_STATIONS_PER_LOAD));
+      setHasMorePopular(popularStationsData.stations.length > POPULAR_STATIONS_PER_LOAD);
+      setPopularStationsPage(1);
+    }
+  }, [popularStationsData]);
+
+  // Load more popular stations - client-side pagination
+  const loadMorePopular = () => {
+    if (isLoadingMorePopular || !hasMorePopular) return;
+    
+    setIsLoadingMorePopular(true);
+    
+    // Simulate async for smooth UX
+    setTimeout(() => {
+      const nextPage = popularStationsPage + 1;
+      const startIdx = popularStationsPage * POPULAR_STATIONS_PER_LOAD;
+      const endIdx = startIdx + POPULAR_STATIONS_PER_LOAD;
+      
+      const nextBatch = allPopularStations.slice(startIdx, endIdx);
+      
+      if (nextBatch.length > 0) {
+        setDisplayedPopularStations(prev => [...prev, ...nextBatch]);
+        setPopularStationsPage(nextPage);
+        setHasMorePopular(endIdx < allPopularStations.length);
+        console.log(`[RadioPlaying] Loaded popular page ${nextPage}, showing ${displayedPopularStations.length + nextBatch.length}/${allPopularStations.length} stations`);
+      } else {
+        setHasMorePopular(false);
+        console.log('[RadioPlaying] No more popular stations to load');
+      }
+      
+      setIsLoadingMorePopular(false);
+    }, 100);
+  };
+
   const similarStations = allSimilarStations || [];
-  const popularStations = popularStationsData?.stations || [];
+  const popularStations = displayedPopularStations || [];
 
   // Initialize TV audio player
   useEffect(() => {
@@ -753,47 +829,47 @@ export const RadioPlaying = (): JSX.Element => {
       {/* Popular Radios Section */}
       <div className="absolute left-[74px] top-[853px]">
         <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">Popular Radios</p>
-        <p 
-          className="absolute right-[-1520px] top-[6px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal cursor-pointer hover:text-gray-300"
-          data-tv-focusable="true"
-        >
-          See More
-        </p>
       </div>
 
       {/* Popular Radios Grid */}
-      <div className="absolute left-[74px] top-[927px] grid grid-cols-6 gap-[19px] w-[1580px]">
-        {popularStations.map((popularStation, index) => (
-          <div
-            key={popularStation._id || index}
-            className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-            data-testid={`card-popular-${popularStation._id}`}
-            data-tv-focusable="true"
-            onClick={() => navigateToStation(popularStation)}
-          >
-            <div className="w-[132px] h-[132px] mt-[34px] ml-[34px] bg-white rounded-[6.6px] overflow-clip">
-              <img
-                className="w-full h-full object-cover"
-                alt={popularStation.name}
-                src={getStationImage(popularStation)}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-                }}
-              />
+      <div className="absolute left-[74px] top-[927px] grid grid-cols-7 gap-[19px] w-[1580px]">
+        {popularStations.map((popularStation, index) => {
+          // Detect if this is in the last row and should trigger load more
+          const isLastRow = index >= popularStations.length - 7;
+          
+          return (
+            <div
+              key={popularStation._id || index}
+              className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              data-testid={`card-popular-${popularStation._id}`}
+              data-tv-focusable="true"
+              onClick={() => navigateToStation(popularStation)}
+              data-is-last-row={isLastRow ? "true" : "false"}
+            >
+              <div className="w-[132px] h-[132px] mt-[34px] ml-[34px] bg-white rounded-[6.6px] overflow-clip">
+                <img
+                  className="w-full h-full object-cover"
+                  alt={popularStation.name}
+                  src={getStationImage(popularStation)}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                  }}
+                />
+              </div>
+              <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
+                {popularStation.name}
+              </p>
+              <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
+                {getStationTags(popularStation)[0] || popularStation.country || 'Radio'}
+              </p>
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
-              {popularStation.name}
-            </p>
-            <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
-              {getStationTags(popularStation)[0] || popularStation.country || 'Radio'}
-            </p>
+          );
+        })}
+        {isLoadingMorePopular && (
+          <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] flex items-center justify-center">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white">Loading...</p>
           </div>
-        ))}
-        <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] flex items-center justify-center cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" data-testid="button-see-more" data-tv-focusable="true">
-          <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal">
-            See More
-          </p>
-        </div>
+        )}
       </div>
 
         </div>
