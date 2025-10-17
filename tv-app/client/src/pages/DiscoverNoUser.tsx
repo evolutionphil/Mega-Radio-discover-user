@@ -26,13 +26,13 @@ export const DiscoverNoUser = (): JSX.Element => {
 
   // Fetch stations for "More From [Country]" section using selected country
   const { data: countryStationsData } = useQuery({
-    queryKey: ['/api/stations/country', selectedCountryCode, { limit: 15 }],
-    queryFn: () => megaRadioApi.getPopularStations({ limit: 15, country: selectedCountryCode }),
+    queryKey: ['/api/stations/country', selectedCountryCode, { limit: 14 }],
+    queryFn: () => megaRadioApi.getPopularStations({ limit: 14, country: selectedCountryCode }),
   });
 
   const genres = genresData?.genres || [];
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
-  const countryStations = countryStationsData?.stations?.slice(0, 15) || [];
+  const countryStations = countryStationsData?.stations?.slice(0, 14) || [];
 
   // Fallback image as SVG data URI
   const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#01d7fb"/><text x="100" y="120" font-size="80" fill="white" text-anchor="middle" font-family="Arial">R</text></svg>')}`;
@@ -277,17 +277,17 @@ export const DiscoverNoUser = (): JSX.Element => {
         <div className="absolute left-[236px] top-[316px] w-[1600px] overflow-x-auto overflow-y-hidden scrollbar-hide">
           <div className="flex gap-[20px] pb-[10px]">
             {genres.map((genre, index) => {
-              const isHighlighted = index === 2;
               return (
                 <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
                   <div 
-                    className={`relative bg-[rgba(255,255,255,0.14)] ${isHighlighted ? 'border-[#b4b4b4] border-[5.5px] border-solid' : ''} box-border flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors flex-shrink-0`}
+                    className="relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors flex-shrink-0"
                     data-tv-focusable="true"
+                    data-testid={genre.slug}
                   >
                     <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-center text-white whitespace-nowrap">
                       {genre.name}
                     </p>
-                    <div className={`absolute ${isHighlighted ? 'inset-[-5.5px]' : 'inset-0'} pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]`} />
+                    <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
                   </div>
                 </Link>
               );
@@ -412,8 +412,8 @@ export const DiscoverNoUser = (): JSX.Element => {
         ))}
 
         {/* Country Stations - Row 2 */}
-        {countryStations.slice(7, 15).map((station, index) => {
-          const positions = [236, 466, 696, 926, 1156, 1386, 1616, 1846];
+        {countryStations.slice(7, 14).map((station, index) => {
+          const positions = [236, 466, 696, 926, 1156, 1386, 1616];
           return (
             <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
               <div 

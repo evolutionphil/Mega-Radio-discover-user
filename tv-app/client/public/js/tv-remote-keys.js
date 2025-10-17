@@ -133,6 +133,7 @@
     // Global key event handler
     window.handleTVKey = function(e) {
         var key = e.keyCode;
+        console.log('[TV Keys] Key pressed:', key, e.key || 'unknown');
         
         // Exit app on EXIT key (Samsung only)
         if (window.platform === 'samsung' && key === tvKey.EXIT) {

@@ -925,50 +925,42 @@
     display: none !important;
 }
 
-/* TV Focus Indicator - Pink Glow - HIGHEST PRIORITY */
-.tv-focused,
-button.tv-focused,
-a.tv-focused,
-[data-tv-focusable].tv-focused,
-div.tv-focused,
-img.tv-focused,
-.tv-focused * {
-    outline: 6px solid #ff4199 !important;
-    outline-offset: 4px !important;
+/* TV Focus Indicator - BRIGHT PINK BORDER - MAXIMUM VISIBILITY */
+.tv-focused {
+    outline: 8px solid #ff4199 !important;
+    outline-offset: 2px !important;
     box-shadow: 
-        0 0 0 6px #ff4199,
-        0 0 20px rgba(255, 65, 153, 0.9), 
-        0 0 40px rgba(255, 65, 153, 0.6),
-        0 0 60px rgba(255, 65, 153, 0.4) !important;
-    transform: scale(1.08) !important;
-    z-index: 999 !important;
+        0 0 0 8px #ff4199,
+        0 0 30px 10px rgba(255, 65, 153, 1),
+        inset 0 0 20px rgba(255, 65, 153, 0.5) !important;
+    transform: scale(1.1) !important;
+    z-index: 9999 !important;
     position: relative !important;
-    transition: all 0.2s ease !important;
-    border: 4px solid #ff4199 !important;
-    border-radius: 8px !important;
+    transition: all 0.15s ease !important;
+    filter: brightness(1.2) !important;
 }
 
-/* Make focused element stand out even more */
-.tv-focused::before {
-    content: '' !important;
-    position: absolute !important;
-    inset: -10px !important;
+/* Extra emphasis with box model */
+button.tv-focused,
+a.tv-focused,
+div.tv-focused {
     border: 6px solid #ff4199 !important;
-    border-radius: 12px !important;
-    pointer-events: none !important;
-    z-index: 1000 !important;
-    animation: pulse-focus 1.5s ease-in-out infinite !important;
+    background: rgba(255, 65, 153, 0.1) !important;
 }
 
 @keyframes pulse-focus {
     0%, 100% {
-        opacity: 1;
-        transform: scale(1);
+        outline-width: 8px;
+        outline-color: #ff4199;
     }
     50% {
-        opacity: 0.6;
-        transform: scale(1.02);
+        outline-width: 12px;
+        outline-color: #ff1177;
     }
+}
+
+.tv-focused {
+    animation: pulse-focus 1s ease-in-out infinite !important;
 }
 
 /* Hide cursor on TV platforms */
