@@ -74,7 +74,10 @@ cat > index.html << 'EOF'
     <!-- LG webOS SDK (loaded only on LG TVs) -->
     <script type="text/javascript" src="webOSTVjs-1.2.0/webOSTV.js"></script>
     
-    <!-- Polyfills for Samsung Tizen (must load FIRST) -->
+    <!-- Fetch polyfill for Samsung TV CORS (must load FIRST) -->
+    <script type="text/javascript" src="js/fetch-polyfill-samsung.js"></script>
+    
+    <!-- Polyfills for Samsung Tizen -->
     <script type="text/javascript" src="js/polyfills.js"></script>
     
     <!-- TV Platform Detection -->

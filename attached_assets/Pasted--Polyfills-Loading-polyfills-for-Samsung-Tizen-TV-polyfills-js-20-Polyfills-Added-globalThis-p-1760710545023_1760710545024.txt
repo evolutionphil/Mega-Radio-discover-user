@@ -1,0 +1,149 @@
+[Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js:20 [Polyfills] Added globalThis
+polyfills.js:36 [Polyfills] Added Object.fromEntries
+polyfills.js:86 [Polyfills] Added String.prototype.replaceAll
+polyfills.js:105 [Polyfills] Added Promise.allSettled
+polyfills.js:108 [Polyfills] All polyfills loaded successfully
+platform-detect.js:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js:5 [TV Spatial Nav] Script loaded and executing...
+tv-spatial-navigation.js:185 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js:185 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js:25 Failed to register Samsung TV keys: WebAPIException
+initTVKeys @ tv-remote-keys.js:25
+tv-remote-keys.js:189 [TV Remote Keys] Key handler attached, waiting for React...
+index-Z489-H09.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 0 focusable elements
+index-Z489-H09.js:154 [useTVNavigation] Initialization complete
+index-Z489-H09.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 5 focusable elements
+tv-spatial-navigation.js:44 [TV Nav] Found 5 focusable elements
+tv-spatial-navigation.js:15 [TV Nav] Initialized with 5 focusable elements
+tv-spatial-navigation.js:27 [TV Nav] Initial focus on first element
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-apple
+index-Z489-H09.js:154 [useTVNavigation] Initialization complete
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-login-facebook
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-facebook
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-login-google
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-google
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-login-email
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-login-email
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-continue-without-login
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-continue-without-login
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+index-Z489-H09.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 8 focusable elements
+index-Z489-H09.js:154 [useTVNavigation] Initialization complete
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-favorites
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-favorites
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:155 [TV Nav] Moving UP to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:155 [TV Nav] Moving UP to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:155 [TV Nav] Moving UP to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+index-Z489-H09.js:154 Samsung TV detected - native keyboard will appear
+index-Z489-H09.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 7 focusable elements
+index-Z489-H09.js:154 [useTVNavigation] Initialization complete
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 q
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 unknown
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 k
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 r
+2tv-remote-keys.js:136 [TV Keys] Key pressed: 229 a
+tv-remote-keys.js:136 [TV Keys] Key pressed: 229 l
+2tv-remote-keys.js:136 [TV Keys] Key pressed: 229 unknown
+tv-remote-keys.js:136 [TV Keys] Key pressed: 65376 Select
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: LEFT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: LEFT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 37 ArrowLeft
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: LEFT - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:158 [TV Nav] No element found in direction: UP - keeping current focus
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 10009 XF86Back
+index-Z489-H09.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 8 focusable elements
+index-Z489-H09.js:154 [useTVNavigation] Initialization complete
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-country-selector
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-country-selector
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-country-selector
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-country-selector
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-favorites
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-favorites
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-records
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-records
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-settings
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-settings
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:155 [TV Nav] Moving UP to: button-records
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-records
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:155 [TV Nav] Moving UP to: button-favorites
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-favorites
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:155 [TV Nav] Moving UP to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:155 [TV Nav] Moving UP to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js:155 [TV Nav] Moving UP to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
