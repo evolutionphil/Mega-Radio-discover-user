@@ -100,9 +100,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     .filter(country => {
       if (!country.name) return false;
       const matches = country.name.toLowerCase().includes(searchQuery.toLowerCase());
-      if (searchQuery && matches) {
-        console.log('[CountrySelector] MATCH:', country.name, 'code:', country.code, 'flag:', country.flag);
-      }
       return matches;
     })
     .sort((a, b) => {
@@ -133,10 +130,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
   console.log('[CountrySelector] ===== RENDER INFO =====');
   console.log('[CountrySelector] Total countries loaded:', countries.length);
-  console.log('[CountrySelector] Search query:', searchQuery);
+  console.log('[CountrySelector] Search query:', `"${searchQuery}"`);
   console.log('[CountrySelector] Filtered count:', filteredCountries.length);
   if (filteredCountries.length > 0) {
-    console.log('[CountrySelector] First 5 filtered:', filteredCountries.slice(0, 5).map(c => `${c.name} (${c.code})`));
+    console.log('[CountrySelector] First 10 filtered:', filteredCountries.slice(0, 10).map(c => `${c.name} (${c.code})`));
   }
   console.log('[CountrySelector] ========================');
 
@@ -191,7 +188,11 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    console.log('[CountrySelector] Input onChange triggered, newValue:', newValue);
+                    setSearchQuery(newValue);
+                  }}
                   onKeyDown={(e) => {
                     // Handle DOWN arrow to exit input and focus first country
                     if (e.key === 'ArrowDown' || e.keyCode === 40) {
