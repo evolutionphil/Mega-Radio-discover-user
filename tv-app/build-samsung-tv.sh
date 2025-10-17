@@ -74,6 +74,9 @@ cat > index.html << 'EOF'
     <!-- LG webOS SDK (loaded only on LG TVs) -->
     <script type="text/javascript" src="webOSTVjs-1.2.0/webOSTV.js"></script>
     
+    <!-- Polyfills for Samsung Tizen (must load FIRST) -->
+    <script type="text/javascript" src="js/polyfills.js"></script>
+    
     <!-- TV Platform Detection -->
     <script type="text/javascript" src="js/platform-detect.js"></script>
     
@@ -85,13 +88,6 @@ cat > index.html << 'EOF'
     
     <!-- TV Audio Player -->
     <script type="text/javascript" src="js/tv-audio-player.js"></script>
-    
-    <!-- Polyfill for globalThis (Samsung Tizen compatibility) -->
-    <script>
-        if (typeof globalThis === 'undefined') {
-            window.globalThis = window;
-        }
-    </script>
     
     <!--VITE_JS_PLACEHOLDER-->
 </body>

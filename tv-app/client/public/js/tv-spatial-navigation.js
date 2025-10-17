@@ -17,7 +17,7 @@
                 // Try to find and focus the Discover button first (sidebar), otherwise first element
                 const discoverBtn = this.focusableElements.find(el => 
                     el.dataset.testid === 'button-discover' || 
-                    el.textContent?.includes('Discover')
+                    (el.textContent && el.textContent.includes('Discover'))
                 );
                 
                 if (discoverBtn) {
@@ -59,7 +59,7 @@
             element.classList.add('tv-focused');
             this.focusedElement = element;
             
-            console.log('[TV Nav] Focused:', element.dataset.testid || element.textContent?.trim().substring(0, 20) || element.tagName);
+            console.log('[TV Nav] Focused:', element.dataset.testid || (element.textContent && element.textContent.trim().substring(0, 20)) || element.tagName);
             
             // Scroll into view
             element.scrollIntoView({ 
