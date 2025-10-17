@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mega Radio is a full-stack web radio streaming application designed for TV/large screen interfaces. It offers global radio station access, organized by genres and countries, featuring an onboarding flow, authentication, station discovery, favorites, and playback controls. The application is a single-page React frontend with an Express backend, utilizing a PostgreSQL database via Neon. The project's vision is to provide a seamless radio streaming experience optimized for television environments.
+Mega Radio is a full-stack web radio streaming application designed for TV/large screen interfaces. It offers global radio station access from 238+ countries, organized by genres and countries, featuring an onboarding flow, authentication, station discovery, favorites, and playback controls. The application is a single-page React frontend with an Express backend, utilizing a PostgreSQL database via Neon. The project's vision is to provide a seamless radio streaming experience optimized for television environments.
 
 ## User Preferences
 

@@ -25,6 +25,11 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     queryFn: async () => {
       console.log('[CountrySelector] Fetching countries...');
       const result = await megaRadioApi.getAllCountries();
+      console.log('[CountrySelector] Raw API result:', result);
+      console.log('[CountrySelector] Countries array:', result.countries);
+      if (result.countries && result.countries.length > 0) {
+        console.log('[CountrySelector] First country:', result.countries[0]);
+      }
       console.log('[CountrySelector] Countries received:', result.countries?.length || 0);
       return result;
     },
@@ -73,6 +78,12 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   const filteredCountries = countries.filter(country =>
     country.name && country.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  console.log('[CountrySelector] Total countries after filter:', countries.length);
+  console.log('[CountrySelector] Filtered countries for search "' + searchQuery + '":', filteredCountries.length);
+  if (filteredCountries.length > 0) {
+    console.log('[CountrySelector] First 5 countries:', filteredCountries.slice(0, 5).map(c => c.name));
+  }
 
   const handleCountryClick = (country: Country) => {
     onSelectCountry(country);

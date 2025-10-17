@@ -75,6 +75,59 @@ export interface PaginationResponse<T> {
   };
 }
 
+// Map country names to ISO 3166-1 codes
+const getCountryCode = (countryName: string): string => {
+  const mapping: Record<string, string> = {
+    'Afghanistan': 'AF', 'Albania': 'AL', 'Algeria': 'DZ', 'American Samoa': 'AS',
+    'Andorra': 'AD', 'Angola': 'AO', 'Argentina': 'AR', 'Armenia': 'AM',
+    'Australia': 'AU', 'Austria': 'AT', 'Azerbaijan': 'AZ', 'Bahrain': 'BH',
+    'Bangladesh': 'BD', 'Belarus': 'BY', 'Belgium': 'BE', 'Belize': 'BZ',
+    'Benin': 'BJ', 'Bermuda': 'BM', 'Bhutan': 'BT', 'Bolivia': 'BO',
+    'Bosnia And Herzegovina': 'BA', 'Botswana': 'BW', 'Brazil': 'BR', 'Brunei Darussalam': 'BN',
+    'Bulgaria': 'BG', 'Burkina Faso': 'BF', 'Burundi': 'BI', 'Cambodia': 'KH',
+    'Cameroon': 'CM', 'Canada': 'CA', 'Chad': 'TD', 'Chile': 'CL',
+    'China': 'CN', 'Colombia': 'CO', 'Costa Rica': 'CR', 'Croatia': 'HR',
+    'Cuba': 'CU', 'Cyprus': 'CY', 'Czechia': 'CZ', 'Denmark': 'DK',
+    'Djibouti': 'DJ', 'Dominica': 'DM', 'Ecuador': 'EC', 'Egypt': 'EG',
+    'El Salvador': 'SV', 'Estonia': 'EE', 'Ethiopia': 'ET', 'Fiji': 'FJ',
+    'Finland': 'FI', 'France': 'FR', 'Gabon': 'GA', 'Georgia': 'GE',
+    'Germany': 'DE', 'Ghana': 'GH', 'Gibraltar': 'GI', 'Greece': 'GR',
+    'Greenland': 'GL', 'Grenada': 'GD', 'Guadeloupe': 'GP', 'Guam': 'GU',
+    'Guatemala': 'GT', 'Guinea': 'GN', 'Guyana': 'GY', 'Haiti': 'HT',
+    'Honduras': 'HN', 'Hong Kong': 'HK', 'Hungary': 'HU', 'Iceland': 'IS',
+    'India': 'IN', 'Indonesia': 'ID', 'Iraq': 'IQ', 'Ireland': 'IE',
+    'Islamic Republic Of Iran': 'IR', 'Israel': 'IL', 'Italy': 'IT', 'Jamaica': 'JM',
+    'Japan': 'JP', 'Jordan': 'JO', 'Kazakhstan': 'KZ', 'Kenya': 'KE',
+    'Kosovo': 'XK', 'Kuwait': 'KW', 'Kyrgyzstan': 'KG', 'Latvia': 'LV',
+    'Lebanon': 'LB', 'Lesotho': 'LS', 'Liberia': 'LR', 'Libya': 'LY',
+    'Liechtenstein': 'LI', 'Lithuania': 'LT', 'Luxembourg': 'LU', 'Macao': 'MO',
+    'Madagascar': 'MG', 'Malawi': 'MW', 'Malaysia': 'MY', 'Maldives': 'MV',
+    'Mali': 'ML', 'Malta': 'MT', 'Mauritania': 'MR', 'Mauritius': 'MU',
+    'Mexico': 'MX', 'Monaco': 'MC', 'Mongolia': 'MN', 'Montenegro': 'ME',
+    'Morocco': 'MA', 'Mozambique': 'MZ', 'Myanmar': 'MM', 'Namibia': 'NA',
+    'Nepal': 'NP', 'New Zealand': 'NZ', 'Nicaragua': 'NI', 'Nigeria': 'NG',
+    'Norway': 'NO', 'Oman': 'OM', 'Pakistan': 'PK', 'Palau': 'PW',
+    'Panama': 'PA', 'Papua New Guinea': 'PG', 'Paraguay': 'PY', 'Peru': 'PE',
+    'Poland': 'PL', 'Portugal': 'PT', 'Puerto Rico': 'PR', 'Qatar': 'QA',
+    'Republic Of North Macedonia': 'MK', 'Reunion': 'RE', 'Romania': 'RO', 'Rwanda': 'RW',
+    'San Marino': 'SM', 'Saudi Arabia': 'SA', 'Senegal': 'SN', 'Serbia': 'RS',
+    'Seychelles': 'SC', 'Sierra Leone': 'SL', 'Singapore': 'SG', 'Slovakia': 'SK',
+    'Slovenia': 'SI', 'Solomon Islands': 'SB', 'Somalia': 'SO', 'South Africa': 'ZA',
+    'South Sudan': 'SS', 'Spain': 'ES', 'Sri Lanka': 'LK', 'Suriname': 'SR',
+    'Sweden': 'SE', 'Switzerland': 'CH', 'Taiwan, Republic Of China': 'TW', 'Tajikistan': 'TJ',
+    'Thailand': 'TH', 'The Bahamas': 'BS', 'The Congo': 'CG', 'The Democratic Republic Of The Congo': 'CD',
+    'The Dominican Republic': 'DO', 'The Gambia': 'GM', 'The Netherlands': 'NL', 'The Philippines': 'PH',
+    'The Republic Of Korea': 'KR', 'The Republic Of Moldova': 'MD', 'The Russian Federation': 'RU', 'The Sudan': 'SD',
+    'The United Arab Emirates': 'AE', 'The United Kingdom Of Great Britain And Northern Ireland': 'GB',
+    'The United States Of America': 'US', 'Togo': 'TG', 'Tonga': 'TO',
+    'Trinidad And Tobago': 'TT', 'Tunisia': 'TN', 'Türkiye': 'TR', 'Turkmenistan': 'TM',
+    'Uganda': 'UG', 'Ukraine': 'UA', 'United Republic Of Tanzania': 'TZ', 'Uruguay': 'UY',
+    'Uzbekistan': 'UZ', 'Vanuatu': 'VU', 'Vietnam': 'VN', 'Yemen': 'YE',
+    'Zambia': 'ZM', 'Zimbabwe': 'ZW'
+  };
+  return mapping[countryName] || 'XX';
+};
+
 // Helper to add TV parameter for Samsung TV (signals backend to skip compression)
 function buildApiUrl(path: string, existingParams?: URLSearchParams): string {
   const url = `${BASE_URL}${API_PREFIX}${path}`;
@@ -298,8 +351,17 @@ export const megaRadioApi = {
         throw new Error(`HTTP ${response.status}`);
       }
       const data = await response.json();
-      console.log('[API] getAllCountries fetched:', data.length || 0);
-      return { countries: data || [] };
+      console.log('[API] getAllCountries raw data type:', Array.isArray(data) ? 'array' : typeof data);
+      
+      // API returns array of strings, convert to Country objects
+      const countries: Country[] = Array.isArray(data) ? data.map((name: string) => ({
+        name: name,
+        iso_3166_1: getCountryCode(name), // Will map country name to ISO code
+        stationcount: 0
+      })) : [];
+      
+      console.log('[API] getAllCountries fetched:', countries.length);
+      return { countries };
     } catch (error) {
       console.error('[API] getAllCountries failed:', error);
       return { countries: [] };
