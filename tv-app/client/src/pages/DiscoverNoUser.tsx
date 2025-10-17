@@ -95,7 +95,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       <div className="fixed bg-gradient-to-b from-[0.88%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[48.611%] top-0 w-[1920px] z-0" />
 
       {/* Fixed Header Section - Always on top, never scrolls */}
-      <div className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none bg-gradient-to-b from-[rgba(14,14,14,0.95)] to-transparent">
+      <div className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none">
         {/* Logo */}
         <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] pointer-events-auto">
           <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
@@ -278,16 +278,16 @@ export const DiscoverNoUser = (): JSX.Element => {
           </Link>
         </div>
 
-      {/* Scrollable Content Area - Only this section scrolls */}
-      <div className="absolute top-0 left-0 w-[1920px] h-[1080px] overflow-y-auto overflow-x-hidden z-1">
-        <div className="relative pb-[30px] pt-[242px]">
+      {/* Scrollable Content Area - Starts below header, only this scrolls */}
+      <div className="absolute top-[242px] left-[162px] w-[1758px] h-[838px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide">
+        <div className="relative pb-[30px]">
         {/* Popular Genres Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
           Popular Genres
         </p>
 
         {/* Genre Pills - Horizontal Scrollable - All genres from API */}
-        <div className="absolute left-[226px] top-[301px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide">
+        <div className="absolute left-[64px] top-[59px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide">
           <div className="flex gap-[20px] py-[15px] px-[10px]">
             {genres.map((genre, index) => {
               return (
@@ -309,11 +309,11 @@ export const DiscoverNoUser = (): JSX.Element => {
         </div>
 
         {/* Popular Radios Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[465px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[223px]">
           Popular Radios
         </p>
 
-        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[484px] translate-x-[-50%]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1630.5px] not-italic text-[22px] text-center text-white top-[242px] translate-x-[-50%]">
           See More
         </p>
 
@@ -321,8 +321,8 @@ export const DiscoverNoUser = (): JSX.Element => {
         {popularStations.slice(0, 7).map((station, index) => (
           <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
             <div 
-              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[539px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              style={{ left: `${stationRow1Positions[index]}px` }}
+              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[297px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              style={{ left: `${stationRow1Positions[index] - 162}px` }}
               data-testid={`card-station-${station._id}`}
               data-tv-focusable="true"
             >
@@ -351,8 +351,8 @@ export const DiscoverNoUser = (): JSX.Element => {
         {popularStations.slice(7, 14).map((station, index) => (
           <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
             <div 
-              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[833px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              style={{ left: `${stationRow2Positions[index]}px` }}
+              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[591px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              style={{ left: `${stationRow2Positions[index] - 162}px` }}
               data-testid={`card-station-${station._id}`}
               data-tv-focusable="true"
             >
@@ -378,7 +378,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         ))}
 
         {/* See More Card */}
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1616px] overflow-clip rounded-[11px] top-[833px] w-[200px]">
+        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1454px] overflow-clip rounded-[11px] top-[591px] w-[200px]">
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100.5px] not-italic text-[22px] text-center text-white top-[120px] translate-x-[-50%]">
             See More
           </p>
@@ -386,11 +386,11 @@ export const DiscoverNoUser = (): JSX.Element => {
         </div>
 
         {/* More From [Country] Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[1181px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[939px]">
           More From {selectedCountry}
         </p>
 
-        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[1186px] translate-x-[-50%]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1630.5px] not-italic text-[22px] text-center text-white top-[944px] translate-x-[-50%]">
           See More
         </p>
 
@@ -398,8 +398,8 @@ export const DiscoverNoUser = (): JSX.Element => {
         {countryStations.slice(0, 7).map((station, index) => (
           <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
             <div 
-              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1255px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              style={{ left: `${stationRow1Positions[index]}px` }}
+              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1013px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+              style={{ left: `${stationRow1Positions[index] - 162}px` }}
               data-testid={`card-station-${station._id}`}
               data-tv-focusable="true"
             >
@@ -426,11 +426,11 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Country Stations - Row 2 */}
         {countryStations.slice(7, 14).map((station, index) => {
-          const positions = [236, 466, 696, 926, 1156, 1386, 1616];
+          const positions = [74, 304, 534, 764, 994, 1224, 1454];
           return (
             <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
               <div 
-                className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1549px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+                className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1307px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
                 style={{ left: `${positions[index]}px` }}
                 data-testid={`card-station-${station._id}`}
                 data-tv-focusable="true"
