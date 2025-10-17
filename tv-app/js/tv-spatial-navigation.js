@@ -116,8 +116,8 @@
                     case 'UP':
                         // Element must be above current AND have horizontal overlap
                         if (candidate.y < current.y - 10) {
-                            // Check horizontal overlap with tolerance (150px)
-                            const tolerance = 150;
+                            // Check horizontal overlap with tolerance (300px for sidebar->content jumps)
+                            const tolerance = 300;
                             const hasHorizontalOverlap = 
                                 candidate.rect.right >= current.rect.left - tolerance &&
                                 candidate.rect.left <= current.rect.right + tolerance;
@@ -135,8 +135,8 @@
                     case 'DOWN':
                         // Element must be below current AND have horizontal overlap
                         if (candidate.y > current.y + 10) {
-                            // Check horizontal overlap with tolerance (150px)
-                            const tolerance = 150;
+                            // Check horizontal overlap with tolerance (300px for sidebar->content jumps)
+                            const tolerance = 300;
                             const hasHorizontalOverlap = 
                                 candidate.rect.right >= current.rect.left - tolerance &&
                                 candidate.rect.left <= current.rect.right + tolerance;
