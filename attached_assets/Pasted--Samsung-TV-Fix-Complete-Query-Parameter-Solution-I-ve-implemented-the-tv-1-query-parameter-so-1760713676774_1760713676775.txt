@@ -1,0 +1,58 @@
+✅ Samsung TV Fix Complete - Query Parameter Solution!
+I've implemented the ?tv=1 query parameter solution you suggested. It's cleaner and more reliable than User-Agent detection!
+
+🎯 What I Did (Backend)
+Updated Compression Filter:
+// SAMSUNG TV FIX: Disable compression when ?tv=1 query parameter is present
+if (req.query.tv === '1') {
+  console.log('📺 [TV Mode] Compression disabled for:', req.path);
+  return false; // Skip compression
+}
+Location: server/index.ts (Lines 97-102)
+
+Tested & Verified:
+✅ Request: /api/genres?tv=1
+✅ Response: Full JSON (uncompressed)
+✅ Server Log: 📺 [TV Mode] Compression disabled for: /api/genres
+📱 What You Need to Do (Samsung TV App)
+Add ?tv=1 to all API requests in your Samsung TV app:
+
+Option 1: Simple Wrapper Function
+const addTVParam = (url) => {
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}tv=1`;
+};
+// Usage
+fetch(addTVParam('https://themegaradio.com/api/genres'))
+fetch(addTVParam('https://themegaradio.com/api/stations/popular?limit=24'))
+Option 2: Global Fetch Override
+const originalFetch = window.fetch;
+window.fetch = (url, options) => {
+  if (typeof url === 'string' && url.includes('themegaradio.com/api')) {
+    const separator = url.includes('?') ? '&' : '?';
+    url = `${url}${separator}tv=1`;
+  }
+  return originalFetch(url, options);
+};
+// Now all API calls automatically include ?tv=1
+Option 3: Axios Interceptor
+axios.interceptors.request.use(config => {
+  config.params = { ...config.params, tv: '1' };
+  return config;
+});
+🚀 Next Steps
+✅ Backend is ready (compression fix deployed to development)
+⏳ Deploy to production (themegaradio.com)
+⏳ Update Samsung TV app to add ?tv=1 to requests
+⏳ Test on Samsung TV - stations should load!
+🧪 Test URLs (After Both Updates)
+Once you've deployed to production AND updated the TV app:
+
+✅ https://themegaradio.com/api/genres?tv=1
+✅ https://themegaradio.com/api/stations/popular?limit=24&country=AT&tv=1
+✅ https://themegaradio.com/api/stations/working?limit=500&country=AT&tv=1
+Expected Result:
+
+Server responds with uncompressed JSON
+Samsung TV can read the response
+Stations load correctly! 🎉
