@@ -925,12 +925,13 @@
     display: none !important;
 }
 
-/* TV Focus Indicator - Pink border only, no layout shift */
+/* TV Focus Indicator - Pink border with rounded corners matching element */
 .tv-focused {
     box-shadow: 
         0 0 0 4px #ff4199,
         0 0 20px rgba(255, 65, 153, 0.6) !important;
     transition: box-shadow 0.2s ease !important;
+    border-radius: inherit !important; /* Inherit border-radius from parent */
 }
 
 /* Pulsing glow animation */
