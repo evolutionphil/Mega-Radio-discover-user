@@ -85,9 +85,14 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     .sort((a, b) => (b.stationcount || 0) - (a.stationcount || 0)); // Sort by station count
 
   const filteredCountries = countries
-    .filter(country =>
-      country.name && country.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    .filter(country => {
+      if (!country.name) return false;
+      const matches = country.name.toLowerCase().includes(searchQuery.toLowerCase());
+      if (searchQuery && matches) {
+        console.log('[CountrySelector] MATCH:', country.name, 'code:', country.code, 'flag:', country.flag);
+      }
+      return matches;
+    })
     .sort((a, b) => {
       if (!searchQuery) {
         // No search: sort by station count
@@ -114,11 +119,14 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       return a.name.localeCompare(b.name);
     });
 
-  console.log('[CountrySelector] Total countries after filter:', countries.length);
-  console.log('[CountrySelector] Filtered countries for search "' + searchQuery + '":', filteredCountries.length);
+  console.log('[CountrySelector] ===== RENDER INFO =====');
+  console.log('[CountrySelector] Total countries loaded:', countries.length);
+  console.log('[CountrySelector] Search query:', searchQuery);
+  console.log('[CountrySelector] Filtered count:', filteredCountries.length);
   if (filteredCountries.length > 0) {
-    console.log('[CountrySelector] First 5 countries:', filteredCountries.slice(0, 5).map(c => c.name));
+    console.log('[CountrySelector] First 5 filtered:', filteredCountries.slice(0, 5).map(c => `${c.name} (${c.code})`));
   }
+  console.log('[CountrySelector] ========================');
 
   const handleCountryClick = (country: Country) => {
     onSelectCountry(country);
