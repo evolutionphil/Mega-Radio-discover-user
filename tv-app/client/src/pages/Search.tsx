@@ -245,7 +245,12 @@ export const Search = (): JSX.Element => {
         className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px]"
         data-testid="input-search"
         data-tv-focusable="true"
-        onClick={() => inputRef.current?.focus()}
+        onClick={(e) => {
+          // Only focus if not already focused to prevent reopening keyboard
+          if (document.activeElement !== inputRef.current) {
+            inputRef.current?.focus();
+          }
+        }}
       >
         <div className="h-[91px] overflow-clip relative rounded-[inherit] w-[774px]">
           <input
@@ -272,19 +277,22 @@ export const Search = (): JSX.Element => {
         const topPositions = [259, 359, 459, 559];
         
         return (
-          <div
-            key={station._id || index}
-            className="absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] h-[65px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-            style={{ top: `${topPositions[index]}px` }}
-            data-testid={`search-result-${index}`}
-            data-tv-focusable="true"
-            onClick={() => window.location.href = `/radio-playing?station=${station._id}`}
+          <Link 
+            key={station._id || index} 
+            href={`/radio-playing?station=${station._id}`}
           >
-            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
-              {highlightText(station.name, searchQuery)}
-            </p>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]" />
-          </div>
+            <a
+              className="absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] h-[65px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors no-underline"
+              style={{ top: `${topPositions[index]}px` }}
+              data-testid={`search-result-${index}`}
+              data-tv-focusable="true"
+            >
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
+                {highlightText(station.name, searchQuery)}
+              </p>
+              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]" />
+            </a>
+          </Link>
         );
       })}
 
@@ -308,9 +316,12 @@ export const Search = (): JSX.Element => {
         const topPositions = [136, 430, 724];
         
         return (
-          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
-            <div 
-              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
+          <Link 
+            key={station._id || index} 
+            href={`/radio-playing?station=${station._id}`}
+          >
+            <a 
+              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors no-underline" 
               style={{ 
                 left: `${leftPositions[col]}px`,
                 top: `${topPositions[row]}px`
@@ -335,7 +346,7 @@ export const Search = (): JSX.Element => {
                 {getStationCategory(station)}
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-            </div>
+            </a>
           </Link>
         );
       })}
