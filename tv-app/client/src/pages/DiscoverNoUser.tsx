@@ -274,8 +274,8 @@ export const DiscoverNoUser = (): JSX.Element => {
         </p>
 
         {/* Genre Pills - Horizontal Scrollable - All genres from API */}
-        <div className="absolute left-[236px] top-[316px] w-[1600px] overflow-x-auto overflow-y-hidden scrollbar-hide">
-          <div className="flex gap-[20px] pb-[10px]">
+        <div className="absolute left-[226px] top-[301px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide">
+          <div className="flex gap-[20px] py-[15px] px-[10px]">
             {genres.map((genre, index) => {
               return (
                 <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
