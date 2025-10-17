@@ -1,6 +1,8 @@
 // TV Spatial Navigation System - Smart directional focus
 (function() {
     'use strict';
+    
+    console.log('[TV Spatial Nav] Script loaded and executing...');
 
     window.tvSpatialNav = {
         focusedElement: null,
@@ -176,16 +178,15 @@
         }
     };
     
-    // Initialize when DOM is ready
+    // Initialize when DOM is ready - but DON'T call init() yet!
+    // Let the React hook (useTVNavigation) handle initialization after elements render
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            if (window.platformInfo && window.platformInfo.isTV()) {
-                window.tvSpatialNav.init();
-            }
+            console.log('[TV Spatial Nav] DOM ready, waiting for React...');
+            // DON'T call init() here - React hook will call it
         });
     } else {
-        if (window.platformInfo && window.platformInfo.isTV()) {
-            window.tvSpatialNav.init();
-        }
+        console.log('[TV Spatial Nav] DOM already ready, waiting for React...');
+        // DON'T call init() here - React hook will call it
     }
 })();

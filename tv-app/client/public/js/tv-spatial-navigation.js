@@ -178,16 +178,15 @@
         }
     };
     
-    // Initialize when DOM is ready
+    // Initialize when DOM is ready - but DON'T call init() yet!
+    // Let the React hook (useTVNavigation) handle initialization after elements render
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('[TV Spatial Nav] DOM ready, initializing...');
-            // Initialize on all platforms for testing (will be limited by key handler)
-            window.tvSpatialNav.init();
+            console.log('[TV Spatial Nav] DOM ready, waiting for React...');
+            // DON'T call init() here - React hook will call it
         });
     } else {
-        console.log('[TV Spatial Nav] DOM already ready, initializing now...');
-        // Initialize on all platforms for testing
-        window.tvSpatialNav.init();
+        console.log('[TV Spatial Nav] DOM already ready, waiting for React...');
+        // DON'T call init() here - React hook will call it
     }
 })();
