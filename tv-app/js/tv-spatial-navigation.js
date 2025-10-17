@@ -142,8 +142,19 @@
                     case 'UP':
                         // Element must be above current AND have horizontal overlap
                         if (candidate.y < current.y - 10) {
-                            // Check horizontal overlap with tolerance (300px for sidebar->content jumps)
-                            const tolerance = 300;
+                            // SPECIAL RULE: Check if navigating from station card to player control
+                            const isPlayerControl = el.dataset.testid && 
+                                (el.dataset.testid === 'button-play-pause' || 
+                                 el.dataset.testid === 'button-previous' || 
+                                 el.dataset.testid === 'button-next' ||
+                                 el.dataset.testid === 'button-favorite');
+                            const isFromStationCard = this.focusedElement.dataset.testid && 
+                                (this.focusedElement.dataset.testid.startsWith('card-similar-') ||
+                                 this.focusedElement.dataset.testid.startsWith('card-popular-'));
+                            
+                            // Use larger tolerance for player controls from station cards
+                            const tolerance = (isFromStationCard && isPlayerControl) ? 1200 : 300;
+                            
                             const hasHorizontalOverlap = 
                                 candidate.rect.right >= current.rect.left - tolerance &&
                                 candidate.rect.left <= current.rect.right + tolerance;
@@ -153,20 +164,9 @@
                                 const verticalDist = current.y - candidate.y;
                                 const horizontalDist = Math.abs(current.x - candidate.x);
                                 
-                                // SPECIAL RULE: Prioritize player controls (play/pause/next/previous) over sidebar
-                                // when navigating UP from station cards
-                                const isPlayerControl = el.dataset.testid && 
-                                    (el.dataset.testid === 'button-play-pause' || 
-                                     el.dataset.testid === 'button-previous' || 
-                                     el.dataset.testid === 'button-next' ||
-                                     el.dataset.testid === 'button-favorite');
-                                const isFromStationCard = this.focusedElement.dataset.testid && 
-                                    (this.focusedElement.dataset.testid.startsWith('card-similar-') ||
-                                     this.focusedElement.dataset.testid.startsWith('card-popular-'));
-                                
                                 if (isFromStationCard && isPlayerControl) {
                                     // Heavily prioritize player controls when coming from station cards
-                                    score = verticalDist + (horizontalDist * 0.5);
+                                    score = verticalDist + (horizontalDist * 0.1);
                                 } else {
                                     // Normal scoring
                                     score = verticalDist + (horizontalDist * 2);
