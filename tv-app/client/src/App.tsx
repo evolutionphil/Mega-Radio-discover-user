@@ -1,4 +1,5 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Router as WouterRouter } from "wouter";
+import { useHashLocation } from "wouter/use-hash-location";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -25,18 +26,12 @@ import { Favorites } from "@/pages/Favorites";
 import { Settings } from "@/pages/Settings";
 
 function Router() {
-  // Debug: Log current path on Samsung TV
-  if (typeof window !== 'undefined') {
-    console.log('Current path:', window.location.pathname);
-    console.log('Current href:', window.location.href);
-  }
-  
   return (
-    <Switch>
-      {/* Authentication Flow */}
-      <Route path="/" component={Splash} />
-      <Route path="/index.html" component={Splash} />
-      <Route path="/login" component={Login} />
+    <WouterRouter hook={useHashLocation}>
+      <Switch>
+        {/* Authentication Flow */}
+        <Route path="/" component={Splash} />
+        <Route path="/login" component={Login} />
       <Route path="/login-with-email" component={LoginWithEmail} />
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/mail-sent" component={MailSent} />
@@ -61,6 +56,7 @@ function Router() {
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
+    </WouterRouter>
   );
 }
 
