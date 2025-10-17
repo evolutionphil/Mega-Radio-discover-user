@@ -22,8 +22,8 @@
                 
                 xhr.open(method, url, true);
                 
-                // Set response type for Samsung TV
-                xhr.responseType = 'text';
+                // DON'T set responseType - Samsung TV has issues with it
+                // xhr.responseType = 'text';
                 
                 // Set headers
                 xhr.setRequestHeader('Accept', 'application/json');
@@ -48,9 +48,14 @@
                 
                 function handleResponse() {
                     console.log('[Fetch] Response status:', xhr.status, 'for', url);
-                    console.log('[Fetch] Response text length:', xhr.responseText ? xhr.responseText.length : 0);
                     
-                    var responseText = xhr.responseText || '';
+                    // Try both response and responseText for Samsung TV compatibility
+                    var responseText = xhr.response || xhr.responseText || '';
+                    console.log('[Fetch] Response text length:', responseText ? responseText.length : 0);
+                    
+                    if (typeof responseText !== 'string') {
+                        responseText = String(responseText);
+                    }
                     
                     var response = {
                         ok: xhr.status >= 200 && xhr.status < 300,
