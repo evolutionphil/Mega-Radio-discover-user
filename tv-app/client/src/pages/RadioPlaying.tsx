@@ -7,16 +7,36 @@ import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const RadioPlaying = (): JSX.Element => {
   useTVNavigation();
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
   const audioPlayerRef = useRef<any>(null);
   
+  // Station history for Previous button (stores station IDs)
+  const stationHistoryRef = useRef<string[]>([]);
+  const isNavigatingBackRef = useRef(false);
+  
   // Parse station ID from URL query params - useMemo ensures it updates when location changes
   const stationId = useMemo(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    return searchParams.get('station');
+    const id = searchParams.get('station');
+    console.log('[RadioPlaying] URL changed, parsing station ID:', id);
+    console.log('[RadioPlaying] Current location:', location);
+    return id;
   }, [location]); // Re-calculate when location changes
+  
+  // Track station history when station ID changes
+  useEffect(() => {
+    if (stationId && !isNavigatingBackRef.current) {
+      // Don't add if it's the same as the last station in history
+      const lastStation = stationHistoryRef.current[stationHistoryRef.current.length - 1];
+      if (lastStation !== stationId) {
+        stationHistoryRef.current.push(stationId);
+        console.log('[RadioPlaying] Station history updated:', stationHistoryRef.current);
+      }
+    }
+    isNavigatingBackRef.current = false;
+  }, [stationId]);
 
   const sidebarItems = [
     { icon: "/images/vuesax-bold-radio.svg", label: "Discover", active: true, href: "/discover-no-user" },
@@ -136,7 +156,9 @@ export const RadioPlaying = (): JSX.Element => {
   // Auto-play when station changes
   useEffect(() => {
     if (station && station.url && audioPlayerRef.current) {
-      console.log('[RadioPlaying] Playing station:', {
+      console.log('[RadioPlaying] ========================================');
+      console.log('[RadioPlaying] Station changed, stopping current playback');
+      console.log('[RadioPlaying] New station:', {
         id: station._id,
         name: station.name,
         url: station.url,
@@ -145,13 +167,21 @@ export const RadioPlaying = (): JSX.Element => {
         bitrate: station.bitrate
       });
       
-      // Try url_resolved first, then fall back to url
-      const streamUrl = station.url_resolved || station.url;
-      console.log('[RadioPlaying] Using stream URL:', streamUrl);
+      // Stop current playback first
+      audioPlayerRef.current.stop();
       
-      // Note: play() doesn't return a Promise in our implementation
-      // Errors are handled through the onError callback
-      audioPlayerRef.current.play(streamUrl);
+      // Small delay to ensure clean stop before starting new stream
+      const playTimeout = setTimeout(() => {
+        // Try url_resolved first, then fall back to url
+        const streamUrl = station.url_resolved || station.url;
+        console.log('[RadioPlaying] Starting new stream:', streamUrl);
+        
+        // Note: play() doesn't return a Promise in our implementation
+        // Errors are handled through the onError callback
+        audioPlayerRef.current.play(streamUrl);
+      }, 100);
+      
+      return () => clearTimeout(playTimeout);
     }
   }, [station]);
 
@@ -169,20 +199,39 @@ export const RadioPlaying = (): JSX.Element => {
   };
 
   const handlePrevious = () => {
-    // Navigate to previous similar station
-    if (similarStations.length > 0) {
-      const currentIndex = similarStations.findIndex(s => s._id === stationId);
-      const prevIndex = currentIndex > 0 ? currentIndex - 1 : similarStations.length - 1;
-      window.location.href = `/radio-playing?station=${similarStations[prevIndex]._id}`;
+    // Go back to previously played station
+    console.log('[RadioPlaying] Previous clicked, history:', stationHistoryRef.current);
+    
+    if (stationHistoryRef.current.length > 1) {
+      // Remove current station from history
+      stationHistoryRef.current.pop();
+      
+      // Get previous station
+      const previousStationId = stationHistoryRef.current[stationHistoryRef.current.length - 1];
+      console.log('[RadioPlaying] Going back to station:', previousStationId);
+      
+      // Mark that we're navigating back so we don't add to history again
+      isNavigatingBackRef.current = true;
+      
+      // Use wouter navigation instead of window.location
+      setLocation(`/radio-playing?station=${previousStationId}`);
+    } else {
+      console.log('[RadioPlaying] No previous station in history');
     }
   };
 
   const handleNext = () => {
-    // Navigate to next similar station
+    // Play first station from similar stations
+    console.log('[RadioPlaying] Next clicked, similar stations:', similarStations.length);
+    
     if (similarStations.length > 0) {
-      const currentIndex = similarStations.findIndex(s => s._id === stationId);
-      const nextIndex = currentIndex < similarStations.length - 1 ? currentIndex + 1 : 0;
-      window.location.href = `/radio-playing?station=${similarStations[nextIndex]._id}`;
+      const firstSimilarStation = similarStations[0];
+      console.log('[RadioPlaying] Playing first similar station:', firstSimilarStation.name);
+      
+      // Use wouter navigation instead of window.location
+      setLocation(`/radio-playing?station=${firstSimilarStation._id}`);
+    } else {
+      console.log('[RadioPlaying] No similar stations available');
     }
   };
 
