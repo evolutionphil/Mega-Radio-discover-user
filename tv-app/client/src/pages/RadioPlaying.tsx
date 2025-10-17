@@ -614,7 +614,7 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
 
       {/* Popular Radios Grid */}
-      <div className="absolute left-[236px] top-[1169px] grid grid-cols-6 gap-x-[19px] gap-y-[19px] w-[1580px]">
+      <div className="absolute left-[236px] top-[1169px] grid grid-cols-6 gap-[19px] w-[1580px]">
         {popularStations.map((popularStation, index) => (
           <div
             key={popularStation._id || index}
