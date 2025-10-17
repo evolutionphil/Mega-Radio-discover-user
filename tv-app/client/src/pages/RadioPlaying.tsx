@@ -16,14 +16,17 @@ export const RadioPlaying = (): JSX.Element => {
   const stationHistoryRef = useRef<string[]>([]);
   const isNavigatingBackRef = useRef(false);
   
-  // Parse station ID from URL query params - useMemo ensures it updates when location changes
+  // Force update trigger for station changes
+  const [updateTrigger, setUpdateTrigger] = useState(0);
+  
+  // Parse station ID from URL query params - useMemo ensures it updates when location or trigger changes
   const stationId = useMemo(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const id = searchParams.get('station');
     console.log('[RadioPlaying] URL changed, parsing station ID:', id);
-    console.log('[RadioPlaying] Current location:', location);
+    console.log('[RadioPlaying] Current location:', location, 'trigger:', updateTrigger);
     return id;
-  }, [location]); // Re-calculate when location changes
+  }, [location, updateTrigger]); // Re-calculate when location or trigger changes
   
   // Track station history when station ID changes
   useEffect(() => {
@@ -213,8 +216,13 @@ export const RadioPlaying = (): JSX.Element => {
       // Mark that we're navigating back so we don't add to history again
       isNavigatingBackRef.current = true;
       
-      // Use wouter navigation instead of window.location
-      setLocation(`/radio-playing?station=${previousStationId}`);
+      // Update URL with hash routing format: /?station=xxx#/radio-playing
+      const newUrl = `${window.location.pathname}?station=${previousStationId}${window.location.hash}`;
+      console.log('[RadioPlaying] Navigating to:', newUrl);
+      window.history.pushState({}, '', newUrl);
+      
+      // Force re-render to detect new station ID
+      setUpdateTrigger(prev => prev + 1);
     } else {
       console.log('[RadioPlaying] No previous station in history');
     }
@@ -228,8 +236,13 @@ export const RadioPlaying = (): JSX.Element => {
       const firstSimilarStation = similarStations[0];
       console.log('[RadioPlaying] Playing first similar station:', firstSimilarStation.name);
       
-      // Use wouter navigation instead of window.location
-      setLocation(`/radio-playing?station=${firstSimilarStation._id}`);
+      // Update URL with hash routing format: /?station=xxx#/radio-playing
+      const newUrl = `${window.location.pathname}?station=${firstSimilarStation._id}${window.location.hash}`;
+      console.log('[RadioPlaying] Navigating to:', newUrl);
+      window.history.pushState({}, '', newUrl);
+      
+      // Force re-render to detect new station ID
+      setUpdateTrigger(prev => prev + 1);
     } else {
       console.log('[RadioPlaying] No similar stations available');
     }
