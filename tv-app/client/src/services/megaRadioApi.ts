@@ -95,9 +95,21 @@ export const megaRadioApi = {
     if (params?.genre) queryParams.append('genre', params.genre);
     if (params?.sort) queryParams.append('sort', params.sort);
 
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/stations?${queryParams}`);
-    const data = await response.json();
-    return { stations: Array.isArray(data) ? data : [], pagination: {} };
+    try {
+      const url = `${BASE_URL}${API_PREFIX}/stations?${queryParams}`;
+      console.log('[API] getAllStations:', url);
+      const response = await fetch(url);
+      console.log('[API] getAllStations response:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('[API] getAllStations fetched:', data.stations?.length || 0);
+      return { stations: Array.isArray(data) ? data : [], pagination: {} };
+    } catch (error) {
+      console.error('[API] getAllStations failed:', error);
+      return { stations: [], pagination: {} };
+    }
   },
 
   getPopularStations: async (params?: {
@@ -193,9 +205,21 @@ export const megaRadioApi = {
 
   // Genres
   getAllGenres: async (): Promise<{ genres: Genre[] }> => {
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/genres`);
-    const result = await response.json();
-    return { genres: result.data || [] };
+    try {
+      const url = `${BASE_URL}${API_PREFIX}/genres`;
+      console.log('[API] getAllGenres:', url);
+      const response = await fetch(url);
+      console.log('[API] getAllGenres response:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const result = await response.json();
+      console.log('[API] getAllGenres fetched:', result.data?.length || 0);
+      return { genres: result.data || [] };
+    } catch (error) {
+      console.error('[API] getAllGenres failed:', error);
+      return { genres: [] };
+    }
   },
 
   getGenreBySlug: async (slug: string): Promise<{ genre: Genre }> => {
@@ -224,9 +248,21 @@ export const megaRadioApi = {
   },
 
   getDiscoverableGenres: async (): Promise<{ genres: Genre[] }> => {
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/genres/discoverable`);
-    const data = await response.json();
-    return { genres: Array.isArray(data) ? data : [] };
+    try {
+      const url = `${BASE_URL}${API_PREFIX}/genres/discoverable`;
+      console.log('[API] getDiscoverableGenres:', url);
+      const response = await fetch(url);
+      console.log('[API] getDiscoverableGenres response:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('[API] getDiscoverableGenres fetched:', Array.isArray(data) ? data.length : 0);
+      return { genres: Array.isArray(data) ? data : [] };
+    } catch (error) {
+      console.error('[API] getDiscoverableGenres failed:', error);
+      return { genres: [] };
+    }
   },
 
   // Countries
@@ -259,9 +295,21 @@ export const megaRadioApi = {
     if (params?.codec) queryParams.append('codec', params.codec);
     if (params?.limit) queryParams.append('limit', params.limit.toString());
 
-    const response = await fetch(`${BASE_URL}${API_PREFIX}/stations?${queryParams}`);
-    const data = await response.json();
-    return { results: data.stations || [], total: data.totalCount || 0 };
+    try {
+      const url = `${BASE_URL}${API_PREFIX}/stations?${queryParams}`;
+      console.log('[API] searchStations:', url);
+      const response = await fetch(url);
+      console.log('[API] searchStations response:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('[API] searchStations fetched:', data.stations?.length || 0);
+      return { results: data.stations || [], total: data.totalCount || 0 };
+    } catch (error) {
+      console.error('[API] searchStations failed:', error);
+      return { results: [], total: 0 };
+    }
   },
 
   // Discovery

@@ -35,9 +35,11 @@ tv-app/                      # Project root (Samsung Tizen project)
 ├── build-samsung-tv.sh     # Samsung TV build script
 ├── assets/                  # Built React app (after build)
 ├── js/                      # TV platform scripts
+│   ├── fetch-polyfill-samsung.js  # Fetch polyfill using XMLHttpRequest for CORS
 │   ├── polyfills.js         # ES2019+ polyfills for Samsung Tizen
 │   ├── platform-detect.js
 │   ├── tv-remote-keys.js
+│   ├── tv-spatial-navigation.js
 │   └── tv-audio-player.js
 ├── css/                     # TV-specific styles
 └── index.html               # Generated TV app entry (after build)
@@ -163,6 +165,14 @@ The schema uses Drizzle's PostgreSQL adapter with type inference for Insert and 
 - Helper functions handle API response formats (stations wrapped in {stations:[]}, genres in {data:[]})
 - Tags field parsed from comma-separated string to array
 - Station images use favicon field or fallback to proxy endpoint
+
+**Samsung TV CORS Solution**
+- Samsung Tizen TVs have strict CORS policies that block cross-origin requests
+- **Fetch Polyfill**: `tv-app/js/fetch-polyfill-samsung.js` replaces fetch() with XMLHttpRequest for better CORS support on Samsung TV
+- **Backend Proxy**: Express server provides proxy endpoints at `/api/proxy/*` to forward requests to Mega Radio API
+- **Comprehensive Error Logging**: All API calls now have try/catch blocks with console logging for debugging
+- **Loading Order**: Fetch polyfill loads FIRST in index.html (before React app) to ensure all API calls use the enhanced fetch
+- **Network Privileges**: config.xml includes `http://tizen.org/privilege/internet` and `http://developer.samsung.com/privilege/network.public`
 
 ### External Dependencies
 
