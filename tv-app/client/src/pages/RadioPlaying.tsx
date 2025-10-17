@@ -369,7 +369,12 @@ export const RadioPlaying = (): JSX.Element => {
       
       return () => {
         if (audioPlayerRef.current) {
-          audioPlayerRef.current.stop();
+          try {
+            audioPlayerRef.current.stop();
+          } catch (err) {
+            // Ignore cleanup errors
+            console.log('[RadioPlaying] Audio cleanup completed');
+          }
         }
       };
     }
@@ -389,7 +394,7 @@ export const RadioPlaying = (): JSX.Element => {
     if (station && window.tvSpatialNav) {
       // Wait a moment for DOM to render
       setTimeout(() => {
-        const playPauseButton = document.querySelector('[data-testid="button-play-pause"]');
+        const playPauseButton = document.querySelector('[data-testid="button-play-pause"]') as HTMLElement;
         if (playPauseButton && window.tvSpatialNav) {
           console.log('[RadioPlaying] Auto-focusing play/pause button');
           window.tvSpatialNav.focus(playPauseButton);
