@@ -925,42 +925,28 @@
     display: none !important;
 }
 
-/* TV Focus Indicator - BRIGHT PINK BORDER - MAXIMUM VISIBILITY */
+/* TV Focus Indicator - Clean Outside Border Only */
 .tv-focused {
-    outline: 8px solid #ff4199 !important;
-    outline-offset: 2px !important;
-    box-shadow: 
-        0 0 0 8px #ff4199,
-        0 0 30px 10px rgba(255, 65, 153, 1),
-        inset 0 0 20px rgba(255, 65, 153, 0.5) !important;
-    transform: scale(1.1) !important;
+    outline: 6px solid #ff4199 !important;
+    outline-offset: 4px !important;
+    box-shadow: 0 0 25px rgba(255, 65, 153, 0.8) !important;
     z-index: 9999 !important;
     position: relative !important;
-    transition: all 0.15s ease !important;
-    filter: brightness(1.2) !important;
+    transition: all 0.2s ease !important;
 }
 
-/* Extra emphasis with box model */
-button.tv-focused,
-a.tv-focused,
-div.tv-focused {
-    border: 6px solid #ff4199 !important;
-    background: rgba(255, 65, 153, 0.1) !important;
-}
-
-@keyframes pulse-focus {
+/* Pulsing glow animation */
+@keyframes pulse-glow {
     0%, 100% {
-        outline-width: 8px;
-        outline-color: #ff4199;
+        box-shadow: 0 0 25px rgba(255, 65, 153, 0.8);
     }
     50% {
-        outline-width: 12px;
-        outline-color: #ff1177;
+        box-shadow: 0 0 40px rgba(255, 65, 153, 1);
     }
 }
 
 .tv-focused {
-    animation: pulse-focus 1s ease-in-out infinite !important;
+    animation: pulse-glow 1.5s ease-in-out infinite !important;
 }
 
 /* Hide cursor on TV platforms */
