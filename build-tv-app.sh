@@ -28,33 +28,18 @@ if [ -f "dist/public/vite.svg" ]; then
     cp dist/public/vite.svg tv-app/
 fi
 
-# Step 3: Create fresh index.html from template with correct hashed filenames
-echo "🔧 Step 3: Creating index.html from template with hashed asset filenames..."
+# Step 3: Copy Vite's built index.html and convert all paths to relative
+echo "🔧 Step 3: Converting Vite output to relative paths for TV platforms..."
 
-# Extract the actual hashed JS filename from Vite's build (strip leading slash for relative path)
-VITE_JS_FILE=$(grep -oP 'src="/assets/index-[^"]+\.js"' dist/public/index.html | sed 's/src="//g' | sed 's/"//g' | sed 's/^\///g')
+# Copy the Vite-built index.html to tv-app
+cp dist/public/index.html tv-app/index.html
 
-# Extract the actual hashed CSS filename from Vite's build (strip leading slash for relative path)
-VITE_CSS_FILE=$(grep -oP 'href="/assets/index-[^"]+\.css"' dist/public/index.html | sed 's/href="//g' | sed 's/"//g' | sed 's/^\///g')
+# Convert ALL absolute local paths to relative paths for TV compatibility
+# This catches any path starting with "/" that's NOT an external URL (http:// or https://)
+# Examples: /assets/..., /css/..., /js/..., /favicon.ico, etc.
+sed -i -E 's/(href|src)="\/([^/])/\1="\2/g' tv-app/index.html
 
-# Copy template to create fresh index.html
-cp tv-app/index.template.html tv-app/index.html
-
-# Update index.html with the correct hashed filenames
-if [ ! -z "$VITE_JS_FILE" ]; then
-    sed -i "s|<!--VITE_JS_PLACEHOLDER-->|<script type=\"module\" src=\"${VITE_JS_FILE}\"></script>|g" tv-app/index.html
-    echo "✓ Updated index.html to use JS: ${VITE_JS_FILE}"
-else
-    echo "⚠️  Warning: Could not find hashed JS file in build output"
-fi
-
-if [ ! -z "$VITE_CSS_FILE" ]; then
-    sed -i "s|<!--VITE_CSS_PLACEHOLDER-->|<link rel=\"stylesheet\" href=\"${VITE_CSS_FILE}\">|g" tv-app/index.html
-    echo "✓ Updated index.html to use CSS: ${VITE_CSS_FILE}"
-else
-    # If no CSS found, just remove the placeholder
-    sed -i "s|<!--VITE_CSS_PLACEHOLDER-->||g" tv-app/index.html
-fi
+echo "✓ Converted all absolute paths to relative paths for TV compatibility"
 
 echo "✅ Build complete!"
 echo ""

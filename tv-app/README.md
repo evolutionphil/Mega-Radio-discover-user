@@ -37,10 +37,14 @@ From the project root directory, run the automated build script:
 This script will:
 1. Build the React app with Vite (`npm run build`)
 2. Copy all assets from `dist/public/assets` to `tv-app/assets`
-3. **Automatically update `tv-app/index.html` with the correct hashed filenames** (e.g., `index-abc123.js`)
+3. **Copy Vite's built index.html and convert ALL absolute paths to relative paths**
+   - Converts `/assets/...` → `assets/...`
+   - Converts `/css/...` → `css/...`
+   - Converts `/js/...` → `js/...`
+   - Converts `/webOSTVjs-1.2.0/...` → `webOSTVjs-1.2.0/...`
 4. Prepare a complete, ready-to-deploy TV app package
 
-**Why automatic filename update?** Vite builds with hashed filenames for cache busting (e.g., `index-4d3f2e1a.js`). The build script automatically extracts these filenames and updates the TV app's index.html to reference them correctly.
+**Why path conversion?** TV platforms (Samsung Tizen and LG webOS) require relative paths to load resources from the packaged app. Absolute paths (starting with `/`) will fail to load and result in a black screen.
 
 ### Step 3: Open in Tizen Studio
 

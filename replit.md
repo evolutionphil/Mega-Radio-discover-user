@@ -217,7 +217,10 @@ tv-app/
 1. Run `./build-tv-app.sh` to build and prepare the TV app
 2. The script builds the React app with Vite
 3. Copies built assets from `dist/public/` to `tv-app/assets/`
-4. Creates a deployable package ready for TV IDEs
+4. Converts Vite's index.html absolute paths to relative paths (required for TV platforms)
+5. Creates a deployable package ready for TV IDEs
+
+**Critical Fix**: TV platforms require relative paths. The build script converts all absolute paths (`/assets/...`) to relative paths (`assets/...`) to ensure resources load correctly on Samsung Tizen and LG webOS.
 
 **Opening in Tizen Studio (Samsung)**
 1. Open Tizen Studio
