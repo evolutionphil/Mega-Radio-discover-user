@@ -20,6 +20,11 @@ export const RadioPlaying = (): JSX.Element => {
   // Force update trigger for station changes
   const [updateTrigger, setUpdateTrigger] = useState(0);
   
+  // Auto-hide header state
+  const [showHeader, setShowHeader] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
+  
   // Infinite scroll state for similar stations
   const [allSimilarStations, setAllSimilarStations] = useState<Station[]>([]);
   const [isLoadingMoreSimilar, setIsLoadingMoreSimilar] = useState(false);
@@ -123,6 +128,29 @@ export const RadioPlaying = (): JSX.Element => {
     setAllSimilarStations([]);
     setAllLoadedStations([]);
   }, [stationId]);
+
+  // Auto-hide header on scroll
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      const currentScrollY = scrollContainer.scrollTop;
+      
+      // Auto-hide header logic
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        setShowHeader(false);
+      } 
+      else if (currentScrollY < lastScrollY.current) {
+        setShowHeader(true);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll);
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Load more similar stations - client-side pagination from pre-loaded data
   const loadMoreSimilar = async () => {
@@ -295,8 +323,8 @@ export const RadioPlaying = (): JSX.Element => {
       {/* Hidden audio container */}
       <div id="tv-audio-container" style={{ display: 'none' }} />
 
-      {/* Logo */}
-      <div className="absolute left-[31px] top-[64px] h-[57px] w-[164.421px]">
+      {/* Fixed Logo */}
+      <div className="fixed left-[31px] top-[64px] h-[57px] w-[164.421px] z-50">
         <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[27.029px] leading-normal text-white whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
@@ -308,8 +336,12 @@ export const RadioPlaying = (): JSX.Element => {
         </div>
       </div>
 
-      {/* Top Right Controls */}
-      <div className="absolute right-[59px] top-[59px] flex items-center gap-[64px]">
+      {/* Auto-hiding Header Controls (Equalizer, Country, User) */}
+      <div 
+        className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
+        style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
+      >
+        <div className="absolute right-[59px] top-[59px] flex items-center gap-[64px] pointer-events-auto">
         {/* Equalizer Icon */}
         <div className="bg-[rgba(255,255,255,0.1)] rounded-[30px] w-[51px] h-[51px] flex items-center justify-center">
           <div className="flex gap-[2.5px] h-[25px] w-[23.75px]">
@@ -351,10 +383,11 @@ export const RadioPlaying = (): JSX.Element => {
             />
           </div>
         </div>
+        </div>
       </div>
 
-      {/* Left Sidebar */}
-      <div className="absolute left-[64px] top-[242px] flex flex-col gap-[10px]">
+      {/* Fixed Left Sidebar */}
+      <div className="fixed left-[64px] top-[242px] w-[98px] h-[638px] z-50 flex flex-col gap-[10px]">
         <div className="bg-[rgba(255,255,255,0.2)] rounded-[10px] w-[98px] h-[98px] flex flex-col items-center justify-center cursor-pointer" data-tv-focusable="true">
           <div className="w-[32px] h-[32px] mb-[9px]">
             <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -419,8 +452,19 @@ export const RadioPlaying = (): JSX.Element => {
         </div>
       </div>
 
+      {/* Scrollable Content Area */}
+      <div 
+        ref={scrollContainerRef}
+        className="absolute left-[162px] w-[1758px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide transition-all duration-300 ease-in-out"
+        style={{
+          top: showHeader ? '242px' : '64px',
+          height: showHeader ? '838px' : '1016px'
+        }}
+      >
+        <div className="relative w-full">
+
       {/* Station Logo */}
-      <div className="absolute left-[236px] top-[242px] w-[296px] h-[296px] bg-white rounded-[16.692px] overflow-hidden">
+      <div className="absolute left-[74px] top-0 w-[296px] h-[296px] bg-white rounded-[16.692px] overflow-hidden">
         <img 
           src={getStationImage(station)}
           alt={station.name}
@@ -432,7 +476,7 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
 
       {/* Station Info */}
-      <div className="absolute left-[596px] top-[242px]">
+      <div className="absolute left-[434px] top-0">
         {/* Pink Equalizer Icon */}
         <div className="flex gap-[2.5px] h-[35px] w-[33.25px]">
           <div className="w-[8.75px] h-[35px] bg-[#ff4199] rounded-[10px]" />
@@ -494,7 +538,7 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
 
       {/* Player Controls */}
-      <div className="absolute left-[1372px] top-[356px] flex gap-[36.27px]">
+      <div className="absolute left-[1210px] top-[114px] flex gap-[36.27px]">
         {/* Previous Button */}
         <div 
           className="bg-black rounded-[45.096px] w-[90.192px] h-[90.192px] flex items-center justify-center cursor-pointer hover:bg-gray-900 transition-colors"
@@ -553,7 +597,7 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
 
       {/* Similar Radios Section */}
-      <div className="absolute left-[236px] top-[659px]">
+      <div className="absolute left-[74px] top-[417px]">
         <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">Similar Radios</p>
         <p 
           className="absolute right-[-1520px] top-[6px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal cursor-pointer hover:text-gray-300"
@@ -566,7 +610,7 @@ export const RadioPlaying = (): JSX.Element => {
       {/* Similar Radios Horizontal Scroll */}
       <div 
         ref={similarScrollRef}
-        className="absolute left-[236px] top-[733px] flex gap-[19px] overflow-x-auto scrollbar-hide w-[1580px]"
+        className="absolute left-[74px] top-[491px] flex gap-[19px] overflow-x-auto scrollbar-hide w-[1580px]"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {similarStations.map((similarStation, index) => (
@@ -603,7 +647,7 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
 
       {/* Popular Radios Section */}
-      <div className="absolute left-[236px] top-[1095px]">
+      <div className="absolute left-[74px] top-[853px]">
         <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">Popular Radios</p>
         <p 
           className="absolute right-[-1520px] top-[6px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal cursor-pointer hover:text-gray-300"
@@ -614,7 +658,7 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
 
       {/* Popular Radios Grid */}
-      <div className="absolute left-[236px] top-[1169px] grid grid-cols-6 gap-[19px] w-[1580px]">
+      <div className="absolute left-[74px] top-[927px] grid grid-cols-6 gap-[19px] w-[1580px]">
         {popularStations.map((popularStation, index) => (
           <div
             key={popularStation._id || index}
@@ -645,6 +689,9 @@ export const RadioPlaying = (): JSX.Element => {
           <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal">
             See More
           </p>
+        </div>
+      </div>
+
         </div>
       </div>
     </div>
