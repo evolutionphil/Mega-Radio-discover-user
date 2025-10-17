@@ -1,9 +1,15 @@
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 import { useMemo, useEffect, useRef, useState } from "react";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useLocalization } from "@/contexts/LocalizationContext";
+
+// Asset path helper
+function getAssetPath(path: string) {
+  if (path.startsWith('/')) return path;
+  return `/${path}`;
+}
 
 export const RadioPlaying = (): JSX.Element => {
   useTVNavigation();
@@ -24,6 +30,12 @@ export const RadioPlaying = (): JSX.Element => {
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
+  
+  // Country selector state (same as DiscoverNoUser)
+  const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("United States");
+  const [selectedCountryCode, setSelectedCountryCode] = useState("US");
+  const selectedCountryFlag = `https://flagcdn.com/w40/${selectedCountryCode.toLowerCase()}.png`;
   
   // Infinite scroll state for similar stations
   const [allSimilarStations, setAllSimilarStations] = useState<Station[]>([]);
@@ -336,121 +348,178 @@ export const RadioPlaying = (): JSX.Element => {
         </div>
       </div>
 
-      {/* Auto-hiding Header Controls (Equalizer, Country, User) */}
+      {/* Auto-hiding Header Controls (Equalizer, Country, Login) - Exact from DiscoverNoUser */}
       <div 
         className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
         style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
       >
-        <div className="absolute right-[59px] top-[59px] flex items-center gap-[64px] pointer-events-auto">
-        {/* Equalizer Icon */}
-        <div className="bg-[rgba(255,255,255,0.1)] rounded-[30px] w-[51px] h-[51px] flex items-center justify-center">
-          <div className="flex gap-[2.5px] h-[25px] w-[23.75px]">
-            <div className="w-[6.25px] h-[25px] bg-white rounded-[10px]" />
-            <div className="w-[6.25px] h-[17.5px] bg-white rounded-[10px] mt-[7.5px]" />
-            <div className="w-[6.25px] h-[21.25px] bg-white rounded-[10px] mt-[3.75px]" />
+        {/* Equalizer */}
+        <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] pointer-events-auto">
+          <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
+            <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
+            <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
+            <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
           </div>
         </div>
 
         {/* Country Selector */}
-        <div className="bg-[rgba(255,255,255,0.1)] rounded-[30px] h-[51px] px-[15px] flex items-center gap-[10px] cursor-pointer" data-tv-focusable="true">
-          <div className="w-[28.421px] h-[28.421px] rounded-full overflow-hidden">
-            <img 
-              src={`https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`}
-              alt={station.country}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-              }}
-            />
-          </div>
-          <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white">{station.country || 'Unknown'}</p>
-          <div className="w-[23.684px] h-[23.684px] rotate-[-90deg]">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.43 5.93L20.5 12L14.43 18.07" stroke="white" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M3.5 12H20.33" stroke="white" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-        </div>
-
-        {/* User Profile */}
-        <div className="flex items-center gap-[18px]">
-          <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white">Talha Çay</p>
-          <div className="w-[66px] h-[66px] rounded-full overflow-hidden bg-gray-600">
-            <img 
-              src={FALLBACK_IMAGE}
-              alt="User"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-        </div>
-      </div>
-
-      {/* Fixed Left Sidebar */}
-      <div className="fixed left-[64px] top-[242px] w-[98px] h-[638px] z-50 flex flex-col gap-[10px]">
-        <div className="bg-[rgba(255,255,255,0.2)] rounded-[10px] w-[98px] h-[98px] flex flex-col items-center justify-center cursor-pointer" data-tv-focusable="true">
-          <div className="w-[32px] h-[32px] mb-[9px]">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M28.5467 18.48C27.4 24.7733 21.52 29.3333 16 29.3333C9.01333 29.3333 3.33333 23.6533 3.33333 16.6667C3.33333 10.8267 7.34667 5.94667 12.7867 4.38667" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M18.6667 16.6667C18.6667 18.1333 17.4667 19.3333 16 19.3333C14.5333 19.3333 13.3333 18.1333 13.3333 16.6667C13.3333 15.2 14.5333 14 16 14C17.4667 14 18.6667 15.2 18.6667 16.6667Z" fill="white"/>
-              <path d="M29.3333 8V14.6667H22.6667" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M29.3333 8L19.2 18.1333" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white">Discover</p>
-        </div>
-
-        <div className="rounded-[10px] w-[98px] h-[98px] flex flex-col items-center justify-center cursor-pointer" data-tv-focusable="true">
-          <div className="w-[32px] h-[32px] mb-[9px]">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12.24 2.66666L7.92 7.01333C7.44 7.49333 6.66667 7.85333 6.01333 7.85333H2.66667C1.92 7.85333 1.33333 8.44 1.33333 9.18666V14.8133C1.33333 15.56 1.92 16.1467 2.66667 16.1467H6.01333C6.66667 16.1467 7.44 16.5067 7.92 16.9867L12.24 21.3333C13.1733 22.2667 14.6667 21.6267 14.6667 20.28V3.70666C14.6667 2.37333 13.1733 1.73333 12.24 2.66666Z" fill="white"/>
-              <path d="M21.3333 9.33333C23.1467 11.8 23.1467 15.2 21.3333 17.6667" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M24.4267 6.66666C27.8133 10.8267 27.8133 16.9867 24.4267 21.3333" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white">Genres</p>
-        </div>
-
-        <div className="rounded-[10px] w-[98px] h-[98px] flex flex-col items-center justify-center cursor-pointer" data-tv-focusable="true">
-          <div className="w-[32px] h-[32px] mb-[9px]">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15.3333 28.6667C22.6933 28.6667 28.6667 22.6933 28.6667 15.3333C28.6667 7.97333 22.6933 2 15.3333 2C7.97333 2 2 7.97333 2 15.3333C2 22.6933 7.97333 28.6667 15.3333 28.6667Z" fill="white"/>
-              <path d="M27.48 27.48L30 30" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white">Search</p>
-        </div>
-
-        <div className="rounded-[10px] w-[98px] h-[98px] flex flex-col items-center justify-center cursor-pointer" data-tv-focusable="true">
-          <div className="w-[32px] h-[32px] mb-[9px]">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16.9733 4.22666C16.4533 3.62666 15.5467 3.62666 15.0267 4.22666L12.56 7.14666C12.2667 7.49333 11.76 7.78666 11.3333 7.84L7.73333 8.33333C6.8 8.46666 6.53333 9.52 7.17333 10.1733L9.93333 12.9733C10.2667 13.3067 10.44 13.9333 10.3467 14.3733L9.69333 17.92C9.46667 18.9467 10.36 19.72 11.2667 19.24L14.6267 17.4133C15.04 17.1867 15.7067 17.1867 16.12 17.4133L19.48 19.24C20.3867 19.7333 21.2667 18.9467 21.0533 17.92L20.4 14.3733C20.3067 13.9333 20.48 13.3067 20.8133 12.9733L23.5733 10.1733C24.2133 9.52 23.9467 8.46666 23.0133 8.33333L19.4133 7.84C18.9733 7.78666 18.4667 7.49333 18.1867 7.14666L16.9733 4.22666Z" fill="white"/>
-              <path d="M10.6667 28H21.3333" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white">Favorites</p>
-        </div>
-
-        <div className="rounded-[10px] w-[98px] h-[98px] flex flex-col items-center justify-center cursor-pointer" data-tv-focusable="true">
-          <div className="w-[32px] h-[32px] mb-[9px] flex items-center justify-center">
-            <div className="relative w-[32px] h-[32px]">
-              <div className="absolute left-[5.33px] top-[5.33px] w-[21.334px] h-[21.334px] bg-white rounded-[10.667px]" />
-              <div className="absolute inset-0 border-[2.667px] border-solid border-white rounded-[20.267px]" />
+        <div 
+          className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] pointer-events-auto cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors"
+          onClick={() => setIsCountrySelectorOpen(true)}
+          data-testid="button-country-selector"
+          data-tv-focusable="true"
+        >
+          <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
+            <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
+              {selectedCountry}
+            </p>
+            <div className="absolute left-0 size-[28.421px] top-0">
+              <img
+                alt={selectedCountry}
+                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                src={selectedCountryFlag}
+              />
+            </div>
+            <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
+              <div className="flex-none rotate-[270deg]">
+                <div className="relative size-[23.684px]">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src={getAssetPath("figmaAssets/vuesax-outline-arrow-left.svg")}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white">Records</p>
         </div>
 
-        <div className="rounded-[10px] w-[98px] h-[98px] flex flex-col items-center justify-center cursor-pointer" data-tv-focusable="true">
-          <div className="w-[32px] h-[32px] mb-[9px]">
-            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16 20C18.2091 20 20 18.2091 20 16C20 13.7909 18.2091 12 16 12C13.7909 12 12 13.7909 12 16C12 18.2091 13.7909 20 16 20Z" fill="white"/>
-              <path d="M2.66667 17.1067V14.8933C2.66667 13.4133 3.86667 12.2 5.36 12.2C7.62667 12.2 8.53333 10.76 7.4 8.81333C6.74667 7.69333 7.12 6.24 8.25333 5.58667L10.4267 4.29333C11.4133 3.69333 12.6933 4.04 13.2933 5.02667L13.4267 5.25333C14.5467 7.2 16.3733 7.2 17.5067 5.25333L17.64 5.02667C18.24 4.04 19.52 3.69333 20.5067 4.29333L22.68 5.58667C23.8133 6.24 24.1867 7.69333 23.5333 8.81333C22.4 10.76 23.3067 12.2 25.5733 12.2C27.0533 12.2 28.2667 13.4 28.2667 14.8933V17.1067C28.2667 18.5867 27.0667 19.8 25.5733 19.8C23.3067 19.8 22.4 21.24 23.5333 23.1867C24.1867 24.32 23.8133 25.76 22.68 26.4133L20.5067 27.7067C19.52 28.3067 18.24 27.96 17.64 26.9733L17.5067 26.7467C16.3867 24.8 14.56 24.8 13.4267 26.7467L13.2933 26.9733C12.6933 27.96 11.4133 28.3067 10.4267 27.7067L8.25333 26.4133C7.12 25.76 6.74667 24.3067 7.4 23.1867C8.53333 21.24 7.62667 19.8 5.36 19.8C3.86667 19.8 2.66667 18.5867 2.66667 17.1067Z" fill="white"/>
-            </svg>
+        {/* Login Button */}
+        <Link href="/login">
+          <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors pointer-events-auto" data-testid="button-login-header" data-tv-focusable="true">
+            <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
+              {t('login')}
+            </p>
+            <div className="absolute left-[13px] size-[34px] top-[9px]">
+              <img
+                alt=""
+                className="block max-w-none size-full"
+                src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
+              />
+            </div>
           </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white">Settings</p>
-        </div>
+        </Link>
       </div>
+
+      {/* Fixed Left Sidebar - Exact from DiscoverNoUser */}
+      <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-50 pointer-events-auto">
+          {/* Discover */}
+          <Link href="/discover-no-user">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
+              <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('discover')}
+                </p>
+                <div className="absolute left-[20px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src={getAssetPath("figmaAssets/vuesax-bold-radio.svg")}
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Genres */}
+          <Link href="/genres">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
+              <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('genres')}
+                </p>
+                <div className="absolute left-[13px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src={getAssetPath("figmaAssets/vuesax-bold-musicnote.svg")}
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Search */}
+          <Link href="/search">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
+              <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('search')}
+                </p>
+                <div className="absolute left-[12px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src={getAssetPath("figmaAssets/vuesax-bold-search-normal.svg")}
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Favorites */}
+          <Link href="/favorites">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
+              <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('favorites')}
+                </p>
+                <div className="absolute left-[22px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src={getAssetPath("figmaAssets/vuesax-bold-heart.svg")}
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Records */}
+          <Link href="/discover-no-user">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
+              <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('profile_nav_records')}
+                </p>
+                <div className="absolute left-[17px] size-[32px] top-0">
+                  <div className="absolute left-0 size-[32px] top-0">
+                    <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
+                    <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Settings */}
+          <Link href="/settings">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
+              <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('settings')}
+                </p>
+                <div className="absolute left-[18px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
 
       {/* Scrollable Content Area */}
       <div 
