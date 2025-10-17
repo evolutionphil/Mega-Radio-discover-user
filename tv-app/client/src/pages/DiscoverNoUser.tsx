@@ -121,25 +121,25 @@ export const DiscoverNoUser = (): JSX.Element => {
       {/* Gradient Overlay - Fixed */}
       <div className="fixed bg-gradient-to-b from-[0.88%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[48.611%] top-0 w-[1920px] z-0" />
 
-      {/* Fixed Header Section - Auto-hides on scroll down */}
+      {/* Logo - ALWAYS VISIBLE, NEVER HIDES */}
+      <div className="fixed h-[57px] left-[30px] top-[64px] w-[164.421px] z-50 pointer-events-auto">
+        <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
+          <span className="font-bold">mega</span>radio
+        </p>
+        <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
+          <img
+            alt=""
+            className="block max-w-none size-full"
+            src={getAssetPath("figmaAssets/path-8.svg")}
+          />
+        </div>
+      </div>
+
+      {/* Header Controls Section - Auto-hides on scroll down (Equalizer, Country, Login) */}
       <div 
         className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
         style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
       >
-        {/* Logo */}
-        <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] pointer-events-auto">
-          <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
-            <span className="font-bold">mega</span>radio
-          </p>
-          <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
-            <img
-              alt=""
-              className="block max-w-none size-full"
-              src={getAssetPath("figmaAssets/path-8.svg")}
-            />
-          </div>
-        </div>
-
         {/* Equalizer */}
         <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] pointer-events-auto">
           <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
@@ -308,10 +308,14 @@ export const DiscoverNoUser = (): JSX.Element => {
           </Link>
         </div>
 
-      {/* Scrollable Content Area - Starts below header, only this scrolls */}
+      {/* Scrollable Content Area - Moves to top when header hides */}
       <div 
         ref={scrollContainerRef}
-        className="absolute top-[242px] left-[162px] w-[1758px] h-[838px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide"
+        className="absolute left-[162px] w-[1758px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide transition-all duration-300 ease-in-out"
+        style={{
+          top: showHeader ? '242px' : '64px',
+          height: showHeader ? '838px' : '1016px'
+        }}
       >
         <div className="relative pb-[30px]">
         {/* Popular Genres Section */}
