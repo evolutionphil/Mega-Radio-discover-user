@@ -363,17 +363,16 @@ export const RadioPlaying = (): JSX.Element => {
       };
       
       audioPlayerRef.current.onError = (error: any) => {
-        console.error('[RadioPlaying] Audio error:', error);
+        console.log('[RadioPlaying] Audio error (non-critical):', error);
         setIsBuffering(false);
       };
       
       return () => {
-        if (audioPlayerRef.current) {
+        if (audioPlayerRef.current && typeof audioPlayerRef.current.stop === 'function') {
           try {
             audioPlayerRef.current.stop();
           } catch (err) {
-            // Ignore cleanup errors
-            console.log('[RadioPlaying] Audio cleanup completed');
+            // Silently ignore cleanup errors
           }
         }
       };
