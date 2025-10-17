@@ -84,18 +84,21 @@ cat > index.html << 'EOF'
     <script type="text/javascript" src="js/platform-detect.js"></script>
     
     <!-- TV Spatial Navigation (must load before remote keys) -->
-    <script type="text/javascript" src="js/tv-spatial-navigation.js"></script>
+    <script type="text/javascript" src="js/tv-spatial-navigation.js?v=TIMESTAMP_PLACEHOLDER"></script>
     
     <!-- TV Remote Control Keys -->
-    <script type="text/javascript" src="js/tv-remote-keys.js"></script>
+    <script type="text/javascript" src="js/tv-remote-keys.js?v=TIMESTAMP_PLACEHOLDER"></script>
     
     <!-- TV Audio Player -->
-    <script type="text/javascript" src="js/tv-audio-player.js"></script>
+    <script type="text/javascript" src="js/tv-audio-player.js?v=TIMESTAMP_PLACEHOLDER"></script>
     
     <!--VITE_JS_PLACEHOLDER-->
 </body>
 </html>
 EOF
+
+# Generate timestamp for cache busting
+TIMESTAMP=$(date +%s)
 
 # Replace placeholders with actual hashed filenames
 # NOTE: Removed type="module" for Samsung Tizen TV compatibility
@@ -108,6 +111,10 @@ if [ ! -z "$VITE_CSS_FILE" ]; then
     sed -i "s|<!--VITE_CSS_PLACEHOLDER-->|<link rel=\"stylesheet\" crossorigin href=\"${VITE_CSS_FILE}\">|g" index.html
     echo "✓ Added React CSS: ${VITE_CSS_FILE}"
 fi
+
+# Replace timestamp placeholders for cache busting
+sed -i "s|TIMESTAMP_PLACEHOLDER|${TIMESTAMP}|g" index.html
+echo "✓ Added cache-busting timestamp: ${TIMESTAMP}"
 
 echo "✅ Build complete!"
 echo ""

@@ -2,7 +2,7 @@
 (function() {
     'use strict';
     
-    console.log('[TV Spatial Nav] Script loaded and executing...');
+    console.log('[TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled');
 
     window.tvSpatialNav = {
         focusedElement: null,
@@ -96,12 +96,24 @@
             };
         },
         
+        isSidebarElement: function(el) {
+            // Check if element is a sidebar button
+            const testId = el.dataset.testid || '';
+            return testId === 'button-discover' || 
+                   testId === 'button-genres' || 
+                   testId === 'button-search' || 
+                   testId === 'button-favorites' || 
+                   testId === 'button-records' || 
+                   testId === 'button-settings';
+        },
+        
         findBestMatch: function(direction) {
             if (!this.focusedElement) {
                 return this.focusableElements[0] || null;
             }
             
             const current = this.getElementCenter(this.focusedElement);
+            const currentIsSidebar = this.isSidebarElement(this.focusedElement);
             let bestElement = null;
             let bestScore = Infinity;
             
@@ -109,8 +121,22 @@
                 if (el === this.focusedElement) return;
                 
                 const candidate = this.getElementCenter(el);
+                const candidateIsSidebar = this.isSidebarElement(el);
                 let score = Infinity;
                 let isValidDirection = false;
+                
+                // CRITICAL RULE: UP/DOWN never cross between sidebar and content
+                // Only LEFT/RIGHT can move between sidebar and content
+                if ((direction === 'UP' || direction === 'DOWN') && 
+                    (currentIsSidebar !== candidateIsSidebar)) {
+                    // Skip this candidate - cannot navigate UP/DOWN between zones
+                    console.log('[TV Nav] Blocking', direction, 'from', 
+                        (currentIsSidebar ? 'sidebar' : 'content'), 'to', 
+                        (candidateIsSidebar ? 'sidebar' : 'content'),
+                        '- current:', this.focusedElement.dataset.testid,
+                        '- candidate:', el.dataset.testid);
+                    return;
+                }
                 
                 switch(direction) {
                     case 'UP':

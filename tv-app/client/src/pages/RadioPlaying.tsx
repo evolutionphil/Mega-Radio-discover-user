@@ -1,7 +1,7 @@
 import { useLocation, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
-import { useMemo, useEffect, useRef, useState } from "react";
+import { useMemo, useEffect, useRef, useState, useCallback } from "react";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useLocalization } from "@/contexts/LocalizationContext";
 
@@ -217,9 +217,12 @@ export const RadioPlaying = (): JSX.Element => {
       }
       
       // Auto-load more popular stations when focusing on last row
-      const isLastRowCard = focusedElement.getAttribute('data-is-last-row') === 'true';
+      // Use closest() to check parent elements too
+      const lastRowElement = focusedElement.closest('[data-is-last-row="true"]');
+      const isLastRowCard = lastRowElement !== null;
+      
       if (isLastRowCard && hasMorePopular && !isLoadingMorePopular) {
-        console.log('[RadioPlaying] Detected focus on last row, loading more popular stations');
+        console.log('[RadioPlaying] ⚡ TRIGGERING LAZY LOAD - loading more popular stations');
         loadMorePopular();
       }
     };
@@ -231,7 +234,7 @@ export const RadioPlaying = (): JSX.Element => {
       console.log('[RadioPlaying] Auto-scroll monitor stopped');
       clearInterval(intervalId);
     };
-  }, []); // Empty deps - interval runs continuously
+  }, [hasMorePopular, isLoadingMorePopular, loadMorePopular]); // Include dependencies for lazy load
 
   // Load more similar stations - client-side pagination from pre-loaded data
   const loadMoreSimilar = async () => {
@@ -300,33 +303,35 @@ export const RadioPlaying = (): JSX.Element => {
     }
   }, [popularStationsData]);
 
-  // Load more popular stations - client-side pagination
-  const loadMorePopular = () => {
+  // Load more popular stations - client-side pagination (useCallback to avoid stale closures)
+  const loadMorePopular = useCallback(() => {
     if (isLoadingMorePopular || !hasMorePopular) return;
     
     setIsLoadingMorePopular(true);
     
     // Simulate async for smooth UX
     setTimeout(() => {
-      const nextPage = popularStationsPage + 1;
-      const startIdx = popularStationsPage * POPULAR_STATIONS_PER_LOAD;
-      const endIdx = startIdx + POPULAR_STATIONS_PER_LOAD;
-      
-      const nextBatch = allPopularStations.slice(startIdx, endIdx);
-      
-      if (nextBatch.length > 0) {
-        setDisplayedPopularStations(prev => [...prev, ...nextBatch]);
-        setPopularStationsPage(nextPage);
-        setHasMorePopular(endIdx < allPopularStations.length);
-        console.log(`[RadioPlaying] Loaded popular page ${nextPage}, showing ${displayedPopularStations.length + nextBatch.length}/${allPopularStations.length} stations`);
-      } else {
-        setHasMorePopular(false);
-        console.log('[RadioPlaying] No more popular stations to load');
-      }
-      
-      setIsLoadingMorePopular(false);
+      setPopularStationsPage(prevPage => {
+        const nextPage = prevPage + 1;
+        const startIdx = prevPage * POPULAR_STATIONS_PER_LOAD;
+        const endIdx = startIdx + POPULAR_STATIONS_PER_LOAD;
+        
+        const nextBatch = allPopularStations.slice(startIdx, endIdx);
+        
+        if (nextBatch.length > 0) {
+          setDisplayedPopularStations(prev => [...prev, ...nextBatch]);
+          setHasMorePopular(endIdx < allPopularStations.length);
+          console.log(`[RadioPlaying] Loaded popular page ${nextPage}, showing ${endIdx}/${allPopularStations.length} stations`);
+        } else {
+          setHasMorePopular(false);
+          console.log('[RadioPlaying] No more popular stations to load');
+        }
+        
+        setIsLoadingMorePopular(false);
+        return nextPage;
+      });
     }, 100);
-  };
+  }, [isLoadingMorePopular, hasMorePopular, allPopularStations, POPULAR_STATIONS_PER_LOAD]);
 
   const similarStations = allSimilarStations || [];
   const popularStations = displayedPopularStations || [];
@@ -376,6 +381,20 @@ export const RadioPlaying = (): JSX.Element => {
       const playUrl = station.url_resolved || station.url;
       console.log('[RadioPlaying] Auto-playing station:', station.name, 'URL:', playUrl);
       audioPlayerRef.current.play(playUrl);
+    }
+  }, [station]);
+
+  // Auto-focus play/pause button when station loads
+  useEffect(() => {
+    if (station && window.tvSpatialNav) {
+      // Wait a moment for DOM to render
+      setTimeout(() => {
+        const playPauseButton = document.querySelector('[data-testid="button-play-pause"]');
+        if (playPauseButton && window.tvSpatialNav) {
+          console.log('[RadioPlaying] Auto-focusing play/pause button');
+          window.tvSpatialNav.focus(playPauseButton);
+        }
+      }, 300);
     }
   }, [station]);
 
