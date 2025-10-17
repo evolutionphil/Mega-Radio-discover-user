@@ -20,6 +20,11 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   const [searchQuery, setSearchQuery] = useState('');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  // Debug: Log when search query changes
+  useEffect(() => {
+    console.log('[CountrySelector] Search query updated to:', searchQuery);
+  }, [searchQuery]);
+
   // Fetch countries from API
   const { data: countriesData, isLoading, error } = useQuery({
     queryKey: ['/api/countries'],
@@ -76,12 +81,19 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   // Map API countries to component format with flag URLs
   const countries: Country[] = (countriesData?.countries || [])
     .filter(country => country.name && country.iso_3166_1) // Filter out invalid countries
-    .map(country => ({
-      name: country.name,
-      code: country.iso_3166_1,
-      flag: `https://flagcdn.com/w40/${country.iso_3166_1.toLowerCase()}.png`,
-      stationcount: country.stationcount,
-    }))
+    .map(country => {
+      // Use a fallback for countries without proper ISO codes (XX)
+      const flagUrl = country.iso_3166_1 === 'XX' || country.iso_3166_1.length !== 2
+        ? 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40"%3E%3Crect width="40" height="40" fill="%23979797"/%3E%3C/svg%3E'
+        : `https://flagcdn.com/w40/${country.iso_3166_1.toLowerCase()}.png`;
+      
+      return {
+        name: country.name,
+        code: country.iso_3166_1,
+        flag: flagUrl,
+        stationcount: country.stationcount,
+      };
+    })
     .sort((a, b) => (b.stationcount || 0) - (a.stationcount || 0)); // Sort by station count
 
   const filteredCountries = countries
@@ -240,6 +252,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                             alt={country.name}
                             className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
                             src={country.flag}
+                            onError={(e) => {
+                              // Fallback to gray box if flag fails to load
+                              e.currentTarget.style.display = 'none';
+                            }}
                           />
                         </div>
                       </div>
