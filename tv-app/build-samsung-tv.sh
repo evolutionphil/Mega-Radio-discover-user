@@ -72,6 +72,9 @@ cat > index.html << 'EOF'
     <!-- TV Platform Detection -->
     <script type="text/javascript" src="js/platform-detect.js"></script>
     
+    <!-- TV Spatial Navigation (must load before remote keys) -->
+    <script type="text/javascript" src="js/tv-spatial-navigation.js"></script>
+    
     <!-- TV Remote Control Keys -->
     <script type="text/javascript" src="js/tv-remote-keys.js"></script>
     

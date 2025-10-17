@@ -4,32 +4,21 @@ export function useTVNavigation() {
   useEffect(() => {
     // Wait for TV platform scripts to load
     const initNavigation = () => {
-      if (window.tvNavigation && window.platformInfo?.isTV()) {
+      if (window.tvSpatialNav && window.platformInfo?.isTV()) {
         // Update focusable elements
-        window.tvNavigation.updateFocusableElements();
+        window.tvSpatialNav.updateFocusableElements();
         
         // Focus first element if nothing is focused
-        if (!window.tvNavigation.currentFocusedElement && window.tvNavigation.focusableElements.length > 0) {
-          window.tvNavigation.focus(window.tvNavigation.focusableElements[0]);
+        if (!window.tvSpatialNav.focusedElement && window.tvSpatialNav.focusableElements.length > 0) {
+          window.tvSpatialNav.focus(window.tvSpatialNav.focusableElements[0]);
         }
       }
     };
 
     // Mouse hover handler - update TV focus on hover
     const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      
-      // Check if the element is focusable
-      if (window.tvNavigation && window.platformInfo?.isTV()) {
-        const isFocusable = 
-          target.tagName === 'BUTTON' ||
-          target.tagName === 'A' ||
-          target.hasAttribute('data-tv-focusable') ||
-          (target.hasAttribute('tabindex') && target.getAttribute('tabindex') !== '-1');
-        
-        if (isFocusable && window.tvNavigation.focusableElements.includes(target)) {
-          window.tvNavigation.focus(target);
-        }
+      if (window.tvSpatialNav && window.platformInfo?.isTV()) {
+        window.tvSpatialNav.handleMouseOver(e);
       }
     };
 
@@ -66,6 +55,16 @@ declare global {
       isTV: () => boolean;
       isWeb: () => boolean;
       getPlatform: () => string;
+    };
+    tvSpatialNav: {
+      focusedElement: HTMLElement | null;
+      focusableElements: HTMLElement[];
+      init: () => void;
+      updateFocusableElements: () => void;
+      focus: (element: HTMLElement | null) => void;
+      navigate: (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => void;
+      select: () => void;
+      handleMouseOver: (e: MouseEvent) => void;
     };
     tvNavigation: {
       currentFocusedElement: HTMLElement | null;

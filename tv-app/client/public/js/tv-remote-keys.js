@@ -105,72 +105,28 @@
         return tvKey;
     }
     
-    // Navigation state management
+    // Keep backward compatibility with old API
     window.tvNavigation = {
-        currentFocusedElement: null,
-        focusableElements: [],
-        
+        get currentFocusedElement() {
+            return window.tvSpatialNav ? window.tvSpatialNav.focusedElement : null;
+        },
+        get focusableElements() {
+            return window.tvSpatialNav ? window.tvSpatialNav.focusableElements : [];
+        },
         init: function() {
-            this.updateFocusableElements();
+            if (window.tvSpatialNav) window.tvSpatialNav.init();
         },
-        
         updateFocusableElements: function() {
-            // Get all focusable elements
-            this.focusableElements = Array.from(document.querySelectorAll(
-                'button:not([disabled]), a[href], [data-tv-focusable="true"], [tabindex]:not([tabindex="-1"])'
-            )).filter(el => {
-                return el.offsetParent !== null; // Element must be visible
-            });
+            if (window.tvSpatialNav) window.tvSpatialNav.updateFocusableElements();
         },
-        
         focus: function(element) {
-            if (this.currentFocusedElement) {
-                this.currentFocusedElement.classList.remove('tv-focused');
-            }
-            
-            if (element) {
-                element.classList.add('tv-focused');
-                this.currentFocusedElement = element;
-                
-                // Scroll into view if needed
-                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            if (window.tvSpatialNav) window.tvSpatialNav.focus(element);
         },
-        
         navigate: function(direction) {
-            if (!this.currentFocusedElement && this.focusableElements.length > 0) {
-                this.focus(this.focusableElements[0]);
-                return;
-            }
-            
-            // Simple directional navigation (can be enhanced)
-            var currentIndex = this.focusableElements.indexOf(this.currentFocusedElement);
-            var nextIndex = currentIndex;
-            
-            switch(direction) {
-                case 'UP':
-                    nextIndex = currentIndex > 0 ? currentIndex - 1 : this.focusableElements.length - 1;
-                    break;
-                case 'DOWN':
-                    nextIndex = currentIndex < this.focusableElements.length - 1 ? currentIndex + 1 : 0;
-                    break;
-                case 'LEFT':
-                    nextIndex = currentIndex > 0 ? currentIndex - 1 : this.focusableElements.length - 1;
-                    break;
-                case 'RIGHT':
-                    nextIndex = currentIndex < this.focusableElements.length - 1 ? currentIndex + 1 : 0;
-                    break;
-            }
-            
-            if (this.focusableElements[nextIndex]) {
-                this.focus(this.focusableElements[nextIndex]);
-            }
+            if (window.tvSpatialNav) window.tvSpatialNav.navigate(direction);
         },
-        
         select: function() {
-            if (this.currentFocusedElement) {
-                this.currentFocusedElement.click();
-            }
+            if (window.tvSpatialNav) window.tvSpatialNav.select();
         }
     };
     
