@@ -14,6 +14,12 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
+  
+  // Infinite scroll state for country stations
+  const [countryStations, setCountryStations] = useState<Station[]>([]);
+  const [countryPage, setCountryPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
 
   // Fetch ALL genres from API
   const { data: genresData } = useQuery({
@@ -27,17 +33,54 @@ export const DiscoverNoUser = (): JSX.Element => {
     queryFn: () => megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode }),
   });
 
-  // Fetch stations for "More From [Country]" section using selected country
-  const { data: countryStationsData } = useQuery({
-    queryKey: ['/api/stations/country', selectedCountryCode, { limit: 14 }],
-    queryFn: () => megaRadioApi.getPopularStations({ limit: 14, country: selectedCountryCode }),
+  // Fetch initial stations for "More From [Country]" section
+  const { data: initialCountryStationsData } = useQuery({
+    queryKey: ['/api/stations/country', selectedCountryCode, { page: 1 }],
+    queryFn: () => megaRadioApi.getAllStations({ page: 1, limit: 50, country: selectedCountryCode }),
   });
+
+  // Initialize country stations when data is loaded or country changes
+  useEffect(() => {
+    if (initialCountryStationsData?.stations) {
+      setCountryStations(initialCountryStationsData.stations);
+      setCountryPage(1);
+      setHasMoreCountryStations(initialCountryStationsData.stations.length >= 50);
+    }
+  }, [initialCountryStationsData, selectedCountryCode]);
 
   const genres = genresData?.genres || [];
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
-  const countryStations = countryStationsData?.stations?.slice(0, 14) || [];
 
-  // Auto-hide header on scroll down, show on scroll up
+  // Load more country stations
+  const loadMoreCountryStations = async () => {
+    if (isLoadingMore || !hasMoreCountryStations) return;
+
+    setIsLoadingMore(true);
+    const nextPage = countryPage + 1;
+
+    try {
+      const response = await megaRadioApi.getAllStations({
+        page: nextPage,
+        limit: 50,
+        country: selectedCountryCode
+      });
+
+      if (response.stations && response.stations.length > 0) {
+        setCountryStations(prev => [...prev, ...response.stations]);
+        setCountryPage(nextPage);
+        setHasMoreCountryStations(response.stations.length >= 50);
+      } else {
+        setHasMoreCountryStations(false);
+      }
+    } catch (error) {
+      console.error('Error loading more stations:', error);
+      setHasMoreCountryStations(false);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
+  // Auto-hide header on scroll down + infinite scroll for country stations
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
@@ -45,21 +88,29 @@ export const DiscoverNoUser = (): JSX.Element => {
     const handleScroll = () => {
       const currentScrollY = scrollContainer.scrollTop;
       
-      // If scrolling down and past 50px threshold, hide header
+      // Auto-hide header logic
       if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
         setShowHeader(false);
       } 
-      // If scrolling up, show header
       else if (currentScrollY < lastScrollY.current) {
         setShowHeader(true);
       }
       
       lastScrollY.current = currentScrollY;
+
+      // Infinite scroll logic - load more when near bottom (500px before end)
+      const scrollHeight = scrollContainer.scrollHeight;
+      const scrollTop = scrollContainer.scrollTop;
+      const clientHeight = scrollContainer.clientHeight;
+      
+      if (scrollHeight - scrollTop - clientHeight < 500 && hasMoreCountryStations && !isLoadingMore) {
+        loadMoreCountryStations();
+      }
     };
 
     scrollContainer.addEventListener('scroll', handleScroll);
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isLoadingMore, hasMoreCountryStations, countryPage, selectedCountryCode]);
 
   // Fallback image as SVG data URI
   const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#01d7fb"/><text x="100" y="120" font-size="80" fill="white" text-anchor="middle" font-family="Arial">R</text></svg>')}`;
@@ -317,7 +368,12 @@ export const DiscoverNoUser = (): JSX.Element => {
           height: showHeader ? '838px' : '1016px'
         }}
       >
-        <div className="relative pb-[30px]">
+        <div 
+          className="relative pb-[100px]"
+          style={{
+            minHeight: `${1013 + (Math.ceil(countryStations.length / 7) * 294) + 364}px`
+          }}
+        >
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
           Popular Genres
@@ -431,44 +487,21 @@ export const DiscoverNoUser = (): JSX.Element => {
           See More
         </p>
 
-        {/* Country Stations - Row 1 */}
-        {countryStations.slice(0, 7).map((station, index) => (
-          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
-            <div 
-              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1013px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              style={{ left: `${stationRow1Positions[index] - 162}px` }}
-              data-testid={`card-station-${station._id}`}
-              data-tv-focusable="true"
-            >
-              <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-                <img
-                  alt={station.name}
-                  className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                  src={getStationImage(station)}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-                  }}
-                />
-              </div>
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.name}
-              </p>
-              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {getStationCategory(station)}
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-            </div>
-          </Link>
-        ))}
-
-        {/* Country Stations - Row 2 */}
-        {countryStations.slice(7, 14).map((station, index) => {
-          const positions = [74, 304, 534, 764, 994, 1224, 1454];
+        {/* Country Stations - Dynamic Rows with Infinite Scroll */}
+        {countryStations.map((station, index) => {
+          const row = Math.floor(index / 7);
+          const col = index % 7;
+          const positions = [236, 466, 696, 926, 1156, 1386, 1616];
+          const topPosition = 1013 + (row * 294); // 294px between rows
+          
           return (
             <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
               <div 
-                className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1307px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-                style={{ left: `${positions[index]}px` }}
+                className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+                style={{ 
+                  left: `${positions[col] - 162}px`,
+                  top: `${topPosition}px`
+                }}
                 data-testid={`card-station-${station._id}`}
                 data-tv-focusable="true"
               >
@@ -478,7 +511,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                     className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
                     src={getStationImage(station)}
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                      (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                     }}
                   />
                 </div>
@@ -493,6 +526,26 @@ export const DiscoverNoUser = (): JSX.Element => {
             </Link>
           );
         })}
+
+        {/* Loading Indicator */}
+        {isLoadingMore && (
+          <div 
+            className="absolute left-[900px] text-white font-['Ubuntu',Helvetica] text-[20px]"
+            style={{ top: `${1013 + (Math.ceil(countryStations.length / 7) * 294) + 20}px` }}
+          >
+            Loading more stations...
+          </div>
+        )}
+
+        {/* No More Stations Message */}
+        {!hasMoreCountryStations && countryStations.length > 0 && (
+          <div 
+            className="absolute left-[860px] text-white/50 font-['Ubuntu',Helvetica] text-[18px]"
+            style={{ top: `${1013 + (Math.ceil(countryStations.length / 7) * 294) + 20}px` }}
+          >
+            No more stations available
+          </div>
+        )}
         </div>
       </div>
 

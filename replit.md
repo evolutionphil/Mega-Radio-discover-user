@@ -77,6 +77,7 @@ This structure allows:
 - Custom query client with credential-based authentication
 - Optimistic updates disabled (staleTime: Infinity)
 - Custom API request wrapper with automatic error handling
+- Infinite scroll for "More From Selected Country" section (50 stations per page load)
 
 **Key Design Patterns**
 - Component-based architecture with reusable UI primitives
