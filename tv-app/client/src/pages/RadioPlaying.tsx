@@ -266,6 +266,7 @@ export const RadioPlaying = (): JSX.Element => {
               }`}
               style={{ top: `${index * 108}px` }}
               data-testid={`button-${item.label.toLowerCase()}`}
+              data-tv-focusable="true"
             >
               <div className="absolute left-1/2 top-[19px] -translate-x-1/2">
                 {item.customIcon ? (
@@ -403,7 +404,7 @@ export const RadioPlaying = (): JSX.Element => {
       <p className="absolute left-[236px] top-[659px] font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">
         Similar Radios
       </p>
-      <p className="absolute left-[1792.5px] top-[665px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal -translate-x-1/2">
+      <p className="absolute left-[1792.5px] top-[665px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal -translate-x-1/2 cursor-pointer hover:text-gray-300" data-tv-focusable="true">
         See More
       </p>
 
@@ -419,6 +420,7 @@ export const RadioPlaying = (): JSX.Element => {
                     : "w-[200px] h-[264px]"
                 }`}
                 data-testid={`card-similar-${station._id}`}
+                data-tv-focusable="true"
               >
                 <div className={`bg-white ${isFeatured ? "w-[138px] h-[138px] mt-[35.55px] ml-[35.55px]" : "w-[132px] h-[132px] mt-[34px] ml-[34px]"} rounded-[6.6px] overflow-clip`}>
                   <img
@@ -446,7 +448,7 @@ export const RadioPlaying = (): JSX.Element => {
       <p className="absolute left-[236px] top-[1095px] font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">
         Popular Radios
       </p>
-      <p className="absolute left-[1792.5px] top-[1101px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal -translate-x-1/2">
+      <p className="absolute left-[1792.5px] top-[1101px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal -translate-x-1/2 cursor-pointer hover:text-gray-300" data-tv-focusable="true">
         See More
       </p>
 
@@ -456,6 +458,7 @@ export const RadioPlaying = (): JSX.Element => {
             <div
               className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
               data-testid={`card-popular-${station._id}`}
+              data-tv-focusable="true"
             >
               <div className="w-[132px] h-[132px] mt-[34px] mx-auto bg-white rounded-[6.6px] overflow-clip">
                 <img
@@ -476,7 +479,7 @@ export const RadioPlaying = (): JSX.Element => {
             </div>
           </Link>
         ))}
-        <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] flex items-center justify-center" data-testid="button-see-more">
+        <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] flex items-center justify-center cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" data-testid="button-see-more" data-tv-focusable="true">
           <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal">
             See More
           </p>
