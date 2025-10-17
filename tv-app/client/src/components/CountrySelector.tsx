@@ -134,7 +134,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50">
       {/* Backdrop with blur (transparent) */}
       <div 
         className="absolute inset-0 backdrop-blur-[7px] backdrop-filter"
@@ -142,8 +142,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         data-testid="country-selector-backdrop"
       />
 
-      {/* Modal Container */}
-      <div className="relative">
+      {/* Modal Container - Centered using absolute positioning for TV compatibility */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         {/* Back Button */}
         <div 
           className="absolute left-0 top-[-43px] h-[24px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity"
