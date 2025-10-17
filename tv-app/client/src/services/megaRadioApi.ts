@@ -223,9 +223,10 @@ export const megaRadioApi = {
   },
 
   // Genres
-  getAllGenres: async (): Promise<{ genres: Genre[] }> => {
+  getAllGenres: async (country?: string): Promise<{ genres: Genre[] }> => {
     try {
-      const url = buildApiUrl('/genres');
+      const params = country ? new URLSearchParams({ country }) : undefined;
+      const url = buildApiUrl('/genres', params);
       console.log('[API] getAllGenres:', url);
       const response = await fetch(url);
       console.log('[API] getAllGenres response:', response.status);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { megaRadioApi } from '@/services/megaRadioApi';
 
@@ -25,6 +25,25 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     queryFn: () => megaRadioApi.getAllCountries(),
     enabled: isOpen,
   });
+
+  // Initialize TV navigation when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const timeout = setTimeout(() => {
+        if ((window as any).tvSpatialNav) {
+          console.log('[CountrySelector] Initializing TV navigation');
+          (window as any).tvSpatialNav.init();
+          
+          // Focus the search input first
+          const searchInput = document.querySelector('[data-testid="input-country-search"]') as HTMLElement;
+          if (searchInput) {
+            (window as any).tvSpatialNav.focus(searchInput);
+          }
+        }
+      }, 200);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -60,7 +79,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         <div 
           className="absolute left-0 top-[-43px] h-[24px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity"
           onClick={onClose}
-          data-testid="button-back"
+          data-testid="button-back-country-selector"
+          data-tv-focusable="true"
         >
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[#c8c8c8] text-[19.027px] top-px">
             Back
@@ -94,6 +114,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                   placeholder="Country"
                   className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[25.945px] text-white bg-transparent border-none outline-none placeholder:text-white/60 w-[800px]"
                   data-testid="input-country-search"
+                  data-tv-focusable="true"
                 />
               </div>
             </div>
@@ -114,6 +135,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                   style={{ marginTop: index === 0 ? 0 : '15px' }}
                   onClick={() => handleCountryClick(country)}
                   data-testid={`country-option-${country.code}`}
+                  data-tv-focusable="true"
                 >
                   <div className="h-[70px] overflow-clip relative rounded-[inherit] w-[967px]">
                     <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[70px] not-italic text-[15px] text-white top-[26px]">

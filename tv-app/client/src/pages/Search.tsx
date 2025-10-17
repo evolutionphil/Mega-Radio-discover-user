@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
@@ -6,6 +6,7 @@ import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const Search = (): JSX.Element => {
   useTVNavigation();
+  const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -277,22 +278,22 @@ export const Search = (): JSX.Element => {
         const topPositions = [259, 359, 459, 559];
         
         return (
-          <Link 
-            key={station._id || index} 
-            href={`/radio-playing?station=${station._id}`}
+          <div
+            key={station._id || index}
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] h-[65px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+            style={{ top: `${topPositions[index]}px` }}
+            data-testid={`search-result-${index}`}
+            data-tv-focusable="true"
+            onClick={() => {
+              console.log('[Search] Navigating to station:', station._id);
+              setLocation(`/radio-playing?station=${station._id}`);
+            }}
           >
-            <a
-              className="absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] h-[65px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors no-underline"
-              style={{ top: `${topPositions[index]}px` }}
-              data-testid={`search-result-${index}`}
-              data-tv-focusable="true"
-            >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
-                {highlightText(station.name, searchQuery)}
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]" />
-            </a>
-          </Link>
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
+              {highlightText(station.name, searchQuery)}
+            </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]" />
+          </div>
         );
       })}
 
@@ -316,19 +317,20 @@ export const Search = (): JSX.Element => {
         const topPositions = [136, 430, 724];
         
         return (
-          <Link 
-            key={station._id || index} 
-            href={`/radio-playing?station=${station._id}`}
+          <div 
+            key={station._id || index}
+            className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
+            style={{ 
+              left: `${leftPositions[col]}px`,
+              top: `${topPositions[row]}px`
+            }}
+            data-testid={`recent-station-${index}`}
+            data-tv-focusable="true"
+            onClick={() => {
+              console.log('[Search] Navigating to recent station:', station._id);
+              setLocation(`/radio-playing?station=${station._id}`);
+            }}
           >
-            <a 
-              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors no-underline" 
-              style={{ 
-                left: `${leftPositions[col]}px`,
-                top: `${topPositions[row]}px`
-              }}
-              data-testid={`recent-station-${index}`}
-              data-tv-focusable="true"
-            >
               <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                 <img
                   alt={station.name}
@@ -346,8 +348,7 @@ export const Search = (): JSX.Element => {
                 {getStationCategory(station)}
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-            </a>
-          </Link>
+            </div>
         );
       })}
     </div>

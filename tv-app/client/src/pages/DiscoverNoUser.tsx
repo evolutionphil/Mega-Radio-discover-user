@@ -34,10 +34,10 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
   const STATIONS_PER_LOAD = 56;
 
-  // Fetch ALL genres from API
+  // Fetch ALL genres from API filtered by country
   const { data: genresData } = useQuery({
-    queryKey: ['/api/genres/all'],
-    queryFn: () => megaRadioApi.getAllGenres(),
+    queryKey: ['/api/genres/all', selectedCountryCode],
+    queryFn: () => megaRadioApi.getAllGenres(selectedCountryCode),
   });
 
   // Fetch popular stations filtered by selected country
