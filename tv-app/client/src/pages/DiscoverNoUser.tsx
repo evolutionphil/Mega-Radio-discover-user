@@ -17,6 +17,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Update country when localization detects it
   useEffect(() => {
     if (detectedCountry && detectedCountryCode) {
+      console.log('[DiscoverNoUser] Setting country from localization:', detectedCountry, detectedCountryCode);
       setSelectedCountry(detectedCountry);
       setSelectedCountryCode(detectedCountryCode);
     }
@@ -42,7 +43,10 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Fetch popular stations filtered by selected country
   const { data: popularStationsData } = useQuery({
     queryKey: ['/api/stations/popular', { limit: 24, country: selectedCountryCode }],
-    queryFn: () => megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode }),
+    queryFn: () => {
+      console.log('[DiscoverNoUser] Fetching popular stations for country:', selectedCountryCode);
+      return megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode });
+    },
   });
 
   // Fetch ALL stations for the country (we'll paginate on frontend)
