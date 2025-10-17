@@ -48,10 +48,18 @@
                 
                 function handleResponse() {
                     console.log('[Fetch] Response status:', xhr.status, 'for', url);
+                    console.log('[Fetch] CORS Headers:', {
+                        'Access-Control-Allow-Origin': xhr.getResponseHeader('Access-Control-Allow-Origin'),
+                        'Access-Control-Allow-Methods': xhr.getResponseHeader('Access-Control-Allow-Methods'),
+                        'Content-Type': xhr.getResponseHeader('Content-Type'),
+                        'Content-Length': xhr.getResponseHeader('Content-Length')
+                    });
                     
                     // Try both response and responseText for Samsung TV compatibility
                     var responseText = xhr.response || xhr.responseText || '';
                     console.log('[Fetch] Response text length:', responseText ? responseText.length : 0);
+                    console.log('[Fetch] xhr.response type:', typeof xhr.response);
+                    console.log('[Fetch] xhr.responseText type:', typeof xhr.responseText);
                     
                     if (typeof responseText !== 'string') {
                         responseText = String(responseText);
