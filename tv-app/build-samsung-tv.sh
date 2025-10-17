@@ -2,9 +2,9 @@
 
 echo "🔨 Building Mega Radio Samsung TV App..."
 
-# Step 1: Build React app with Vite
-echo "📦 Step 1: Building React app with Vite..."
-npm run build
+# Step 1: Build React app with Vite (TV-specific config)
+echo "📦 Step 1: Building React app for Samsung TV (IIFE format)..."
+vite build --config vite.config.tv.ts
 
 # Step 2: Copy built assets to assets folder
 echo "📂 Step 2: Copying built assets to assets folder..."
@@ -80,9 +80,10 @@ cat > index.html << 'EOF'
 EOF
 
 # Replace placeholders with actual hashed filenames
+# NOTE: Removed type="module" for Samsung Tizen TV compatibility
 if [ ! -z "$VITE_JS_FILE" ]; then
-    sed -i "s|<!--VITE_JS_PLACEHOLDER-->|<script type=\"module\" crossorigin src=\"${VITE_JS_FILE}\"></script>|g" index.html
-    echo "✓ Added React JS: ${VITE_JS_FILE}"
+    sed -i "s|<!--VITE_JS_PLACEHOLDER-->|<script crossorigin src=\"${VITE_JS_FILE}\"></script>|g" index.html
+    echo "✓ Added React JS: ${VITE_JS_FILE} (non-module for TV compatibility)"
 fi
 
 if [ ! -z "$VITE_CSS_FILE" ]; then
