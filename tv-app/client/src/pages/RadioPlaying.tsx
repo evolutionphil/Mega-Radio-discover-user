@@ -229,19 +229,26 @@ export const RadioPlaying = (): JSX.Element => {
   };
 
   const handleNext = () => {
-    // Find next unplayed similar station (avoid immediate history)
+    // Cycle through similar stations sequentially (like a playlist)
     console.log('[RadioPlaying] Next clicked, similar stations:', similarStations.length);
     console.log('[RadioPlaying] Current station:', stationId);
-    console.log('[RadioPlaying] History:', stationHistoryRef.current);
     
     if (similarStations.length > 0) {
-      // Filter out stations that are in recent history (last 3)
-      const recentHistory = stationHistoryRef.current.slice(-3);
-      const unplayedStations = similarStations.filter(s => !recentHistory.includes(s._id));
+      // Find the current station in the similar stations list
+      const currentIndex = similarStations.findIndex(s => s._id === stationId);
       
-      // If all similar stations have been played recently, just use the first one
-      const nextStation = unplayedStations.length > 0 ? unplayedStations[0] : similarStations[0];
+      // If current station is in the list, go to next one (with wraparound)
+      // If not in the list, just play the first similar station
+      let nextIndex;
+      if (currentIndex >= 0) {
+        nextIndex = (currentIndex + 1) % similarStations.length;
+        console.log('[RadioPlaying] Current station index:', currentIndex, '-> Next index:', nextIndex);
+      } else {
+        nextIndex = 0;
+        console.log('[RadioPlaying] Current station not in similar list, starting at index 0');
+      }
       
+      const nextStation = similarStations[nextIndex];
       console.log('[RadioPlaying] Playing next station:', nextStation.name, nextStation._id);
       
       // Update URL with hash routing format: /?station=xxx#/radio-playing
