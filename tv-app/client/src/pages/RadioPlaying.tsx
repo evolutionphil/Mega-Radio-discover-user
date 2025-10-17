@@ -164,6 +164,41 @@ export const RadioPlaying = (): JSX.Element => {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Auto-scroll to top when focus moves to top elements (player controls, sidebar)
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const handleFocusChange = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      
+      // Check if focused element is in the top fixed area (sidebar, header, or player controls)
+      const isTopElement = target.closest('[data-testid^="button-"]') && 
+        (target.closest('[data-testid^="button-discover"]') ||
+         target.closest('[data-testid^="button-genres"]') ||
+         target.closest('[data-testid^="button-search"]') ||
+         target.closest('[data-testid^="button-favorites"]') ||
+         target.closest('[data-testid^="button-records"]') ||
+         target.closest('[data-testid^="button-settings"]') ||
+         target.closest('[data-testid^="button-country-selector"]') ||
+         target.closest('[data-testid^="button-login-header"]') ||
+         target.closest('[data-testid^="button-previous"]') ||
+         target.closest('[data-testid^="button-play-pause"]') ||
+         target.closest('[data-testid^="button-next"]') ||
+         target.closest('[data-testid^="button-favorite"]'));
+      
+      if (isTopElement && scrollContainer.scrollTop > 100) {
+        // Smooth scroll to top
+        scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        setShowHeader(true);
+      }
+    };
+
+    // Listen to focus events on the document
+    document.addEventListener('focusin', handleFocusChange, true);
+    return () => document.removeEventListener('focusin', handleFocusChange, true);
+  }, []);
+
   // Load more similar stations - client-side pagination from pre-loaded data
   const loadMoreSimilar = async () => {
     if (isLoadingMoreSimilar || !hasMoreSimilar) return;
