@@ -75,9 +75,35 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     }))
     .sort((a, b) => (b.stationcount || 0) - (a.stationcount || 0)); // Sort by station count
 
-  const filteredCountries = countries.filter(country =>
-    country.name && country.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredCountries = countries
+    .filter(country =>
+      country.name && country.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (!searchQuery) {
+        // No search: sort by station count
+        return (b.stationcount || 0) - (a.stationcount || 0);
+      }
+      
+      const queryLower = searchQuery.toLowerCase();
+      const aNameLower = a.name.toLowerCase();
+      const bNameLower = b.name.toLowerCase();
+      
+      // Priority 1: Exact match
+      const aExact = aNameLower === queryLower;
+      const bExact = bNameLower === queryLower;
+      if (aExact && !bExact) return -1;
+      if (!aExact && bExact) return 1;
+      
+      // Priority 2: Starts with search query
+      const aStarts = aNameLower.startsWith(queryLower);
+      const bStarts = bNameLower.startsWith(queryLower);
+      if (aStarts && !bStarts) return -1;
+      if (!aStarts && bStarts) return 1;
+      
+      // Priority 3: Alphabetical order
+      return a.name.localeCompare(b.name);
+    });
 
   console.log('[CountrySelector] Total countries after filter:', countries.length);
   console.log('[CountrySelector] Filtered countries for search "' + searchQuery + '":', filteredCountries.length);
