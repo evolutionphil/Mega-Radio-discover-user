@@ -11,6 +11,11 @@ echo "📂 Step 2: Copying built assets to assets folder..."
 mkdir -p assets
 cp -r dist/public/assets/* assets/
 
+# Copy figmaAssets to images folder (Samsung TV standard location)
+echo "📂 Step 2a: Copying assets to images folder (TV standard location)..."
+mkdir -p images
+cp -r client/public/figmaAssets/* images/ 2>/dev/null || echo "Warning: figmaAssets not found"
+
 # Copy TV styles CSS
 cp client/public/css/tv-styles.css css/tv-styles.css 2>/dev/null || echo "Warning: tv-styles.css not found"
 

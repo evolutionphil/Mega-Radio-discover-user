@@ -37,6 +37,18 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Fallback image as SVG data URI
   const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#01d7fb"/><text x="100" y="120" font-size="80" fill="white" text-anchor="middle" font-family="Arial">R</text></svg>')}`;
 
+  // Helper function to get correct asset path for both dev and Samsung TV
+  const getAssetPath = (path: string) => {
+    // For Samsung TV (production build), use relative paths with images/ folder
+    // For dev (browser), use absolute paths with figmaAssets/
+    if (import.meta.env.PROD) {
+      // Production: Use images/ folder (Samsung TV standard location)
+      return path.replace('figmaAssets/', 'images/');
+    }
+    // Development: Use figmaAssets/ folder
+    return path.startsWith('/') ? path : '/' + path;
+  };
+
   // Helper function to get station image
   const getStationImage = (station: Station) => {
     if (station.favicon) {
@@ -69,13 +81,13 @@ export const DiscoverNoUser = (): JSX.Element => {
   const stationRow2Positions = [236, 466, 696, 926, 1156, 1386, 1616];
 
   return (
-    <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-discover-no-user">
+    <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-y-auto overflow-x-hidden" data-testid="page-discover-no-user">
       {/* Background Image - Fixed */}
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px] z-0">
         <img
           alt=""
           className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-          src="/figmaAssets/hand-crowd-disco-1.png"
+          src={getAssetPath("figmaAssets/hand-crowd-disco-1.png")}
         />
       </div>
 
@@ -93,7 +105,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             <img
               alt=""
               className="block max-w-none size-full"
-              src="/figmaAssets/path-8.svg"
+              src={getAssetPath("figmaAssets/path-8.svg")}
             />
           </div>
         </div>
@@ -131,7 +143,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src="/figmaAssets/vuesax-outline-arrow-left.svg"
+                    src={getAssetPath("figmaAssets/vuesax-outline-arrow-left.svg")}
                   />
                 </div>
               </div>
@@ -149,14 +161,15 @@ export const DiscoverNoUser = (): JSX.Element => {
               <img
                 alt=""
                 className="block max-w-none size-full"
-                src="/figmaAssets/vuesax-bold-setting-2.svg"
+                src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
               />
             </div>
           </div>
         </Link>
+      </div>
 
-        {/* Left Sidebar */}
-        <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] pointer-events-auto">
+      {/* Fixed Left Sidebar */}
+      <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-10 pointer-events-auto">
           {/* Discover - Active */}
           <Link href="/discover-no-user">
             <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
@@ -168,7 +181,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src="/figmaAssets/vuesax-bold-radio.svg"
+                    src={getAssetPath("figmaAssets/vuesax-bold-radio.svg")}
                   />
                 </div>
               </div>
@@ -186,7 +199,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src="/figmaAssets/vuesax-bold-musicnote.svg"
+                    src={getAssetPath("figmaAssets/vuesax-bold-musicnote.svg")}
                   />
                 </div>
               </div>
@@ -204,7 +217,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src="/figmaAssets/vuesax-bold-search-normal.svg"
+                    src={getAssetPath("figmaAssets/vuesax-bold-search-normal.svg")}
                   />
                 </div>
               </div>
@@ -222,7 +235,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src="/figmaAssets/vuesax-bold-heart.svg"
+                    src={getAssetPath("figmaAssets/vuesax-bold-heart.svg")}
                   />
                 </div>
               </div>
@@ -257,17 +270,16 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src="/figmaAssets/vuesax-bold-setting-2.svg"
+                    src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
                   />
                 </div>
               </div>
             </div>
           </Link>
         </div>
-      </div>
 
-      {/* Scrollable Content */}
-      <div className="relative pb-[30px] z-1">
+      {/* Scrollable Content - Add top padding to prevent overlap with fixed header */}
+      <div className="relative pb-[30px] pt-[242px] z-1">
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
           Popular Genres
