@@ -81,9 +81,9 @@ export const DiscoverNoUser = (): JSX.Element => {
   const stationRow2Positions = [236, 466, 696, 926, 1156, 1386, 1616];
 
   return (
-    <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-y-auto overflow-x-hidden" data-testid="page-discover-no-user">
+    <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-discover-no-user">
       {/* Background Image - Fixed */}
-      <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px] z-0">
+      <div className="fixed h-[1292px] left-[-10px] top-[-523px] w-[1939px] z-0">
         <img
           alt=""
           className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
@@ -92,10 +92,10 @@ export const DiscoverNoUser = (): JSX.Element => {
       </div>
 
       {/* Gradient Overlay - Fixed */}
-      <div className="absolute bg-gradient-to-b from-[0.88%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[48.611%] top-0 w-[1920px] z-0" />
+      <div className="fixed bg-gradient-to-b from-[0.88%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[48.611%] top-0 w-[1920px] z-0" />
 
-      {/* Fixed Header Section */}
-      <div className="fixed top-0 left-0 w-[1920px] h-[242px] z-10 pointer-events-none">
+      {/* Fixed Header Section - Always on top, never scrolls */}
+      <div className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none bg-gradient-to-b from-[rgba(14,14,14,0.95)] to-transparent">
         {/* Logo */}
         <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] pointer-events-auto">
           <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
@@ -169,7 +169,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       </div>
 
       {/* Fixed Left Sidebar */}
-      <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-10 pointer-events-auto">
+      <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-50 pointer-events-auto">
           {/* Discover - Active */}
           <Link href="/discover-no-user">
             <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
@@ -278,8 +278,9 @@ export const DiscoverNoUser = (): JSX.Element => {
           </Link>
         </div>
 
-      {/* Scrollable Content - Add top padding to prevent overlap with fixed header */}
-      <div className="relative pb-[30px] pt-[242px] z-1">
+      {/* Scrollable Content Area - Only this section scrolls */}
+      <div className="absolute top-0 left-0 w-[1920px] h-[1080px] overflow-y-auto overflow-x-hidden z-1">
+        <div className="relative pb-[30px] pt-[242px]">
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
           Popular Genres
@@ -455,6 +456,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             </Link>
           );
         })}
+        </div>
       </div>
 
       {/* Country Selector Modal */}
