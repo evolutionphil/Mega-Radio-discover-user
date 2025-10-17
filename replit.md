@@ -45,11 +45,12 @@ The `tv-app/` directory is the complete Samsung Tizen project. A build script (`
 
 ### System Design Choices
 
-**CORS Solution for Samsung TV:**
--   `fetch-polyfill-samsung.js` replaces native `fetch()` with `XMLHttpRequest` to mitigate strict CORS policies.
--   Backend Express server provides `/api/proxy/*` endpoints to forward requests to the Mega Radio API.
+**Samsung TV Network Configuration:**
+-   `fetch-polyfill-samsung.js` replaces native `fetch()` with `XMLHttpRequest` for better Samsung TV compatibility.
+-   Direct API calls to `https://themegaradio.com/api` (CORS headers added on backend).
 -   Polyfill loads before the React app in `index.html`.
 -   `config.xml` includes `http://tizen.org/privilege/internet` and `http://developer.samsung.com/privilege/network.public` for network access.
+-   Backend Express server provides optional `/api/proxy/*` endpoints for development/testing.
 
 **TV Platform Support (LG webOS & Samsung Tizen):**
 -   **Platform Detection:** Automatic via user agent.

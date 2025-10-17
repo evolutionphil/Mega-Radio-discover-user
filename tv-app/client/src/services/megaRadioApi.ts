@@ -1,21 +1,13 @@
 // Mega Radio API Service
-// Samsung TV MUST use backend proxy because API has NO CORS headers
+const BASE_URL = 'https://themegaradio.com';
+const API_PREFIX = '/api';
+
 const isSamsungTV = typeof window !== 'undefined' && (
   navigator.userAgent.toLowerCase().includes('tizen') ||
   navigator.userAgent.toLowerCase().includes('samsung')
 );
 
-// Public CORS proxy for Samsung TV (no backend needed)
-// Using allorigins.win - a free CORS proxy service
-const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
-
-// IMPORTANT: API has no CORS! Samsung TV must use CORS proxy
-// Browser: Direct API call (works from browser/simulator)
-// Samsung TV: CORS proxy wraps the API call
-const BASE_URL = isSamsungTV ? `${CORS_PROXY}https://themegaradio.com` : 'https://themegaradio.com';
-const API_PREFIX = '/api';
-
-console.log('[MegaRadio API] Platform:', isSamsungTV ? 'Samsung TV (using CORS proxy)' : 'Web Browser (direct)');
+console.log('[MegaRadio API] Platform:', isSamsungTV ? 'Samsung TV' : 'Web Browser');
 console.log('[MegaRadio API] BASE_URL:', BASE_URL);
 
 export interface Station {
