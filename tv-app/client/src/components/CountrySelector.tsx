@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { megaRadioApi } from '@/services/megaRadioApi';
 
@@ -79,54 +79,59 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   if (!isOpen) return null;
 
   // Map API countries to component format with flag URLs
-  const countries: Country[] = (countriesData?.countries || [])
-    .filter(country => country.name && country.iso_3166_1) // Filter out invalid countries
-    .map(country => {
-      // Use a fallback for countries without proper ISO codes (XX)
-      const flagUrl = country.iso_3166_1 === 'XX' || country.iso_3166_1.length !== 2
-        ? 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40"%3E%3Crect width="40" height="40" fill="%23979797"/%3E%3C/svg%3E'
-        : `https://flagcdn.com/w40/${country.iso_3166_1.toLowerCase()}.png`;
-      
-      return {
-        name: country.name,
-        code: country.iso_3166_1,
-        flag: flagUrl,
-        stationcount: country.stationcount,
-      };
-    })
-    .sort((a, b) => (b.stationcount || 0) - (a.stationcount || 0)); // Sort by station count
+  const countries: Country[] = useMemo(() => {
+    return (countriesData?.countries || [])
+      .filter(country => country.name && country.iso_3166_1) // Filter out invalid countries
+      .map(country => {
+        // Use a fallback for countries without proper ISO codes (XX)
+        const flagUrl = country.iso_3166_1 === 'XX' || country.iso_3166_1.length !== 2
+          ? 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40"%3E%3Crect width="40" height="40" fill="%23979797"/%3E%3C/svg%3E'
+          : `https://flagcdn.com/w40/${country.iso_3166_1.toLowerCase()}.png`;
+        
+        return {
+          name: country.name,
+          code: country.iso_3166_1,
+          flag: flagUrl,
+          stationcount: country.stationcount,
+        };
+      })
+      .sort((a, b) => (b.stationcount || 0) - (a.stationcount || 0)); // Sort by station count
+  }, [countriesData]);
 
-  const filteredCountries = countries
-    .filter(country => {
-      if (!country.name) return false;
-      const matches = country.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matches;
-    })
-    .sort((a, b) => {
-      if (!searchQuery) {
-        // No search: sort by station count
-        return (b.stationcount || 0) - (a.stationcount || 0);
-      }
-      
-      const queryLower = searchQuery.toLowerCase();
-      const aNameLower = a.name.toLowerCase();
-      const bNameLower = b.name.toLowerCase();
-      
-      // Priority 1: Exact match
-      const aExact = aNameLower === queryLower;
-      const bExact = bNameLower === queryLower;
-      if (aExact && !bExact) return -1;
-      if (!aExact && bExact) return 1;
-      
-      // Priority 2: Starts with search query
-      const aStarts = aNameLower.startsWith(queryLower);
-      const bStarts = bNameLower.startsWith(queryLower);
-      if (aStarts && !bStarts) return -1;
-      if (!aStarts && bStarts) return 1;
-      
-      // Priority 3: Alphabetical order
-      return a.name.localeCompare(b.name);
-    });
+  const filteredCountries = useMemo(() => {
+    console.log('[CountrySelector] useMemo: Recalculating filtered countries for query:', searchQuery);
+    return countries
+      .filter(country => {
+        if (!country.name) return false;
+        const matches = country.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return matches;
+      })
+      .sort((a, b) => {
+        if (!searchQuery) {
+          // No search: sort by station count
+          return (b.stationcount || 0) - (a.stationcount || 0);
+        }
+        
+        const queryLower = searchQuery.toLowerCase();
+        const aNameLower = a.name.toLowerCase();
+        const bNameLower = b.name.toLowerCase();
+        
+        // Priority 1: Exact match
+        const aExact = aNameLower === queryLower;
+        const bExact = bNameLower === queryLower;
+        if (aExact && !bExact) return -1;
+        if (!aExact && bExact) return 1;
+        
+        // Priority 2: Starts with search query
+        const aStarts = aNameLower.startsWith(queryLower);
+        const bStarts = bNameLower.startsWith(queryLower);
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
+        
+        // Priority 3: Alphabetical order
+        return a.name.localeCompare(b.name);
+      });
+  }, [countries, searchQuery]);
 
   console.log('[CountrySelector] ===== RENDER INFO =====');
   console.log('[CountrySelector] Total countries loaded:', countries.length);
@@ -217,6 +222,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           <div 
             ref={scrollContainerRef}
             className="absolute left-[20px] top-[119px] w-[967px] h-[395px] overflow-y-auto"
+            key={`countries-list-${searchQuery}`}
           >
             {isLoading ? (
               <div className="flex items-center justify-center h-full">
