@@ -7,30 +7,30 @@ import { CountrySelector } from "@/components/CountrySelector";
 export const DiscoverNoUser = (): JSX.Element => {
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('Austria');
+  const [selectedCountryCode, setSelectedCountryCode] = useState('AT');
   const [selectedCountryFlag, setSelectedCountryFlag] = useState('/figmaAssets/austria-1.png');
 
-  // Fetch popular genres
+  // Fetch ALL genres from API
   const { data: genresData } = useQuery({
-    queryKey: ['/api/genres/discoverable'],
-    queryFn: () => megaRadioApi.getDiscoverableGenres(),
+    queryKey: ['/api/genres/all'],
+    queryFn: () => megaRadioApi.getAllGenres(),
   });
 
-  // Fetch popular stations
+  // Fetch popular stations filtered by selected country
   const { data: popularStationsData } = useQuery({
-    queryKey: ['/api/stations/popular', { limit: 24 }],
-    queryFn: () => megaRadioApi.getPopularStations({ limit: 24 }),
+    queryKey: ['/api/stations/popular', { limit: 24, country: selectedCountryCode }],
+    queryFn: () => megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode }),
   });
 
-  // Fetch more popular stations for "More From Austria" section
-  // Note: API country filter doesn't work reliably, using search instead
-  const { data: austriaStationsData } = useQuery({
-    queryKey: ['/api/stations/search-austria', { limit: 15 }],
-    queryFn: () => megaRadioApi.searchStations({ q: 'austria', limit: 15 }),
+  // Fetch stations for "More From [Country]" section using selected country
+  const { data: countryStationsData } = useQuery({
+    queryKey: ['/api/stations/country', selectedCountryCode, { limit: 15 }],
+    queryFn: () => megaRadioApi.getPopularStations({ limit: 15, country: selectedCountryCode }),
   });
 
-  const genres = genresData?.genres?.slice(0, 8) || [];
+  const genres = genresData?.genres || [];
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
-  const austriaStations = austriaStationsData?.results?.slice(0, 15) || [];
+  const countryStations = countryStationsData?.stations?.slice(0, 15) || [];
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
@@ -268,23 +268,27 @@ export const DiscoverNoUser = (): JSX.Element => {
           Popular Genres
         </p>
 
-        {/* Genre Pills - Dynamic from API */}
-        {genres.map((genre, index) => {
-          const isHighlighted = index === 2;
-          return (
-            <div 
-              key={genre.slug || index}
-              className={`absolute bg-[rgba(255,255,255,0.14)] ${isHighlighted ? 'border-[#b4b4b4] border-[5.5px] border-solid' : ''} box-border content-stretch flex gap-[10px] items-start px-[72px] py-[28px] rounded-[20px] top-[316px]`}
-              style={{ left: `${genrePositions[index]}px` }}
-              data-tv-focusable="true"
-            >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
-                {genre.name}
-              </p>
-              <div className={`absolute ${isHighlighted ? 'inset-[-5.5px]' : 'inset-0'} pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]`} />
-            </div>
-          );
-        })}
+        {/* Genre Pills - Horizontal Scrollable - All genres from API */}
+        <div className="absolute left-[236px] top-[316px] w-[1600px] overflow-x-auto overflow-y-hidden scrollbar-hide">
+          <div className="flex gap-[20px] pb-[10px]">
+            {genres.map((genre, index) => {
+              const isHighlighted = index === 2;
+              return (
+                <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+                  <div 
+                    className={`relative bg-[rgba(255,255,255,0.14)] ${isHighlighted ? 'border-[#b4b4b4] border-[5.5px] border-solid' : ''} box-border flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors flex-shrink-0`}
+                    data-tv-focusable="true"
+                  >
+                    <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-center text-white whitespace-nowrap">
+                      {genre.name}
+                    </p>
+                    <div className={`absolute ${isHighlighted ? 'inset-[-5.5px]' : 'inset-0'} pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]`} />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
 
         {/* Popular Radios Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[465px]">
@@ -363,17 +367,17 @@ export const DiscoverNoUser = (): JSX.Element => {
           <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
 
-        {/* More From Austria Section */}
+        {/* More From [Country] Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[1181px]">
-          More From Austria
+          More From {selectedCountry}
         </p>
 
         <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[1186px] translate-x-[-50%]">
           See More
         </p>
 
-        {/* Austria Stations - Row 1 */}
-        {austriaStations.slice(0, 7).map((station, index) => (
+        {/* Country Stations - Row 1 */}
+        {countryStations.slice(0, 7).map((station, index) => (
           <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
             <div 
               className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1255px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
@@ -402,8 +406,8 @@ export const DiscoverNoUser = (): JSX.Element => {
           </Link>
         ))}
 
-        {/* Austria Stations - Row 2 */}
-        {austriaStations.slice(7, 15).map((station, index) => {
+        {/* Country Stations - Row 2 */}
+        {countryStations.slice(7, 15).map((station, index) => {
           const positions = [236, 466, 696, 926, 1156, 1386, 1616, 1846];
           return (
             <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
@@ -443,6 +447,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         selectedCountry={selectedCountry}
         onSelectCountry={(country) => {
           setSelectedCountry(country.name);
+          setSelectedCountryCode(country.code);
           setSelectedCountryFlag(country.flag);
         }}
       />

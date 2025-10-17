@@ -1,27 +1,13 @@
 import { useState } from 'react';
-import turkeyFlag from '@assets/stock_images/turkey_flag_icon_90da75bd.jpg';
-import germanyFlag from '@assets/stock_images/germany_flag_icon_59644cc1.jpg';
-import usaFlag from '@assets/stock_images/usa_flag_icon_c457cbee.jpg';
-import franceFlag from '@assets/stock_images/france_flag_icon_18b48b55.jpg';
-import spainFlag from '@assets/stock_images/spain_flag_icon_961ef74e.jpg';
-import italyFlag from '@assets/stock_images/italy_flag_icon_faebeb02.jpg';
-import austriaFlag from '@assets/stock_images/austria_flag_icon_9c009934.jpg';
+import { useQuery } from '@tanstack/react-query';
+import { megaRadioApi } from '@/services/megaRadioApi';
 
 interface Country {
   name: string;
   code: string;
   flag: string;
+  stationcount?: number;
 }
-
-const countries: Country[] = [
-  { name: 'Turkey', code: 'TR', flag: turkeyFlag },
-  { name: 'Germany', code: 'DE', flag: germanyFlag },
-  { name: 'USA', code: 'US', flag: usaFlag },
-  { name: 'France', code: 'FR', flag: franceFlag },
-  { name: 'Spain', code: 'ES', flag: spainFlag },
-  { name: 'Italy', code: 'IT', flag: italyFlag },
-  { name: 'Austria', code: 'AT', flag: austriaFlag },
-];
 
 interface CountrySelectorProps {
   isOpen: boolean;
@@ -33,7 +19,22 @@ interface CountrySelectorProps {
 export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry }: CountrySelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Fetch countries from API
+  const { data: countriesData, isLoading } = useQuery({
+    queryKey: ['/api/countries'],
+    queryFn: () => megaRadioApi.getAllCountries(),
+    enabled: isOpen,
+  });
+
   if (!isOpen) return null;
+
+  // Map API countries to component format with flag URLs
+  const countries: Country[] = (countriesData?.countries || []).map(country => ({
+    name: country.name,
+    code: country.iso_3166_1,
+    flag: `https://flagcdn.com/w40/${country.iso_3166_1.toLowerCase()}.png`,
+    stationcount: country.stationcount,
+  }));
 
   const filteredCountries = countries.filter(country =>
     country.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -100,7 +101,11 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
           {/* Countries List - Scrollable */}
           <div className="absolute left-[20px] top-[119px] w-[967px] h-[395px] overflow-y-auto">
-            {filteredCountries.map((country, index) => {
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full">
+                <p className="font-['Ubuntu',Helvetica] font-medium text-white text-[20px]">Loading countries...</p>
+              </div>
+            ) : filteredCountries.map((country, index) => {
               const isSelected = country.name === selectedCountry;
               return (
                 <div
