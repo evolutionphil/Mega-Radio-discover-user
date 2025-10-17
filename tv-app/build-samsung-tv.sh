@@ -6,14 +6,14 @@ echo "🔨 Building Mega Radio Samsung TV App..."
 echo "📦 Step 1: Building React app with Vite..."
 npm run build
 
-# Step 2: Copy built assets to tv-app folder
-echo "📂 Step 2: Copying built assets to tv-app folder..."
-mkdir -p tv-app/assets
-cp -r dist/public/assets/* tv-app/assets/
+# Step 2: Copy built assets to assets folder
+echo "📂 Step 2: Copying built assets to assets folder..."
+mkdir -p assets
+cp -r dist/public/assets/* assets/
 
 # Copy any other static assets if they exist
 if [ -f "dist/public/vite.svg" ]; then
-    cp dist/public/vite.svg tv-app/
+    cp dist/public/vite.svg ./
 fi
 
 # Step 3: Create index.html with all necessary scripts and React app
@@ -24,7 +24,7 @@ VITE_JS_FILE=$(grep -oP 'src="/assets/index-[^"]+\.js"' dist/public/index.html |
 VITE_CSS_FILE=$(grep -oP 'href="/assets/index-[^"]+\.css"' dist/public/index.html | sed 's/href="//g' | sed 's/"//g' | sed 's/^\///g')
 
 # Create the index.html for Samsung TV
-cat > tv-app/index.html << 'EOF'
+cat > index.html << 'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,18 +81,18 @@ EOF
 
 # Replace placeholders with actual hashed filenames
 if [ ! -z "$VITE_JS_FILE" ]; then
-    sed -i "s|<!--VITE_JS_PLACEHOLDER-->|<script type=\"module\" crossorigin src=\"${VITE_JS_FILE}\"></script>|g" tv-app/index.html
+    sed -i "s|<!--VITE_JS_PLACEHOLDER-->|<script type=\"module\" crossorigin src=\"${VITE_JS_FILE}\"></script>|g" index.html
     echo "✓ Added React JS: ${VITE_JS_FILE}"
 fi
 
 if [ ! -z "$VITE_CSS_FILE" ]; then
-    sed -i "s|<!--VITE_CSS_PLACEHOLDER-->|<link rel=\"stylesheet\" crossorigin href=\"${VITE_CSS_FILE}\">|g" tv-app/index.html
+    sed -i "s|<!--VITE_CSS_PLACEHOLDER-->|<link rel=\"stylesheet\" crossorigin href=\"${VITE_CSS_FILE}\">|g" index.html
     echo "✓ Added React CSS: ${VITE_CSS_FILE}"
 fi
 
 echo "✅ Build complete!"
 echo ""
-echo "📱 Samsung Tizen TV App ready at: tv-app/"
+echo "📱 Samsung Tizen TV App ready in current directory (tv-app/)"
 echo ""
 echo "To deploy:"
 echo "1. Open Tizen Studio"
