@@ -11,6 +11,9 @@ echo "📂 Step 2: Copying built assets to assets folder..."
 mkdir -p assets
 cp -r dist/public/assets/* assets/
 
+# Copy TV styles CSS
+cp client/public/css/tv-styles.css css/tv-styles.css 2>/dev/null || echo "Warning: tv-styles.css not found"
+
 # Copy any other static assets if they exist
 if [ -f "dist/public/vite.svg" ]; then
     cp dist/public/vite.svg ./
@@ -39,6 +42,7 @@ cat > index.html << 'EOF'
     
     <!-- TV Styles -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tv-styles.css">
     
     <style>
         body {

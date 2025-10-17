@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
+import { useTVNavigation } from "@/hooks/useTVNavigation";
 
 export const Splash = (): JSX.Element => {
   const [, setLocation] = useLocation();
+  
+  // Initialize TV navigation
+  useTVNavigation();
 
   useEffect(() => {
     const timer = setTimeout(() => {
