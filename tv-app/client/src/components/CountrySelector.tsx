@@ -57,27 +57,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     }
   }, [searchQuery]);
 
-  // Initialize TV navigation when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      const timeout = setTimeout(() => {
-        if ((window as any).tvSpatialNav) {
-          console.log('[CountrySelector] Initializing TV navigation');
-          (window as any).tvSpatialNav.init();
-          
-          // Focus the search input first
-          const searchInput = document.querySelector('[data-testid="input-country-search"]') as HTMLElement;
-          if (searchInput) {
-            (window as any).tvSpatialNav.focus(searchInput);
-          }
-        }
-      }, 200);
-      return () => clearTimeout(timeout);
-    }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
   // Map API countries to component format with flag URLs
   const countries: Country[] = useMemo(() => {
     return (countriesData?.countries || [])
@@ -133,6 +112,25 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       });
   }, [countries, searchQuery]);
 
+  // Initialize TV navigation when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const timeout = setTimeout(() => {
+        if ((window as any).tvSpatialNav) {
+          console.log('[CountrySelector] Initializing TV navigation');
+          (window as any).tvSpatialNav.init();
+          
+          // Focus the search input first
+          const searchInput = document.querySelector('[data-testid="input-country-search"]') as HTMLElement;
+          if (searchInput) {
+            (window as any).tvSpatialNav.focus(searchInput);
+          }
+        }
+      }, 200);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen]);
+
   console.log('[CountrySelector] ===== RENDER INFO =====');
   console.log('[CountrySelector] Total countries loaded:', countries.length);
   console.log('[CountrySelector] Search query:', `"${searchQuery}"`);
@@ -142,9 +140,24 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   }
   console.log('[CountrySelector] ========================');
 
+  // Early return AFTER all hooks
+  if (!isOpen) return null;
+
   const handleCountryClick = (country: Country) => {
-    onSelectCountry(country);
-    onClose();
+    console.log('[CountrySelector] Country clicked:', country.name);
+    
+    // Blur the search input to prevent Samsung keyboard from appearing
+    const searchInput = document.querySelector('[data-testid="input-country-search"]') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.blur();
+      console.log('[CountrySelector] Search input blurred');
+    }
+    
+    // Small delay to ensure blur takes effect before closing
+    setTimeout(() => {
+      onSelectCountry(country);
+      onClose();
+    }, 50);
   };
 
   return (
@@ -246,7 +259,15 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                       key={country.code}
                       className={`bg-[#2b2b2b] ${isSelected ? 'border-[#d2d2d2] border-[5px]' : ''} border-solid h-[70px] rounded-[10px] w-[967px] cursor-pointer hover:bg-[#3b3b3b] transition-colors`}
                       style={{ marginTop: index === 0 ? 0 : '15px' }}
-                      onClick={() => handleCountryClick(country)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleCountryClick(country);
+                      }}
+                      onMouseDown={(e) => {
+                        // Prevent input from getting focus when clicking country
+                        e.preventDefault();
+                      }}
                       data-testid={`country-option-${country.code}`}
                       data-tv-focusable="true"
                     >
