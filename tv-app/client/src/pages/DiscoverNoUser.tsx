@@ -36,7 +36,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Fetch initial stations for "More From [Country]" section
   const { data: initialCountryStationsData } = useQuery({
     queryKey: ['/api/stations/country', selectedCountryCode, { page: 1 }],
-    queryFn: () => megaRadioApi.getAllStations({ page: 1, limit: 50, country: selectedCountryCode }),
+    queryFn: () => megaRadioApi.getWorkingStations({ limit: 500, country: selectedCountryCode }),
   });
 
   // Initialize country stations when data is loaded or country changes
@@ -44,40 +44,17 @@ export const DiscoverNoUser = (): JSX.Element => {
     if (initialCountryStationsData?.stations) {
       setCountryStations(initialCountryStationsData.stations);
       setCountryPage(1);
-      setHasMoreCountryStations(initialCountryStationsData.stations.length >= 50);
+      setHasMoreCountryStations(false); // Load all stations at once for now
     }
   }, [initialCountryStationsData, selectedCountryCode]);
 
   const genres = genresData?.genres || [];
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
 
-  // Load more country stations
+  // Load more country stations (disabled for now - loads all at once)
   const loadMoreCountryStations = async () => {
-    if (isLoadingMore || !hasMoreCountryStations) return;
-
-    setIsLoadingMore(true);
-    const nextPage = countryPage + 1;
-
-    try {
-      const response = await megaRadioApi.getAllStations({
-        page: nextPage,
-        limit: 50,
-        country: selectedCountryCode
-      });
-
-      if (response.stations && response.stations.length > 0) {
-        setCountryStations(prev => [...prev, ...response.stations]);
-        setCountryPage(nextPage);
-        setHasMoreCountryStations(response.stations.length >= 50);
-      } else {
-        setHasMoreCountryStations(false);
-      }
-    } catch (error) {
-      console.error('Error loading more stations:', error);
-      setHasMoreCountryStations(false);
-    } finally {
-      setIsLoadingMore(false);
-    }
+    // All stations loaded at once with getWorkingStations
+    return;
   };
 
   // Auto-hide header on scroll down + infinite scroll for country stations
