@@ -32,6 +32,21 @@ export const Search = (): JSX.Element => {
     }
   }, []);
 
+  // Auto-focus search input in TV navigation system
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if ((window as any).tvSpatialNav) {
+        // Find the search input wrapper by data-testid
+        const searchInput = document.querySelector('[data-testid="input-search"]') as HTMLElement;
+        if (searchInput) {
+          console.log('[Search] Auto-focusing search input in TV navigation');
+          (window as any).tvSpatialNav.focus(searchInput);
+        }
+      }
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, []);
+
   // Re-initialize TV navigation when search results change
   useEffect(() => {
     // Small delay to ensure DOM is updated with search results
