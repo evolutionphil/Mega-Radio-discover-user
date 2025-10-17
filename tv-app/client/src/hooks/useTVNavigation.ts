@@ -2,32 +2,65 @@ import { useEffect } from 'react';
 
 export function useTVNavigation() {
   useEffect(() => {
+    let initialized = false;
+    
     // Wait for TV platform scripts to load
     const initNavigation = () => {
-      if (window.tvSpatialNav && window.platformInfo?.isTV()) {
-        // Update focusable elements
-        window.tvSpatialNav.updateFocusableElements();
-        
-        // Focus first element if nothing is focused
-        if (!window.tvSpatialNav.focusedElement && window.tvSpatialNav.focusableElements.length > 0) {
-          window.tvSpatialNav.focus(window.tvSpatialNav.focusableElements[0]);
-        }
+      // Check if TV scripts are loaded
+      if (!window.tvSpatialNav || !window.platformInfo) {
+        console.log('[useTVNavigation] TV scripts not loaded yet, retrying...');
+        return false;
       }
+      
+      // Allow TV navigation on all platforms for testing
+      // if (!window.platformInfo.isTV()) {
+      //   console.log('[useTVNavigation] Not a TV platform, skipping TV navigation');
+      //   return true;
+      // }
+      
+      console.log('[useTVNavigation] Initializing TV navigation...');
+      
+      // Update focusable elements
+      window.tvSpatialNav.updateFocusableElements();
+      
+      // Focus first element if nothing is focused
+      if (!window.tvSpatialNav.focusedElement && window.tvSpatialNav.focusableElements.length > 0) {
+        window.tvSpatialNav.init(); // Use init which has smart focus logic
+        initialized = true;
+      }
+      
+      return true;
     };
 
     // Mouse hover handler - update TV focus on hover
     const handleMouseOver = (e: MouseEvent) => {
-      if (window.tvSpatialNav && window.platformInfo?.isTV()) {
+      if (window.tvSpatialNav) {
         window.tvSpatialNav.handleMouseOver(e);
       }
     };
 
-    // Run after component mounts and DOM updates
-    setTimeout(initNavigation, 100);
+    // Retry initialization until TV scripts are loaded (max 5 seconds)
+    let retryCount = 0;
+    const maxRetries = 50;
+    const retryInterval = setInterval(() => {
+      if (initNavigation() || retryCount >= maxRetries) {
+        clearInterval(retryInterval);
+        console.log('[useTVNavigation] Initialization complete');
+      }
+      retryCount++;
+    }, 100);
 
     // Update on any changes (route changes, etc.)
     const observer = new MutationObserver(() => {
-      setTimeout(initNavigation, 50);
+      if (initialized && window.tvSpatialNav) {
+        setTimeout(() => {
+          window.tvSpatialNav.updateFocusableElements();
+          // Re-focus if focus was lost
+          if (!window.tvSpatialNav.focusedElement && window.tvSpatialNav.focusableElements.length > 0) {
+            window.tvSpatialNav.init();
+          }
+        }, 50);
+      }
     });
 
     observer.observe(document.body, {
@@ -39,6 +72,7 @@ export function useTVNavigation() {
     document.addEventListener('mouseover', handleMouseOver);
 
     return () => {
+      clearInterval(retryInterval);
       observer.disconnect();
       document.removeEventListener('mouseover', handleMouseOver);
     };

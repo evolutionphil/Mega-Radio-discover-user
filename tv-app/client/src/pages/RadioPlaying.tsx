@@ -27,6 +27,9 @@ export const RadioPlaying = (): JSX.Element => {
     { icon: "/figmaAssets/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
   ];
 
+  // Fallback image as SVG data URI
+  const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#01d7fb"/><text x="100" y="120" font-size="80" fill="white" text-anchor="middle" font-family="Arial">R</text></svg>')}`;
+
   // Helper function to get station image
   const getStationImage = (station: Station) => {
     if (station.favicon) {
@@ -34,7 +37,7 @@ export const RadioPlaying = (): JSX.Element => {
         ? station.favicon 
         : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
     }
-    return '/figmaAssets/powerturk-tv-logosu-1.png';
+    return FALLBACK_IMAGE;
   };
 
   // Helper function to get tags as array
@@ -267,7 +270,7 @@ export const RadioPlaying = (): JSX.Element => {
           alt="Radio Logo"
           src={station ? getStationImage(station) : '/figmaAssets/meta-image--1--1-4.png'}
           onError={(e) => {
-            (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+            (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
           }}
         />
       </div>
@@ -401,7 +404,7 @@ export const RadioPlaying = (): JSX.Element => {
                     alt={station.name}
                     src={getStationImage(station)}
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                      (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                     }}
                   />
                 </div>
@@ -438,7 +441,7 @@ export const RadioPlaying = (): JSX.Element => {
                   alt={station.name}
                   src={getStationImage(station)}
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                    (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                   }}
                 />
               </div>

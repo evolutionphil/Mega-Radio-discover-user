@@ -24,6 +24,9 @@ export const Search = (): JSX.Element => {
   const searchResults = searchData?.results || [];
   const recentStations = recentStationsData?.stations || [];
 
+  // Fallback image as SVG data URI
+  const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#01d7fb"/><text x="100" y="120" font-size="80" fill="white" text-anchor="middle" font-family="Arial">R</text></svg>')}`;
+
   // Helper function to get station image
   const getStationImage = (station: Station) => {
     if (station.favicon) {
@@ -31,7 +34,7 @@ export const Search = (): JSX.Element => {
         ? station.favicon 
         : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
     }
-    return '/figmaAssets/powerturk-tv-logosu-1.png';
+    return FALLBACK_IMAGE;
   };
 
   // Helper function to get station tags as array
@@ -155,7 +158,7 @@ export const Search = (): JSX.Element => {
                   className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
                   src={getStationImage(station)}
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/figmaAssets/powerturk-tv-logosu-1.png';
+                    (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                   }}
                 />
               </div>

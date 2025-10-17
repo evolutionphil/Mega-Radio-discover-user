@@ -181,17 +181,19 @@
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('[TV Remote Keys] DOM ready, initializing...');
             initTVKeys();
-            if (window.platformInfo.isTV()) {
-                window.tvNavigation.init();
-                document.addEventListener('keydown', window.handleTVKey);
-            }
-        });
-    } else {
-        initTVKeys();
-        if (window.platformInfo.isTV()) {
+            // Always attach key handler for testing (works in browser and TV)
             window.tvNavigation.init();
             document.addEventListener('keydown', window.handleTVKey);
-        }
+            console.log('[TV Remote Keys] Key handler attached, keys ready!');
+        });
+    } else {
+        console.log('[TV Remote Keys] DOM already ready, initializing now...');
+        initTVKeys();
+        // Always attach key handler for testing
+        window.tvNavigation.init();
+        document.addEventListener('keydown', window.handleTVKey);
+        console.log('[TV Remote Keys] Key handler attached, keys ready!');
     }
 })();

@@ -1,0 +1,132 @@
+powerturk-tv-logosu-1.png:1 
+        
+        
+       GET file:///C:/figmaAssets/powerturk-tv-logosu-1.png net::ERR_FILE_NOT_FOUND
+Image (async)
+onError @ index-BuE0gX9K.js:154
+vg @ index-BuE0gX9K.js:38
+bg @ index-BuE0gX9K.js:38
+yg @ index-BuE0gX9K.js:38
+np @ index-BuE0gX9K.js:38
+op @ index-BuE0gX9K.js:38
+(anonymous) @ index-BuE0gX9K.js:38
+xc @ index-BuE0gX9K.js:41
+ud @ index-BuE0gX9K.js:38
+xl @ index-BuE0gX9K.js:38
+qi @ index-BuE0gX9K.js:38
+powerturk-tv-logosu-1.png:1 
+        
+        
+       GET file:///C:/figmaAssets/powerturk-tv-logosu-1.png net::ERR_FILE_NOT_FOUND
+Image (async)
+onError @ index-BuE0gX9K.js:154
+vg @ index-BuE0gX9K.js:38
+bg @ index-BuE0gX9K.js:38
+yg @ index-BuE0gX9K.js:38
+np @ index-BuE0gX9K.js:38
+op @ index-BuE0gX9K.js:38
+(anonymous) @ index-BuE0gX9K.js:38
+xc @ index-BuE0gX9K.js:41
+ud @ index-BuE0gX9K.js:38
+xl @ index-BuE0gX9K.js:38
+qi @ index-BuE0gX9K.js:38
+powerturk-tv-logosu-1.png:1 
+        
+        
+       GET file:///C:/figmaAssets/powerturk-tv-logosu-1.png net::ERR_FILE_NOT_FOUND
+Image (async)
+onError @ index-BuE0gX9K.js:154
+vg @ index-BuE0gX9K.js:38
+bg @ index-BuE0gX9K.js:38
+yg @ index-BuE0gX9K.js:38
+np @ index-BuE0gX9K.js:38
+op @ index-BuE0gX9K.js:38
+(anonymous) @ index-BuE0gX9K.js:38
+xc @ index-BuE0gX9K.js:41
+ud @ index-BuE0gX9K.js:38
+xl @ index-BuE0gX9K.js:38
+qi @ index-BuE0gX9K.js:38
+powerturk-tv-logosu-1.png:1 
+        
+        
+       GET file:///C:/figmaAssets/powerturk-tv-logosu-1.png net::ERR_FILE_NOT_FOUND
+Image (async)
+onError @ index-BuE0gX9K.js:154
+vg @ index-BuE0gX9K.js:38
+bg @ index-BuE0gX9K.js:38
+yg @ index-BuE0gX9K.js:38
+np @ index-BuE0gX9K.js:38
+op @ index-BuE0gX9K.js:38
+(anonymous) @ index-BuE0gX9K.js:38
+xc @ index-BuE0gX9K.js:41
+ud @ index-BuE0gX9K.js:38
+xl @ index-BuE0gX9K.js:38
+qi @ index-BuE0gX9K.js:38
+powerturk-tv-logosu-1.png:1 
+        
+        
+       GET file:///C:/figmaAssets/powerturk-tv-logosu-1.png net::ERR_FILE_NOT_FOUND
+Image (async)
+onError @ index-BuE0gX9K.js:154
+vg @ index-BuE0gX9K.js:38
+bg @ index-BuE0gX9K.js:38
+yg @ index-BuE0gX9K.js:38
+np @ index-BuE0gX9K.js:38
+op @ index-BuE0gX9K.js:38
+(anonymous) @ index-BuE0gX9K.js:38
+xc @ index-BuE0gX9K.js:41
+ud @ index-BuE0gX9K.js:38
+xl @ index-BuE0gX9K.js:38
+qi @ index-BuE0gX9K.js:38
+powerturk-tv-logosu-1.png:1 
+        
+        
+       GET file:///C:/figmaAssets/powerturk-tv-logosu-1.png net::ERR_FILE_NOT_FOUND
+Image (async)
+onError @ index-BuE0gX9K.js:154
+vg @ index-BuE0gX9K.js:38
+bg @ index-BuE0gX9K.js:38
+yg @ index-BuE0gX9K.js:38
+np @ index-BuE0gX9K.js:38
+op @ index-BuE0gX9K.js:38
+(anonymous) @ index-BuE0gX9K.js:38
+xc @ index-BuE0gX9K.js:41
+ud @ index-BuE0gX9K.js:38
+xl @ index-BuE0gX9K.js:38
+qi @ index-BuE0gX9K.js:38
+powerturk-tv-logosu-1.png:1 
+        
+        
+       GET file:///C:/figmaAssets/powerturk-tv-logosu-1.png net::ERR_FILE_NOT_FOUND
+Image (async)
+onError @ index-BuE0gX9K.js:154
+vg @ index-BuE0gX9K.js:38
+bg @ index-BuE0gX9K.js:38
+yg @ index-BuE0gX9K.js:38
+np @ index-BuE0gX9K.js:38
+op @ index-BuE0gX9K.js:38
+(anonymous) @ index-BuE0gX9K.js:38
+xc @ index-BuE0gX9K.js:41
+ud @ index-BuE0gX9K.js:38
+xl @ index-BuE0gX9K.js:38
+qi @ index-BuE0gX9K.js:38
+powerturk-tv-logosu-1.png:1 
+        
+        
+       GET file:///C:/figmaAssets/powerturk-tv-logosu-1.png net::ERR_FILE_NOT_FOUND
+Image (async)
+onError @ index-BuE0gX9K.js:154
+vg @ index-BuE0gX9K.js:38
+bg @ index-BuE0gX9K.js:38
+yg @ index-BuE0gX9K.js:38
+np @ index-BuE0gX9K.js:38
+op @ index-BuE0gX9K.js:38
+(anonymous) @ index-BuE0gX9K.js:38
+xc @ index-BuE0gX9K.js:41
+ud @ index-BuE0gX9K.js:38
+xl @ index-BuE0gX9K.js:38
+qi @ index-BuE0gX9K.js:38
+powerturk-tv-logosu-1.png:1 
+        
+        
+       GET file:///C:/figmaAssets/powerturk-tv-logosu-1.png net::ERR_FILE_NOT_FOUND

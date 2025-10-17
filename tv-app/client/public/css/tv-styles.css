@@ -925,14 +925,50 @@
     display: none !important;
 }
 
-/* TV Focus Indicator - Pink Glow */
-.tv-focused {
-    outline: 4px solid #ff4199 !important;
-    box-shadow: 0 0 20px rgba(255, 65, 153, 0.8), 0 0 40px rgba(255, 65, 153, 0.4) !important;
-    transform: scale(1.05) !important;
-    z-index: 100 !important;
+/* TV Focus Indicator - Pink Glow - HIGHEST PRIORITY */
+.tv-focused,
+button.tv-focused,
+a.tv-focused,
+[data-tv-focusable].tv-focused,
+div.tv-focused,
+img.tv-focused,
+.tv-focused * {
+    outline: 6px solid #ff4199 !important;
+    outline-offset: 4px !important;
+    box-shadow: 
+        0 0 0 6px #ff4199,
+        0 0 20px rgba(255, 65, 153, 0.9), 
+        0 0 40px rgba(255, 65, 153, 0.6),
+        0 0 60px rgba(255, 65, 153, 0.4) !important;
+    transform: scale(1.08) !important;
+    z-index: 999 !important;
     position: relative !important;
-    transition: all 0.3s ease !important;
+    transition: all 0.2s ease !important;
+    border: 4px solid #ff4199 !important;
+    border-radius: 8px !important;
+}
+
+/* Make focused element stand out even more */
+.tv-focused::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: -10px !important;
+    border: 6px solid #ff4199 !important;
+    border-radius: 12px !important;
+    pointer-events: none !important;
+    z-index: 1000 !important;
+    animation: pulse-focus 1.5s ease-in-out infinite !important;
+}
+
+@keyframes pulse-focus {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.02);
+    }
 }
 
 /* Hide cursor on TV platforms */

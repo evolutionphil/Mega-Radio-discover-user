@@ -1,6 +1,8 @@
 // TV Spatial Navigation System - Smart directional focus
 (function() {
     'use strict';
+    
+    console.log('[TV Spatial Nav] Script loaded and executing...');
 
     window.tvSpatialNav = {
         focusedElement: null,
@@ -179,13 +181,13 @@
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            if (window.platformInfo && window.platformInfo.isTV()) {
-                window.tvSpatialNav.init();
-            }
+            console.log('[TV Spatial Nav] DOM ready, initializing...');
+            // Initialize on all platforms for testing (will be limited by key handler)
+            window.tvSpatialNav.init();
         });
     } else {
-        if (window.platformInfo && window.platformInfo.isTV()) {
-            window.tvSpatialNav.init();
-        }
+        console.log('[TV Spatial Nav] DOM already ready, initializing now...');
+        // Initialize on all platforms for testing
+        window.tvSpatialNav.init();
     }
 })();
