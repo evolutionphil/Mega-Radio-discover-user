@@ -65,7 +65,7 @@ export const Favorites = (): JSX.Element => {
       </div>
 
       {/* Login Button */}
-      <div className="absolute left-[1704px] top-[73px] w-[186px] h-[38px] bg-[rgba(255,255,255,0.1)] rounded-[30px]" data-testid="button-login">
+      <div className="absolute left-[1704px] top-[73px] w-[186px] h-[38px] bg-[rgba(255,255,255,0.1)] rounded-[30px]" data-testid="button-login" data-tv-focusable="true">
         <img
           className="absolute left-[18px] top-[9px] w-[20px] h-[20px]"
           alt="Login"
@@ -86,6 +86,7 @@ export const Favorites = (): JSX.Element => {
                   item.active ? 'bg-[rgba(255,255,255,0.2)]' : 'bg-transparent'
                 }`}
                 data-testid={`button-${item.label.toLowerCase()}`}
+                data-tv-focusable="true"
               >
               <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
                 <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
@@ -135,6 +136,7 @@ export const Favorites = (): JSX.Element => {
                 key={index}
                 className="bg-[rgba(255,255,255,0.05)] rounded-[20px] p-6 hover:bg-[rgba(255,255,255,0.1)] transition-colors cursor-pointer group"
                 data-testid={`card-favorite-${index}`}
+                data-tv-focusable="true"
               >
                 <div className="relative w-full aspect-square bg-white/10 rounded-[16px] mb-4 overflow-hidden">
                   <img
@@ -142,7 +144,7 @@ export const Favorites = (): JSX.Element => {
                     alt={station.name}
                     src={station.image}
                   />
-                  <button className="absolute top-3 right-3 w-[40px] h-[40px] bg-[#ff4199] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`button-unfavorite-${index}`}>
+                  <button className="absolute top-3 right-3 w-[40px] h-[40px] bg-[#ff4199] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`button-unfavorite-${index}`} data-tv-focusable="true">
                     <img
                       className="w-[20px] h-[20px]"
                       alt="Unfavorite"

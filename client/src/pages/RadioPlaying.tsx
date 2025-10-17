@@ -1,11 +1,14 @@
 import { Link, useLocation } from "wouter";
-import { SkipBack, Pause, SkipForward, Heart } from "lucide-react";
+import { SkipBack, Pause, Play, SkipForward, Heart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
-import { useMemo } from "react";
+import { useMemo, useEffect, useRef, useState } from "react";
 
 export const RadioPlaying = (): JSX.Element => {
   const [location] = useLocation();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isBuffering, setIsBuffering] = useState(false);
+  const audioPlayerRef = useRef<any>(null);
   
   // Parse station ID from URL query params - useMemo ensures it updates when location changes
   const stationId = useMemo(() => {
@@ -73,6 +76,88 @@ export const RadioPlaying = (): JSX.Element => {
 
   const similarStations = similarStationsData?.stations || [];
   const popularStations = popularStationsData?.stations || [];
+
+  // Initialize TV audio player
+  useEffect(() => {
+    // Check if TVAudioPlayer is available (loaded from global script)
+    if (typeof (window as any).TVAudioPlayer !== 'undefined') {
+      // Initialize player
+      audioPlayerRef.current = new (window as any).TVAudioPlayer('tv-audio-container');
+      
+      // Set up event handlers
+      audioPlayerRef.current.onPlay = () => {
+        setIsPlaying(true);
+        setIsBuffering(false);
+      };
+      
+      audioPlayerRef.current.onPause = () => {
+        setIsPlaying(false);
+      };
+      
+      audioPlayerRef.current.onStop = () => {
+        setIsPlaying(false);
+      };
+      
+      audioPlayerRef.current.onBuffering = () => {
+        setIsBuffering(true);
+      };
+      
+      audioPlayerRef.current.onReady = () => {
+        setIsBuffering(false);
+      };
+      
+      audioPlayerRef.current.onError = (error: any) => {
+        console.error('Audio player error:', error);
+        setIsPlaying(false);
+        setIsBuffering(false);
+      };
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      if (audioPlayerRef.current) {
+        audioPlayerRef.current.stop();
+      }
+    };
+  }, []);
+
+  // Auto-play when station changes
+  useEffect(() => {
+    if (station && station.url && audioPlayerRef.current) {
+      audioPlayerRef.current.play(station.url);
+    }
+  }, [station]);
+
+  // Playback control handlers
+  const handlePlayPause = () => {
+    if (!audioPlayerRef.current) return;
+    
+    if (isPlaying) {
+      audioPlayerRef.current.pause();
+    } else {
+      if (station?.url) {
+        audioPlayerRef.current.play(station.url);
+      }
+    }
+  };
+
+  const handlePrevious = () => {
+    // Navigate to previous similar station
+    if (similarStations.length > 0) {
+      const currentIndex = similarStations.findIndex(s => s._id === stationId);
+      const prevIndex = currentIndex > 0 ? currentIndex - 1 : similarStations.length - 1;
+      window.location.href = `/radio-playing?station=${similarStations[prevIndex]._id}`;
+    }
+  };
+
+  const handleNext = () => {
+    // Navigate to next similar station
+    if (similarStations.length > 0) {
+      const currentIndex = similarStations.findIndex(s => s._id === stationId);
+      const nextIndex = currentIndex < similarStations.length - 1 ? currentIndex + 1 : 0;
+      window.location.href = `/radio-playing?station=${similarStations[nextIndex]._id}`;
+    }
+  };
 
   return (
     <div className="relative w-[1920px] min-h-[1080px] bg-[#0e0e0e] overflow-y-auto pb-[50px]">
@@ -246,22 +331,43 @@ export const RadioPlaying = (): JSX.Element => {
       {/* Playback Controls */}
       <div className="absolute left-[1372px] top-[356px] w-[469px] h-[90.192px]">
         {/* Previous Button */}
-        <button className="absolute left-0 top-0 w-[90.192px] h-[90.192px] bg-black rounded-[45.096px] flex items-center justify-center" data-testid="button-previous">
+        <button 
+          onClick={handlePrevious}
+          className="absolute left-0 top-0 w-[90.192px] h-[90.192px] bg-black rounded-[45.096px] flex items-center justify-center hover:bg-gray-800 transition-colors" 
+          data-testid="button-previous"
+          data-tv-focusable="true"
+        >
           <SkipBack className="w-[40px] h-[40px] text-white" fill="white" />
         </button>
 
-        {/* Pause Button */}
-        <button className="absolute left-[126.27px] top-0 w-[90.192px] h-[90.192px] bg-black rounded-[45.096px] flex items-center justify-center" data-testid="button-pause">
-          <Pause className="w-[40px] h-[40px] text-white" fill="white" />
+        {/* Play/Pause Button */}
+        <button 
+          onClick={handlePlayPause}
+          className="absolute left-[126.27px] top-0 w-[90.192px] h-[90.192px] bg-black rounded-[45.096px] flex items-center justify-center hover:bg-gray-800 transition-colors" 
+          data-testid="button-pause"
+          data-tv-focusable="true"
+        >
+          {isBuffering ? (
+            <div className="w-[40px] h-[40px] border-4 border-white border-t-transparent rounded-full animate-spin" />
+          ) : isPlaying ? (
+            <Pause className="w-[40px] h-[40px] text-white" fill="white" />
+          ) : (
+            <Play className="w-[40px] h-[40px] text-white" fill="white" />
+          )}
         </button>
 
         {/* Next Button */}
-        <button className="absolute left-[252.54px] top-0 w-[90.192px] h-[90.192px] bg-black rounded-[45.096px] flex items-center justify-center" data-testid="button-next">
+        <button 
+          onClick={handleNext}
+          className="absolute left-[252.54px] top-0 w-[90.192px] h-[90.192px] bg-black rounded-[45.096px] flex items-center justify-center hover:bg-gray-800 transition-colors" 
+          data-testid="button-next"
+          data-tv-focusable="true"
+        >
           <SkipForward className="w-[40px] h-[40px] text-white" fill="white" />
         </button>
 
         {/* Favorite Button */}
-        <button className="absolute left-[378.81px] top-0 w-[90.192px] h-[90.192px] border-[3.608px] border-black border-solid rounded-[72.655px] flex items-center justify-center" data-testid="button-favorite">
+        <button className="absolute left-[378.81px] top-0 w-[90.192px] h-[90.192px] border-[3.608px] border-black border-solid rounded-[72.655px] flex items-center justify-center hover:border-gray-700 transition-colors" data-testid="button-favorite" data-tv-focusable="true">
           <Heart className="w-[40px] h-[40px] text-white" fill="white" />
         </button>
       </div>
@@ -350,6 +456,9 @@ export const RadioPlaying = (): JSX.Element => {
         </div>
       </div>
       </div>
+      
+      {/* Hidden Audio Player Container for TV platforms */}
+      <div id="tv-audio-container" className="hidden"></div>
     </div>
   );
 };

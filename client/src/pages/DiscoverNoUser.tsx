@@ -107,6 +107,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] pointer-events-auto cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors"
           onClick={() => setIsCountrySelectorOpen(true)}
           data-testid="button-country-selector"
+          data-tv-focusable="true"
         >
           <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
             <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
@@ -135,7 +136,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Login Button */}
         <Link href="/login">
-          <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors pointer-events-auto" data-testid="button-login-header">
+          <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors pointer-events-auto" data-testid="button-login-header" data-tv-focusable="true">
             <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
               Login
             </p>
@@ -153,7 +154,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] pointer-events-auto">
           {/* Discover - Active */}
           <Link href="/discover-no-user">
-            <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover">
+            <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   Discover
@@ -171,7 +172,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Genres */}
           <Link href="/genres">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   Genres
@@ -189,7 +190,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Search */}
           <Link href="/search">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   Search
@@ -207,7 +208,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Favorites */}
           <Link href="/favorites">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   Favorites
@@ -225,7 +226,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Records */}
           <Link href="/discover-no-user">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   Records
@@ -242,7 +243,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Settings */}
           <Link href="/settings">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings">
+            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
               <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   Settings
@@ -261,7 +262,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       </div>
 
       {/* Scrollable Content */}
-      <div className="relative pt-[242px] pb-[30px] z-1">
+      <div className="relative pb-[30px] z-1">
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
           Popular Genres
@@ -275,6 +276,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               key={genre.slug || index}
               className={`absolute bg-[rgba(255,255,255,0.14)] ${isHighlighted ? 'border-[#b4b4b4] border-[5.5px] border-solid' : ''} box-border content-stretch flex gap-[10px] items-start px-[72px] py-[28px] rounded-[20px] top-[316px]`}
               style={{ left: `${genrePositions[index]}px` }}
+              data-tv-focusable="true"
             >
               <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
                 {genre.name}
@@ -300,6 +302,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[539px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
               style={{ left: `${stationRow1Positions[index]}px` }}
               data-testid={`card-station-${station._id}`}
+              data-tv-focusable="true"
             >
               <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                 <img
@@ -329,6 +332,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[833px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
               style={{ left: `${stationRow2Positions[index]}px` }}
               data-testid={`card-station-${station._id}`}
+              data-tv-focusable="true"
             >
               <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                 <img
@@ -375,6 +379,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1255px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
               style={{ left: `${stationRow1Positions[index]}px` }}
               data-testid={`card-station-${station._id}`}
+              data-tv-focusable="true"
             >
               <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                 <img
@@ -406,6 +411,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                 className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[1549px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
                 style={{ left: `${positions[index]}px` }}
                 data-testid={`card-station-${station._id}`}
+                data-tv-focusable="true"
               >
                 <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                   <img

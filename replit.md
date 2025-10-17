@@ -137,3 +137,57 @@ The schema uses Drizzle's PostgreSQL adapter with type inference for Insert and 
 - Figma-exported assets stored in `/figmaAssets` directory
 - SVG icons and PNG images for radio station logos
 - Wave animations and visual effects
+
+### TV Platform Support (LG webOS & Samsung Tizen)
+
+**Platform Detection**
+- Automatic platform detection via user agent (client/public/js/platform-detect.js)
+- LG webOS: Detected by "web0s" in user agent
+- Samsung Tizen: Detected by "tizen" in user agent or tizen API presence
+- Web Browser: Default fallback for non-TV platforms
+
+**Remote Control Navigation**
+- Global key event handler (client/public/js/tv-remote-keys.js)
+- Platform-specific key codes mapping:
+  - RETURN: 10009 (Samsung), 461 (LG)
+  - CH_UP/DOWN: 427/428 (Samsung), 33/34 (LG)
+  - Directional keys (UP/DOWN/LEFT/RIGHT): 38/40/37/39 (both platforms)
+  - ENTER/SELECT: 13 (both platforms)
+- Focus management system with visual indicators (.tv-focused CSS class)
+- Automatic focus navigation using data-tv-focusable attributes on interactive elements
+
+**Audio Playback System**
+- Dual audio player implementation (client/public/js/tv-audio-player.js)
+- Samsung Tizen: Uses webapis.avplay API for AVPlay streaming
+- LG webOS: Uses HTML5 Audio/Video elements
+- Web Browser: Standard HTML5 Audio with controls
+- Unified interface with event handlers (onPlay, onPause, onStop, onBuffering, onError)
+- Auto-play support when station changes
+- Volume control and playback state management
+
+**TV-Specific Styling**
+- Custom CSS for TV focus states (client/public/css/tv-styles.css)
+- Pink focus outline with glow effect (#ff4199)
+- Scale transformations on focus for better visibility
+- Hidden cursor on TV platforms
+- Scrollbar hiding for cleaner TV interface
+- Platform-specific visibility classes (.lg-only, .samsung-only, .tv-only)
+
+**SDK Integration**
+- LG webOS SDK (webOSTVjs-1.2.0) included in client/public/
+- Samsung Tizen: Uses native webapis (no separate SDK needed)
+- Platform scripts loaded globally via index.html
+
+**Configuration Files**
+- LG webOS: appinfo.json (app ID: com.megaradio.tv, resolution: 1920x1080)
+- Samsung Tizen: config.xml (package ID: MegaRadioTV, Tizen version 6.0)
+
+**Interactive Element Support**
+- All interactive elements tagged with data-tv-focusable="true"
+- Pages with TV navigation support:
+  - RadioPlaying: Full playback controls, station navigation
+  - DiscoverNoUser: Station cards, genre pills, sidebar navigation
+  - Genres: Genre cards, sidebar navigation
+  - GenreList: Station cards, back button, sidebar navigation
+  - Search: Search input, station cards, sidebar navigation
+  - (Favorites & Settings: Partial support, pending completion)

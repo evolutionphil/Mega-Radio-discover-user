@@ -56,7 +56,7 @@ export const Settings = (): JSX.Element => {
       </div>
 
       {/* Login Button */}
-      <div className="absolute left-[1704px] top-[73px] w-[186px] h-[38px] bg-[rgba(255,255,255,0.1)] rounded-[30px]" data-testid="button-login">
+      <div className="absolute left-[1704px] top-[73px] w-[186px] h-[38px] bg-[rgba(255,255,255,0.1)] rounded-[30px]" data-testid="button-login" data-tv-focusable="true">
         <img
           className="absolute left-[18px] top-[9px] w-[20px] h-[20px]"
           alt="Login"
@@ -77,6 +77,7 @@ export const Settings = (): JSX.Element => {
                   item.active ? 'bg-[rgba(255,255,255,0.2)]' : 'bg-transparent'
                 }`}
                 data-testid={`button-${item.label.toLowerCase()}`}
+                data-tv-focusable="true"
               >
               <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
                 <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
@@ -116,7 +117,7 @@ export const Settings = (): JSX.Element => {
                   <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Email</p>
                   <p className="font-['Ubuntu',Helvetica] text-[16px] text-[#9b9b9b] mt-1">user@example.com</p>
                 </div>
-                <button className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-[#ff4199]" data-testid="button-change-email">
+                <button className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-[#ff4199]" data-testid="button-change-email" data-tv-focusable="true">
                   Change
                 </button>
               </div>
@@ -125,7 +126,7 @@ export const Settings = (): JSX.Element => {
                   <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Password</p>
                   <p className="font-['Ubuntu',Helvetica] text-[16px] text-[#9b9b9b] mt-1">••••••••</p>
                 </div>
-                <button className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-[#ff4199]" data-testid="button-change-password">
+                <button className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-[#ff4199]" data-testid="button-change-password" data-tv-focusable="true">
                   Change
                 </button>
               </div>
@@ -138,7 +139,7 @@ export const Settings = (): JSX.Element => {
             <div className="space-y-4">
               <div className="flex items-center justify-between py-4 border-b border-white/10">
                 <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Language</p>
-                <button className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white" data-testid="button-language">
+                <button className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white" data-testid="button-language" data-tv-focusable="true">
                   English
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 6L8 10L12 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -147,7 +148,7 @@ export const Settings = (): JSX.Element => {
               </div>
               <div className="flex items-center justify-between py-4 border-b border-white/10">
                 <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Default Country</p>
-                <button className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white" data-testid="button-country">
+                <button className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white" data-testid="button-country" data-tv-focusable="true">
                   Austria
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 6L8 10L12 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -156,7 +157,7 @@ export const Settings = (): JSX.Element => {
               </div>
               <div className="flex items-center justify-between py-4">
                 <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Notifications</p>
-                <button className="w-[60px] h-[32px] bg-[#ff4199] rounded-full relative" data-testid="button-notifications">
+                <button className="w-[60px] h-[32px] bg-[#ff4199] rounded-full relative" data-testid="button-notifications" data-tv-focusable="true">
                   <div className="absolute right-[4px] top-[4px] w-[24px] h-[24px] bg-white rounded-full" />
                 </button>
               </div>
@@ -175,7 +176,7 @@ export const Settings = (): JSX.Element => {
           </div>
 
           {/* Logout Button */}
-          <button className="w-full py-4 bg-red-600/20 rounded-[12px] font-['Ubuntu',Helvetica] font-medium text-[20px] text-red-500 hover:bg-red-600/30 transition-colors" data-testid="button-logout">
+          <button className="w-full py-4 bg-red-600/20 rounded-[12px] font-['Ubuntu',Helvetica] font-medium text-[20px] text-red-500 hover:bg-red-600/30 transition-colors" data-testid="button-logout" data-tv-focusable="true">
             Logout
           </button>
         </div>

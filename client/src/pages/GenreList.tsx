@@ -123,7 +123,7 @@ export const GenreList = (): JSX.Element => {
 
         {/* Login Button */}
         <Link href="/login">
-          <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-login-header">
+          <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-login-header" data-tv-focusable="true">
             <img
               className="absolute left-[13px] size-[34px] top-[9px]"
               alt="Login"
@@ -137,7 +137,7 @@ export const GenreList = (): JSX.Element => {
 
         {/* Back Button */}
         <Link href="/genres">
-          <div className="absolute h-[24px] left-[236px] top-[211px] w-[71px] cursor-pointer" data-testid="button-back">
+          <div className="absolute h-[24px] left-[236px] top-[211px] w-[71px] cursor-pointer" data-testid="button-back" data-tv-focusable="true">
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[#c8c8c8] text-[19.027px] top-px">
               Back
             </p>
@@ -172,7 +172,7 @@ export const GenreList = (): JSX.Element => {
           <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
             {/* Discover */}
             <Link href="/discover-no-user">
-              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover">
+              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
                 <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
                   <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                     Discover
@@ -186,7 +186,7 @@ export const GenreList = (): JSX.Element => {
 
             {/* Genres - Active */}
             <Link href="/genres">
-              <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres">
+              <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
                 <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
                   <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                     Genres
@@ -200,7 +200,7 @@ export const GenreList = (): JSX.Element => {
 
             {/* Search */}
             <Link href="/search">
-              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search">
+              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
                 <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
                   <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                     Search
@@ -214,7 +214,7 @@ export const GenreList = (): JSX.Element => {
 
             {/* Favorites */}
             <Link href="/favorites">
-              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites">
+              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
                 <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
                   <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                     Favorites
@@ -228,7 +228,7 @@ export const GenreList = (): JSX.Element => {
 
             {/* Records */}
             <Link href="/discover-no-user">
-              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records">
+              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
                 <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
                   <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                     Records
@@ -243,7 +243,7 @@ export const GenreList = (): JSX.Element => {
 
             {/* Settings */}
             <Link href="/settings">
-              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings">
+              <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
                 <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
                   <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                     Settings
@@ -263,6 +263,7 @@ export const GenreList = (): JSX.Element => {
                 className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px]"
                 style={{ left: `${positions[index]?.left}px`, top: `${positions[index]?.top}px` }}
                 data-testid={`station-card-${index}`}
+                data-tv-focusable="true"
               >
                 <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                   <img

@@ -73,6 +73,7 @@ export const Search = (): JSX.Element => {
             placeholder="Search for stations..."
             className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[850px] placeholder:text-[rgba(255,255,255,0.5)]"
             data-testid="input-search"
+            data-tv-focusable="true"
           />
           <div className="absolute left-[32.43px] size-[31.134px] top-[29.84px] pointer-events-none">
             <img
@@ -107,6 +108,7 @@ export const Search = (): JSX.Element => {
               className={`absolute ${isFirst ? 'bg-[rgba(255,255,255,0.28)] border-[#b4b4b4] border-[5.5px] border-solid' : 'bg-[rgba(255,255,255,0.14)]'} box-border content-stretch flex gap-[10px] items-start left-[308px] px-[50px] py-[20px] rounded-[14px]`}
               style={{ top: `${topPositions[index]}px` }}
               data-testid={`result-${station.slug || station._id}`}
+              data-tv-focusable="true"
             >
               <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center">
                 {isFirst ? (
@@ -143,6 +145,7 @@ export const Search = (): JSX.Element => {
               className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1394px] overflow-clip rounded-[11px] w-[200px]" 
               style={{ top: `${topPositions[index]}px` }}
               data-testid={`recent-station-${index}`}
+              data-tv-focusable="true"
             >
               <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                 <img
@@ -218,7 +221,7 @@ export const Search = (): JSX.Element => {
 
       {/* Login Button */}
       <Link href="/login">
-        <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-login-header">
+        <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-login-header" data-tv-focusable="true">
           <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
             Login
           </p>
@@ -236,7 +239,7 @@ export const Search = (): JSX.Element => {
       <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
         {/* Discover */}
         <Link href="/discover-no-user">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Discover
@@ -254,7 +257,7 @@ export const Search = (): JSX.Element => {
 
         {/* Genres */}
         <Link href="/genres">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Genres
@@ -272,7 +275,7 @@ export const Search = (): JSX.Element => {
 
         {/* Search - Active */}
         <Link href="/search">
-          <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search">
+          <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Search
@@ -290,7 +293,7 @@ export const Search = (): JSX.Element => {
 
         {/* Favorites */}
         <Link href="/favorites">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Favorites
@@ -308,7 +311,7 @@ export const Search = (): JSX.Element => {
 
         {/* Records */}
         <Link href="/discover-no-user">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Records
@@ -325,7 +328,7 @@ export const Search = (): JSX.Element => {
 
         {/* Settings */}
         <Link href="/settings">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Settings

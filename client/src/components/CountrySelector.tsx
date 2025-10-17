@@ -46,14 +46,11 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop with blur */}
+      {/* Backdrop with blur (transparent) */}
       <div 
         className="absolute inset-0 backdrop-blur-[7px] backdrop-filter"
         onClick={onClose}
         data-testid="country-selector-backdrop"
-        style={{
-          background: 'linear-gradient(180deg, rgba(14,14,14,0) 18.333%, #0e0e0e 15.185%)'
-        }}
       />
 
       {/* Modal Container */}
@@ -128,13 +125,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                 </div>
               );
             })}
-          </div>
-
-          {/* Native Keyboard Placeholder (bottom section) */}
-          <div className="absolute bg-[#313131] h-[378px] left-0 overflow-clip rounded-b-[14px] bottom-0 w-[1006px] pointer-events-none">
-            <p className="absolute font-['Roboto',Helvetica] font-medium leading-normal left-1/2 text-[#656565] text-[25.945px] text-center top-1/2 -translate-x-1/2 -translate-y-1/2">
-              Native keyboard
-            </p>
           </div>
         </div>
       </div>

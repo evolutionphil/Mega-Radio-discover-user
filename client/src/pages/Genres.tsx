@@ -91,7 +91,7 @@ export const Genres = (): JSX.Element => {
 
       {/* Login Button */}
       <Link href="/login">
-        <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-login-header">
+        <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-login-header" data-tv-focusable="true">
           <img
             className="absolute left-[13px] size-[34px] top-[9px]"
             alt="Login"
@@ -107,7 +107,7 @@ export const Genres = (): JSX.Element => {
       <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
         {/* Discover */}
         <Link href="/discover-no-user">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Discover
@@ -121,7 +121,7 @@ export const Genres = (): JSX.Element => {
 
         {/* Genres - Active */}
         <Link href="/genres">
-          <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres">
+          <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Genres
@@ -135,7 +135,7 @@ export const Genres = (): JSX.Element => {
 
         {/* Search */}
         <Link href="/search">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Search
@@ -149,7 +149,7 @@ export const Genres = (): JSX.Element => {
 
         {/* Favorites */}
         <Link href="/favorites">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Favorites
@@ -163,7 +163,7 @@ export const Genres = (): JSX.Element => {
 
         {/* Records */}
         <Link href="/discover-no-user">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Records
@@ -178,7 +178,7 @@ export const Genres = (): JSX.Element => {
 
         {/* Settings */}
         <Link href="/settings">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 Settings
@@ -203,6 +203,7 @@ export const Genres = (): JSX.Element => {
             className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[309px]" 
             data-testid={`card-genre-${index}`}
             style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+            data-tv-focusable="true"
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
               {genre.name}
@@ -222,6 +223,7 @@ export const Genres = (): JSX.Element => {
             className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[467px]" 
             data-testid={`card-genre-${index + 4}`}
             style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+            data-tv-focusable="true"
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
               {genre.name}
@@ -246,6 +248,7 @@ export const Genres = (): JSX.Element => {
             className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[737px]" 
             data-testid={`card-genre-${index + 8}`}
             style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+            data-tv-focusable="true"
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
               {genre.name}
@@ -265,6 +268,7 @@ export const Genres = (): JSX.Element => {
             className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[895px]" 
             data-testid={`card-genre-${index + 12}`}
             style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+            data-tv-focusable="true"
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
               {genre.name}
@@ -284,6 +288,7 @@ export const Genres = (): JSX.Element => {
             className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[1055px]" 
             data-testid={`card-genre-${index + 16}`}
             style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+            data-tv-focusable="true"
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
               {genre.name}
