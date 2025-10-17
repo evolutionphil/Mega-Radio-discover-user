@@ -149,6 +149,36 @@ export const RadioPlaying = (): JSX.Element => {
     setAllLoadedStations([]);
   }, [stationId]);
 
+  // Load more popular stations - client-side pagination (useCallback to avoid stale closures)
+  const loadMorePopular = useCallback(() => {
+    if (isLoadingMorePopular || !hasMorePopular) return;
+    
+    setIsLoadingMorePopular(true);
+    
+    // Simulate async for smooth UX
+    setTimeout(() => {
+      setPopularStationsPage(prevPage => {
+        const nextPage = prevPage + 1;
+        const startIdx = prevPage * POPULAR_STATIONS_PER_LOAD;
+        const endIdx = startIdx + POPULAR_STATIONS_PER_LOAD;
+        
+        const nextBatch = allPopularStations.slice(startIdx, endIdx);
+        
+        if (nextBatch.length > 0) {
+          setDisplayedPopularStations(prev => [...prev, ...nextBatch]);
+          setHasMorePopular(endIdx < allPopularStations.length);
+          console.log(`[RadioPlaying] Loaded popular page ${nextPage}, showing ${endIdx}/${allPopularStations.length} stations`);
+        } else {
+          setHasMorePopular(false);
+          console.log('[RadioPlaying] No more popular stations to load');
+        }
+        
+        setIsLoadingMorePopular(false);
+        return nextPage;
+      });
+    }, 100);
+  }, [isLoadingMorePopular, hasMorePopular, allPopularStations, POPULAR_STATIONS_PER_LOAD]);
+
   // Auto-hide header on scroll
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -302,36 +332,6 @@ export const RadioPlaying = (): JSX.Element => {
       setPopularStationsPage(1);
     }
   }, [popularStationsData]);
-
-  // Load more popular stations - client-side pagination (useCallback to avoid stale closures)
-  const loadMorePopular = useCallback(() => {
-    if (isLoadingMorePopular || !hasMorePopular) return;
-    
-    setIsLoadingMorePopular(true);
-    
-    // Simulate async for smooth UX
-    setTimeout(() => {
-      setPopularStationsPage(prevPage => {
-        const nextPage = prevPage + 1;
-        const startIdx = prevPage * POPULAR_STATIONS_PER_LOAD;
-        const endIdx = startIdx + POPULAR_STATIONS_PER_LOAD;
-        
-        const nextBatch = allPopularStations.slice(startIdx, endIdx);
-        
-        if (nextBatch.length > 0) {
-          setDisplayedPopularStations(prev => [...prev, ...nextBatch]);
-          setHasMorePopular(endIdx < allPopularStations.length);
-          console.log(`[RadioPlaying] Loaded popular page ${nextPage}, showing ${endIdx}/${allPopularStations.length} stations`);
-        } else {
-          setHasMorePopular(false);
-          console.log('[RadioPlaying] No more popular stations to load');
-        }
-        
-        setIsLoadingMorePopular(false);
-        return nextPage;
-      });
-    }, 100);
-  }, [isLoadingMorePopular, hasMorePopular, allPopularStations, POPULAR_STATIONS_PER_LOAD]);
 
   const similarStations = allSimilarStations || [];
   const popularStations = displayedPopularStations || [];

@@ -19,6 +19,16 @@ cp -r client/public/figmaAssets/* images/ 2>/dev/null || echo "Warning: figmaAss
 # Copy TV styles CSS
 cp client/public/css/tv-styles.css css/tv-styles.css 2>/dev/null || echo "Warning: tv-styles.css not found"
 
+# Copy TV JavaScript files to dist for dev server
+echo "📂 Step 2b: Copying TV JavaScript files to dist/public/js..."
+mkdir -p dist/public/js
+cp js/fetch-polyfill-samsung.js dist/public/js/ 2>/dev/null || echo "Warning: fetch-polyfill not found"
+cp js/platform-detect.js dist/public/js/ 2>/dev/null || echo "Warning: platform-detect not found"
+cp js/polyfills.js dist/public/js/ 2>/dev/null || echo "Warning: polyfills not found"
+cp js/tv-spatial-navigation.js dist/public/js/ 2>/dev/null || echo "Warning: tv-spatial-navigation not found"
+cp js/tv-remote-keys.js dist/public/js/ 2>/dev/null || echo "Warning: tv-remote-keys not found"
+cp js/tv-audio-player.js dist/public/js/ 2>/dev/null || echo "Warning: tv-audio-player not found"
+
 # Copy any other static assets if they exist
 if [ -f "dist/public/vite.svg" ]; then
     cp dist/public/vite.svg ./
