@@ -194,45 +194,52 @@ The schema uses Drizzle's PostgreSQL adapter with type inference for Insert and 
 
 ### TV App Deployment
 
-**Deployment Package Structure**
-The `tv-app/` folder contains a deployable package for both LG webOS and Samsung Tizen platforms with proper flat structure required by TV SDKs:
+**Samsung Tizen TV App (Primary)**
+The `tv-app/` folder contains the official Samsung Tizen TV project extracted from `MegaRadioTVAPP.zip`:
 
 ```
 tv-app/
-├── index.html          # Main entry point
-├── config.xml          # Samsung Tizen configuration
-├── appinfo.json        # LG webOS configuration
+├── config.xml          # Samsung Tizen configuration (lJoKY533ah.MegaRadioTVAPP)
 ├── .project            # Tizen Studio project file
-├── .tproject           # Tizen platform configuration
-├── images/             # App icons
-│   ├── icon.png
-│   └── largeIcon.png
-├── css/                # TV-specific styles
+├── .tproject           # Platform: tv-samsung-9.0
+├── .settings/          # Eclipse/Tizen Studio settings
+├── index.html          # Main entry point (auto-generated)
+├── icon.png            # App icon (57KB)
+├── assets/             # Built React app
+│   ├── index-[hash].js
+│   └── index-[hash].css
+├── css/
+│   └── style.css       # TV styles
 ├── js/                 # Platform scripts
-├── webOSTVjs-1.2.0/    # LG webOS SDK
-└── assets/             # Built React app (after build)
+│   ├── platform-detect.js
+│   ├── tv-remote-keys.js
+│   └── tv-audio-player.js
+├── webOSTVjs-1.2.0/    # LG webOS SDK (cross-platform support)
+└── images/             # Additional images
 ```
 
 **Build Process**
-1. Run `./build-tv-app.sh` to build and prepare the TV app
+1. Run `./build-samsung-tv.sh` to build and prepare the Samsung TV app
 2. The script builds the React app with Vite
 3. Copies built assets from `dist/public/` to `tv-app/assets/`
-4. Converts Vite's index.html absolute paths to relative paths (required for TV platforms)
-5. Creates a deployable package ready for TV IDEs
+4. Generates `index.html` with all TV scripts and React app integrated
+5. Uses relative paths for all resources (required for TV platforms)
 
-**Critical Fix**: TV platforms require relative paths. The build script converts all absolute paths (`/assets/...`) to relative paths (`assets/...`) to ensure resources load correctly on Samsung Tizen and LG webOS.
+**Important**: Configuration files (`config.xml`, `.project`, `.tproject`, `.settings/`) are from the original Samsung project and must NOT be modified. The build script only updates `index.html` and `assets/`.
 
-**Opening in Tizen Studio (Samsung)**
+**Deploying to Samsung TV (Tizen Studio)**
 1. Open Tizen Studio
 2. File > Open Projects from File System
 3. Select the `tv-app` folder
-4. Platform will be detected as `tv-samsung-6.0`
-5. The `.project` and `.tproject` files enable proper platform detection
+4. Platform detected as `tv-samsung-9.0`
+5. Right-click project > Run As > Tizen Web Application
+6. Select Samsung TV emulator or real device
 
-**Opening in webOS TV IDE (LG)**
-1. Open webOS TV IDE
-2. Import the `tv-app` folder as a webOS TV project
-3. The `appinfo.json` will be automatically recognized
+**App Configuration**
+- App ID: `lJoKY533ah.MegaRadioTVAPP`
+- Package: `lJoKY533ah`
+- Platform: Samsung Tizen TV 9.0
+- Resolution: 1920x1080
 
 **Platform Detection Requirements**
 - Samsung Tizen: Requires `config.xml`, `.project`, `.tproject` at root
