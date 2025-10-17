@@ -44,11 +44,14 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Initialize country stations when data is loaded or country changes
   useEffect(() => {
     if (allCountryStationsData?.stations) {
+      console.log(`Country changed: ${selectedCountry}, total stations: ${allCountryStationsData.stations.length}`);
       setAllCountryStations(allCountryStationsData.stations);
       // Show only first 56 stations initially
       setDisplayedStations(allCountryStationsData.stations.slice(0, STATIONS_PER_LOAD));
       setCurrentOffset(STATIONS_PER_LOAD);
-      setHasMoreCountryStations(allCountryStationsData.stations.length > STATIONS_PER_LOAD);
+      const hasMore = allCountryStationsData.stations.length > STATIONS_PER_LOAD;
+      setHasMoreCountryStations(hasMore);
+      console.log(`Initial load: showing 56 stations, hasMore=${hasMore}`);
     }
   }, [allCountryStationsData, selectedCountryCode]);
 
@@ -65,12 +68,18 @@ export const DiscoverNoUser = (): JSX.Element => {
     setTimeout(() => {
       const nextStations = allCountryStations.slice(currentOffset, currentOffset + STATIONS_PER_LOAD);
       
+      console.log(`Loading more: offset=${currentOffset}, nextStations=${nextStations.length}, total=${allCountryStations.length}`);
+      
       if (nextStations.length > 0) {
         setDisplayedStations(prev => [...prev, ...nextStations]);
-        setCurrentOffset(prev => prev + STATIONS_PER_LOAD);
-        setHasMoreCountryStations(currentOffset + STATIONS_PER_LOAD < allCountryStations.length);
+        const newOffset = currentOffset + STATIONS_PER_LOAD;
+        setCurrentOffset(newOffset);
+        const hasMore = newOffset < allCountryStations.length;
+        setHasMoreCountryStations(hasMore);
+        console.log(`After load: displayed=${displayedStations.length + nextStations.length}, hasMore=${hasMore}`);
       } else {
         setHasMoreCountryStations(false);
+        console.log('No more stations to load');
       }
       
       setIsLoadingMore(false);
@@ -537,10 +546,10 @@ export const DiscoverNoUser = (): JSX.Element => {
         {/* No More Stations Message */}
         {!hasMoreCountryStations && displayedStations.length > 0 && (
           <div 
-            className="absolute left-[820px] text-white/50 font-['Ubuntu',Helvetica] text-[18px]"
+            className="absolute left-[780px] text-white/50 font-['Ubuntu',Helvetica] text-[18px]"
             style={{ top: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 20}px` }}
           >
-            All stations from {selectedCountry} loaded
+            ✓ All {displayedStations.length} stations from {selectedCountry} loaded
           </div>
         )}
         </div>
