@@ -1,8 +1,14 @@
 import { Link } from "wouter";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
+import { CountrySelector } from "@/components/CountrySelector";
 
 export const DiscoverNoUser = (): JSX.Element => {
+  const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState('Austria');
+  const [selectedCountryFlag, setSelectedCountryFlag] = useState('/figmaAssets/austria-1.png');
+
   // Fetch popular genres
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres/discoverable'],
@@ -34,6 +40,20 @@ export const DiscoverNoUser = (): JSX.Element => {
         : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
     }
     return '/figmaAssets/powerturk-tv-logosu-1.png';
+  };
+
+  // Helper function to get station tags as array
+  const getStationTags = (station: Station): string[] => {
+    if (!station.tags) return [];
+    if (Array.isArray(station.tags)) return station.tags;
+    return station.tags.split(',').map(tag => tag.trim());
+  };
+
+  // Helper function to get first category/tag
+  const getStationCategory = (station: Station): string => {
+    const tags = getStationTags(station);
+    if (tags.length > 0) return tags[0];
+    return station.country || 'Radio';
   };
 
   // Genre positions
@@ -83,16 +103,20 @@ export const DiscoverNoUser = (): JSX.Element => {
         </div>
 
         {/* Country Selector */}
-        <div className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] pointer-events-auto">
+        <div 
+          className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] pointer-events-auto cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors"
+          onClick={() => setIsCountrySelectorOpen(true)}
+          data-testid="button-country-selector"
+        >
           <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
             <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
-              Austria
+              {selectedCountry}
             </p>
             <div className="absolute left-0 size-[28.421px] top-0">
               <img
-                alt=""
+                alt={selectedCountry}
                 className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                src="/figmaAssets/austria-1.png"
+                src={selectedCountryFlag}
               />
             </div>
             <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
@@ -291,7 +315,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                 {station.name}
               </p>
               <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.tags?.[0] || station.country || 'Radio'}
+                {getStationCategory(station)}
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
             </div>
@@ -320,7 +344,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                 {station.name}
               </p>
               <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.tags?.[0] || station.country || 'Radio'}
+                {getStationCategory(station)}
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
             </div>
@@ -366,7 +390,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                 {station.name}
               </p>
               <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.tags?.[0] || station.country || 'Radio'}
+                {getStationCategory(station)}
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
             </div>
@@ -397,7 +421,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   {station.name}
                 </p>
                 <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                  {station.tags?.[0] || station.country || 'Radio'}
+                  {getStationCategory(station)}
                 </p>
                 <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
               </div>
@@ -405,6 +429,17 @@ export const DiscoverNoUser = (): JSX.Element => {
           );
         })}
       </div>
+
+      {/* Country Selector Modal */}
+      <CountrySelector
+        isOpen={isCountrySelectorOpen}
+        onClose={() => setIsCountrySelectorOpen(false)}
+        selectedCountry={selectedCountry}
+        onSelectCountry={(country) => {
+          setSelectedCountry(country.name);
+          setSelectedCountryFlag(country.flag);
+        }}
+      />
     </div>
   );
 };

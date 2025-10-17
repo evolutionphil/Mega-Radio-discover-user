@@ -28,6 +28,20 @@ export const GenreList = (): JSX.Element => {
     return '/figmaAssets/powerturk-tv-logosu-1.png';
   };
 
+  // Helper function to get station tags as array
+  const getStationTags = (station: Station): string[] => {
+    if (!station.tags) return [];
+    if (Array.isArray(station.tags)) return station.tags;
+    return station.tags.split(',').map(tag => tag.trim());
+  };
+
+  // Helper function to get first category/tag
+  const getStationCategory = (station: Station): string => {
+    const tags = getStationTags(station);
+    if (tags.length > 0) return tags[0];
+    return station.country || 'Radio';
+  };
+
   const positions = [
     // Row 1
     { left: 236, top: 316 },
@@ -264,7 +278,7 @@ export const GenreList = (): JSX.Element => {
                   {station.name}
                 </p>
                 <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                  {station.tags?.[0] || station.country || 'Radio'}
+                  {getStationCategory(station)}
                 </p>
                 <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
               </div>
