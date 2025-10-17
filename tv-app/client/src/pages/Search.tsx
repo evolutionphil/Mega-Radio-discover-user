@@ -250,18 +250,18 @@ export const Search = (): JSX.Element => {
 
       {/* Search Results */}
       {searchQuery.length > 0 && searchResults.map((station, index) => {
-        const topPositions = [259, 344, 429, 514];
+        const topPositions = [259, 359, 459, 559];
         
         return (
           <div
             key={station._id || index}
-            className="absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] h-[65px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
             style={{ top: `${topPositions[index]}px` }}
             data-testid={`search-result-${index}`}
             data-tv-focusable="true"
             onClick={() => window.location.href = `/radio-playing?station=${station._id}`}
           >
-            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px]">
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
               {highlightText(station.name, searchQuery)}
             </p>
             <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]" />
@@ -275,13 +275,6 @@ export const Search = (): JSX.Element => {
           No stations found for "{searchQuery}"
         </p>
       )}
-
-      {/* Samsung Native Keyboard Placeholder */}
-      <div className="absolute bg-[#313131] h-[378px] left-[246px] overflow-clip rounded-[14px] top-[610px] w-[774px]">
-        <p className="absolute font-['Roboto',Helvetica] font-medium leading-normal left-1/2 text-[#656565] text-[25.945px] text-center top-[calc(50%-15px)] translate-x-[-50%]">
-          {(window as any).tizen || (window as any).webapis ? 'Focus search box to show keyboard' : 'Native keyboard'}
-        </p>
-      </div>
 
       {/* Recently Played Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[1110px] not-italic text-[32px] text-white top-[58px]">
