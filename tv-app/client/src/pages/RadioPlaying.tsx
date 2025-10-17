@@ -112,7 +112,14 @@ export const RadioPlaying = (): JSX.Element => {
       };
       
       audioPlayerRef.current.onError = (error: any) => {
-        console.error('Audio player error:', error);
+        console.error('[RadioPlaying] Audio player error:', error);
+        console.error('[RadioPlaying] Error details:', {
+          stationId,
+          stationName: station?.name,
+          stationUrl: station?.url,
+          errorType: error?.type,
+          errorMessage: error?.message
+        });
         setIsPlaying(false);
         setIsBuffering(false);
       };
@@ -129,7 +136,23 @@ export const RadioPlaying = (): JSX.Element => {
   // Auto-play when station changes
   useEffect(() => {
     if (station && station.url && audioPlayerRef.current) {
-      audioPlayerRef.current.play(station.url);
+      console.log('[RadioPlaying] Playing station:', {
+        id: station._id,
+        name: station.name,
+        url: station.url,
+        url_resolved: station.url_resolved,
+        codec: station.codec,
+        bitrate: station.bitrate
+      });
+      
+      // Try url_resolved first, then fall back to url
+      const streamUrl = station.url_resolved || station.url;
+      console.log('[RadioPlaying] Using stream URL:', streamUrl);
+      
+      audioPlayerRef.current.play(streamUrl).catch((error: any) => {
+        console.error('[RadioPlaying] Play failed:', error);
+        console.error('[RadioPlaying] Station details:', station);
+      });
     }
   }, [station]);
 
