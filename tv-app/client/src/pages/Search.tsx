@@ -25,6 +25,24 @@ export const Search = (): JSX.Element => {
   const searchResults = searchData?.results || [];
   const recentStations = recentStationsData?.stations || [];
 
+  // Auto-focus search input when page loads
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  // Re-initialize TV navigation when search results change
+  useEffect(() => {
+    // Small delay to ensure DOM is updated with search results
+    const timeout = setTimeout(() => {
+      if (window.TVNavigation) {
+        window.TVNavigation.update();
+      }
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, [searchResults.length]);
+
   // Samsung keyboard integration - focus input and trigger native keyboard
   const handleInputFocus = () => {
     // On Samsung TV, focusing the input will automatically show the native keyboard
@@ -86,7 +104,7 @@ export const Search = (): JSX.Element => {
           <img
             alt=""
             className="block max-w-none size-full"
-            src="/figmaAssets/path-8.svg"
+            src="/images/path-8.svg"
           />
         </div>
       </div>
@@ -104,7 +122,7 @@ export const Search = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/figmaAssets/vuesax-bold-radio.svg"
+                  src="/images/vuesax-bold-radio.svg"
                 />
               </div>
             </div>
@@ -122,7 +140,7 @@ export const Search = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/figmaAssets/vuesax-bold-musicnote.svg"
+                  src="/images/vuesax-bold-musicnote.svg"
                 />
               </div>
             </div>
@@ -140,7 +158,7 @@ export const Search = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/figmaAssets/vuesax-bold-search-normal.svg"
+                  src="/images/vuesax-bold-search-normal.svg"
                 />
               </div>
             </div>
@@ -158,7 +176,7 @@ export const Search = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/figmaAssets/vuesax-bold-heart.svg"
+                  src="/images/vuesax-bold-heart.svg"
                 />
               </div>
             </div>
@@ -193,7 +211,7 @@ export const Search = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/figmaAssets/vuesax-bold-setting-2.svg"
+                  src="/images/vuesax-bold-setting-2.svg"
                 />
               </div>
             </div>
@@ -224,7 +242,7 @@ export const Search = (): JSX.Element => {
             <img
               alt=""
               className="block max-w-none size-full"
-              src="/figmaAssets/vuesax-outline-search-normal.svg"
+              src="/images/vuesax-bold-search-normal.svg"
             />
           </div>
         </div>
@@ -236,23 +254,23 @@ export const Search = (): JSX.Element => {
         const topPositions = [259, 344, 429, 514];
         
         return (
-          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
-            <div 
-              className={`absolute ${isFirst ? 'bg-[rgba(255,255,255,0.28)] border-[#b4b4b4] border-[5.5px] border-solid' : 'bg-[rgba(255,255,255,0.14)]'} box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors`}
-              style={{ top: `${topPositions[index]}px` }}
-              data-testid={`result-${station.slug || station._id}`}
-              data-tv-focusable="true"
-            >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px]">
-                {isFirst ? (
-                  <span className="text-white">{station.name}</span>
-                ) : (
-                  highlightText(station.name, searchQuery)
-                )}
-              </p>
-              <div className={`absolute ${isFirst ? 'inset-[-5.5px]' : 'inset-0'} pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]`} />
-            </div>
-          </Link>
+          <div
+            key={station._id || index}
+            className={`absolute ${isFirst ? 'bg-[rgba(255,255,255,0.28)] border-[#b4b4b4] border-[5.5px] border-solid' : 'bg-[rgba(255,255,255,0.14)]'} box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors`}
+            style={{ top: `${topPositions[index]}px` }}
+            data-testid={`search-result-${index}`}
+            data-tv-focusable="true"
+            onClick={() => window.location.href = `/radio-playing?station=${station._id}`}
+          >
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px]">
+              {isFirst ? (
+                <span className="text-white">{station.name}</span>
+              ) : (
+                highlightText(station.name, searchQuery)
+              )}
+            </p>
+            <div className={`absolute ${isFirst ? 'inset-[-5.5px]' : 'inset-0'} pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]`} />
+          </div>
         );
       })}
 
