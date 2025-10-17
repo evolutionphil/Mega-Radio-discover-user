@@ -74,6 +74,13 @@ cat > index.html << 'EOF'
     <!-- TV Audio Player -->
     <script type="text/javascript" src="js/tv-audio-player.js"></script>
     
+    <!-- Polyfill for globalThis (Samsung Tizen compatibility) -->
+    <script>
+        if (typeof globalThis === 'undefined') {
+            window.globalThis = window;
+        }
+    </script>
+    
     <!--VITE_JS_PLACEHOLDER-->
 </body>
 </html>
