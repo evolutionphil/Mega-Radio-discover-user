@@ -19,12 +19,12 @@ export const RadioPlaying = (): JSX.Element => {
   }, [location]); // Re-calculate when location changes
 
   const sidebarItems = [
-    { icon: "/figmaAssets/vuesax-bold-radio.svg", label: "Discover", active: true, href: "/discover-no-user" },
-    { icon: "/figmaAssets/vuesax-bold-musicnote.svg", label: "Genres", active: false, href: "/genres" },
-    { icon: "/figmaAssets/vuesax-bold-search-normal.svg", label: "Search", active: false, href: "/search" },
-    { icon: "/figmaAssets/vuesax-bold-heart.svg", label: "Favorites", active: false, href: "/favorites" },
+    { icon: "/images/vuesax-bold-radio.svg", label: "Discover", active: true, href: "/discover-no-user" },
+    { icon: "/images/vuesax-bold-musicnote.svg", label: "Genres", active: false, href: "/genres" },
+    { icon: "/images/vuesax-bold-search-normal.svg", label: "Search", active: false, href: "/search" },
+    { icon: "/images/vuesax-bold-heart.svg", label: "Favorites", active: false, href: "/favorites" },
     { icon: null, label: "Records", active: false, customIcon: true, href: "/discover-no-user" },
-    { icon: "/figmaAssets/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
+    { icon: "/images/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
   ];
 
   // Fallback image as SVG data URI
@@ -171,7 +171,7 @@ export const RadioPlaying = (): JSX.Element => {
         <img
           className="w-full h-full object-cover opacity-20 blur-[80px] scale-110"
           alt="Background"
-          src={station ? getStationImage(station) : '/figmaAssets/meta-image--1--1-4.png'}
+          src={station ? getStationImage(station) : '/images/meta-image--1--1-4.png'}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0e0e0e]/60 to-[#0e0e0e]/90" />
       </div>
@@ -186,7 +186,7 @@ export const RadioPlaying = (): JSX.Element => {
         <img
           className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
           alt="Path"
-          src="/figmaAssets/path-8.svg"
+          src="/images/path-8.svg"
         />
       </div>
 
@@ -199,7 +199,7 @@ export const RadioPlaying = (): JSX.Element => {
           <img
             className="w-full h-full object-cover"
             alt="User"
-            src="/figmaAssets/frame-218.png"
+            src="/images/frame-218.png"
           />
         </div>
       </div>
@@ -213,13 +213,13 @@ export const RadioPlaying = (): JSX.Element => {
           <img
             className="absolute left-0 top-0 w-[28.421px] h-[28.421px]"
             alt="Austria"
-            src="/figmaAssets/austria-1.png"
+            src="/images/austria-1.png"
           />
           <div className="absolute left-[170px] top-[3.32px] rotate-[270deg]">
             <img
               className="w-[23.684px] h-[23.684px]"
               alt="Arrow"
-              src="/figmaAssets/vuesax-outline-arrow-left.svg"
+              src="/images/vuesax-outline-arrow-left.svg"
             />
           </div>
         </div>
@@ -268,7 +268,7 @@ export const RadioPlaying = (): JSX.Element => {
         <img
           className="w-full h-full object-cover"
           alt="Radio Logo"
-          src={station ? getStationImage(station) : '/figmaAssets/meta-image--1--1-4.png'}
+          src={station ? getStationImage(station) : '/images/meta-image--1--1-4.png'}
           onError={(e) => {
             (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
           }}
@@ -301,7 +301,7 @@ export const RadioPlaying = (): JSX.Element => {
       <img
         className="absolute left-[596px] top-[479.48px] w-[34.783px] h-[34.783px]"
         alt={station?.country || "Country"}
-        src="/figmaAssets/austria-1.png"
+        src="/images/austria-1.png"
       />
 
       {/* Station Info Tags */}

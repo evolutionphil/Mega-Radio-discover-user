@@ -55,7 +55,7 @@ export const Splash = (): JSX.Element => {
         <img
           className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
           alt="Path"
-          src="/figmaAssets/path-8.svg"
+          src="/images/path-8.svg"
         />
       </div>
 

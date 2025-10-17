@@ -4,21 +4,21 @@ import { useTVNavigation } from "@/hooks/useTVNavigation";
 export const Favorites = (): JSX.Element => {
   useTVNavigation();
   const sidebarItems = [
-    { icon: "/figmaAssets/vuesax-bold-radio.svg", label: "Discover", active: false, href: "/discover" },
-    { icon: "/figmaAssets/vuesax-bold-musicnote.svg", label: "Genres", active: false, href: "/genres" },
-    { icon: "/figmaAssets/vuesax-bold-search-normal.svg", label: "Search", active: false, href: "/search" },
-    { icon: "/figmaAssets/vuesax-bold-heart.svg", label: "Favorites", active: true, href: "/favorites" },
+    { icon: "/images/vuesax-bold-radio.svg", label: "Discover", active: false, href: "/discover" },
+    { icon: "/images/vuesax-bold-musicnote.svg", label: "Genres", active: false, href: "/genres" },
+    { icon: "/images/vuesax-bold-search-normal.svg", label: "Search", active: false, href: "/search" },
+    { icon: "/images/vuesax-bold-heart.svg", label: "Favorites", active: true, href: "/favorites" },
     { icon: null, label: "Records", active: false, customIcon: true, href: "/discover" },
-    { icon: "/figmaAssets/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
+    { icon: "/images/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
   ];
 
   const favoriteStations = [
-    { name: "CNN International", location: "International", image: "/figmaAssets/cnn-international-logo-1.png" },
-    { name: "BBC Radio", location: "United Kingdom", image: "/figmaAssets/-hdd91mb-400x400-1.png" },
-    { name: "Power Türk", location: "Turkey", image: "/figmaAssets/meta-image--1--1-4.png" },
-    { name: "VOA", location: "USA, New York", image: "/figmaAssets/c175-1.png" },
-    { name: "VIBRA", location: "Italy, Rome", image: "/figmaAssets/logo-1.png" },
-    { name: "Metro FM", location: "Turkey, Istanbul", image: "/figmaAssets/meta-image--1--1-4.png" },
+    { name: "CNN International", location: "International", image: "/images/cnn-international-logo-1.png" },
+    { name: "BBC Radio", location: "United Kingdom", image: "/images/-hdd91mb-400x400-1.png" },
+    { name: "Power Türk", location: "Turkey", image: "/images/meta-image--1--1-4.png" },
+    { name: "VOA", location: "USA, New York", image: "/images/c175-1.png" },
+    { name: "VIBRA", location: "Italy, Rome", image: "/images/logo-1.png" },
+    { name: "Metro FM", location: "Turkey, Istanbul", image: "/images/meta-image--1--1-4.png" },
   ];
 
   return (
@@ -34,7 +34,7 @@ export const Favorites = (): JSX.Element => {
         <img
           className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
           alt="Path"
-          src="/figmaAssets/path-8.svg"
+          src="/images/path-8.svg"
         />
       </div>
 
@@ -44,7 +44,7 @@ export const Favorites = (): JSX.Element => {
           <img
             className="absolute left-0 top-0 w-[28.421px] h-[28.421px]"
             alt="Austria"
-            src="/figmaAssets/at-1.png"
+            src="/images/at-1.png"
           />
           <p className="absolute left-[37.421px] top-[3.5px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white leading-normal">
             Austria
@@ -52,7 +52,7 @@ export const Favorites = (): JSX.Element => {
           <img
             className="absolute left-[178.684px] top-[7.5px] w-[15px] h-[14px]"
             alt="Dropdown"
-            src="/figmaAssets/vuesax-linear-arrow-down-1.svg"
+            src="/images/vuesax-linear-arrow-down-1.svg"
           />
         </div>
       </div>
@@ -62,7 +62,7 @@ export const Favorites = (): JSX.Element => {
         <img
           className="w-full h-full object-cover"
           alt="User"
-          src="/figmaAssets/memoji-1.png"
+          src="/images/memoji-1.png"
         />
       </div>
 
@@ -71,7 +71,7 @@ export const Favorites = (): JSX.Element => {
         <img
           className="absolute left-[18px] top-[9px] w-[20px] h-[20px]"
           alt="Login"
-          src="/figmaAssets/vuesax-bold-login.svg"
+          src="/images/vuesax-bold-login.svg"
         />
         <p className="absolute left-[52px] top-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white leading-normal">
           Login
@@ -122,7 +122,7 @@ export const Favorites = (): JSX.Element => {
             <img
               className="w-[120px] h-[120px] mb-8 opacity-30"
               alt="Empty"
-              src="/figmaAssets/vuesax-bold-heart.svg"
+              src="/images/vuesax-bold-heart.svg"
             />
             <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-[#9b9b9b] text-center">
               No favorite stations yet
@@ -150,7 +150,7 @@ export const Favorites = (): JSX.Element => {
                     <img
                       className="w-[20px] h-[20px]"
                       alt="Unfavorite"
-                      src="/figmaAssets/vuesax-bold-heart.svg"
+                      src="/images/vuesax-bold-heart.svg"
                     />
                   </button>
                 </div>

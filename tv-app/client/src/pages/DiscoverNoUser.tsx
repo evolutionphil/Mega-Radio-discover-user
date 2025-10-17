@@ -10,7 +10,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('Austria');
   const [selectedCountryCode, setSelectedCountryCode] = useState('AT');
-  const [selectedCountryFlag, setSelectedCountryFlag] = useState('/figmaAssets/austria-1.png');
+  const [selectedCountryFlag, setSelectedCountryFlag] = useState('/images/austria-1.png');
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);

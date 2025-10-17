@@ -11,7 +11,7 @@ export const Guide2 = (): JSX.Element => {
             <img
               className="absolute inset-0 w-full h-full object-cover max-w-none"
               alt="Background"
-              src="/figmaAssets/guide1-background.jpg"
+              src="/images/guide1-background.jpg"
             />
             <div className="absolute inset-0 bg-[rgba(0,0,0,0.7)]" />
           </div>

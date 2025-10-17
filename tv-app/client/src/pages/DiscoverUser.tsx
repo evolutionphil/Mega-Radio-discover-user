@@ -9,7 +9,7 @@ export const DiscoverUser = (): JSX.Element => {
         <img
           alt=""
           className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-          src="/figmaAssets/hand-crowd-disco-1.png"
+          src="/images/hand-crowd-disco-1.png"
         />
       </div>
 
@@ -24,7 +24,7 @@ export const DiscoverUser = (): JSX.Element => {
         <img
           className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
           alt="Path"
-          src="/figmaAssets/path-8.svg"
+          src="/images/path-8.svg"
         />
       </div>
 
@@ -47,7 +47,7 @@ export const DiscoverUser = (): JSX.Element => {
             <img
               alt="Austria"
               className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-              src="/figmaAssets/austria-1.png"
+              src="/images/austria-1.png"
             />
           </div>
           <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
@@ -56,7 +56,7 @@ export const DiscoverUser = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/figmaAssets/vuesax-outline-arrow-left.svg"
+                  src="/images/vuesax-outline-arrow-left.svg"
                 />
               </div>
             </div>
@@ -73,7 +73,7 @@ export const DiscoverUser = (): JSX.Element => {
           <img
             alt=""
             className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[73.333px] size-full"
-            src="/figmaAssets/frame-218.png"
+            src="/images/frame-218.png"
           />
         </div>
       </div>
@@ -179,7 +179,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-0">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/-hdd91mb-400x400-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/-hdd91mb-400x400-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102.5px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
             BBC Radio
@@ -195,7 +195,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-1">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/830-weeu-1-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/830-weeu-1-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
             WEEU
@@ -212,7 +212,7 @@ export const DiscoverUser = (): JSX.Element => {
         <div className="absolute bg-[rgba(255,255,255,0.14)] border-[#d2d2d2] border-[5.75px] border-solid h-[276px] left-[691.46px] rounded-[11.5px] top-[310px] w-[209.091px]" data-testid="card-station-2">
           <div className="h-[276px] overflow-clip relative rounded-[inherit] w-[209.091px]">
             <div className="absolute bg-white left-[35.55px] overflow-clip rounded-[6.9px] size-[138px] top-[35.55px]">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/cnn-international-logo-1.png" />
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/cnn-international-logo-1.png" />
             </div>
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[106.73px] not-italic text-[22px] text-center text-white top-[195.5px] translate-x-[-50%]">
               CNN
@@ -229,7 +229,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-3">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/2616697-nbc-news-logo-stacked--1--1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/2616697-nbc-news-logo-stacked--1--1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
             NBC News
@@ -245,7 +245,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-4">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
             Power Türk
@@ -261,7 +261,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-5">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/cheddar-news-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/cheddar-news-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102.5px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
             Cheddar
@@ -277,7 +277,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1616px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-6">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/c175--1--1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/c175--1--1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
             WNYC
@@ -293,7 +293,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1846px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-7">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/0b75jzrr-400x400-1-8.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/0b75jzrr-400x400-1-8.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">
             Power Türk
@@ -379,7 +379,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-0">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/logo-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/logo-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">VIBRA</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">Italy</span>, Rome</p>
@@ -390,7 +390,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-1">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/c175-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/c175-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102.5px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">VOA</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">USA</span>, New York</p>
@@ -401,7 +401,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-2">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/ebg3ye6-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/ebg3ye6-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Radio L</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Turkey</p>
@@ -412,7 +412,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-3">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/android-default-logo-1-3.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/android-default-logo-1-3.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Turkey, Istanbul</p>
@@ -423,7 +423,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-4">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18.818px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">USA</span>, New York</p>
@@ -434,7 +434,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-5">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/washington-d-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/washington-d-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Soul Radio</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100.5px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">USA</span>, Washington D.C</p>
@@ -446,7 +446,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-6">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/germany-bavaria-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/germany-bavaria-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">ON 70'S</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[99px] not-italic text-[18px] text-center text-white top-[218px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">Germany</span>, Bavaria</p>
@@ -457,7 +457,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-7">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/830-weeu-1-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/830-weeu-1-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">WEEU</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">USA</p>
@@ -468,7 +468,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-8">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Metro FM</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">Turkey</span>, Istanbul</p>
@@ -479,7 +479,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-9">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100.5px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -490,7 +490,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-10">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/apple-icon-120x120-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/apple-icon-120x120-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Zeno</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Italy</p>
@@ -501,7 +501,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-11">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/80s-radio-1.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/80s-radio-1.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Radio 80'S</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]"><span className="font-['Ubuntu',Helvetica] font-medium">USA</span>, New York</p>
@@ -527,7 +527,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/powertu-rk-tv-logosu-1-12.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/powertu-rk-tv-logosu-1-12.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -538,7 +538,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/0b75jzrr-400x400-1-8.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/0b75jzrr-400x400-1-8.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -549,7 +549,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -560,7 +560,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/android-default-logo-1-3.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/android-default-logo-1-3.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -571,7 +571,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -582,7 +582,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -594,7 +594,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/powertu-rk-tv-logosu-1-12.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/powertu-rk-tv-logosu-1-12.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -605,7 +605,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/0b75jzrr-400x400-1-8.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/0b75jzrr-400x400-1-8.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -616,7 +616,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -627,7 +627,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/android-default-logo-1-3.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/android-default-logo-1-3.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -638,7 +638,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/meta-image--1--1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>
@@ -649,7 +649,7 @@ export const DiscoverUser = (): JSX.Element => {
       <Link href="/radio-playing">
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figmaAssets/alem-fm-1-4.png" />
+            <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[102px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%]">Power Türk</p>
           <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[103.1px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%]">Türkçe Pop</p>

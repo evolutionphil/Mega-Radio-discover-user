@@ -8,7 +8,7 @@ export const MailSent = (): JSX.Element => {
         <img
           className="absolute left-[159px] top-0 w-[66px] h-[66px]"
           alt="Success"
-          src="/figmaAssets/vuesax-linear-tick-circle.svg"
+          src="/images/vuesax-linear-tick-circle.svg"
         />
 
         {/* Message */}

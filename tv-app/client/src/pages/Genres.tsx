@@ -36,7 +36,7 @@ export const Genres = (): JSX.Element => {
         <img
           alt=""
           className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-          src="/figmaAssets/hand-crowd-disco-1.png"
+          src="/images/hand-crowd-disco-1.png"
         />
       </div>
 
@@ -51,7 +51,7 @@ export const Genres = (): JSX.Element => {
         <img
           className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
           alt="Path"
-          src="/figmaAssets/path-8.svg"
+          src="/images/path-8.svg"
         />
       </div>
 
@@ -74,7 +74,7 @@ export const Genres = (): JSX.Element => {
             <img
               alt="Austria"
               className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-              src="/figmaAssets/austria-1.png"
+              src="/images/austria-1.png"
             />
           </div>
           <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
@@ -83,7 +83,7 @@ export const Genres = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/figmaAssets/vuesax-outline-arrow-left.svg"
+                  src="/images/vuesax-outline-arrow-left.svg"
                 />
               </div>
             </div>
@@ -97,7 +97,7 @@ export const Genres = (): JSX.Element => {
           <img
             className="absolute left-[13px] size-[34px] top-[9px]"
             alt="Login"
-            src="/figmaAssets/vuesax-bold-setting-2.svg"
+            src="/images/vuesax-bold-setting-2.svg"
           />
           <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
             Login
