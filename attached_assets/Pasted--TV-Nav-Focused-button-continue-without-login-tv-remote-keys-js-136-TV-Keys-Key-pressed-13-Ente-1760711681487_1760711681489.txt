@@ -1,0 +1,318 @@
+[TV Nav] Focused: button-continue-without-login
+tv-remote-keys.js:136 [TV Keys] Key pressed: 13 Enter
+index-B2MVZaRE.js:154 [API] getAllGenres: https://themegaradio.com/api/genres
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/popular?limit=24&country=AT
+index-B2MVZaRE.js:154 [API] Fetching working stations: https://themegaradio.com/api/stations/working?limit=500&country=AT
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/working?limit=500&country=AT
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/genres
+fetch-polyfill-samsung.js:54 [Fetch] Response text length: 0
+index-B2MVZaRE.js:154 [API] getAllGenres response: 200
+fetch-polyfill-samsung.js:75 [Fetch] Empty response body for: https://themegaradio.com/api/genres
+json @ fetch-polyfill-samsung.js:75
+(anonymous) @ index-B2MVZaRE.js:154
+ja @ index-B2MVZaRE.js:1
+Promise.then (async)
+Kt @ index-B2MVZaRE.js:1
+Promise @ index-B2MVZaRE.js:1
+ne @ index-B2MVZaRE.js:1
+getAllGenres @ index-B2MVZaRE.js:154
+queryFn @ index-B2MVZaRE.js:154
+s @ index-B2MVZaRE.js:49
+w @ index-B2MVZaRE.js:49
+start @ index-B2MVZaRE.js:49
+fetch @ index-B2MVZaRE.js:49
+ya @ index-B2MVZaRE.js:49
+onSubscribe @ index-B2MVZaRE.js:49
+subscribe @ index-B2MVZaRE.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-B2MVZaRE.js:49
+Rp @ index-B2MVZaRE.js:39
+bs @ index-B2MVZaRE.js:41
+Vr @ index-B2MVZaRE.js:41
+e1 @ index-B2MVZaRE.js:41
+or @ index-B2MVZaRE.js:41
+zf @ index-B2MVZaRE.js:41
+kn @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:41
+Promise.then (async)
+Ev @ index-B2MVZaRE.js:39
+Xe @ index-B2MVZaRE.js:41
+Et @ index-B2MVZaRE.js:41
+Op @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:39
+aa.v.forEach.e @ index-B2MVZaRE.js:49
+dx @ index-B2MVZaRE.js:49
+hashchange (async)
+D1 @ index-B2MVZaRE.js:49
+Ms.qf @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+f @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+wg @ index-B2MVZaRE.js:38
+yg @ index-B2MVZaRE.js:38
+jg @ index-B2MVZaRE.js:38
+op @ index-B2MVZaRE.js:38
+ap @ index-B2MVZaRE.js:38
+(anonymous) @ index-B2MVZaRE.js:38
+hc @ index-B2MVZaRE.js:41
+dd @ index-B2MVZaRE.js:38
+hl @ index-B2MVZaRE.js:38
+Xi @ index-B2MVZaRE.js:38
+Ig @ index-B2MVZaRE.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+index-B2MVZaRE.js:154 [API] getAllGenres failed: TypeError: Cannot read property 'data' of null
+    at index-B2MVZaRE.js:154
+    at Generator.next (<anonymous>)
+    at ja (index-B2MVZaRE.js:1)
+(anonymous) @ index-B2MVZaRE.js:154
+ja @ index-B2MVZaRE.js:1
+Promise.then (async)
+Kt @ index-B2MVZaRE.js:1
+ja @ index-B2MVZaRE.js:1
+Promise.then (async)
+Kt @ index-B2MVZaRE.js:1
+Promise @ index-B2MVZaRE.js:1
+ne @ index-B2MVZaRE.js:1
+getAllGenres @ index-B2MVZaRE.js:154
+queryFn @ index-B2MVZaRE.js:154
+s @ index-B2MVZaRE.js:49
+w @ index-B2MVZaRE.js:49
+start @ index-B2MVZaRE.js:49
+fetch @ index-B2MVZaRE.js:49
+ya @ index-B2MVZaRE.js:49
+onSubscribe @ index-B2MVZaRE.js:49
+subscribe @ index-B2MVZaRE.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-B2MVZaRE.js:49
+Rp @ index-B2MVZaRE.js:39
+bs @ index-B2MVZaRE.js:41
+Vr @ index-B2MVZaRE.js:41
+e1 @ index-B2MVZaRE.js:41
+or @ index-B2MVZaRE.js:41
+zf @ index-B2MVZaRE.js:41
+kn @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:41
+Promise.then (async)
+Ev @ index-B2MVZaRE.js:39
+Xe @ index-B2MVZaRE.js:41
+Et @ index-B2MVZaRE.js:41
+Op @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:39
+aa.v.forEach.e @ index-B2MVZaRE.js:49
+dx @ index-B2MVZaRE.js:49
+hashchange (async)
+D1 @ index-B2MVZaRE.js:49
+Ms.qf @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+f @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+wg @ index-B2MVZaRE.js:38
+yg @ index-B2MVZaRE.js:38
+jg @ index-B2MVZaRE.js:38
+op @ index-B2MVZaRE.js:38
+ap @ index-B2MVZaRE.js:38
+(anonymous) @ index-B2MVZaRE.js:38
+hc @ index-B2MVZaRE.js:41
+dd @ index-B2MVZaRE.js:38
+hl @ index-B2MVZaRE.js:38
+Xi @ index-B2MVZaRE.js:38
+Ig @ index-B2MVZaRE.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/popular?limit=24&country=AT
+fetch-polyfill-samsung.js:54 [Fetch] Response text length: 0
+fetch-polyfill-samsung.js:75 [Fetch] Empty response body for: https://themegaradio.com/api/stations/popular?limit=24&country=AT
+json @ fetch-polyfill-samsung.js:75
+(anonymous) @ index-B2MVZaRE.js:154
+ja @ index-B2MVZaRE.js:1
+Promise.then (async)
+Kt @ index-B2MVZaRE.js:1
+Promise @ index-B2MVZaRE.js:1
+ne @ index-B2MVZaRE.js:1
+getPopularStations @ index-B2MVZaRE.js:154
+queryFn @ index-B2MVZaRE.js:154
+s @ index-B2MVZaRE.js:49
+w @ index-B2MVZaRE.js:49
+start @ index-B2MVZaRE.js:49
+fetch @ index-B2MVZaRE.js:49
+ya @ index-B2MVZaRE.js:49
+onSubscribe @ index-B2MVZaRE.js:49
+subscribe @ index-B2MVZaRE.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-B2MVZaRE.js:49
+Rp @ index-B2MVZaRE.js:39
+bs @ index-B2MVZaRE.js:41
+Vr @ index-B2MVZaRE.js:41
+e1 @ index-B2MVZaRE.js:41
+or @ index-B2MVZaRE.js:41
+zf @ index-B2MVZaRE.js:41
+kn @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:41
+Promise.then (async)
+Ev @ index-B2MVZaRE.js:39
+Xe @ index-B2MVZaRE.js:41
+Et @ index-B2MVZaRE.js:41
+Op @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:39
+aa.v.forEach.e @ index-B2MVZaRE.js:49
+dx @ index-B2MVZaRE.js:49
+hashchange (async)
+D1 @ index-B2MVZaRE.js:49
+Ms.qf @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+f @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+wg @ index-B2MVZaRE.js:38
+yg @ index-B2MVZaRE.js:38
+jg @ index-B2MVZaRE.js:38
+op @ index-B2MVZaRE.js:38
+ap @ index-B2MVZaRE.js:38
+(anonymous) @ index-B2MVZaRE.js:38
+hc @ index-B2MVZaRE.js:41
+dd @ index-B2MVZaRE.js:38
+hl @ index-B2MVZaRE.js:38
+Xi @ index-B2MVZaRE.js:38
+Ig @ index-B2MVZaRE.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations/working?limit=500&country=AT
+fetch-polyfill-samsung.js:54 [Fetch] Response text length: 0
+index-B2MVZaRE.js:154 [API] Response status: 200
+fetch-polyfill-samsung.js:75 [Fetch] Empty response body for: https://themegaradio.com/api/stations/working?limit=500&country=AT
+json @ fetch-polyfill-samsung.js:75
+(anonymous) @ index-B2MVZaRE.js:154
+ja @ index-B2MVZaRE.js:1
+Promise.then (async)
+Kt @ index-B2MVZaRE.js:1
+Promise @ index-B2MVZaRE.js:1
+ne @ index-B2MVZaRE.js:1
+getWorkingStations @ index-B2MVZaRE.js:154
+queryFn @ index-B2MVZaRE.js:154
+s @ index-B2MVZaRE.js:49
+w @ index-B2MVZaRE.js:49
+start @ index-B2MVZaRE.js:49
+fetch @ index-B2MVZaRE.js:49
+ya @ index-B2MVZaRE.js:49
+onSubscribe @ index-B2MVZaRE.js:49
+subscribe @ index-B2MVZaRE.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-B2MVZaRE.js:49
+Rp @ index-B2MVZaRE.js:39
+bs @ index-B2MVZaRE.js:41
+Vr @ index-B2MVZaRE.js:41
+e1 @ index-B2MVZaRE.js:41
+or @ index-B2MVZaRE.js:41
+zf @ index-B2MVZaRE.js:41
+kn @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:41
+Promise.then (async)
+Ev @ index-B2MVZaRE.js:39
+Xe @ index-B2MVZaRE.js:41
+Et @ index-B2MVZaRE.js:41
+Op @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:39
+aa.v.forEach.e @ index-B2MVZaRE.js:49
+dx @ index-B2MVZaRE.js:49
+hashchange (async)
+D1 @ index-B2MVZaRE.js:49
+Ms.qf @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+f @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+wg @ index-B2MVZaRE.js:38
+yg @ index-B2MVZaRE.js:38
+jg @ index-B2MVZaRE.js:38
+op @ index-B2MVZaRE.js:38
+ap @ index-B2MVZaRE.js:38
+(anonymous) @ index-B2MVZaRE.js:38
+hc @ index-B2MVZaRE.js:41
+dd @ index-B2MVZaRE.js:38
+hl @ index-B2MVZaRE.js:38
+Xi @ index-B2MVZaRE.js:38
+Ig @ index-B2MVZaRE.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+index-B2MVZaRE.js:154 [API] Failed to fetch working stations: TypeError: Cannot read property 'stations' of null
+    at index-B2MVZaRE.js:154
+    at Generator.next (<anonymous>)
+    at ja (index-B2MVZaRE.js:1)
+(anonymous) @ index-B2MVZaRE.js:154
+ja @ index-B2MVZaRE.js:1
+Promise.then (async)
+Kt @ index-B2MVZaRE.js:1
+ja @ index-B2MVZaRE.js:1
+Promise.then (async)
+Kt @ index-B2MVZaRE.js:1
+Promise @ index-B2MVZaRE.js:1
+ne @ index-B2MVZaRE.js:1
+getWorkingStations @ index-B2MVZaRE.js:154
+queryFn @ index-B2MVZaRE.js:154
+s @ index-B2MVZaRE.js:49
+w @ index-B2MVZaRE.js:49
+start @ index-B2MVZaRE.js:49
+fetch @ index-B2MVZaRE.js:49
+ya @ index-B2MVZaRE.js:49
+onSubscribe @ index-B2MVZaRE.js:49
+subscribe @ index-B2MVZaRE.js:49
+b.useSyncExternalStore.b.useCallback.v @ index-B2MVZaRE.js:49
+Rp @ index-B2MVZaRE.js:39
+bs @ index-B2MVZaRE.js:41
+Vr @ index-B2MVZaRE.js:41
+e1 @ index-B2MVZaRE.js:41
+or @ index-B2MVZaRE.js:41
+zf @ index-B2MVZaRE.js:41
+kn @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:41
+Promise.then (async)
+Ev @ index-B2MVZaRE.js:39
+Xe @ index-B2MVZaRE.js:41
+Et @ index-B2MVZaRE.js:41
+Op @ index-B2MVZaRE.js:39
+(anonymous) @ index-B2MVZaRE.js:39
+aa.v.forEach.e @ index-B2MVZaRE.js:49
+dx @ index-B2MVZaRE.js:49
+hashchange (async)
+D1 @ index-B2MVZaRE.js:49
+Ms.qf @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+f @ index-B2MVZaRE.js:49
+b.useRef.n @ index-B2MVZaRE.js:49
+wg @ index-B2MVZaRE.js:38
+yg @ index-B2MVZaRE.js:38
+jg @ index-B2MVZaRE.js:38
+op @ index-B2MVZaRE.js:38
+ap @ index-B2MVZaRE.js:38
+(anonymous) @ index-B2MVZaRE.js:38
+hc @ index-B2MVZaRE.js:41
+dd @ index-B2MVZaRE.js:38
+hl @ index-B2MVZaRE.js:38
+Xi @ index-B2MVZaRE.js:38
+Ig @ index-B2MVZaRE.js:38
+select @ tv-spatial-navigation.js:169
+select @ tv-remote-keys.js:129
+window.handleTVKey @ tv-remote-keys.js:167
+index-B2MVZaRE.js:154 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js:44 [TV Nav] Found 8 focusable elements
+index-B2MVZaRE.js:154 [useTVNavigation] Initialization complete
+index-B2MVZaRE.js:154 Country changed: Austria, total stations: 0
+index-B2MVZaRE.js:154 Initial load: showing 56 stations, hasMore=false
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-genres
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-genres
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-search
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-search
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-favorites
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-favorites
+tv-remote-keys.js:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigation.js:155 [TV Nav] Moving RIGHT to: button-country-selector
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-country-selector
+tv-remote-keys.js:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js:155 [TV Nav] Moving DOWN to: button-discover
+tv-spatial-navigation.js:62 [TV Nav] Focused: button-discover
