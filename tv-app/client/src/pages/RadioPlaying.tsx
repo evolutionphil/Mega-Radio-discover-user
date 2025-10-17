@@ -229,15 +229,23 @@ export const RadioPlaying = (): JSX.Element => {
   };
 
   const handleNext = () => {
-    // Play first station from similar stations
+    // Find next unplayed similar station (avoid immediate history)
     console.log('[RadioPlaying] Next clicked, similar stations:', similarStations.length);
+    console.log('[RadioPlaying] Current station:', stationId);
+    console.log('[RadioPlaying] History:', stationHistoryRef.current);
     
     if (similarStations.length > 0) {
-      const firstSimilarStation = similarStations[0];
-      console.log('[RadioPlaying] Playing first similar station:', firstSimilarStation.name);
+      // Filter out stations that are in recent history (last 3)
+      const recentHistory = stationHistoryRef.current.slice(-3);
+      const unplayedStations = similarStations.filter(s => !recentHistory.includes(s._id));
+      
+      // If all similar stations have been played recently, just use the first one
+      const nextStation = unplayedStations.length > 0 ? unplayedStations[0] : similarStations[0];
+      
+      console.log('[RadioPlaying] Playing next station:', nextStation.name, nextStation._id);
       
       // Update URL with hash routing format: /?station=xxx#/radio-playing
-      const newUrl = `${window.location.pathname}?station=${firstSimilarStation._id}${window.location.hash}`;
+      const newUrl = `${window.location.pathname}?station=${nextStation._id}${window.location.hash}`;
       console.log('[RadioPlaying] Navigating to:', newUrl);
       window.history.pushState({}, '', newUrl);
       
@@ -471,37 +479,43 @@ export const RadioPlaying = (): JSX.Element => {
       </p>
 
       <div className="absolute left-[236px] top-[733px] flex gap-[19px]">
-        {similarStations.map((station, index) => {
+        {similarStations.map((similarStation, index) => {
           const isFeatured = index === 2;
           return (
-            <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
-              <div
-                className={`bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${
-                  isFeatured
-                    ? "w-[209.091px] h-[276px] border-[5.75px] border-solid border-[#d2d2d2]"
-                    : "w-[200px] h-[264px]"
-                }`}
-                data-testid={`card-similar-${station._id}`}
-                data-tv-focusable="true"
-              >
+            <div
+              key={similarStation._id || index}
+              className={`bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${
+                isFeatured
+                  ? "w-[209.091px] h-[276px] border-[5.75px] border-solid border-[#d2d2d2]"
+                  : "w-[200px] h-[264px]"
+              }`}
+              data-testid={`card-similar-${similarStation._id}`}
+              data-tv-focusable="true"
+              onClick={() => {
+                console.log('[RadioPlaying] Similar station clicked:', similarStation.name, similarStation._id);
+                const newUrl = `${window.location.pathname}?station=${similarStation._id}${window.location.hash}`;
+                console.log('[RadioPlaying] Navigating to:', newUrl);
+                window.history.pushState({}, '', newUrl);
+                setUpdateTrigger(prev => prev + 1);
+              }}
+            >
                 <div className={`bg-white ${isFeatured ? "w-[138px] h-[138px] mt-[35.55px] ml-[35.55px]" : "w-[132px] h-[132px] mt-[34px] ml-[34px]"} rounded-[6.6px] overflow-clip`}>
                   <img
                     className="w-full h-full object-cover"
-                    alt={station.name}
-                    src={getStationImage(station)}
+                    alt={similarStation.name}
+                    src={getStationImage(similarStation)}
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                     }}
                   />
                 </div>
                 <p className={`font-['Ubuntu',Helvetica] font-medium ${isFeatured ? "text-[22px] mt-[22px]" : "text-[22px] mt-[21px]"} text-center text-white leading-normal truncate px-2`}>
-                  {station.name}
+                  {similarStation.name}
                 </p>
                 <p className={`font-['Ubuntu',Helvetica] font-light ${isFeatured ? "text-[18.818px] mt-[7.6px]" : "text-[18px] mt-[6.2px]"} text-center text-white leading-normal truncate px-2`}>
-                  {getStationTags(station)[0] || station.country || 'Radio'}
+                  {getStationTags(similarStation)[0] || similarStation.country || 'Radio'}
                 </p>
               </div>
-            </Link>
           );
         })}
       </div>
@@ -515,31 +529,37 @@ export const RadioPlaying = (): JSX.Element => {
       </p>
 
       <div className="absolute left-[236px] top-[1169px] grid grid-cols-6 gap-x-[19px] gap-y-[19px] w-[1580px]">
-        {popularStations.map((station, index) => (
-          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+        {popularStations.map((popularStation, index) => (
             <div
+              key={popularStation._id || index}
               className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              data-testid={`card-popular-${station._id}`}
+              data-testid={`card-popular-${popularStation._id}`}
               data-tv-focusable="true"
+              onClick={() => {
+                console.log('[RadioPlaying] Popular station clicked:', popularStation.name, popularStation._id);
+                const newUrl = `${window.location.pathname}?station=${popularStation._id}${window.location.hash}`;
+                console.log('[RadioPlaying] Navigating to:', newUrl);
+                window.history.pushState({}, '', newUrl);
+                setUpdateTrigger(prev => prev + 1);
+              }}
             >
               <div className="w-[132px] h-[132px] mt-[34px] mx-auto bg-white rounded-[6.6px] overflow-clip">
                 <img
                   className="w-full h-full object-cover"
-                  alt={station.name}
-                  src={getStationImage(station)}
+                  alt={popularStation.name}
+                  src={getStationImage(popularStation)}
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                   }}
                 />
               </div>
               <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
-                {station.name}
+                {popularStation.name}
               </p>
               <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
-                {getStationTags(station)[0] || station.country || 'Radio'}
+                {getStationTags(popularStation)[0] || popularStation.country || 'Radio'}
               </p>
             </div>
-          </Link>
         ))}
         <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] flex items-center justify-center cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" data-testid="button-see-more" data-tv-focusable="true">
           <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal">
