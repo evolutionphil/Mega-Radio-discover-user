@@ -184,17 +184,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('[TV Remote Keys] DOM ready, initializing...');
             initTVKeys();
-            // Always attach key handler for testing (works in browser and TV)
-            window.tvNavigation.init();
+            // DON'T call init here - let React hook handle it
             document.addEventListener('keydown', window.handleTVKey);
-            console.log('[TV Remote Keys] Key handler attached, keys ready!');
+            console.log('[TV Remote Keys] Key handler attached, waiting for React...');
         });
     } else {
         console.log('[TV Remote Keys] DOM already ready, initializing now...');
         initTVKeys();
-        // Always attach key handler for testing
-        window.tvNavigation.init();
+        // DON'T call init here - let React hook handle it
         document.addEventListener('keydown', window.handleTVKey);
-        console.log('[TV Remote Keys] Key handler attached, keys ready!');
+        console.log('[TV Remote Keys] Key handler attached, waiting for React...');
     }
 })();

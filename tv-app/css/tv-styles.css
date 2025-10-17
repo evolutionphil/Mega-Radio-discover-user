@@ -925,14 +925,30 @@
     display: none !important;
 }
 
-/* TV Focus Indicator - Pink Glow */
+/* TV Focus Indicator - Pink border only, no layout shift */
 .tv-focused {
-    outline: 4px solid #ff4199 !important;
-    box-shadow: 0 0 20px rgba(255, 65, 153, 0.8), 0 0 40px rgba(255, 65, 153, 0.4) !important;
-    transform: scale(1.05) !important;
-    z-index: 100 !important;
-    position: relative !important;
-    transition: all 0.3s ease !important;
+    box-shadow: 
+        0 0 0 4px #ff4199,
+        0 0 20px rgba(255, 65, 153, 0.6) !important;
+    transition: box-shadow 0.2s ease !important;
+}
+
+/* Pulsing glow animation */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 
+            0 0 0 4px #ff4199,
+            0 0 20px rgba(255, 65, 153, 0.6);
+    }
+    50% {
+        box-shadow: 
+            0 0 0 4px #ff4199,
+            0 0 35px rgba(255, 65, 153, 0.9);
+    }
+}
+
+.tv-focused {
+    animation: pulse-glow 1.5s ease-in-out infinite !important;
 }
 
 /* Hide cursor on TV platforms */

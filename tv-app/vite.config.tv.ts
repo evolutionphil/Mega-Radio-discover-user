@@ -2,8 +2,25 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
+// Plugin to replace /figmaAssets/ paths with images/ for Samsung TV
+function replaceFigmaAssetPaths() {
+  return {
+    name: 'replace-figma-asset-paths',
+    enforce: 'post' as const,
+    generateBundle(_options: any, bundle: any) {
+      for (const fileName in bundle) {
+        const chunk = bundle[fileName];
+        if (chunk.type === 'chunk' && chunk.code) {
+          // Replace all /figmaAssets/ paths with images/
+          chunk.code = chunk.code.replace(/\/figmaAssets\//g, 'images/');
+        }
+      }
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), replaceFigmaAssetPaths()],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),

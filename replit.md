@@ -179,7 +179,9 @@ The schema uses Drizzle's PostgreSQL adapter with type inference for Insert and 
 - Google Fonts integration
 
 **Asset Management**
-- Figma-exported assets stored in `/figmaAssets` directory
+- Development: Assets in `/figmaAssets` directory for local development
+- Production (Samsung TV): Assets copied to `images/` directory
+- Vite plugin `replaceFigmaAssetPaths()` replaces `/figmaAssets/` with `images/` during build
 - SVG icons and PNG images for radio station logos
 - Wave animations and visual effects
 
@@ -200,6 +202,7 @@ The schema uses Drizzle's PostgreSQL adapter with type inference for Insert and 
   - ENTER/SELECT: 13 (both platforms)
 - Focus management system with visual indicators (.tv-focused CSS class)
 - Automatic focus navigation using data-tv-focusable attributes on interactive elements
+- Initialization handled by React hook (useTVNavigation) to ensure elements are rendered before navigation starts
 
 **Audio Playback System**
 - Dual audio player implementation (client/public/js/tv-audio-player.js)
