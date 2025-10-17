@@ -149,10 +149,9 @@ export const RadioPlaying = (): JSX.Element => {
       const streamUrl = station.url_resolved || station.url;
       console.log('[RadioPlaying] Using stream URL:', streamUrl);
       
-      audioPlayerRef.current.play(streamUrl).catch((error: any) => {
-        console.error('[RadioPlaying] Play failed:', error);
-        console.error('[RadioPlaying] Station details:', station);
-      });
+      // Note: play() doesn't return a Promise in our implementation
+      // Errors are handled through the onError callback
+      audioPlayerRef.current.play(streamUrl);
     }
   }, [station]);
 
