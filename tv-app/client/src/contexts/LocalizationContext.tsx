@@ -128,9 +128,20 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
         console.log('[Localization] Detected country:', countryInfo.name, countryInfo.code);
 
         // Fetch translations from API
+        console.log('[Localization] Fetching translations for:', langToUse);
         const translationsData = await megaRadioApi.getTranslations(langToUse);
-        setTranslations(translationsData.translations || {});
-        console.log('[Localization] Loaded', Object.keys(translationsData.translations || {}).length, 'translations');
+        console.log('[Localization] API response received');
+        
+        // API returns translations directly OR in a "translations" property
+        const translations = translationsData.translations || translationsData;
+        
+        if (translations && typeof translations === 'object') {
+          setTranslations(translations);
+          console.log('[Localization] Loaded', Object.keys(translations).length, 'translations');
+        } else {
+          console.warn('[Localization] No translations in response, using fallback');
+          setTranslations({});
+        }
       } catch (error) {
         console.error('[Localization] Failed to load translations:', error);
         // Set default English translations as fallback
@@ -156,7 +167,10 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
 
       // Fetch new translations
       const translationsData = await megaRadioApi.getTranslations(lang);
-      setTranslations(translationsData.translations || {});
+      
+      // API returns translations directly OR in a "translations" property
+      const translations = translationsData.translations || translationsData;
+      setTranslations(translations);
       setLanguageState(lang);
       
       // Save to localStorage
@@ -170,9 +184,23 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Translation function
+  // Translation function with fallback
   const t = (key: string): string => {
-    return translations[key] || key;
+    // Return translation if exists
+    if (translations[key]) {
+      return translations[key];
+    }
+    
+    // Fallback to English-friendly version of the key
+    // Convert snake_case or key names to Title Case
+    const fallback = key
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, char => char.toUpperCase())
+      .replace(/^Auth\s/, '')
+      .replace(/^Homepage\s/, '')
+      .replace(/^Profile\sNav\s/, '');
+    
+    return fallback;
   };
 
   return (
