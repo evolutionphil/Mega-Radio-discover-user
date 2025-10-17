@@ -22,12 +22,11 @@
                 
                 xhr.open(method, url, true);
                 
-                // CRITICAL for Samsung TV: Must set responseType to get response body
-                xhr.responseType = 'text';
+                // Samsung TV FIX: DON'T set responseType - it causes empty responses on Tizen
+                // Leave it undefined to use the default behavior
                 
-                // Set headers - Samsung TV User-Agent for backend detection
+                // Set headers
                 xhr.setRequestHeader('Accept', 'application/json');
-                xhr.setRequestHeader('User-Agent', 'Mozilla/5.0 (SMART-TV; Linux; Tizen 5.5) AppleWebKit/537.36');
                 if (options.headers) {
                     Object.keys(options.headers).forEach(function(key) {
                         xhr.setRequestHeader(key, options.headers[key]);
@@ -51,15 +50,28 @@
                     console.log('[Fetch] Response status:', xhr.status, 'for', url);
                     console.log('[Fetch] Response ready state:', xhr.readyState);
                     
-                    // Samsung TV: responseType='text' makes xhr.response the string response
-                    var responseText = xhr.response;
+                    // Samsung TV: Try multiple ways to get response text
+                    var responseText = '';
                     
-                    // Fallback to responseText if response is empty
-                    if (!responseText || responseText === '') {
+                    // Method 1: responseText (most reliable for Samsung TV)
+                    try {
                         responseText = xhr.responseText || '';
+                        console.log('[Fetch] Got responseText, length:', responseText.length);
+                    } catch(e) {
+                        console.log('[Fetch] responseText failed:', e.message);
                     }
                     
-                    console.log('[Fetch] Response text length:', responseText ? responseText.length : 0);
+                    // Method 2: response property (fallback)
+                    if (!responseText && xhr.response) {
+                        try {
+                            responseText = typeof xhr.response === 'string' ? xhr.response : String(xhr.response);
+                            console.log('[Fetch] Got response, length:', responseText.length);
+                        } catch(e) {
+                            console.log('[Fetch] response failed:', e.message);
+                        }
+                    }
+                    
+                    console.log('[Fetch] Final response text length:', responseText ? responseText.length : 0);
                     console.log('[Fetch] Response preview:', responseText ? responseText.substring(0, 100) + '...' : 'EMPTY');
                     
                     if (typeof responseText !== 'string') {
