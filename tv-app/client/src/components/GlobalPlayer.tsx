@@ -20,7 +20,8 @@ export const GlobalPlayer = (): JSX.Element | null => {
   }
 
   // Hide global player on RadioPlaying page (has its own player)
-  if (location === '/radio-playing') {
+  // Check if location starts with /radio-playing (includes query params)
+  if (location.startsWith('/radio-playing')) {
     return null;
   }
 
