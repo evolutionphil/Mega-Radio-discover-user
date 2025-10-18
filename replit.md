@@ -145,13 +145,13 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 - ✅ All navigation, localization, and playback features working
 - ✅ All asset paths verified and functional
 
-### October 18, 2025 - RadioPlaying Page Figma Design Implementation
+### October 18, 2025 - RadioPlaying Page & Global Country Selector Figma Design Implementation
 
-**Background & Visual Design:**
+**Background & Visual Design (RadioPlaying):**
 - ✅ Implemented Figma-specified radial gradient background: `radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)`
 - ✅ Replaced black background with purple-tinted radial gradient matching Figma design
 
-**Similar Station Cards Styling:**
+**Similar Station Cards Styling (RadioPlaying):**
 - ✅ Applied exact Figma specifications:
   - Background: `rgba(255, 255, 255, 0.14)`
   - Border-radius: `11px`
@@ -159,9 +159,22 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
   - Dimensions: `200px × 264px`
 - ✅ Added hover state with opacity transition for better UX
 
-**Logo Icon Fix:**
+**Logo Icon Fix (RadioPlaying):**
 - ✅ Replaced inline SVG with `/images/path-8.svg` for consistency with other pages
 - ✅ Logo now displays correctly with proper visibility
+
+**Global Country Selector Figma Specifications:**
+- ✅ Applied exact Figma flexbox layout globally across all pages:
+  - Layout: `display: flex; width: 223px; height: 51px; padding: 11px 14.316px 11px 15px; justify-content: center; align-items: center; flex-shrink: 0;`
+  - Style: `border-radius: 30px; background: rgba(255, 255, 255, 0.10);`
+- ✅ Updated in all files:
+  - `AppLayout.tsx` (global layout component)
+  - `RadioPlaying.tsx`
+  - `Genres.tsx`
+  - `DiscoverNoUser.tsx`
+  - `DiscoverUser.tsx`
+- ✅ Consistent flexbox layout using proper CSS properties instead of absolute positioning
+- ✅ Proper spacing with gap and margin utilities for arrow icon alignment
 
 **Audio Playback Notes:**
 - "Web audio error" and "Play error" console messages are expected browser autoplay policy behavior

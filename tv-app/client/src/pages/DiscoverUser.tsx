@@ -38,20 +38,23 @@ export const DiscoverUser = (): JSX.Element => {
       </div>
 
       {/* Country Selector */}
-      <div className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1351px] overflow-clip rounded-[30px] top-[67px] w-[223px]">
-        <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
-          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
-            Austria
-          </p>
-          <div className="absolute left-0 size-[28.421px] top-0">
+      <div 
+        className="absolute left-[1351px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] flex-shrink-0"
+        style={{ padding: '11px 14.316px 11px 15px', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <div className="flex items-center gap-[10.66px]">
+          <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
             <img
               alt="Austria"
-              className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+              className="w-full h-full object-cover"
               src="/images/austria-1.png"
             />
           </div>
-          <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
-            <div className="flex-none rotate-[270deg]">
+          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal text-[24px] text-white whitespace-nowrap">
+            Austria
+          </p>
+          <div className="flex items-center justify-center ml-auto">
+            <div className="rotate-[270deg]">
               <div className="relative size-[23.684px]">
                 <img
                   alt=""

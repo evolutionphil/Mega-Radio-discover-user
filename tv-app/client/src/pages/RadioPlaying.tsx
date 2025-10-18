@@ -210,24 +210,25 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Country Selector */}
       <div 
-        className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50"
+        className="absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50 flex-shrink-0"
+        style={{ padding: '11px 14.316px 11px 15px', justifyContent: 'center', alignItems: 'center' }}
         onClick={() => setIsCountrySelectorOpen(true)}
         data-testid="button-country-selector"
         data-tv-focusable="true"
       >
-        <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
-          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
-            {selectedCountry}
-          </p>
-          <div className="absolute left-0 size-[28.421px] top-0 rounded-full overflow-hidden">
+        <div className="flex items-center gap-[10.66px]">
+          <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
             <img 
               src={`https://flagcdn.com/w40/${selectedCountryCode.toLowerCase()}.png`}
               alt={selectedCountry}
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
-            <div className="flex-none rotate-[270deg]">
+          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal text-[24px] text-white whitespace-nowrap">
+            {selectedCountry}
+          </p>
+          <div className="flex items-center justify-center ml-auto">
+            <div className="rotate-[270deg]">
               <div className="relative size-[23.684px]">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                   <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
