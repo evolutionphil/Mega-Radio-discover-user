@@ -105,35 +105,9 @@
         return tvKey;
     }
     
-    // Keep backward compatibility with old API
-    window.tvNavigation = {
-        get currentFocusedElement() {
-            return window.tvSpatialNav ? window.tvSpatialNav.focusedElement : null;
-        },
-        get focusableElements() {
-            return window.tvSpatialNav ? window.tvSpatialNav.focusableElements : [];
-        },
-        init: function() {
-            if (window.tvSpatialNav) window.tvSpatialNav.init();
-        },
-        updateFocusableElements: function() {
-            if (window.tvSpatialNav) window.tvSpatialNav.updateFocusableElements();
-        },
-        focus: function(element) {
-            if (window.tvSpatialNav) window.tvSpatialNav.focus(element);
-        },
-        navigate: function(direction) {
-            if (window.tvSpatialNav) window.tvSpatialNav.navigate(direction);
-        },
-        select: function() {
-            if (window.tvSpatialNav) window.tvSpatialNav.select();
-        }
-    };
-    
-    // Global key event handler
+    // Global key event handler - LGTV-style routing pattern
     window.handleTVKey = function(e) {
         var key = e.keyCode;
-        console.log('[TV Keys] Key pressed:', key, e.key || 'unknown');
         
         // Exit app on EXIT key (Samsung only)
         if (window.platform === 'samsung' && key === tvKey.EXIT) {
@@ -145,63 +119,36 @@
             return false;
         }
         
-        // Handle color button navigation
+        // Handle color button navigation (global shortcuts)
         switch(key) {
             case tvKey.RED:
-                // Red button - Navigate to Discover
-                console.log('[TV Keys] RED button pressed - Navigate to Discover');
+                console.log('[TV Keys] RED → Discover');
                 window.location.hash = '#/discover-no-user';
                 e.preventDefault();
                 return false;
             case tvKey.GREEN:
-                // Green button - Navigate to Genres
-                console.log('[TV Keys] GREEN button pressed - Navigate to Genres');
+                console.log('[TV Keys] GREEN → Genres');
                 window.location.hash = '#/genres';
                 e.preventDefault();
                 return false;
             case tvKey.BLUE:
-                // Blue button - Navigate to Search
-                console.log('[TV Keys] BLUE button pressed - Navigate to Search');
+                console.log('[TV Keys] BLUE → Search');
                 window.location.hash = '#/search';
                 e.preventDefault();
                 return false;
             case tvKey.YELLOW:
-                // Yellow button - Navigate to Favorites
-                console.log('[TV Keys] YELLOW button pressed - Navigate to Favorites');
+                console.log('[TV Keys] YELLOW → Favorites');
                 window.location.hash = '#/favorites';
                 e.preventDefault();
                 return false;
         }
         
-        // Handle navigation keys
-        switch(key) {
-            case tvKey.UP:
-                window.tvNavigation.navigate('UP');
-                e.preventDefault();
-                return false;
-            case tvKey.DOWN:
-                window.tvNavigation.navigate('DOWN');
-                e.preventDefault();
-                return false;
-            case tvKey.LEFT:
-                window.tvNavigation.navigate('LEFT');
-                e.preventDefault();
-                return false;
-            case tvKey.RIGHT:
-                window.tvNavigation.navigate('RIGHT');
-                e.preventDefault();
-                return false;
-            case tvKey.ENTER:
-                window.tvNavigation.select();
-                e.preventDefault();
-                return false;
-            case tvKey.RETURN:
-                // Go back in history
-                if (window.history.length > 1) {
-                    window.history.back();
-                }
-                e.preventDefault();
-                return false;
+        // Dispatch to FocusRouter (set by React)
+        // This matches LGTV pattern: switch(current_route) { case "login": login_page.HandleKey(e); }
+        if (window.focusRouterDispatch) {
+            window.focusRouterDispatch(e);
+            e.preventDefault();
+            return false;
         }
         
         return true;

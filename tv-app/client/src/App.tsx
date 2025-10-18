@@ -8,6 +8,7 @@ import { LocalizationProvider } from "@/contexts/LocalizationContext";
 import { CountryProvider } from "@/contexts/CountryContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import { GlobalPlayerProvider } from "@/contexts/GlobalPlayerContext";
+import { FocusRouterProvider } from "@/contexts/FocusRouterContext";
 import { GlobalPlayer } from "@/components/GlobalPlayer";
 import NotFound from "@/pages/not-found";
 
@@ -72,11 +73,13 @@ function App() {
         <CountryProvider>
           <FavoritesProvider>
             <GlobalPlayerProvider>
-              <TooltipProvider>
-                <Toaster />
-                <Router />
-                <GlobalPlayer />
-              </TooltipProvider>
+              <FocusRouterProvider>
+                <TooltipProvider>
+                  <Toaster />
+                  <Router />
+                  <GlobalPlayer />
+                </TooltipProvider>
+              </FocusRouterProvider>
             </GlobalPlayerProvider>
           </FavoritesProvider>
         </CountryProvider>
