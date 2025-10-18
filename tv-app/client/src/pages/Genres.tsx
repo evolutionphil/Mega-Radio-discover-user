@@ -98,86 +98,34 @@ export const Genres = (): JSX.Element => {
   return (
     <AppLayout currentPage="genres" scrollContainerRef={scrollContainerRef}>
       <div ref={scrollContainerRef} className="relative w-[1920px] h-[1080px] overflow-y-auto" data-testid="page-genres">
-        {/* Background Image */}
-        <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
-          <img
-            alt=""
-            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-            src="/images/hand-crowd-disco-1.png"
-          />
-        </div>
+        {/* Content wrapper with top padding to prevent header overlap */}
+        <div className="relative pt-[242px]">
+          {/* Background Image */}
+          <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
+            <img
+              alt=""
+              className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+              src="/images/hand-crowd-disco-1.png"
+            />
+          </div>
 
-        {/* Gradient Overlay */}
-        <div className="absolute bg-gradient-to-b from-[18.704%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[25.787%] top-0 w-[1920px]" />
+          {/* Gradient Overlay */}
+          <div className="absolute bg-gradient-to-b from-[18.704%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[25.787%] top-0 w-[1920px]" />
 
-        {/* Popular Genres Title */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-[242px]">
-          Popular Genres
-        </p>
+          {/* Popular Genres Title */}
+          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-0">
+            Popular Genres
+          </p>
 
-        {/* Popular Genres - Row 1 */}
-        {popularGenres.slice(0, 4).map((genre, index) => (
-          <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
-            <div 
-              className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[309px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
+          {/* Popular Genres - Row 1 */}
+          {popularGenres.slice(0, 4).map((genre, index) => (
+            <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+              <div 
+                className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[67px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
               data-testid={`card-genre-${index}`}
               style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
               data-tv-focusable="true"
             >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-left text-white truncate w-full">
-                {genre.name}
-              </p>
-              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-left text-white">
-                {genre.stationCount || 0} Stations
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-            </div>
-          </Link>
-        ))}
-
-        {/* Popular Genres - Row 2 */}
-        {popularGenres.slice(4, 8).map((genre, index) => (
-          <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
-            <div 
-              className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[467px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
-              data-testid={`card-genre-${index + 4}`}
-              style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
-              data-tv-focusable="true"
-            >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-left text-white truncate w-full">
-                {genre.name}
-              </p>
-              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-left text-white">
-                {genre.stationCount || 0} Stations
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-            </div>
-          </Link>
-        ))}
-
-        {/* All Section Title */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-[670px]">
-          All
-        </p>
-
-        {/* All Genres - Dynamic Grid (All genres loaded) */}
-        {allGenres.map((genre, index) => {
-          const row = Math.floor(index / 4);
-          const col = index % 4;
-          const topPosition = 737 + (row * 158); // 737px start, 158px between rows
-          
-          return (
-            <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
-              <div 
-                className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
-                data-testid={`card-genre-all-${index}`}
-                style={{ 
-                  left: `${row1Positions[col].left}px`, 
-                  width: `${row1Positions[col].width}px`,
-                  top: `${topPosition}px`
-                }}
-                data-tv-focusable="true"
-              >
                 <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-left text-white truncate w-full">
                   {genre.name}
                 </p>
@@ -187,11 +135,66 @@ export const Genres = (): JSX.Element => {
                 <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
               </div>
             </Link>
-          );
-        })}
+          ))}
 
-        {/* Spacer to ensure scrolling works */}
-        <div style={{ height: `${Math.max(1080, 737 + Math.ceil(allGenres.length / 4) * 158 + 200)}px` }} />
+          {/* Popular Genres - Row 2 */}
+          {popularGenres.slice(4, 8).map((genre, index) => (
+            <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+              <div 
+                className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[225px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
+              data-testid={`card-genre-${index + 4}`}
+              style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
+              data-tv-focusable="true"
+            >
+                <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-left text-white truncate w-full">
+                  {genre.name}
+                </p>
+                <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-left text-white">
+                  {genre.stationCount || 0} Stations
+                </p>
+                <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+              </div>
+            </Link>
+          ))}
+
+          {/* All Section Title */}
+          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-[428px]">
+            All
+          </p>
+
+          {/* All Genres - Dynamic Grid (All genres loaded) */}
+          {allGenres.map((genre, index) => {
+            const row = Math.floor(index / 4);
+            const col = index % 4;
+            const topPosition = 495 + (row * 158); // 495px start (737-242), 158px between rows
+          
+            return (
+              <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+                <div 
+                  className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
+                  data-testid={`card-genre-all-${index}`}
+                  style={{ 
+                    left: `${row1Positions[col].left}px`, 
+                    width: `${row1Positions[col].width}px`,
+                    top: `${topPosition}px`
+                  }}
+                  data-tv-focusable="true"
+                >
+                  <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-left text-white truncate w-full">
+                    {genre.name}
+                  </p>
+                  <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-left text-white">
+                    {genre.stationCount || 0} Stations
+                  </p>
+                  <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+                </div>
+              </Link>
+            );
+          })}
+
+          {/* Spacer to ensure scrolling works */}
+          <div style={{ height: `${Math.max(838, 495 + Math.ceil(allGenres.length / 4) * 158 + 200)}px` }} />
+        </div>
       </div>
     </AppLayout>
   );
