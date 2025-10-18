@@ -191,7 +191,7 @@ export const RadioPlaying = (): JSX.Element => {
     <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black overflow-y-auto scrollbar-hide">
 
       {/* Logo */}
-      <div className="absolute h-[57px] left-[31px] top-[64px] w-[164.421px] z-50">
+      <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
         <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
@@ -203,8 +203,8 @@ export const RadioPlaying = (): JSX.Element => {
         </div>
       </div>
 
-      {/* Equalizer Icon - Right side with padding */}
-      <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1616px] overflow-clip rounded-[30px] size-[51px] top-[67px] z-50">
+      {/* Equalizer Icon */}
+      <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] z-50">
         <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
           <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
           <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
@@ -212,9 +212,9 @@ export const RadioPlaying = (): JSX.Element => {
         </div>
       </div>
 
-      {/* Country Selector - Right side with padding */}
+      {/* Country Selector */}
       <div 
-        className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1667px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50"
+        className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50"
         onClick={() => setIsCountrySelectorOpen(true)}
         data-testid="button-country-selector"
         data-tv-focusable="true"
