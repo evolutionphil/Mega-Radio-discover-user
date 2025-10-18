@@ -183,7 +183,7 @@ export const RadioPlaying = (): JSX.Element => {
   const countryCode = station.countrycode || station.countryCode || 'XX';
 
   return (
-    <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black overflow-y-auto scrollbar-hide">
+    <div className="fixed inset-0 w-[1920px] h-[1080px] overflow-y-auto scrollbar-hide" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
 
       {/* Logo */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
@@ -191,10 +191,11 @@ export const RadioPlaying = (): JSX.Element => {
           <span className="font-bold">mega</span>radio
         </p>
         <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
-          <svg viewBox="0 0 57 55" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <path d="M22.6604 0L0 27.5L22.6604 55L45.3208 27.5L22.6604 0Z" fill="#FF4199"/>
-            <path d="M34.0189 0L11.3585 27.5L34.0189 55L56.6792 27.5L34.0189 0Z" fill="#01D7FB"/>
-          </svg>
+          <img
+            alt=""
+            className="block max-w-none size-full"
+            src="/images/path-8.svg"
+          />
         </div>
       </div>
 
@@ -496,7 +497,8 @@ export const RadioPlaying = (): JSX.Element => {
         {similarStations.slice(0, 8).map((similarStation, index) => (
           <div
             key={similarStation._id || index}
-            className="flex-shrink-0 h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:opacity-80 transition-opacity relative"
+            className="flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors relative"
+            style={{ boxShadow: 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
             data-testid={`card-similar-${similarStation._id}`}
             data-tv-focusable="true"
             onClick={() => navigateToStation(similarStation)}
