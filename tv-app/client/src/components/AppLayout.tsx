@@ -7,83 +7,93 @@ import { useCountry } from "@/contexts/CountryContext";
 interface AppLayoutProps {
   children: React.ReactNode;
   currentPage?: string;
+  hideHeaderControls?: boolean; // For Search page - hides country selector and login
 }
 
-export const AppLayout = ({ children, currentPage }: AppLayoutProps) => {
+export const AppLayout = ({ children, currentPage, hideHeaderControls = false }: AppLayoutProps) => {
   const { selectedCountry, selectedCountryFlag, setCountry } = useCountry();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
   return (
     <div className="relative w-[1920px] min-h-[1080px] bg-black">
-      {/* Logo - Top Left */}
+      {/* Logo - Top Left - EXACT MATCH TO DISCOVERNO USER */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
         <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
-        <img
-          className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
-          alt="Path"
-          src="/images/path-8.svg"
-        />
-      </div>
-
-      {/* Equalizer Icon */}
-      <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1281px] overflow-clip rounded-[30px] size-[51px] top-[67px] z-50">
-        <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
-          <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
-          <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
-          <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
+        <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
+          <img
+            alt=""
+            className="block max-w-none size-full"
+            src="/images/path-8.svg"
+          />
         </div>
       </div>
 
-      {/* Country Selector Button */}
-      <div 
-        className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1351px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50"
-        onClick={() => setIsCountrySelectorOpen(true)}
-        data-testid="button-country-selector"
-        data-tv-focusable="true"
-      >
-        <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
-          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
-            {selectedCountry || 'Austria'}
-          </p>
-          <div className="absolute left-0 size-[28.421px] top-0">
-            <img
-              alt={selectedCountry}
-              className="absolute inset-0 max-w-none object-cover pointer-events-none size-full rounded-full"
-              src={selectedCountryFlag || '/images/austria-1.png'}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/images/austria-1.png';
-              }}
-            />
+      {/* Header Controls - Hidden for Search page */}
+      {!hideHeaderControls && (
+        <>
+          {/* Equalizer Icon - EXACT POSITION FROM DISCOVERNO USER */}
+          <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] z-50">
+            <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
+              <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
+              <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
+              <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
+            </div>
           </div>
-          <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
-            <div className="flex-none rotate-[270deg]">
-              <div className="relative size-[23.684px]">
+
+          {/* Country Selector Button - EXACT POSITION FROM DISCOVERNO USER */}
+          <div 
+            className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50"
+            onClick={() => setIsCountrySelectorOpen(true)}
+            data-testid="button-country-selector"
+            data-tv-focusable="true"
+          >
+            <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
+                {selectedCountry || 'Austria'}
+              </p>
+              <div className="absolute left-0 size-[28.421px] top-0">
                 <img
-                  alt="arrow"
-                  className="block max-w-none size-full"
-                  src="/images/vuesax-outline-arrow-left.svg"
+                  alt={selectedCountry}
+                  className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                  src={selectedCountryFlag || '/images/austria-1.png'}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/austria-1.png';
+                  }}
                 />
+              </div>
+              <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
+                <div className="flex-none rotate-[270deg]">
+                  <div className="relative size-[23.684px]">
+                    <img
+                      alt=""
+                      className="block max-w-none size-full"
+                      src="/images/vuesax-outline-arrow-left.svg"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Login Button */}
-      <Link href="/login">
-        <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50" data-testid="button-login-header" data-tv-focusable="true">
-          <img
-            className="absolute left-[13px] size-[34px] top-[9px]"
-            alt="Login"
-            src="/images/vuesax-bold-setting-2.svg"
-          />
-          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
-            Login
-          </p>
-        </div>
-      </Link>
+          {/* Login Button - EXACT POSITION FROM DISCOVERNO USER */}
+          <Link href="/login">
+            <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50" data-testid="button-login-header" data-tv-focusable="true">
+              <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
+                Login
+              </p>
+              <div className="absolute left-[13px] size-[34px] top-[9px]">
+                <img
+                  alt=""
+                  className="block max-w-none size-full"
+                  src="/images/vuesax-bold-setting-2.svg"
+                />
+              </div>
+            </div>
+          </Link>
+        </>
+      )}
 
       {/* Left Sidebar */}
       <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] z-50">

@@ -131,7 +131,7 @@ export const Search = (): JSX.Element => {
   };
 
   return (
-    <AppLayout currentPage="search">
+    <AppLayout currentPage="search" hideHeaderControls={true}>
       <div className="relative w-[1920px] h-[1080px] overflow-hidden" data-testid="page-search">
         {/* Search Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[246px] not-italic text-[32px] text-white top-[58px]">
