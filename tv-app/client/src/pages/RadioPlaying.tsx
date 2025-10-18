@@ -45,13 +45,6 @@ export const RadioPlaying = (): JSX.Element => {
   const similarScrollRef = useRef<HTMLDivElement>(null);
   const SIMILAR_STATIONS_PER_LOAD = 40;
 
-  // Infinite scroll state for popular stations
-  const [allPopularStations, setAllPopularStations] = useState<Station[]>([]);
-  const [displayedPopularStations, setDisplayedPopularStations] = useState<Station[]>([]);
-  const [isLoadingMorePopular, setIsLoadingMorePopular] = useState(false);
-  const [hasMorePopular, setHasMorePopular] = useState(true);
-  const [popularStationsPage, setPopularStationsPage] = useState(1);
-  const POPULAR_STATIONS_PER_LOAD = 21; // 3 rows of 7
   
   // Parse station ID from URL query params
   const stationId = useMemo(() => {
@@ -149,35 +142,6 @@ export const RadioPlaying = (): JSX.Element => {
     setAllLoadedStations([]);
   }, [stationId]);
 
-  // Load more popular stations - client-side pagination (useCallback to avoid stale closures)
-  const loadMorePopular = useCallback(() => {
-    if (isLoadingMorePopular || !hasMorePopular) return;
-    
-    setIsLoadingMorePopular(true);
-    
-    // Simulate async for smooth UX
-    setTimeout(() => {
-      setPopularStationsPage(prevPage => {
-        const nextPage = prevPage + 1;
-        const startIdx = prevPage * POPULAR_STATIONS_PER_LOAD;
-        const endIdx = startIdx + POPULAR_STATIONS_PER_LOAD;
-        
-        const nextBatch = allPopularStations.slice(startIdx, endIdx);
-        
-        if (nextBatch.length > 0) {
-          setDisplayedPopularStations(prev => [...prev, ...nextBatch]);
-          setHasMorePopular(endIdx < allPopularStations.length);
-          console.log(`[RadioPlaying] Loaded popular page ${nextPage}, showing ${endIdx}/${allPopularStations.length} stations`);
-        } else {
-          setHasMorePopular(false);
-          console.log('[RadioPlaying] No more popular stations to load');
-        }
-        
-        setIsLoadingMorePopular(false);
-        return nextPage;
-      });
-    }, 100);
-  }, [isLoadingMorePopular, hasMorePopular, allPopularStations, POPULAR_STATIONS_PER_LOAD]);
 
   // Auto-hide header on scroll
   useEffect(() => {
@@ -246,15 +210,6 @@ export const RadioPlaying = (): JSX.Element => {
         setShowHeader(true);
       }
       
-      // Auto-load more popular stations when focusing on last row
-      // Use closest() to check parent elements too
-      const lastRowElement = focusedElement.closest('[data-is-last-row="true"]');
-      const isLastRowCard = lastRowElement !== null;
-      
-      if (isLastRowCard && hasMorePopular && !isLoadingMorePopular) {
-        console.log('[RadioPlaying] ⚡ TRIGGERING LAZY LOAD - loading more popular stations');
-        loadMorePopular();
-      }
     };
 
     // Check on interval (TV navigation doesn't emit standard events)
@@ -264,7 +219,7 @@ export const RadioPlaying = (): JSX.Element => {
       console.log('[RadioPlaying] Auto-scroll monitor stopped');
       clearInterval(intervalId);
     };
-  }, [hasMorePopular, isLoadingMorePopular, loadMorePopular]); // Include dependencies for lazy load
+  }, []); // No dependencies needed for similar stations auto-scroll
 
   // Load more similar stations - client-side pagination from pre-loaded data
   const loadMoreSimilar = async () => {
@@ -313,28 +268,7 @@ export const RadioPlaying = (): JSX.Element => {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [hasMoreSimilar, isLoadingMoreSimilar, station]);
 
-  // Fetch popular stations (large batch for client-side pagination)
-  const { data: popularStationsData } = useQuery({
-    queryKey: ['popular-stations-all', selectedCountryCode],
-    queryFn: () => megaRadioApi.getPopularStations({ 
-      limit: 200,
-      country: selectedCountryCode 
-    }),
-  });
-
-  // Initialize popular stations when data loads
-  useEffect(() => {
-    if (popularStationsData?.stations) {
-      setAllPopularStations(popularStationsData.stations);
-      // Display first batch (21 stations = 3 rows of 7)
-      setDisplayedPopularStations(popularStationsData.stations.slice(0, POPULAR_STATIONS_PER_LOAD));
-      setHasMorePopular(popularStationsData.stations.length > POPULAR_STATIONS_PER_LOAD);
-      setPopularStationsPage(1);
-    }
-  }, [popularStationsData]);
-
   const similarStations = allSimilarStations || [];
-  const popularStations = displayedPopularStations || [];
 
   // Initialize TV audio player
   useEffect(() => {
@@ -849,51 +783,6 @@ export const RadioPlaying = (): JSX.Element => {
         )}
       </div>
 
-      {/* Popular Radios Section */}
-      <div className="absolute left-[74px] top-[853px]">
-        <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">Popular Radios</p>
-      </div>
-
-      {/* Popular Radios Grid */}
-      <div className="absolute left-[74px] top-[927px] grid grid-cols-7 gap-[19px] w-[1580px]">
-        {popularStations.map((popularStation, index) => {
-          // Detect if this is in the last row and should trigger load more
-          const isLastRow = index >= popularStations.length - 7;
-          
-          return (
-            <div
-              key={popularStation._id || index}
-              className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              data-testid={`card-popular-${popularStation._id}`}
-              data-tv-focusable="true"
-              onClick={() => navigateToStation(popularStation)}
-              data-is-last-row={isLastRow ? "true" : "false"}
-            >
-              <div className="w-[132px] h-[132px] mt-[34px] ml-[34px] bg-white rounded-[6.6px] overflow-clip">
-                <img
-                  className="w-full h-full object-cover"
-                  alt={popularStation.name}
-                  src={getStationImage(popularStation)}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-                  }}
-                />
-              </div>
-              <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
-                {popularStation.name}
-              </p>
-              <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
-                {getStationTags(popularStation)[0] || popularStation.country || 'Radio'}
-              </p>
-            </div>
-          );
-        })}
-        {isLoadingMorePopular && (
-          <div className="w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] flex items-center justify-center">
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white">Loading...</p>
-          </div>
-        )}
-      </div>
 
         </div>
       </div>
