@@ -71,9 +71,9 @@ export const Favorites = (): JSX.Element => {
             </div>
 
             {/* Text Message - Centered */}
-            <div className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1047.5px] not-italic text-[32px] text-center text-white top-[504px] translate-x-[-50%] whitespace-nowrap">
-              <p className="mb-0">{t('no_favorites_line1') || "You don't have any"}</p>
-              <p>{t('no_favorites_line2') || 'favorites yet'}</p>
+            <div className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1047.5px] not-italic text-[32px] text-center text-white top-[504px] translate-x-[-50%]">
+              <p className="mb-2">{t('no_favorites_yet') || t('you_dont_have_any_favorites_yet') || "You don't have any"}</p>
+              <p>{t('favorites_yet') || 'favorites yet'}</p>
             </div>
 
             {/* Call to Action */}
