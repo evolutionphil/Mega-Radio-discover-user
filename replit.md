@@ -4,6 +4,15 @@
 
 Mega Radio is a full-stack web radio streaming application designed for TV/large screen interfaces. It offers global radio station access from 238+ countries, organized by genres and countries, featuring an onboarding flow, authentication, station discovery, favorites, and playback controls. The application is a single-page React frontend with an Express backend, utilizing a PostgreSQL database via Neon. The project's vision is to provide a seamless radio streaming experience optimized for television environments.
 
+## Recent Changes (October 18, 2025)
+
+**Global Country Selection & Shared Layout Implementation:**
+- Created `CountryContext` to provide global country state across all pages
+- Built `AppLayout` component with shared header and sidebar for all main pages
+- Refactored Discover, Genres, and Search pages to use shared AppLayout
+- Country selection now persists globally - when user changes country on any page, all pages update automatically
+- Eliminated code duplication by centralizing header/sidebar in single component
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
