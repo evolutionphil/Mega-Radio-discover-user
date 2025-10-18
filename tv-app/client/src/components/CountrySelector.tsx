@@ -253,10 +253,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           <div className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[75px] left-[19px] rounded-[12px] top-[21px] w-[968px]">
             <div className="h-[75px] overflow-clip relative rounded-[inherit] w-[968px]">
               <div className="absolute h-[31.134px] left-[45px] top-1/2 -translate-y-1/2 flex items-center gap-[15px]">
-                <div className="size-[31.134px]">
+                <div className="size-[31.134px] pointer-events-none">
                   <img
                     alt="search"
-                    className="block max-w-none size-full"
+                    className="block max-w-none size-full pointer-events-none"
                     src="/images/vuesax-bold-search-normal.svg"
                   />
                 </div>
@@ -316,6 +316,13 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                       const inputElement = e.target as HTMLInputElement;
                       inputElement.focus();
                       console.log('[CountrySelector] After focus() - active element:', document.activeElement?.tagName);
+                      e.preventDefault();
+                      return;
+                    }
+                    
+                    // Handle UP arrow - prevent navigation to prevent focus issues
+                    if (e.key === 'ArrowUp' || e.keyCode === 38) {
+                      console.log('[CountrySelector] UP pressed in input - preventing default to avoid focus issues');
                       e.preventDefault();
                       return;
                     }
