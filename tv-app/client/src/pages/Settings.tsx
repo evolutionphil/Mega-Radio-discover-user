@@ -153,16 +153,19 @@ export const Settings = (): JSX.Element => {
           className="absolute left-[30px] top-[95px] flex items-center gap-[20px] cursor-pointer"
           onClick={() => handlePlayAtStartChange("last-played")}
           data-testid="option-last-played"
-          data-tv-focusable="true"
         >
-          <div className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative">
+          <div 
+            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative cursor-pointer"
+            data-tv-focusable="true"
+            onClick={() => handlePlayAtStartChange("last-played")}
+          >
             <div className="overflow-clip relative rounded-[inherit] size-[32px]">
               {playAtStart === "last-played" && (
                 <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
               )}
             </div>
           </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white pointer-events-none">
             Last Played
           </p>
         </div>
@@ -172,16 +175,19 @@ export const Settings = (): JSX.Element => {
           className="absolute left-[30px] top-[152px] flex items-center gap-[20px] cursor-pointer"
           onClick={() => handlePlayAtStartChange("random")}
           data-testid="option-random"
-          data-tv-focusable="true"
         >
-          <div className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative">
+          <div 
+            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative cursor-pointer"
+            data-tv-focusable="true"
+            onClick={() => handlePlayAtStartChange("random")}
+          >
             <div className="overflow-clip rounded-[inherit] size-[32px]">
               {playAtStart === "random" && (
                 <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
               )}
             </div>
           </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white pointer-events-none">
             Random
           </p>
         </div>
@@ -191,16 +197,19 @@ export const Settings = (): JSX.Element => {
           className="absolute left-[30px] top-[209px] flex items-center gap-[20px] cursor-pointer"
           onClick={() => handlePlayAtStartChange("favorite")}
           data-testid="option-favorite"
-          data-tv-focusable="true"
         >
-          <div className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative">
+          <div 
+            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative cursor-pointer"
+            data-tv-focusable="true"
+            onClick={() => handlePlayAtStartChange("favorite")}
+          >
             <div className="overflow-clip rounded-[inherit] size-[32px]">
               {playAtStart === "favorite" && (
                 <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
               )}
             </div>
           </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white pointer-events-none">
             Favorite
           </p>
         </div>
@@ -210,16 +219,19 @@ export const Settings = (): JSX.Element => {
           className="absolute left-[30px] top-[266px] flex items-center gap-[20px] cursor-pointer"
           onClick={() => handlePlayAtStartChange("none")}
           data-testid="option-none"
-          data-tv-focusable="true"
         >
-          <div className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative">
+          <div 
+            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative cursor-pointer"
+            data-tv-focusable="true"
+            onClick={() => handlePlayAtStartChange("none")}
+          >
             <div className="overflow-clip rounded-[inherit] size-[32px]">
               {playAtStart === "none" && (
                 <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
               )}
             </div>
           </div>
-          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white">
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white pointer-events-none">
             None
           </p>
         </div>
