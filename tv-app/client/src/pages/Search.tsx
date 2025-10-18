@@ -215,7 +215,7 @@ export const Search = (): JSX.Element => {
             <img
               alt=""
               className="block max-w-none size-full"
-              src="/images/vuesax-bold-search-normal.svg"
+              src="/images/search-icon.svg"
             />
           </div>
         </div>

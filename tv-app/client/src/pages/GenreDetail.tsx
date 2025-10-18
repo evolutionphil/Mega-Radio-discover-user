@@ -2,12 +2,12 @@ import { Link } from "wouter";
 
 export const GenreDetail = (): JSX.Element => {
   const sidebarItems = [
-    { icon: "/images/vuesax-bold-radio.svg", label: "Discover", active: false, href: "/discover" },
-    { icon: "/images/vuesax-bold-musicnote.svg", label: "Genres", active: true, href: "/genres" },
-    { icon: "/images/vuesax-bold-search-normal.svg", label: "Search", active: false, href: "/search" },
-    { icon: "/images/vuesax-bold-heart.svg", label: "Favorites", active: false, href: "/favorites" },
+    { icon: "/images/radio-icon.svg", label: "Discover", active: false, href: "/discover" },
+    { icon: "/images/music-icon.svg", label: "Genres", active: true, href: "/genres" },
+    { icon: "/images/search-icon.svg", label: "Search", active: false, href: "/search" },
+    { icon: "/images/heart-icon.svg", label: "Favorites", active: false, href: "/favorites" },
     { icon: null, label: "Records", active: false, customIcon: true, href: "/discover" },
-    { icon: "/images/vuesax-bold-setting-2.svg", label: "Settings", active: false, href: "/settings" },
+    { icon: "/images/logout-icon.svg", label: "Settings", active: false, href: "/settings" },
   ];
 
   const stations = [

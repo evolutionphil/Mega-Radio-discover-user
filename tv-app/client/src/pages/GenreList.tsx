@@ -160,7 +160,7 @@ export const GenreList = (): JSX.Element => {
               <img
                 alt="back"
                 className="block max-w-none size-full"
-                src="images/vuesax-outline-arrow-left.svg"
+                src="/images/arrow.svg"
               />
             </div>
           </div>

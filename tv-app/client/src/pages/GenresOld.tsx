@@ -110,7 +110,7 @@ export const Genres = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/images/vuesax-outline-arrow-left.svg"
+                  src="/images/arrow.svg"
                 />
               </div>
             </div>
@@ -124,7 +124,7 @@ export const Genres = (): JSX.Element => {
           <img
             className="absolute left-[13px] size-[34px] top-[9px]"
             alt="Login"
-            src="/images/vuesax-bold-setting-2.svg"
+            src="/images/logout-icon.svg"
           />
           <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
             Login
