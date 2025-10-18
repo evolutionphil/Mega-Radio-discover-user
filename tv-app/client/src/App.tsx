@@ -5,6 +5,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LocalizationProvider } from "@/contexts/LocalizationContext";
+import { CountryProvider } from "@/contexts/CountryContext";
 import NotFound from "@/pages/not-found";
 
 import { Splash } from "@/pages/Splash";
@@ -65,10 +66,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <LocalizationProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+        <CountryProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </CountryProvider>
       </LocalizationProvider>
     </QueryClientProvider>
   );

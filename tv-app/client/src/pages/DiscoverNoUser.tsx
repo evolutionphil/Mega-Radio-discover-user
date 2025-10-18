@@ -4,24 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
 import { CountrySelector } from "@/components/CountrySelector";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { useCountry } from "@/contexts/CountryContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 
 export const DiscoverNoUser = (): JSX.Element => {
   useTVNavigation();
-  const { t, detectedCountry, detectedCountryCode } = useLocalization();
+  const { t } = useLocalization();
+  const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState(detectedCountry);
-  const [selectedCountryCode, setSelectedCountryCode] = useState(detectedCountryCode);
-  const [selectedCountryFlag, setSelectedCountryFlag] = useState('/images/austria-1.png');
-  
-  // Update country when localization detects it
-  useEffect(() => {
-    if (detectedCountry && detectedCountryCode) {
-      console.log('[DiscoverNoUser] Setting country from localization:', detectedCountry, detectedCountryCode);
-      setSelectedCountry(detectedCountry);
-      setSelectedCountryCode(detectedCountryCode);
-    }
-  }, [detectedCountry, detectedCountryCode]);
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
@@ -582,9 +572,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         selectedCountry={selectedCountry}
         onSelectCountry={(country) => {
           console.log('[DiscoverNoUser] Country selected:', country.name, 'Code:', country.code);
-          setSelectedCountry(country.name);
-          setSelectedCountryCode(country.code);
-          setSelectedCountryFlag(country.flag);
+          setCountry(country.name, country.code, country.flag);
         }}
       />
     </div>
