@@ -3,7 +3,7 @@ import { Heart } from "lucide-react";
 
 export const Guide4 = (): JSX.Element => {
   return (
-    <Link href="/discover">
+    <Link href="/discover-no-user">
       <div className="relative w-[1920px] h-[1080px] bg-white overflow-hidden cursor-pointer" data-testid="page-guide-4">
         {/* Background Image with Overlay */}
         <div className="absolute h-[1897px] left-0 top-0 w-[1920px]">

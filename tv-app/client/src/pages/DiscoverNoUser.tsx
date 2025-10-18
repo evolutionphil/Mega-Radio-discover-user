@@ -247,22 +247,6 @@ export const DiscoverNoUser = (): JSX.Element => {
             </div>
           </div>
         </div>
-
-        {/* Login Button */}
-        <Link href="/login">
-          <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors pointer-events-auto" data-testid="button-login-header" data-tv-focusable="true">
-            <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
-              {t('login')}
-            </p>
-            <div className="absolute left-[13px] size-[34px] top-[9px]">
-              <img
-                alt=""
-                className="block max-w-none size-full"
-                src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
-              />
-            </div>
-          </div>
-        </Link>
       </div>
 
       {/* Fixed Left Sidebar */}

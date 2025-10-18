@@ -106,21 +106,6 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
             </div>
           </div>
 
-          {/* Login Button - EXACT POSITION FROM DISCOVERNO USER */}
-          <Link href="/login">
-            <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors pointer-events-auto" data-testid="button-login-header" data-tv-focusable="true">
-              <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
-                Login
-              </p>
-              <div className="absolute left-[13px] size-[34px] top-[9px]">
-                <img
-                  alt=""
-                  className="block max-w-none size-full"
-                  src="/images/vuesax-bold-setting-2.svg"
-                />
-              </div>
-            </div>
-          </Link>
         </div>
       )}
 

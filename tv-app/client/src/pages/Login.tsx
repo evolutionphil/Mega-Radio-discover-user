@@ -91,8 +91,8 @@ export const Login = (): JSX.Element => {
             </div>
           </Link>
 
-          {/* Continue Without Login */}
-          <Link href="/discover-no-user">
+          {/* Continue Without Login - Shows Guide Pages First */}
+          <Link href="/guide-1">
             <div className="absolute left-0 top-[512px] w-[496px] h-[96px] rounded-[48px] bg-[rgba(255,255,255,0.1)] overflow-clip cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-continue-without-login" data-tv-focusable="true">
               <p className="absolute left-1/2 top-[33.6px] -translate-x-1/2 font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
                 {t('continue_without_login')}

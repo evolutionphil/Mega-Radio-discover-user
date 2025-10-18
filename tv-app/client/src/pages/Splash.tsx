@@ -10,8 +10,8 @@ export const Splash = (): JSX.Element => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLocation("/login");
-    }, 3000); // 3 seconds for splash screen
+      setLocation("/guide-1");
+    }, 3000); // 3 seconds for splash screen, then show guides
     return () => clearTimeout(timer);
   }, [setLocation]);
 
