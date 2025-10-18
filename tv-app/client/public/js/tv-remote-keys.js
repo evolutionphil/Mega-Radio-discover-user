@@ -145,6 +145,34 @@
             return false;
         }
         
+        // Handle color button navigation
+        switch(key) {
+            case tvKey.RED:
+                // Red button - Navigate to Discover
+                console.log('[TV Keys] RED button pressed - Navigate to Discover');
+                window.location.hash = '#/discover-no-user';
+                e.preventDefault();
+                return false;
+            case tvKey.GREEN:
+                // Green button - Navigate to Genres
+                console.log('[TV Keys] GREEN button pressed - Navigate to Genres');
+                window.location.hash = '#/genres';
+                e.preventDefault();
+                return false;
+            case tvKey.BLUE:
+                // Blue button - Navigate to Search
+                console.log('[TV Keys] BLUE button pressed - Navigate to Search');
+                window.location.hash = '#/search';
+                e.preventDefault();
+                return false;
+            case tvKey.YELLOW:
+                // Yellow button - Navigate to Favorites
+                console.log('[TV Keys] YELLOW button pressed - Navigate to Favorites');
+                window.location.hash = '#/favorites';
+                e.preventDefault();
+                return false;
+        }
+        
         // Handle navigation keys
         switch(key) {
             case tvKey.UP:

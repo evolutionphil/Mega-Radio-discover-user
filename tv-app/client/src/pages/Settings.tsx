@@ -6,9 +6,14 @@ import { useCountry } from "@/contexts/CountryContext";
 
 export const Settings = (): JSX.Element => {
   useTVNavigation();
-  const { selectedCountry, selectedCountryFlag } = useCountry();
+  const { selectedCountry, selectedCountryFlag, setCountry } = useCountry();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [playAtLogin, setPlayAtLogin] = useState("last-played");
+
+  const handleSelectCountry = (country: { name: string; code: string; flag: string }) => {
+    setCountry(country.name, country.code, country.flag);
+    setIsCountrySelectorOpen(false);
+  };
 
   return (
     <div className="fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-settings">
@@ -80,9 +85,12 @@ export const Settings = (): JSX.Element => {
       </div>
 
       {/* Country Selector Modal */}
-      {isCountrySelectorOpen && (
-        <CountrySelector onClose={() => setIsCountrySelectorOpen(false)} />
-      )}
+      <CountrySelector 
+        isOpen={isCountrySelectorOpen}
+        selectedCountry={selectedCountry}
+        onSelectCountry={handleSelectCountry}
+        onClose={() => setIsCountrySelectorOpen(false)}
+      />
 
       {/* Left Sidebar Menu */}
       <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] z-50">

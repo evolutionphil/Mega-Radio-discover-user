@@ -6,6 +6,15 @@ Mega Radio is a full-stack web radio streaming application designed for TV/large
 
 ## Recent Changes (October 18, 2025)
 
+**Color Button Navigation for TV Remotes (Build: index-DKK_B0LW.js):**
+- Added Samsung and LG TV remote color button navigation support
+- RED button → Navigate to Discover page (from any page)
+- GREEN button → Navigate to Genres page (from any page)
+- BLUE button → Navigate to Search page (from any page)
+- YELLOW button → Navigate to Favorites page (from any page)
+- Works on both Samsung Tizen and LG webOS platforms
+- Updated Settings page with exact Figma design including global header and sidebar
+
 **Removed Login & Updated Flow - Direct to Guides (Build: index-CwL1WbUv.js):**
 - Removed login page functionality - no authentication required
 - Removed login button from global header (AppLayout) and DiscoverNoUser page
