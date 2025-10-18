@@ -251,10 +251,26 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                     console.log('[CountrySelector] 🎹 Input FOCUSED - keyboard should appear automatically');
                     console.log('[CountrySelector] Focus event target:', e.target.tagName, e.target.getAttribute('data-testid'));
                     console.log('[CountrySelector] Input value:', (e.target as HTMLInputElement).value);
+                    console.log('[CountrySelector] Active element:', document.activeElement?.tagName, document.activeElement?.getAttribute('data-testid'));
                     console.log('[CountrySelector] Samsung TV keyboards show automatically when <input> is focused');
-                    console.log('[CountrySelector] If keyboard does NOT appear, this is a Samsung TV focus issue');
+                  }}
+                  onClick={(e) => {
+                    console.log('[CountrySelector] 🖱️ Input CLICKED - explicitly calling focus()');
+                    const inputElement = e.target as HTMLInputElement;
+                    inputElement.focus();
+                    console.log('[CountrySelector] After focus() - active element:', document.activeElement?.tagName);
                   }}
                   onKeyDown={(e) => {
+                    // Handle ENTER/OK button to explicitly focus input (trigger keyboard)
+                    if (e.key === 'Enter' || e.keyCode === 13) {
+                      console.log('[CountrySelector] ⚡ ENTER pressed on input - explicitly calling focus()');
+                      const inputElement = e.target as HTMLInputElement;
+                      inputElement.focus();
+                      console.log('[CountrySelector] After focus() - active element:', document.activeElement?.tagName);
+                      e.preventDefault();
+                      return;
+                    }
+                    
                     // Handle DOWN arrow to exit input and focus first country
                     if (e.key === 'ArrowDown' || e.keyCode === 40) {
                       e.preventDefault();
