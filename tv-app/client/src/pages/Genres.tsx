@@ -6,11 +6,13 @@ import { useEffect, useRef, useMemo, useState } from "react";
 import { useCountry } from "@/contexts/CountryContext";
 import { CountrySelector } from "@/components/CountrySelector";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
+import { useLocalization } from "@/contexts/LocalizationContext";
 
 export const Genres = (): JSX.Element => {
   useTVNavigation();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
   const { isPlaying } = useGlobalPlayer();
+  const { t } = useLocalization();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
@@ -130,9 +132,15 @@ export const Genres = (): JSX.Element => {
       </div>
 
       {/* Country Selector Modal */}
-      {isCountrySelectorOpen && (
-        <CountrySelector onClose={() => setIsCountrySelectorOpen(false)} />
-      )}
+      <CountrySelector 
+        isOpen={isCountrySelectorOpen}
+        onClose={() => setIsCountrySelectorOpen(false)}
+        selectedCountry={selectedCountry}
+        onSelectCountry={(country) => {
+          // Country selection is handled by CountryContext
+          setIsCountrySelectorOpen(false);
+        }}
+      />
 
       {/* Left Sidebar Menu */}
       <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] z-50">
@@ -141,7 +149,7 @@ export const Genres = (): JSX.Element => {
           <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Discover
+                {t('nav_discover') || 'Discover'}
               </p>
               <div className="absolute left-[20px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-radio.svg" />
@@ -154,7 +162,7 @@ export const Genres = (): JSX.Element => {
         <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
           <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-              Genres
+              {t('genres') || 'Genres'}
             </p>
             <div className="absolute left-[13px] size-[32px] top-0">
               <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-musicnote.svg" />
@@ -167,7 +175,7 @@ export const Genres = (): JSX.Element => {
           <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Search
+                {t('search') || 'Search'}
               </p>
               <div className="absolute left-[12px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-search-normal.svg" />
@@ -220,7 +228,7 @@ export const Genres = (): JSX.Element => {
 
       {/* Popular Genres Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-[242px]">
-        Popular Genres
+        {t('popular_genres') || 'Popular Genres'}
       </p>
 
       {/* Popular Genres - Row 1 */}

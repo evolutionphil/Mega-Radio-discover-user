@@ -1,11 +1,13 @@
 import { Link } from "wouter";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useState, useEffect } from "react";
+import { useLocalization } from "@/contexts/LocalizationContext";
 
 type PlayAtStartMode = "last-played" | "random" | "favorite" | "none";
 
 export const Settings = (): JSX.Element => {
   useTVNavigation();
+  const { t } = useLocalization();
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("last-played");
 
   // Load play at start preference from localStorage
@@ -59,7 +61,7 @@ export const Settings = (): JSX.Element => {
           <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Discover
+                {t('nav_discover') || 'Discover'}
               </p>
               <div className="absolute left-[20px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-radio.svg" />
@@ -73,7 +75,7 @@ export const Settings = (): JSX.Element => {
           <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Genres
+                {t('genres') || 'Genres'}
               </p>
               <div className="absolute left-[13px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-musicnote.svg" />
@@ -87,7 +89,7 @@ export const Settings = (): JSX.Element => {
           <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Search
+                {t('search') || 'Search'}
               </p>
               <div className="absolute left-[12px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-search-normal.svg" />
@@ -101,7 +103,7 @@ export const Settings = (): JSX.Element => {
           <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
             <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Favorites
+                {t('nav_your_favorites') || 'Favorites'}
               </p>
               <div className="absolute left-[22px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-heart.svg" />
@@ -127,7 +129,7 @@ export const Settings = (): JSX.Element => {
         <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
           <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-              Settings
+              {t('settings') || 'Settings'}
             </p>
             <div className="absolute left-[18px] size-[32px] top-0">
               <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-setting-2.svg" />
@@ -138,14 +140,14 @@ export const Settings = (): JSX.Element => {
 
       {/* Settings Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px] z-10">
-        Settings
+        {t('settings') || 'Settings'}
       </p>
 
       {/* Settings Content Card - Centered */}
       <div className="absolute bg-[#1f1f1f] h-[400px] left-[50%] translate-x-[-50%] overflow-clip rounded-[20px] top-[350px] w-[886px] z-10">
         {/* Play at Start Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[30px]">
-          Play at Start
+          {t('settings_play_at_start') || 'Play at Start'}
         </p>
 
         {/* Last Played Option */}
@@ -166,7 +168,7 @@ export const Settings = (): JSX.Element => {
             </div>
           </div>
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white pointer-events-none">
-            Last Played
+            {t('settings_last_played') || 'Last Played'}
           </p>
         </div>
 
@@ -188,7 +190,7 @@ export const Settings = (): JSX.Element => {
             </div>
           </div>
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white pointer-events-none">
-            Random
+            {t('settings_random') || 'Random'}
           </p>
         </div>
 
@@ -210,7 +212,7 @@ export const Settings = (): JSX.Element => {
             </div>
           </div>
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white pointer-events-none">
-            Favorite
+            {t('settings_favorite') || 'Favorite'}
           </p>
         </div>
 
@@ -232,7 +234,7 @@ export const Settings = (): JSX.Element => {
             </div>
           </div>
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white pointer-events-none">
-            None
+            {t('settings_none') || 'None'}
           </p>
         </div>
       </div>
