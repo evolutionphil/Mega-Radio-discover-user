@@ -12,6 +12,7 @@ export const Search = (): JSX.Element => {
   const { selectedCountryCode } = useCountry();
   const [searchQuery, setSearchQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const isNavigatingRef = useRef(false);
 
   // Search for stations based on query
   const { data: searchData } = useQuery({
@@ -117,17 +118,18 @@ export const Search = (): JSX.Element => {
   const handleStationClick = (stationId: string, type: 'search' | 'recent') => {
     console.log(`[Search] Station clicked (${type}):`, stationId);
     
+    // Set navigation flag to prevent input refocus
+    isNavigatingRef.current = true;
+    
     // Blur the search input to prevent Samsung keyboard from appearing
     if (inputRef.current) {
       inputRef.current.blur();
       console.log('[Search] Search input blurred');
     }
     
-    // Small delay to ensure blur takes effect before navigation
-    setTimeout(() => {
-      console.log('[Search] Navigating to station:', stationId);
-      setLocation(`/radio-playing?station=${stationId}`);
-    }, 50);
+    // Navigate immediately
+    console.log('[Search] Navigating to station:', stationId);
+    setLocation(`/radio-playing?station=${stationId}`);
   };
 
   return (
@@ -143,10 +145,10 @@ export const Search = (): JSX.Element => {
         className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px]"
         data-testid="input-search"
         data-tv-focusable="true"
-        onClick={(e) => {
-          // Only focus if not already focused to prevent reopening keyboard
-          if (document.activeElement !== inputRef.current) {
-            inputRef.current?.focus();
+        onFocus={(e) => {
+          console.log('[Search] Input wrapper focused, isNavigating:', isNavigatingRef.current);
+          if (!isNavigatingRef.current && inputRef.current && document.activeElement !== inputRef.current) {
+            inputRef.current.focus();
           }
         }}
       >
@@ -157,6 +159,9 @@ export const Search = (): JSX.Element => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={handleInputFocus}
+            onBlur={() => {
+              console.log('[Search] Input blurred');
+            }}
             placeholder="Kral Ra"
             className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[650px] placeholder:text-[rgba(255,255,255,0.5)]"
           />

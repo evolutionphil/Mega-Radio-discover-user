@@ -161,16 +161,16 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   };
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed top-0 left-0 w-[1920px] h-[1080px] z-50">
       {/* Backdrop with blur (transparent) */}
       <div 
-        className="absolute inset-0 backdrop-blur-[7px] backdrop-filter"
+        className="absolute top-0 left-0 w-[1920px] h-[1080px] backdrop-blur-[7px] backdrop-filter"
         onClick={onClose}
         data-testid="country-selector-backdrop"
       />
 
       {/* Modal Container - Centered with fixed pixel positioning for Samsung TV */}
-      <div className="absolute" style={{ left: '457px', top: '273px' }}>
+      <div className="absolute" style={{ left: '457px', top: '251px' }}>
         {/* Back Button */}
         <div 
           className="absolute left-0 top-[-43px] h-[24px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity"
