@@ -123,21 +123,26 @@ export const Search = (): JSX.Element => {
     console.log(`[Search] Current input focus:`, document.activeElement === inputRef.current ? 'INPUT HAS FOCUS' : 'NO FOCUS');
     console.log(`[Search] isNavigating flag BEFORE:`, isNavigatingRef.current);
     
-    // Set navigation flag to prevent input refocus
+    // Set navigation flag FIRST to prevent ANY input focus attempts
     isNavigatingRef.current = true;
-    console.log(`[Search] isNavigating flag set to TRUE`);
+    console.log(`[Search] ✅ isNavigating flag set to TRUE - input focus is now BLOCKED`);
     
-    // Blur the search input to prevent Samsung keyboard from appearing
+    // Blur BOTH the input and the wrapper to completely prevent keyboard
     if (inputRef.current) {
-      console.log('[Search] Blurring input to close keyboard...');
+      console.log('[Search] Blurring input element...');
       inputRef.current.blur();
-      console.log('[Search] Input blur() called');
-      console.log('[Search] New active element:', document.activeElement?.tagName, document.activeElement?.getAttribute('data-testid'));
-    } else {
-      console.log('[Search] ⚠️ WARNING: inputRef.current is null!');
     }
     
-    // Navigate immediately
+    // Also blur any currently focused element
+    if (document.activeElement && document.activeElement instanceof HTMLElement) {
+      console.log('[Search] Blurring active element:', document.activeElement.tagName, document.activeElement.getAttribute('data-testid'));
+      document.activeElement.blur();
+    }
+    
+    console.log('[Search] ✅ All elements blurred');
+    console.log('[Search] New active element:', document.activeElement?.tagName);
+    
+    // Navigate immediately - flag will stay true to prevent input refocus during unmount
     console.log('[Search] 🚀 NAVIGATING to /radio-playing?station=' + stationId);
     console.log('='.repeat(60));
     setLocation(`/radio-playing?station=${stationId}`);
