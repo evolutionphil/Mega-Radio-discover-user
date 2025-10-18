@@ -6,11 +6,13 @@ import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { AppLayout } from "@/components/AppLayout";
 import { useCountry } from "@/contexts/CountryContext";
 import { recentlyPlayedService } from "@/services/recentlyPlayedService";
+import { useLocalization } from "@/contexts/LocalizationContext";
 
 export const Search = (): JSX.Element => {
   useTVNavigation();
   const [, setLocation] = useLocation();
   const { selectedCountryCode } = useCountry();
+  const { t } = useLocalization();
   const [searchQuery, setSearchQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const isNavigatingRef = useRef(false);
@@ -166,7 +168,7 @@ export const Search = (): JSX.Element => {
       <div className="relative w-[1920px] h-[1080px] overflow-hidden" data-testid="page-search">
         {/* Search Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[246px] not-italic text-[32px] text-white top-[58px]">
-        Search
+        {t('search') || 'Search'}
       </p>
 
       {/* Search Input */}
@@ -262,7 +264,7 @@ export const Search = (): JSX.Element => {
 
       {/* Recently Played Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[1110px] not-italic text-[32px] text-white top-[58px]">
-        Recently Played
+        {t('recently_played') || t('recent') || 'Recently Played'}
       </p>
 
       {/* Recently Played Stations - 2 columns x 3 rows */}
