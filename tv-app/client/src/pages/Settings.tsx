@@ -32,7 +32,7 @@ export const Settings = (): JSX.Element => {
         <img
           alt=""
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
-          src="/genres-assets/hand-crowd-disco-1.png"
+          src="/images/hand-crowd-disco-1.png"
         />
       </div>
 
@@ -64,7 +64,7 @@ export const Settings = (): JSX.Element => {
                 {t('nav_discover') || 'Discover'}
               </p>
               <div className="absolute left-[20px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-radio.svg" />
+                <img alt="" className="block max-w-none size-full" src="/images/radio-icon.svg" />
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@ export const Settings = (): JSX.Element => {
                 {t('genres') || 'Genres'}
               </p>
               <div className="absolute left-[13px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-musicnote.svg" />
+                <img alt="" className="block max-w-none size-full" src="/images/music-icon.svg" />
               </div>
             </div>
           </div>
@@ -92,7 +92,7 @@ export const Settings = (): JSX.Element => {
                 {t('search') || 'Search'}
               </p>
               <div className="absolute left-[12px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-search-normal.svg" />
+                <img alt="" className="block max-w-none size-full" src="/images/search-icon.svg" />
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@ export const Settings = (): JSX.Element => {
                 {t('nav_your_favorites') || 'Favorites'}
               </p>
               <div className="absolute left-[22px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-heart.svg" />
+                <img alt="" className="block max-w-none size-full" src="/images/heart-icon.svg" />
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ export const Settings = (): JSX.Element => {
               {t('settings') || 'Settings'}
             </p>
             <div className="absolute left-[18px] size-[32px] top-0">
-              <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-setting-2.svg" />
+              <img alt="" className="block max-w-none size-full" src="/images/logout-icon.svg" />
             </div>
           </div>
         </div>
