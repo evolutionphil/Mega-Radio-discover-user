@@ -31,11 +31,25 @@ export const Genres = (): JSX.Element => {
   // Infinite scroll handler
   useEffect(() => {
     const container = scrollContainerRef.current;
-    if (!container) return;
+    if (!container) {
+      console.log('[Genres] No scroll container found');
+      return;
+    }
+
+    console.log('[Genres] Scroll container attached. Total genres:', allGenres.length, 'Visible:', visibleGenresCount);
 
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = container;
       const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+
+      console.log('[Genres] Scroll event:', {
+        scrollTop,
+        scrollHeight,
+        clientHeight,
+        scrollPercentage: (scrollPercentage * 100).toFixed(1) + '%',
+        visibleGenresCount,
+        allGenresLength: allGenres.length
+      });
 
       // Load more when scrolled 70% down
       if (scrollPercentage > 0.7 && visibleGenresCount < allGenres.length) {
@@ -45,6 +59,10 @@ export const Genres = (): JSX.Element => {
     };
 
     container.addEventListener('scroll', handleScroll);
+    
+    // Trigger initial check in case content already needs loading
+    handleScroll();
+    
     return () => container.removeEventListener('scroll', handleScroll);
   }, [visibleGenresCount, allGenres.length]);
 
