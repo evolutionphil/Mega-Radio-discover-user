@@ -366,9 +366,9 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Equalizer Icon (Pink) */}
       <div className="absolute h-[35px] left-[596px] overflow-clip top-[242px] w-[33.25px]">
-        <div className="absolute bg-[#ff4199] h-[35px] left-0 rounded-[10px] top-0 w-[8.75px]" />
-        <div className="absolute bg-[#ff4199] h-[24.5px] left-[12.25px] rounded-[10px] top-[10.5px] w-[8.75px]" />
-        <div className="absolute bg-[#ff4199] h-[29.75px] left-[24.5px] rounded-[10px] top-[5.25px] w-[8.75px]" />
+        <div className={`absolute bg-[#ff4199] left-0 rounded-[10px] top-0 w-[8.75px] ${isPlaying ? 'animate-equalizer-global-1' : 'h-[35px]'}`} style={{ height: isPlaying ? undefined : '35px' }} />
+        <div className={`absolute bg-[#ff4199] left-[12.25px] rounded-[10px] w-[8.75px] ${isPlaying ? 'animate-equalizer-global-2' : 'h-[24.5px] top-[10.5px]'}`} style={{ height: isPlaying ? undefined : '24.5px', top: isPlaying ? undefined : '10.5px' }} />
+        <div className={`absolute bg-[#ff4199] left-[24.5px] rounded-[10px] w-[8.75px] ${isPlaying ? 'animate-equalizer-global-3' : 'h-[29.75px] top-[5.25px]'}`} style={{ height: isPlaying ? undefined : '29.75px', top: isPlaying ? undefined : '5.25px' }} />
       </div>
 
       {/* Station Name */}
