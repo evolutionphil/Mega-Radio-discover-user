@@ -1,186 +1,321 @@
 import { Link } from "wouter";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { useState } from "react";
+import { CountrySelector } from "@/components/CountrySelector";
+import { useCountry } from "@/contexts/CountryContext";
 
 export const Settings = (): JSX.Element => {
   useTVNavigation();
-  const sidebarItems = [
-    { icon: "/images/vuesax-bold-radio.svg", label: "Discover", active: false, href: "/discover" },
-    { icon: "/images/vuesax-bold-musicnote.svg", label: "Genres", active: false, href: "/genres" },
-    { icon: "/images/vuesax-bold-search-normal.svg", label: "Search", active: false, href: "/search" },
-    { icon: "/images/vuesax-bold-heart.svg", label: "Favorites", active: false, href: "/favorites" },
-    { icon: null, label: "Records", active: false, customIcon: true, href: "/discover" },
-    { icon: "/images/vuesax-bold-setting-2.svg", label: "Settings", active: true, href: "/settings" },
-  ];
+  const { selectedCountry, selectedCountryFlag } = useCountry();
+  const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
+  const [playAtLogin, setPlayAtLogin] = useState("last-played");
 
   return (
-    <div className="relative w-[1920px] h-[1080px] overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0e0e0e]" />
+    <div className="fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-settings">
+      {/* Background Image */}
+      <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
+        <img
+          alt=""
+          className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
+          src="/genres-assets/hand-crowd-disco-1.png"
+        />
+      </div>
+
+      {/* Black Overlay */}
+      <div className="absolute bg-[#0e0e0e] h-[1080px] left-0 top-0 w-[1920px]" />
 
       {/* Logo */}
-      <div className="absolute left-[30px] top-[64px] w-[164.421px] h-[57px]">
-        <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[27.029px] text-white leading-normal whitespace-pre-wrap">
+      <div className="absolute h-[57px] left-[31px] top-[64px] w-[164.421px] z-50">
+        <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
-        <img
-          className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
-          alt="Path"
-          src="/images/path-8.svg"
-        />
+        <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
+          <img
+            alt=""
+            className="block max-w-none size-full"
+            src="/images/path-8.svg"
+          />
+        </div>
       </div>
 
-      {/* Top Right Controls */}
-      <div className="absolute left-[1351px] top-[67px] w-[223px] h-[51px] bg-[rgba(255,255,255,0.1)] rounded-[30px]">
-        <div className="absolute left-[15px] top-[11px] w-[193.684px] h-[29px]">
-          <img
-            className="absolute left-0 top-0 w-[28.421px] h-[28.421px]"
-            alt="Austria"
-            src="/images/at-1.png"
-          />
-          <p className="absolute left-[37.421px] top-[3.5px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white leading-normal">
-            Austria
+      {/* Equalizer Icon */}
+      <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1281px] overflow-clip rounded-[30px] size-[51px] top-[67px] z-50">
+        <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
+          <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
+          <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
+          <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
+        </div>
+      </div>
+
+      {/* Country Selector */}
+      <div 
+        className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1351px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50"
+        onClick={() => setIsCountrySelectorOpen(true)}
+        data-testid="button-country-selector"
+        data-tv-focusable="true"
+      >
+        <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
+          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
+            {selectedCountry}
           </p>
-          <img
-            className="absolute left-[178.684px] top-[7.5px] w-[15px] h-[14px]"
-            alt="Dropdown"
-            src="/images/vuesax-linear-arrow-down-1.svg"
-          />
+          <div className="absolute left-0 size-[28.421px] top-0">
+            <img
+              alt={selectedCountry}
+              className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
+              src={selectedCountryFlag}
+            />
+          </div>
+          <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
+            <div className="flex-none rotate-[270deg]">
+              <div className="relative size-[23.684px]">
+                <img
+                  alt=""
+                  className="block max-w-none size-full"
+                  src="/images/vuesax-outline-arrow-left.svg"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* User Avatar */}
-      <div className="absolute left-[1614px] top-[67px] w-[51px] h-[51px] bg-[#ff4199] rounded-full overflow-hidden" data-testid="avatar-user">
-        <img
-          className="w-full h-full object-cover"
-          alt="User"
-          src="/images/memoji-1.png"
-        />
-      </div>
+      {/* Country Selector Modal */}
+      {isCountrySelectorOpen && (
+        <CountrySelector onClose={() => setIsCountrySelectorOpen(false)} />
+      )}
 
-      {/* Login Button */}
-      <div className="absolute left-[1704px] top-[73px] w-[186px] h-[38px] bg-[rgba(255,255,255,0.1)] rounded-[30px]" data-testid="button-login" data-tv-focusable="true">
-        <img
-          className="absolute left-[18px] top-[9px] w-[20px] h-[20px]"
-          alt="Login"
-          src="/images/vuesax-bold-login.svg"
-        />
-        <p className="absolute left-[52px] top-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white leading-normal">
-          Login
-        </p>
-      </div>
+      {/* Left Sidebar Menu */}
+      <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] z-50">
+        {/* Discover */}
+        <Link href="/discover-no-user">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Discover
+              </p>
+              <div className="absolute left-[20px] size-[32px] top-0">
+                <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-radio.svg" />
+              </div>
+            </div>
+          </div>
+        </Link>
 
-      {/* Sidebar */}
-      <div className="absolute left-[30px] top-[144px] w-[120px] h-[556px]">
-        <div className="flex flex-col gap-[8px]">
-          {sidebarItems.map((item, index) => (
-            <Link key={index} href={item.href}>
-              <div
-                className={`w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors ${
-                  item.active ? 'bg-[rgba(255,255,255,0.2)]' : 'bg-transparent'
-                }`}
-                data-testid={`button-${item.label.toLowerCase()}`}
-                data-tv-focusable="true"
-              >
-              <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
-                <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
-                  {item.label}
-                </p>
-                {item.customIcon ? (
-                  <div className="absolute left-[23px] top-0 w-[32px] h-[32px] bg-white rounded-full" />
-                ) : item.icon && (
-                  <img
-                    className="absolute left-[23px] top-0 w-[32px] h-[32px]"
-                    alt={item.label}
-                    src={item.icon}
-                  />
-                )}
+        {/* Genres */}
+        <Link href="/genres">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Genres
+              </p>
+              <div className="absolute left-[13px] size-[32px] top-0">
+                <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-musicnote.svg" />
               </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Search */}
+        <Link href="/search">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Search
+              </p>
+              <div className="absolute left-[12px] size-[32px] top-0">
+                <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-search-normal.svg" />
               </div>
-            </Link>
-          ))}
+            </div>
+          </div>
+        </Link>
+
+        {/* Favorites */}
+        <Link href="/favorites">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                Favorites
+              </p>
+              <div className="absolute left-[22px] size-[32px] top-0">
+                <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-heart.svg" />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Records */}
+        <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
+          <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
+            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+              Records
+            </p>
+            <div className="absolute left-[17px] size-[32px] top-0">
+              <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
+              <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
+            </div>
+          </div>
+        </div>
+
+        {/* Settings - Active */}
+        <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
+          <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
+            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+              Settings
+            </p>
+            <div className="absolute left-[18px] size-[32px] top-0">
+              <img alt="" className="block max-w-none size-full" src="/images/vuesax-bold-setting-2.svg" />
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="absolute left-[190px] top-[144px] right-[30px] bottom-[30px]">
-        {/* Page Title */}
-        <h1 className="font-['Ubuntu',Helvetica] font-bold text-[48px] text-white mb-12" data-testid="title-settings">
-          Settings
-        </h1>
+      {/* Settings Title */}
+      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px] z-10">
+        Settings
+      </p>
 
-        {/* Settings Sections */}
-        <div className="space-y-8 max-w-[900px]">
-          {/* Account Section */}
-          <div className="bg-[rgba(255,255,255,0.05)] rounded-[20px] p-8">
-            <h2 className="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white mb-6">Account</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between py-4 border-b border-white/10">
-                <div>
-                  <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Email</p>
-                  <p className="font-['Ubuntu',Helvetica] text-[16px] text-[#9b9b9b] mt-1">user@example.com</p>
-                </div>
-                <button className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-[#ff4199]" data-testid="button-change-email" data-tv-focusable="true">
-                  Change
-                </button>
-              </div>
-              <div className="flex items-center justify-between py-4 border-b border-white/10">
-                <div>
-                  <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Password</p>
-                  <p className="font-['Ubuntu',Helvetica] text-[16px] text-[#9b9b9b] mt-1">••••••••</p>
-                </div>
-                <button className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-[#ff4199]" data-testid="button-change-password" data-tv-focusable="true">
-                  Change
-                </button>
-              </div>
-            </div>
+      {/* User Profile Card - Right Side */}
+      <div className="absolute bg-[#1f1f1f] h-[177px] left-[1142px] overflow-clip rounded-[20px] top-[311px] w-[703px] z-10">
+        <div className="absolute h-[97px] left-[48px] top-[40px] w-[305px]">
+          <div className="absolute left-0 rounded-[50px] size-[97px] top-0">
+            <img
+              alt=""
+              className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none rounded-[50px] size-full"
+              src="/images/frame-218.png"
+            />
           </div>
-
-          {/* Preferences Section */}
-          <div className="bg-[rgba(255,255,255,0.05)] rounded-[20px] p-8">
-            <h2 className="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white mb-6">Preferences</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between py-4 border-b border-white/10">
-                <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Language</p>
-                <button className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white" data-testid="button-language" data-tv-focusable="true">
-                  English
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 6L8 10L12 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-              <div className="flex items-center justify-between py-4 border-b border-white/10">
-                <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Default Country</p>
-                <button className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-white" data-testid="button-country" data-tv-focusable="true">
-                  Austria
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 6L8 10L12 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-              </div>
-              <div className="flex items-center justify-between py-4">
-                <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Notifications</p>
-                <button className="w-[60px] h-[32px] bg-[#ff4199] rounded-full relative" data-testid="button-notifications" data-tv-focusable="true">
-                  <div className="absolute right-[4px] top-[4px] w-[24px] h-[24px] bg-white rounded-full" />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* About Section */}
-          <div className="bg-[rgba(255,255,255,0.05)] rounded-[20px] p-8">
-            <h2 className="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white mb-6">About</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between py-4">
-                <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">Version</p>
-                <p className="font-['Ubuntu',Helvetica] text-[18px] text-[#9b9b9b]">1.0.0</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Logout Button */}
-          <button className="w-full py-4 bg-red-600/20 rounded-[12px] font-['Ubuntu',Helvetica] font-medium text-[20px] text-red-500 hover:bg-red-600/30 transition-colors" data-testid="button-logout" data-tv-focusable="true">
+          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[132px] not-italic text-[24px] text-white top-[23px]">
+            Talha Çay
+          </p>
+          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[132px] not-italic text-[#818181] text-[18px] top-[64px]">
+            talhacay@gmail.com
+          </p>
+        </div>
+        <div className="absolute bottom-[76px] h-[24px] right-[30px] w-[99px] cursor-pointer" data-testid="button-logout" data-tv-focusable="true">
+          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[37px] not-italic text-[18px] text-white top-[2px]">
             Logout
-          </button>
+          </p>
+          <div className="absolute right-[75px] size-[24px] top-0">
+            <img alt="" className="block max-w-none size-full" src="/genres-assets/logout-icon.svg" />
+          </div>
+        </div>
+      </div>
+
+      {/* Settings Content Card - Left Side */}
+      <div className="absolute bg-[#1f1f1f] h-[678px] left-[236px] overflow-clip rounded-[20px] top-[311px] w-[886px] z-10">
+        {/* Play at login Section */}
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[30px]">
+          Play at login
+        </p>
+
+        {/* Last Played Option */}
+        <div 
+          className="absolute left-[30px] top-[95px] flex items-center gap-[20px] cursor-pointer"
+          onClick={() => setPlayAtLogin("last-played")}
+          data-testid="option-last-played"
+          data-tv-focusable="true"
+        >
+          <div className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative">
+            <div className="overflow-clip relative rounded-[inherit] size-[32px]">
+              {playAtLogin === "last-played" && (
+                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
+              )}
+            </div>
+          </div>
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white">
+            Last Played
+          </p>
+        </div>
+
+        {/* Random Option */}
+        <div 
+          className="absolute left-[30px] top-[152px] flex items-center gap-[20px] cursor-pointer"
+          onClick={() => setPlayAtLogin("random")}
+          data-testid="option-random"
+          data-tv-focusable="true"
+        >
+          <div className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative">
+            <div className="overflow-clip rounded-[inherit] size-[32px]">
+              {playAtLogin === "random" && (
+                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
+              )}
+            </div>
+          </div>
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white">
+            Random
+          </p>
+        </div>
+
+        {/* Favorite Option */}
+        <div 
+          className="absolute left-[30px] top-[209px] flex items-center gap-[20px] cursor-pointer"
+          onClick={() => setPlayAtLogin("favorite")}
+          data-testid="option-favorite"
+          data-tv-focusable="true"
+        >
+          <div className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative">
+            <div className="overflow-clip rounded-[inherit] size-[32px]">
+              {playAtLogin === "favorite" && (
+                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
+              )}
+            </div>
+          </div>
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white">
+            Favorite
+          </p>
+        </div>
+
+        {/* None Option */}
+        <div 
+          className="absolute left-[30px] top-[266px] flex items-center gap-[20px] cursor-pointer"
+          onClick={() => setPlayAtLogin("none")}
+          data-testid="option-none"
+          data-tv-focusable="true"
+        >
+          <div className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative">
+            <div className="overflow-clip rounded-[inherit] size-[32px]">
+              {playAtLogin === "none" && (
+                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
+              )}
+            </div>
+          </div>
+          <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-white">
+            None
+          </p>
+        </div>
+
+        {/* Country Section */}
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[346px]">
+          Country
+        </p>
+
+        <div 
+          className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[75px] left-[30px] rounded-[12px] top-[390px] w-[815px] cursor-pointer"
+          onClick={() => setIsCountrySelectorOpen(true)}
+          data-testid="input-country"
+          data-tv-focusable="true"
+        >
+          <div className="h-[75px] overflow-clip relative rounded-[inherit] w-[815px]">
+            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[20px] not-italic text-[24px] text-white top-[24px]">
+              Turkey
+            </p>
+          </div>
+        </div>
+
+        {/* Language Section */}
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[495px]">
+          Language
+        </p>
+
+        <div 
+          className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[75px] left-[30px] rounded-[12px] top-[539px] w-[815px] cursor-pointer"
+          data-testid="input-language"
+          data-tv-focusable="true"
+        >
+          <div className="h-[75px] overflow-clip relative rounded-[inherit] w-[815px]">
+            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29px] not-italic text-[24px] text-white top-[24px]">
+              English
+            </p>
+          </div>
         </div>
       </div>
     </div>
