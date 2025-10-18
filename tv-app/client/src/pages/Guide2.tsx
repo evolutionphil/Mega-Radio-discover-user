@@ -1,10 +1,12 @@
 import { useLocation } from "wouter";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useEffect } from "react";
+import { useLocalization } from "@/contexts/LocalizationContext";
 
 export const Guide2 = (): JSX.Element => {
   useTVNavigation();
   const [, setLocation] = useLocation();
+  const { t } = useLocalization();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -58,7 +60,7 @@ export const Guide2 = (): JSX.Element => {
         <div className="absolute bg-[rgba(255,255,255,0.2)] left-[63px] overflow-clip rounded-[10px] size-[98px] top-[346px] z-20" data-testid="button-genres-highlighted">
           <div className="absolute h-[61px] left-[20px] top-[19px] w-[59px]">
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-              Genres
+              {t('guide_genres_title') || t('genres') || 'Genres'}
             </p>
             <div className="absolute left-[13px] size-[32px] top-0">
               <img 
@@ -73,7 +75,7 @@ export const Guide2 = (): JSX.Element => {
         {/* Tooltip Box */}
         <div className="absolute bg-black h-[115px] left-[340px] overflow-clip rounded-[10px] top-[338px] w-[509px] z-20">
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[67px] not-italic text-[24px] text-white top-[43px]">
-            You can press green to access genres.
+            {t('guide_genres_description') || 'You can press green to access genres.'}
           </p>
           <div className="absolute bg-[#55e952] left-[24px] rounded-[40px] size-[18.667px] top-[48px]" />
         </div>

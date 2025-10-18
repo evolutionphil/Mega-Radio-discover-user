@@ -1,10 +1,12 @@
 import { useLocation } from "wouter";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useEffect } from "react";
+import { useLocalization } from "@/contexts/LocalizationContext";
 
 export const Guide4 = (): JSX.Element => {
   useTVNavigation();
   const [, setLocation] = useLocation();
+  const { t } = useLocalization();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -57,8 +59,8 @@ export const Guide4 = (): JSX.Element => {
         {/* Tooltip Box */}
         <div className="absolute bg-black h-[115px] left-[340px] overflow-clip rounded-[10px] top-[555px] w-[597px] z-20">
           <div className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[67px] not-italic text-[24px] text-white top-[29px] whitespace-nowrap">
-            <p className="mb-0">Your favorite radios will be here.</p>
-            <p>Press yellow on the remote.</p>
+            <p className="mb-0">{t('guide_favorites_description') || 'Your favorite radios will be here.'}</p>
+            <p>{t('guide_favorites_yellow_button') || 'Press yellow on the remote.'}</p>
           </div>
           <div className="absolute bg-[#f4ec2d] left-[24px] rounded-[40px] size-[18.667px] top-[48px]" />
         </div>
@@ -67,7 +69,7 @@ export const Guide4 = (): JSX.Element => {
         <div className="absolute bg-[rgba(255,255,255,0.2)] left-[62px] overflow-clip rounded-[10px] size-[98px] top-[565px] z-20" data-testid="button-favorites-highlighted">
           <div className="absolute h-[61px] left-[11px] top-[19px] w-[77px]">
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-              Favorites
+              {t('guide_favorites_title') || t('nav_your_favorites') || 'Favorites'}
             </p>
             <div className="absolute left-[23px] size-[32px] top-0">
               <img 
