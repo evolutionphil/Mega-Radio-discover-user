@@ -99,6 +99,7 @@ export const Genres = (): JSX.Element => {
   }, [visibleGenresCount, allGenres.length]);
 
   // Auto-scroll to keep focused element visible when navigating with TV remote
+  // AND trigger lazy loading when focusing on elements near the bottom
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -106,6 +107,17 @@ export const Genres = (): JSX.Element => {
     const handleFocusChange = () => {
       const focused = document.querySelector('[data-tv-focusable]:focus') as HTMLElement;
       if (!focused) return;
+
+      // LAZY LOADING TRIGGER: Load more genres when focusing on elements in the last 2 rows
+      const testId = focused.getAttribute('data-testid');
+      if (testId && testId.startsWith('card-genre-all-')) {
+        const index = parseInt(testId.replace('card-genre-all-', ''));
+        // If focusing on last 8 items (2 rows), load more
+        if (index >= visibleGenresCount - 8 && visibleGenresCount < allGenres.length) {
+          console.log('[Genres] Focus-based lazy load triggered! Index:', index, 'Visible:', visibleGenresCount, 'Total:', allGenres.length);
+          setVisibleGenresCount(prev => Math.min(prev + 8, allGenres.length)); // Load 2 more rows
+        }
+      }
 
       const containerRect = container.getBoundingClientRect();
       const focusedRect = focused.getBoundingClientRect();
@@ -127,7 +139,7 @@ export const Genres = (): JSX.Element => {
     // Listen for focus changes
     document.addEventListener('focusin', handleFocusChange);
     return () => document.removeEventListener('focusin', handleFocusChange);
-  }, []);
+  }, [visibleGenresCount, allGenres.length]);
 
   // Card positions
   const row1Positions = [
