@@ -10,7 +10,7 @@ export const Genres = (): JSX.Element => {
   useTVNavigation();
   const { selectedCountryCode } = useCountry();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [visibleGenresCount, setVisibleGenresCount] = useState(8); // Start with 8 genres (2 rows)
+  const [visibleGenresCount, setVisibleGenresCount] = useState(16); // Start with 16 genres (4 rows)
 
   // Fetch stations from selected country to extract real genres
   const { data: stationsData } = useQuery({
@@ -108,12 +108,12 @@ export const Genres = (): JSX.Element => {
       const focused = document.querySelector('[data-tv-focusable]:focus') as HTMLElement;
       if (!focused) return;
 
-      // LAZY LOADING TRIGGER: Load more genres when focusing on elements in the last 2 rows
+      // LAZY LOADING TRIGGER: Load more genres when focusing on elements near the bottom
       const testId = focused.getAttribute('data-testid');
       if (testId && testId.startsWith('card-genre-all-')) {
         const index = parseInt(testId.replace('card-genre-all-', ''));
-        // If focusing on last 8 items (2 rows), load more
-        if (index >= visibleGenresCount - 8 && visibleGenresCount < allGenres.length) {
+        // If focusing on last 12 items (3 rows), load more
+        if (index >= visibleGenresCount - 12 && visibleGenresCount < allGenres.length) {
           console.log('[Genres] Focus-based lazy load triggered! Index:', index, 'Visible:', visibleGenresCount, 'Total:', allGenres.length);
           setVisibleGenresCount(prev => Math.min(prev + 8, allGenres.length)); // Load 2 more rows
         }
