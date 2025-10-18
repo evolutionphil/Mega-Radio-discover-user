@@ -6,12 +6,17 @@ Mega Radio is a full-stack web radio streaming application designed for TV/large
 
 ## Recent Changes (October 18, 2025)
 
-**Removed Login & Updated Flow - Direct to Guides (Build: index-Cu5ldb90.js):**
+**Removed Login & Updated Flow - Direct to Guides (Build: index-CwL1WbUv.js):**
 - Removed login page functionality - no authentication required
-- Removed login button from global header (AppLayout)
-- Updated app flow: Splash → Guide 1 → Guide 2 → Guide 3 → Guide 4 → Discover
-- Guide pages now show with background images from Figma
-- "Continue Without Login" button removed from login flow
+- Removed login button from global header (AppLayout) and DiscoverNoUser page
+- Updated app flow: Splash (3s) → Guide 1 → Guide 2 → Guide 3 → Guide 4 → Discover
+- All guide pages updated with exact Figma designs and background images:
+  - Guide 1 (1711-5214): Discover button highlighted with red button indicator
+  - Guide 2 (1783-6171): Genres button highlighted with green button indicator
+  - Guide 3 (2159-7857): Search button highlighted with blue button indicator
+  - Guide 4 (2159-7904): Favorites button highlighted with yellow button indicator
+- Downloaded all guide assets from Figma: discover-background.png, radio-icon.svg, music-icon.svg, search-icon.svg, heart-icon.svg, arrow.svg
+- Each guide shows exact tooltip, arrow, and highlighted sidebar button
 - Users now go directly through onboarding guides on first start
 - Clean, simplified user experience without authentication barriers
 
