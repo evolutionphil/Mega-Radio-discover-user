@@ -9,7 +9,7 @@ function getAssetPath(path: string) {
 }
 
 export const GlobalPlayer = (): JSX.Element | null => {
-  const { currentStation, isPlaying, togglePlayPause } = useGlobalPlayer();
+  const { currentStation, isPlaying, togglePlayPause, nowPlayingMetadata } = useGlobalPlayer();
   const { isFavorite, toggleFavorite } = useFavorites();
 
   // Don't render if no station is playing
@@ -28,14 +28,8 @@ export const GlobalPlayer = (): JSX.Element | null => {
     return FALLBACK_IMAGE;
   };
 
-  const getStationTags = (station: Station): string[] => {
-    if (!station.tags) return [];
-    if (Array.isArray(station.tags)) return station.tags;
-    return station.tags.split(',').map(tag => tag.trim());
-  };
-
-  const tags = getStationTags(currentStation);
-  const firstTag = tags[0] || currentStation.country || 'Radio';
+  // Display metadata if available, otherwise fall back to country name
+  const displayText = nowPlayingMetadata || currentStation.country || 'Radio';
 
   return (
     <>
@@ -62,9 +56,9 @@ export const GlobalPlayer = (): JSX.Element | null => {
         {currentStation.name}
       </p>
 
-      {/* Station Genre/Tag */}
-      <p className="fixed font-['Ubuntu',Helvetica] font-light leading-normal left-[357px] not-italic text-[20px] text-white top-[1007.2px] z-50">
-        {firstTag}
+      {/* Now Playing / Country */}
+      <p className="fixed font-['Ubuntu',Helvetica] font-light leading-normal left-[357px] not-italic text-[20px] text-white top-[1007.2px] z-50 max-w-[800px] truncate">
+        {displayText}
       </p>
 
       {/* Previous Button */}
@@ -132,7 +126,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
         data-tv-focusable="true"
         data-testid="button-global-equalizer"
       >
-        <div className="h-[35.526px] overflow-clip w-[33.75px]">
+        <div className="relative h-[35.526px] w-[33.75px]">
           <div className="bg-white h-[35.526px] left-0 rounded-[10px] absolute top-0 w-[8.882px]" />
           <div className="bg-white h-[24.868px] left-[12.43px] rounded-[10px] absolute top-[10.66px] w-[8.882px]" />
           <div className="bg-white h-[30.197px] left-[24.87px] rounded-[10px] absolute top-[5.33px] w-[8.882px]" />

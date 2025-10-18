@@ -5,6 +5,7 @@ interface GlobalPlayerContextType {
   currentStation: Station | null;
   isPlaying: boolean;
   isBuffering: boolean;
+  nowPlayingMetadata: string | null;
   playStation: (station: Station) => void;
   pauseStation: () => void;
   resumeStation: () => void;
@@ -18,6 +19,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const [currentStation, setCurrentStation] = useState<Station | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
+  const [nowPlayingMetadata, setNowPlayingMetadata] = useState<string | null>(null);
   const audioPlayerRef = useRef<any>(null);
 
   // Initialize TV audio player once
@@ -54,6 +56,11 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       audioPlayerRef.current.onError = (error: any) => {
         console.log('[GlobalPlayer] Audio error (non-critical):', error);
         setIsBuffering(false);
+      };
+
+      audioPlayerRef.current.onMetadata = (metadata: string) => {
+        console.log('[GlobalPlayer] Metadata received:', metadata);
+        setNowPlayingMetadata(metadata);
       };
     }
 
@@ -119,6 +126,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         currentStation,
         isPlaying,
         isBuffering,
+        nowPlayingMetadata,
         playStation,
         pauseStation,
         resumeStation,
