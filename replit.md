@@ -6,6 +6,20 @@ Mega Radio is a full-stack web radio streaming application designed for TV/large
 
 ## Recent Changes (October 18, 2025)
 
+**Splash Screen Redesign - Exact Figma Implementation (Build: index-BJEdP69y.js):**
+- Completely rebuilt Splash screen to match exact Figma design (node 1691-6344)
+- Downloaded all images from Figma: waves, dotted pattern, pink glow, device icons, logo
+- Pure black background (#0e0e0e) with animated elements
+- Centered "megaradio" logo with pink diamond icons
+- Animated pink/purple waves in center (pulse animation, 3s duration)
+- Animated pink glow on left side (pulse animation, 4s duration)
+- Dotted pattern on bottom left (fade-in animation, 2s duration)
+- "Listen freely" tagline below logo in gray (#9b9b9b)
+- Device icons at bottom (monitor, tablet, phone) showing multi-platform support
+- "megaradio.live" website text at bottom
+- All images, positions, and styling match Figma exactly
+- 3-second splash screen duration before redirecting to login
+
 **Global Player Implementation - Continuous Playback Across Pages (Build: index-DDzSwjQG.js):**
 - Created GlobalPlayerContext for managing audio playback globally across all pages
 - Implemented GlobalPlayer component with exact Figma design (1622-4793)
