@@ -125,16 +125,39 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           console.log('[CountrySelector] Initializing TV navigation');
           (window as any).tvSpatialNav.init();
           
-          // Focus the first country option instead of the search input
-          const firstCountry = document.querySelector('[data-testid^="country-option-"]') as HTMLElement;
-          if (firstCountry) {
-            (window as any).tvSpatialNav.focus(firstCountry);
+          // Focus the search input wrapper
+          const searchWrapper = document.querySelector('[data-testid="search-input-wrapper"]') as HTMLElement;
+          if (searchWrapper) {
+            console.log('[CountrySelector] Focusing search wrapper');
+            (window as any).tvSpatialNav.focus(searchWrapper);
+            
+            // When wrapper gets focus via TV navigation, trigger input focus for keyboard
+            searchWrapper.addEventListener('click', () => {
+              const inputElement = document.querySelector('[data-testid="input-country-search"]') as HTMLInputElement;
+              if (inputElement && !isNavigatingRef.current) {
+                console.log('[CountrySelector] TV navigation activated search - opening keyboard');
+                inputElement.focus();
+              }
+            }, { once: true });
           }
         }
       }, 200);
       return () => clearTimeout(timeout);
     }
   }, [isOpen]);
+
+  // Reinitialize TV navigation when filtered countries change (after search)
+  useEffect(() => {
+    if (isOpen && filteredCountries.length > 0) {
+      const timeout = setTimeout(() => {
+        if ((window as any).tvSpatialNav) {
+          console.log('[CountrySelector] Updating TV navigation for', filteredCountries.length, 'countries');
+          (window as any).tvSpatialNav.init();
+        }
+      }, 100);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen, filteredCountries.length]);
 
   console.log('[CountrySelector] ===== RENDER INFO =====');
   console.log('[CountrySelector] Total countries loaded:', countries.length);
@@ -250,17 +273,34 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         {/* Modal */}
         <div className="relative bg-black h-[534px] w-[1006px] overflow-clip rounded-[14px]">
           {/* Search Bar */}
-          <div className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[75px] left-[19px] rounded-[12px] top-[21px] w-[968px]">
-            <div className="h-[75px] overflow-clip relative rounded-[inherit] w-[968px]">
+          <div 
+            className="absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[75px] left-[19px] rounded-[12px] top-[21px] w-[968px] cursor-pointer"
+            data-testid="search-input-wrapper"
+            data-tv-focusable="true"
+            onClick={() => {
+              const inputElement = document.querySelector('[data-testid="input-country-search"]') as HTMLInputElement;
+              if (inputElement && !isNavigatingRef.current) {
+                console.log('[CountrySelector] Wrapper clicked - focusing input');
+                inputElement.focus();
+              }
+            }}
+          >
+            <div className="h-[75px] overflow-clip relative rounded-[inherit] w-[968px] pointer-events-none">
               <div className="absolute h-[31.134px] left-[45px] top-1/2 -translate-y-1/2 flex items-center gap-[15px]">
-                <div className="size-[31.134px] pointer-events-none">
+                <div className="size-[31.134px]">
                   <img
                     alt="search"
-                    className="block max-w-none size-full pointer-events-none"
+                    className="block max-w-none size-full"
                     src="images/vuesax-bold-search-normal.svg"
                   />
                 </div>
                 <input
+                  ref={(el) => {
+                    if (el) {
+                      // Store reference for wrapper to access
+                      (el as any).parentWrapper = el.closest('[data-testid="search-input-wrapper"]');
+                    }
+                  }}
                   type="text"
                   value={searchQuery}
                   onChange={(e) => {
@@ -269,78 +309,30 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                     setSearchQuery(newValue);
                   }}
                   onFocus={(e) => {
-                    console.log('[CountrySelector] 🎹 Input FOCUSED event triggered');
-                    console.log('[CountrySelector] isNavigating flag:', isNavigatingRef.current);
-                    
+                    console.log('[CountrySelector] 🎹 Input FOCUSED - keyboard should appear');
                     if (isNavigatingRef.current) {
-                      console.log('[CountrySelector] ❌ BLOCKING focus - isNavigating is TRUE (user clicked country)');
+                      console.log('[CountrySelector] ❌ BLOCKING focus - user clicked country');
                       e.target.blur();
-                      return;
                     }
-                    
-                    console.log('[CountrySelector] ✅ Input focus allowed - keyboard should appear automatically');
-                    console.log('[CountrySelector] Focus event target:', e.target.tagName, e.target.getAttribute('data-testid'));
-                    console.log('[CountrySelector] Input value:', (e.target as HTMLInputElement).value);
-                    console.log('[CountrySelector] Active element:', document.activeElement?.tagName, document.activeElement?.getAttribute('data-testid'));
-                    console.log('[CountrySelector] Samsung TV keyboards show automatically when <input> is focused');
-                  }}
-                  onClick={(e) => {
-                    console.log('[CountrySelector] 🖱️ Input CLICKED');
-                    console.log('[CountrySelector] isNavigating flag:', isNavigatingRef.current);
-                    
-                    if (isNavigatingRef.current) {
-                      console.log('[CountrySelector] ❌ BLOCKING click focus - isNavigating is TRUE');
-                      e.preventDefault();
-                      e.stopPropagation();
-                      return;
-                    }
-                    
-                    console.log('[CountrySelector] ✅ Allowing input focus from click');
-                    const inputElement = e.target as HTMLInputElement;
-                    inputElement.focus();
-                    console.log('[CountrySelector] After focus() - active element:', document.activeElement?.tagName);
                   }}
                   onKeyDown={(e) => {
-                    // Handle ENTER/OK button to explicitly focus input (trigger keyboard)
-                    if (e.key === 'Enter' || e.keyCode === 13) {
-                      console.log('[CountrySelector] ⚡ ENTER pressed on input');
-                      console.log('[CountrySelector] isNavigating flag:', isNavigatingRef.current);
-                      
-                      if (isNavigatingRef.current) {
-                        console.log('[CountrySelector] ❌ BLOCKING ENTER focus - isNavigating is TRUE');
-                        e.preventDefault();
-                        return;
-                      }
-                      
-                      console.log('[CountrySelector] ✅ Allowing input focus from ENTER');
-                      const inputElement = e.target as HTMLInputElement;
-                      inputElement.focus();
-                      console.log('[CountrySelector] After focus() - active element:', document.activeElement?.tagName);
-                      e.preventDefault();
-                      return;
-                    }
-                    
-                    // Handle UP arrow - prevent navigation to prevent focus issues
-                    if (e.key === 'ArrowUp' || e.keyCode === 38) {
-                      console.log('[CountrySelector] UP pressed in input - preventing default to avoid focus issues');
-                      e.preventDefault();
-                      return;
-                    }
-                    
                     // Handle DOWN arrow to exit input and focus first country
                     if (e.key === 'ArrowDown' || e.keyCode === 40) {
                       e.preventDefault();
                       const firstCountry = document.querySelector('[data-testid^="country-option-"]') as HTMLElement;
                       if (firstCountry && (window as any).tvSpatialNav) {
-                        console.log('[CountrySelector] DOWN pressed in input, focusing first country');
+                        console.log('[CountrySelector] DOWN pressed - focusing first country');
                         (window as any).tvSpatialNav.focus(firstCountry);
                       }
                     }
+                    // Handle UP arrow
+                    if (e.key === 'ArrowUp' || e.keyCode === 38) {
+                      e.preventDefault();
+                    }
                   }}
                   placeholder="Country"
-                  className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[25.945px] text-white bg-transparent border-none outline-none placeholder:text-white/60 w-[800px]"
+                  className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[25.945px] text-white bg-transparent border-none outline-none placeholder:text-white/60 w-[800px] pointer-events-auto"
                   data-testid="input-country-search"
-                  data-tv-focusable="true"
                 />
               </div>
             </div>
