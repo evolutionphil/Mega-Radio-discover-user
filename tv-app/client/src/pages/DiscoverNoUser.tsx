@@ -422,14 +422,19 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Genre Pills - Horizontal Scrollable - All genres from API */}
         <div className="absolute left-[64px] top-[59px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide">
-          <div className="flex gap-[20px] py-[15px] px-[10px]">
+          <div className="flex py-[15px] px-[10px]" style={{ gap: '20px' }}>
             {genres.map((genre, index) => {
               return (
-                <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+                <Link 
+                  key={genre.slug || index} 
+                  href={`/genre-list?genre=${genre.slug}`}
+                  style={{ marginRight: '20px', display: 'inline-block', flexShrink: 0 }}
+                >
                   <div 
-                    className="relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors flex-shrink-0"
+                    className="relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
                     data-tv-focusable="true"
                     data-testid={genre.slug}
+                    style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}
                   >
                     <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-center text-white whitespace-nowrap">
                       {genre.name}
