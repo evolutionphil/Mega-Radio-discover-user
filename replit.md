@@ -90,10 +90,17 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 - ✅ Removed `data-tv-focusable` and `tabIndex` attributes
 - ✅ Simplified to ONE `useEffect` keydown listener per page using capture phase
 - ✅ Added extensive logging: `[Guide1] Key pressed: keyCode, key`
-- ✅ Kept image paths absolute from Vite public root: `/guide-assets/...`
+
+**Asset Consolidation:**
+- ✅ Consolidated ALL assets into single `tv-app/client/public/images/` folder (requirement)
+- ✅ Removed old folders: `guide-assets/`, `genres-assets/`, `splash-assets/`
+- ✅ Updated all code references to use `/images/` paths
+- ✅ Removed `getAssetPath()` helper functions from all pages - using direct paths
+- ✅ Asset mapping: vuesax icons → named icons (radio-icon.svg, music-icon.svg, search-icon.svg, heart-icon.svg, logout-icon.svg)
 
 **Technical Notes:**
 - Vite serves `tv-app/client/public/` directory at root path
+- All images now served from single `/images/` folder as required
 - Reference app uses simple routing: `switch(current_route) { case "login": login_page.HandleKey(e); }`
 - Samsung TV key codes: ENTER=13, RETURN=10009, RED=403, GREEN=404, YELLOW=405, BLUE=406
 - LG TV RETURN key code is different: 461 (vs Samsung's 10009)
