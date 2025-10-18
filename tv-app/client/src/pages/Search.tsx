@@ -5,6 +5,7 @@ import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { AppLayout } from "@/components/AppLayout";
 import { useCountry } from "@/contexts/CountryContext";
+import { recentlyPlayedService } from "@/services/recentlyPlayedService";
 
 export const Search = (): JSX.Element => {
   useTVNavigation();
@@ -13,6 +14,7 @@ export const Search = (): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const isNavigatingRef = useRef(false);
+  const [recentlyPlayedStations, setRecentlyPlayedStations] = useState<Station[]>([]);
 
   // Search for stations based on query
   const { data: searchData } = useQuery({
@@ -21,14 +23,25 @@ export const Search = (): JSX.Element => {
     enabled: searchQuery.length > 0,
   });
 
-  // Fetch recently played (popular) stations
-  const { data: recentStationsData } = useQuery({
-    queryKey: ['/api/stations/popular', { limit: 6 }],
-    queryFn: () => megaRadioApi.getPopularStations({ limit: 6 }),
+  // Fetch popular stations as fallback
+  const { data: popularStationsData } = useQuery({
+    queryKey: ['/api/stations/popular', { limit: 6, country: selectedCountryCode }],
+    queryFn: () => megaRadioApi.getPopularStations({ limit: 6, country: selectedCountryCode }),
   });
 
   const searchResults = searchData?.results || [];
-  const recentStations = recentStationsData?.stations || [];
+  
+  // Load recently played stations from localStorage
+  useEffect(() => {
+    const recent = recentlyPlayedService.getStations();
+    setRecentlyPlayedStations(recent);
+    console.log('[Search] Loaded recently played stations:', recent.length);
+  }, []);
+
+  // Use recently played if available, otherwise fall back to popular stations
+  const recentStations = recentlyPlayedStations.length > 0 
+    ? recentlyPlayedStations 
+    : (popularStationsData?.stations || []);
 
   // Auto-focus search input when page loads
   useEffect(() => {

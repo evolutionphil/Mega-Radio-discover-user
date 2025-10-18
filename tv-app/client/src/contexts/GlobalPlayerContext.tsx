@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode } from "react";
 import { Station } from "@/services/megaRadioApi";
+import { recentlyPlayedService } from "@/services/recentlyPlayedService";
 
 interface GlobalPlayerContextType {
   currentStation: Station | null;
@@ -94,6 +95,9 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       console.warn('[GlobalPlayer] Failed to save station to localStorage:', err);
     }
+
+    // Add to recently played list
+    recentlyPlayedService.addStation(station);
   };
 
   const pauseStation = () => {
