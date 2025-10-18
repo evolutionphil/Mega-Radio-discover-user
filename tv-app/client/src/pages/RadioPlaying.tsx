@@ -191,8 +191,8 @@ export const RadioPlaying = (): JSX.Element => {
     <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black overflow-y-auto scrollbar-hide">
 
       {/* Logo */}
-      <div className="absolute h-[57px] left-[31px] top-[64px] w-[164.421px]">
-        <p className="absolute bottom-0 font-['Ubuntu',Helvetica] font-normal leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
+      <div className="absolute h-[57px] left-[31px] top-[64px] w-[164.421px] z-50">
+        <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
         <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
@@ -203,17 +203,18 @@ export const RadioPlaying = (): JSX.Element => {
         </div>
       </div>
 
-      {/* User Profile (Top Right) */}
-      <div className="absolute h-[66px] left-[1648px] top-[59px] w-[193px]">
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[54.5px] not-italic text-[24px] text-center text-white top-[19px] translate-x-[-50%]">
-          {t('user_name') || 'Guest'}
-        </p>
-        <div className="absolute left-[127px] rounded-[73.333px] size-[66px] top-0 bg-gradient-to-br from-[#ff4199] to-[#01d7fb]" />
+      {/* Equalizer Icon - Right side with padding */}
+      <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1616px] overflow-clip rounded-[30px] size-[51px] top-[67px] z-50">
+        <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
+          <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
+          <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
+          <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
+        </div>
       </div>
 
-      {/* Country Selector */}
+      {/* Country Selector - Right side with padding */}
       <div 
-        className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1351px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors"
+        className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1667px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50"
         onClick={() => setIsCountrySelectorOpen(true)}
         data-testid="button-country-selector"
         data-tv-focusable="true"
@@ -238,15 +239,6 @@ export const RadioPlaying = (): JSX.Element => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Equalizer Icon (Top Right) */}
-      <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1281px] overflow-clip rounded-[30px] size-[51px] top-[67px]">
-        <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
-          <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
-          <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
-          <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
         </div>
       </div>
 
