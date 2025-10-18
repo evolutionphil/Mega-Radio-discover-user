@@ -6,6 +6,20 @@ Mega Radio is a full-stack web radio streaming application designed for TV/large
 
 ## Recent Changes (October 18, 2025)
 
+**Radio Playing Page Redesign - Exact Figma Implementation (Build: index-DgvmYGOt.js):**
+- Completely rebuilt RadioPlaying page to match exact Figma design (node 1597-3968)
+- Pure black background (no gradients or background images)
+- Removed AppLayout component - standalone full-screen page design
+- Exact positioning from Figma: station logo (236px, 242px, 296x296px), info at 596px, controls at 1372px
+- Pink equalizer icon, station name, now playing, and station info precisely positioned
+- Player controls (Previous, Play/Pause, Next, Favorite) with exact spacing
+- Station info tags: country flag, bitrate, codec, country code, and genre tags
+- Left sidebar menu with all navigation options
+- Similar Radios horizontal scroll section
+- Removed Popular Radios section (as requested by user)
+- Heart button with pink background when favorited
+- All spacing, fonts, and styling match Figma design exactly
+
 **Favorites Functionality Implementation (Build: index-DBDnoY9y.js):**
 - Created FavoritesContext for global favorites state management with localStorage persistence
 - Added heart button to RadioPlaying page that toggles favorite status (pink when favorited)

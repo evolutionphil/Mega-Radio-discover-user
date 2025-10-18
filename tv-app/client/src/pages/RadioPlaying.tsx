@@ -31,22 +31,11 @@ export const RadioPlaying = (): JSX.Element => {
   // Force update trigger for station changes
   const [updateTrigger, setUpdateTrigger] = useState(0);
   
-  // Auto-hide header state
-  const [showHeader, setShowHeader] = useState(true);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const lastScrollY = useRef(0);
-  
   // Country selector state
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   
-  // Infinite scroll state for similar stations
-  const [allSimilarStations, setAllSimilarStations] = useState<Station[]>([]);
-  const [isLoadingMoreSimilar, setIsLoadingMoreSimilar] = useState(false);
-  const [hasMoreSimilar, setHasMoreSimilar] = useState(true);
-  const [similarStationsPage, setSimilarStationsPage] = useState(1);
+  // Similar stations scroll ref
   const similarScrollRef = useRef<HTMLDivElement>(null);
-  const SIMILAR_STATIONS_PER_LOAD = 40;
-
   
   // Parse station ID from URL query params
   const stationId = useMemo(() => {
@@ -105,172 +94,24 @@ export const RadioPlaying = (): JSX.Element => {
 
   const metadata = metadataData?.metadata;
 
-  // Fetch ALL similar stations from same country (client-side pagination)
-  const [allLoadedStations, setAllLoadedStations] = useState<Station[]>([]);
-  
-  const { data: initialSimilarData } = useQuery({
-    queryKey: ['similar-all', stationId, station?.countrycode || station?.country],
+  // Fetch similar stations
+  const { data: similarData } = useQuery({
+    queryKey: ['similar-stations', stationId, station?.countrycode || station?.country],
     queryFn: async () => {
       if (!station) return { stations: [] };
       const countryCode = station.countrycode || station.country;
       if (countryCode) {
-        // Fetch a large batch for client-side pagination (200 stations)
         return megaRadioApi.getWorkingStations({ 
-          limit: 200, 
+          limit: 50, 
           country: countryCode 
         });
       }
-      return megaRadioApi.getSimilarStations(stationId!, 200);
+      return megaRadioApi.getSimilarStations(stationId!, 50);
     },
     enabled: !!stationId && !!station,
   });
 
-  // Initialize when data loads - show first 40 stations
-  useEffect(() => {
-    if (initialSimilarData?.stations) {
-      setAllLoadedStations(initialSimilarData.stations);
-      // Display first batch (40 stations)
-      setAllSimilarStations(initialSimilarData.stations.slice(0, SIMILAR_STATIONS_PER_LOAD));
-      setHasMoreSimilar(initialSimilarData.stations.length > SIMILAR_STATIONS_PER_LOAD);
-      setSimilarStationsPage(1);
-    }
-  }, [initialSimilarData]);
-
-  // Reset pagination when station changes
-  useEffect(() => {
-    setSimilarStationsPage(1);
-    setHasMoreSimilar(true);
-    setAllSimilarStations([]);
-    setAllLoadedStations([]);
-  }, [stationId]);
-
-
-  // Auto-hide header on scroll
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (!scrollContainer) return;
-
-    const handleScroll = () => {
-      const currentScrollY = scrollContainer.scrollTop;
-      
-      // Auto-hide header logic
-      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-        setShowHeader(false);
-      } 
-      else if (currentScrollY < lastScrollY.current) {
-        setShowHeader(true);
-      }
-      
-      lastScrollY.current = currentScrollY;
-    };
-
-    scrollContainer.addEventListener('scroll', handleScroll);
-    return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Auto-scroll to top when focus moves to top elements (player controls, sidebar)
-  useEffect(() => {
-    // Wait for scroll container to be available
-    if (!scrollContainerRef.current) {
-      console.log('[RadioPlaying] Scroll container not ready, waiting...');
-      return;
-    }
-
-    const scrollContainer = scrollContainerRef.current;
-    console.log('[RadioPlaying] Auto-scroll monitor started');
-    let lastFocusedTestId = '';
-
-    const checkAndScrollToTop = () => {
-      // Get the currently focused element using tv-focused class
-      const focusedElement = document.querySelector('.tv-focused');
-      
-      if (!focusedElement) return;
-      
-      const testId = focusedElement.getAttribute('data-testid') || '';
-      
-      // Only act if focus changed
-      if (testId === lastFocusedTestId) return;
-      lastFocusedTestId = testId;
-      
-      console.log('[RadioPlaying] Focus changed to:', testId, 'Scroll position:', scrollContainer.scrollTop);
-      
-      // List of top elements that should trigger scroll to top
-      const topElementTestIds = [
-        'button-discover', 'button-genres', 'button-search', 
-        'button-favorites', 'button-records', 'button-settings',
-        'button-country-selector', 'button-login-header',
-        'button-previous', 'button-play-pause', 'button-next', 'button-favorite'
-      ];
-      
-      const isTopElement = topElementTestIds.some(id => testId === id);
-      const isSimilarRadioCard = testId.startsWith('card-similar-');
-      
-      // Scroll to top for player controls, sidebar buttons, AND similar radio cards
-      if ((isTopElement || isSimilarRadioCard) && scrollContainer.scrollTop > 50) {
-        console.log('[RadioPlaying] Scrolling to top for element:', testId);
-        scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-        setShowHeader(true);
-      }
-      
-    };
-
-    // Check on interval (TV navigation doesn't emit standard events)
-    const intervalId = setInterval(checkAndScrollToTop, 200);
-    
-    return () => {
-      console.log('[RadioPlaying] Auto-scroll monitor stopped');
-      clearInterval(intervalId);
-    };
-  }, []); // No dependencies needed for similar stations auto-scroll
-
-  // Load more similar stations - client-side pagination from pre-loaded data
-  const loadMoreSimilar = async () => {
-    if (isLoadingMoreSimilar || !hasMoreSimilar) return;
-    
-    setIsLoadingMoreSimilar(true);
-    
-    // Simulate async for smooth UX
-    setTimeout(() => {
-      const nextPage = similarStationsPage + 1;
-      // Fix: use current page to calculate start index (page 1 already showed 0-39, so page 2 should start at 40)
-      const startIdx = similarStationsPage * SIMILAR_STATIONS_PER_LOAD;
-      const endIdx = startIdx + SIMILAR_STATIONS_PER_LOAD;
-      
-      const nextBatch = allLoadedStations.slice(startIdx, endIdx);
-      
-      if (nextBatch.length > 0) {
-        setAllSimilarStations(prev => [...prev, ...nextBatch]);
-        setSimilarStationsPage(nextPage);
-        setHasMoreSimilar(endIdx < allLoadedStations.length);
-        console.log(`[RadioPlaying] Loaded page ${nextPage}, showing ${allSimilarStations.length + nextBatch.length}/${allLoadedStations.length} stations`);
-      } else {
-        setHasMoreSimilar(false);
-        console.log('[RadioPlaying] No more stations to load');
-      }
-      
-      setIsLoadingMoreSimilar(false);
-    }, 100);
-  };
-
-  // Scroll detection for infinite scroll
-  useEffect(() => {
-    const scrollContainer = similarScrollRef.current;
-    if (!scrollContainer) return;
-
-    const handleScroll = () => {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainer;
-      const scrolledToEnd = scrollLeft + clientWidth >= scrollWidth - 200;
-      
-      if (scrolledToEnd && hasMoreSimilar && !isLoadingMoreSimilar) {
-        loadMoreSimilar();
-      }
-    };
-
-    scrollContainer.addEventListener('scroll', handleScroll);
-    return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, [hasMoreSimilar, isLoadingMoreSimilar, station]);
-
-  const similarStations = allSimilarStations || [];
+  const similarStations = similarData?.stations || [];
 
   // Initialize TV audio player
   useEffect(() => {
@@ -327,7 +168,6 @@ export const RadioPlaying = (): JSX.Element => {
   // Auto-focus play/pause button when station loads
   useEffect(() => {
     if (station && window.tvSpatialNav) {
-      // Wait a moment for DOM to render
       setTimeout(() => {
         const playPauseButton = document.querySelector('[data-testid="button-play-pause"]') as HTMLElement;
         if (playPauseButton && window.tvSpatialNav) {
@@ -389,7 +229,7 @@ export const RadioPlaying = (): JSX.Element => {
 
   if (!station) {
     return (
-      <div className="fixed inset-0 w-[1920px] h-[1080px] bg-gradient-to-br from-[#1a0e2e] via-[#0e0e1e] to-[#0e0e0e] flex items-center justify-center">
+      <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex items-center justify-center">
         <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white">Loading...</p>
       </div>
     );
@@ -401,16 +241,16 @@ export const RadioPlaying = (): JSX.Element => {
   const countryCode = station.countrycode || station.countryCode || 'XX';
 
   return (
-    <div className="fixed inset-0 w-[1920px] h-[1080px] bg-gradient-to-br from-[#1a0e2e] via-[#0e0e1e] to-[#0e0e0e] overflow-hidden">
+    <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black overflow-y-auto scrollbar-hide">
       {/* Hidden audio container */}
       <div id="tv-audio-container" style={{ display: 'none' }} />
 
-      {/* Fixed Logo */}
-      <div className="fixed left-[31px] top-[64px] h-[57px] w-[164.421px] z-50">
-        <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[27.029px] leading-normal text-white whitespace-pre-wrap">
+      {/* Logo */}
+      <div className="absolute h-[57px] left-[31px] top-[64px] w-[164.421px]">
+        <p className="absolute bottom-0 font-['Ubuntu',Helvetica] font-normal leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
-        <div className="absolute left-0 top-0 bottom-[2.84%] right-[65.2%]">
+        <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
           <svg viewBox="0 0 57 55" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
             <path d="M22.6604 0L0 27.5L22.6604 55L45.3208 27.5L22.6604 0Z" fill="#FF4199"/>
             <path d="M34.0189 0L11.3585 27.5L34.0189 55L56.6792 27.5L34.0189 0Z" fill="#01D7FB"/>
@@ -418,274 +258,244 @@ export const RadioPlaying = (): JSX.Element => {
         </div>
       </div>
 
-      {/* Auto-hiding Header Controls (Equalizer, Country, Login) - Exact from DiscoverNoUser */}
-      <div 
-        className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
-        style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
-      >
-        {/* Equalizer */}
-        <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] pointer-events-auto">
-          <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
-            <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
-            <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
-            <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
-          </div>
-        </div>
+      {/* User Profile (Top Right) */}
+      <div className="absolute h-[66px] left-[1648px] top-[59px] w-[193px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[54.5px] not-italic text-[24px] text-center text-white top-[19px] translate-x-[-50%]">
+          {t('user_name') || 'Guest'}
+        </p>
+        <div className="absolute left-[127px] rounded-[73.333px] size-[66px] top-0 bg-gradient-to-br from-[#ff4199] to-[#01d7fb]" />
+      </div>
 
-        {/* Country Selector */}
-        <div 
-          className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] pointer-events-auto cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors"
-          onClick={() => setIsCountrySelectorOpen(true)}
-          data-testid="button-country-selector"
-          data-tv-focusable="true"
-        >
-          <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
-            <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
-              {selectedCountry}
-            </p>
-            <div className="absolute left-0 size-[28.421px] top-0">
-              <img
-                alt={selectedCountry}
-                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                src={selectedCountryFlag}
-              />
-            </div>
-            <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
-              <div className="flex-none rotate-[270deg]">
-                <div className="relative size-[23.684px]">
-                  <img
-                    alt=""
-                    className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-outline-arrow-left.svg")}
-                  />
-                </div>
+      {/* Country Selector */}
+      <div 
+        className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1351px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors"
+        onClick={() => setIsCountrySelectorOpen(true)}
+        data-testid="button-country-selector"
+        data-tv-focusable="true"
+      >
+        <div className="absolute h-[29px] left-[15px] top-[11px] w-[193.684px]">
+          <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[39.08px] not-italic text-[24px] text-white top-px">
+            {selectedCountry}
+          </p>
+          <div className="absolute left-0 size-[28.421px] top-0 rounded-full overflow-hidden">
+            <img 
+              src={`https://flagcdn.com/w40/${selectedCountryCode.toLowerCase()}.png`}
+              alt={selectedCountry}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="absolute flex h-[calc(1px*((var(--transform-inner-width)*1)+(var(--transform-inner-height)*0)))] items-center justify-center left-[170px] top-[3.32px] w-[calc(1px*((var(--transform-inner-height)*1)+(var(--transform-inner-width)*0)))]">
+            <div className="flex-none rotate-[270deg]">
+              <div className="relative size-[23.684px]">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Login Button */}
-        <Link href="/login">
-          <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors pointer-events-auto" data-testid="button-login-header" data-tv-focusable="true">
-            <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
-              {t('login')}
-            </p>
-            <div className="absolute left-[13px] size-[34px] top-[9px]">
-              <img
-                alt=""
-                className="block max-w-none size-full"
-                src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
-              />
+      {/* Equalizer Icon (Top Right) */}
+      <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1281px] overflow-clip rounded-[30px] size-[51px] top-[67px]">
+        <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
+          <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
+          <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
+          <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
+        </div>
+      </div>
+
+      {/* Left Menu / Sidebar */}
+      <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
+        {/* Discover - Active */}
+        <Link href="/discover-no-user">
+          <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                {t('discover')}
+              </p>
+              <div className="absolute left-[20px] size-[32px] top-0">
+                <img
+                  alt=""
+                  className="block max-w-none size-full"
+                  src={getAssetPath("figmaAssets/vuesax-bold-radio.svg")}
+                />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Genres */}
+        <Link href="/genres">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                {t('genres')}
+              </p>
+              <div className="absolute left-[13px] size-[32px] top-0">
+                <img
+                  alt=""
+                  className="block max-w-none size-full"
+                  src={getAssetPath("figmaAssets/vuesax-bold-musicnote.svg")}
+                />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Search */}
+        <Link href="/search">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                {t('search')}
+              </p>
+              <div className="absolute left-[12px] size-[32px] top-0">
+                <img
+                  alt=""
+                  className="block max-w-none size-full"
+                  src={getAssetPath("figmaAssets/vuesax-bold-search-normal.svg")}
+                />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Favorites */}
+        <Link href="/favorites">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                {t('favorites')}
+              </p>
+              <div className="absolute left-[22px] size-[32px] top-0">
+                <img
+                  alt=""
+                  className="block max-w-none size-full"
+                  src={getAssetPath("figmaAssets/vuesax-bold-heart.svg")}
+                />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Records */}
+        <Link href="/discover-no-user">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                {t('profile_nav_records')}
+              </p>
+              <div className="absolute left-[17px] size-[32px] top-0">
+                <div className="absolute left-0 size-[32px] top-0">
+                  <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
+                  <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Settings */}
+        <Link href="/settings">
+          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
+            <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
+              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                {t('settings')}
+              </p>
+              <div className="absolute left-[18px] size-[32px] top-0">
+                <img
+                  alt=""
+                  className="block max-w-none size-full"
+                  src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
+                />
+              </div>
             </div>
           </div>
         </Link>
       </div>
 
-      {/* Fixed Left Sidebar - Exact from DiscoverNoUser */}
-      <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-50 pointer-events-auto">
-          {/* Discover */}
-          <Link href="/discover-no-user">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
-              <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
-                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  {t('discover')}
-                </p>
-                <div className="absolute left-[20px] size-[32px] top-0">
-                  <img
-                    alt=""
-                    className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-radio.svg")}
-                  />
-                </div>
-              </div>
-            </div>
-          </Link>
-
-          {/* Genres */}
-          <Link href="/genres">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
-              <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
-                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  {t('genres')}
-                </p>
-                <div className="absolute left-[13px] size-[32px] top-0">
-                  <img
-                    alt=""
-                    className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-musicnote.svg")}
-                  />
-                </div>
-              </div>
-            </div>
-          </Link>
-
-          {/* Search */}
-          <Link href="/search">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
-              <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
-                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  {t('search')}
-                </p>
-                <div className="absolute left-[12px] size-[32px] top-0">
-                  <img
-                    alt=""
-                    className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-search-normal.svg")}
-                  />
-                </div>
-              </div>
-            </div>
-          </Link>
-
-          {/* Favorites */}
-          <Link href="/favorites">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
-              <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
-                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  {t('favorites')}
-                </p>
-                <div className="absolute left-[22px] size-[32px] top-0">
-                  <img
-                    alt=""
-                    className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-heart.svg")}
-                  />
-                </div>
-              </div>
-            </div>
-          </Link>
-
-          {/* Records */}
-          <Link href="/discover-no-user">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
-              <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
-                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  {t('profile_nav_records')}
-                </p>
-                <div className="absolute left-[17px] size-[32px] top-0">
-                  <div className="absolute left-0 size-[32px] top-0">
-                    <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
-                    <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-
-          {/* Settings */}
-          <Link href="/settings">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
-              <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
-                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  {t('settings')}
-                </p>
-                <div className="absolute left-[18px] size-[32px] top-0">
-                  <img
-                    alt=""
-                    className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
-                  />
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-      {/* Scrollable Content Area */}
-      <div 
-        ref={scrollContainerRef}
-        className="absolute left-[162px] w-[1758px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide transition-all duration-300 ease-in-out"
-        style={{
-          top: showHeader ? '242px' : '64px',
-          height: showHeader ? '838px' : '1016px'
-        }}
-      >
-        <div className="relative w-full">
-
       {/* Station Logo */}
-      <div className="absolute left-[74px] top-0 w-[296px] h-[296px] bg-white rounded-[16.692px] overflow-hidden">
+      <div className="absolute bg-white left-[236px] overflow-clip rounded-[16.692px] size-[296px] top-[242px]">
         <img 
           src={getStationImage(station)}
           alt={station.name}
-          className="w-full h-full object-cover"
+          className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
           onError={(e) => {
             (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
           }}
         />
       </div>
 
-      {/* Station Info */}
-      <div className="absolute left-[434px] top-0">
-        {/* Pink Equalizer Icon */}
-        <div className="flex gap-[2.5px] h-[35px] w-[33.25px]">
-          <div className="w-[8.75px] h-[35px] bg-[#ff4199] rounded-[10px]" />
-          <div className="w-[8.75px] h-[24.5px] bg-[#ff4199] rounded-[10px] mt-[10.5px]" />
-          <div className="w-[8.75px] h-[29.75px] bg-[#ff4199] rounded-[10px] mt-[5.25px]" />
+      {/* Equalizer Icon (Pink) */}
+      <div className="absolute h-[35px] left-[596px] overflow-clip top-[242px] w-[33.25px]">
+        <div className="absolute bg-[#ff4199] h-[35px] left-0 rounded-[10px] top-0 w-[8.75px]" />
+        <div className="absolute bg-[#ff4199] h-[24.5px] left-[12.25px] rounded-[10px] top-[10.5px] w-[8.75px]" />
+        <div className="absolute bg-[#ff4199] h-[29.75px] left-[24.5px] rounded-[10px] top-[5.25px] w-[8.75px]" />
+      </div>
+
+      {/* Station Name */}
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[48px] text-white top-[293px]">
+        {station.name}
+      </p>
+
+      {/* Now Playing */}
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[32px] text-white top-[356.71px]">
+        {metadata?.title || 'Now Playing'}
+      </p>
+
+      {/* Station Info Label */}
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[24px] text-white top-[425px]">
+        Station Info
+      </p>
+
+      {/* Station Info Tags */}
+      <div className="absolute left-[596px] top-[476px] flex gap-[11.3px] items-center">
+        {/* Country Flag */}
+        <div className="size-[34.783px] rounded-full overflow-hidden">
+          <img 
+            src={`https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`}
+            alt={station.country}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+            }}
+          />
         </div>
 
-        {/* Station Name */}
-        <p className="font-['Ubuntu',Helvetica] font-medium text-[48px] text-white leading-normal mt-[16px]">
-          {station.name}
-        </p>
-
-        {/* Now Playing */}
-        <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white leading-normal mt-[13.71px]">
-          {metadata?.title || 'Now Playing'}
-        </p>
-
-        {/* Station Info Label */}
-        <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal mt-[38.29px]">
-          Station Info
-        </p>
-
-        {/* Tags */}
-        <div className="flex gap-[11.3px] mt-[27px] items-center">
-          {/* Country Flag */}
-          <div className="w-[34.783px] h-[34.783px] rounded-full overflow-hidden">
-            <img 
-              src={`https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`}
-              alt={station.country}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-              }}
-            />
-          </div>
-
-          {/* Bitrate */}
-          <div className="bg-[#242424] rounded-[5.217px] h-[40px] px-[20px] flex items-center justify-center">
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-white">{bitrate}</p>
-          </div>
-
-          {/* Codec */}
-          <div className="bg-[#242424] rounded-[5.217px] h-[40px] px-[20px] flex items-center justify-center">
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-white">{codec}</p>
-          </div>
-
-          {/* Country Code */}
-          <div className="bg-[#242424] rounded-[5.217px] h-[40px] px-[20px] flex items-center justify-center">
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-white">{countryCode}</p>
-          </div>
-
-          {/* Genre Tags */}
-          {stationTags.slice(0, 2).map((tag, idx) => (
-            <div key={idx} className="bg-[#242424] rounded-[5.217px] h-[40px] px-[20px] flex items-center justify-center">
-              <p className="font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-white">{tag}</p>
-            </div>
-          ))}
+        {/* Bitrate */}
+        <div className="bg-[#242424] h-[40px] overflow-clip rounded-[5.217px] px-[20px] flex items-center justify-center">
+          <p className="font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-white">{bitrate}</p>
         </div>
+
+        {/* Codec */}
+        <div className="bg-[#242424] h-[40px] overflow-clip rounded-[5.217px] px-[20px] flex items-center justify-center">
+          <p className="font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-white">{codec}</p>
+        </div>
+
+        {/* Country Code */}
+        <div className="bg-[#242424] h-[40px] overflow-clip rounded-[5.217px] px-[20px] flex items-center justify-center">
+          <p className="font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-white">{countryCode}</p>
+        </div>
+
+        {/* Genre Tags - show first 2 */}
+        {stationTags.slice(0, 2).map((tag, idx) => (
+          <div key={idx} className="bg-[#242424] h-[40px] overflow-clip rounded-[5.217px] px-[20px] flex items-center justify-center">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[24.348px] text-white">{tag}</p>
+          </div>
+        ))}
       </div>
 
       {/* Player Controls */}
-      <div className="absolute left-[1210px] top-[114px] flex gap-[36.27px]">
+      <div className="absolute h-[90.192px] left-[1372px] top-[356px] w-[469px]">
         {/* Previous Button */}
         <div 
-          className="bg-black rounded-[45.096px] w-[90.192px] h-[90.192px] flex items-center justify-center cursor-pointer hover:bg-gray-900 transition-colors"
+          className="absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
           onClick={handlePrevious}
           data-tv-focusable="true"
           data-testid="button-previous"
         >
-          <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M34.375 16.9792L23.6042 27.75L34.375 38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M16.1458 16.9792V38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
@@ -693,18 +503,18 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Play/Pause Button */}
         <div 
-          className="bg-black rounded-[45.096px] w-[90.192px] h-[90.192px] flex items-center justify-center cursor-pointer hover:bg-gray-900 transition-colors"
+          className="absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
           onClick={handlePlayPause}
           data-tv-focusable="true"
           data-testid="button-play-pause"
         >
           {isPlaying ? (
-            <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="18" y="14" width="6" height="27" rx="2" fill="white"/>
               <rect x="31" y="14" width="6" height="27" rx="2" fill="white"/>
             </svg>
           ) : (
-            <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M20 14L38 27.5L20 41V14Z" fill="white"/>
             </svg>
           )}
@@ -712,12 +522,12 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Next Button */}
         <div 
-          className="bg-black rounded-[45.096px] w-[90.192px] h-[90.192px] flex items-center justify-center cursor-pointer hover:bg-gray-900 transition-colors"
+          className="absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
           onClick={handleNext}
           data-tv-focusable="true"
           data-testid="button-next"
         >
-          <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.625 16.9792L31.3958 27.75L20.625 38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M38.8542 16.9792V38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
@@ -725,7 +535,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Favorite Button */}
         <div 
-          className={`border-[3.608px] border-solid rounded-[72.655px] w-[90.192px] h-[90.192px] flex items-center justify-center cursor-pointer transition-colors ${
+          className={`absolute border-[3.608px] border-solid left-[378.81px] rounded-[72.655px] size-[90.192px] top-0 cursor-pointer transition-colors flex items-center justify-center ${
             isFavorite(station._id) 
               ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
               : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
@@ -734,38 +544,39 @@ export const RadioPlaying = (): JSX.Element => {
           data-tv-focusable="true"
           data-testid="button-favorite"
         >
-          <svg className="w-[50.508px] h-[50.508px]" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="size-[50.508px]" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M25.5 44.625C24.7396 44.625 23.9792 44.3958 23.3604 43.9375C18.9375 40.6042 14.9479 37.6771 11.9792 34.7917C7.44792 30.3479 4.25 26.2646 4.25 20.625C4.25 12.6667 10.5 6.375 18.0625 6.375C21.6042 6.375 24.9167 8.14583 27.125 11.1354C29.3333 8.14583 32.6458 6.375 36.1875 6.375C43.75 6.375 50 12.6667 50 20.625C50 26.2646 46.8021 30.3479 42.2708 34.8125C39.3021 37.6979 35.3125 40.625 30.8896 43.9583C30.2708 44.3958 29.5104 44.625 28.75 44.625H25.5Z" fill="white"/>
           </svg>
         </div>
       </div>
 
       {/* Similar Radios Section */}
-      <div className="absolute left-[74px] top-[417px]">
-        <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white leading-normal">Similar Radios</p>
-        <p 
-          className="absolute right-[-1520px] top-[6px] font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal cursor-pointer hover:text-gray-300"
-          data-tv-focusable="true"
-        >
-          See More
-        </p>
-      </div>
+      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[659px]">
+        Similar Radios
+      </p>
+
+      <p 
+        className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[665px] translate-x-[-50%] cursor-pointer hover:text-gray-300"
+        data-tv-focusable="true"
+      >
+        See More
+      </p>
 
       {/* Similar Radios Horizontal Scroll */}
       <div 
         ref={similarScrollRef}
-        className="absolute left-[74px] top-[491px] flex gap-[19px] overflow-x-auto scrollbar-hide w-[1580px]"
+        className="absolute left-[236px] top-[733px] flex gap-[19px] overflow-x-auto scrollbar-hide w-[1610px]"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {similarStations.map((similarStation, index) => (
+        {similarStations.slice(0, 8).map((similarStation, index) => (
           <div
             key={similarStation._id || index}
-            className="flex-shrink-0 w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] overflow-clip shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+            className="flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
             data-testid={`card-similar-${similarStation._id}`}
             data-tv-focusable="true"
             onClick={() => navigateToStation(similarStation)}
           >
-            <div className="w-[132px] h-[132px] mt-[34px] ml-[34px] bg-white rounded-[6.6px] overflow-clip">
+            <div className="bg-white left-[34px] ml-[34px] mt-[34px] overflow-clip rounded-[6.6px] size-[132px]">
               <img
                 className="w-full h-full object-cover"
                 alt={similarStation.name}
@@ -781,13 +592,9 @@ export const RadioPlaying = (): JSX.Element => {
             <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
               {getStationTags(similarStation)[0] || similarStation.country || 'Radio'}
             </p>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
           </div>
         ))}
-        {isLoadingMoreSimilar && (
-          <div className="flex-shrink-0 w-[200px] h-[264px] bg-[rgba(255,255,255,0.14)] rounded-[11px] flex items-center justify-center">
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white">Loading...</p>
-          </div>
-        )}
       </div>
 
       {/* Country Selector Modal */}
@@ -803,9 +610,6 @@ export const RadioPlaying = (): JSX.Element => {
           }}
         />
       )}
-
-        </div>
-      </div>
     </div>
   );
 };
