@@ -6,6 +6,16 @@ Mega Radio is a full-stack web radio streaming application designed for TV/large
 
 ## Recent Changes (October 18, 2025)
 
+**Genre List Page Implementation (Build: index-CWtQTVq8.js):**
+- Implemented genre content page based on Figma design (1623:6928)
+- Uses AppLayout for consistent header/sidebar across all pages
+- Shows stations filtered by genre AND selected country (global context)
+- 7-column grid layout (21 stations per page) matching exact Figma positions
+- Infinite scroll for loading more stations (client-side pagination)
+- Back button navigates to Genres page
+- Dynamic genre title from URL parameters
+- Integrated with global country selection context
+
 **Fixed Layout for Samsung TV (Build: index-DmIq4fBv.js):**
 - Fixed AppLayout to use exact 1920x1080 fixed dimensions instead of `min-h-[1080px]`
 - Changed from `relative w-[1920px] min-h-[1080px]` to `fixed inset-0 w-[1920px] h-[1080px] overflow-hidden`
