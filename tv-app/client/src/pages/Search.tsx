@@ -3,10 +3,13 @@ import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { AppLayout } from "@/components/AppLayout";
+import { useCountry } from "@/contexts/CountryContext";
 
 export const Search = (): JSX.Element => {
   useTVNavigation();
   const [, setLocation] = useLocation();
+  const { selectedCountryCode } = useCountry();
   const [searchQuery, setSearchQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -128,132 +131,9 @@ export const Search = (): JSX.Element => {
   };
 
   return (
-    <div className="relative w-[1920px] h-[1080px] bg-black overflow-hidden" data-testid="page-search">
-      {/* Logo - Top Left */}
-      <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
-        <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
-          <span className="font-bold">mega</span>radio
-        </p>
-        <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
-          <img
-            alt=""
-            className="block max-w-none size-full"
-            src="/images/path-8.svg"
-          />
-        </div>
-      </div>
-
-      {/* Left Sidebar */}
-      <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] z-50">
-        {/* Discover */}
-        <Link href="/discover-no-user">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
-            <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Discover
-              </p>
-              <div className="absolute left-[20px] size-[32px] top-0">
-                <img
-                  alt=""
-                  className="block max-w-none size-full"
-                  src="/images/vuesax-bold-radio.svg"
-                />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Genres */}
-        <Link href="/genres">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
-            <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Genres
-              </p>
-              <div className="absolute left-[13px] size-[32px] top-0">
-                <img
-                  alt=""
-                  className="block max-w-none size-full"
-                  src="/images/vuesax-bold-musicnote.svg"
-                />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Search - Active */}
-        <Link href="/search">
-          <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
-            <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Search
-              </p>
-              <div className="absolute left-[12px] size-[32px] top-0">
-                <img
-                  alt=""
-                  className="block max-w-none size-full"
-                  src="/images/vuesax-bold-search-normal.svg"
-                />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Favorites */}
-        <Link href="/favorites">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
-            <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Favorites
-              </p>
-              <div className="absolute left-[22px] size-[32px] top-0">
-                <img
-                  alt=""
-                  className="block max-w-none size-full"
-                  src="/images/vuesax-bold-heart.svg"
-                />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Records */}
-        <Link href="/discover-no-user">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
-            <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Records
-              </p>
-              <div className="absolute left-[17px] size-[32px] top-0">
-                <div className="absolute left-0 size-[32px] top-0">
-                  <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
-                  <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Settings */}
-        <Link href="/settings">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
-            <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Settings
-              </p>
-              <div className="absolute left-[18px] size-[32px] top-0">
-                <img
-                  alt=""
-                  className="block max-w-none size-full"
-                  src="/images/vuesax-bold-setting-2.svg"
-                />
-              </div>
-            </div>
-          </div>
-        </Link>
-      </div>
-
-      {/* Search Title */}
+    <AppLayout currentPage="search">
+      <div className="relative w-[1920px] h-[1080px] overflow-hidden" data-testid="page-search">
+        {/* Search Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[246px] not-italic text-[32px] text-white top-[58px]">
         Search
       </p>
@@ -378,6 +258,7 @@ export const Search = (): JSX.Element => {
             </div>
         );
       })}
-    </div>
+      </div>
+    </AppLayout>
   );
 };
