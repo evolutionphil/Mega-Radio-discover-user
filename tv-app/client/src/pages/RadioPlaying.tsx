@@ -500,13 +500,6 @@ export const RadioPlaying = (): JSX.Element => {
         Similar Radios
       </p>
 
-      <p 
-        className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[565px] translate-x-[-50%] cursor-pointer hover:text-gray-300"
-        data-tv-focusable="true"
-      >
-        See More
-      </p>
-
       {/* Similar Radios Horizontal Scroll */}
       <div 
         ref={similarScrollRef}
