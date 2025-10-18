@@ -110,6 +110,23 @@ export const Search = (): JSX.Element => {
     );
   };
 
+  // Handle station click - blur input to prevent Samsung keyboard
+  const handleStationClick = (stationId: string, type: 'search' | 'recent') => {
+    console.log(`[Search] Station clicked (${type}):`, stationId);
+    
+    // Blur the search input to prevent Samsung keyboard from appearing
+    if (inputRef.current) {
+      inputRef.current.blur();
+      console.log('[Search] Search input blurred');
+    }
+    
+    // Small delay to ensure blur takes effect before navigation
+    setTimeout(() => {
+      console.log('[Search] Navigating to station:', stationId);
+      setLocation(`/radio-playing?station=${stationId}`);
+    }, 50);
+  };
+
   return (
     <div className="relative w-[1920px] h-[1080px] bg-black overflow-hidden" data-testid="page-search">
       {/* Logo - Top Left */}
@@ -284,9 +301,14 @@ export const Search = (): JSX.Element => {
             style={{ top: `${topPositions[index]}px` }}
             data-testid={`search-result-${index}`}
             data-tv-focusable="true"
-            onClick={() => {
-              console.log('[Search] Navigating to station:', station._id);
-              setLocation(`/radio-playing?station=${station._id}`);
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleStationClick(station._id, 'search');
+            }}
+            onMouseDown={(e) => {
+              // Prevent input from getting focus when clicking search result
+              e.preventDefault();
             }}
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
@@ -326,9 +348,14 @@ export const Search = (): JSX.Element => {
             }}
             data-testid={`recent-station-${index}`}
             data-tv-focusable="true"
-            onClick={() => {
-              console.log('[Search] Navigating to recent station:', station._id);
-              setLocation(`/radio-playing?station=${station._id}`);
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleStationClick(station._id, 'recent');
+            }}
+            onMouseDown={(e) => {
+              // Prevent input from getting focus when clicking recent station
+              e.preventDefault();
             }}
           >
               <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
