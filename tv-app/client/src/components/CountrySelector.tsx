@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { megaRadioApi } from '@/services/megaRadioApi';
+import { useLocalization } from '@/contexts/LocalizationContext';
 
 interface Country {
   name: string;
@@ -20,6 +21,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   const [searchQuery, setSearchQuery] = useState('');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isNavigatingRef = useRef(false);
+  const { t } = useLocalization();
 
   // Debug: Log when search query changes
   useEffect(() => {
@@ -260,7 +262,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           data-tv-focusable="true"
         >
           <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[#c8c8c8] text-[19.027px] top-px">
-            Back
+            {t('back') || 'Back'}
           </p>
           <div className="absolute left-0 size-[24px] top-0">
             <img
@@ -331,7 +333,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                       e.preventDefault();
                     }
                   }}
-                  placeholder="Country"
+                  placeholder={t('country') || 'Country'}
                   className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[25.945px] text-white bg-transparent border-none outline-none placeholder:text-white/60 w-[800px] pointer-events-auto"
                   data-testid="input-country-search"
                 />
@@ -347,7 +349,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           >
             {isLoading ? (
               <div className="flex items-center justify-center h-full">
-                <p className="font-['Ubuntu',Helvetica] font-medium text-white text-[20px]">Loading countries...</p>
+                <p className="font-['Ubuntu',Helvetica] font-medium text-white text-[20px]">{t('regions_loading_countries') || t('loading') || 'Loading countries...'}</p>
               </div>
             ) : (
               <>
@@ -355,7 +357,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                 {filteredCountries.length === 0 && (
                   <div className="flex items-center justify-center h-full">
                     <p className="font-['Ubuntu',Helvetica] font-medium text-white text-[20px]">
-                      No countries found for "{searchQuery}"
+                      {t('regions_search_no_results') || t('no_results_title') || 'No countries found for'} "{searchQuery}"
                     </p>
                   </div>
                 )}
