@@ -17,7 +17,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false }:
   return (
     <div className="relative w-[1920px] min-h-[1080px] bg-black">
       {/* Logo - Top Left - EXACT MATCH TO DISCOVERNO USER */}
-      <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
+      <div className="fixed h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
         <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
@@ -34,7 +34,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false }:
       {!hideHeaderControls && (
         <>
           {/* Equalizer Icon - EXACT POSITION FROM DISCOVERNO USER */}
-          <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] z-50">
+          <div className="fixed bg-[rgba(255,255,255,0.1)] left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] z-50">
             <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
               <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
               <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
@@ -44,7 +44,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false }:
 
           {/* Country Selector Button - EXACT POSITION FROM DISCOVERNO USER */}
           <div 
-            className="absolute bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50"
+            className="fixed bg-[rgba(255,255,255,0.1)] h-[51px] left-[1453px] overflow-clip rounded-[30px] top-[67px] w-[223px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50"
             onClick={() => setIsCountrySelectorOpen(true)}
             data-testid="button-country-selector"
             data-tv-focusable="true"
@@ -79,7 +79,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false }:
 
           {/* Login Button - EXACT POSITION FROM DISCOVERNO USER */}
           <Link href="/login">
-            <div className="absolute bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50" data-testid="button-login-header" data-tv-focusable="true">
+            <div className="fixed bg-[rgba(255,255,255,0.1)] h-[52px] left-[1695px] overflow-clip rounded-[30px] top-[66px] w-[146px] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50" data-testid="button-login-header" data-tv-focusable="true">
               <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[57.08px] not-italic text-[24px] text-white top-[12px]">
                 Login
               </p>
@@ -96,7 +96,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false }:
       )}
 
       {/* Left Sidebar */}
-      <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] z-50">
+      <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-50">
         {/* Discover */}
         <Link href="/discover-no-user">
           <div 
