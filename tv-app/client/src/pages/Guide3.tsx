@@ -24,12 +24,21 @@ export const Guide3 = (): JSX.Element => {
     setLocation('/guide-4');
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.keyCode === 13 || e.key === 'Enter') {
+      console.log('[Guide3] onKeyDown OK/Enter pressed - navigating to Guide 4');
+      setLocation('/guide-4');
+    }
+  };
+
   return (
       <div 
         className="bg-white fixed inset-0 w-[1920px] h-[1080px] overflow-hidden cursor-pointer" 
         data-testid="page-guide-3"
         data-tv-focusable="true"
         onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
       >
         {/* Background Image with Dark Overlay */}
         <div className="absolute h-[1897px] left-0 top-0 w-[1920px]">
@@ -37,7 +46,7 @@ export const Guide3 = (): JSX.Element => {
             <img 
               alt="" 
               className="absolute max-w-none object-50%-50% object-cover size-full" 
-              src="guide-assets/discover-background.png"
+              src="/guide-assets/discover-background.png"
             />
             <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
           </div>
@@ -50,7 +59,7 @@ export const Guide3 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="guide-assets/arrow.svg"
+                src="/guide-assets/arrow.svg"
               />
             </div>
           </div>
@@ -75,7 +84,7 @@ export const Guide3 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="guide-assets/search-icon.svg"
+                src="/guide-assets/search-icon.svg"
               />
             </div>
           </div>
