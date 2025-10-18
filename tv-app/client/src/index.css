@@ -180,6 +180,75 @@
   animation: equalizer-3 0.7s ease-in-out infinite;
 }
 
+@keyframes equalizer-global-1 {
+  0%, 100% {
+    height: 35.526px;
+    top: 0;
+  }
+  25% {
+    height: 15px;
+    top: 20.526px;
+  }
+  50% {
+    height: 28px;
+    top: 7.526px;
+  }
+  75% {
+    height: 20px;
+    top: 15.526px;
+  }
+}
+
+@keyframes equalizer-global-2 {
+  0%, 100% {
+    height: 24.868px;
+    top: 10.66px;
+  }
+  25% {
+    height: 35.526px;
+    top: 0;
+  }
+  50% {
+    height: 12px;
+    top: 23.526px;
+  }
+  75% {
+    height: 28px;
+    top: 7.526px;
+  }
+}
+
+@keyframes equalizer-global-3 {
+  0%, 100% {
+    height: 30.197px;
+    top: 5.33px;
+  }
+  25% {
+    height: 20px;
+    top: 15.526px;
+  }
+  50% {
+    height: 35.526px;
+    top: 0;
+  }
+  75% {
+    height: 15px;
+    top: 20.526px;
+  }
+}
+
+.animate-equalizer-global-1 {
+  animation: equalizer-global-1 0.8s ease-in-out infinite;
+}
+
+.animate-equalizer-global-2 {
+  animation: equalizer-global-2 0.9s ease-in-out infinite;
+}
+
+.animate-equalizer-global-3 {
+  animation: equalizer-global-3 0.7s ease-in-out infinite;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

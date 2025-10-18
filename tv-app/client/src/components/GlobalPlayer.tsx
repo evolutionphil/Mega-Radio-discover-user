@@ -131,14 +131,14 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Equalizer Button (Now Playing visualization) */}
       <div 
-        className="fixed border-[3.608px] border-solid border-black left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center hover:bg-[rgba(255,255,255,0.1)]"
+        className={`fixed border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center ${isPlaying ? 'bg-[#ff4199] border-[#ff4199]' : 'border-black hover:bg-[rgba(255,255,255,0.1)]'}`}
         data-tv-focusable="true"
         data-testid="button-global-equalizer"
       >
         <div className="relative h-[35.526px] w-[33.75px]">
-          <div className="bg-white h-[35.526px] left-0 rounded-[10px] absolute top-0 w-[8.882px]" />
-          <div className="bg-white h-[24.868px] left-[12.43px] rounded-[10px] absolute top-[10.66px] w-[8.882px]" />
-          <div className="bg-white h-[30.197px] left-[24.87px] rounded-[10px] absolute top-[5.33px] w-[8.882px]" />
+          <div className={`bg-white left-0 rounded-[10px] absolute top-0 w-[8.882px] ${isPlaying ? 'animate-equalizer-global-1' : 'h-[35.526px]'}`} style={{ height: isPlaying ? undefined : '35.526px' }} />
+          <div className={`bg-white left-[12.43px] rounded-[10px] absolute w-[8.882px] ${isPlaying ? 'animate-equalizer-global-2' : 'h-[24.868px] top-[10.66px]'}`} style={{ height: isPlaying ? undefined : '24.868px', top: isPlaying ? undefined : '10.66px' }} />
+          <div className={`bg-white left-[24.87px] rounded-[10px] absolute w-[8.882px] ${isPlaying ? 'animate-equalizer-global-3' : 'h-[30.197px] top-[5.33px]'}`} style={{ height: isPlaying ? undefined : '30.197px', top: isPlaying ? undefined : '5.33px' }} />
         </div>
       </div>
     </>
