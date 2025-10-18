@@ -496,12 +496,12 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
 
       {/* Similar Radios Section */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[659px]">
+      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[559px]">
         Similar Radios
       </p>
 
       <p 
-        className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[665px] translate-x-[-50%] cursor-pointer hover:text-gray-300"
+        className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[565px] translate-x-[-50%] cursor-pointer hover:text-gray-300"
         data-tv-focusable="true"
       >
         See More
@@ -510,7 +510,7 @@ export const RadioPlaying = (): JSX.Element => {
       {/* Similar Radios Horizontal Scroll */}
       <div 
         ref={similarScrollRef}
-        className="absolute left-[236px] top-[733px] flex gap-[19px] overflow-x-auto scrollbar-hide w-[1610px]"
+        className="absolute left-[236px] top-[633px] flex gap-[19px] overflow-x-auto scrollbar-hide w-[1610px]"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {similarStations.slice(0, 8).map((similarStation, index) => (
