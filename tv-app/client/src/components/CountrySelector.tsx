@@ -19,6 +19,7 @@ interface CountrySelectorProps {
 export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry }: CountrySelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isNavigatingRef = useRef(false);
 
   // Debug: Log when search query changes
   useEffect(() => {
@@ -115,6 +116,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   // Initialize TV navigation when modal opens
   useEffect(() => {
     if (isOpen) {
+      // Reset navigation flag when modal opens
+      isNavigatingRef.current = false;
+      console.log('[CountrySelector] Modal opened - reset isNavigating flag to FALSE');
+      
       const timeout = setTimeout(() => {
         if ((window as any).tvSpatialNav) {
           console.log('[CountrySelector] Initializing TV navigation');
@@ -151,20 +156,36 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   console.log('[CountrySelector] Screen dimensions: 1920x1080');
 
   const handleCountryClick = (country: Country) => {
-    console.log('[CountrySelector] Country clicked:', country.name);
+    console.log('='.repeat(60));
+    console.log('[CountrySelector] ⚡ COUNTRY CLICK HANDLER TRIGGERED');
+    console.log('[CountrySelector] Country:', country.name, country.code);
+    console.log('[CountrySelector] isNavigating flag BEFORE:', isNavigatingRef.current);
+    
+    // Set navigation flag FIRST to prevent ANY input focus attempts
+    isNavigatingRef.current = true;
+    console.log('[CountrySelector] ✅ isNavigating flag set to TRUE - input focus is now BLOCKED');
     
     // Blur the search input to prevent Samsung keyboard from appearing
     const searchInput = document.querySelector('[data-testid="input-country-search"]') as HTMLInputElement;
     if (searchInput) {
+      console.log('[CountrySelector] Blurring input element...');
       searchInput.blur();
-      console.log('[CountrySelector] Search input blurred');
     }
     
-    // Small delay to ensure blur takes effect before closing
-    setTimeout(() => {
-      onSelectCountry(country);
-      onClose();
-    }, 50);
+    // Also blur any currently focused element
+    if (document.activeElement && document.activeElement instanceof HTMLElement) {
+      console.log('[CountrySelector] Blurring active element:', document.activeElement.tagName, document.activeElement.getAttribute('data-testid'));
+      document.activeElement.blur();
+    }
+    
+    console.log('[CountrySelector] ✅ All elements blurred');
+    console.log('[CountrySelector] New active element:', document.activeElement?.tagName);
+    console.log('[CountrySelector] 🚀 Closing modal and updating country');
+    console.log('='.repeat(60));
+    
+    // Execute immediately - flag will prevent input refocus during operations
+    onSelectCountry(country);
+    onClose();
   };
 
   return (
@@ -248,7 +269,16 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                     setSearchQuery(newValue);
                   }}
                   onFocus={(e) => {
-                    console.log('[CountrySelector] 🎹 Input FOCUSED - keyboard should appear automatically');
+                    console.log('[CountrySelector] 🎹 Input FOCUSED event triggered');
+                    console.log('[CountrySelector] isNavigating flag:', isNavigatingRef.current);
+                    
+                    if (isNavigatingRef.current) {
+                      console.log('[CountrySelector] ❌ BLOCKING focus - isNavigating is TRUE (user clicked country)');
+                      e.target.blur();
+                      return;
+                    }
+                    
+                    console.log('[CountrySelector] ✅ Input focus allowed - keyboard should appear automatically');
                     console.log('[CountrySelector] Focus event target:', e.target.tagName, e.target.getAttribute('data-testid'));
                     console.log('[CountrySelector] Input value:', (e.target as HTMLInputElement).value);
                     console.log('[CountrySelector] Active element:', document.activeElement?.tagName, document.activeElement?.getAttribute('data-testid'));
