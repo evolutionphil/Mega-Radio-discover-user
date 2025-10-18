@@ -285,7 +285,17 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                     console.log('[CountrySelector] Samsung TV keyboards show automatically when <input> is focused');
                   }}
                   onClick={(e) => {
-                    console.log('[CountrySelector] 🖱️ Input CLICKED - explicitly calling focus()');
+                    console.log('[CountrySelector] 🖱️ Input CLICKED');
+                    console.log('[CountrySelector] isNavigating flag:', isNavigatingRef.current);
+                    
+                    if (isNavigatingRef.current) {
+                      console.log('[CountrySelector] ❌ BLOCKING click focus - isNavigating is TRUE');
+                      e.preventDefault();
+                      e.stopPropagation();
+                      return;
+                    }
+                    
+                    console.log('[CountrySelector] ✅ Allowing input focus from click');
                     const inputElement = e.target as HTMLInputElement;
                     inputElement.focus();
                     console.log('[CountrySelector] After focus() - active element:', document.activeElement?.tagName);
@@ -293,7 +303,16 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                   onKeyDown={(e) => {
                     // Handle ENTER/OK button to explicitly focus input (trigger keyboard)
                     if (e.key === 'Enter' || e.keyCode === 13) {
-                      console.log('[CountrySelector] ⚡ ENTER pressed on input - explicitly calling focus()');
+                      console.log('[CountrySelector] ⚡ ENTER pressed on input');
+                      console.log('[CountrySelector] isNavigating flag:', isNavigatingRef.current);
+                      
+                      if (isNavigatingRef.current) {
+                        console.log('[CountrySelector] ❌ BLOCKING ENTER focus - isNavigating is TRUE');
+                        e.preventDefault();
+                        return;
+                      }
+                      
+                      console.log('[CountrySelector] ✅ Allowing input focus from ENTER');
                       const inputElement = e.target as HTMLInputElement;
                       inputElement.focus();
                       console.log('[CountrySelector] After focus() - active element:', document.activeElement?.tagName);
