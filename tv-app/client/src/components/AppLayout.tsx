@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useState } from "react";
+import { useState, useEffect, useRef, RefObject } from "react";
 import { Radio, Music, Search, Heart, Settings } from "lucide-react";
 import { CountrySelector } from "@/components/CountrySelector";
 import { useCountry } from "@/contexts/CountryContext";
@@ -8,11 +8,37 @@ interface AppLayoutProps {
   children: React.ReactNode;
   currentPage?: string;
   hideHeaderControls?: boolean; // For Search page - hides country selector and login
+  scrollContainerRef?: RefObject<HTMLDivElement>; // For auto-hide header feature
 }
 
-export const AppLayout = ({ children, currentPage, hideHeaderControls = false }: AppLayoutProps) => {
+export const AppLayout = ({ children, currentPage, hideHeaderControls = false, scrollContainerRef }: AppLayoutProps) => {
   const { selectedCountry, selectedCountryFlag, setCountry } = useCountry();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const lastScrollY = useRef(0);
+
+  // Auto-hide header on scroll down
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef?.current;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      const currentScrollY = scrollContainer.scrollTop;
+      
+      // Hide header when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        setShowHeader(false);
+      } 
+      else if (currentScrollY < lastScrollY.current) {
+        setShowHeader(true);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll);
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+  }, [scrollContainerRef]);
 
   return (
     <div className="relative w-[1920px] min-h-[1080px] bg-black">
@@ -30,9 +56,12 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false }:
         </div>
       </div>
 
-      {/* Header Controls - Hidden for Search page */}
+      {/* Header Controls - Hidden for Search page, Auto-hides on scroll */}
       {!hideHeaderControls && (
-        <div className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none">
+        <div 
+          className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
+          style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
+        >
           {/* Equalizer Icon - EXACT POSITION FROM DISCOVERNO USER */}
           <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] pointer-events-auto">
             <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
