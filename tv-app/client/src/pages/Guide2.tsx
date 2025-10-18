@@ -1,19 +1,41 @@
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { useEffect } from "react";
 
 export const Guide2 = (): JSX.Element => {
   useTVNavigation();
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.keyCode === 13 || e.key === 'Enter') {
+        console.log('[Guide2] OK/Enter pressed - navigating to Guide 3');
+        setLocation('/guide-3');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setLocation]);
+
+  const handleClick = () => {
+    console.log('[Guide2] Clicked - navigating to Guide 3');
+    setLocation('/guide-3');
+  };
 
   return (
-    <Link href="/guide-3">
-      <div className="bg-white fixed inset-0 w-[1920px] h-[1080px] overflow-hidden cursor-pointer" data-testid="page-guide-2">
+      <div 
+        className="bg-white fixed inset-0 w-[1920px] h-[1080px] overflow-hidden cursor-pointer" 
+        data-testid="page-guide-2"
+        data-tv-focusable="true"
+        onClick={handleClick}
+      >
         {/* Background Image with Dark Overlay */}
         <div className="absolute h-[1897px] left-0 top-0 w-[1920px]">
           <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
             <img 
               alt="" 
               className="absolute max-w-none object-50%-50% object-cover size-full" 
-              src="/guide-assets/discover-background.png"
+              src="guide-assets/discover-background.png"
             />
             <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
           </div>
@@ -26,7 +48,7 @@ export const Guide2 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="/guide-assets/arrow.svg"
+                src="guide-assets/arrow.svg"
               />
             </div>
           </div>
@@ -42,7 +64,7 @@ export const Guide2 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="/guide-assets/music-icon.svg"
+                src="guide-assets/music-icon.svg"
               />
             </div>
           </div>
@@ -56,6 +78,5 @@ export const Guide2 = (): JSX.Element => {
           <div className="absolute bg-[#55e952] left-[24px] rounded-[40px] size-[18.667px] top-[48px]" />
         </div>
       </div>
-    </Link>
   );
 };
