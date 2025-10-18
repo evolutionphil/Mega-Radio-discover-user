@@ -24,7 +24,8 @@ export const GlobalPlayer = (): JSX.Element | null => {
     return null;
   }
 
-  const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#01d7fb"/><text x="100" y="120" font-size="80" fill="white" text-anchor="middle" font-family="Arial">R</text></svg>')}`;
+  // Fallback image - music note on pink gradient background
+  const FALLBACK_IMAGE = '/images/fallback-favicon.svg';
 
   const getStationImage = (station: Station) => {
     if (station.favicon) {
