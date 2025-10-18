@@ -1,6 +1,7 @@
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { Station } from "@/services/megaRadioApi";
+import { useLocation } from "wouter";
 
 // Asset path helper
 function getAssetPath(path: string) {
@@ -11,9 +12,15 @@ function getAssetPath(path: string) {
 export const GlobalPlayer = (): JSX.Element | null => {
   const { currentStation, isPlaying, togglePlayPause, nowPlayingMetadata } = useGlobalPlayer();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const [location] = useLocation();
 
   // Don't render if no station is playing
   if (!currentStation) {
+    return null;
+  }
+
+  // Hide global player on RadioPlaying page (has its own player)
+  if (location === '/radio-playing') {
     return null;
   }
 
