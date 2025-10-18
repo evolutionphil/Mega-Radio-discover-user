@@ -61,19 +61,35 @@ export const Favorites = (): JSX.Element => {
 
         {/* Empty State or Station Grid */}
         {favorites.length === 0 ? (
-          <div className="absolute left-[236px] top-[400px] w-[1580px] h-[400px] flex flex-col items-center justify-center">
-            <div className="w-[120px] h-[120px] mb-8 opacity-30">
-              <svg viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                <path d="M25.5 44.625C24.7396 44.625 23.9792 44.3958 23.3604 43.9375C18.9375 40.6042 14.9479 37.6771 11.9792 34.7917C7.44792 30.3479 4.25 26.2646 4.25 20.625C4.25 12.6667 10.5 6.375 18.0625 6.375C21.6042 6.375 24.9167 8.14583 27.125 11.1354C29.3333 8.14583 32.6458 6.375 36.1875 6.375C43.75 6.375 50 12.6667 50 20.625C50 26.2646 46.8021 30.3479 42.2708 34.8125C39.3021 37.6979 35.3125 40.625 30.8896 43.9583C30.2708 44.3958 29.5104 44.625 28.75 44.625H25.5Z" fill="white"/>
+          <>
+            {/* Heart Icon - Centered */}
+            <div className="absolute left-[986px] size-[124px] top-[365px]">
+              <svg viewBox="0 0 124 124" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                <circle cx="62" cy="62" r="62" fill="rgba(255, 255, 255, 0.1)"/>
+                <path d="M62 85.25C61.2396 85.25 60.4792 85.0208 59.8604 84.5625C55.4375 81.2292 51.4479 78.3021 48.4792 75.4167C43.9479 70.9729 40.75 66.8896 40.75 61.25C40.75 53.2917 47 47 54.5625 47C58.1042 47 61.4167 48.7708 63.625 51.7604C65.8333 48.7708 69.1458 47 72.6875 47C80.25 47 86.5 53.2917 86.5 61.25C86.5 66.8896 83.3021 70.9729 78.7708 75.4375C75.8021 78.3229 71.8125 81.25 67.3896 84.5833C66.7708 85.0208 66.0104 85.25 65.25 85.25H62Z" fill="#FF4199"/>
               </svg>
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white mb-4">
-              {t('no_favorites_yet') || 'No favorite stations yet'}
-            </p>
-            <p className="font-['Ubuntu',Helvetica] font-light text-[24px] text-[#c8c8c8]">
-              {t('tap_heart_to_add') || 'Press the heart icon on any station to add it to your favorites'}
-            </p>
-          </div>
+
+            {/* Text Message - Centered */}
+            <div className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1047.5px] not-italic text-[32px] text-center text-white top-[504px] translate-x-[-50%] whitespace-nowrap">
+              <p className="mb-0">{t('no_favorites_line1') || "You don't have any"}</p>
+              <p>{t('no_favorites_line2') || 'favorites yet'}</p>
+            </div>
+
+            {/* Call to Action */}
+            <Link href="/discover-no-user">
+              <div className="absolute left-[calc(50%+87.5px)] top-[calc(50%+98px)] translate-x-[-50%] cursor-pointer hover:opacity-80 transition-opacity" data-testid="button-discover-cta" data-tv-focusable="true">
+                <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[#ff4199] text-[24px] text-center">
+                  {t('discover_stations_near_you') || 'Discover stations near to you!'}
+                </p>
+                <div className="absolute left-[calc(100%+10px)] top-[50%] translate-y-[-50%] size-[38px]">
+                  <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                    <path d="M14.25 28.5L23.75 19L14.25 9.5" stroke="#FF4199" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </Link>
+          </>
         ) : (
           <>
             {/* Radio Station Cards - Dynamic Grid (7 columns like GenreList) */}
