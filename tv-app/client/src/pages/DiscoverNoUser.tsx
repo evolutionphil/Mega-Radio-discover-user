@@ -170,7 +170,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   }, [isLoadingMore, hasMoreCountryStations, currentOffset, allCountryStations.length]);
 
   // Fallback image - music note on pink gradient background
-  const FALLBACK_IMAGE = '/images/fallback-favicon.svg';
+  const FALLBACK_IMAGE = '/images/fallback-station.png';
 
   // Helper function to get correct asset path for both dev and Samsung TV
   const getAssetPath = (path: string) => {

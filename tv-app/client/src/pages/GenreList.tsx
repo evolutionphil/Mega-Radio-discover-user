@@ -105,7 +105,7 @@ export const GenreList = (): JSX.Element => {
   };
 
   // Fallback image - music note on pink gradient background
-  const FALLBACK_IMAGE = '/images/fallback-favicon.svg';
+  const FALLBACK_IMAGE = '/images/fallback-station.png';
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {

@@ -26,7 +26,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
   }
 
   // Fallback image - music note on pink gradient background
-  const FALLBACK_IMAGE = '/images/fallback-favicon.svg';
+  const FALLBACK_IMAGE = '/images/fallback-station.png';
 
   const getStationImage = (station: Station) => {
     if (station.favicon) {

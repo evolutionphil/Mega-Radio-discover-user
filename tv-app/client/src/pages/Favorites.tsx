@@ -13,7 +13,7 @@ export const Favorites = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Fallback image - music note on pink gradient background
-  const FALLBACK_IMAGE = '/images/fallback-favicon.svg';
+  const FALLBACK_IMAGE = '/images/fallback-station.png';
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
