@@ -116,19 +116,30 @@ export const Search = (): JSX.Element => {
 
   // Handle station click - blur input to prevent Samsung keyboard
   const handleStationClick = (stationId: string, type: 'search' | 'recent') => {
-    console.log(`[Search] Station clicked (${type}):`, stationId);
+    console.log('='.repeat(60));
+    console.log(`[Search] ⚡ STATION CLICK HANDLER TRIGGERED`);
+    console.log(`[Search] Type: ${type}`);
+    console.log(`[Search] Station ID:`, stationId);
+    console.log(`[Search] Current input focus:`, document.activeElement === inputRef.current ? 'INPUT HAS FOCUS' : 'NO FOCUS');
+    console.log(`[Search] isNavigating flag BEFORE:`, isNavigatingRef.current);
     
     // Set navigation flag to prevent input refocus
     isNavigatingRef.current = true;
+    console.log(`[Search] isNavigating flag set to TRUE`);
     
     // Blur the search input to prevent Samsung keyboard from appearing
     if (inputRef.current) {
+      console.log('[Search] Blurring input to close keyboard...');
       inputRef.current.blur();
-      console.log('[Search] Search input blurred');
+      console.log('[Search] Input blur() called');
+      console.log('[Search] New active element:', document.activeElement?.tagName, document.activeElement?.getAttribute('data-testid'));
+    } else {
+      console.log('[Search] ⚠️ WARNING: inputRef.current is null!');
     }
     
     // Navigate immediately
-    console.log('[Search] Navigating to station:', stationId);
+    console.log('[Search] 🚀 NAVIGATING to /radio-playing?station=' + stationId);
+    console.log('='.repeat(60));
     setLocation(`/radio-playing?station=${stationId}`);
   };
 
@@ -146,9 +157,20 @@ export const Search = (): JSX.Element => {
         data-testid="input-search"
         data-tv-focusable="true"
         onFocus={(e) => {
-          console.log('[Search] Input wrapper focused, isNavigating:', isNavigatingRef.current);
+          console.log('[Search] 🎯 Input wrapper FOCUSED');
+          console.log('[Search] isNavigating flag:', isNavigatingRef.current);
+          console.log('[Search] Current active element:', document.activeElement?.tagName);
+          console.log('[Search] Input ref exists:', !!inputRef.current);
+          
           if (!isNavigatingRef.current && inputRef.current && document.activeElement !== inputRef.current) {
+            console.log('[Search] ✅ Focusing actual input element...');
             inputRef.current.focus();
+          } else {
+            console.log('[Search] ❌ NOT focusing input - reason:', {
+              isNavigating: isNavigatingRef.current,
+              hasInputRef: !!inputRef.current,
+              alreadyFocused: document.activeElement === inputRef.current
+            });
           }
         }}
       >
@@ -158,9 +180,13 @@ export const Search = (): JSX.Element => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={handleInputFocus}
+            onFocus={(e) => {
+              console.log('[Search] 📝 Actual INPUT element focused');
+              handleInputFocus();
+            }}
             onBlur={() => {
-              console.log('[Search] Input blurred');
+              console.log('[Search] 📝 Actual INPUT element blurred');
+              console.log('[Search] New active element:', document.activeElement?.tagName, document.activeElement?.getAttribute('data-testid'));
             }}
             placeholder="Kral Ra"
             className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[650px] placeholder:text-[rgba(255,255,255,0.5)]"
@@ -187,13 +213,18 @@ export const Search = (): JSX.Element => {
             data-testid={`search-result-${index}`}
             data-tv-focusable="true"
             onClick={(e) => {
+              console.log(`[Search] 🖱️ Search result ${index} onClick triggered`);
               e.preventDefault();
               e.stopPropagation();
               handleStationClick(station._id, 'search');
             }}
             onMouseDown={(e) => {
+              console.log(`[Search] 🖱️ Search result ${index} onMouseDown`);
               // Prevent input from getting focus when clicking search result
               e.preventDefault();
+            }}
+            onFocus={(e) => {
+              console.log(`[Search] 🎯 Search result ${index} focused via TV navigation`);
             }}
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
@@ -234,13 +265,18 @@ export const Search = (): JSX.Element => {
             data-testid={`recent-station-${index}`}
             data-tv-focusable="true"
             onClick={(e) => {
+              console.log(`[Search] 🖱️ Recent station ${index} onClick triggered`);
               e.preventDefault();
               e.stopPropagation();
               handleStationClick(station._id, 'recent');
             }}
             onMouseDown={(e) => {
+              console.log(`[Search] 🖱️ Recent station ${index} onMouseDown`);
               // Prevent input from getting focus when clicking recent station
               e.preventDefault();
+            }}
+            onFocus={(e) => {
+              console.log(`[Search] 🎯 Recent station ${index} focused via TV navigation`);
             }}
           >
               <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">

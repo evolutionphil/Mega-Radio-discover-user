@@ -141,7 +141,14 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   console.log('[CountrySelector] ========================');
 
   // Early return AFTER all hooks
-  if (!isOpen) return null;
+  if (!isOpen) {
+    console.log('[CountrySelector] Not rendering - isOpen is false');
+    return null;
+  }
+
+  console.log('[CountrySelector] Rendering modal - should be centered at left: 457px, top: 251px');
+  console.log('[CountrySelector] Modal dimensions: width: 1006px, height: 534px');
+  console.log('[CountrySelector] Screen dimensions: 1920x1080');
 
   const handleCountryClick = (country: Country) => {
     console.log('[CountrySelector] Country clicked:', country.name);
@@ -161,7 +168,19 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   };
 
   return (
-    <div className="fixed top-0 left-0 w-[1920px] h-[1080px] z-50">
+    <div 
+      className="fixed top-0 left-0 w-[1920px] h-[1080px] z-50"
+      ref={(el) => {
+        if (el) {
+          console.log('[CountrySelector] Outer container mounted:', {
+            offsetWidth: el.offsetWidth,
+            offsetHeight: el.offsetHeight,
+            offsetLeft: el.offsetLeft,
+            offsetTop: el.offsetTop
+          });
+        }
+      }}
+    >
       {/* Backdrop with blur (transparent) */}
       <div 
         className="absolute top-0 left-0 w-[1920px] h-[1080px] backdrop-blur-[7px] backdrop-filter"
@@ -170,7 +189,24 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       />
 
       {/* Modal Container - Centered with fixed pixel positioning for Samsung TV */}
-      <div className="absolute" style={{ left: '457px', top: '251px' }}>
+      <div 
+        className="absolute" 
+        style={{ left: '457px', top: '251px' }}
+        ref={(el) => {
+          if (el) {
+            console.log('[CountrySelector] Modal container positioned at:', {
+              left: '457px',
+              top: '251px',
+              actualLeft: el.offsetLeft,
+              actualTop: el.offsetTop,
+              centered: {
+                horizontalCenter: (1920 - 1006) / 2,
+                verticalCenter: (1080 - 534) / 2
+              }
+            });
+          }
+        }}
+      >
         {/* Back Button */}
         <div 
           className="absolute left-0 top-[-43px] h-[24px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity"
