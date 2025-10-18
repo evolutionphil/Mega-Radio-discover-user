@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
@@ -6,11 +6,15 @@ import { CountrySelector } from "@/components/CountrySelector";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useCountry } from "@/contexts/CountryContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
+import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
+import { autoPlayService } from "@/services/autoPlayService";
 
 export const DiscoverNoUser = (): JSX.Element => {
   useTVNavigation();
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
+  const { playStation } = useGlobalPlayer();
+  const [, setLocation] = useLocation();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -64,6 +68,43 @@ export const DiscoverNoUser = (): JSX.Element => {
       console.log(`Initial load: showing 56 stations, hasMore=${hasMore}`);
     }
   }, [allCountryStationsData, selectedCountryCode]);
+
+  // Auto-play on app startup based on settings
+  useEffect(() => {
+    const handleAutoPlay = async () => {
+      // Only auto-play once per session
+      if (!autoPlayService.shouldAutoPlay()) {
+        console.log('[AutoPlay] Skipping auto-play (already played this session)');
+        return;
+      }
+
+      const playMode = autoPlayService.getPlayAtStartMode();
+      console.log(`[AutoPlay] Play at start mode: ${playMode}`);
+
+      if (playMode === "none") {
+        console.log('[AutoPlay] Play at start is disabled');
+        return;
+      }
+
+      const stationToPlay = await autoPlayService.getStationToPlay(playMode, selectedCountryCode);
+      
+      if (stationToPlay) {
+        console.log('[AutoPlay] Auto-playing station:', stationToPlay.name);
+        playStation(stationToPlay);
+        // Navigate to radio playing page
+        setLocation(`/radio-playing?stationId=${stationToPlay._id}`);
+      } else {
+        console.log('[AutoPlay] No station found to auto-play');
+      }
+    };
+
+    // Delay auto-play slightly to ensure all contexts are ready
+    const timer = setTimeout(() => {
+      handleAutoPlay();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []); // Empty deps - only run once on component mount
 
   const genres = genresData?.genres || [];
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
