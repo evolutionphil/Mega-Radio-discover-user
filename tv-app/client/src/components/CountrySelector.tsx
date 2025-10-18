@@ -125,10 +125,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           console.log('[CountrySelector] Initializing TV navigation');
           (window as any).tvSpatialNav.init();
           
-          // Focus the search input first
-          const searchInput = document.querySelector('[data-testid="input-country-search"]') as HTMLElement;
-          if (searchInput) {
-            (window as any).tvSpatialNav.focus(searchInput);
+          // Focus the first country option instead of the search input
+          const firstCountry = document.querySelector('[data-testid^="country-option-"]') as HTMLElement;
+          if (firstCountry) {
+            (window as any).tvSpatialNav.focus(firstCountry);
           }
         }
       }, 200);
