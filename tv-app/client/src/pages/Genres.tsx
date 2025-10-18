@@ -30,7 +30,7 @@ export const Genres = (): JSX.Element => {
   ];
 
   return (
-    <div className="relative w-[1920px] min-h-[1080px] bg-white overflow-y-auto" data-testid="page-genres">
+    <div className="relative w-[1920px] min-h-[1080px] bg-black overflow-y-auto" data-testid="page-genres">
       {/* Background Image */}
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
         <img
@@ -202,15 +202,15 @@ export const Genres = (): JSX.Element => {
       {popularGenres.slice(0, 4).map((genre, index) => (
         <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
           <div 
-            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[309px]" 
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[309px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
             data-testid={`card-genre-${index}`}
             style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
             data-tv-focusable="true"
           >
-            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-left text-white truncate w-full">
               {genre.name}
             </p>
-            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
+            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-left text-white">
               {genre.stationCount || 0} Stations
             </p>
             <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
@@ -222,15 +222,15 @@ export const Genres = (): JSX.Element => {
       {popularGenres.slice(4, 8).map((genre, index) => (
         <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
           <div 
-            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[467px]" 
+            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[467px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
             data-testid={`card-genre-${index + 4}`}
             style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
             data-tv-focusable="true"
           >
-            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
+            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-left text-white truncate w-full">
               {genre.name}
             </p>
-            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
+            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-left text-white">
               {genre.stationCount || 0} Stations
             </p>
             <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
@@ -243,65 +243,35 @@ export const Genres = (): JSX.Element => {
         All
       </p>
 
-      {/* All Genres - Row 1 */}
-      {allGenres.slice(0, 4).map((genre, index) => (
-        <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
-          <div 
-            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[737px]" 
-            data-testid={`card-genre-${index + 8}`}
-            style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
-            data-tv-focusable="true"
-          >
-            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
-              {genre.name}
-            </p>
-            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
-              {genre.stationCount || 0} Stations
-            </p>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-          </div>
-        </Link>
-      ))}
-
-      {/* All Genres - Row 2 */}
-      {allGenres.slice(4, 8).map((genre, index) => (
-        <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
-          <div 
-            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[895px]" 
-            data-testid={`card-genre-${index + 12}`}
-            style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
-            data-tv-focusable="true"
-          >
-            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
-              {genre.name}
-            </p>
-            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
-              {genre.stationCount || 0} Stations
-            </p>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-          </div>
-        </Link>
-      ))}
-
-      {/* All Genres - Row 3 */}
-      {allGenres.slice(8, 12).map((genre, index) => (
-        <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
-          <div 
-            className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[1055px]" 
-            data-testid={`card-genre-${index + 16}`}
-            style={{ left: `${row1Positions[index].left}px`, width: `${row1Positions[index].width}px` }}
-            data-tv-focusable="true"
-          >
-            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white truncate w-full">
-              {genre.name}
-            </p>
-            <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
-              {genre.stationCount || 0} Stations
-            </p>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-          </div>
-        </Link>
-      ))}
+      {/* All Genres - Dynamic Grid (Scrollable) */}
+      {allGenres.map((genre, index) => {
+        const row = Math.floor(index / 4);
+        const col = index % 4;
+        const topPosition = 737 + (row * 158); // 737px start, 158px between rows
+        
+        return (
+          <Link key={genre.slug || index} href={`/genre-list?genre=${genre.slug}`}>
+            <div 
+              className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors" 
+              data-testid={`card-genre-all-${index}`}
+              style={{ 
+                left: `${row1Positions[col].left}px`, 
+                width: `${row1Positions[col].width}px`,
+                top: `${topPosition}px`
+              }}
+              data-tv-focusable="true"
+            >
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-left text-white truncate w-full">
+                {genre.name}
+              </p>
+              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-left text-white">
+                {genre.stationCount || 0} Stations
+              </p>
+              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+            </div>
+          </Link>
+        );
+      })}
     </div>
   );
 };
