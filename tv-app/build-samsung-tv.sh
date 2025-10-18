@@ -8,6 +8,8 @@ vite build --config vite.config.tv.ts
 
 # Step 2: Copy built assets to assets folder
 echo "📂 Step 2: Copying built assets to assets folder..."
+# Clean old builds first to avoid accumulation
+rm -rf assets
 mkdir -p assets
 cp -r dist/public/assets/* assets/
 
