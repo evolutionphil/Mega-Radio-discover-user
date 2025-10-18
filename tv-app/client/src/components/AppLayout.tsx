@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, RefObject } from "react";
 import { Radio, Music, Search, Heart, Settings } from "lucide-react";
 import { CountrySelector } from "@/components/CountrySelector";
 import { useCountry } from "@/contexts/CountryContext";
+import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ interface AppLayoutProps {
 
 export const AppLayout = ({ children, currentPage, hideHeaderControls = false, scrollContainerRef }: AppLayoutProps) => {
   const { selectedCountry, selectedCountryFlag, setCountry } = useCountry();
+  const { isPlaying } = useGlobalPlayer();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const lastScrollY = useRef(0);
@@ -63,11 +65,11 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
           style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
         >
           {/* Equalizer Icon - EXACT POSITION FROM DISCOVERNO USER */}
-          <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] pointer-events-auto">
+          <div className={`absolute left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] pointer-events-auto transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
             <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
-              <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
-              <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
-              <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
+              <div className={`absolute bg-white left-0 rounded-[10px] top-0 w-[6.25px] ${isPlaying ? 'animate-equalizer-1' : 'h-[25px]'}`} style={{ height: isPlaying ? undefined : '25px' }} />
+              <div className={`absolute bg-white left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px] ${isPlaying ? 'animate-equalizer-2' : 'h-[17.5px]'}`} style={{ height: isPlaying ? undefined : '17.5px' }} />
+              <div className={`absolute bg-white left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px] ${isPlaying ? 'animate-equalizer-3' : 'h-[21.25px]'}`} style={{ height: isPlaying ? undefined : '21.25px' }} />
             </div>
           </div>
 
