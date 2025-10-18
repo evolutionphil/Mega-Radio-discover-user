@@ -172,17 +172,6 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Fallback image - music note on pink gradient background
   const FALLBACK_IMAGE = '/images/fallback-station.png';
 
-  // Helper function to get correct asset path for both dev and Samsung TV
-  const getAssetPath = (path: string) => {
-    // For Samsung TV (production build), use relative paths with images/ folder
-    // For dev (browser), use absolute paths with figmaAssets/
-    if (import.meta.env.PROD) {
-      // Production: Use images/ folder (Samsung TV standard location)
-      return path.replace('figmaAssets/', 'images/');
-    }
-    // Development: Use figmaAssets/ folder
-    return path.startsWith('/') ? path : '/' + path;
-  };
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
@@ -222,7 +211,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         <img
           alt=""
           className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-          src={getAssetPath("figmaAssets/hand-crowd-disco-1.png")}
+          src="/images/hand-crowd-disco-1.png"
         />
       </div>
 
@@ -238,7 +227,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           <img
             alt=""
             className="block max-w-none size-full"
-            src={getAssetPath("figmaAssets/path-8.svg")}
+            src="/images/path-8.svg"
           />
         </div>
       </div>
@@ -281,7 +270,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-outline-arrow-left.svg")}
+                    src="/images/vuesax-outline-arrow-left.svg"
                   />
                 </div>
               </div>
@@ -303,7 +292,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-radio.svg")}
+                    src="/images/radio-icon.svg"
                   />
                 </div>
               </div>
@@ -321,7 +310,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-musicnote.svg")}
+                    src="/images/music-icon.svg"
                   />
                 </div>
               </div>
@@ -339,7 +328,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-search-normal.svg")}
+                    src="/images/search-icon.svg"
                   />
                 </div>
               </div>
@@ -357,7 +346,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-heart.svg")}
+                    src="/images/heart-icon.svg"
                   />
                 </div>
               </div>
@@ -392,7 +381,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
+                    src="/images/logout-icon.svg"
                   />
                 </div>
               </div>

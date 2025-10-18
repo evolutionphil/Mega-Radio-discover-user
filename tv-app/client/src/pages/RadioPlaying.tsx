@@ -9,11 +9,6 @@ import { useFavorites } from "@/contexts/FavoritesContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { CountrySelector } from "@/components/CountrySelector";
 
-// Asset path helper
-function getAssetPath(path: string) {
-  if (path.startsWith('/')) return path;
-  return `/${path}`;
-}
 
 export const RadioPlaying = (): JSX.Element => {
   useTVNavigation();
@@ -255,7 +250,7 @@ export const RadioPlaying = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src={getAssetPath("figmaAssets/vuesax-bold-radio.svg")}
+                  src="/images/radio-icon.svg"
                 />
               </div>
             </div>
@@ -273,7 +268,7 @@ export const RadioPlaying = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src={getAssetPath("figmaAssets/vuesax-bold-musicnote.svg")}
+                  src="/images/music-icon.svg"
                 />
               </div>
             </div>
@@ -291,7 +286,7 @@ export const RadioPlaying = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src={getAssetPath("figmaAssets/vuesax-bold-search-normal.svg")}
+                  src="/images/search-icon.svg"
                 />
               </div>
             </div>
@@ -309,7 +304,7 @@ export const RadioPlaying = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src={getAssetPath("figmaAssets/vuesax-bold-heart.svg")}
+                  src="/images/heart-icon.svg"
                 />
               </div>
             </div>
@@ -344,7 +339,7 @@ export const RadioPlaying = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src={getAssetPath("figmaAssets/vuesax-bold-setting-2.svg")}
+                  src="/images/logout-icon.svg"
                 />
               </div>
             </div>

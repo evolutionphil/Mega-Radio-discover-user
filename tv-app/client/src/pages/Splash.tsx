@@ -28,7 +28,7 @@ export const Splash = (): JSX.Element => {
         <img 
           alt="" 
           className="block max-w-none size-full opacity-40" 
-          src="/splash-assets/waves.png"
+          src="/images/waves.png"
         />
       </div>
 
@@ -41,7 +41,7 @@ export const Splash = (): JSX.Element => {
           <img 
             alt="" 
             className="block max-w-none size-full" 
-            src="/splash-assets/path8.svg"
+            src="/images/path8.svg"
           />
         </div>
       </div>
@@ -58,7 +58,7 @@ export const Splash = (): JSX.Element => {
           <img 
             alt="" 
             className="block max-w-none size-full opacity-30" 
-            src="/splash-assets/ellipse2.png"
+            src="/images/ellipse2.png"
           />
         </div>
       </div>
@@ -80,7 +80,7 @@ export const Splash = (): JSX.Element => {
           <img 
             alt="" 
             className="block max-w-none size-full" 
-            src="/splash-assets/monitor.png"
+            src="/images/monitor.png"
           />
         </div>
         
@@ -90,7 +90,7 @@ export const Splash = (): JSX.Element => {
             <img 
               alt="" 
               className="block max-w-none size-full" 
-              src="/splash-assets/tablet.png"
+              src="/images/tablet.png"
             />
           </div>
         </div>
@@ -100,7 +100,7 @@ export const Splash = (): JSX.Element => {
           <img 
             alt="" 
             className="block max-w-none size-full" 
-            src="/splash-assets/phone.png"
+            src="/images/phone.png"
           />
         </div>
       </div>
@@ -112,7 +112,7 @@ export const Splash = (): JSX.Element => {
         <img 
           alt="" 
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full opacity-20" 
-          src="/splash-assets/frame445.png"
+          src="/images/frame445.png"
         />
       </div>
 

@@ -3,11 +3,6 @@ import { useFavorites } from "@/contexts/FavoritesContext";
 import { Station } from "@/services/megaRadioApi";
 import { useLocation } from "wouter";
 
-// Asset path helper
-function getAssetPath(path: string) {
-  if (path.startsWith('/')) return path;
-  return `/${path}`;
-}
 
 export const GlobalPlayer = (): JSX.Element | null => {
   const { currentStation, isPlaying, togglePlayPause, nowPlayingMetadata } = useGlobalPlayer();
