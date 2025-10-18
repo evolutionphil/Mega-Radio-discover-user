@@ -66,6 +66,37 @@ export const Genres = (): JSX.Element => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [visibleGenresCount, allGenres.length]);
 
+  // Auto-scroll to keep focused element visible when navigating with TV remote
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleFocusChange = () => {
+      const focused = document.querySelector('[data-tv-focusable]:focus') as HTMLElement;
+      if (!focused) return;
+
+      const containerRect = container.getBoundingClientRect();
+      const focusedRect = focused.getBoundingClientRect();
+
+      // Check if element is below the visible area
+      if (focusedRect.bottom > containerRect.bottom) {
+        const scrollAmount = focusedRect.bottom - containerRect.bottom + 50;
+        container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+        console.log('[Genres] Auto-scrolling down to show focused element');
+      }
+      // Check if element is above the visible area
+      else if (focusedRect.top < containerRect.top) {
+        const scrollAmount = focusedRect.top - containerRect.top - 50;
+        container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+        console.log('[Genres] Auto-scrolling up to show focused element');
+      }
+    };
+
+    // Listen for focus changes
+    document.addEventListener('focusin', handleFocusChange);
+    return () => document.removeEventListener('focusin', handleFocusChange);
+  }, []);
+
   // Card positions
   const row1Positions = [
     { left: 237, width: 386 },
