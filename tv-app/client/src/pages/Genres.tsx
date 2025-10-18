@@ -3,9 +3,13 @@ import { Radio, Music, Search, Heart, Settings } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Genre } from "@/services/megaRadioApi";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { useEffect, useRef, useState } from "react";
 
 export const Genres = (): JSX.Element => {
   useTVNavigation();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [visibleGenresCount, setVisibleGenresCount] = useState(8); // Start with 8 genres (2 rows)
+
   // Fetch all genres
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres'],
@@ -20,6 +24,27 @@ export const Genres = (): JSX.Element => {
 
   const allGenres = genresData?.genres || [];
   const popularGenres = discoverableGenresData?.genres?.slice(0, 8) || [];
+  const visibleGenres = allGenres.slice(0, visibleGenresCount);
+
+  // Infinite scroll handler
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+
+      // Load more when scrolled 70% down
+      if (scrollPercentage > 0.7 && visibleGenresCount < allGenres.length) {
+        console.log('[Genres] Loading more genres...', visibleGenresCount, '/', allGenres.length);
+        setVisibleGenresCount(prev => Math.min(prev + 4, allGenres.length)); // Load 4 more (1 row)
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [visibleGenresCount, allGenres.length]);
 
   // Card positions
   const row1Positions = [
@@ -30,7 +55,7 @@ export const Genres = (): JSX.Element => {
   ];
 
   return (
-    <div className="relative w-[1920px] min-h-[1080px] bg-black overflow-y-auto" data-testid="page-genres">
+    <div ref={scrollContainerRef} className="relative w-[1920px] min-h-[1080px] bg-black overflow-y-auto" data-testid="page-genres">
       {/* Background Image */}
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
         <img
@@ -243,8 +268,8 @@ export const Genres = (): JSX.Element => {
         All
       </p>
 
-      {/* All Genres - Dynamic Grid (Scrollable) */}
-      {allGenres.map((genre, index) => {
+      {/* All Genres - Dynamic Grid (Scrollable with Lazy Loading) */}
+      {visibleGenres.map((genre, index) => {
         const row = Math.floor(index / 4);
         const col = index % 4;
         const topPosition = 737 + (row * 158); // 737px start, 158px between rows
@@ -272,6 +297,21 @@ export const Genres = (): JSX.Element => {
           </Link>
         );
       })}
+
+      {/* Loading indicator - shown when there are more genres to load */}
+      {visibleGenresCount < allGenres.length && (
+        <div 
+          className="absolute left-[850px] text-center text-white"
+          style={{ top: `${737 + Math.ceil(visibleGenresCount / 4) * 158 + 20}px` }}
+        >
+          <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-[rgba(255,255,255,0.6)]">
+            Loading more genres... ({visibleGenresCount} / {allGenres.length})
+          </p>
+        </div>
+      )}
+
+      {/* Spacer to ensure scrolling works */}
+      <div style={{ height: `${Math.max(1080, 737 + Math.ceil(allGenres.length / 4) * 158 + 200)}px` }} />
     </div>
   );
 };
