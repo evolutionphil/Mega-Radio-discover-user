@@ -146,15 +146,16 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     }
   }, [isOpen]);
 
-  // Reinitialize TV navigation when filtered countries change (after search)
+  // Update TV navigation when filtered countries change (after search)
+  // Only update focusable elements, don't re-initialize everything
   useEffect(() => {
     if (isOpen && filteredCountries.length > 0) {
       const timeout = setTimeout(() => {
         if ((window as any).tvSpatialNav) {
-          console.log('[CountrySelector] Updating TV navigation for', filteredCountries.length, 'countries');
-          (window as any).tvSpatialNav.init();
+          console.log('[CountrySelector] Updating focusable elements for', filteredCountries.length, 'countries');
+          (window as any).tvSpatialNav.updateFocusableElements();
         }
-      }, 100);
+      }, 300);
       return () => clearTimeout(timeout);
     }
   }, [isOpen, filteredCountries.length]);
