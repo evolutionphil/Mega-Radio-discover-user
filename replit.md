@@ -70,3 +70,30 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family (Google Fonts).
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+
+## Recent Changes
+
+### October 18, 2025 - Guide Pages Simplification Based on Reference App Analysis
+
+**CRITICAL FIX**: Analyzed LGTV reference app (LGTV-master-main.zip) to understand proper Samsung TV key handling patterns.
+
+**Key Findings from Reference App:**
+- Uses ONE global `document.addEventListener('keydown')` that routes to page-specific `HandleKey(e)` functions
+- No individual `onKeyDown` handlers on DOM elements
+- No `data-tv-focusable` attributes or complex TV navigation systems
+- Simple key detection: `if (e.keyCode === 13)` for Enter/OK
+- Image paths use absolute paths from public root: `src="images/user_icon.png"`
+
+**Changes Made to Guide Pages (Guide1-4):**
+- ✅ Removed `useTVNavigation()` hook - it was interfering with natural key events
+- ✅ Removed duplicate key handlers (`onKeyDown` props on divs)
+- ✅ Removed `data-tv-focusable` and `tabIndex` attributes
+- ✅ Simplified to ONE `useEffect` keydown listener per page using capture phase
+- ✅ Added extensive logging: `[Guide1] Key pressed: keyCode, key`
+- ✅ Kept image paths absolute from Vite public root: `/guide-assets/...`
+
+**Technical Notes:**
+- Vite serves `tv-app/client/public/` directory at root path
+- Reference app uses simple routing: `switch(current_route) { case "login": login_page.HandleKey(e); }`
+- Samsung TV key codes: ENTER=13, RETURN=10009, RED=403, GREEN=404, YELLOW=405, BLUE=406
+- LG TV RETURN key code is different: 461 (vs Samsung's 10009)

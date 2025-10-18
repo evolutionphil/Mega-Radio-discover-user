@@ -41,7 +41,7 @@ export const Guide2 = (): JSX.Element => {
             <img 
               alt="" 
               className="absolute max-w-none object-50%-50% object-cover size-full" 
-              src="guide-assets/discover-background.png"
+              src="/guide-assets/discover-background.png"
             />
             <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
           </div>
@@ -54,7 +54,7 @@ export const Guide2 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="guide-assets/arrow.svg"
+                src="/guide-assets/arrow.svg"
               />
             </div>
           </div>
@@ -70,7 +70,7 @@ export const Guide2 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="guide-assets/music-icon.svg"
+                src="/guide-assets/music-icon.svg"
               />
             </div>
           </div>
