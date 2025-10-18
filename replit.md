@@ -96,7 +96,9 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 - ✅ Removed old folders: `guide-assets/`, `genres-assets/`, `splash-assets/`
 - ✅ Updated all code references to use `/images/` paths
 - ✅ Removed `getAssetPath()` helper functions from all pages - using direct paths
-- ✅ Asset mapping: vuesax icons → named icons (radio-icon.svg, music-icon.svg, search-icon.svg, heart-icon.svg, logout-icon.svg)
+- ✅ Asset mapping: vuesax icons → named icons (radio-icon.svg, music-icon.svg, search-icon.svg, heart-icon.svg, logout-icon.svg, arrow.svg)
+- ✅ Fixed ALL icon paths across 12+ files (Genres, Settings, Search, GenreList, GenresOld, DiscoverUser, GenreDetail, CountrySelector, AppLayout)
+- ✅ Fixed Settings.tsx background image path (was using old `/genres-assets/` folder)
 
 **Technical Notes:**
 - Vite serves `tv-app/client/public/` directory at root path

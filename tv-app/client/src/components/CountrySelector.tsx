@@ -268,7 +268,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
             <img
               alt="back"
               className="block max-w-none size-full"
-              src="images/vuesax-outline-arrow-left.svg"
+              src="/images/arrow.svg"
             />
           </div>
         </div>
@@ -294,7 +294,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                   <img
                     alt="search"
                     className="block max-w-none size-full"
-                    src="images/vuesax-bold-search-normal.svg"
+                    src="/images/search-icon.svg"
                   />
                 </div>
                 <input

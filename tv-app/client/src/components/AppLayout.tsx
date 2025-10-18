@@ -100,7 +100,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                     <img
                       alt=""
                       className="block max-w-none size-full"
-                      src="/images/vuesax-outline-arrow-left.svg"
+                      src="/images/arrow.svg"
                     />
                   </div>
                 </div>
