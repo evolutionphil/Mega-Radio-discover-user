@@ -106,3 +106,41 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 - Reference app uses simple routing: `switch(current_route) { case "login": login_page.HandleKey(e); }`
 - Samsung TV key codes: ENTER=13, RETURN=10009, RED=403, GREEN=404, YELLOW=405, BLUE=406
 - LG TV RETURN key code is different: 461 (vs Samsung's 10009)
+
+### October 18, 2025 - Comprehensive Codebase Cleanup
+
+**Removed Unused Root-Level Files/Folders (~19MB):**
+- `/tv-app/css/` - 3.2M (OLD CSS files from LGTV reference, not used by React app)
+- `/tv-app/js/` - 52K (duplicates of `/tv-app/client/public/js/`)
+- `/tv-app/images/` - 11M (OLD images, all assets consolidated in `/tv-app/client/public/images/`)
+- `/tv-app/webOSTVjs-1.2.0/` - 40K (duplicate of `/tv-app/client/public/webOSTVjs-1.2.0/`)
+- `/tv-app/genres-assets/` - 924K (already consolidated to /images/)
+- `/tv-app/guide-assets/` - 3.9M (already consolidated to /images/)
+- `/tv-app/splash-assets/` - 60K (already consolidated to /images/)
+- `/tv-app/assets/` - 552K (build output folder, regenerated on each build)
+- `/tv-app/attached_assets/` - not used in the application
+- `/tv-app/index.html` - 4K (OLD HTML entry point, React app uses `/tv-app/client/index.html`)
+- `/tv-app/main.js` - empty file
+
+**Removed Unused React Components/Files:**
+- `/tv-app/client/src/pages/GenresOld.tsx` - unused duplicate page (active: Genres.tsx)
+- `/tv-app/client/src/hooks/use-mobile.tsx` - unused hook (never imported)
+- **35 Unused Shadcn UI Components** (kept only 12 actually used):
+  - Removed: accordion, alert, alert-dialog, aspect-ratio, avatar, badge, breadcrumb, calendar, carousel, chart, checkbox, collapsible, command, context-menu, drawer, dropdown-menu, form, hover-card, input-otp, menubar, navigation-menu, pagination, popover, progress, radio-group, resizable, scroll-area, select, sidebar, slider, switch, table, tabs, textarea, toggle-group
+  - Kept: button, card, dialog, input, label, separator, sheet, skeleton, toast, toaster, toggle, tooltip
+
+**Final Codebase Structure (tv-app/client/src/):**
+- **Pages (16):** Splash, Guide1-4, Login, LoginWithEmail, ForgotPassword, MailSent, DiscoverUser, DiscoverNoUser, Genres, GenreList, GenreDetail, Search, Favorites, Settings, RadioPlaying, not-found
+- **Components (3):** AppLayout, CountrySelector, GlobalPlayer
+- **UI Components (12):** button, card, dialog, input, label, separator, sheet, skeleton, toast, toaster, toggle, tooltip
+- **Contexts (4):** LocalizationContext, CountryContext, FavoritesContext, GlobalPlayerContext
+- **Hooks (2):** use-toast, useTVNavigation
+- **Services (3):** megaRadioApi, autoPlayService, recentlyPlayedService
+- **Library Files (2):** queryClient, utils
+- **Total Source Files:** 66 (down from 110+)
+
+**Verification:**
+- ✅ No LSP errors after cleanup
+- ✅ App running successfully
+- ✅ All navigation, localization, and playback features working
+- ✅ All asset paths verified and functional
