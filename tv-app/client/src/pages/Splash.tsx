@@ -107,7 +107,7 @@ export const Splash = (): JSX.Element => {
 
       {/* Dotted Pattern - Bottom Left */}
       <div 
-        className="absolute h-[614px] left-[-16px] top-[466px] w-[667px] animate-[fadeIn_2s_ease-in-out]"
+        className="absolute h-[614px] left-[-16px] top-[466px] w-[667px] animate-[fadeInFloat_3s_ease-in-out_infinite]"
       >
         <img 
           alt="" 
@@ -118,12 +118,18 @@ export const Splash = (): JSX.Element => {
 
       {/* Keyframe animations */}
       <style>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
+        @keyframes fadeInFloat {
+          0% {
+            opacity: 0.15;
+            transform: translateY(0px) scale(1);
           }
-          to {
-            opacity: 0.2;
+          50% {
+            opacity: 0.25;
+            transform: translateY(-10px) scale(1.02);
+          }
+          100% {
+            opacity: 0.15;
+            transform: translateY(0px) scale(1);
           }
         }
       `}</style>
