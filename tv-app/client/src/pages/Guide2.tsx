@@ -1,22 +1,27 @@
 import { useLocation } from "wouter";
-import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useEffect } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 
 export const Guide2 = (): JSX.Element => {
-  useTVNavigation();
   const [, setLocation] = useLocation();
   const { t } = useLocalization();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      console.log('[Guide2] Key pressed:', e.keyCode, e.key);
       if (e.keyCode === 13 || e.key === 'Enter') {
         console.log('[Guide2] OK/Enter pressed - navigating to Guide 3');
+        e.preventDefault();
+        e.stopPropagation();
         setLocation('/guide-3');
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    console.log('[Guide2] Adding keydown listener');
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => {
+      console.log('[Guide2] Removing keydown listener');
+      window.removeEventListener('keydown', handleKeyDown, true);
+    };
   }, [setLocation]);
 
   const handleClick = () => {
@@ -24,21 +29,11 @@ export const Guide2 = (): JSX.Element => {
     setLocation('/guide-3');
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.keyCode === 13 || e.key === 'Enter') {
-      console.log('[Guide2] onKeyDown OK/Enter pressed - navigating to Guide 3');
-      setLocation('/guide-3');
-    }
-  };
-
   return (
       <div 
         className="bg-white fixed inset-0 w-[1920px] h-[1080px] overflow-hidden cursor-pointer" 
         data-testid="page-guide-2"
-        data-tv-focusable="true"
         onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
       >
         {/* Background Image with Dark Overlay */}
         <div className="absolute h-[1897px] left-0 top-0 w-[1920px]">
@@ -46,7 +41,7 @@ export const Guide2 = (): JSX.Element => {
             <img 
               alt="" 
               className="absolute max-w-none object-50%-50% object-cover size-full" 
-              src="/guide-assets/discover-background.png"
+              src="guide-assets/discover-background.png"
             />
             <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
           </div>
@@ -59,7 +54,7 @@ export const Guide2 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="/guide-assets/arrow.svg"
+                src="guide-assets/arrow.svg"
               />
             </div>
           </div>
@@ -75,7 +70,7 @@ export const Guide2 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="/guide-assets/music-icon.svg"
+                src="guide-assets/music-icon.svg"
               />
             </div>
           </div>
