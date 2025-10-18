@@ -516,7 +516,7 @@ export const RadioPlaying = (): JSX.Element => {
         {similarStations.slice(0, 8).map((similarStation, index) => (
           <div
             key={similarStation._id || index}
-            className="flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+            className="flex-shrink-0 h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:opacity-80 transition-opacity relative"
             data-testid={`card-similar-${similarStation._id}`}
             data-tv-focusable="true"
             onClick={() => navigateToStation(similarStation)}
@@ -537,7 +537,6 @@ export const RadioPlaying = (): JSX.Element => {
             <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
               {getStationTags(similarStation)[0] || similarStation.country || 'Radio'}
             </p>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
           </div>
         ))}
       </div>
