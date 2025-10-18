@@ -41,7 +41,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
   }, [scrollContainerRef]);
 
   return (
-    <div className="relative w-[1920px] min-h-[1080px] bg-black">
+    <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black overflow-hidden">
       {/* Logo - Top Left - EXACT MATCH TO DISCOVERNO USER */}
       <div className="fixed h-[57px] left-[30px] top-[64px] w-[164.421px] z-50 pointer-events-auto">
         <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">

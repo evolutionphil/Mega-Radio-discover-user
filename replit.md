@@ -6,6 +6,13 @@ Mega Radio is a full-stack web radio streaming application designed for TV/large
 
 ## Recent Changes (October 18, 2025)
 
+**Fixed Layout for Samsung TV (Build: index-DmIq4fBv.js):**
+- Fixed AppLayout to use exact 1920x1080 fixed dimensions instead of `min-h-[1080px]`
+- Changed from `relative w-[1920px] min-h-[1080px]` to `fixed inset-0 w-[1920px] h-[1080px] overflow-hidden`
+- Ensures consistent layout rendering across Samsung TV, LG webOS, and web browsers
+- All pages now use exact 1920x1080 viewport with no vertical expansion
+- Critical fix for Samsung Tizen TV hardware compatibility
+
 **Global Country Selection Fix (Build: index-B0FgqF_j.js):**
 - Fixed RadioPlaying page to use global `CountryContext` instead of local state
 - RadioPlaying was hardcoded to "United States" - now uses global country selection
