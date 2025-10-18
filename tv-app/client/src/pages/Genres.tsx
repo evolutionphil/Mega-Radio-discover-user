@@ -18,14 +18,9 @@ export const Genres = (): JSX.Element => {
     queryFn: () => megaRadioApi.getAllGenres(selectedCountryCode),
   });
 
-  // Fetch discoverable/popular genres
-  const { data: discoverableGenresData } = useQuery({
-    queryKey: ['/api/genres/discoverable'],
-    queryFn: () => megaRadioApi.getDiscoverableGenres(),
-  });
-
   const allGenres = genresData?.genres || [];
-  const popularGenres = discoverableGenresData?.genres?.slice(0, 8) || [];
+  // Popular Genres: Show first 8 genres from selected country
+  const popularGenres = allGenres.slice(0, 8);
   const visibleGenres = allGenres.slice(0, visibleGenresCount);
 
   // Infinite scroll handler
