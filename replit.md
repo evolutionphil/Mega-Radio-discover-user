@@ -6,6 +6,18 @@ Mega Radio is a full-stack web radio streaming application designed for TV/large
 
 ## Recent Changes (October 18, 2025)
 
+**Global Player Implementation - Continuous Playback Across Pages (Build: index-DDzSwjQG.js):**
+- Created GlobalPlayerContext for managing audio playback globally across all pages
+- Implemented GlobalPlayer component with exact Figma design (1622-4793)
+- Bottom player bar with backdrop-blur at top: 925px, height: 155px
+- Station logo, name, and genre display on bottom player
+- Control buttons: Previous (pink border), Play/Pause, Next, Favorite, Equalizer
+- Audio continues playing when navigating between pages (Discover, Genres, Search, Favorites)
+- RadioPlaying page now uses global player instead of local audio player
+- All play button clicks update global player state
+- Fixed issue: Audio no longer stops when changing pages
+- Exact positioning and styling from Figma: station logo (235px), name (357px), controls (1210px-1715px)
+
 **Radio Playing Page Redesign - Exact Figma Implementation (Build: index-DgvmYGOt.js):**
 - Completely rebuilt RadioPlaying page to match exact Figma design (node 1597-3968)
 - Pure black background (no gradients or background images)

@@ -7,6 +7,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LocalizationProvider } from "@/contexts/LocalizationContext";
 import { CountryProvider } from "@/contexts/CountryContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
+import { GlobalPlayerProvider } from "@/contexts/GlobalPlayerContext";
+import { GlobalPlayer } from "@/components/GlobalPlayer";
 import NotFound from "@/pages/not-found";
 
 import { Splash } from "@/pages/Splash";
@@ -69,10 +71,13 @@ function App() {
       <LocalizationProvider>
         <CountryProvider>
           <FavoritesProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Router />
-            </TooltipProvider>
+            <GlobalPlayerProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Router />
+                <GlobalPlayer />
+              </TooltipProvider>
+            </GlobalPlayerProvider>
           </FavoritesProvider>
         </CountryProvider>
       </LocalizationProvider>

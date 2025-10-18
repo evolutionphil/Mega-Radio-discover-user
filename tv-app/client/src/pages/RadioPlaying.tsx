@@ -6,6 +6,7 @@ import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { useCountry } from "@/contexts/CountryContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
+import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { CountrySelector } from "@/components/CountrySelector";
 
 // Asset path helper
@@ -17,12 +18,10 @@ function getAssetPath(path: string) {
 export const RadioPlaying = (): JSX.Element => {
   useTVNavigation();
   const [location] = useLocation();
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isBuffering, setIsBuffering] = useState(false);
-  const audioPlayerRef = useRef<any>(null);
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { playStation, togglePlayPause, isPlaying, isBuffering } = useGlobalPlayer();
   
   // Station history for Previous button (stores station IDs)
   const stationHistoryRef = useRef<string[]>([]);
@@ -113,55 +112,11 @@ export const RadioPlaying = (): JSX.Element => {
 
   const similarStations = similarData?.stations || [];
 
-  // Initialize TV audio player
+  // Auto-play when station loads using global player
   useEffect(() => {
-    if (typeof (window as any).TVAudioPlayer !== 'undefined') {
-      audioPlayerRef.current = new (window as any).TVAudioPlayer('tv-audio-container');
-      
-      audioPlayerRef.current.onPlay = () => {
-        setIsPlaying(true);
-        setIsBuffering(false);
-      };
-      
-      audioPlayerRef.current.onPause = () => {
-        setIsPlaying(false);
-      };
-      
-      audioPlayerRef.current.onStop = () => {
-        setIsPlaying(false);
-      };
-      
-      audioPlayerRef.current.onBuffering = () => {
-        setIsBuffering(true);
-      };
-      
-      audioPlayerRef.current.onReady = () => {
-        setIsBuffering(false);
-      };
-      
-      audioPlayerRef.current.onError = (error: any) => {
-        console.log('[RadioPlaying] Audio error (non-critical):', error);
-        setIsBuffering(false);
-      };
-      
-      return () => {
-        if (audioPlayerRef.current && typeof audioPlayerRef.current.stop === 'function') {
-          try {
-            audioPlayerRef.current.stop();
-          } catch (err) {
-            // Silently ignore cleanup errors
-          }
-        }
-      };
-    }
-  }, []);
-
-  // Auto-play when station loads
-  useEffect(() => {
-    if (station && station.url && audioPlayerRef.current) {
-      const playUrl = station.url_resolved || station.url;
-      console.log('[RadioPlaying] Auto-playing station:', station.name, 'URL:', playUrl);
-      audioPlayerRef.current.play(playUrl);
+    if (station) {
+      console.log('[RadioPlaying] Auto-playing station via global player:', station.name);
+      playStation(station);
     }
   }, [station]);
 
@@ -179,16 +134,7 @@ export const RadioPlaying = (): JSX.Element => {
   }, [station]);
 
   const handlePlayPause = () => {
-    if (!audioPlayerRef.current) return;
-    
-    if (isPlaying) {
-      audioPlayerRef.current.pause();
-    } else {
-      if (station && station.url) {
-        const playUrl = station.url_resolved || station.url;
-        audioPlayerRef.current.play(playUrl);
-      }
-    }
+    togglePlayPause();
   };
 
   const handlePrevious = () => {
@@ -222,6 +168,7 @@ export const RadioPlaying = (): JSX.Element => {
 
   const navigateToStation = (targetStation: Station) => {
     console.log('[RadioPlaying] Navigating to station:', targetStation.name, targetStation._id);
+    playStation(targetStation);
     const newUrl = `${window.location.pathname}?station=${targetStation._id}${window.location.hash}`;
     window.history.pushState({}, '', newUrl);
     setUpdateTrigger(prev => prev + 1);
@@ -242,8 +189,6 @@ export const RadioPlaying = (): JSX.Element => {
 
   return (
     <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black overflow-y-auto scrollbar-hide">
-      {/* Hidden audio container */}
-      <div id="tv-audio-container" style={{ display: 'none' }} />
 
       {/* Logo */}
       <div className="absolute h-[57px] left-[31px] top-[64px] w-[164.421px]">
