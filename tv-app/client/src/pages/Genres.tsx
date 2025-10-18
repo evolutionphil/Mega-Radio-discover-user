@@ -10,7 +10,6 @@ export const Genres = (): JSX.Element => {
   useTVNavigation();
   const { selectedCountryCode } = useCountry();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [visibleGenresCount, setVisibleGenresCount] = useState(16); // Start with 16 genres (4 rows)
 
   // Fetch stations from selected country to extract real genres
   const { data: stationsData } = useQuery({
@@ -58,48 +57,8 @@ export const Genres = (): JSX.Element => {
 
   // Popular Genres: Show first 8 genres from selected country
   const popularGenres = allGenres.slice(0, 8);
-  const visibleGenres = allGenres.slice(0, visibleGenresCount);
-
-  // Infinite scroll handler
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) {
-      console.log('[Genres] No scroll container found');
-      return;
-    }
-
-    console.log('[Genres] Scroll container attached. Total genres:', allGenres.length, 'Visible:', visibleGenresCount);
-
-    const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = container;
-      const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
-
-      console.log('[Genres] Scroll event:', {
-        scrollTop,
-        scrollHeight,
-        clientHeight,
-        scrollPercentage: (scrollPercentage * 100).toFixed(1) + '%',
-        visibleGenresCount,
-        allGenresLength: allGenres.length
-      });
-
-      // Load more when scrolled 50% down (more aggressive for TV navigation)
-      if (scrollPercentage > 0.5 && visibleGenresCount < allGenres.length) {
-        console.log('[Genres] Loading more genres...', visibleGenresCount, '/', allGenres.length);
-        setVisibleGenresCount(prev => Math.min(prev + 8, allGenres.length)); // Load 8 more (2 rows)
-      }
-    };
-
-    container.addEventListener('scroll', handleScroll);
-    
-    // Trigger initial check in case content already needs loading
-    handleScroll();
-    
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [visibleGenresCount, allGenres.length]);
-
+  
   // Auto-scroll to keep focused element visible when navigating with TV remote
-  // AND trigger lazy loading when focusing on elements near the bottom
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -108,17 +67,6 @@ export const Genres = (): JSX.Element => {
       const focused = document.querySelector('[data-tv-focusable]:focus') as HTMLElement;
       if (!focused) return;
 
-      // LAZY LOADING TRIGGER: Load more genres when focusing on elements near the bottom
-      const testId = focused.getAttribute('data-testid');
-      if (testId && testId.startsWith('card-genre-all-')) {
-        const index = parseInt(testId.replace('card-genre-all-', ''));
-        // If focusing on last 12 items (3 rows), load more
-        if (index >= visibleGenresCount - 12 && visibleGenresCount < allGenres.length) {
-          console.log('[Genres] Focus-based lazy load triggered! Index:', index, 'Visible:', visibleGenresCount, 'Total:', allGenres.length);
-          setVisibleGenresCount(prev => Math.min(prev + 8, allGenres.length)); // Load 2 more rows
-        }
-      }
-
       const containerRect = container.getBoundingClientRect();
       const focusedRect = focused.getBoundingClientRect();
 
@@ -126,20 +74,18 @@ export const Genres = (): JSX.Element => {
       if (focusedRect.bottom > containerRect.bottom) {
         const scrollAmount = focusedRect.bottom - containerRect.bottom + 50;
         container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
-        console.log('[Genres] Auto-scrolling down to show focused element');
       }
       // Check if element is above the visible area
       else if (focusedRect.top < containerRect.top) {
         const scrollAmount = focusedRect.top - containerRect.top - 50;
         container.scrollBy({ top: scrollAmount, behavior: 'smooth' });
-        console.log('[Genres] Auto-scrolling up to show focused element');
       }
     };
 
     // Listen for focus changes
     document.addEventListener('focusin', handleFocusChange);
     return () => document.removeEventListener('focusin', handleFocusChange);
-  }, [visibleGenresCount, allGenres.length]);
+  }, []);
 
   // Card positions
   const row1Positions = [
@@ -214,8 +160,8 @@ export const Genres = (): JSX.Element => {
           All
         </p>
 
-        {/* All Genres - Dynamic Grid (Scrollable with Lazy Loading) */}
-        {visibleGenres.map((genre, index) => {
+        {/* All Genres - Dynamic Grid (All genres loaded) */}
+        {allGenres.map((genre, index) => {
           const row = Math.floor(index / 4);
           const col = index % 4;
           const topPosition = 737 + (row * 158); // 737px start, 158px between rows
@@ -243,18 +189,6 @@ export const Genres = (): JSX.Element => {
             </Link>
           );
         })}
-
-        {/* Loading indicator - shown when there are more genres to load */}
-        {visibleGenresCount < allGenres.length && (
-          <div 
-            className="absolute left-[850px] text-center text-white"
-            style={{ top: `${737 + Math.ceil(visibleGenresCount / 4) * 158 + 20}px` }}
-          >
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-[rgba(255,255,255,0.6)]">
-              Loading more genres... ({visibleGenresCount} / {allGenres.length})
-            </p>
-          </div>
-        )}
 
         {/* Spacer to ensure scrolling works */}
         <div style={{ height: `${Math.max(1080, 737 + Math.ceil(allGenres.length / 4) * 158 + 200)}px` }} />
