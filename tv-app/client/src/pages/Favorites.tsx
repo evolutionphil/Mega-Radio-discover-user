@@ -1,80 +1,119 @@
 import { Link } from "wouter";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { AppLayout } from "@/components/AppLayout";
+import { useFavorites } from "@/contexts/FavoritesContext";
+import { useLocalization } from "@/contexts/LocalizationContext";
+import { Station } from "@/services/megaRadioApi";
+import { useRef } from "react";
 
 export const Favorites = (): JSX.Element => {
   useTVNavigation();
+  const { favorites } = useFavorites();
+  const { t } = useLocalization();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const favoriteStations = [
-    { name: "CNN International", location: "International", image: "/images/cnn-international-logo-1.png" },
-    { name: "BBC Radio", location: "United Kingdom", image: "/images/-hdd91mb-400x400-1.png" },
-    { name: "Power Türk", location: "Turkey", image: "/images/meta-image--1--1-4.png" },
-    { name: "VOA", location: "USA, New York", image: "/images/c175-1.png" },
-    { name: "VIBRA", location: "Italy, Rome", image: "/images/logo-1.png" },
-    { name: "Metro FM", location: "Turkey, Istanbul", image: "/images/meta-image--1--1-4.png" },
-  ];
+  // Fallback image
+  const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="#01d7fb"/><text x="100" y="120" font-size="80" fill="white" text-anchor="middle" font-family="Arial">R</text></svg>')}`;
+
+  // Helper function to get station image
+  const getStationImage = (station: Station) => {
+    if (station.favicon) {
+      return station.favicon.startsWith('http') 
+        ? station.favicon 
+        : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
+    }
+    return FALLBACK_IMAGE;
+  };
+
+  // Helper function to get station tags as array
+  const getStationTags = (station: Station): string[] => {
+    if (!station.tags) return [];
+    if (Array.isArray(station.tags)) return station.tags;
+    return station.tags.split(',').map(tag => tag.trim());
+  };
+
+  // Helper function to get first category/tag
+  const getStationCategory = (station: Station): string => {
+    const tags = getStationTags(station);
+    if (tags.length > 0) return tags[0];
+    return station.country || 'Radio';
+  };
 
   return (
-    <AppLayout currentPage="favorites">
-      <div className="relative w-[1920px] h-[1080px] overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0e0e0e]" />
+    <AppLayout currentPage="favorites" scrollContainerRef={scrollContainerRef}>
+      <div ref={scrollContainerRef} className="relative w-[1920px] h-[1080px] overflow-y-auto" data-testid="page-favorites">
+        {/* Background Image */}
+        <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
+          <img
+            alt=""
+            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+            src="/images/hand-crowd-disco-1.png"
+          />
+        </div>
 
-        {/* Main Content */}
-        <div className="absolute left-[246px] top-[242px] right-[30px] bottom-[30px]">
+        {/* Gradient Overlay */}
+        <div className="absolute bg-gradient-to-b from-[18.333%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[15.185%] top-0 w-[1920px]" />
+
         {/* Page Title */}
-        <h1 className="font-['Ubuntu',Helvetica] font-bold text-[48px] text-white mb-12" data-testid="title-favorites">
-          Your Favorites
-        </h1>
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
+          {t('your_favorites') || 'Your Favorites'}
+        </p>
 
-        {favoriteStations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-[600px]">
-            <img
-              className="w-[120px] h-[120px] mb-8 opacity-30"
-              alt="Empty"
-              src="/images/vuesax-bold-heart.svg"
-            />
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-[#9b9b9b] text-center">
-              No favorite stations yet
+        {/* Empty State or Station Grid */}
+        {favorites.length === 0 ? (
+          <div className="absolute left-[236px] top-[400px] w-[1580px] h-[400px] flex flex-col items-center justify-center">
+            <div className="w-[120px] h-[120px] mb-8 opacity-30">
+              <svg viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                <path d="M25.5 44.625C24.7396 44.625 23.9792 44.3958 23.3604 43.9375C18.9375 40.6042 14.9479 37.6771 11.9792 34.7917C7.44792 30.3479 4.25 26.2646 4.25 20.625C4.25 12.6667 10.5 6.375 18.0625 6.375C21.6042 6.375 24.9167 8.14583 27.125 11.1354C29.3333 8.14583 32.6458 6.375 36.1875 6.375C43.75 6.375 50 12.6667 50 20.625C50 26.2646 46.8021 30.3479 42.2708 34.8125C39.3021 37.6979 35.3125 40.625 30.8896 43.9583C30.2708 44.3958 29.5104 44.625 28.75 44.625H25.5Z" fill="white"/>
+              </svg>
+            </div>
+            <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white mb-4">
+              {t('no_favorites_yet') || 'No favorite stations yet'}
             </p>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-[#666666] text-center mt-4">
-              Press the heart icon on any station to add it to your favorites
+            <p className="font-['Ubuntu',Helvetica] font-light text-[24px] text-[#c8c8c8]">
+              {t('tap_heart_to_add') || 'Press the heart icon on any station to add it to your favorites'}
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-4 gap-8">
-            {favoriteStations.map((station, index) => (
-              <div
-                key={index}
-                className="bg-[rgba(255,255,255,0.05)] rounded-[20px] p-6 hover:bg-[rgba(255,255,255,0.1)] transition-colors cursor-pointer group"
-                data-testid={`card-favorite-${index}`}
-                data-tv-focusable="true"
-              >
-                <div className="relative w-full aspect-square bg-white/10 rounded-[16px] mb-4 overflow-hidden">
-                  <img
-                    className="w-full h-full object-cover"
-                    alt={station.name}
-                    src={station.image}
-                  />
-                  <button className="absolute top-3 right-3 w-[40px] h-[40px] bg-[#ff4199] rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`button-unfavorite-${index}`} data-tv-focusable="true">
-                    <img
-                      className="w-[20px] h-[20px]"
-                      alt="Unfavorite"
-                      src="/images/vuesax-bold-heart.svg"
-                    />
-                  </button>
-                </div>
-                <h3 className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-1" data-testid={`text-favorite-name-${index}`}>
-                  {station.name}
-                </h3>
-                <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-[#9b9b9b]" data-testid={`text-favorite-location-${index}`}>
-                  {station.location}
-                </p>
-              </div>
-            ))}
-          </div>
+          <>
+            {/* Radio Station Cards - Dynamic Grid (7 columns like GenreList) */}
+            {favorites.map((station, index) => {
+              const row = Math.floor(index / 7);
+              const col = index % 7;
+              const leftPosition = 236 + (col * 230); // 236px start, 230px between columns
+              const topPosition = 316 + (row * 294); // 316px start, 294px between rows
+              
+              return (
+                <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+                  <div 
+                    className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+                    style={{ left: `${leftPosition}px`, top: `${topPosition}px` }}
+                    data-testid={`station-card-${index}`}
+                    data-tv-focusable="true"
+                  >
+                    <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+                      <img
+                        alt={station.name}
+                        className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                        src={getStationImage(station)}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                        }}
+                      />
+                    </div>
+                    <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                      {station.name}
+                    </p>
+                    <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                      {getStationCategory(station)}
+                    </p>
+                    <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+                  </div>
+                </Link>
+              );
+            })}
+          </>
         )}
-        </div>
       </div>
     </AppLayout>
   );

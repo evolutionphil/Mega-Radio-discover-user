@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LocalizationProvider } from "@/contexts/LocalizationContext";
 import { CountryProvider } from "@/contexts/CountryContext";
+import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import NotFound from "@/pages/not-found";
 
 import { Splash } from "@/pages/Splash";
@@ -67,10 +68,12 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <LocalizationProvider>
         <CountryProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
+          <FavoritesProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Router />
+            </TooltipProvider>
+          </FavoritesProvider>
         </CountryProvider>
       </LocalizationProvider>
     </QueryClientProvider>

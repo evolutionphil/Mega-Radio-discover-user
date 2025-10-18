@@ -5,6 +5,7 @@ import { useMemo, useEffect, useRef, useState, useCallback } from "react";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { useCountry } from "@/contexts/CountryContext";
+import { useFavorites } from "@/contexts/FavoritesContext";
 import { CountrySelector } from "@/components/CountrySelector";
 
 // Asset path helper
@@ -21,6 +22,7 @@ export const RadioPlaying = (): JSX.Element => {
   const audioPlayerRef = useRef<any>(null);
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
+  const { isFavorite, toggleFavorite } = useFavorites();
   
   // Station history for Previous button (stores station IDs)
   const stationHistoryRef = useRef<string[]>([]);
@@ -723,7 +725,12 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Favorite Button */}
         <div 
-          className="border-[3.608px] border-black border-solid rounded-[72.655px] w-[90.192px] h-[90.192px] flex items-center justify-center cursor-pointer hover:bg-[rgba(255,255,255,0.1)] transition-colors"
+          className={`border-[3.608px] border-solid rounded-[72.655px] w-[90.192px] h-[90.192px] flex items-center justify-center cursor-pointer transition-colors ${
+            isFavorite(station._id) 
+              ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
+              : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
+          }`}
+          onClick={() => toggleFavorite(station)}
           data-tv-focusable="true"
           data-testid="button-favorite"
         >
