@@ -86,6 +86,14 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     
     setCurrentStation(station);
     audioPlayerRef.current.play(playUrl);
+
+    // Save last played station to localStorage
+    try {
+      localStorage.setItem("lastPlayedStation", JSON.stringify(station));
+      console.log('[GlobalPlayer] Saved last played station to localStorage');
+    } catch (err) {
+      console.warn('[GlobalPlayer] Failed to save station to localStorage:', err);
+    }
   };
 
   const pauseStation = () => {
