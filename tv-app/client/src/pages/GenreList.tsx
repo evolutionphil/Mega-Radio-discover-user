@@ -1,15 +1,15 @@
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
-import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { AppLayout } from "@/components/AppLayout";
 import { useCountry } from "@/contexts/CountryContext";
 import { useRef, useEffect, useState } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
+import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
+import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 
 export const GenreList = (): JSX.Element => {
-  useTVNavigation();
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const { selectedCountryCode } = useCountry();
   const { t } = useLocalization();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -131,6 +131,53 @@ export const GenreList = (): JSX.Element => {
     return station.country || 'Radio';
   };
 
+  // Focus management for grid: 1 back button + stations (7 cols)
+  const totalItems = 1 + displayedStations.length;
+  const { focusIndex, handleNavigation, handleSelect, handleBack, isFocused } = useFocusManager({
+    totalItems,
+    cols: 7,
+    onSelect: (index) => {
+      if (index === 0) {
+        // Back button
+        setLocation('/genres');
+      } else {
+        // Station card
+        const stationIndex = index - 1;
+        const station = displayedStations[stationIndex];
+        if (station) {
+          setLocation(`/radio-playing?station=${station._id}`);
+        }
+      }
+    },
+    onBack: () => setLocation('/genres')
+  });
+
+  // Register page-specific key handler
+  usePageKeyHandler('/genre-list', (e) => {
+    const key = (window as any).tvKey;
+    
+    switch(e.keyCode) {
+      case key?.UP || 38:
+        handleNavigation('UP');
+        break;
+      case key?.DOWN || 40:
+        handleNavigation('DOWN');
+        break;
+      case key?.LEFT || 37:
+        handleNavigation('LEFT');
+        break;
+      case key?.RIGHT || 39:
+        handleNavigation('RIGHT');
+        break;
+      case key?.ENTER || 13:
+        handleSelect();
+        break;
+      case key?.RETURN || 461 || 10009:
+        handleBack();
+        break;
+    }
+  });
+
   return (
     <AppLayout currentPage="genres" scrollContainerRef={scrollContainerRef}>
       <div ref={scrollContainerRef} className="relative w-[1920px] h-[1080px] overflow-y-auto" data-testid="page-genre-list">
@@ -149,9 +196,9 @@ export const GenreList = (): JSX.Element => {
         {/* Back Button */}
         <Link href="/genres">
           <div 
-            className="absolute h-[24px] left-[236px] top-[211px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity" 
-            data-testid="button-back" 
-            data-tv-focusable="true"
+            className={`absolute h-[24px] left-[236px] top-[211px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity ${getFocusClasses(isFocused(0))}`}
+            data-testid="button-back"
+            onClick={() => setLocation('/genres')}
           >
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[#c8c8c8] text-[19.027px] top-px">
               {t('back') || 'Back'}
@@ -181,10 +228,10 @@ export const GenreList = (): JSX.Element => {
           return (
             <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
               <div 
-                className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(index + 1))}`}
                 style={{ left: `${leftPosition}px`, top: `${topPosition}px` }}
                 data-testid={`station-card-${index}`}
-                data-tv-focusable="true"
+                onClick={() => setLocation(`/radio-playing?station=${station._id}`)}
               >
                 <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                   <img

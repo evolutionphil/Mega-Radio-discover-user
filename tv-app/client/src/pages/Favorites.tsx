@@ -1,16 +1,63 @@
-import { Link } from "wouter";
-import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { Link, useLocation } from "wouter";
 import { AppLayout } from "@/components/AppLayout";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { Station } from "@/services/megaRadioApi";
 import { useRef } from "react";
+import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
+import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 
 export const Favorites = (): JSX.Element => {
-  useTVNavigation();
   const { favorites } = useFavorites();
   const { t } = useLocalization();
+  const [, setLocation] = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Focus management for favorites grid (7 columns)
+  const totalItems = favorites.length || 1; // 1 for empty state CTA button
+  const { focusIndex, handleNavigation, handleSelect, handleBack, isFocused } = useFocusManager({
+    totalItems,
+    cols: favorites.length > 0 ? 7 : 1,
+    onSelect: (index) => {
+      if (favorites.length === 0) {
+        // Empty state: go to discover
+        setLocation('/discover-no-user');
+      } else {
+        // Navigate to radio playing page
+        const station = favorites[index];
+        if (station) {
+          setLocation(`/radio-playing?station=${station._id}`);
+        }
+      }
+    },
+    onBack: () => setLocation('/discover-no-user')
+  });
+
+  // Register page-specific key handler
+  usePageKeyHandler('/favorites', (e) => {
+    const key = (window as any).tvKey;
+    
+    switch(e.keyCode) {
+      case key?.UP || 38:
+        handleNavigation('UP');
+        break;
+      case key?.DOWN || 40:
+        handleNavigation('DOWN');
+        break;
+      case key?.LEFT || 37:
+        handleNavigation('LEFT');
+        break;
+      case key?.RIGHT || 39:
+        handleNavigation('RIGHT');
+        break;
+      case key?.ENTER || 13:
+        handleSelect();
+        break;
+      case key?.RETURN || 461 || 10009:
+        handleBack();
+        break;
+    }
+  });
 
   // Fallback image - music note on pink gradient background
   const FALLBACK_IMAGE = '/images/fallback-station.png';
@@ -78,7 +125,7 @@ export const Favorites = (): JSX.Element => {
 
             {/* Call to Action */}
             <Link href="/discover-no-user">
-              <div className="absolute left-[calc(50%+87.5px)] top-[calc(50%+98px)] translate-x-[-50%] cursor-pointer hover:opacity-80 transition-opacity" data-testid="button-discover-cta" data-tv-focusable="true">
+              <div className={`absolute left-[calc(50%+87.5px)] top-[calc(50%+98px)] translate-x-[-50%] cursor-pointer hover:opacity-80 transition-opacity ${getFocusClasses(isFocused(0))}`} data-testid="button-discover-cta" onClick={() => setLocation('/discover-no-user')}>
                 <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[#ff4199] text-[24px] text-center">
                   {t('discover_stations_near_you') || 'Discover stations near to you!'}
                 </p>
@@ -102,10 +149,10 @@ export const Favorites = (): JSX.Element => {
               return (
                 <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
                   <div 
-                    className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+                    className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(index))}`}
                     style={{ left: `${leftPosition}px`, top: `${topPosition}px` }}
                     data-testid={`station-card-${index}`}
-                    data-tv-focusable="true"
+                    onClick={() => setLocation(`/radio-playing?station=${station._id}`)}
                   >
                     <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                       <img
