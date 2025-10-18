@@ -270,7 +270,7 @@ export const Search = (): JSX.Element => {
         const row = Math.floor(index / 2);
         const col = index % 2;
         const leftPositions = [1110, 1340];
-        const topPositions = [136, 430, 724];
+        const topPositions = [136, 400, 650]; // Adjusted to prevent overlap with global player (starts at 925px)
         
         return (
           <div 
