@@ -163,6 +163,11 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 - ✅ Replaced inline SVG with `/images/path-8.svg` for consistency with other pages
 - ✅ Logo now displays correctly with proper visibility
 
+**Equalizer Animation Fix (RadioPlaying Header):**
+- ✅ Updated header equalizer to use same animation as global player bar
+- ✅ Changed from `animate-equalizer-1/2/3` to `animate-equalizer-global-1/2/3`
+- ✅ Synchronized animation timing across header and global player
+
 **Global Country Selector Figma Specifications:**
 - ✅ Applied exact Figma flexbox layout globally across all pages:
   - Layout: `display: flex; width: 223px; height: 51px; padding: 11px 14.316px 11px 15px; justify-content: center; align-items: center; flex-shrink: 0;`
