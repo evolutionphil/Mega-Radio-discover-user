@@ -83,10 +83,10 @@ export const Genres = (): JSX.Element => {
         allGenresLength: allGenres.length
       });
 
-      // Load more when scrolled 70% down
-      if (scrollPercentage > 0.7 && visibleGenresCount < allGenres.length) {
+      // Load more when scrolled 50% down (more aggressive for TV navigation)
+      if (scrollPercentage > 0.5 && visibleGenresCount < allGenres.length) {
         console.log('[Genres] Loading more genres...', visibleGenresCount, '/', allGenres.length);
-        setVisibleGenresCount(prev => Math.min(prev + 4, allGenres.length)); // Load 4 more (1 row)
+        setVisibleGenresCount(prev => Math.min(prev + 8, allGenres.length)); // Load 8 more (2 rows)
       }
     };
 
