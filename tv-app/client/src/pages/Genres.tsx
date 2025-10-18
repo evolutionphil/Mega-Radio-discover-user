@@ -139,7 +139,7 @@ export const Genres = (): JSX.Element => {
 
   return (
     <AppLayout currentPage="genres" scrollContainerRef={scrollContainerRef}>
-      <div ref={scrollContainerRef} className="relative w-[1920px] min-h-[1080px] overflow-y-auto" data-testid="page-genres">
+      <div ref={scrollContainerRef} className="relative w-[1920px] h-[1080px] overflow-y-auto" data-testid="page-genres">
         {/* Background Image */}
         <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
           <img
