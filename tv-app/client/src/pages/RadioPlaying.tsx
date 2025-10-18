@@ -4,6 +4,8 @@ import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 import { useMemo, useEffect, useRef, useState, useCallback } from "react";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useLocalization } from "@/contexts/LocalizationContext";
+import { useCountry } from "@/contexts/CountryContext";
+import { CountrySelector } from "@/components/CountrySelector";
 
 // Asset path helper
 function getAssetPath(path: string) {
@@ -17,7 +19,8 @@ export const RadioPlaying = (): JSX.Element => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
   const audioPlayerRef = useRef<any>(null);
-  const { t, detectedCountryCode } = useLocalization();
+  const { t } = useLocalization();
+  const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   
   // Station history for Previous button (stores station IDs)
   const stationHistoryRef = useRef<string[]>([]);
@@ -31,11 +34,8 @@ export const RadioPlaying = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   
-  // Country selector state (same as DiscoverNoUser)
+  // Country selector state
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState("United States");
-  const [selectedCountryCode, setSelectedCountryCode] = useState("US");
-  const selectedCountryFlag = `https://flagcdn.com/w40/${selectedCountryCode.toLowerCase()}.png`;
   
   // Infinite scroll state for similar stations
   const [allSimilarStations, setAllSimilarStations] = useState<Station[]>([]);
@@ -783,6 +783,19 @@ export const RadioPlaying = (): JSX.Element => {
         )}
       </div>
 
+      {/* Country Selector Modal */}
+      {isCountrySelectorOpen && (
+        <CountrySelector
+          isOpen={isCountrySelectorOpen}
+          onClose={() => setIsCountrySelectorOpen(false)}
+          selectedCountry={selectedCountry}
+          onSelectCountry={(country) => {
+            console.log('[RadioPlaying] Country selected:', country);
+            setCountry(country.name, country.code, country.flag);
+            setIsCountrySelectorOpen(false);
+          }}
+        />
+      )}
 
         </div>
       </div>

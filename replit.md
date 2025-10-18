@@ -6,6 +6,14 @@ Mega Radio is a full-stack web radio streaming application designed for TV/large
 
 ## Recent Changes (October 18, 2025)
 
+**Global Country Selection Fix (Build: index-B0FgqF_j.js):**
+- Fixed RadioPlaying page to use global `CountryContext` instead of local state
+- RadioPlaying was hardcoded to "United States" - now uses global country selection
+- All pages now share same country state: Discover, Genres, Search, RadioPlaying
+- Country selection persists across ALL pages via `CountryContext` + localStorage
+- Removed "Popular Radios" section from station detail page
+- Fixed missing SVG images in Country Selector (changed to relative paths)
+
 **Global Country Selection & Shared Layout Implementation:**
 - Created `CountryContext` to provide global country state across all pages
 - Built `AppLayout` component with shared header and sidebar for all main pages
