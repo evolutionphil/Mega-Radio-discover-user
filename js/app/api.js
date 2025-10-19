@@ -33,18 +33,58 @@ var MegaRadioAPI = (function() {
             retries = retries || 3;
             options = options || {};
             
+            console.log('[API DEBUG] 🔍 Starting fetch to:', url);
+            console.log('[API DEBUG] 📤 Request options:', JSON.stringify(options));
+            
             return fetch(url, options)
                 .then(function(response) {
+                    console.log('[API DEBUG] 📥 Response received:');
+                    console.log('[API DEBUG]   - Status:', response.status, response.statusText);
+                    console.log('[API DEBUG]   - Headers:', {
+                        'Content-Type': response.headers.get('content-type'),
+                        'Content-Length': response.headers.get('content-length')
+                    });
+                    
                     if (!response.ok) {
-                        throw new Error('HTTP ' + response.status);
+                        console.error('[API DEBUG] ❌ HTTP Error:', response.status, response.statusText);
+                        throw new Error('HTTP ' + response.status + ' ' + response.statusText);
                     }
-                    return response.json();
+                    
+                    return response.text().then(function(text) {
+                        console.log('[API DEBUG] 📄 Raw response text (first 500 chars):', text.substring(0, 500));
+                        
+                        if (!text || text.trim() === '') {
+                            console.warn('[API DEBUG] ⚠️  Empty response body!');
+                            return null;
+                        }
+                        
+                        try {
+                            var data = JSON.parse(text);
+                            console.log('[API DEBUG] ✅ JSON parsed successfully');
+                            console.log('[API DEBUG] 📊 Data type:', Array.isArray(data) ? 'Array' : typeof data);
+                            console.log('[API DEBUG] 📊 Data length/keys:', Array.isArray(data) ? data.length : Object.keys(data || {}).length);
+                            return data;
+                        } catch (parseError) {
+                            console.error('[API DEBUG] ❌ JSON parse error:', parseError.message);
+                            console.error('[API DEBUG] 📄 Invalid JSON text:', text);
+                            throw new Error('Invalid JSON response: ' + parseError.message);
+                        }
+                    });
                 })
                 .catch(function(error) {
+                    console.error('[API DEBUG] ❌ Fetch error:', error.message);
+                    console.error('[API DEBUG] 🔍 Error details:', {
+                        name: error.name,
+                        message: error.message,
+                        stack: error.stack ? error.stack.substring(0, 200) : 'No stack trace'
+                    });
+                    
                     if (retries > 0) {
-                        console.log('[API] Retrying... (' + retries + ' left)');
+                        console.log('[API DEBUG] 🔄 Retrying... (' + retries + ' attempts left)');
                         return MegaRadioAPI.fetchWithRetry(url, options, retries - 1);
                     }
+                    
+                    console.error('[API DEBUG] 💥 All retries exhausted, giving up');
                     throw error;
                 });
         },
