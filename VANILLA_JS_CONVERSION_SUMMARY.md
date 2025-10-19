@@ -137,27 +137,32 @@ dist-vanilla/              ← DEPLOYMENT FOLDER
 
 ---
 
-## 🔨 Build & Deployment
+## 🔨 Deployment (LGTV-Master Pattern: NO BUILD!)
 
 ### **Development**
 ```bash
-# Open in browser
-open index-vanilla.html
-```
+# Just open index.html in browser
+open index.html
 
-### **Build for Deployment**
-```bash
-./build-vanilla.sh
-# Output: dist-vanilla/ folder
+# OR use local server
+python3 -m http.server 8080
 ```
 
 ### **Deploy to Samsung TV**
-1. Package `dist-vanilla/` as `.wgt` file
-2. Install via Tizen Studio
+```bash
+# Package entire ROOT folder as .wgt
+tizen package -t wgt -s <profile> -- .
+tizen install -n MegaRadio.wgt -t <device-id>
+```
 
 ### **Deploy to LG webOS**
-1. Package `dist-vanilla/` as `.ipk` file
-2. Install via webOS TV SDK
+```bash
+# Package entire ROOT folder as .ipk
+ares-package .
+ares-install com.megaradio.tv_1.0.0_all.ipk -d <device>
+```
+
+**NO BUILD SCRIPT, NO DIST FOLDER - Everything is flat at root level!**
 
 ---
 

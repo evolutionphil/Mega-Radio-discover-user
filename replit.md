@@ -36,10 +36,10 @@ Root (Main Development Project)
 - All pages follow LGTV pattern: init(), render(), bindEvents(), loadData(), cleanup() methods
 - Page navigation: Hash-based routing with show/hide `.active` class pattern
 - State management: Singleton AppState with pub/sub events + localStorage persistence
-- Build output: `dist-vanilla/` folder - deployment-ready for Samsung TV and LG webOS
-- Build script: `./build-vanilla.sh` creates complete deployment package
+- **LGTV-Master Pattern**: NO build script, NO dist folder - everything flat at root level
+- Deployment: Package entire root folder directly as .wgt (Samsung) or .ipk (LG webOS)
 - See VANILLA_JS_CONVERSION_SUMMARY.md for complete documentation
-- **NOTE**: Both React version (tv-app/) and Vanilla JS version (dist-vanilla/) are now available
+- **NOTE**: Both React version (tv-app/) and Vanilla JS version (root index.html) are now available
 
 ### October 19, 2025 - Simplified to Single Index (LGTV Pattern)
 - Consolidated project structure: Root is main development, tv-app/ is Samsung TV build output only
