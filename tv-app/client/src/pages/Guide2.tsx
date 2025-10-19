@@ -6,27 +6,62 @@ export const Guide2 = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const { t } = useLocalization();
 
+  // Component lifecycle logging
+  useEffect(() => {
+    console.log('[Guide2] 🎬 Component mounted');
+    console.log('[Guide2] 📂 Image paths to load:', {
+      background: '/images/discover-background.png',
+      arrow: '/images/arrow.svg',
+      icon: '/images/music-icon.svg'
+    });
+    return () => {
+      console.log('[Guide2] 👋 Component unmounting');
+    };
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      console.log('[Guide2] Key pressed:', e.keyCode, e.key);
+      console.log('[Guide2] ⌨️  Key event:', {
+        key: e.key,
+        keyCode: e.keyCode,
+        code: e.code,
+        type: e.type,
+        target: e.target,
+        bubbles: e.bubbles,
+        cancelable: e.cancelable
+      });
       if (e.keyCode === 13 || e.key === 'Enter') {
-        console.log('[Guide2] OK/Enter pressed - navigating to Guide 3');
+        console.log('[Guide2] ✅ OK/Enter detected - navigating to Guide 3');
         e.preventDefault();
         e.stopPropagation();
         setLocation('/guide-3');
+      } else {
+        console.log('[Guide2] ℹ️  Key not handled:', e.key);
       }
     };
-    console.log('[Guide2] Adding keydown listener');
+    console.log('[Guide2] 🎯 Adding keydown listener (capture phase)');
     window.addEventListener('keydown', handleKeyDown, true);
     return () => {
-      console.log('[Guide2] Removing keydown listener');
+      console.log('[Guide2] 🗑️  Removing keydown listener');
       window.removeEventListener('keydown', handleKeyDown, true);
     };
   }, [setLocation]);
 
   const handleClick = () => {
-    console.log('[Guide2] Clicked - navigating to Guide 3');
+    console.log('[Guide2] 🖱️  Clicked - navigating to Guide 3');
     setLocation('/guide-3');
+  };
+
+  // Image loading handlers
+  const handleImageLoad = (imageName: string) => {
+    console.log(`[Guide2] ✅ Image loaded successfully: ${imageName}`);
+  };
+
+  const handleImageError = (imageName: string, src: string) => {
+    console.error(`[Guide2] ❌ Image failed to load: ${imageName}`, {
+      src,
+      fullPath: window.location.origin + src
+    });
   };
 
   return (
@@ -42,6 +77,8 @@ export const Guide2 = (): JSX.Element => {
               alt="" 
               className="absolute max-w-none object-50%-50% object-cover size-full" 
               src="/images/discover-background.png"
+              onLoad={() => handleImageLoad('discover-background.png')}
+              onError={() => handleImageError('discover-background.png', '/images/discover-background.png')}
             />
             <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
           </div>
@@ -55,6 +92,8 @@ export const Guide2 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none size-full" 
                 src="/images/arrow.svg"
+                onLoad={() => handleImageLoad('arrow.svg')}
+                onError={() => handleImageError('arrow.svg', '/images/arrow.svg')}
               />
             </div>
           </div>
@@ -71,6 +110,8 @@ export const Guide2 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none size-full" 
                 src="/images/music-icon.svg"
+                onLoad={() => handleImageLoad('music-icon.svg')}
+                onError={() => handleImageError('music-icon.svg', '/images/music-icon.svg')}
               />
             </div>
           </div>

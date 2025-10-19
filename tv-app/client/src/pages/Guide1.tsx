@@ -6,30 +6,65 @@ export const Guide1 = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const { t } = useLocalization();
 
+  // Component lifecycle logging
+  useEffect(() => {
+    console.log('[Guide1] 🎬 Component mounted');
+    console.log('[Guide1] 📂 Image paths to load:', {
+      background: '/images/discover-background.png',
+      arrow: '/images/arrow.svg',
+      icon: '/images/radio-icon.svg'
+    });
+    return () => {
+      console.log('[Guide1] 👋 Component unmounting');
+    };
+  }, []);
+
   // Handle Samsung TV remote OK/Enter key - global listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      console.log('[Guide1] Key pressed:', e.keyCode, e.key);
+      console.log('[Guide1] ⌨️  Key event:', {
+        key: e.key,
+        keyCode: e.keyCode,
+        code: e.code,
+        type: e.type,
+        target: e.target,
+        bubbles: e.bubbles,
+        cancelable: e.cancelable
+      });
       // OK/Enter key on Samsung TV (keyCode 13 or "Enter")
       if (e.keyCode === 13 || e.key === 'Enter') {
-        console.log('[Guide1] OK/Enter pressed - navigating to Guide 2');
+        console.log('[Guide1] ✅ OK/Enter detected - navigating to Guide 2');
         e.preventDefault();
         e.stopPropagation();
         setLocation('/guide-2');
+      } else {
+        console.log('[Guide1] ℹ️  Key not handled:', e.key);
       }
     };
 
-    console.log('[Guide1] Adding keydown listener');
+    console.log('[Guide1] 🎯 Adding keydown listener (capture phase)');
     window.addEventListener('keydown', handleKeyDown, true);
     return () => {
-      console.log('[Guide1] Removing keydown listener');
+      console.log('[Guide1] 🗑️  Removing keydown listener');
       window.removeEventListener('keydown', handleKeyDown, true);
     };
   }, [setLocation]);
 
   const handleClick = () => {
-    console.log('[Guide1] Clicked - navigating to Guide 2');
+    console.log('[Guide1] 🖱️  Clicked - navigating to Guide 2');
     setLocation('/guide-2');
+  };
+
+  // Image loading handlers
+  const handleImageLoad = (imageName: string) => {
+    console.log(`[Guide1] ✅ Image loaded successfully: ${imageName}`);
+  };
+
+  const handleImageError = (imageName: string, src: string) => {
+    console.error(`[Guide1] ❌ Image failed to load: ${imageName}`, {
+      src,
+      fullPath: window.location.origin + src
+    });
   };
 
   return (
@@ -45,6 +80,8 @@ export const Guide1 = (): JSX.Element => {
               alt="" 
               className="absolute max-w-none object-50%-50% object-cover size-full" 
               src="/images/discover-background.png"
+              onLoad={() => handleImageLoad('discover-background.png')}
+              onError={() => handleImageError('discover-background.png', '/images/discover-background.png')}
             />
             <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
           </div>
@@ -61,6 +98,8 @@ export const Guide1 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none size-full" 
                 src="/images/radio-icon.svg"
+                onLoad={() => handleImageLoad('radio-icon.svg')}
+                onError={() => handleImageError('radio-icon.svg', '/images/radio-icon.svg')}
               />
             </div>
           </div>
@@ -74,6 +113,8 @@ export const Guide1 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none size-full" 
                 src="/images/arrow.svg"
+                onLoad={() => handleImageLoad('arrow.svg')}
+                onError={() => handleImageError('arrow.svg', '/images/arrow.svg')}
               />
             </div>
           </div>
