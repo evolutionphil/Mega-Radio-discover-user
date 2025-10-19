@@ -222,7 +222,7 @@ export const Search = (): JSX.Element => {
         if (station) {
           console.log('[Search] ▶️  Playing search result:', station.name);
           playStation(station);
-          setLocation(`/radio-playing?stationId=${station._id}`);
+          setLocation(`/radio-playing?station=${station._id}`);
         }
       }
       // Recently played (7+searchResults.length onwards)
@@ -232,7 +232,7 @@ export const Search = (): JSX.Element => {
         if (station) {
           console.log('[Search] ▶️  Playing recently played:', station.name);
           playStation(station);
-          setLocation(`/radio-playing?stationId=${station._id}`);
+          setLocation(`/radio-playing?station=${station._id}`);
         }
       }
     },

@@ -134,7 +134,7 @@ export const GenreDetail = (): JSX.Element => {
         const station = stations[stationIndex];
         if (station) {
           playStation(station as any);
-          setLocation(`/radio-playing?stationId=${station._id}`);
+          setLocation(`/radio-playing?station=${station._id}`);
         }
       }
     },
@@ -299,7 +299,7 @@ export const GenreDetail = (): JSX.Element => {
                 data-testid={`card-station-${index}`}
                 onClick={() => {
                   playStation(station as any);
-                  setLocation(`/radio-playing?stationId=${station._id}`);
+                  setLocation(`/radio-playing?station=${station._id}`);
                 }}
               >
                 <div className="w-full aspect-square bg-white/10 rounded-[16px] mb-4 overflow-hidden">

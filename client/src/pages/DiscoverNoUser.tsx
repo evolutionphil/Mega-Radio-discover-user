@@ -215,7 +215,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         const station = popularStations[stationIndex];
         if (station) {
           playStation(station);
-          setLocation(`/radio-playing?stationId=${station._id}`);
+          setLocation(`/radio-playing?station=${station._id}`);
         }
       }
       // Genres - dynamic boundaries
@@ -232,7 +232,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         const station = displayedStations[stationIndex];
         if (station) {
           playStation(station);
-          setLocation(`/radio-playing?stationId=${station._id}`);
+          setLocation(`/radio-playing?station=${station._id}`);
         }
       }
     },
@@ -298,7 +298,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       if (stationToPlay) {
         console.log('[AutoPlay] Auto-playing station:', stationToPlay.name);
         playStation(stationToPlay);
-        setLocation(`/radio-playing?stationId=${stationToPlay._id}`);
+        setLocation(`/radio-playing?station=${stationToPlay._id}`);
       } else {
         console.log('[AutoPlay] No station found to auto-play');
       }
