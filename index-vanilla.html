@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mega Radio - TV App</title>
+    
+    <!-- Bootstrap 4.4.1 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    
+    <!-- Font Awesome 5.12.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    
+    <!-- Custom TV Styles -->
+    <link rel="stylesheet" href="css/tv-styles.css">
+    <link rel="stylesheet" href="css/vanilla-app.css">
+    
+    <!-- Ubuntu Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app" class="tv-app">
+        <!-- Splash Page -->
+        <div id="page-splash" class="page active">
+            <div class="splash-container"></div>
+        </div>
+
+        <!-- Guide Pages -->
+        <div id="page-guide-1" class="page">
+            <div class="guide-container"></div>
+        </div>
+        <div id="page-guide-2" class="page">
+            <div class="guide-container"></div>
+        </div>
+        <div id="page-guide-3" class="page">
+            <div class="guide-container"></div>
+        </div>
+        <div id="page-guide-4" class="page">
+            <div class="guide-container"></div>
+        </div>
+
+        <!-- Main Pages with Sidebar -->
+        <div id="page-discover" class="page with-sidebar">
+            <div class="sidebar-container"></div>
+            <div class="page-content"></div>
+        </div>
+
+        <div id="page-genres" class="page with-sidebar">
+            <div class="sidebar-container"></div>
+            <div class="page-content"></div>
+        </div>
+
+        <div id="page-search" class="page with-sidebar">
+            <div class="sidebar-container"></div>
+            <div class="page-content"></div>
+        </div>
+
+        <div id="page-favorites" class="page with-sidebar">
+            <div class="sidebar-container"></div>
+            <div class="page-content"></div>
+        </div>
+
+        <div id="page-settings" class="page with-sidebar">
+            <div class="sidebar-container"></div>
+            <div class="page-content"></div>
+        </div>
+
+        <div id="page-radio-playing" class="page fullscreen">
+            <div class="radio-playing-container"></div>
+        </div>
+
+        <!-- Global Player Bar -->
+        <div id="global-player-bar" class="player-bar">
+            <div class="player-info">
+                <img id="player-station-logo" class="station-logo" src="" alt="">
+                <div class="station-details">
+                    <div id="player-station-name" class="station-name"></div>
+                    <div id="player-station-genre" class="station-genre"></div>
+                </div>
+            </div>
+            <div class="player-controls">
+                <button id="player-prev-btn" class="btn-player"><i class="fas fa-step-backward"></i></button>
+                <button id="player-play-btn" class="btn-player"><i class="fas fa-play"></i></button>
+                <button id="player-next-btn" class="btn-player"><i class="fas fa-step-forward"></i></button>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay" style="display:none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery 3.4.1 -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+    <!-- Bootstrap 4.4.1 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
+    <!-- webOS SDK -->
+    <script src="webOSTVjs-1.2.0/webOSTV.js"></script>
+    
+    <!-- TV Scripts -->
+    <script src="js/polyfills.js"></script>
+    <script src="js/tv-remote-keys.js"></script>
+    <script src="js/tv-spatial-navigation.js"></script>
+    <script src="js/tv-audio-player.js"></script>
+    
+    <!-- App Core -->
+    <script src="js/app/config.js"></script>
+    <script src="js/app/utils.js"></script>
+    <script src="js/app/state.js"></script>
+    <script src="js/app/router.js"></script>
+    <script src="js/app/api.js"></script>
+    <script src="js/app/localization.js"></script>
+    <script src="js/app/player.js"></script>
+    <script src="js/app/favorites.js"></script>
+    
+    <!-- Page Controllers -->
+    <script src="js/pages/splash.js"></script>
+    <script src="js/pages/guides.js"></script>
+    <script src="js/pages/discover.js"></script>
+    <script src="js/pages/genres.js"></script>
+    <script src="js/pages/search.js"></script>
+    <script src="js/pages/favorites.js"></script>
+    <script src="js/pages/settings.js"></script>
+    <script src="js/pages/radio-playing.js"></script>
+    
+    <!-- Components -->
+    <script src="js/components/sidebar.js"></script>
+    
+    <!-- App Initialization -->
+    <script src="js/app/main.js"></script>
+</body>
+</html>
