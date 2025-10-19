@@ -67,59 +67,59 @@ export const Search = (): JSX.Element => {
     ? recentlyPlayedStations 
     : (popularStationsData?.stations || []);
 
-  // Calculate totalItems: 6 (sidebar) + 1 (country) + 1 (input) + results + recent
-  const totalItems = 6 + 1 + 1 + searchResults.length + recentStations.length;
+  // Calculate totalItems: 5 (sidebar) + 1 (country) + 1 (input) + results + recent
+  const totalItems = 5 + 1 + 1 + searchResults.length + recentStations.length;
 
-  // Define sidebar routes
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '#', '/settings'];
+  // Define sidebar routes (removed Records)
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
   // Custom navigation logic for multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-5)
-    if (current >= 0 && current <= 5) {
+    // Sidebar section (0-4)
+    if (current >= 0 && current <= 4) {
       if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
+        newIndex = current < 4 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 6; // Jump to country selector
+        newIndex = 5; // Jump to country selector
       }
     }
-    // Country selector (6)
-    else if (current === 6) {
+    // Country selector (5)
+    else if (current === 5) {
       if (direction === 'DOWN') {
-        newIndex = 7; // Jump to search input
+        newIndex = 6; // Jump to search input
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to first sidebar item
       }
     }
-    // Search input (7)
-    else if (current === 7) {
+    // Search input (6)
+    else if (current === 6) {
       if (direction === 'UP') {
-        newIndex = 6; // Jump to country selector
+        newIndex = 5; // Jump to country selector
       } else if (direction === 'DOWN') {
         // Jump to first search result or first recent station
         if (searchResults.length > 0) {
-          newIndex = 8; // First search result
+          newIndex = 7; // First search result
         } else if (recentStations.length > 0) {
-          newIndex = 8; // First recent station (no search results)
+          newIndex = 7; // First recent station (no search results)
         }
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to sidebar
       }
     }
-    // Search results section (8 to 8+searchResults.length-1)
-    else if (current >= 8 && current < 8 + searchResults.length) {
-      const relIndex = current - 8;
+    // Search results section (7 to 7+searchResults.length-1)
+    else if (current >= 7 && current < 7 + searchResults.length) {
+      const relIndex = current - 7;
 
       if (direction === 'UP') {
         if (relIndex > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 7; // Jump to search input
+          newIndex = 6; // Jump to search input
         }
       } else if (direction === 'DOWN') {
         if (relIndex < searchResults.length - 1) {
@@ -127,7 +127,7 @@ export const Search = (): JSX.Element => {
         } else {
           // Jump to recently played if available
           if (recentStations.length > 0) {
-            newIndex = 8 + searchResults.length; // First recent station
+            newIndex = 7 + searchResults.length; // First recent station
           }
         }
       } else if (direction === 'LEFT') {
@@ -135,8 +135,8 @@ export const Search = (): JSX.Element => {
       }
     }
     // Recently played section (2-column grid)
-    else if (current >= 8 + searchResults.length) {
-      const recentStartIndex = 8 + searchResults.length;
+    else if (current >= 7 + searchResults.length) {
+      const recentStartIndex = 7 + searchResults.length;
       const relIndex = current - recentStartIndex;
       const row = Math.floor(relIndex / 2);
       const col = relIndex % 2;
@@ -157,9 +157,9 @@ export const Search = (): JSX.Element => {
         } else {
           // Jump to search results or search input
           if (searchResults.length > 0) {
-            newIndex = 8 + searchResults.length - 1; // Last search result
+            newIndex = 7 + searchResults.length - 1; // Last search result
           } else {
-            newIndex = 7; // Search input
+            newIndex = 6; // Search input
           }
         }
       } else if (direction === 'DOWN') {
@@ -190,34 +190,34 @@ export const Search = (): JSX.Element => {
   const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 7, // Start on search input
+    initialIndex: 6, // Start on search input
     onSelect: (index) => {
       console.log('[Search] 🎯 handleMenuClick - index:', index);
       
-      // Sidebar navigation (0-5)
-      if (index >= 0 && index <= 5) {
+      // Sidebar navigation (0-4)
+      if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
         if (route !== '#') {
           console.log('[Search] 📍 Navigating to sidebar route:', route);
           setLocation(route);
         }
       }
-      // Country selector (6)
-      else if (index === 6) {
+      // Country selector (5)
+      else if (index === 5) {
         console.log('[Search] 🌍 Opening country selector');
         setIsCountrySelectorOpen(true);
       }
-      // Search input (7) - LGTV pattern: focus input and set cursor to end
-      else if (index === 7) {
+      // Search input (6) - LGTV pattern: focus input and set cursor to end
+      else if (index === 6) {
         console.log('[Search] ⌨️  Search input selected - focusing input field (LGTV pattern)');
         if (inputRef.current) {
           inputRef.current.focus();
           setInputCursorToEnd();
         }
       }
-      // Search results (8 to 8+searchResults.length-1)
-      else if (index >= 8 && index < 8 + searchResults.length) {
-        const resultIndex = index - 8;
+      // Search results (7 to 7+searchResults.length-1)
+      else if (index >= 7 && index < 7 + searchResults.length) {
+        const resultIndex = index - 7;
         const station = searchResults[resultIndex];
         if (station) {
           console.log('[Search] ▶️  Playing search result:', station.name);
@@ -225,9 +225,9 @@ export const Search = (): JSX.Element => {
           setLocation(`/radio-playing?stationId=${station._id}`);
         }
       }
-      // Recently played (8+searchResults.length onwards)
-      else if (index >= 8 + searchResults.length) {
-        const recentIndex = index - 8 - searchResults.length;
+      // Recently played (7+searchResults.length onwards)
+      else if (index >= 7 + searchResults.length) {
+        const recentIndex = index - 7 - searchResults.length;
         const station = recentStations[recentIndex];
         if (station) {
           console.log('[Search] ▶️  Playing recently played:', station.name);
@@ -264,9 +264,9 @@ export const Search = (): JSX.Element => {
     }
   });
 
-  // Special handling: Focus input element when index 7 is focused
+  // Special handling: Focus input element when index 6 is focused
   useEffect(() => {
-    if (focusIndex === 7 && inputRef.current) {
+    if (focusIndex === 6 && inputRef.current) {
       console.log('[Search] Focus index 7 (search input) - calling .focus() on input element');
       inputRef.current.focus();
       
@@ -458,26 +458,9 @@ export const Search = (): JSX.Element => {
             </div>
           </Link>
 
-          {/* Records */}
-          <Link href="#">
-            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px] ${getFocusClasses(isFocused(4))}`} data-testid="button-records">
-              <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
-                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                  {t('profile_nav_records')}
-                </p>
-                <div className="absolute left-[17px] size-[32px] top-0">
-                  <div className="absolute left-0 size-[32px] top-0">
-                    <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
-                    <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-
           {/* Settings */}
           <Link href="/settings">
-            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px] ${getFocusClasses(isFocused(5))}`} data-testid="button-settings">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px] ${getFocusClasses(isFocused(4))}`} data-testid="button-settings">
               <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   {t('settings')}
@@ -501,7 +484,7 @@ export const Search = (): JSX.Element => {
 
       {/* Search Input */}
       <div 
-        className={`absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px] ${getFocusClasses(isFocused(7))}`}
+        className={`absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px] ${getFocusClasses(isFocused(6))}`}
         data-testid="input-search"
       >
         <div className="h-[91px] overflow-clip relative rounded-[inherit] w-[774px]">
@@ -526,7 +509,7 @@ export const Search = (): JSX.Element => {
       {/* Search Results */}
       {searchQuery.length > 0 && searchResults.map((station, index) => {
         const topPositions = [259, 359, 459, 559];
-        const focusIdx = 8 + index;
+        const focusIdx = 7 + index;
         
         return (
           <div
@@ -569,7 +552,7 @@ export const Search = (): JSX.Element => {
         const col = index % 2;
         const leftPositions = [1110, 1340];
         const topPositions = [136, 400, 650];
-        const focusIdx = 8 + searchResults.length + index;
+        const focusIdx = 7 + searchResults.length + index;
         
         return (
           <div 
