@@ -27,14 +27,14 @@ export const GenreList = (): JSX.Element => {
   const [page, setPage] = useState(1);
   const STATIONS_PER_PAGE = 21; // 7 columns x 3 rows
 
-  // Fetch stations by genre and country
+  // Fetch stations by genre and country (OPTIMIZED: 50 initial)
   const { data: stationsData, isLoading } = useQuery({
     queryKey: ['/api/stations/genre', genreSlug, selectedCountryCode],
     queryFn: async () => {
       // Fetch stations by genre for the selected country
       const result = await megaRadioApi.getAllStations({ 
         country: selectedCountryCode,
-        limit: 200,
+        limit: 50,
         genre: genreSlug
       });
       return result;

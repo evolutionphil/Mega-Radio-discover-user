@@ -17,12 +17,12 @@ export const Genres = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
-  // Fetch stations from selected country to extract real genres
+  // Fetch stations from selected country to extract real genres (OPTIMIZED: 50 initial)
   const { data: stationsData } = useQuery({
     queryKey: ['/api/stations/country', selectedCountryCode],
     queryFn: () => megaRadioApi.getWorkingStations({ 
       country: selectedCountryCode,
-      limit: 500 
+      limit: 50 
     }),
   });
 
