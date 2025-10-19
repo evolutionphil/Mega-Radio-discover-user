@@ -2,13 +2,24 @@
 
 echo "🔨 Building Mega Radio Samsung TV App (LGTV Simple Pattern)..."
 
+# Step 0: Clean old bundles (CRITICAL for Samsung TV cache busting)
+echo "🧹 Cleaning old bundles..."
+rm -rf assets/*.js
+rm -rf dist/public/assets/*.js
+
 # Step 1: Build React app with Vite (TV-specific IIFE format)
 echo "📦 Building React bundle..."
 vite build --config vite.config.tv.ts
 
 # Step 2: Extract the hashed bundle filename from Vite output
 VITE_JS_FILE=$(grep -oP 'src="/assets/index-[^"]+\.js"' dist/public/index.html | sed 's/src="//g' | sed 's/"//g' | sed 's/^\///g')
-echo "✓ React bundle: ${VITE_JS_FILE}"
+echo "✓ Vite bundle: ${VITE_JS_FILE}"
+
+# Step 2.5: RENAME bundle with timestamp for Samsung TV cache busting
+TIMESTAMP=$(date +%s%3N)  # Milliseconds timestamp
+NEW_JS_FILE="assets/index-${TIMESTAMP}.js"
+echo "🔄 Renaming to: ${NEW_JS_FILE} (cache busting)"
+mv "dist/public/${VITE_JS_FILE}" "dist/public/${NEW_JS_FILE}"
 
 # Step 3: Copy bundle to assets folder
 echo "📂 Copying bundle to assets..."
@@ -30,16 +41,15 @@ cp client/public/css/tv-styles.css css/ 2>/dev/null || true
 cp -r client/public/webOSTVjs-1.2.0 . 2>/dev/null || true
 
 # Step 7: Update index.html with new bundle reference (IN-PLACE)
-TIMESTAMP=$(date +%s)
-echo "🔧 Updating index.html with bundle: ${VITE_JS_FILE}"
-sed -i "s|assets/index-[^\"]*\.js|${VITE_JS_FILE}|g" index.html
+echo "🔧 Updating index.html with bundle: ${NEW_JS_FILE}"
+sed -i "s|assets/index-[^\"]*\.js|${NEW_JS_FILE}|g" index.html
 sed -i "s|v=[0-9]*|v=${TIMESTAMP}|g" index.html
 
 echo "✅ Build complete!"
 echo ""
 echo "📱 Samsung TV App ready in: tv-app/"
 echo "   ONE index.html: tv-app/index.html"
-echo "   Bundle: ${VITE_JS_FILE}"
+echo "   Bundle: ${NEW_JS_FILE} (🆕 NEW FILENAME - cache busted!)"
 echo "   Version: ${TIMESTAMP}"
 echo ""
 echo "🚀 Deploy the entire tv-app/ folder to Samsung TV"
