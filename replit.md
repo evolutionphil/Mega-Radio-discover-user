@@ -73,23 +73,28 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 
 ## Recent Changes
 
-### October 19, 2025 - URL Routing Structure Fix
+### October 19, 2025 - Hash-Based Routing Required for Samsung TV
 
-**Issue Identified:**
-- URLs were displaying with hash fragments: `/guide-1#/discover-no-user`, `/guide-1?station=xyz#/radio-playing`
-- App was using hash-based routing (`useHashLocation` from wouter)
-- This caused confusing URL structure where browser path and app route were separated by `#`
+**CRITICAL FINDING:**
+- Hash-based routing (`useHashLocation`) is **REQUIRED** for Samsung TV compatibility
+- Path-based routing causes `ERR_<unknown>` errors when loading JavaScript files on Samsung Tizen
+- URL structure like `/guide-1#/discover-no-user` is intentional and necessary
 
-**Fix Applied:**
-- ✅ Removed `useHashLocation` import from App.tsx
-- ✅ Changed router from `<WouterRouter hook={useHashLocation}>` to `<WouterRouter>`
-- ✅ App now uses clean path-based routing with HTML5 History API
-- ✅ URLs now display correctly: `/discover-no-user`, `/radio-playing?station=xyz`
+**Why Hash-Based Routing is Required:**
+- Samsung Tizen Chromium 76 browser has limitations with HTML5 History API in packaged apps
+- Hash-based routing prevents the browser from treating route changes as full page navigations
+- Scripts in `index.html` load once on initial page load and remain available
+- Path-based routing causes the TV browser to attempt reloading scripts on each route change, resulting in failures
 
-**Technical Notes:**
-- Wouter supports both hash-based routing (via `useHashLocation`) and path-based routing (default)
-- Path-based routing provides cleaner URLs and better SEO
-- All navigation still works with TV remote controls (key events unchanged)
+**Technical Implementation:**
+- ✅ Uses `useHashLocation` from `wouter/use-hash-location`
+- ✅ Router configured: `<WouterRouter hook={useHashLocation}>`
+- ✅ URL format: `/{initial-page}#{/app-route}` (e.g., `/guide-1#/discover-no-user`)
+- ✅ Browser path stays constant while hash changes handle navigation
+
+**DO NOT CHANGE:**
+- Never remove hash-based routing - it will break Samsung TV deployment
+- This is a platform requirement, not a design choice
 
 ### October 18, 2025 - Guide Pages Simplification Based on Reference App Analysis
 
