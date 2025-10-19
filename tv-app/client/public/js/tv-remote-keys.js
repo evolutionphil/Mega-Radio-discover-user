@@ -146,11 +146,12 @@
         // Dispatch to FocusRouter (set by React)
         // This matches LGTV pattern: switch(current_route) { case "login": login_page.HandleKey(e); }
         if (window.focusRouterDispatch) {
+            // Don't preventDefault here - let pages handle it
+            // Guide pages use their own keydown listeners
             window.focusRouterDispatch(e);
-            e.preventDefault();
-            return false;
         }
         
+        // Allow event to propagate to page handlers
         return true;
     };
     
