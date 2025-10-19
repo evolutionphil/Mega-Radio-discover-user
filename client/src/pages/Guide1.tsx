@@ -71,9 +71,9 @@ export const Guide1 = (): JSX.Element => {
             <img 
               alt="" 
               className="absolute max-w-none object-50%-50% object-cover size-full" 
-              src="/images/discover-background.png"
+              src="images/discover-background.png"
               onLoad={() => handleImageLoad('discover-background.png')}
-              onError={() => handleImageError('discover-background.png', '/images/discover-background.png')}
+              onError={() => handleImageError('discover-background.png', 'images/discover-background.png')}
             />
             <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
           </div>
@@ -89,9 +89,9 @@ export const Guide1 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="/images/radio-icon.svg"
+                src="images/radio-icon.svg"
                 onLoad={() => handleImageLoad('radio-icon.svg')}
-                onError={() => handleImageError('radio-icon.svg', '/images/radio-icon.svg')}
+                onError={() => handleImageError('radio-icon.svg', 'images/radio-icon.svg')}
               />
             </div>
           </div>
@@ -104,9 +104,9 @@ export const Guide1 = (): JSX.Element => {
               <img 
                 alt="" 
                 className="block max-w-none size-full" 
-                src="/images/arrow.svg"
+                src="images/arrow.svg"
                 onLoad={() => handleImageLoad('arrow.svg')}
-                onError={() => handleImageError('arrow.svg', '/images/arrow.svg')}
+                onError={() => handleImageError('arrow.svg', 'images/arrow.svg')}
               />
             </div>
           </div>
