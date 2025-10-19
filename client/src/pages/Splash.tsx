@@ -41,7 +41,7 @@ export const Splash = (): JSX.Element => {
           <img 
             alt="" 
             className="block max-w-none size-full" 
-            src="/images/path8.svg"
+            src="/images/path-8.svg"
           />
         </div>
       </div>
