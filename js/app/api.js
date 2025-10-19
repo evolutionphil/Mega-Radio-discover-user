@@ -18,7 +18,8 @@ var MegaRadioAPI = (function() {
         'ES': 'Spain',
         'CA': 'Canada',
         'AU': 'Australia',
-        'BR': 'Brazil'
+        'BR': 'Brazil',
+        'AT': 'Austria'
     };
     
     return {
@@ -57,6 +58,11 @@ var MegaRadioAPI = (function() {
             
             return this.fetchWithRetry(url)
                 .then(function(data) {
+                    // Handle null or invalid data
+                    if (!data || !Array.isArray(data)) {
+                        console.log('[API] Genres fetched: 0 (null response)');
+                        return [];
+                    }
                     console.log('[API] Genres fetched:', data.length);
                     return data;
                 })
@@ -77,6 +83,11 @@ var MegaRadioAPI = (function() {
             
             return this.fetchWithRetry(url)
                 .then(function(data) {
+                    // Handle null or invalid data
+                    if (!data || !Array.isArray(data)) {
+                        console.log('[API] Popular stations fetched: 0 (null response)');
+                        return [];
+                    }
                     console.log('[API] Popular stations fetched:', data.length);
                     return data;
                 })
@@ -97,6 +108,11 @@ var MegaRadioAPI = (function() {
             
             return this.fetchWithRetry(url)
                 .then(function(data) {
+                    // Handle null or invalid data
+                    if (!data || !Array.isArray(data)) {
+                        console.log('[API] Working stations fetched: 0 (null response)');
+                        return [];
+                    }
                     console.log('[API] Working stations fetched:', data.length);
                     return data;
                 })
@@ -121,6 +137,11 @@ var MegaRadioAPI = (function() {
             
             return this.fetchWithRetry(url)
                 .then(function(data) {
+                    // Handle null or invalid data
+                    if (!data || !Array.isArray(data)) {
+                        console.log('[API] Search results: 0 (null response)');
+                        return [];
+                    }
                     console.log('[API] Search results:', data.length);
                     return data;
                 })
@@ -145,6 +166,11 @@ var MegaRadioAPI = (function() {
             
             return this.fetchWithRetry(url)
                 .then(function(data) {
+                    // Handle null or invalid data
+                    if (!data || !Array.isArray(data)) {
+                        console.log('[API] Stations by genre fetched: 0 (null response)');
+                        return [];
+                    }
                     console.log('[API] Stations by genre fetched:', data.length);
                     return data;
                 })
