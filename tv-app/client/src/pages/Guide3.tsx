@@ -1,6 +1,7 @@
 import { useLocation } from "wouter";
 import { useEffect } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
+import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 
 export const Guide3 = (): JSX.Element => {
   const [, setLocation] = useLocation();
@@ -19,33 +20,18 @@ export const Guide3 = (): JSX.Element => {
     };
   }, []);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      console.log('[Guide3] ⌨️  Key event:', {
-        key: e.key,
-        keyCode: e.keyCode,
-        code: e.code,
-        type: e.type,
-        target: e.target,
-        bubbles: e.bubbles,
-        cancelable: e.cancelable
-      });
-      if (e.keyCode === 13 || e.key === 'Enter') {
-        console.log('[Guide3] ✅ OK/Enter detected - navigating to Guide 4');
-        e.preventDefault();
-        e.stopPropagation();
-        setLocation('/guide-4');
-      } else {
-        console.log('[Guide3] ℹ️  Key not handled:', e.key);
-      }
-    };
-    console.log('[Guide3] 🎯 Adding keydown listener (capture phase)');
-    window.addEventListener('keydown', handleKeyDown, true);
-    return () => {
-      console.log('[Guide3] 🗑️  Removing keydown listener');
-      window.removeEventListener('keydown', handleKeyDown, true);
-    };
-  }, [setLocation]);
+  // Register with FocusRouter (LGTV pattern)
+  usePageKeyHandler('/guide-3', (e) => {
+    const key = (window as any).tvKey;
+    console.log('[Guide3] ⌨️  Key pressed:', e.keyCode);
+    
+    // OK/Enter key (13) on Samsung TV
+    if (e.keyCode === 13 || e.keyCode === key?.ENTER) {
+      console.log('[Guide3] ✅ OK/Enter - navigating to Guide 4');
+      e.preventDefault();
+      setLocation('/guide-4');
+    }
+  });
 
   const handleClick = () => {
     console.log('[Guide3] 🖱️  Clicked - navigating to Guide 4');

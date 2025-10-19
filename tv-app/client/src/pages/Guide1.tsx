@@ -1,6 +1,7 @@
 import { useLocation } from "wouter";
 import { useEffect } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
+import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 
 export const Guide1 = (): JSX.Element => {
   const [, setLocation] = useLocation();
@@ -19,36 +20,27 @@ export const Guide1 = (): JSX.Element => {
     };
   }, []);
 
-  // Handle Samsung TV remote OK/Enter key - global listener
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      console.log('[Guide1] ⌨️  Key event:', {
-        key: e.key,
-        keyCode: e.keyCode,
-        code: e.code,
-        type: e.type,
-        target: e.target,
-        bubbles: e.bubbles,
-        cancelable: e.cancelable
-      });
-      // OK/Enter key on Samsung TV (keyCode 13 or "Enter")
-      if (e.keyCode === 13 || e.key === 'Enter') {
-        console.log('[Guide1] ✅ OK/Enter detected - navigating to Guide 2');
-        e.preventDefault();
-        e.stopPropagation();
-        setLocation('/guide-2');
-      } else {
-        console.log('[Guide1] ℹ️  Key not handled:', e.key);
-      }
-    };
+  // Register with FocusRouter (LGTV pattern)
+  usePageKeyHandler('/guide-1', (e) => {
+    const key = (window as any).tvKey;
+    console.log('[Guide1] ⌨️  Key pressed:', e.keyCode, getKeyName(e.keyCode, key));
+    
+    // OK/Enter key (13) on Samsung TV
+    if (e.keyCode === 13 || e.keyCode === key?.ENTER) {
+      console.log('[Guide1] ✅ OK/Enter - navigating to Guide 2');
+      e.preventDefault();
+      setLocation('/guide-2');
+    }
+  });
 
-    console.log('[Guide1] 🎯 Adding keydown listener (capture phase)');
-    window.addEventListener('keydown', handleKeyDown, true);
-    return () => {
-      console.log('[Guide1] 🗑️  Removing keydown listener');
-      window.removeEventListener('keydown', handleKeyDown, true);
-    };
-  }, [setLocation]);
+  // Helper function to get key name
+  const getKeyName = (keyCode: number, tvKey: any) => {
+    if (!tvKey) return String(keyCode);
+    for (const name in tvKey) {
+      if (tvKey[name] === keyCode) return name;
+    }
+    return String(keyCode);
+  };
 
   const handleClick = () => {
     console.log('[Guide1] 🖱️  Clicked - navigating to Guide 2');

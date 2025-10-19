@@ -39,13 +39,20 @@ export function FocusRouterProvider({ children }: { children: ReactNode }) {
 
   // Dispatch key event to the handler for current route
   const dispatch = (e: KeyboardEvent) => {
-    const currentRoute = location;
+    let currentRoute = location;
+    
+    // Samsung TV fix: Handle /index.html route
+    if (currentRoute === '/index.html' || currentRoute === '/') {
+      currentRoute = '/guide-1'; // Default to guide-1 for root/index
+    }
+    
     const handler = handlersRef.current.get(currentRoute);
     
     console.log('[FocusRouter] ⌨️  Key event received:', {
       key: e.key,
       keyCode: e.keyCode,
       code: e.code,
+      originalLocation: location,
       currentRoute,
       hasHandler: !!handler,
       registeredRoutes: Array.from(handlersRef.current.keys())
@@ -56,10 +63,12 @@ export function FocusRouterProvider({ children }: { children: ReactNode }) {
       console.log('[FocusRouter] ✅ Dispatching to route handler:', currentRoute);
       handler(e);
     } else {
-      // No handler registered, log for debugging
-      console.warn('[FocusRouter] ⚠️  No handler registered for route:', currentRoute, {
-        availableRoutes: Array.from(handlersRef.current.keys())
-      });
+      // No handler registered - only warn if it's not a common unregistered route
+      if (!currentRoute.includes('/index.html') && currentRoute !== '/') {
+        console.log('[FocusRouter] No handler for route:', currentRoute, {
+          availableRoutes: Array.from(handlersRef.current.keys())
+        });
+      }
     }
   };
 
