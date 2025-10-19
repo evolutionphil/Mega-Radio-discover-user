@@ -6,6 +6,7 @@ import { useLocalization } from "@/contexts/LocalizationContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { CountrySelector } from "@/components/CountrySelector";
+import { Sidebar } from "@/components/Sidebar";
 
 export const GenreDetail = (): JSX.Element => {
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
@@ -13,14 +14,6 @@ export const GenreDetail = (): JSX.Element => {
   const { t } = useLocalization();
   const [, setLocation] = useLocation();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
-
-  const sidebarItems = [
-    { icon: "images/radio-icon.svg", label: "Discover", active: false, href: "/discover-no-user" },
-    { icon: "images/music-icon.svg", label: "Genres", active: true, href: "/genres" },
-    { icon: "images/search-icon.svg", label: "Search", active: false, href: "/search" },
-    { icon: "images/heart-icon.svg", label: "Favorites", active: false, href: "/favorites" },
-    { icon: "images/settings-icon.svg", label: "Settings", active: false, href: "/settings" },
-  ];
 
   const stations = [
     { _id: "1", name: "Power Türk", location: "Turkey", image: "/images/powertu-rk-tv-logosu-1-12.png", url: "https://example.com/stream1" },
@@ -233,39 +226,12 @@ export const GenreDetail = (): JSX.Element => {
         }}
       />
 
-      {/* Sidebar */}
-      <div className="absolute left-[30px] top-[144px] w-[120px] h-[556px]">
-        <div className="flex flex-col gap-[8px]">
-          {sidebarItems.map((item, index) => (
-            <Link key={index} href={item.href}>
-              <div
-                className={`w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer transition-colors ${
-                  item.active ? 'bg-[rgba(255,255,255,0.2)]' : 'bg-transparent'
-                } ${getFocusClasses(isFocused(index))}`}
-                data-testid={`button-${item.label.toLowerCase()}`}
-                onClick={() => {
-                  if (item.href !== '#') {
-                    setLocation(item.href);
-                  }
-                }}
-              >
-              <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
-                <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
-                  {item.label}
-                </p>
-                {item.icon && (
-                  <img
-                    className="absolute left-[23px] top-0 w-[32px] h-[32px]"
-                    alt={item.label}
-                    src={item.icon}
-                  />
-                )}
-              </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+      {/* Global Sidebar */}
+      <Sidebar 
+        activePage="genres"
+        isFocused={isFocused}
+        getFocusClasses={getFocusClasses}
+      />
 
       {/* Main Content */}
       <div className="absolute left-[190px] top-[144px] right-[30px] bottom-[30px]">
