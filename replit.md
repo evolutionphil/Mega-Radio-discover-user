@@ -73,28 +73,55 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 
 ## Recent Changes
 
-### October 19, 2025 - Hash-Based Routing Required for Samsung TV
+### October 19, 2025 - Samsung TV Build Script Fix & Hash-Based Routing
 
-**CRITICAL FINDING:**
+**CRITICAL FIX: Build Script Paths Corrected**
+- Fixed `build-samsung-tv.sh` to copy files from correct locations
+- Build script was looking for files in wrong paths causing `ERR_<unknown>` errors
+- All TV JavaScript files, CSS, and assets now copy correctly to Samsung TV package structure
+
+**Changes Made:**
+- ✅ Fixed paths: `client/public/js/` → `tv-app/js/` (copy destination)
+- ✅ Fixed paths: `client/public/css/` → `tv-app/css/`
+- ✅ Added webOSTVjs SDK copy step
+- ✅ Added images folder copy step
+- ✅ Samsung TV package now builds successfully with all required files
+
+**Samsung TV Package Structure (REQUIRED):**
+```
+tv-app/
+├── config.xml (Samsung TV configuration)
+├── index.html (root - referenced by config.xml)
+├── icon.png
+├── assets/ (Vite build output - React app bundle)
+├── css/ (tv-styles.css)
+├── js/ (all TV platform JavaScript files)
+│   ├── fetch-polyfill-samsung.js
+│   ├── platform-detect.js
+│   ├── polyfills.js
+│   ├── tv-audio-player.js
+│   ├── tv-remote-keys.js
+│   └── tv-spatial-navigation.js
+├── webOSTVjs-1.2.0/ (LG webOS SDK)
+└── images/ (all image assets)
+```
+
+**Hash-Based Routing Required:**
 - Hash-based routing (`useHashLocation`) is **REQUIRED** for Samsung TV compatibility
-- Path-based routing causes `ERR_<unknown>` errors when loading JavaScript files on Samsung Tizen
+- Path-based routing causes `ERR_<unknown>` errors when loading JavaScript files
 - URL structure like `/guide-1#/discover-no-user` is intentional and necessary
-
-**Why Hash-Based Routing is Required:**
-- Samsung Tizen Chromium 76 browser has limitations with HTML5 History API in packaged apps
-- Hash-based routing prevents the browser from treating route changes as full page navigations
-- Scripts in `index.html` load once on initial page load and remain available
-- Path-based routing causes the TV browser to attempt reloading scripts on each route change, resulting in failures
-
-**Technical Implementation:**
-- ✅ Uses `useHashLocation` from `wouter/use-hash-location`
+- Samsung Tizen Chromium 76 browser limitations with HTML5 History API
 - ✅ Router configured: `<WouterRouter hook={useHashLocation}>`
-- ✅ URL format: `/{initial-page}#{/app-route}` (e.g., `/guide-1#/discover-no-user`)
-- ✅ Browser path stays constant while hash changes handle navigation
+
+**Build Command:**
+```bash
+cd tv-app && ./build-samsung-tv.sh
+```
 
 **DO NOT CHANGE:**
-- Never remove hash-based routing - it will break Samsung TV deployment
-- This is a platform requirement, not a design choice
+- Never remove hash-based routing
+- Never modify Samsung TV package structure
+- index.html MUST be at tv-app root level (same as config.xml)
 
 ### October 18, 2025 - Guide Pages Simplification Based on Reference App Analysis
 
