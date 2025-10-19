@@ -8,7 +8,6 @@ const buildTimestamp = Date.now();
 // Samsung TV build config - IIFE format with timestamp-based cache busting
 export default defineConfig({
   plugins: [react()],
-  base: "./",  // Relative paths for Samsung TV compatibility
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),

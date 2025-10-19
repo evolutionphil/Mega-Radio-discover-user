@@ -1,5 +1,4 @@
 import { Link } from "wouter";
-import { assetPath } from "@/lib/assetPath";
 
 interface SidebarProps {
   activePage: 'discover' | 'genres' | 'search' | 'favorites' | 'settings';
@@ -21,7 +20,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
               <img
                 alt=""
                 className="block max-w-none size-full"
-                src={assetPath("images/radio-icon.svg")}
+                src="images/radio-icon.svg"
               />
             </div>
           </div>
@@ -39,7 +38,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
               <img
                 alt=""
                 className="block max-w-none size-full"
-                src={assetPath("images/music-icon.svg")}
+                src="images/music-icon.svg"
               />
             </div>
           </div>
@@ -57,7 +56,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
               <img
                 alt=""
                 className="block max-w-none size-full"
-                src={assetPath("images/search-icon.svg")}
+                src="images/search-icon.svg"
               />
             </div>
           </div>
@@ -75,7 +74,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
               <img
                 alt=""
                 className="block max-w-none size-full"
-                src={assetPath("images/heart-icon.svg")}
+                src="images/heart-icon.svg"
               />
             </div>
           </div>
@@ -93,7 +92,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
               <img
                 alt=""
                 className="block max-w-none size-full"
-                src={assetPath("images/settings-icon.svg")}
+                src="images/settings-icon.svg"
               />
             </div>
           </div>

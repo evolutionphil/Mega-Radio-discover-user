@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
-import { assetPath } from "@/lib/assetPath";
 
 export const Splash = (): JSX.Element => {
   const [, setLocation] = useLocation();
@@ -29,7 +28,8 @@ export const Splash = (): JSX.Element => {
         <img 
           alt="" 
           className="block max-w-none size-full opacity-40" 
-          src={assetPath("images/waves.png")}
+          src="images/waves.png"
+          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
         />
       </div>
 
@@ -42,7 +42,8 @@ export const Splash = (): JSX.Element => {
           <img 
             alt="" 
             className="block max-w-none size-full" 
-            src={assetPath("images/path-8.svg")}
+            src="images/path-8.svg"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
         </div>
       </div>
@@ -59,7 +60,8 @@ export const Splash = (): JSX.Element => {
           <img 
             alt="" 
             className="block max-w-none size-full opacity-30" 
-            src={assetPath("images/ellipse2.png")}
+            src="images/ellipse2.png"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
         </div>
       </div>
@@ -81,7 +83,8 @@ export const Splash = (): JSX.Element => {
           <img 
             alt="" 
             className="block max-w-none size-full" 
-            src={assetPath("images/monitor.png")}
+            src="images/monitor.png"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
         </div>
         
@@ -91,7 +94,8 @@ export const Splash = (): JSX.Element => {
             <img 
               alt="" 
               className="block max-w-none size-full" 
-              src={assetPath("images/tablet.png")}
+              src="images/tablet.png"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
           </div>
         </div>
@@ -101,7 +105,8 @@ export const Splash = (): JSX.Element => {
           <img 
             alt="" 
             className="block max-w-none size-full" 
-            src={assetPath("images/phone.png")}
+            src="images/phone.png"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
         </div>
       </div>
@@ -113,7 +118,8 @@ export const Splash = (): JSX.Element => {
         <img 
           alt="" 
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full opacity-20" 
-          src={assetPath("images/frame445.png")}
+          src="images/frame445.png"
+          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
         />
       </div>
 
