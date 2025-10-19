@@ -1,0 +1,362 @@
+tv-remote-keys.js?v=1760816215:136 [TV Keys] Key pressed: 13 Enter
+index-CVfptfye.js:134 [CountrySelector] ===== RENDER INFO =====
+index-CVfptfye.js:134 [CountrySelector] Total countries loaded: 0
+index-CVfptfye.js:134 [CountrySelector] Search query: ""
+index-CVfptfye.js:134 [CountrySelector] Filtered count: 0
+index-CVfptfye.js:134 [CountrySelector] ========================
+index-CVfptfye.js:134 [CountrySelector] Rendering modal - should be centered at left: 457px, top: 251px
+index-CVfptfye.js:134 [CountrySelector] Modal dimensions: width: 1006px, height: 534px
+index-CVfptfye.js:134 [CountrySelector] Screen dimensions: 1920x1080
+index-CVfptfye.js:134 [CountrySelector] Modal container positioned at: {left: '457px', top: '251px', actualLeft: 457, actualTop: 251, centered: {…}}
+index-CVfptfye.js:134 [CountrySelector] Outer container mounted: {offsetWidth: 1920, offsetHeight: 1080, offsetLeft: 0, offsetTop: 0}
+index-CVfptfye.js:134 [CountrySelector] Fetching countries...
+index-CVfptfye.js:134 [API] getAllCountries: https://themegaradio.com/api/countries
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/countries
+index-CVfptfye.js:134 [CountrySelector] Modal opened, query should trigger
+index-CVfptfye.js:134 [CountrySelector] isLoading: true error: null
+index-CVfptfye.js:134 [CountrySelector] Modal opened - reset isNavigating flag to FALSE
+/C:/images/vuesax-outline-arrow-left.svg:1          GET file:///C:/images/vuesax-outline-arrow-left.svg net::ERR_FILE_NOT_FOUND
+Image (async)
+Xf @ index-CVfptfye.js:41
+qf @ index-CVfptfye.js:41
+b0 @ index-CVfptfye.js:41
+S0 @ index-CVfptfye.js:41
+hr @ index-CVfptfye.js:41
+tx @ index-CVfptfye.js:41
+Ln @ index-CVfptfye.js:39
+(anonymous) @ index-CVfptfye.js:41
+/C:/images/vuesax-bold-search-normal.svg:1          GET file:///C:/images/vuesax-bold-search-normal.svg net::ERR_FILE_NOT_FOUND
+Image (async)
+Xf @ index-CVfptfye.js:41
+qf @ index-CVfptfye.js:41
+b0 @ index-CVfptfye.js:41
+S0 @ index-CVfptfye.js:41
+hr @ index-CVfptfye.js:41
+tx @ index-CVfptfye.js:41
+Ln @ index-CVfptfye.js:39
+(anonymous) @ index-CVfptfye.js:41
+index-CVfptfye.js:134 [CountrySelector] Initializing TV navigation
+tv-spatial-navigation.js?v=1760816215:52 [TV Nav] Found 36 focusable elements
+tv-spatial-navigation.js?v=1760816215:61 [TV Nav] Element types: {button-country-selector: 1, button-login-header: 1, button-discover: 1, button-genres: 1, button-search: 1, …}
+tv-spatial-navigation.js?v=1760816215:15 [TV Nav] Initialized with 36 focusable elements
+tv-spatial-navigation.js?v=1760816215:24 [TV Nav] Initial focus on Discover button
+tv-spatial-navigation.js?v=1760816215:80 [TV Nav] Focused: button-discover
+tv-spatial-navigation.js?v=1760816215:80 [TV Nav] Focused: input-country-search
+index-CVfptfye.js:134 [API] getAllCountries response: 200
+index-CVfptfye.js:134 [API] getAllCountries raw data type: array
+index-CVfptfye.js:134 [API] getAllCountries fetched: 238
+index-CVfptfye.js:134 [CountrySelector] Raw API result: {countries: Array(238)}
+index-CVfptfye.js:134 [CountrySelector] Countries array: (238) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, …]
+index-CVfptfye.js:134 [CountrySelector] First country: {name: 'Afghanistan', iso_3166_1: 'AF', stationcount: 0}
+index-CVfptfye.js:134 [CountrySelector] Countries received: 238
+index-CVfptfye.js:134 [CountrySelector] useMemo: Recalculating filtered countries for query: 
+index-CVfptfye.js:134 [CountrySelector] ===== RENDER INFO =====
+index-CVfptfye.js:134 [CountrySelector] Total countries loaded: 238
+index-CVfptfye.js:134 [CountrySelector] Search query: ""
+index-CVfptfye.js:134 [CountrySelector] Filtered count: 238
+index-CVfptfye.js:134 [CountrySelector] First 10 filtered: (10) ['Afghanistan (AF)', 'Aland Islands (XX)', 'Albania (AL)', 'Algeria (DZ)', 'American Samoa (AS)', 'Andorra (AD)', 'Angola (AO)', 'Anguilla (XX)', 'Antarctica (XX)', 'Antigua And Barbuda (XX)']
+index-CVfptfye.js:134 [CountrySelector] ========================
+index-CVfptfye.js:134 [CountrySelector] Rendering modal - should be centered at left: 457px, top: 251px
+index-CVfptfye.js:134 [CountrySelector] Modal dimensions: width: 1006px, height: 534px
+index-CVfptfye.js:134 [CountrySelector] Screen dimensions: 1920x1080
+index-CVfptfye.js:134 [CountrySelector] Rendering country 0: Afghanistan AF
+index-CVfptfye.js:134 [CountrySelector] Rendering country 1: Aland Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 2: Albania AL
+index-CVfptfye.js:134 [CountrySelector] Rendering country 3: Algeria DZ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 4: American Samoa AS
+index-CVfptfye.js:134 [CountrySelector] Rendering country 5: Andorra AD
+index-CVfptfye.js:134 [CountrySelector] Rendering country 6: Angola AO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 7: Anguilla XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 8: Antarctica XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 9: Antigua And Barbuda XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 10: Argentina AR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 11: Armenia AM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 12: Aruba XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 13: Ascension And Tristan Da Cunha Saint Helena XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 14: Australia AU
+index-CVfptfye.js:134 [CountrySelector] Rendering country 15: Austria AT
+index-CVfptfye.js:134 [CountrySelector] Rendering country 16: Azerbaijan AZ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 17: Bahrain BH
+index-CVfptfye.js:134 [CountrySelector] Rendering country 18: Bangladesh BD
+index-CVfptfye.js:134 [CountrySelector] Rendering country 19: Barbados XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 20: Belarus BY
+index-CVfptfye.js:134 [CountrySelector] Rendering country 21: Belgium BE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 22: Belize BZ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 23: Benin BJ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 24: Bermuda BM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 25: Bhutan BT
+index-CVfptfye.js:134 [CountrySelector] Rendering country 26: Bolivarian Republic Of Venezuela XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 27: Bolivia BO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 28: Bonaire XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 29: Bosnia And Herzegovina BA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 30: Botswana BW
+index-CVfptfye.js:134 [CountrySelector] Rendering country 31: Brazil BR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 32: British Indian Ocean Territory XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 33: British Virgin Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 34: Brunei Darussalam BN
+index-CVfptfye.js:134 [CountrySelector] Rendering country 35: Bulgaria BG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 36: Burkina Faso BF
+index-CVfptfye.js:134 [CountrySelector] Rendering country 37: Burundi BI
+index-CVfptfye.js:134 [CountrySelector] Rendering country 38: Cabo Verde XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 39: Cambodia KH
+index-CVfptfye.js:134 [CountrySelector] Rendering country 40: Cameroon CM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 41: Canada CA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 42: Chad TD
+index-CVfptfye.js:134 [CountrySelector] Rendering country 43: Chile CL
+index-CVfptfye.js:134 [CountrySelector] Rendering country 44: China CN
+index-CVfptfye.js:134 [CountrySelector] Rendering country 45: Christmas Island XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 46: Colombia CO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 47: Costa Rica CR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 48: Coted Ivoire XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 49: Croatia HR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 50: Cuba CU
+index-CVfptfye.js:134 [CountrySelector] Rendering country 51: Curacao XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 52: Cyprus CY
+index-CVfptfye.js:134 [CountrySelector] Rendering country 53: Czechia CZ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 54: Denmark DK
+index-CVfptfye.js:134 [CountrySelector] Rendering country 55: Djibouti DJ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 56: Dominica DM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 57: Ecuador EC
+index-CVfptfye.js:134 [CountrySelector] Rendering country 58: Egypt EG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 59: El Salvador SV
+index-CVfptfye.js:134 [CountrySelector] Rendering country 60: Equatorial Guinea XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 61: Eritrea XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 62: Estonia EE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 63: Eswatini XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 64: Ethiopia ET
+index-CVfptfye.js:134 [CountrySelector] Rendering country 65: Federated States Of Micronesia XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 66: Fiji FJ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 67: Finland FI
+index-CVfptfye.js:134 [CountrySelector] Rendering country 68: France FR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 69: French Guiana XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 70: French Polynesia XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 71: Gabon GA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 72: Georgia GE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 73: Germany DE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 74: Ghana GH
+index-CVfptfye.js:134 [CountrySelector] Rendering country 75: Gibraltar GI
+index-CVfptfye.js:134 [CountrySelector] Rendering country 76: Greece GR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 77: Greenland GL
+index-CVfptfye.js:134 [CountrySelector] Rendering country 78: Grenada GD
+index-CVfptfye.js:134 [CountrySelector] Rendering country 79: Guadeloupe GP
+index-CVfptfye.js:134 [CountrySelector] Rendering country 80: Guam GU
+index-CVfptfye.js:134 [CountrySelector] Rendering country 81: Guatemala GT
+index-CVfptfye.js:134 [CountrySelector] Rendering country 82: Guernsey XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 83: Guinea GN
+index-CVfptfye.js:134 [CountrySelector] Rendering country 84: Guinea Bissau XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 85: Guyana GY
+index-CVfptfye.js:134 [CountrySelector] Rendering country 86: Haiti HT
+index-CVfptfye.js:134 [CountrySelector] Rendering country 87: Honduras HN
+index-CVfptfye.js:134 [CountrySelector] Rendering country 88: Hong Kong HK
+index-CVfptfye.js:134 [CountrySelector] Rendering country 89: Hungary HU
+index-CVfptfye.js:134 [CountrySelector] Rendering country 90: Iceland IS
+index-CVfptfye.js:134 [CountrySelector] Rendering country 91: India IN
+index-CVfptfye.js:134 [CountrySelector] Rendering country 92: Indonesia ID
+index-CVfptfye.js:134 [CountrySelector] Rendering country 93: Iraq IQ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 94: Ireland IE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 95: Islamic Republic Of Iran IR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 96: Isle Of Man XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 97: Israel IL
+index-CVfptfye.js:134 [CountrySelector] Rendering country 98: Italy IT
+index-CVfptfye.js:134 [CountrySelector] Rendering country 99: Jamaica JM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 100: Japan JP
+index-CVfptfye.js:134 [CountrySelector] Rendering country 101: Jordan JO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 102: Kazakhstan KZ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 103: Kenya KE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 104: Kiribati XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 105: Kosovo XK
+index-CVfptfye.js:134 [CountrySelector] Rendering country 106: Kuwait KW
+index-CVfptfye.js:134 [CountrySelector] Rendering country 107: Kyrgyzstan KG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 108: Latvia LV
+index-CVfptfye.js:134 [CountrySelector] Rendering country 109: Lebanon LB
+index-CVfptfye.js:134 [CountrySelector] Rendering country 110: Lesotho LS
+index-CVfptfye.js:134 [CountrySelector] Rendering country 111: Liberia LR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 112: Libya LY
+index-CVfptfye.js:134 [CountrySelector] Rendering country 113: Liechtenstein LI
+index-CVfptfye.js:134 [CountrySelector] Rendering country 114: Lithuania LT
+index-CVfptfye.js:134 [CountrySelector] Rendering country 115: Luxembourg LU
+index-CVfptfye.js:134 [CountrySelector] Rendering country 116: Macao MO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 117: Madagascar MG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 118: Malawi MW
+index-CVfptfye.js:134 [CountrySelector] Rendering country 119: Malaysia MY
+index-CVfptfye.js:134 [CountrySelector] Rendering country 120: Maldives MV
+index-CVfptfye.js:134 [CountrySelector] Rendering country 121: Mali ML
+index-CVfptfye.js:134 [CountrySelector] Rendering country 122: Malta MT
+index-CVfptfye.js:134 [CountrySelector] Rendering country 123: Martinique XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 124: Mauritania MR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 125: Mauritius MU
+index-CVfptfye.js:134 [CountrySelector] Rendering country 126: Mayotte XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 127: Mexico MX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 128: Monaco MC
+index-CVfptfye.js:134 [CountrySelector] Rendering country 129: Mongolia MN
+index-CVfptfye.js:134 [CountrySelector] Rendering country 130: Montenegro ME
+index-CVfptfye.js:134 [CountrySelector] Rendering country 131: Montserrat XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 132: Morocco MA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 133: Mozambique MZ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 134: Myanmar MM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 135: Namibia NA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 136: Nauru XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 137: Nepal NP
+index-CVfptfye.js:134 [CountrySelector] Rendering country 138: New Caledonia XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 139: New Zealand NZ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 140: Nicaragua NI
+index-CVfptfye.js:134 [CountrySelector] Rendering country 141: Nigeria NG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 142: Niue XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 143: Norway NO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 144: Oman OM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 145: Pakistan PK
+index-CVfptfye.js:134 [CountrySelector] Rendering country 146: Palau PW
+index-CVfptfye.js:134 [CountrySelector] Rendering country 147: Panama PA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 148: Papua New Guinea PG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 149: Paraguay PY
+index-CVfptfye.js:134 [CountrySelector] Rendering country 150: Peru PE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 151: Poland PL
+index-CVfptfye.js:134 [CountrySelector] Rendering country 152: Portugal PT
+index-CVfptfye.js:134 [CountrySelector] Rendering country 153: Puerto Rico PR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 154: Qatar QA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 155: Republic Of North Macedonia MK
+index-CVfptfye.js:134 [CountrySelector] Rendering country 156: Reunion RE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 157: Romania RO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 158: Rwanda RW
+index-CVfptfye.js:134 [CountrySelector] Rendering country 159: Saint Kitts And Nevis XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 160: Saint Lucia XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 161: Saint Pierre And Miquelon XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 162: Saint Vincent And The Grenadines XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 163: San Marino SM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 164: Sao Tome And Principe XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 165: Saudi Arabia SA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 166: Senegal SN
+index-CVfptfye.js:134 [CountrySelector] Rendering country 167: Serbia RS
+index-CVfptfye.js:134 [CountrySelector] Rendering country 168: Seychelles SC
+index-CVfptfye.js:134 [CountrySelector] Rendering country 169: Sierra Leone SL
+index-CVfptfye.js:134 [CountrySelector] Rendering country 170: Singapore SG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 171: Slovakia SK
+index-CVfptfye.js:134 [CountrySelector] Rendering country 172: Slovenia SI
+index-CVfptfye.js:134 [CountrySelector] Rendering country 173: Solomon Islands SB
+index-CVfptfye.js:134 [CountrySelector] Rendering country 174: Somalia SO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 175: South Africa ZA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 176: South Sudan SS
+index-CVfptfye.js:134 [CountrySelector] Rendering country 177: Spain ES
+index-CVfptfye.js:134 [CountrySelector] Rendering country 178: Sri Lanka LK
+index-CVfptfye.js:134 [CountrySelector] Rendering country 179: State Of Palestine XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 180: Suriname SR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 181: Svalbard And Jan Mayen XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 182: Sweden SE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 183: Switzerland CH
+index-CVfptfye.js:134 [CountrySelector] Rendering country 184: Syrian Arab Republic XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 185: Taiwan, Republic Of China TW
+index-CVfptfye.js:134 [CountrySelector] Rendering country 186: Tajikistan TJ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 187: Thailand TH
+index-CVfptfye.js:134 [CountrySelector] Rendering country 188: The Bahamas BS
+index-CVfptfye.js:134 [CountrySelector] Rendering country 189: The Cayman Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 190: The Central African Republic XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 191: The Cocos Keeling Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 192: The Comoros XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 193: The Congo CG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 194: The Cook Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 195: The Democratic Peoples Republic Of Korea XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 196: The Democratic Republic Of The Congo CD
+index-CVfptfye.js:134 [CountrySelector] Rendering country 197: The Dominican Republic DO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 198: The Falkland Islands Malvinas XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 199: The Faroe Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 200: The French Southern Territories XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 201: The Gambia GM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 202: The Holy See XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 203: The Lao Peoples Democratic Republic XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 204: The Marshall Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 205: The Netherlands NL
+index-CVfptfye.js:134 [CountrySelector] Rendering country 206: The Niger XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 207: The Philippines PH
+index-CVfptfye.js:134 [CountrySelector] Rendering country 208: The Republic Of Korea KR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 209: The Republic Of Moldova MD
+index-CVfptfye.js:134 [CountrySelector] Rendering country 210: The Russian Federation RU
+index-CVfptfye.js:134 [CountrySelector] Rendering country 211: The Sudan SD
+index-CVfptfye.js:134 [CountrySelector] Rendering country 212: The Turks And Caicos Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 213: The United Arab Emirates AE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 214: The United Kingdom Of Great Britain And Northern Ireland GB
+index-CVfptfye.js:134 [CountrySelector] Rendering country 215: The United States Minor Outlying Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 216: The United States Of America US
+index-CVfptfye.js:134 [CountrySelector] Rendering country 217: Timor Leste XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 218: Togo TG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 219: Tonga TO
+index-CVfptfye.js:134 [CountrySelector] Rendering country 220: Trinidad And Tobago TT
+index-CVfptfye.js:134 [CountrySelector] Rendering country 221: Tunisia TN
+index-CVfptfye.js:134 [CountrySelector] Rendering country 222: Turkmenistan TM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 223: Tuvalu XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 224: Türkiye TR
+index-CVfptfye.js:134 [CountrySelector] Rendering country 225: US Virgin Islands XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 226: Uganda UG
+index-CVfptfye.js:134 [CountrySelector] Rendering country 227: Ukraine UA
+index-CVfptfye.js:134 [CountrySelector] Rendering country 228: United Republic Of Tanzania TZ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 229: Unknown XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 230: Uruguay UY
+index-CVfptfye.js:134 [CountrySelector] Rendering country 231: Uzbekistan UZ
+index-CVfptfye.js:134 [CountrySelector] Rendering country 232: Vanuatu VU
+index-CVfptfye.js:134 [CountrySelector] Rendering country 233: Vietnam VN
+index-CVfptfye.js:134 [CountrySelector] Rendering country 234: Wallis And Futuna XX
+index-CVfptfye.js:134 [CountrySelector] Rendering country 235: Yemen YE
+index-CVfptfye.js:134 [CountrySelector] Rendering country 236: Zambia ZM
+index-CVfptfye.js:134 [CountrySelector] Rendering country 237: Zimbabwe ZW
+index-CVfptfye.js:134 [CountrySelector] Modal container positioned at: {left: '457px', top: '251px', actualLeft: 457, actualTop: 251, centered: {…}}
+index-CVfptfye.js:134 [CountrySelector] Outer container mounted: {offsetWidth: 1920, offsetHeight: 1080, offsetLeft: 0, offsetTop: 0}
+index-CVfptfye.js:134 [CountrySelector] Modal opened, query should trigger
+index-CVfptfye.js:134 [CountrySelector] isLoading: false error: null
+tv-spatial-navigation.js?v=1760816215:52 [TV Nav] Found 274 focusable elements
+tv-spatial-navigation.js?v=1760816215:61 [TV Nav] Element types: {button-country-selector: 1, button-login-header: 1, button-discover: 1, button-genres: 1, button-search: 1, …}
+index-CVfptfye.js:134 [useTVNavigation] Element count changed: 36 -> 274
+tv-spatial-navigation.js?v=1760816215:52 [TV Nav] Found 274 focusable elements
+tv-spatial-navigation.js?v=1760816215:61 [TV Nav] Element types: {button-country-selector: 1, button-login-header: 1, button-discover: 1, button-genres: 1, button-search: 1, …}
+tv-remote-keys.js?v=1760816215:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-discover
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-genres
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-search
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-favorites
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-records
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-settings
+tv-spatial-navigation.js?v=1760816215:232 [TV Nav] Moving DOWN to: A
+tv-spatial-navigation.js?v=1760816215:80 [TV Nav] Focused: News
+tv-remote-keys.js?v=1760816215:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-discover
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-genres
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-search
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-favorites
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-records
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-settings
+tv-spatial-navigation.js?v=1760816215:232 [TV Nav] Moving UP to: input-country-search
+tv-spatial-navigation.js?v=1760816215:80 [TV Nav] Focused: input-country-search
+tv-remote-keys.js?v=1760816215:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-discover
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-genres
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-search
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-favorites
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-records
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: input-country-search - candidate: button-settings
+tv-spatial-navigation.js?v=1760816215:232 [TV Nav] Moving DOWN to: A
+tv-spatial-navigation.js?v=1760816215:80 [TV Nav] Focused: News
+tv-remote-keys.js?v=1760816215:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: undefined - candidate: button-discover
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: undefined - candidate: button-genres
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: undefined - candidate: button-search
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: undefined - candidate: button-favorites
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: undefined - candidate: button-records
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking DOWN from content to sidebar - current: undefined - candidate: button-settings
+tv-spatial-navigation.js?v=1760816215:232 [TV Nav] Moving DOWN to: country-option-AF
+tv-spatial-navigation.js?v=1760816215:80 [TV Nav] Focused: country-option-AF
+tv-remote-keys.js?v=1760816215:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: country-option-AF - candidate: button-discover
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: country-option-AF - candidate: button-genres
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: country-option-AF - candidate: button-search
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: country-option-AF - candidate: button-favorites
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: country-option-AF - candidate: button-records
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: country-option-AF - candidate: button-settings
+tv-spatial-navigation.js?v=1760816215:232 [TV Nav] Moving UP to: A
+tv-spatial-navigation.js?v=1760816215:80 [TV Nav] Focused: News
+tv-remote-keys.js?v=1760816215:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-discover
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-genres
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-search
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-favorites
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-records
+tv-spatial-navigation.js?v=1760816215:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-settings
+tv-spatial-navigation.js?v=1760816215:232 [TV Nav] Moving UP to: input-country-search
+tv-spatial-navigation.js?v=1760816215:80 [TV Nav] Focused: input-country-search
