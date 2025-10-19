@@ -4,6 +4,17 @@
 
 Mega Radio is a full-stack web radio streaming application designed for TV and large screen interfaces. It offers access to global radio stations from over 238 countries, categorized by genres and countries. Key features include an onboarding process, station discovery, favorites management, and continuous audio playback, all tailored for an immersive television viewing experience. The project aims to deliver a seamless and engaging radio streaming experience specifically tailored for television environments.
 
+## Recent Changes
+
+### October 19, 2025 - LGTV Focus Pattern Migration
+- Migrated ALL 9 pages (DiscoverNoUser, DiscoverUser, Genres, GenreDetail, Search, RadioPlaying, Settings, Favorites, GenreList) from `useTVNavigation` to LGTV focus pattern
+- Replaced with `useFocusManager` (state-based index tracking) + `usePageKeyHandler` (route-specific handlers) + `getFocusClasses` (visual feedback)
+- Fixed critical bug: Replaced hard-coded array lengths with dynamic data-driven counts to prevent focus landing on non-existent elements
+- Each page now calculates `totalItems` from actual array lengths after data load
+- Custom navigation logic implemented for multi-section layouts with different grid column counts
+- Focus system now adapts dynamically to sparse datasets and empty arrays
+- Ready for Samsung/LG TV hardware validation
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
@@ -31,7 +42,8 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Samsung Tizen TV:** Targets Chromium 76 (ES2015/ES6) with polyfills for ES2019+ features, `&&` checks instead of optional chaining, IIFE bundle format, and a custom fetch polyfill using `XMLHttpRequest`.
 -   **LG webOS:** Uses HTML5 Audio/Video for playback and `webOSTVjs-1.2.0` SDK.
 -   **Platform Detection:** Automatic via user agent.
--   **Remote Control Navigation:** Global key event handler, platform-specific key codes, `useTVNavigation` hook for focus management (though simplified for Guide pages).
+-   **Remote Control Navigation:** Migrated to LGTV focus pattern with `useFocusManager` + `usePageKeyHandler` + `getFocusClasses`. All main pages (DiscoverNoUser, DiscoverUser, Genres, GenreDetail, Search, RadioPlaying, Settings, Favorites, GenreList) use state-based focus tracking with dynamic array lengths to prevent focus landing on non-existent elements.
+-   **Focus Index Mapping:** Sidebar (0-5) + Country Selector (6) + Page Content (7+). Each page implements custom navigation logic for multi-section layouts with different grid column counts.
 -   **Audio Playback:** Dual implementation using `webapis.avplay` for Tizen and HTML5 Audio/Video for webOS/browsers, with a unified interface.
 -   **TV-Specific Styling:** Custom CSS for focus states, hidden cursor, scrollbar hiding, and platform-specific visibility.
 
