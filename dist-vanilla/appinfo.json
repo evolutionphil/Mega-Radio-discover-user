@@ -1,0 +1,10 @@
+{
+  "id": "com.megaradio.tv",
+  "title": "Mega Radio",
+  "main": "index.html",
+  "icon": "icon.png",
+  "vendor": "Mega Radio",
+  "version": "1.0.0",
+  "type": "web",
+  "appDescription": "Global Radio Streaming for TV"
+}
