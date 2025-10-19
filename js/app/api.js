@@ -51,7 +51,7 @@ var MegaRadioAPI = (function() {
         // Get all genres for a country
         getAllGenres: function(countryCode) {
             var countryName = this.getCountryName(countryCode);
-            var url = BASE_URL + '/api/genres?country=' + encodeURIComponent(countryName);
+            var url = BASE_URL + '/api/genres?country=' + encodeURIComponent(countryName) + '&tv=1';
             
             console.log('[API] getAllGenres:', url);
             
@@ -71,7 +71,7 @@ var MegaRadioAPI = (function() {
             limit = limit || 24;
             var countryName = this.getCountryName(countryCode);
             var url = BASE_URL + '/api/stations?search=&limit=' + limit + 
-                     '&country=' + encodeURIComponent(countryName) + '&sort=votes';
+                     '&country=' + encodeURIComponent(countryName) + '&sort=votes&tv=1';
             
             console.log('[API] getPopularStations:', url);
             
@@ -91,7 +91,7 @@ var MegaRadioAPI = (function() {
             limit = limit || 500;
             var countryName = this.getCountryName(countryCode);
             var url = BASE_URL + '/api/stations?search=&limit=' + limit + 
-                     '&country=' + encodeURIComponent(countryName);
+                     '&country=' + encodeURIComponent(countryName) + '&tv=1';
             
             console.log('[API] getWorkingStations:', url);
             
@@ -111,7 +111,7 @@ var MegaRadioAPI = (function() {
             limit = limit || 50;
             var countryName = countryCode ? this.getCountryName(countryCode) : '';
             var url = BASE_URL + '/api/stations?search=' + encodeURIComponent(query) + 
-                     '&limit=' + limit;
+                     '&limit=' + limit + '&tv=1';
             
             if (countryName) {
                 url += '&country=' + encodeURIComponent(countryName);
@@ -135,7 +135,7 @@ var MegaRadioAPI = (function() {
             limit = limit || 50;
             var countryName = countryCode ? this.getCountryName(countryCode) : '';
             var url = BASE_URL + '/api/stations?genre=' + encodeURIComponent(genre) + 
-                     '&limit=' + limit;
+                     '&limit=' + limit + '&tv=1';
             
             if (countryName) {
                 url += '&country=' + encodeURIComponent(countryName);
@@ -156,7 +156,7 @@ var MegaRadioAPI = (function() {
         
         // Get translations
         getTranslations: function(language) {
-            var url = BASE_URL + '/api/translations?lang=' + language;
+            var url = BASE_URL + '/api/translations/' + language + TV_PARAM;
             
             console.log('[API] getTranslations:', url);
             

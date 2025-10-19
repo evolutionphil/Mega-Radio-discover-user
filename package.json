@@ -1,0 +1,11 @@
+{
+  "name": "mega-radio-vanilla",
+  "version": "1.0.0",
+  "description": "Mega Radio - Vanilla JS TV App",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}
