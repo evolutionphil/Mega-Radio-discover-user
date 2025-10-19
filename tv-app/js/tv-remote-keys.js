@@ -105,16 +105,38 @@
         return tvKey;
     }
     
+    // Helper to get key name from code
+    function getKeyName(keyCode) {
+        for (var name in tvKey) {
+            if (tvKey[name] === keyCode) {
+                return name;
+            }
+        }
+        return 'UNKNOWN';
+    }
+    
     // Global key event handler - LGTV-style routing pattern
     window.handleTVKey = function(e) {
         var key = e.keyCode;
+        var keyName = getKeyName(key);
+        
+        console.log('[TV Keys] 🎮 Key pressed:', {
+            keyCode: key,
+            keyName: keyName,
+            key: e.key,
+            code: e.code,
+            platform: window.platform,
+            hash: window.location.hash,
+            focusRouterAvailable: !!window.focusRouterDispatch
+        });
         
         // Exit app on EXIT key (Samsung only)
         if (window.platform === 'samsung' && key === tvKey.EXIT) {
+            console.log('[TV Keys] ⚠️  EXIT key - closing app');
             try {
                 tizen.application.getCurrentApplication().exit();
             } catch(err) {
-                console.error('Exit failed:', err);
+                console.error('[TV Keys] ❌ Exit failed:', err);
             }
             return false;
         }
@@ -122,22 +144,22 @@
         // Handle color button navigation (global shortcuts)
         switch(key) {
             case tvKey.RED:
-                console.log('[TV Keys] RED → Discover');
+                console.log('[TV Keys] 🔴 RED → Discover');
                 window.location.hash = '#/discover-no-user';
                 e.preventDefault();
                 return false;
             case tvKey.GREEN:
-                console.log('[TV Keys] GREEN → Genres');
+                console.log('[TV Keys] 🟢 GREEN → Genres');
                 window.location.hash = '#/genres';
                 e.preventDefault();
                 return false;
             case tvKey.BLUE:
-                console.log('[TV Keys] BLUE → Search');
+                console.log('[TV Keys] 🔵 BLUE → Search');
                 window.location.hash = '#/search';
                 e.preventDefault();
                 return false;
             case tvKey.YELLOW:
-                console.log('[TV Keys] YELLOW → Favorites');
+                console.log('[TV Keys] 🟡 YELLOW → Favorites');
                 window.location.hash = '#/favorites';
                 e.preventDefault();
                 return false;
@@ -146,9 +168,12 @@
         // Dispatch to FocusRouter (set by React)
         // This matches LGTV pattern: switch(current_route) { case "login": login_page.HandleKey(e); }
         if (window.focusRouterDispatch) {
+            console.log('[TV Keys] 📤 Dispatching to FocusRouter');
             // Don't preventDefault here - let pages handle it
             // Guide pages use their own keydown listeners
             window.focusRouterDispatch(e);
+        } else {
+            console.warn('[TV Keys] ⚠️  FocusRouter not available yet');
         }
         
         // Allow event to propagate to page handlers
