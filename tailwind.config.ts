@@ -1,1 +1,0 @@
-tv-app/tailwind.config.ts
