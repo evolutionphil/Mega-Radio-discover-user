@@ -78,13 +78,25 @@ export const RadioPlaying = (): JSX.Element => {
   };
 
   // Fetch station details
-  const { data: stationData, isLoading: isLoadingStation } = useQuery({
+  const { data: stationData, isLoading: isLoadingStation, error: stationError } = useQuery({
     queryKey: ['station', stationId],
     queryFn: () => megaRadioApi.getStationById(stationId!),
     enabled: !!stationId,
   });
 
   const station = stationData?.station;
+
+  // Debug logging
+  useEffect(() => {
+    console.log('[RadioPlaying] Query state:', {
+      stationId,
+      isLoading: isLoadingStation,
+      hasData: !!stationData,
+      hasStation: !!station,
+      error: stationError,
+      rawData: stationData
+    });
+  }, [stationId, isLoadingStation, stationData, station, stationError]);
 
   // Fetch station metadata
   const { data: metadataData } = useQuery({
