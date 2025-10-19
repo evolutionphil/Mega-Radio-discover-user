@@ -1,6 +1,5 @@
 import { Link } from "wouter";
 import { useState, useEffect, useRef, RefObject } from "react";
-import { Radio, Music, Search, Heart, Settings } from "lucide-react";
 import { CountrySelector } from "@/components/CountrySelector";
 import { useCountry } from "@/contexts/CountryContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
@@ -126,7 +125,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Discover
               </p>
               <div className="absolute left-[20px] size-[32px] top-0">
-                <Radio className="size-full text-white" fill="white" />
+                <img alt="" className="block max-w-none size-full" src="/images/radio-icon.svg" />
               </div>
             </div>
           </div>
@@ -144,7 +143,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Genres
               </p>
               <div className="absolute left-[13px] size-[32px] top-0">
-                <Music className="size-full text-white" fill="white" />
+                <img alt="" className="block max-w-none size-full" src="/images/music-icon.svg" />
               </div>
             </div>
           </div>
@@ -162,7 +161,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Search
               </p>
               <div className="absolute left-[12px] size-[32px] top-0">
-                <Search className="size-full text-white" strokeWidth={2.5} />
+                <img alt="" className="block max-w-none size-full" src="/images/search-icon.svg" />
               </div>
             </div>
           </div>
@@ -180,7 +179,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Favorites
               </p>
               <div className="absolute left-[22px] size-[32px] top-0">
-                <Heart className="size-full text-white" fill="white" />
+                <img alt="" className="block max-w-none size-full" src="/images/heart-icon.svg" />
               </div>
             </div>
           </div>
@@ -213,7 +212,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Settings
               </p>
               <div className="absolute left-[18px] size-[32px] top-0">
-                <Settings className="size-full text-white" fill="white" />
+                <img alt="" className="block max-w-none size-full" src="/images/settings-icon.svg" />
               </div>
             </div>
           </div>

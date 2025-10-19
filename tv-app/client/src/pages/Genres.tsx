@@ -220,7 +220,7 @@ export const Genres = (): JSX.Element => {
                 Settings
               </p>
               <div className="absolute left-[18px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/logout-icon.svg" />
+                <img alt="" className="block max-w-none size-full" src="/images/settings-icon.svg" />
               </div>
             </div>
           </div>

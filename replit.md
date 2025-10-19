@@ -145,6 +145,21 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 - ✅ All navigation, localization, and playback features working
 - ✅ All asset paths verified and functional
 
+### October 18, 2025 - Sidebar Icon Consistency Fix
+
+**Issue Identified:**
+- AppLayout component was using Lucide React icons (Radio, Music, Search, Heart, Settings components)
+- Individual pages were using SVG files from `/images/` folder
+- This caused icons to change appearance when switching between pages
+
+**Fix Applied:**
+- ✅ Created proper settings-icon.svg file (gear icon matching vuesax/bold design)
+- ✅ Updated all files to use correct SVG icons:
+  - AppLayout.tsx, DiscoverUser.tsx, DiscoverNoUser.tsx, Genres.tsx, GenreDetail.tsx, Settings.tsx, RadioPlaying.tsx
+- ✅ Icon mapping: radio-icon.svg (Discover), music-icon.svg (Genres), search-icon.svg (Search), heart-icon.svg (Favorites), settings-icon.svg (Settings)
+- ✅ Removed all Lucide React icon imports (Radio, Music, Search, Heart, Settings)
+- ✅ All sidebar icons now consistent across ALL pages
+
 ### October 18, 2025 - RadioPlaying Page & Global Country Selector Figma Design Implementation
 
 **Background & Visual Design (RadioPlaying):**

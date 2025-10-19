@@ -7,7 +7,7 @@ export const GenreDetail = (): JSX.Element => {
     { icon: "/images/search-icon.svg", label: "Search", active: false, href: "/search" },
     { icon: "/images/heart-icon.svg", label: "Favorites", active: false, href: "/favorites" },
     { icon: null, label: "Records", active: false, customIcon: true, href: "/discover" },
-    { icon: "/images/logout-icon.svg", label: "Settings", active: false, href: "/settings" },
+    { icon: "/images/settings-icon.svg", label: "Settings", active: false, href: "/settings" },
   ];
 
   const stations = [

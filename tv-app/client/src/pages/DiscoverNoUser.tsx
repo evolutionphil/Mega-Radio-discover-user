@@ -382,7 +382,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src="/images/logout-icon.svg"
+                    src="/images/settings-icon.svg"
                   />
                 </div>
               </div>

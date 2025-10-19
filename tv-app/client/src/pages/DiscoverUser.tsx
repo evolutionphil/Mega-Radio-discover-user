@@ -1,5 +1,4 @@
 import { Link } from "wouter";
-import { Radio, Music, Search, Heart, Settings } from "lucide-react";
 
 export const DiscoverUser = (): JSX.Element => {
   return (
@@ -91,7 +90,7 @@ export const DiscoverUser = (): JSX.Element => {
                 Discover
               </p>
               <div className="absolute left-[20px] size-[32px] top-0">
-                <Radio className="size-full text-white" fill="white" />
+                <img alt="" className="block max-w-none size-full" src="/images/radio-icon.svg" />
               </div>
             </div>
           </div>
@@ -105,7 +104,7 @@ export const DiscoverUser = (): JSX.Element => {
                 Genres
               </p>
               <div className="absolute left-[13px] size-[32px] top-0">
-                <Music className="size-full text-white" fill="white" />
+                <img alt="" className="block max-w-none size-full" src="/images/music-icon.svg" />
               </div>
             </div>
           </div>
@@ -119,7 +118,7 @@ export const DiscoverUser = (): JSX.Element => {
                 Search
               </p>
               <div className="absolute left-[12px] size-[32px] top-0">
-                <Search className="size-full text-white" strokeWidth={2.5} />
+                <img alt="" className="block max-w-none size-full" src="/images/search-icon.svg" />
               </div>
             </div>
           </div>
@@ -133,7 +132,7 @@ export const DiscoverUser = (): JSX.Element => {
                 Favorites
               </p>
               <div className="absolute left-[22px] size-[32px] top-0">
-                <Heart className="size-full text-white" fill="white" />
+                <img alt="" className="block max-w-none size-full" src="/images/heart-icon.svg" />
               </div>
             </div>
           </div>
@@ -162,7 +161,7 @@ export const DiscoverUser = (): JSX.Element => {
                 Settings
               </p>
               <div className="absolute left-[18px] size-[32px] top-0">
-                <Settings className="size-full text-white" fill="white" />
+                <img alt="" className="block max-w-none size-full" src="/images/settings-icon.svg" />
               </div>
             </div>
           </div>
