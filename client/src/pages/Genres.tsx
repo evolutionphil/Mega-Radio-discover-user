@@ -63,11 +63,11 @@ export const Genres = (): JSX.Element => {
 
   const popularGenres = allGenres.slice(0, 8);
 
-  // Calculate totalItems: 6 (sidebar) + 1 (country selector) + 8 (popular genres) + allGenres.length
-  const totalItems = 6 + 1 + popularGenres.length + allGenres.length;
+  // Calculate totalItems: 5 (sidebar) + 1 (country selector) + 8 (popular genres) + allGenres.length
+  const totalItems = 5 + 1 + popularGenres.length + allGenres.length;
 
-  // Define sidebar routes
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '#', '/settings'];
+  // Define sidebar routes (NO PROFILE - 5 items)
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
   // Custom navigation logic for complex multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {

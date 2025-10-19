@@ -11,26 +11,24 @@ export const Settings = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("last-played");
 
-  // Define focusable items: 7 sidebar + 4 settings = 11 total
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '#', '/settings'];
+  // Define focusable items: 5 sidebar + 4 settings = 9 total (NO PROFILE)
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
   const settingsOptions: PlayAtStartMode[] = ["last-played", "random", "favorite", "none"];
-  const totalItems = 6 + 4; // 6 sidebar items + 4 settings options
+  const totalItems = 5 + 4; // 5 sidebar items + 4 settings options
 
   // Focus management
   const { focusIndex, handleNavigation, handleSelect, handleBack, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 6, // Start on first settings option
+    initialIndex: 5, // Start on first settings option
     onSelect: (index) => {
-      if (index < 6) {
-        // Sidebar navigation
+      if (index < 5) {
+        // Sidebar navigation (0-4)
         const route = sidebarRoutes[index];
-        if (route !== '#') {
-          setLocation(route);
-        }
+        setLocation(route);
       } else {
         // Settings option
-        const optionIndex = index - 6;
+        const optionIndex = index - 5;
         handlePlayAtStartChange(settingsOptions[optionIndex]);
       }
     },

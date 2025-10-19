@@ -34,31 +34,31 @@ export const GenreDetail = (): JSX.Element => {
     { _id: "8", name: "WEEU", location: "USA", image: "/images/830-weeu-1-1.png", url: "https://example.com/stream8" },
   ];
 
-  // Calculate totalItems: 6 (sidebar) + 1 (country selector) + 1 (back button) + 8 (stations)
-  const totalItems = 6 + 1 + 1 + stations.length;
+  // Calculate totalItems: 5 (sidebar) + 1 (country selector) + 1 (back button) + 8 (stations)
+  const totalItems = 5 + 1 + 1 + stations.length;
 
-  // Define sidebar routes
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '#', '/settings'];
+  // Define sidebar routes (NO PROFILE - 5 items)
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
   // Custom navigation logic for multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-5)
-    if (current >= 0 && current <= 5) {
+    // Sidebar section (0-4) - 5 items
+    if (current >= 0 && current <= 4) {
       if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
+        newIndex = current < 4 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 6; // Jump to country selector
+        newIndex = 5; // Jump to country selector
       }
     }
-    // Country selector (6)
-    else if (current === 6) {
+    // Country selector (5)
+    else if (current === 5) {
       if (direction === 'DOWN') {
-        newIndex = 7; // Jump to back button
+        newIndex = 6; // Jump to back button
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to first sidebar item
       }

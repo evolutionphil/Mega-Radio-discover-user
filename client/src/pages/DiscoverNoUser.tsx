@@ -58,36 +58,36 @@ export const DiscoverNoUser = (): JSX.Element => {
   const genres = genresData?.genres?.slice(0, 8) || [];
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
 
-  // Calculate dynamic section boundaries
-  const popularStationsStart = 7;
+  // Calculate dynamic section boundaries (5 sidebar + 1 country selector = 6)
+  const popularStationsStart = 6;
   const popularStationsEnd = popularStationsStart + popularStations.length - 1;
   const genresStart = popularStationsEnd + 1;
   const genresEnd = genresStart + genres.length - 1;
   const countryStationsStart = genresEnd + 1;
 
-  // Calculate dynamic totalItems using actual array lengths
-  const totalItems = 6 + 1 + popularStations.length + genres.length + displayedStations.length;
+  // Calculate dynamic totalItems using actual array lengths (5 sidebar + 1 country selector + content)
+  const totalItems = 5 + 1 + popularStations.length + genres.length + displayedStations.length;
 
-  // Define sidebar routes
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '#', '/settings'];
+  // Define sidebar routes (NO PROFILE - 5 items: Discover, Genres, Search, Favorites, Settings)
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
   // Custom navigation logic for complex multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-5)
-    if (current >= 0 && current <= 5) {
+    // Sidebar section (0-4) - 5 items
+    if (current >= 0 && current <= 4) {
       if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
+        newIndex = current < 4 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 6; // Jump to country selector
+        newIndex = 5; // Jump to country selector
       }
     }
-    // Country selector (6)
-    else if (current === 6) {
+    // Country selector (5)
+    else if (current === 5) {
       if (direction === 'DOWN') {
         newIndex = genresStart; // Jump to first genre
       } else if (direction === 'LEFT') {
@@ -145,7 +145,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           newIndex = current + 1;
         }
       } else if (direction === 'UP') {
-        newIndex = 6; // Jump to country selector
+        newIndex = 5; // Jump to country selector
       } else if (direction === 'DOWN') {
         // Jump to popular stations below
         newIndex = popularStationsStart + Math.min(col, Math.min(6, popularStations.length - 1));
@@ -198,15 +198,13 @@ export const DiscoverNoUser = (): JSX.Element => {
     cols: 1,
     initialIndex: 0,
     onSelect: (index) => {
-      // Sidebar navigation (0-5)
-      if (index >= 0 && index <= 5) {
+      // Sidebar navigation (0-4) - 5 items
+      if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
-        if (route !== '#') {
-          setLocation(route);
-        }
+        setLocation(route);
       }
-      // Country selector (6)
-      else if (index === 6) {
+      // Country selector (5)
+      else if (index === 5) {
         setIsCountrySelectorOpen(true);
       }
       // Popular stations - dynamic boundaries

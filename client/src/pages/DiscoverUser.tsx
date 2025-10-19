@@ -18,7 +18,7 @@ export const DiscoverUser = (): JSX.Element => {
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
   // Fetch recently played stations
-  const recentStations = recentlyPlayedService.getRecentStations().slice(0, 8);
+  const recentStations = recentlyPlayedService.getStations().slice(0, 8);
   
   // Fetch genres from API filtered by country
   const { data: genresData } = useQuery({
@@ -70,31 +70,31 @@ export const DiscoverUser = (): JSX.Element => {
   const countryStationsRow2Start = countryStationsRow1End + 1;
   const countryStationsRow2End = countryStationsRow2Start + countryStationsRow2Count - 1;
 
-  // Calculate totalItems using ACTUAL counts: 6 sidebar + 1 country + sections
-  const totalItems = 6 + 1 + recentlyPlayedCount + popularGenresCount + 
+  // Calculate totalItems using ACTUAL counts: 5 sidebar + 1 country + sections
+  const totalItems = 5 + 1 + recentlyPlayedCount + popularGenresCount + 
                      popularRadiosRow1Count + popularRadiosRow2Count + 
                      countryStationsRow1Count + countryStationsRow2Count;
 
-  // Define sidebar routes
-  const sidebarRoutes = ['/discover', '/genres', '/search', '/favorites', '#', '/settings'];
+  // Define sidebar routes (NO PROFILE - 5 items)
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
   // Custom navigation logic for complex multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-5)
-    if (current >= 0 && current <= 5) {
+    // Sidebar section (0-4) - 5 items
+    if (current >= 0 && current <= 4) {
       if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
+        newIndex = current < 4 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 6; // Jump to country selector
+        newIndex = 5; // Jump to country selector
       }
     }
-    // Country selector (6)
-    else if (current === 6) {
+    // Country selector (5)
+    else if (current === 5) {
       if (direction === 'DOWN') {
         newIndex = popularGenresStart; // Jump to first genre
       } else if (direction === 'LEFT') {

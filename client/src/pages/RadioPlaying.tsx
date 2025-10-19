@@ -115,39 +115,39 @@ export const RadioPlaying = (): JSX.Element => {
 
   const similarStations = similarData?.stations || [];
 
-  // Calculate totalItems: 6 (sidebar) + 1 (country) + 4 (playback) + similar stations
-  const totalItems = 6 + 1 + 4 + Math.min(similarStations.length, 8);
+  // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations
+  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 8);
 
-  // Define sidebar routes
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/discover-no-user', '/settings'];
+  // Define sidebar routes (NO PROFILE - 5 items)
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
   // Custom navigation logic for multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-5)
-    if (current >= 0 && current <= 5) {
+    // Sidebar section (0-4) - 5 items
+    if (current >= 0 && current <= 4) {
       if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
+        newIndex = current < 4 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 6; // Jump to country selector
+        newIndex = 5; // Jump to country selector
       }
     }
-    // Country selector (6)
-    else if (current === 6) {
+    // Country selector (5)
+    else if (current === 5) {
       if (direction === 'DOWN') {
-        newIndex = 7; // Jump to first playback button (previous)
+        newIndex = 6; // Jump to first playback button (previous)
       } else if (direction === 'UP') {
-        newIndex = 7; // Jump to playback controls
+        newIndex = 6; // Jump to playback controls
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to sidebar
       }
     }
-    // Playback controls (7-10: previous, play/pause, next, favorite)
-    else if (current >= 7 && current <= 10) {
+    // Playback controls (6-9: previous, play/pause, next, favorite)
+    else if (current >= 6 && current <= 9) {
       const relIndex = current - 7;
 
       if (direction === 'LEFT') {
