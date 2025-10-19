@@ -1,7 +1,6 @@
 // Mega Radio API Service
-// Use backend proxy because Cloudflare blocks Replit's browser IPs
-const BASE_URL = '';
-const API_PREFIX = '/api/proxy';
+const BASE_URL = 'https://themegaradio.com';
+const API_PREFIX = '/api';
 
 const isSamsungTV = typeof window !== 'undefined' && (
   navigator.userAgent.toLowerCase().includes('tizen') ||
