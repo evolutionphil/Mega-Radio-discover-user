@@ -344,117 +344,115 @@ export const Search = (): JSX.Element => {
         }}
       />
 
-      {/* Sidebar */}
-      <div className="absolute left-[30px] top-[144px] w-[120px] h-[556px]">
-        <div className="flex flex-col gap-[8px]">
+      {/* Fixed Left Sidebar */}
+      <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-50 pointer-events-auto">
+          {/* Discover */}
           <Link href="/discover-no-user">
-            <div
-              className={`w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer transition-colors bg-transparent ${getFocusClasses(isFocused(0))}`}
-              data-testid="button-discover"
-            >
-              <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
-                <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0 ${getFocusClasses(isFocused(0))}`} data-testid="button-discover">
+              <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   {t('discover')}
                 </p>
-                <img
-                  className="absolute left-[23px] top-0 w-[32px] h-[32px]"
-                  alt="Discover"
-                  src="/images/radio-icon.svg"
-                />
-              </div>
-            </div>
-          </Link>
-
-          <Link href="/genres">
-            <div
-              className={`w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer transition-colors bg-transparent ${getFocusClasses(isFocused(1))}`}
-              data-testid="button-genres"
-            >
-              <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
-                <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
-                  {t('genres')}
-                </p>
-                <img
-                  className="absolute left-[23px] top-0 w-[32px] h-[32px]"
-                  alt="Genres"
-                  src="/images/music-icon.svg"
-                />
-              </div>
-            </div>
-          </Link>
-
-          <Link href="/search">
-            <div
-              className={`w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer transition-colors bg-[rgba(255,255,255,0.2)] ${getFocusClasses(isFocused(2))}`}
-              data-testid="button-search"
-            >
-              <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
-                <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
-                  {t('search')}
-                </p>
-                <img
-                  className="absolute left-[23px] top-0 w-[32px] h-[32px]"
-                  alt="Search"
-                  src="/images/search-icon.svg"
-                />
-              </div>
-            </div>
-          </Link>
-
-          <Link href="/favorites">
-            <div
-              className={`w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer transition-colors bg-transparent ${getFocusClasses(isFocused(3))}`}
-              data-testid="button-favorites"
-            >
-              <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
-                <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
-                  {t('favorites')}
-                </p>
-                <img
-                  className="absolute left-[23px] top-0 w-[32px] h-[32px]"
-                  alt="Favorites"
-                  src="/images/heart-icon.svg"
-                />
-              </div>
-            </div>
-          </Link>
-
-          <Link href="#">
-            <div
-              className={`w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer transition-colors bg-transparent ${getFocusClasses(isFocused(4))}`}
-              data-testid="button-records"
-            >
-              <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
-                <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
-                  {t('profile_nav_records')}
-                </p>
-                <div className="absolute left-[23px] top-0 w-[32px] h-[32px]">
-                  <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
-                  <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
+                <div className="absolute left-[20px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src="/images/radio-icon.svg"
+                  />
                 </div>
               </div>
             </div>
           </Link>
 
+          {/* Genres */}
+          <Link href="/genres">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px] ${getFocusClasses(isFocused(1))}`} data-testid="button-genres">
+              <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('genres')}
+                </p>
+                <div className="absolute left-[13px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src="/images/music-icon.svg"
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Search - Active */}
+          <Link href="/search">
+            <div className={`absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[216px] ${getFocusClasses(isFocused(2))}`} data-testid="button-search">
+              <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('search')}
+                </p>
+                <div className="absolute left-[12px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src="/images/search-icon.svg"
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Favorites */}
+          <Link href="/favorites">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px] ${getFocusClasses(isFocused(3))}`} data-testid="button-favorites">
+              <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('favorites')}
+                </p>
+                <div className="absolute left-[22px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src="/images/heart-icon.svg"
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Records */}
+          <Link href="#">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px] ${getFocusClasses(isFocused(4))}`} data-testid="button-records">
+              <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                  {t('profile_nav_records')}
+                </p>
+                <div className="absolute left-[17px] size-[32px] top-0">
+                  <div className="absolute left-0 size-[32px] top-0">
+                    <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
+                    <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Settings */}
           <Link href="/settings">
-            <div
-              className={`w-[98px] h-[98px] rounded-[10px] overflow-clip cursor-pointer transition-colors bg-transparent ${getFocusClasses(isFocused(5))}`}
-              data-testid="button-settings"
-            >
-              <div className="absolute w-[77px] h-[61px] left-[11px] top-[19px]">
-                <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px] ${getFocusClasses(isFocused(5))}`} data-testid="button-settings">
+              <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   {t('settings')}
                 </p>
-                <img
-                  className="absolute left-[23px] top-0 w-[32px] h-[32px]"
-                  alt="Settings"
-                  src="/images/settings-icon.svg"
-                />
+                <div className="absolute left-[18px] size-[32px] top-0">
+                  <img
+                    alt=""
+                    className="block max-w-none size-full"
+                    src="/images/settings-icon.svg"
+                  />
+                </div>
               </div>
             </div>
           </Link>
         </div>
-      </div>
 
       {/* Search Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[246px] not-italic text-[32px] text-white top-[58px]">
