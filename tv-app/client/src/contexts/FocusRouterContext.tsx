@@ -42,12 +42,24 @@ export function FocusRouterProvider({ children }: { children: ReactNode }) {
     const currentRoute = location;
     const handler = handlersRef.current.get(currentRoute);
     
+    console.log('[FocusRouter] ⌨️  Key event received:', {
+      key: e.key,
+      keyCode: e.keyCode,
+      code: e.code,
+      currentRoute,
+      hasHandler: !!handler,
+      registeredRoutes: Array.from(handlersRef.current.keys())
+    });
+    
     if (handler) {
       // Route found, call page-specific handler
+      console.log('[FocusRouter] ✅ Dispatching to route handler:', currentRoute);
       handler(e);
     } else {
       // No handler registered, log for debugging
-      console.log('[FocusRouter] No handler registered for route:', currentRoute);
+      console.warn('[FocusRouter] ⚠️  No handler registered for route:', currentRoute, {
+        availableRoutes: Array.from(handlersRef.current.keys())
+      });
     }
   };
 

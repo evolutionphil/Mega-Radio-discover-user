@@ -40,6 +40,17 @@ export function useFocusManager({
 }: UseFocusManagerOptions) {
   const [focusIndex, setFocusIndex] = useState(initialIndex);
 
+  // Log initial state
+  useEffect(() => {
+    console.log('[useFocusManager] 🎯 Initialized with:', {
+      totalItems,
+      cols,
+      rows,
+      initialIndex,
+      enableWrapping
+    });
+  }, []);
+
   // Calculate grid dimensions
   const actualRows = rows || Math.ceil(totalItems / cols);
 
@@ -53,8 +64,26 @@ export function useFocusManager({
     return Math.max(0, Math.min(totalItems - 1, index));
   }, [totalItems, enableWrapping]);
 
+  // Log focus changes
+  useEffect(() => {
+    console.log('[useFocusManager] 👁️  Focus changed:', {
+      focusIndex,
+      totalItems,
+      cols,
+      row: Math.floor(focusIndex / cols),
+      col: focusIndex % cols
+    });
+  }, [focusIndex, totalItems, cols]);
+
   // Navigation handler
   const handleNavigation = useCallback((direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
+    console.log('[useFocusManager] ⌨️  Navigation:', {
+      direction,
+      currentIndex: focusIndex,
+      totalItems,
+      cols
+    });
+    
     setFocusIndex(current => {
       let newIndex = current;
 
@@ -88,12 +117,26 @@ export function useFocusManager({
           break;
       }
 
-      return clampIndex(newIndex);
+      const clampedIndex = clampIndex(newIndex);
+      console.log('[useFocusManager] 🎯 Focus move:', {
+        from: current,
+        to: clampedIndex,
+        attempted: newIndex,
+        clamped: newIndex !== clampedIndex
+      });
+      
+      return clampedIndex;
     });
-  }, [cols, clampIndex]);
+  }, [cols, clampIndex, focusIndex, totalItems]);
 
   // Select handler
   const handleSelect = useCallback(() => {
+    console.log('[useFocusManager] ✅ Select pressed:', {
+      focusIndex,
+      totalItems,
+      hasHandler: !!onSelect
+    });
+    
     if (onSelect && focusIndex >= 0 && focusIndex < totalItems) {
       onSelect(focusIndex);
     }
@@ -101,6 +144,10 @@ export function useFocusManager({
 
   // Back handler
   const handleBack = useCallback(() => {
+    console.log('[useFocusManager] ⬅️  Back pressed:', {
+      hasHandler: !!onBack
+    });
+    
     if (onBack) {
       onBack();
     } else {
@@ -111,7 +158,19 @@ export function useFocusManager({
 
   // Reset focus when totalItems changes
   useEffect(() => {
-    setFocusIndex(current => clampIndex(current));
+    const oldIndex = focusIndex;
+    setFocusIndex(current => {
+      const newIndex = clampIndex(current);
+      if (newIndex !== current) {
+        console.log('[useFocusManager] 🔄 Focus reset due to totalItems change:', {
+          oldTotal: totalItems,
+          newTotal: totalItems,
+          oldIndex: current,
+          newIndex
+        });
+      }
+      return newIndex;
+    });
   }, [totalItems, clampIndex]);
 
   return {
@@ -134,6 +193,6 @@ export function useFocusManager({
  */
 export function getFocusClasses(isFocused: boolean): string {
   return isFocused
-    ? 'ring-2 ring-white ring-offset-2 ring-offset-black scale-105 transition-all duration-200'
+    ? 'ring-4 ring-[#ff4199] ring-offset-2 ring-offset-black scale-105 transition-all duration-200 shadow-[0_0_20px_rgba(255,65,153,0.6)]'
     : 'transition-all duration-200';
 }
