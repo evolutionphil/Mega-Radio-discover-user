@@ -31,11 +31,19 @@ export const RadioPlaying = (): JSX.Element => {
   // Similar stations scroll ref
   const similarScrollRef = useRef<HTMLDivElement>(null);
   
-  // Parse station ID from URL query params
+  // Parse station ID from URL query params (hash-based routing)
   const stationId = useMemo(() => {
-    const searchParams = new URLSearchParams(window.location.search);
+    // For hash-based routing, query params are inside the hash: #/radio-playing?station=123
+    const hash = window.location.hash;
+    const queryStart = hash.indexOf('?');
+    if (queryStart === -1) {
+      console.log('[RadioPlaying] No query params in hash:', hash);
+      return null;
+    }
+    const queryString = hash.substring(queryStart + 1);
+    const searchParams = new URLSearchParams(queryString);
     const id = searchParams.get('station');
-    console.log('[RadioPlaying] URL changed, parsing station ID:', id);
+    console.log('[RadioPlaying] URL changed, parsing station ID from hash:', id, 'Full hash:', hash);
     return id;
   }, [location, updateTrigger]);
   
