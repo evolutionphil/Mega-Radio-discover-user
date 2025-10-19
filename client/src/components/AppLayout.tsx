@@ -125,7 +125,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Discover
               </p>
               <div className="absolute left-[20px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/radio-icon.svg" />
+                <img alt="" className="block max-w-none size-full" src="images/radio-icon.svg" />
               </div>
             </div>
           </div>
@@ -143,7 +143,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Genres
               </p>
               <div className="absolute left-[13px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/music-icon.svg" />
+                <img alt="" className="block max-w-none size-full" src="images/music-icon.svg" />
               </div>
             </div>
           </div>
@@ -161,7 +161,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Search
               </p>
               <div className="absolute left-[12px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/search-icon.svg" />
+                <img alt="" className="block max-w-none size-full" src="images/search-icon.svg" />
               </div>
             </div>
           </div>
@@ -179,22 +179,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Favorites
               </p>
               <div className="absolute left-[22px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/heart-icon.svg" />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Records */}
-        <Link href="/discover-no-user">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
-            <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Records
-              </p>
-              <div className="absolute left-[17px] size-[32px] top-0">
-                <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
-                <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
+                <img alt="" className="block max-w-none size-full" src="images/heart-icon.svg" />
               </div>
             </div>
           </div>
@@ -203,7 +188,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
         {/* Settings */}
         <Link href="/settings">
           <div 
-            className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px] ${currentPage === 'settings' ? 'bg-[rgba(255,255,255,0.2)]' : ''}`} 
+            className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px] ${currentPage === 'settings' ? 'bg-[rgba(255,255,255,0.2)]' : ''}`} 
             data-testid="button-settings" 
             data-tv-focusable="true"
           >
@@ -212,7 +197,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 Settings
               </p>
               <div className="absolute left-[18px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/settings-icon.svg" />
+                <img alt="" className="block max-w-none size-full" src="images/settings-icon.svg" />
               </div>
             </div>
           </div>

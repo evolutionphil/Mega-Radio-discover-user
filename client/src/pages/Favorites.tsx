@@ -6,6 +6,7 @@ import { Station } from "@/services/megaRadioApi";
 import { useRef } from "react";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
+import { Sidebar } from "@/components/Sidebar";
 
 export const Favorites = (): JSX.Element => {
   const { favorites } = useFavorites();

@@ -8,6 +8,7 @@ import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
+import { Sidebar } from "@/components/Sidebar";
 
 export const Genres = (): JSX.Element => {
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
@@ -305,88 +306,7 @@ export const Genres = (): JSX.Element => {
       />
 
       {/* Left Sidebar Menu */}
-      <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] z-50">
-        {/* Discover */}
-        <Link href="/discover-no-user">
-          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-0 ${getFocusClasses(isFocused(0))}`} data-testid="button-discover" onClick={() => setLocation('/discover-no-user')}>
-            <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                {t('nav_discover') || 'Discover'}
-              </p>
-              <div className="absolute left-[20px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/radio-icon.svg" />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Genres - Active */}
-        <div className={`absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-[108px] ${getFocusClasses(isFocused(1))}`} data-testid="button-genres">
-          <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
-            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-              {t('genres') || 'Genres'}
-            </p>
-            <div className="absolute left-[13px] size-[32px] top-0">
-              <img alt="" className="block max-w-none size-full" src="/images/music-icon.svg" />
-            </div>
-          </div>
-        </div>
-
-        {/* Search */}
-        <Link href="/search">
-          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px] ${getFocusClasses(isFocused(2))}`} data-testid="button-search" onClick={() => setLocation('/search')}>
-            <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                {t('search') || 'Search'}
-              </p>
-              <div className="absolute left-[12px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/search-icon.svg" />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Favorites */}
-        <Link href="/favorites">
-          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px] ${getFocusClasses(isFocused(3))}`} data-testid="button-favorites" onClick={() => setLocation('/favorites')}>
-            <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Favorites
-              </p>
-              <div className="absolute left-[22px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/heart-icon.svg" />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Records */}
-        <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px] ${getFocusClasses(isFocused(4))}`} data-testid="button-records">
-          <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
-            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-              Records
-            </p>
-            <div className="absolute left-[17px] size-[32px] top-0">
-              <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
-              <div className="absolute border-[2.667px] border-solid border-white left-0 rounded-[20.267px] size-[32px] top-0" />
-            </div>
-          </div>
-        </div>
-
-        {/* Settings */}
-        <Link href="/settings">
-          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px] ${getFocusClasses(isFocused(5))}`} data-testid="button-settings" onClick={() => setLocation('/settings')}>
-            <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Settings
-              </p>
-              <div className="absolute left-[18px] size-[32px] top-0">
-                <img alt="" className="block max-w-none size-full" src="/images/settings-icon.svg" />
-              </div>
-            </div>
-          </div>
-        </Link>
-      </div>
+      <Sidebar activePage="genres" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
       {/* Popular Genres Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-[242px]">

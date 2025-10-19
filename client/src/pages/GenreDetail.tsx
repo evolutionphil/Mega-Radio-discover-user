@@ -15,12 +15,11 @@ export const GenreDetail = (): JSX.Element => {
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
   const sidebarItems = [
-    { icon: "/images/radio-icon.svg", label: "Discover", active: false, href: "/discover-no-user" },
-    { icon: "/images/music-icon.svg", label: "Genres", active: true, href: "/genres" },
-    { icon: "/images/search-icon.svg", label: "Search", active: false, href: "/search" },
-    { icon: "/images/heart-icon.svg", label: "Favorites", active: false, href: "/favorites" },
-    { icon: null, label: "Records", active: false, customIcon: true, href: "#" },
-    { icon: "/images/settings-icon.svg", label: "Settings", active: false, href: "/settings" },
+    { icon: "images/radio-icon.svg", label: "Discover", active: false, href: "/discover-no-user" },
+    { icon: "images/music-icon.svg", label: "Genres", active: true, href: "/genres" },
+    { icon: "images/search-icon.svg", label: "Search", active: false, href: "/search" },
+    { icon: "images/heart-icon.svg", label: "Favorites", active: false, href: "/favorites" },
+    { icon: "images/settings-icon.svg", label: "Settings", active: false, href: "/settings" },
   ];
 
   const stations = [
@@ -254,9 +253,7 @@ export const GenreDetail = (): JSX.Element => {
                 <p className="absolute left-1/2 -translate-x-1/2 top-[40px] font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal">
                   {item.label}
                 </p>
-                {item.customIcon ? (
-                  <div className="absolute left-[23px] top-0 w-[32px] h-[32px] bg-white rounded-full" />
-                ) : item.icon && (
+                {item.icon && (
                   <img
                     className="absolute left-[23px] top-0 w-[32px] h-[32px]"
                     alt={item.label}
