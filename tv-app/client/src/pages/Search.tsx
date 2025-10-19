@@ -16,15 +16,35 @@ export const Search = (): JSX.Element => {
   const { playStation, isPlaying } = useGlobalPlayer();
   const { t } = useLocalization();
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [recentlyPlayedStations, setRecentlyPlayedStations] = useState<Station[]>([]);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
-  // Search for stations based on query
+  // LGTV Reference Pattern: Debounce search with 400ms timeout
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    searchTimeoutRef.current = setTimeout(() => {
+      console.log('[Search] 🔍 keywordChange - debounced query:', searchQuery);
+      setDebouncedSearchQuery(searchQuery);
+    }, 400); // LGTV uses 400ms debounce
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [searchQuery]);
+
+  // Search for stations based on debounced query
   const { data: searchData } = useQuery({
-    queryKey: ['/api/stations/search', searchQuery],
-    queryFn: () => megaRadioApi.searchStations({ q: searchQuery, limit: 4 }),
-    enabled: searchQuery.length > 0,
+    queryKey: ['/api/stations/search', debouncedSearchQuery],
+    queryFn: () => megaRadioApi.searchStations({ q: debouncedSearchQuery, limit: 4 }),
+    enabled: debouncedSearchQuery.length > 0,
   });
 
   // Fetch popular stations as fallback
@@ -155,33 +175,52 @@ export const Search = (): JSX.Element => {
     setFocusIndex(newIndex);
   };
 
+  // LGTV Reference Pattern: Set cursor position to end of input text
+  const setInputCursorToEnd = () => {
+    setTimeout(() => {
+      if (inputRef.current) {
+        const length = inputRef.current.value.length;
+        inputRef.current.setSelectionRange(length, length);
+        console.log('[Search] 📍 Cursor set to end of input, position:', length);
+      }
+    }, 200);
+  };
+
   // Focus management with custom navigation
   const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
     initialIndex: 7, // Start on search input
     onSelect: (index) => {
+      console.log('[Search] 🎯 handleMenuClick - index:', index);
+      
       // Sidebar navigation (0-5)
       if (index >= 0 && index <= 5) {
         const route = sidebarRoutes[index];
         if (route !== '#') {
+          console.log('[Search] 📍 Navigating to sidebar route:', route);
           setLocation(route);
         }
       }
       // Country selector (6)
       else if (index === 6) {
+        console.log('[Search] 🌍 Opening country selector');
         setIsCountrySelectorOpen(true);
       }
-      // Search input (7) - do nothing, user can type
+      // Search input (7) - LGTV pattern: focus input and set cursor to end
       else if (index === 7) {
-        // Input already focused via useEffect below
-        console.log('[Search] Search input selected');
+        console.log('[Search] ⌨️  Search input selected - focusing input field (LGTV pattern)');
+        if (inputRef.current) {
+          inputRef.current.focus();
+          setInputCursorToEnd();
+        }
       }
       // Search results (8 to 8+searchResults.length-1)
       else if (index >= 8 && index < 8 + searchResults.length) {
         const resultIndex = index - 8;
         const station = searchResults[resultIndex];
         if (station) {
+          console.log('[Search] ▶️  Playing search result:', station.name);
           playStation(station);
           setLocation(`/radio-playing?stationId=${station._id}`);
         }
@@ -191,6 +230,7 @@ export const Search = (): JSX.Element => {
         const recentIndex = index - 8 - searchResults.length;
         const station = recentStations[recentIndex];
         if (station) {
+          console.log('[Search] ▶️  Playing recently played:', station.name);
           playStation(station);
           setLocation(`/radio-playing?stationId=${station._id}`);
         }
@@ -494,9 +534,13 @@ export const Search = (): JSX.Element => {
             className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] h-[65px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
             style={{ top: `${topPositions[index]}px` }}
             data-testid={`search-result-${index}`}
+            onMouseEnter={() => {
+              console.log('[Search] 🖱️ hoverMovie - search result index:', index);
+              setFocusIndex(focusIdx);
+            }}
             onClick={() => {
-              playStation(station);
-              setLocation(`/radio-playing?stationId=${station._id}`);
+              console.log('[Search] 🎯 onClick - handleMenuClick for search result:', station.name);
+              handleSelect();
             }}
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
@@ -536,9 +580,13 @@ export const Search = (): JSX.Element => {
               top: `${topPositions[row]}px`
             }}
             data-testid={`recent-station-${index}`}
+            onMouseEnter={() => {
+              console.log('[Search] 🖱️ hoverMovie - recent station index:', index);
+              setFocusIndex(focusIdx);
+            }}
             onClick={() => {
-              playStation(station);
-              setLocation(`/radio-playing?stationId=${station._id}`);
+              console.log('[Search] 🎯 onClick - handleMenuClick for recent station:', station.name);
+              handleSelect();
             }}
           >
             <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
