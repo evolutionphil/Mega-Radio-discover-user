@@ -1,0 +1,122 @@
+Failed to load resource: net::ERR_<unknown>
+fetch-polyfill-samsung.js:5 [Fetch Polyfill] Loading Samsung TV fetch handler...
+fetch-polyfill-samsung.js:135 [Fetch Polyfill] Samsung TV fetch handler loaded
+polyfills.js:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js:20 [Polyfills] Added globalThis
+polyfills.js:36 [Polyfills] Added Object.fromEntries
+polyfills.js:86 [Polyfills] Added String.prototype.replaceAll
+polyfills.js:105 [Polyfills] Added Promise.allSettled
+polyfills.js:108 [Polyfills] All polyfills loaded successfully
+platform-detect.js:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js?v=1760837867:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+index-D1owXiSb.js:104 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-D1owXiSb.js:104 [MegaRadio API] BASE_URL: https://themegaradio.com
+tv-spatial-navigatio…js?v=1760837867:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1760837867:161 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1760837867:165 [TV Remote Keys] Key handler attached, waiting for React...
+index-D1owXiSb.js:104 [FocusRouter] Dispatch function registered to window
+index-D1owXiSb.js:104 [CountryContext] Setting country from localization: United States US
+index-D1owXiSb.js:104 [Localization] Browser language detected: de-DE
+index-D1owXiSb.js:104 [Localization] Using language: de
+index-D1owXiSb.js:104 [Localization] Detected country: Germany DE
+index-D1owXiSb.js:104 [Localization] Fetching translations for: de
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/translations/de?tv=1
+index-D1owXiSb.js:104 [CountryContext] Setting country from localization: Germany DE
+path8.svg:1 Failed to load resource: net::ERR_<unknown>
+index-D1owXiSb.js:104 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js?v=1760837867:52 [TV Nav] Found 0 focusable elements
+index-D1owXiSb.js:104 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/translations/de?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 25409
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 25409
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"mood_energetic":"Energisch","mood_relaxed":"Entspannt","mood_focused":"Konzentriert","mood_nostalg...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+Array(623)
+index-D1owXiSb.js:104 [Localization] API response received
+index-D1owXiSb.js:104 [Localization] Loaded 623 translations
+index-D1owXiSb.js:119 [Guide1] Adding keydown listener
+index-D1owXiSb.js:119 [Guide1] Key pressed: 40 ArrowDown
+index-D1owXiSb.js:104 [FocusRouter] No handler registered for route: /index.html
+index-D1owXiSb.js:119 [Guide1] Key pressed: 13 Enter
+index-D1owXiSb.js:119 [Guide1] OK/Enter pressed - navigating to Guide 2
+index-D1owXiSb.js:119 [Guide1] Removing keydown listener
+index-D1owXiSb.js:119 [Guide2] Adding keydown listener
+index-D1owXiSb.js:119 [Guide2] Key pressed: 13 Enter
+index-D1owXiSb.js:119 [Guide2] OK/Enter pressed - navigating to Guide 3
+index-D1owXiSb.js:119 [Guide2] Removing keydown listener
+index-D1owXiSb.js:119 [Guide3] Adding keydown listener
+index-D1owXiSb.js:119 [Guide3] Key pressed: 13 Enter
+index-D1owXiSb.js:119 [Guide3] OK/Enter pressed - navigating to Guide 4
+index-D1owXiSb.js:119 [Guide3] Removing keydown listener
+index-D1owXiSb.js:119 [Guide4] Adding keydown listener
+index-D1owXiSb.js:119 [Guide4] Key pressed: 13 Enter
+index-D1owXiSb.js:119 [Guide4] OK/Enter pressed - navigating to Discover
+index-D1owXiSb.js:119 [CountrySelector] useMemo: Recalculating filtered countries for query: 
+index-D1owXiSb.js:119 [CountrySelector] ===== RENDER INFO =====
+index-D1owXiSb.js:119 [CountrySelector] Total countries loaded: 0
+index-D1owXiSb.js:119 [CountrySelector] Search query: ""
+index-D1owXiSb.js:119 [CountrySelector] Filtered count: 0
+index-D1owXiSb.js:119 [CountrySelector] ========================
+index-D1owXiSb.js:119 [CountrySelector] Not rendering - isOpen is false
+index-D1owXiSb.js:119 [Guide4] Removing keydown listener
+index-D1owXiSb.js:119 [CountrySelector] Search query updated to: 
+index-D1owXiSb.js:119 [DiscoverNoUser] Fetching genres for country code: DE
+index-D1owXiSb.js:104 [API] getAllGenres: Converting DE -> Germany
+index-D1owXiSb.js:104 [API] getAllGenres URL: https://themegaradio.com/api/genres?country=Germany&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres?country=Germany&tv=1
+index-D1owXiSb.js:119 [DiscoverNoUser] Fetching popular stations for country: DE
+index-D1owXiSb.js:104 [API] getPopularStations: Converting DE -> Germany
+index-D1owXiSb.js:104 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+index-D1owXiSb.js:119 [DiscoverNoUser] Fetching stations for country code: DE
+index-D1owXiSb.js:104 [API] getWorkingStations: Converting DE -> Germany
+index-D1owXiSb.js:104 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=500&country=Germany&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=500&country=Germany&tv=1
+index-D1owXiSb.js:104 [FocusRouter] Registering handler for route: /discover-no-user
+images/austria-1.png:1 GET file:///images/austria-1.png net::ERR_<unknown>
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/genres?country=Germany&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 2119
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 2119
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5...
+index-D1owXiSb.js:104 [API] getAllGenres response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(5) ["data", "count", "currentPage", "perPage", "totalPages"]
+index-D1owXiSb.js:104 [API] getAllGenres fetched: 9
+index-D1owXiSb.js:119 [CountrySelector] ===== RENDER INFO =====
+index-D1owXiSb.js:119 [CountrySelector] Total countries loaded: 0
+index-D1owXiSb.js:119 [CountrySelector] Search query: ""
+index-D1owXiSb.js:119 [CountrySelector] Filtered count: 0
+index-D1owXiSb.js:119 [CountrySelector] ========================
+index-D1owXiSb.js:119 [CountrySelector] Not rendering - isOpen is false
+index-D1owXiSb.js:104 [FocusRouter] No handler registered for route: /index.html
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 29194
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 29194
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c47dbd66579311ab228c","stationuuid":"78012206-1aa1-11e9-a80b-52543be04c81",...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-D1owXiSb.js:104 [API] getPopularStations fetched: 24 stations
+index-D1owXiSb.js:119 [CountrySelector] ===== RENDER INFO =====
+index-D1owXiSb.js:119 [CountrySelector] Total countries loaded: 0
+index-D1owXiSb.js:119 [CountrySelector] Search query: ""
+index-D1owXiSb.js:119 [CountrySelector] Filtered count: 0
+index-D1owXiSb.js:119 [CountrySelector] ========================
+index-D1owXiSb.js:119 [CountrySelector] Not rendering - isOpen is false
+index-D1owXiSb.js:104 [FocusRouter] No handler registered for route: /index.html
+index-D1owXiSb.js:119 [AutoPlay] Play at start mode: last-played
+index-D1owXiSb.js:119 [AutoPlay] Getting station for mode: last-played
+index-D1owXiSb.js:119 [AutoPlay] No station found to auto-play
+2
+index-D1owXiSb.js:104 [FocusRouter] No handler registered for route: /index.html
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=&limit=500&country=Germany&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 609446
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 609446
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c4a5bd66579311ab852c","stationuuid":"c83f96db-ea3f-405f-82c1-7356a7553bea",...
+index-D1owXiSb.js:104 [API] Response status: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+﻿
