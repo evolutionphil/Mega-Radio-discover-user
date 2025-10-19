@@ -16,49 +16,50 @@ var guide_1_page = {
     
     render: function() {
         var html = `
-            <div class="bg-black fixed inset-0 w-[1920px] h-[1080px] overflow-hidden cursor-pointer" 
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000000; cursor: pointer;" 
                  data-testid="page-guide-1">
                 <!-- Background Image with Dark Overlay -->
-                <div class="absolute h-[1897px] left-0 top-0 w-[1920px]">
-                    <div class="absolute inset-0 pointer-events-none">
+                <div style="position: absolute; height: 1897px; left: 0; top: 0; width: 1920px;">
+                    <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; pointer-events: none;">
                         <img alt="" 
-                             class="absolute max-w-none object-50%-50% object-cover size-full" 
+                             style="position: absolute; max-width: none; object-fit: cover; object-position: 50% 50%; width: 100%; height: 100%;" 
                              src="${Utils.assetPath('images/discover-background.png')}">
-                        <div class="absolute bg-[rgba(0,0,0,0.7)] inset-0"></div>
+                        <div style="position: absolute; background: rgba(0,0,0,0.7); top: 0; right: 0; bottom: 0; left: 0;"></div>
                     </div>
                 </div>
 
                 <!-- Arrow pointing to Discover button -->
-                <div class="absolute flex items-center justify-center left-[188px] top-[270px] z-20">
-                    <div class="rotate-[1.292deg]">
-                        <div class="h-[31.65px] relative w-[130.979px]">
+                <div class="d-flex align-items-center justify-content-center" 
+                     style="position: absolute; left: 188px; top: 270px; z-index: 20;">
+                    <div style="transform: rotate(1.292deg);">
+                        <div style="height: 31.65px; position: relative; width: 130.979px;">
                             <img alt="" 
-                                 class="block max-w-none size-full" 
+                                 style="display: block; max-width: none; width: 100%; height: 100%;" 
                                  src="${Utils.assetPath('images/arrow.svg')}">
                         </div>
                     </div>
                 </div>
 
                 <!-- Highlighted Discover Button -->
-                <div class="absolute bg-[rgba(255,255,255,0.2)] left-[63px] overflow-clip rounded-[10px] size-[98px] top-[238px] z-20">
-                    <div class="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
-                        <p class="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]" data-i18n="nav_discover">
+                <div style="position: absolute; background: rgba(255,255,255,0.2); left: 63px; overflow: hidden; border-radius: 10px; width: 98px; height: 98px; top: 238px; z-index: 20;">
+                    <div style="position: absolute; height: 61px; left: 13px; top: 19px; width: 72px;">
+                        <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 500; line-height: normal; left: 36px; font-style: normal; font-size: 18px; text-align: center; color: #ffffff; top: 40px; transform: translateX(-50%);" data-i18n="nav_discover">
                             Discover
                         </p>
-                        <div class="absolute left-[20px] size-[32px] top-0">
+                        <div style="position: absolute; left: 20px; width: 32px; height: 32px; top: 0;">
                             <img alt="" 
-                                 class="block max-w-none size-full" 
+                                 style="display: block; max-width: none; width: 100%; height: 100%;" 
                                  src="${Utils.assetPath('images/radio-icon.svg')}">
                         </div>
                     </div>
                 </div>
 
                 <!-- Tooltip Box -->
-                <div class="absolute bg-black h-[115px] left-[340px] overflow-clip rounded-[10px] top-[227px] w-[551px] z-20">
-                    <p class="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[67px] not-italic text-[24px] text-white top-[43px]" data-i18n="guide_discover_description">
+                <div style="position: absolute; background: #000000; height: 115px; left: 340px; overflow: hidden; border-radius: 10px; top: 227px; width: 551px; z-index: 20;">
+                    <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 500; line-height: normal; left: 67px; font-style: normal; font-size: 24px; color: #ffffff; top: 43px;" data-i18n="guide_discover_description">
                         You can discover new radio stations here.
                     </p>
-                    <div class="absolute bg-[#f42d2d] left-[24px] rounded-[40px] size-[18.667px] top-[48px]"></div>
+                    <div style="position: absolute; background: #f42d2d; left: 24px; border-radius: 40px; width: 18.667px; height: 18.667px; top: 48px;"></div>
                 </div>
             </div>
         `;

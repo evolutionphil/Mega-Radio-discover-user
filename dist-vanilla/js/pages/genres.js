@@ -23,24 +23,24 @@ var genres_page = {
         var currentCountry = State.get('currentCountry') || AppConfig.DEFAULT_COUNTRY;
         
         var html = `
-            <div class="bg-[#0e0e0e] fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-genres">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0e0e0e;" data-testid="page-genres">
                 <!-- Sidebar -->
                 <div id="genres-sidebar"></div>
                 
                 <!-- Main Content -->
-                <div class="absolute left-[190px] right-[64px] top-[64px] bottom-[64px] overflow-y-auto" id="genres-content">
+                <div style="position: absolute; left: 190px; right: 64px; top: 64px; bottom: 64px; overflow-y: auto;" id="genres-content">
                     <!-- Header -->
-                    <div class="mb-[40px]">
-                        <h1 class="font-['Ubuntu',Helvetica] font-bold text-[48px] text-white mb-[16px]" data-i18n="genres">
+                    <div style="margin-bottom: 40px;">
+                        <h1 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 48px; color: #ffffff; margin-bottom: 16px;" data-i18n="genres">
                             Genres
                         </h1>
-                        <p class="font-['Ubuntu',Helvetica] text-[20px] text-[#9b9b9b]">
+                        <p style="font-family: 'Ubuntu', Helvetica; font-size: 20px; color: #9b9b9b;">
                             <span data-i18n="browse_by_genre">Browse by genre from</span> ${currentCountry}
                         </p>
                     </div>
                     
                     <!-- Genres Grid -->
-                    <div class="grid grid-cols-6 gap-[24px]" id="genres-grid-container">
+                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px;" id="genres-grid-container">
                         <!-- Genres will be dynamically inserted here -->
                     </div>
                 </div>
@@ -119,28 +119,30 @@ var genres_page = {
     renderGenres: function() {
         var html = '';
         var colors = [
-            'from-pink-500 to-purple-600',
-            'from-blue-500 to-cyan-600',
-            'from-green-500 to-teal-600',
-            'from-orange-500 to-red-600',
-            'from-purple-500 to-pink-600',
-            'from-cyan-500 to-blue-600'
+            'linear-gradient(to right, #ec4899, #9333ea)',
+            'linear-gradient(to right, #3b82f6, #06b6d4)',
+            'linear-gradient(to right, #10b981, #14b8a6)',
+            'linear-gradient(to right, #f97316, #ef4444)',
+            'linear-gradient(to right, #a855f7, #ec4899)',
+            'linear-gradient(to right, #06b6d4, #3b82f6)'
         ];
         
         this.data.genres.forEach(function(genre, index) {
             var focusIndex = 5 + index; // After sidebar (0-4)
-            var colorClass = colors[index % colors.length];
+            var colorStyle = colors[index % colors.length];
             
             html += `
-                <div class="genre-card focusable cursor-pointer transition-all duration-200"
+                <div class="genre-card focusable" 
+                     style="cursor: pointer; transition: all 0.2s;"
                      data-focus-index="${focusIndex}"
                      data-genre-slug="${genre.slug}"
                      data-genre-name="${genre.name}">
-                    <div class="bg-gradient-to-r ${colorClass} rounded-[10px] h-[150px] flex flex-col items-center justify-center p-[20px]">
-                        <p class="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white text-center mb-[8px]">
+                    <div class="d-flex flex-column align-items-center justify-content-center" 
+                         style="background: ${colorStyle}; border-radius: 10px; height: 150px; padding: 20px;">
+                        <p style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 24px; color: #ffffff; text-align: center; margin-bottom: 8px;">
                             ${genre.name}
                         </p>
-                        <p class="font-['Ubuntu',Helvetica] text-[16px] text-white opacity-80">
+                        <p style="font-family: 'Ubuntu', Helvetica; font-size: 16px; color: #ffffff; opacity: 0.8;">
                             ${genre.stationCount} <span data-i18n="stations">stations</span>
                         </p>
                     </div>

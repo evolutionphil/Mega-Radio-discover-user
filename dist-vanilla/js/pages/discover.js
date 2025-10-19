@@ -27,54 +27,55 @@ var discover_page = {
         var currentCountryCode = State.get('currentCountryCode') || AppConfig.DEFAULT_COUNTRY_CODE;
         
         var html = `
-            <div class="bg-[#0e0e0e] fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-discover">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0e0e0e;" data-testid="page-discover">
                 <!-- Sidebar -->
                 <div id="discover-sidebar"></div>
                 
                 <!-- Main Content -->
-                <div class="absolute left-[190px] right-[64px] top-[64px] bottom-[64px] overflow-y-auto" id="discover-content">
+                <div style="position: absolute; left: 190px; right: 64px; top: 64px; bottom: 64px; overflow-y: auto;" id="discover-content">
                     <!-- Header -->
-                    <div class="mb-[40px]">
-                        <h1 class="font-['Ubuntu',Helvetica] font-bold text-[48px] text-white mb-[16px]" data-i18n="nav_discover">
+                    <div style="margin-bottom: 40px;">
+                        <h1 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 48px; color: #ffffff; margin-bottom: 16px;" data-i18n="nav_discover">
                             Discover
                         </h1>
                         
                         <!-- Country Selector -->
-                        <div class="inline-flex items-center gap-[12px] bg-[rgba(255,255,255,0.1)] rounded-[10px] px-[20px] py-[12px] focusable cursor-pointer" 
+                        <div class="d-inline-flex align-items-center focusable" 
+                             style="gap: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 20px; cursor: pointer;" 
                              data-focus-index="5" 
                              id="country-selector-btn">
-                            <span class="text-[24px]">${this.getCountryFlag(currentCountryCode)}</span>
-                            <span class="font-['Ubuntu',Helvetica] text-[20px] text-white">${currentCountry}</span>
-                            <span class="text-white text-[16px]">▼</span>
+                            <span style="font-size: 24px;">${this.getCountryFlag(currentCountryCode)}</span>
+                            <span style="font-family: 'Ubuntu', Helvetica; font-size: 20px; color: #ffffff;">${currentCountry}</span>
+                            <span style="color: #ffffff; font-size: 16px;">▼</span>
                         </div>
                     </div>
                     
                     <!-- Popular Genres Section -->
-                    <div class="mb-[48px]">
-                        <h2 class="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white mb-[24px]" data-i18n="popular_genres">
+                    <div style="margin-bottom: 48px;">
+                        <h2 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 32px; color: #ffffff; margin-bottom: 24px;" data-i18n="popular_genres">
                             Popular Genres
                         </h2>
-                        <div class="flex gap-[16px] overflow-x-auto pb-[16px]" id="genres-container">
+                        <div class="d-flex" style="gap: 16px; overflow-x: auto; padding-bottom: 16px;" id="genres-container">
                             <!-- Genres will be dynamically inserted here -->
                         </div>
                     </div>
                     
                     <!-- Popular Stations Section -->
-                    <div class="mb-[48px]">
-                        <h2 class="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white mb-[24px]" data-i18n="popular_stations">
+                    <div style="margin-bottom: 48px;">
+                        <h2 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 32px; color: #ffffff; margin-bottom: 24px;" data-i18n="popular_stations">
                             Popular Stations
                         </h2>
-                        <div class="grid grid-cols-6 gap-[24px]" id="popular-stations-container">
+                        <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px;" id="popular-stations-container">
                             <!-- Popular stations will be dynamically inserted here -->
                         </div>
                     </div>
                     
                     <!-- Country Stations Section -->
                     <div>
-                        <h2 class="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white mb-[24px]">
+                        <h2 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 32px; color: #ffffff; margin-bottom: 24px;">
                             <span data-i18n="stations_from">Stations from</span> ${currentCountry}
                         </h2>
-                        <div class="grid grid-cols-6 gap-[24px]" id="country-stations-container">
+                        <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px;" id="country-stations-container">
                             <!-- Country stations will be dynamically inserted here -->
                         </div>
                     </div>
@@ -156,10 +157,11 @@ var discover_page = {
         topGenres.forEach(function(genre, index) {
             var focusIndex = 6 + index; // Start after sidebar (0-4) and country selector (5)
             html += `
-                <div class="genre-card flex-shrink-0 w-[200px] h-[100px] bg-gradient-to-r from-pink-500 to-purple-600 rounded-[10px] flex items-center justify-center cursor-pointer focusable transition-all duration-200"
+                <div class="genre-card d-flex align-items-center justify-content-center focusable" 
+                     style="flex-shrink: 0; width: 200px; height: 100px; background: linear-gradient(to right, #ec4899, #9333ea); border-radius: 10px; cursor: pointer; transition: all 0.2s;"
                      data-focus-index="${focusIndex}"
                      data-genre-slug="${genre.slug || genre.name.toLowerCase().replace(/\s+/g, '-')}">
-                    <p class="font-['Ubuntu',Helvetica] font-bold text-[20px] text-white text-center">
+                    <p style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 20px; color: #ffffff; text-align: center;">
                         ${genre.name}
                     </p>
                 </div>
@@ -178,19 +180,20 @@ var discover_page = {
             var stationImage = self.getStationImage(station);
             
             html += `
-                <div class="station-card focusable cursor-pointer transition-all duration-200"
+                <div class="station-card focusable" 
+                     style="cursor: pointer; transition: all 0.2s;"
                      data-focus-index="${focusIndex}"
                      data-station-id="${station.stationuuid || station._id}">
-                    <div class="bg-[rgba(255,255,255,0.05)] rounded-[10px] overflow-hidden">
+                    <div style="background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
                         <img src="${stationImage}" 
                              alt="${station.name}" 
-                             class="w-full h-[200px] object-cover"
+                             style="width: 100%; height: 200px; object-fit: cover;"
                              onerror="this.src='${Utils.assetPath(AppConfig.FALLBACK_STATION_IMAGE)}'">
-                        <div class="p-[16px]">
-                            <p class="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white truncate">
+                        <div style="padding: 16px;">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-weight: 500; font-size: 18px; color: #ffffff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 ${station.name}
                             </p>
-                            <p class="font-['Ubuntu',Helvetica] text-[14px] text-[#9b9b9b] truncate">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-size: 14px; color: #9b9b9b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 ${station.tags || station.country || ''}
                             </p>
                         </div>
@@ -211,19 +214,20 @@ var discover_page = {
             var stationImage = self.getStationImage(station);
             
             html += `
-                <div class="station-card focusable cursor-pointer transition-all duration-200"
+                <div class="station-card focusable" 
+                     style="cursor: pointer; transition: all 0.2s;"
                      data-focus-index="${focusIndex}"
                      data-station-id="${station.stationuuid || station._id}">
-                    <div class="bg-[rgba(255,255,255,0.05)] rounded-[10px] overflow-hidden">
+                    <div style="background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
                         <img src="${stationImage}" 
                              alt="${station.name}" 
-                             class="w-full h-[200px] object-cover"
+                             style="width: 100%; height: 200px; object-fit: cover;"
                              onerror="this.src='${Utils.assetPath(AppConfig.FALLBACK_STATION_IMAGE)}'">
-                        <div class="p-[16px]">
-                            <p class="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white truncate">
+                        <div style="padding: 16px;">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-weight: 500; font-size: 18px; color: #ffffff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 ${station.name}
                             </p>
-                            <p class="font-['Ubuntu',Helvetica] text-[14px] text-[#9b9b9b] truncate">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-size: 14px; color: #9b9b9b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 ${station.tags || station.country || ''}
                             </p>
                         </div>

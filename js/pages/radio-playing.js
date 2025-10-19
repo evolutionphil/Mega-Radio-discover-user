@@ -49,69 +49,73 @@ var radio_playing_page = {
         var playPauseIcon = isPlaying ? 'fa-pause' : 'fa-play';
         
         var html = `
-            <div class="bg-[#0e0e0e] fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-radio-playing">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0e0e0e;" data-testid="page-radio-playing">
                 <!-- Background blur effect -->
-                <div class="absolute inset-0 opacity-20">
+                <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; opacity: 0.2;">
                     <img src="${stationImage}" 
                          alt="${station.name}" 
-                         class="w-full h-full object-cover blur-[100px]">
+                         style="width: 100%; height: 100%; object-fit: cover; filter: blur(100px);">
                 </div>
                 
                 <!-- Main Content -->
-                <div class="relative z-10 flex flex-col items-center justify-center h-full">
+                <div class="d-flex flex-column align-items-center justify-content-center" 
+                     style="position: relative; z-index: 10; height: 100%;">
                     <!-- Station Logo -->
-                    <div class="mb-[48px]">
-                        <div class="w-[400px] h-[400px] rounded-[20px] overflow-hidden shadow-2xl">
+                    <div style="margin-bottom: 48px;">
+                        <div style="width: 400px; height: 400px; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
                             <img src="${stationImage}" 
                                  alt="${station.name}" 
-                                 class="w-full h-full object-cover"
+                                 style="width: 100%; height: 100%; object-fit: cover;"
                                  onerror="this.src='${Utils.assetPath(AppConfig.FALLBACK_STATION_IMAGE)}'">
                         </div>
                     </div>
                     
                     <!-- Station Info -->
-                    <div class="text-center mb-[48px]">
-                        <h1 class="font-['Ubuntu',Helvetica] font-bold text-[56px] text-white mb-[16px]">
+                    <div style="text-align: center; margin-bottom: 48px;">
+                        <h1 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 56px; color: #ffffff; margin-bottom: 16px;">
                             ${station.name}
                         </h1>
-                        <p class="font-['Ubuntu',Helvetica] text-[24px] text-[#9b9b9b] mb-[8px]">
+                        <p style="font-family: 'Ubuntu', Helvetica; font-size: 24px; color: #9b9b9b; margin-bottom: 8px;">
                             ${station.tags || station.country || ''}
                         </p>
-                        <p class="font-['Ubuntu',Helvetica] text-[20px] text-[#9b9b9b]">
+                        <p style="font-family: 'Ubuntu', Helvetica; font-size: 20px; color: #9b9b9b;">
                             ${station.country || ''}
                         </p>
                     </div>
                     
                     <!-- Playback Controls -->
-                    <div class="flex items-center gap-[32px]">
+                    <div class="d-flex align-items-center" style="gap: 32px;">
                         <!-- Favorite Button -->
                         <button id="favorite-btn" 
-                                class="bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] rounded-full p-[20px] focusable cursor-pointer transition-all duration-200"
+                                class="focusable"
+                                style="background: rgba(255,255,255,0.1); border-radius: 50%; padding: 20px; cursor: pointer; transition: all 0.2s; border: none;"
                                 data-focus-index="0">
                             <img src="${Utils.assetPath('images/heart-icon.svg')}" 
                                  alt="Favorite" 
-                                 class="w-[32px] h-[32px] ${this.data.isFavorite ? 'filter-pink' : ''}">
+                                 style="width: 32px; height: 32px; ${this.data.isFavorite ? 'filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(315deg) brightness(118%) contrast(119%);' : ''}">
                         </button>
                         
                         <!-- Play/Pause Button -->
                         <button id="play-pause-btn" 
-                                class="bg-gradient-to-r from-pink-500 to-purple-600 rounded-full p-[32px] focusable cursor-pointer transition-all duration-200 scale-110"
+                                class="focusable"
+                                style="background: linear-gradient(to right, #ec4899, #9333ea); border-radius: 50%; padding: 32px; cursor: pointer; transition: all 0.2s; border: none; transform: scale(1.1);"
                                 data-focus-index="1">
-                            <i class="fas ${playPauseIcon} text-white text-[48px]"></i>
+                            <i class="fas ${playPauseIcon}" style="color: #ffffff; font-size: 48px;"></i>
                         </button>
                         
                         <!-- Back Button -->
                         <button id="back-btn" 
-                                class="bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.2)] rounded-full p-[20px] focusable cursor-pointer transition-all duration-200"
+                                class="focusable"
+                                style="background: rgba(255,255,255,0.1); border-radius: 50%; padding: 20px; cursor: pointer; transition: all 0.2s; border: none;"
                                 data-focus-index="2">
-                            <i class="fas fa-arrow-left text-white text-[32px]"></i>
+                            <i class="fas fa-arrow-left" style="color: #ffffff; font-size: 32px;"></i>
                         </button>
                     </div>
                     
                     <!-- Now Playing Indicator -->
-                    <div class="mt-[48px] flex items-center gap-[12px]">
-                        <div class="w-[8px] h-[8px] bg-pink-500 rounded-full animate-pulse"></div>
-                        <p class="font-['Ubuntu',Helvetica] text-[18px] text-[#9b9b9b]" data-i18n="now_playing">
+                    <div class="d-flex align-items-center" style="margin-top: 48px; gap: 12px;">
+                        <div style="width: 8px; height: 8px; background: #ec4899; border-radius: 50%; animation: pulse 2s infinite;"></div>
+                        <p style="font-family: 'Ubuntu', Helvetica; font-size: 18px; color: #9b9b9b;" data-i18n="now_playing">
                             Now Playing
                         </p>
                     </div>
@@ -149,7 +153,7 @@ var radio_playing_page = {
     updatePlayPauseButton: function() {
         var isPlaying = GlobalPlayer.isPlaying();
         var icon = isPlaying ? 'fa-pause' : 'fa-play';
-        $('#play-pause-btn i').attr('class', 'fas ' + icon + ' text-white text-[48px]');
+        $('#play-pause-btn i').attr('class', 'fas ' + icon).attr('style', 'color: #ffffff; font-size: 48px;');
     },
     
     toggleFavorite: function() {
@@ -180,9 +184,9 @@ var radio_playing_page = {
     updateFavoriteButton: function() {
         var $img = $('#favorite-btn img');
         if (this.data.isFavorite) {
-            $img.addClass('filter-pink');
+            $img.attr('style', 'width: 32px; height: 32px; filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(315deg) brightness(118%) contrast(119%);');
         } else {
-            $img.removeClass('filter-pink');
+            $img.attr('style', 'width: 32px; height: 32px;');
         }
     },
     

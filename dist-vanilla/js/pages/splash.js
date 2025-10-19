@@ -15,44 +15,42 @@ var splash_page = {
     
     render: function() {
         var html = `
-            <div class="bg-[#0e0e0e] fixed inset-0 w-[1920px] h-[1080px] overflow-hidden">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0e0e0e;">
                 <!-- Animated Waves - Center Background -->
-                <div class="absolute inset-[34.91%_41.51%] animate-pulse" 
-                     style="animation-duration: 3s; animation-timing-function: ease-in-out;">
+                <div style="position: absolute; top: 34.91%; right: 41.51%; bottom: 34.91%; left: 41.51%; animation: pulse 3s ease-in-out infinite;">
                     <img alt="" 
-                         class="block max-w-none size-full opacity-40" 
+                         style="display: block; max-width: none; width: 100%; height: 100%; opacity: 0.4;" 
                          src="${Utils.assetPath('images/waves.png')}">
                 </div>
 
                 <!-- Logo -->
-                <div class="absolute h-[111.999px] left-[798px] top-[484px] w-[323.069px]">
-                    <p class="absolute bottom-0 font-['Ubuntu',Helvetica] font-normal leading-normal left-[18.67%] not-italic right-0 text-[53.108px] text-white top-[46.16%] whitespace-pre-wrap">
-                        <span class="font-['Ubuntu',Helvetica] font-bold">mega</span>radio
+                <div style="position: absolute; height: 111.999px; left: 798px; top: 484px; width: 323.069px;">
+                    <p style="position: absolute; bottom: 0; font-family: 'Ubuntu', Helvetica; font-weight: 400; line-height: normal; left: 18.67%; font-style: normal; right: 0; font-size: 53.108px; color: #ffffff; top: 46.16%; white-space: pre-wrap;">
+                        <span style="font-family: 'Ubuntu', Helvetica; font-weight: 700;">mega</span>radio
                     </p>
-                    <div class="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
+                    <div style="position: absolute; bottom: 2.84%; left: 0; right: 65.2%; top: 0;">
                         <img alt="" 
-                             class="block max-w-none size-full" 
+                             style="display: block; max-width: none; width: 100%; height: 100%;" 
                              src="${Utils.assetPath('images/path-8.svg')}">
                     </div>
                 </div>
 
                 <!-- Pink Glow Circle - Left Side -->
-                <div class="absolute left-[-377px] size-[781.011px] top-[510.99px] animate-pulse"
-                     style="animation-duration: 4s; animation-timing-function: ease-in-out;">
-                    <div class="absolute inset-[-82.95%]">
+                <div style="position: absolute; left: -377px; width: 781.011px; height: 781.011px; top: 510.99px; animation: pulse 4s ease-in-out infinite;">
+                    <div style="position: absolute; top: -82.95%; right: -82.95%; bottom: -82.95%; left: -82.95%;">
                         <img alt="" 
-                             class="block max-w-none size-full opacity-30" 
+                             style="display: block; max-width: none; width: 100%; height: 100%; opacity: 0.3;" 
                              src="${Utils.assetPath('images/ellipse2.png')}">
                     </div>
                 </div>
 
                 <!-- "Listen freely" text -->
-                <p class="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[901px] not-italic text-[#9b9b9b] text-[20px] top-[624px]">
+                <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 500; line-height: normal; left: 901px; font-style: normal; color: #9b9b9b; font-size: 20px; top: 624px;">
                     Listen freely
                 </p>
 
                 <!-- megaradio.live text -->
-                <p class="absolute font-['Ubuntu',Helvetica] font-normal leading-normal left-[872px] not-italic text-[#9b9b9b] text-[16px] top-[673px]">
+                <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 400; line-height: normal; left: 872px; font-style: normal; color: #9b9b9b; font-size: 16px; top: 673px;">
                     megaradio.live
                 </p>
             </div>

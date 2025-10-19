@@ -33,54 +33,55 @@ var settings_page = {
     
     render: function() {
         var html = `
-            <div class="bg-[#0e0e0e] fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-settings">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0e0e0e;" data-testid="page-settings">
                 <!-- Sidebar -->
                 <div id="settings-sidebar"></div>
                 
                 <!-- Main Content -->
-                <div class="absolute left-[190px] right-[64px] top-[64px] bottom-[64px] overflow-y-auto" id="settings-content">
+                <div style="position: absolute; left: 190px; right: 64px; top: 64px; bottom: 64px; overflow-y: auto;" id="settings-content">
                     <!-- Header -->
-                    <div class="mb-[40px]">
-                        <h1 class="font-['Ubuntu',Helvetica] font-bold text-[48px] text-white mb-[16px]" data-i18n="settings">
+                    <div style="margin-bottom: 40px;">
+                        <h1 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 48px; color: #ffffff; margin-bottom: 16px;" data-i18n="settings">
                             Settings
                         </h1>
-                        <p class="font-['Ubuntu',Helvetica] text-[20px] text-[#9b9b9b]" data-i18n="settings_description">
+                        <p style="font-family: 'Ubuntu', Helvetica; font-size: 20px; color: #9b9b9b;" data-i18n="settings_description">
                             Customize your Mega Radio experience
                         </p>
                     </div>
                     
                     <!-- Settings Groups -->
-                    <div class="space-y-[32px]">
+                    <div style="display: flex; flex-direction: column; gap: 32px;">
                         <!-- Language Setting -->
-                        <div class="bg-[rgba(255,255,255,0.05)] rounded-[10px] p-[32px]">
-                            <h2 class="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white mb-[24px]" data-i18n="language">
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 32px;">
+                            <h2 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 28px; color: #ffffff; margin-bottom: 24px;" data-i18n="language">
                                 Language
                             </h2>
-                            <div class="grid grid-cols-4 gap-[16px]">
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
                                 ${this.renderLanguageOptions()}
                             </div>
                         </div>
                         
                         <!-- Country Setting -->
-                        <div class="bg-[rgba(255,255,255,0.05)] rounded-[10px] p-[32px]">
-                            <h2 class="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white mb-[24px]" data-i18n="country">
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 32px;">
+                            <h2 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 28px; color: #ffffff; margin-bottom: 24px;" data-i18n="country">
                                 Country
                             </h2>
-                            <div class="inline-flex items-center gap-[12px] bg-[rgba(255,255,255,0.1)] rounded-[10px] px-[24px] py-[16px] focusable cursor-pointer"
+                            <div class="d-inline-flex align-items-center focusable" 
+                                 style="gap: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; padding: 16px 24px; cursor: pointer;"
                                  data-focus-index="9"
                                  id="country-selector-btn">
-                                <span class="text-[32px]">${this.getCountryFlag(this.data.currentCountryCode)}</span>
-                                <span class="font-['Ubuntu',Helvetica] text-[24px] text-white">${this.data.currentCountry}</span>
-                                <span class="text-white text-[20px]">▼</span>
+                                <span style="font-size: 32px;">${this.getCountryFlag(this.data.currentCountryCode)}</span>
+                                <span style="font-family: 'Ubuntu', Helvetica; font-size: 24px; color: #ffffff;">${this.data.currentCountry}</span>
+                                <span style="color: #ffffff; font-size: 20px;">▼</span>
                             </div>
                         </div>
                         
                         <!-- Auto-Play Setting -->
-                        <div class="bg-[rgba(255,255,255,0.05)] rounded-[10px] p-[32px]">
-                            <h2 class="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white mb-[24px]" data-i18n="auto_play_at_start">
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 32px;">
+                            <h2 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 28px; color: #ffffff; margin-bottom: 24px;" data-i18n="auto_play_at_start">
                                 Auto-play at start
                             </h2>
-                            <div class="grid grid-cols-2 gap-[16px]">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
                                 ${this.renderAutoPlayOptions()}
                             </div>
                         </div>
@@ -115,10 +116,11 @@ var settings_page = {
             var focusIndex = 5 + index; // After sidebar (0-4)
             
             html += `
-                <div class="language-option focusable cursor-pointer transition-all duration-200 ${isSelected ? 'bg-gradient-to-r from-pink-500 to-purple-600' : 'bg-[rgba(255,255,255,0.1)]'} rounded-[10px] px-[24px] py-[16px] text-center"
+                <div class="language-option focusable" 
+                     style="cursor: pointer; transition: all 0.2s; background: ${isSelected ? 'linear-gradient(to right, #ec4899, #9333ea)' : 'rgba(255,255,255,0.1)'}; border-radius: 10px; padding: 16px 24px; text-align: center;"
                      data-focus-index="${focusIndex}"
                      data-language-code="${lang.code}">
-                    <p class="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">
+                    <p style="font-family: 'Ubuntu', Helvetica; font-weight: 500; font-size: 20px; color: #ffffff;">
                         ${lang.name}
                     </p>
                 </div>
@@ -144,10 +146,11 @@ var settings_page = {
             var focusIndex = 10 + index; // After sidebar, languages, and country selector
             
             html += `
-                <div class="auto-play-option focusable cursor-pointer transition-all duration-200 ${isSelected ? 'bg-gradient-to-r from-pink-500 to-purple-600' : 'bg-[rgba(255,255,255,0.1)]'} rounded-[10px] px-[24px] py-[16px] text-center"
+                <div class="auto-play-option focusable" 
+                     style="cursor: pointer; transition: all 0.2s; background: ${isSelected ? 'linear-gradient(to right, #ec4899, #9333ea)' : 'rgba(255,255,255,0.1)'}; border-radius: 10px; padding: 16px 24px; text-align: center;"
                      data-focus-index="${focusIndex}"
                      data-auto-play-value="${option.value}">
-                    <p class="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white" data-i18n="${option.i18n}">
+                    <p style="font-family: 'Ubuntu', Helvetica; font-weight: 500; font-size: 20px; color: #ffffff;" data-i18n="${option.i18n}">
                         ${option.label}
                     </p>
                 </div>

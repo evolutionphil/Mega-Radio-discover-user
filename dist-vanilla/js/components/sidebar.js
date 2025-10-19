@@ -59,22 +59,21 @@ var Sidebar = {
             var topPosition = i * 108; // 108px spacing between items
             
             var focusClass = isFocused ? 'ring-4 ring-white ring-opacity-50 scale-105' : '';
+            var activeStyle = isActive ? 'background: rgba(255,255,255,0.2);' : '';
             
             return `
-                <div class="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[${topPosition}px] 
-                            ${isActive ? 'bg-[rgba(255,255,255,0.2)]' : ''} 
-                            ${focusClass} 
-                            focusable cursor-pointer transition-all duration-200" 
+                <div class="focusable ${focusClass}" 
+                     style="position: absolute; left: 0; overflow: hidden; border-radius: 10px; width: 98px; height: 98px; top: ${topPosition}px; ${activeStyle} cursor: pointer; transition: all 0.2s;" 
                      data-focus-index="${item.index}"
                      data-route="${item.route}"
                      data-testid="button-${item.id}">
-                    <div class="absolute h-[61px] left-[${item.id === 'discover' || item.id === 'favorites' ? '13' : '19'}px] top-[19px] w-[72px]">
-                        <p class="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
+                    <div style="position: absolute; height: 61px; left: ${item.id === 'discover' || item.id === 'favorites' ? '13' : '19'}px; top: 19px; width: 72px;">
+                        <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 500; line-height: normal; left: 36px; font-style: normal; font-size: 18px; text-align: center; color: #ffffff; top: 40px; transform: translateX(-50%);">
                             ${item.label}
                         </p>
-                        <div class="absolute left-[20px] size-[32px] top-0">
+                        <div style="position: absolute; left: 20px; width: 32px; height: 32px; top: 0;">
                             <img alt="${item.label}" 
-                                 class="block max-w-none size-full" 
+                                 style="display: block; max-width: none; width: 100%; height: 100%;" 
                                  src="${Utils.assetPath('images/' + item.icon)}">
                         </div>
                     </div>
@@ -83,7 +82,7 @@ var Sidebar = {
         }).join('');
         
         return `
-            <div class="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-50 pointer-events-auto" id="sidebar-container">
+            <div style="position: fixed; height: 638px; left: 64px; top: 242px; width: 98px; z-index: 50; pointer-events: auto;" id="sidebar-container">
                 ${itemsHtml}
             </div>
         `;

@@ -27,18 +27,18 @@ var favorites_page = {
     
     render: function() {
         var html = `
-            <div class="bg-[#0e0e0e] fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-favorites">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0e0e0e;" data-testid="page-favorites">
                 <!-- Sidebar -->
                 <div id="favorites-sidebar"></div>
                 
                 <!-- Main Content -->
-                <div class="absolute left-[190px] right-[64px] top-[64px] bottom-[64px] overflow-y-auto" id="favorites-content">
+                <div style="position: absolute; left: 190px; right: 64px; top: 64px; bottom: 64px; overflow-y: auto;" id="favorites-content">
                     <!-- Header -->
-                    <div class="mb-[40px]">
-                        <h1 class="font-['Ubuntu',Helvetica] font-bold text-[48px] text-white mb-[16px]" data-i18n="nav_your_favorites">
+                    <div style="margin-bottom: 40px;">
+                        <h1 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 48px; color: #ffffff; margin-bottom: 16px;" data-i18n="nav_your_favorites">
                             Your Favorites
                         </h1>
-                        <p class="font-['Ubuntu',Helvetica] text-[20px] text-[#9b9b9b]">
+                        <p style="font-family: 'Ubuntu', Helvetica; font-size: 20px; color: #9b9b9b;">
                             ${this.data.favoriteStations.length} <span data-i18n="favorite_stations">favorite stations</span>
                         </p>
                     </div>
@@ -90,20 +90,21 @@ var favorites_page = {
         if (this.data.favoriteStations.length === 0) {
             // Empty state
             html = `
-                <div class="flex flex-col items-center justify-center py-[100px]">
-                    <div class="mb-[32px]">
+                <div class="d-flex flex-column align-items-center justify-content-center" style="padding: 100px 0;">
+                    <div style="margin-bottom: 32px;">
                         <img src="${Utils.assetPath('images/heart-icon.svg')}" 
                              alt="No favorites" 
-                             class="w-[120px] h-[120px] opacity-30">
+                             style="width: 120px; height: 120px; opacity: 0.3;">
                     </div>
-                    <h2 class="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white mb-[16px]" data-i18n="no_favorites">
+                    <h2 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 32px; color: #ffffff; margin-bottom: 16px;" data-i18n="no_favorites">
                         No favorites yet
                     </h2>
-                    <p class="font-['Ubuntu',Helvetica] text-[20px] text-[#9b9b9b] mb-[32px]" data-i18n="no_favorites_description">
+                    <p style="font-family: 'Ubuntu', Helvetica; font-size: 20px; color: #9b9b9b; margin-bottom: 32px;" data-i18n="no_favorites_description">
                         Start adding stations to your favorites
                     </p>
                     <button id="go-to-discover-btn" 
-                            class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-['Ubuntu',Helvetica] font-bold text-[20px] px-[32px] py-[16px] rounded-[10px] focusable cursor-pointer transition-all duration-200"
+                            class="focusable"
+                            style="background: linear-gradient(to right, #ec4899, #9333ea); color: #ffffff; font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 20px; padding: 16px 32px; border-radius: 10px; cursor: pointer; transition: all 0.2s; border: none;"
                             data-focus-index="5">
                         <span data-i18n="discover_stations">Discover Stations</span>
                     </button>
@@ -111,7 +112,7 @@ var favorites_page = {
             `;
         } else {
             // Grid of favorite stations
-            html = '<div class="grid grid-cols-7 gap-[24px]">';
+            html = '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 24px;">';
             
             var self = this;
             this.data.favoriteStations.forEach(function(station, index) {
@@ -119,26 +120,27 @@ var favorites_page = {
                 var stationImage = self.getStationImage(station);
                 
                 html += `
-                    <div class="station-card focusable cursor-pointer transition-all duration-200"
+                    <div class="station-card focusable" 
+                         style="cursor: pointer; transition: all 0.2s;"
                          data-focus-index="${focusIndex}"
                          data-station-id="${station.stationuuid || station._id}">
-                        <div class="bg-[rgba(255,255,255,0.05)] rounded-[10px] overflow-hidden relative">
-                            <div class="absolute top-[8px] right-[8px] z-10">
-                                <div class="bg-pink-500 rounded-full p-[8px]">
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; position: relative;">
+                            <div style="position: absolute; top: 8px; right: 8px; z-index: 10;">
+                                <div style="background: #ec4899; border-radius: 50%; padding: 8px;">
                                     <img src="${Utils.assetPath('images/heart-icon.svg')}" 
                                          alt="Favorite" 
-                                         class="w-[16px] h-[16px]">
+                                         style="width: 16px; height: 16px;">
                                 </div>
                             </div>
                             <img src="${stationImage}" 
                                  alt="${station.name}" 
-                                 class="w-full h-[200px] object-cover"
+                                 style="width: 100%; height: 200px; object-fit: cover;"
                                  onerror="this.src='${Utils.assetPath(AppConfig.FALLBACK_STATION_IMAGE)}'">
-                            <div class="p-[16px]">
-                                <p class="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white truncate">
+                            <div style="padding: 16px;">
+                                <p style="font-family: 'Ubuntu', Helvetica; font-weight: 500; font-size: 18px; color: #ffffff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                     ${station.name}
                                 </p>
-                                <p class="font-['Ubuntu',Helvetica] text-[14px] text-[#9b9b9b] truncate">
+                                <p style="font-family: 'Ubuntu', Helvetica; font-size: 14px; color: #9b9b9b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                     ${station.tags || station.country || ''}
                                 </p>
                             </div>

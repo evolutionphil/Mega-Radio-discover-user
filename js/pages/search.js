@@ -24,30 +24,31 @@ var search_page = {
     
     render: function() {
         var html = `
-            <div class="bg-[#0e0e0e] fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-search">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0e0e0e;" data-testid="page-search">
                 <!-- Sidebar -->
                 <div id="search-sidebar"></div>
                 
                 <!-- Main Content -->
-                <div class="absolute left-[190px] right-[64px] top-[64px] bottom-[64px] overflow-y-auto" id="search-content">
+                <div style="position: absolute; left: 190px; right: 64px; top: 64px; bottom: 64px; overflow-y: auto;" id="search-content">
                     <!-- Header & Search Input -->
-                    <div class="mb-[40px]">
-                        <h1 class="font-['Ubuntu',Helvetica] font-bold text-[48px] text-white mb-[24px]" data-i18n="search">
+                    <div style="margin-bottom: 40px;">
+                        <h1 style="font-family: 'Ubuntu', Helvetica; font-weight: 700; font-size: 48px; color: #ffffff; margin-bottom: 24px;" data-i18n="search">
                             Search
                         </h1>
                         
                         <!-- Search Input -->
-                        <div class="relative">
+                        <div style="position: relative;">
                             <input type="text" 
                                    id="search-input" 
-                                   class="w-full bg-[rgba(255,255,255,0.1)] text-white font-['Ubuntu',Helvetica] text-[24px] px-[24px] py-[16px] rounded-[10px] border-2 border-transparent focus:border-white outline-none focusable"
+                                   class="focusable"
+                                   style="width: 100%; background: rgba(255,255,255,0.1); color: #ffffff; font-family: 'Ubuntu', Helvetica; font-size: 24px; padding: 16px 24px; border-radius: 10px; border: 2px solid transparent; outline: none;"
                                    placeholder="Search for stations..."
                                    data-focus-index="5"
                                    data-i18n-placeholder="search_placeholder">
-                            <div class="absolute right-[24px] top-[50%] translate-y-[-50%]">
+                            <div style="position: absolute; right: 24px; top: 50%; transform: translateY(-50%);">
                                 <img src="${Utils.assetPath('images/search-icon.svg')}" 
                                      alt="Search" 
-                                     class="w-[24px] h-[24px] opacity-50">
+                                     style="width: 24px; height: 24px; opacity: 0.5;">
                             </div>
                         </div>
                     </div>
@@ -142,8 +143,8 @@ var search_page = {
     },
     
     renderPopularStations: function() {
-        var html = '<h2 class="font-[\'Ubuntu\',Helvetica] font-bold text-[32px] text-white mb-[24px]" data-i18n="popular_stations">Popular Stations</h2>';
-        html += '<div class="grid grid-cols-6 gap-[24px]">';
+        var html = '<h2 style="font-family: \'Ubuntu\', Helvetica; font-weight: 700; font-size: 32px; color: #ffffff; margin-bottom: 24px;" data-i18n="popular_stations">Popular Stations</h2>';
+        html += '<div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px;">';
         
         var self = this;
         this.data.popularStations.forEach(function(station, index) {
@@ -151,19 +152,20 @@ var search_page = {
             var stationImage = self.getStationImage(station);
             
             html += `
-                <div class="station-card focusable cursor-pointer transition-all duration-200"
+                <div class="station-card focusable" 
+                     style="cursor: pointer; transition: all 0.2s;"
                      data-focus-index="${focusIndex}"
                      data-station-id="${station.stationuuid || station._id}">
-                    <div class="bg-[rgba(255,255,255,0.05)] rounded-[10px] overflow-hidden">
+                    <div style="background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
                         <img src="${stationImage}" 
                              alt="${station.name}" 
-                             class="w-full h-[200px] object-cover"
+                             style="width: 100%; height: 200px; object-fit: cover;"
                              onerror="this.src='${Utils.assetPath(AppConfig.FALLBACK_STATION_IMAGE)}'">
-                        <div class="p-[16px]">
-                            <p class="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white truncate">
+                        <div style="padding: 16px;">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-weight: 500; font-size: 18px; color: #ffffff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 ${station.name}
                             </p>
-                            <p class="font-['Ubuntu',Helvetica] text-[14px] text-[#9b9b9b] truncate">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-size: 14px; color: #9b9b9b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 ${station.tags || station.country || ''}
                             </p>
                         </div>
@@ -177,17 +179,17 @@ var search_page = {
     },
     
     renderSearchResults: function(query) {
-        var html = '<h2 class="font-[\'Ubuntu\',Helvetica] font-bold text-[32px] text-white mb-[24px]">';
+        var html = '<h2 style="font-family: \'Ubuntu\', Helvetica; font-weight: 700; font-size: 32px; color: #ffffff; margin-bottom: 24px;">';
         html += '<span data-i18n="search_results_for">Results for</span> "' + query + '"';
         html += '</h2>';
         
         if (this.data.searchResults.length === 0) {
-            html += '<p class="font-[\'Ubuntu\',Helvetica] text-[20px] text-[#9b9b9b]" data-i18n="no_results">No results found</p>';
+            html += '<p style="font-family: \'Ubuntu\', Helvetica; font-size: 20px; color: #9b9b9b;" data-i18n="no_results">No results found</p>';
             $('#results-section').html(html);
             return;
         }
         
-        html += '<div class="grid grid-cols-6 gap-[24px]">';
+        html += '<div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px;">';
         
         var self = this;
         this.data.searchResults.forEach(function(station, index) {
@@ -195,19 +197,20 @@ var search_page = {
             var stationImage = self.getStationImage(station);
             
             html += `
-                <div class="station-card focusable cursor-pointer transition-all duration-200"
+                <div class="station-card focusable" 
+                     style="cursor: pointer; transition: all 0.2s;"
                      data-focus-index="${focusIndex}"
                      data-station-id="${station.stationuuid || station._id}">
-                    <div class="bg-[rgba(255,255,255,0.05)] rounded-[10px] overflow-hidden">
+                    <div style="background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
                         <img src="${stationImage}" 
                              alt="${station.name}" 
-                             class="w-full h-[200px] object-cover"
+                             style="width: 100%; height: 200px; object-fit: cover;"
                              onerror="this.src='${Utils.assetPath(AppConfig.FALLBACK_STATION_IMAGE)}'">
-                        <div class="p-[16px]">
-                            <p class="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white truncate">
+                        <div style="padding: 16px;">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-weight: 500; font-size: 18px; color: #ffffff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 ${station.name}
                             </p>
-                            <p class="font-['Ubuntu',Helvetica] text-[14px] text-[#9b9b9b] truncate">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-size: 14px; color: #9b9b9b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                 ${station.tags || station.country || ''}
                             </p>
                         </div>
