@@ -23,7 +23,6 @@ const FocusRouterContext = createContext<FocusRouterContextValue | null>(null);
 
 export function FocusRouterProvider({ children }: { children: ReactNode }) {
   const handlersRef = useRef<Map<string, KeyHandler>>(new Map());
-  const [location] = useLocation();
 
   // Register a handler for a specific route
   const registerHandler = (route: string, handler: KeyHandler) => {
@@ -39,36 +38,30 @@ export function FocusRouterProvider({ children }: { children: ReactNode }) {
 
   // Dispatch key event to the handler for current route
   const dispatch = (e: KeyboardEvent) => {
-    let currentRoute = location;
+    // Samsung TV: Use window.location.hash directly (hash-based routing)
+    const hash = window.location.hash;
+    let currentRoute = hash.replace('#', '') || '/';
     
-    // Samsung TV fix: Handle /index.html route
-    if (currentRoute === '/index.html' || currentRoute === '/') {
-      currentRoute = '/guide-1'; // Default to guide-1 for root/index
+    // Samsung TV fix: Default route for root/index
+    if (currentRoute === '/' || currentRoute === '/index.html' || currentRoute === '') {
+      currentRoute = '/guide-1';
     }
     
     const handler = handlersRef.current.get(currentRoute);
     
-    console.log('[FocusRouter] ⌨️  Key event received:', {
-      key: e.key,
+    console.log('[FocusRouter] ⌨️  Key event:', {
       keyCode: e.keyCode,
-      code: e.code,
-      originalLocation: location,
-      currentRoute,
+      hash: hash,
+      currentRoute: currentRoute,
       hasHandler: !!handler,
-      registeredRoutes: Array.from(handlersRef.current.keys())
+      registered: Array.from(handlersRef.current.keys())
     });
     
     if (handler) {
-      // Route found, call page-specific handler
-      console.log('[FocusRouter] ✅ Dispatching to route handler:', currentRoute);
+      console.log('[FocusRouter] ✅ Dispatching to:', currentRoute);
       handler(e);
     } else {
-      // No handler registered - only warn if it's not a common unregistered route
-      if (!currentRoute.includes('/index.html') && currentRoute !== '/') {
-        console.log('[FocusRouter] No handler for route:', currentRoute, {
-          availableRoutes: Array.from(handlersRef.current.keys())
-        });
-      }
+      console.log('[FocusRouter] ⚠️  No handler for:', currentRoute);
     }
   };
 
@@ -79,7 +72,7 @@ export function FocusRouterProvider({ children }: { children: ReactNode }) {
     return () => {
       (window as any).focusRouterDispatch = null;
     };
-  }, [location]);
+  }, []);
 
   return (
     <FocusRouterContext.Provider value={{ registerHandler, unregisterHandler, dispatch }}>
