@@ -1,6 +1,7 @@
 // Mega Radio API Service
-const BASE_URL = 'https://themegaradio.com';
-const API_PREFIX = '/api';
+// Use backend proxy to avoid CORS issues
+const BASE_URL = '';
+const API_PREFIX = '/api/proxy';
 
 const isSamsungTV = typeof window !== 'undefined' && (
   navigator.userAgent.toLowerCase().includes('tizen') ||
@@ -11,7 +12,7 @@ const isSamsungTV = typeof window !== 'undefined' && (
 const TV_PARAM = isSamsungTV ? '?tv=1' : '';
 
 console.log('[MegaRadio API] Platform:', isSamsungTV ? 'Samsung TV (adding ?tv=1)' : 'Web Browser');
-console.log('[MegaRadio API] BASE_URL:', BASE_URL);
+console.log('[MegaRadio API] Using backend proxy for all API calls');
 
 export interface Station {
   _id: string;
