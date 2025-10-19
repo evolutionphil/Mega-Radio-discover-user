@@ -2,47 +2,18 @@
 
 ## Overview
 
-Mega Radio is a full-stack web radio streaming application designed for TV and large screen interfaces. It offers access to global radio stations from over 238 countries, categorized by genres and countries. Key features include an onboarding process, station discovery, favorites management, and continuous audio playback, all tailored for an immersive television viewing experience.
-
-## Project Structure (LGTV Simple Pattern)
-
-```
-Root (Main Development Project)
-├── client/           ← React frontend source
-├── server/           ← Express backend source
-├── shared/           ← Shared types/schemas
-├── package.json      ← Dependencies & scripts
-├── vite.config.ts    ← Vite configuration
-└── tv-app/           ← Samsung TV build output (deploy this folder)
-    ├── index.html           ← Single entry point (LGTV pattern)
-    ├── assets/              ← Compiled React bundle
-    ├── images/              ← All SVG icons/images
-    ├── js/                  ← TV scripts (keys, audio, polyfills)
-    ├── css/                 ← Styles
-    ├── config.xml           ← Samsung TV config
-    └── build-samsung-tv.sh  ← Build script
-```
-
-**Development:** Run `npm run dev` from root
-**Samsung TV Build:** `cd tv-app && bash build-samsung-tv.sh`
-**Deploy:** Upload entire `tv-app/` folder to Samsung TV
+Mega Radio is a full-stack web radio streaming application designed for TV and large screen interfaces. It offers access to global radio stations from over 238 countries, categorized by genres and countries. Key features include an onboarding process, station discovery, favorites management, and continuous audio playback, all tailored for an immersive television viewing experience. The project aims to deliver a seamless and engaging radio streaming experience specifically tailored for television environments.
 
 ## Recent Changes
 
-### October 19, 2025 - Simplified to Single Index (LGTV Pattern)
-- Consolidated project structure: Root is main development, tv-app/ is Samsung TV build output only
-- Implemented single index.html pattern (like LGTV reference) - ONE file, manually editable
-- Build script now updates bundle references IN-PLACE instead of regenerating HTML
-- Fixed FocusRouter to use window.location.hash directly for Samsung TV hash-based routing
-- Added base tag (`<base href="/">`) to fix image loading (no more file:/// errors)
-- All assets (images, scripts) in correct locations for Samsung TV deployment
-- Cache-busting with timestamps on all TV scripts
-
 ### October 19, 2025 - LGTV Focus Pattern Migration
-- Migrated ALL 9 pages to LGTV focus pattern with `useFocusManager` + `usePageKeyHandler` + `getFocusClasses`
-- Fixed critical bug: Dynamic array lengths prevent focus landing on non-existent elements
-- Custom navigation logic for multi-section layouts with different grid column counts
-- Focus system adapts dynamically to sparse datasets and empty arrays
+- Migrated ALL 9 pages (DiscoverNoUser, DiscoverUser, Genres, GenreDetail, Search, RadioPlaying, Settings, Favorites, GenreList) from `useTVNavigation` to LGTV focus pattern
+- Replaced with `useFocusManager` (state-based index tracking) + `usePageKeyHandler` (route-specific handlers) + `getFocusClasses` (visual feedback)
+- Fixed critical bug: Replaced hard-coded array lengths with dynamic data-driven counts to prevent focus landing on non-existent elements
+- Each page now calculates `totalItems` from actual array lengths after data load
+- Custom navigation logic implemented for multi-section layouts with different grid column counts
+- Focus system now adapts dynamically to sparse datasets and empty arrays
+- Ready for Samsung/LG TV hardware validation
 
 ## User Preferences
 

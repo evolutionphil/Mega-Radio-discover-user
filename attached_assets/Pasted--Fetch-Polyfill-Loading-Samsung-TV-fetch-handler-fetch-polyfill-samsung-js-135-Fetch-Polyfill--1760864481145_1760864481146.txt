@@ -1,0 +1,132 @@
+[Fetch Polyfill] Loading Samsung TV fetch handler...
+fetch-polyfill-samsung.js:135 [Fetch Polyfill] Samsung TV fetch handler loaded
+polyfills.js:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js:20 [Polyfills] Added globalThis
+polyfills.js:36 [Polyfills] Added Object.fromEntries
+polyfills.js:86 [Polyfills] Added String.prototype.replaceAll
+polyfills.js:105 [Polyfills] Added Promise.allSettled
+polyfills.js:108 [Polyfills] All polyfills loaded successfully
+platform-detect.js?v=1760863841:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js?v=1760863841:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+index-DKn2AkNh.js:104 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-DKn2AkNh.js:104 [MegaRadio API] BASE_URL: https://themegaradio.com
+tv-spatial-navigatio…js?v=1760863841:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1760863841:186 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1760863841:190 [TV Remote Keys] Key handler attached, waiting for React...
+index-DKn2AkNh.js:104 [FocusRouter] Dispatch function registered to window
+index-DKn2AkNh.js:104 [CountryContext] Setting country from localization: United States US
+index-DKn2AkNh.js:104 [Localization] Browser language detected: de-DE
+index-DKn2AkNh.js:104 [Localization] Using language: de
+index-DKn2AkNh.js:104 [Localization] Detected country: Germany DE
+index-DKn2AkNh.js:104 [Localization] Fetching translations for: de
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/translations/de?tv=1
+path8.svg:1 Failed to load resource: net::ERR_<unknown>
+index-DKn2AkNh.js:104 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js?v=1760863841:52 [TV Nav] Found 0 focusable elements
+index-DKn2AkNh.js:104 [useTVNavigation] Initialization complete
+index-DKn2AkNh.js:104 [CountryContext] Setting country from localization: Germany DE
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/translations/de?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 25409
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 25409
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"mood_energetic":"Energisch","mood_relaxed":"Entspannt","mood_focused":"Konzentriert","mood_nostalg...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(623) ["mood_energetic", "mood_relaxed", "mood_focused", "mood_nostalgic", "mood_party", "mood_chill", "mood_all", "mood_selector", "mood_description", "nav_for_you", "for_you_subtitle", "your_music_profile", "profile_description", "avg_listen_time", "stations_played", "profile_strength", "total_sessions", "preferred_genres", "preferred_countries", "personalized_for_you", "trending_now", "discover_new", "based_on_genres", "no_recommendations", "no_recommendations_desc", "browse_stations", "homepage_see_all", "debug_personalized_stations_fetched", "debug_trending_stations_fetched", "debug_discovery_stations_fetched", "debug_genre_based_stations_fetched", "debug_discovery_strategy_failed", "error_fetch_personalized_stations", "error_fetch_trending_stations", "error_fetch_genre_based_stations", "stations_for_mood", "stations_label", "stations_diverse_mix", "stations_for_genre", "nav_home", "nav_genres", "nav_about", "nav_contact", "nav_apps", "nav_feedback", "header_welcome_message", "header_get_mobile_app", "user_menu_signed_in_as", "user_menu_your_favorites", "user_menu_discover", "user_menu_records", "user_menu_profile", "user_menu_settings", "footer_about_us", "footer_privacy_policy", "footer_terms_conditions", "footer_contact", "footer_feedback", "footer_applications", "profile_nav_favorites", "profile_nav_discover", "profile_nav_records", "profile_nav_profile", "user_menu_logout", "user_menu_logging_out", "regions_page_title", "regions_page_description", "regions_browse_by_region", "regions_explore_worldwide", "regions_continent_title", "regions_back_to_regions", "continent_africa", "continent_antarctica", "continent_asia", "continent_europe", "continent_north_america", "continent_oceania", "continent_south_america", "regions_countries_title", "regions_countries_description", "regions_country_stations_count", "regions_no_countries_found", "regions_search_countries", "regions_cities_title", "regions_cities_description", "regions_city_stations_count", "regions_no_cities_found", "regions_search_cities", "regions_back_to_countries", "regions_stations_title", "regions_stations_description", "regions_no_stations_found", "regions_search_stations", "regions_filter_by_genre", "regions_all_genres", "regions_back_to_cities", "regions_total_countries", "regions_total_stations", "regions_popular_in_region", "regions_local_favorites", …]
+index-DKn2AkNh.js:104 [Localization] API response received
+index-DKn2AkNh.js:104 [Localization] Loaded 623 translations
+index-DKn2AkNh.js:119 [Guide1] 🎬 Component mounted
+index-DKn2AkNh.js:119 [Guide1] 📂 Image paths to load: 
+{background: "/images/discover-background.png", arrow: "/images/arrow.svg", icon: "/images/radio-icon.svg"}
+index-DKn2AkNh.js:104 [FocusRouter] Registering handler for route: /guide-1
+index-DKn2AkNh.js:119 [Guide1] ✅ Image loaded successfully: radio-icon.svg
+index-DKn2AkNh.js:119 [Guide1] ✅ Image loaded successfully: arrow.svg
+index-DKn2AkNh.js:119 [Guide1] ✅ Image loaded successfully: discover-background.png
+tv-remote-keys.js?v=1760863841:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1760863841:171 [TV Keys] 📤 Dispatching to FocusRouter
+index-DKn2AkNh.js:104 [FocusRouter] ⌨️  Key event: 
+{keyCode: 13, hash: "#/guide-1", currentRoute: "/guide-1", hasHandler: true, registered: Array(1)}
+index-DKn2AkNh.js:104 [FocusRouter] ✅ Dispatching to: /guide-1
+index-DKn2AkNh.js:119 [Guide1] ⌨️  Key pressed: 13 ENTER
+index-DKn2AkNh.js:119 [Guide1] ✅ OK/Enter - navigating to Guide 2
+index-DKn2AkNh.js:119 [Guide1] 👋 Component unmounting
+index-DKn2AkNh.js:104 [FocusRouter] Unregistering handler for route: /guide-1
+index-DKn2AkNh.js:119 [Guide2] 🎬 Component mounted
+index-DKn2AkNh.js:119 [Guide2] 📂 Image paths to load: 
+{background: "/images/discover-background.png", arrow: "/images/arrow.svg", icon: "/images/music-icon.svg"}
+index-DKn2AkNh.js:104 [FocusRouter] Registering handler for route: /guide-2
+index-DKn2AkNh.js:119 [Guide2] ✅ Image loaded successfully: discover-background.png
+index-DKn2AkNh.js:119 [Guide2] ✅ Image loaded successfully: arrow.svg
+index-DKn2AkNh.js:119 [Guide2] ✅ Image loaded successfully: music-icon.svg
+tv-remote-keys.js?v=1760863841:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1760863841:171 [TV Keys] 📤 Dispatching to FocusRouter
+index-DKn2AkNh.js:104 [FocusRouter] ⌨️  Key event: 
+{keyCode: 13, hash: "#/guide-2", currentRoute: "/guide-2", hasHandler: true, registered: Array(1)}
+index-DKn2AkNh.js:104 [FocusRouter] ✅ Dispatching to: /guide-2
+index-DKn2AkNh.js:119 [Guide2] ⌨️  Key pressed: 13
+index-DKn2AkNh.js:119 [Guide2] ✅ OK/Enter - navigating to Guide 3
+index-DKn2AkNh.js:119 [Guide2] 👋 Component unmounting
+index-DKn2AkNh.js:104 [FocusRouter] Unregistering handler for route: /guide-2
+index-DKn2AkNh.js:119 [Guide3] 🎬 Component mounted
+index-DKn2AkNh.js:119 [Guide3] 📂 Image paths to load: 
+{background: "/images/discover-background.png", arrow: "/images/arrow.svg", icon: "/images/search-icon.svg"}
+index-DKn2AkNh.js:104 [FocusRouter] Registering handler for route: /guide-3
+index-DKn2AkNh.js:119 [Guide3] ✅ Image loaded successfully: discover-background.png
+index-DKn2AkNh.js:119 [Guide3] ✅ Image loaded successfully: arrow.svg
+index-DKn2AkNh.js:119 [Guide3] ✅ Image loaded successfully: search-icon.svg
+tv-remote-keys.js?v=1760863841:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1760863841:171 [TV Keys] 📤 Dispatching to FocusRouter
+index-DKn2AkNh.js:104 [FocusRouter] ⌨️  Key event: 
+{keyCode: 13, hash: "#/guide-3", currentRoute: "/guide-3", hasHandler: true, registered: Array(1)}
+index-DKn2AkNh.js:104 [FocusRouter] ✅ Dispatching to: /guide-3
+index-DKn2AkNh.js:119 [Guide3] ⌨️  Key pressed: 13
+index-DKn2AkNh.js:119 [Guide3] ✅ OK/Enter - navigating to Guide 4
+index-DKn2AkNh.js:119 [Guide3] 👋 Component unmounting
+index-DKn2AkNh.js:104 [FocusRouter] Unregistering handler for route: /guide-3
+index-DKn2AkNh.js:119 [Guide4] 🎬 Component mounted
+index-DKn2AkNh.js:119 [Guide4] 📂 Image paths to load: 
+{background: "/images/discover-background.png", arrow: "/images/arrow.svg", icon: "/images/heart-icon.svg"}
+index-DKn2AkNh.js:104 [FocusRouter] Registering handler for route: /guide-4
+index-DKn2AkNh.js:119 [Guide4] ✅ Image loaded successfully: discover-background.png
+index-DKn2AkNh.js:119 [Guide4] ✅ Image loaded successfully: arrow.svg
+index-DKn2AkNh.js:119 [Guide4] ✅ Image loaded successfully: heart-icon.svg
+tv-remote-keys.js?v=1760863841:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1760863841:171 [TV Keys] 📤 Dispatching to FocusRouter
+index-DKn2AkNh.js:104 [FocusRouter] ⌨️  Key event: 
+{keyCode: 13, hash: "#/guide-4", currentRoute: "/guide-4", hasHandler: true, registered: Array(1)}
+index-DKn2AkNh.js:104 [FocusRouter] ✅ Dispatching to: /guide-4
+index-DKn2AkNh.js:119 [Guide4] ⌨️  Key pressed: 13
+index-DKn2AkNh.js:119 [Guide4] ✅ OK/Enter - navigating to Discover
+index-DKn2AkNh.js:119 [CountrySelector] useMemo: Recalculating filtered countries for query: 
+index-DKn2AkNh.js:119 [CountrySelector] ===== RENDER INFO =====
+index-DKn2AkNh.js:119 [CountrySelector] Total countries loaded: 0
+index-DKn2AkNh.js:119 [CountrySelector] Search query: ""
+index-DKn2AkNh.js:119 [CountrySelector] Filtered count: 0
+index-DKn2AkNh.js:119 [CountrySelector] ========================
+index-DKn2AkNh.js:119 [CountrySelector] Not rendering - isOpen is false
+index-DKn2AkNh.js:119 [Guide4] 👋 Component unmounting
+index-DKn2AkNh.js:104 [FocusRouter] Unregistering handler for route: /guide-4
+index-DKn2AkNh.js:119 [CountrySelector] Search query updated to: 
+index-DKn2AkNh.js:119 [DiscoverNoUser] Fetching genres for country code: DE
+index-DKn2AkNh.js:104 [API] getAllGenres: Converting DE -> Germany
+index-DKn2AkNh.js:104 [API] getAllGenres URL: https://themegaradio.com/api/genres?country=Germany&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres?country=Germany&tv=1
+index-DKn2AkNh.js:119 [DiscoverNoUser] Fetching popular stations for country: DE
+index-DKn2AkNh.js:104 [API] getPopularStations: Converting DE -> Germany
+index-DKn2AkNh.js:104 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+index-DKn2AkNh.js:119 [DiscoverNoUser] Fetching stations for country code: DE
+index-DKn2AkNh.js:104 [API] getWorkingStations: Converting DE -> Germany
+index-DKn2AkNh.js:104 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=500&country=Germany&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=500&country=Germany&tv=1
+index-DKn2AkNh.js:119 [useFocusManager] 🎯 Initialized with: 
+{totalItems: 7, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-DKn2AkNh.js:119 [useFocusManager] 👁️  Focus changed: 
+{focusIndex: 0, totalItems: 7, cols: 1, row: 0, col: 0}
+index-DKn2AkNh.js:104 [FocusRouter] Registering handler for route: /discover-no-user
+images/austria-1.png:1 GET file:///images/austria-1.png net::ERR_<unknown>
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/genres?country=Germany&tv=1
+﻿
