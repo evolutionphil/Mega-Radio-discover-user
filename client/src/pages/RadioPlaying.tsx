@@ -31,19 +31,18 @@ export const RadioPlaying = (): JSX.Element => {
   // Similar stations scroll ref
   const similarScrollRef = useRef<HTMLDivElement>(null);
   
-  // Parse station ID from URL query params (hash-based routing)
+  // Parse station ID from URL query params (wouter location string)
   const stationId = useMemo(() => {
-    // For hash-based routing, query params are inside the hash: #/radio-playing?station=123
-    const hash = window.location.hash;
-    const queryStart = hash.indexOf('?');
+    // Wouter's location includes the path + query: "/radio-playing?station=123"
+    const queryStart = location.indexOf('?');
     if (queryStart === -1) {
-      console.log('[RadioPlaying] No query params in hash:', hash);
+      console.log('[RadioPlaying] No query params in location:', location);
       return null;
     }
-    const queryString = hash.substring(queryStart + 1);
+    const queryString = location.substring(queryStart + 1);
     const searchParams = new URLSearchParams(queryString);
     const id = searchParams.get('station');
-    console.log('[RadioPlaying] URL changed, parsing station ID from hash:', id, 'Full hash:', hash);
+    console.log('[RadioPlaying] Parsed station ID:', id, 'from location:', location);
     return id;
   }, [location, updateTrigger]);
   
@@ -86,17 +85,6 @@ export const RadioPlaying = (): JSX.Element => {
 
   const station = stationData?.station;
 
-  // Debug logging
-  useEffect(() => {
-    console.log('[RadioPlaying] Query state:', {
-      stationId,
-      isLoading: isLoadingStation,
-      hasData: !!stationData,
-      hasStation: !!station,
-      error: stationError,
-      rawData: stationData
-    });
-  }, [stationId, isLoadingStation, stationData, station, stationError]);
 
   // Fetch station metadata
   const { data: metadataData } = useQuery({

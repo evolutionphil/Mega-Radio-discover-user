@@ -46,12 +46,12 @@ export const DiscoverNoUser = (): JSX.Element => {
     },
   });
 
-  // Fetch ALL stations for the country (we'll paginate on frontend)
+  // Fetch initial 50 stations ONLY (lazy load rest asynchronously)
   const { data: allCountryStationsData } = useQuery({
     queryKey: ['/api/stations/country', selectedCountryCode],
     queryFn: () => {
-      console.log('[DiscoverNoUser] Fetching stations for country code:', selectedCountryCode);
-      return megaRadioApi.getWorkingStations({ limit: 500, country: selectedCountryCode });
+      console.log('[DiscoverNoUser] Fetching INITIAL 50 stations for country code:', selectedCountryCode);
+      return megaRadioApi.getWorkingStations({ limit: 50, country: selectedCountryCode });
     },
   });
 

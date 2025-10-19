@@ -52,7 +52,7 @@ export const Guide4 = (): JSX.Element => {
 
   return (
       <div 
-        className="fixed inset-0 w-[1920px] h-[1080px] overflow-hidden cursor-pointer" 
+        className="bg-black fixed inset-0 w-[1920px] h-[1080px] overflow-hidden cursor-pointer" 
         data-testid="page-guide-4"
         onClick={handleClick}
       >
