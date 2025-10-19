@@ -73,6 +73,24 @@ The application targets TV-optimized interfaces with a fixed 1920x1080px resolut
 
 ## Recent Changes
 
+### October 19, 2025 - URL Routing Structure Fix
+
+**Issue Identified:**
+- URLs were displaying with hash fragments: `/guide-1#/discover-no-user`, `/guide-1?station=xyz#/radio-playing`
+- App was using hash-based routing (`useHashLocation` from wouter)
+- This caused confusing URL structure where browser path and app route were separated by `#`
+
+**Fix Applied:**
+- ✅ Removed `useHashLocation` import from App.tsx
+- ✅ Changed router from `<WouterRouter hook={useHashLocation}>` to `<WouterRouter>`
+- ✅ App now uses clean path-based routing with HTML5 History API
+- ✅ URLs now display correctly: `/discover-no-user`, `/radio-playing?station=xyz`
+
+**Technical Notes:**
+- Wouter supports both hash-based routing (via `useHashLocation`) and path-based routing (default)
+- Path-based routing provides cleaner URLs and better SEO
+- All navigation still works with TV remote controls (key events unchanged)
+
 ### October 18, 2025 - Guide Pages Simplification Based on Reference App Analysis
 
 **CRITICAL FIX**: Analyzed LGTV reference app (LGTV-master-main.zip) to understand proper Samsung TV key handling patterns.
