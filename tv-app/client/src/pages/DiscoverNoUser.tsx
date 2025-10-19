@@ -3,14 +3,14 @@ import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
 import { CountrySelector } from "@/components/CountrySelector";
-import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
+import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useCountry } from "@/contexts/CountryContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { autoPlayService } from "@/services/autoPlayService";
 
 export const DiscoverNoUser = (): JSX.Element => {
-  useTVNavigation();
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { playStation, isPlaying } = useGlobalPlayer();
@@ -55,12 +55,220 @@ export const DiscoverNoUser = (): JSX.Element => {
     },
   });
 
+  const genres = genresData?.genres?.slice(0, 8) || [];
+  const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
+
+  // Calculate dynamic section boundaries
+  const popularStationsStart = 7;
+  const popularStationsEnd = popularStationsStart + popularStations.length - 1;
+  const genresStart = popularStationsEnd + 1;
+  const genresEnd = genresStart + genres.length - 1;
+  const countryStationsStart = genresEnd + 1;
+
+  // Calculate dynamic totalItems using actual array lengths
+  const totalItems = 6 + 1 + popularStations.length + genres.length + displayedStations.length;
+
+  // Define sidebar routes
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '#', '/settings'];
+
+  // Custom navigation logic for complex multi-section layout
+  const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
+    const current = focusIndex;
+    let newIndex = current;
+
+    // Sidebar section (0-5)
+    if (current >= 0 && current <= 5) {
+      if (direction === 'DOWN') {
+        newIndex = current < 5 ? current + 1 : current;
+      } else if (direction === 'UP') {
+        newIndex = current > 0 ? current - 1 : current;
+      } else if (direction === 'RIGHT') {
+        newIndex = 6; // Jump to country selector
+      }
+    }
+    // Country selector (6)
+    else if (current === 6) {
+      if (direction === 'DOWN') {
+        newIndex = genresStart; // Jump to first genre
+      } else if (direction === 'LEFT') {
+        newIndex = 0; // Jump to first sidebar item
+      }
+    }
+    // Popular stations section - dynamic boundaries
+    else if (current >= popularStationsStart && current <= popularStationsEnd) {
+      const relIndex = current - popularStationsStart;
+      const row = Math.floor(relIndex / 7);
+      const col = relIndex % 7;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < 6 && current < popularStationsEnd) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        if (row > 0) {
+          newIndex = current - 7;
+        } else {
+          // Jump to genres above
+          newIndex = genresStart + Math.min(col, genres.length - 1);
+        }
+      } else if (direction === 'DOWN') {
+        const nextRow = current + 7;
+        if (nextRow <= popularStationsEnd) {
+          newIndex = nextRow;
+        } else {
+          // Jump to country stations
+          newIndex = countryStationsStart + col;
+          if (newIndex >= totalItems) {
+            newIndex = totalItems - 1;
+          }
+        }
+      }
+    }
+    // Genres section - dynamic boundaries
+    else if (current >= genresStart && current <= genresEnd) {
+      const col = current - genresStart;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < genres.length - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        newIndex = 6; // Jump to country selector
+      } else if (direction === 'DOWN') {
+        // Jump to popular stations below
+        newIndex = popularStationsStart + Math.min(col, Math.min(6, popularStations.length - 1));
+      }
+    }
+    // Country stations section - dynamic boundary
+    else if (current >= countryStationsStart) {
+      const relIndex = current - countryStationsStart;
+      const row = Math.floor(relIndex / 7);
+      const col = relIndex % 7;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < 6 && current < totalItems - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        if (row > 0) {
+          newIndex = current - 7;
+        } else {
+          // Jump to popular stations above (last row)
+          const targetCol = Math.min(col, 6);
+          const lastRowStart = popularStationsEnd - (popularStations.length % 7 === 0 ? 6 : (popularStations.length % 7) - 1);
+          newIndex = lastRowStart + targetCol;
+          if (newIndex > popularStationsEnd) {
+            newIndex = popularStationsEnd;
+          }
+        }
+      } else if (direction === 'DOWN') {
+        const nextIndex = current + 7;
+        if (nextIndex < totalItems) {
+          newIndex = nextIndex;
+        }
+      }
+    }
+
+    // Clamp to valid range
+    newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
+    setFocusIndex(newIndex);
+  };
+
+  // Focus management with custom navigation
+  const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
+    totalItems,
+    cols: 1,
+    initialIndex: 0,
+    onSelect: (index) => {
+      // Sidebar navigation (0-5)
+      if (index >= 0 && index <= 5) {
+        const route = sidebarRoutes[index];
+        if (route !== '#') {
+          setLocation(route);
+        }
+      }
+      // Country selector (6)
+      else if (index === 6) {
+        setIsCountrySelectorOpen(true);
+      }
+      // Popular stations - dynamic boundaries
+      else if (index >= popularStationsStart && index <= popularStationsEnd) {
+        const stationIndex = index - popularStationsStart;
+        const station = popularStations[stationIndex];
+        if (station) {
+          playStation(station);
+          setLocation(`/radio-playing?stationId=${station._id}`);
+        }
+      }
+      // Genres - dynamic boundaries
+      else if (index >= genresStart && index <= genresEnd) {
+        const genreIndex = index - genresStart;
+        const genre = genres[genreIndex];
+        if (genre) {
+          setLocation(`/genre-list?genre=${genre.slug}`);
+        }
+      }
+      // Country stations - dynamic boundary
+      else if (index >= countryStationsStart) {
+        const stationIndex = index - countryStationsStart;
+        const station = displayedStations[stationIndex];
+        if (station) {
+          playStation(station);
+          setLocation(`/radio-playing?stationId=${station._id}`);
+        }
+      }
+    },
+    onBack: () => {
+      // No back action on discover page
+    }
+  });
+
+  // Register page-specific key handler with custom navigation
+  usePageKeyHandler('/discover-no-user', (e) => {
+    const key = (window as any).tvKey;
+    
+    switch(e.keyCode) {
+      case key?.UP || 38:
+        customHandleNavigation('UP');
+        break;
+      case key?.DOWN || 40:
+        customHandleNavigation('DOWN');
+        break;
+      case key?.LEFT || 37:
+        customHandleNavigation('LEFT');
+        break;
+      case key?.RIGHT || 39:
+        customHandleNavigation('RIGHT');
+        break;
+      case key?.ENTER || 13:
+        handleSelect();
+        break;
+    }
+  });
+
   // Initialize country stations when data is loaded or country changes
   useEffect(() => {
     if (allCountryStationsData?.stations) {
       console.log(`Country changed: ${selectedCountry}, total stations: ${allCountryStationsData.stations.length}`);
       setAllCountryStations(allCountryStationsData.stations);
-      // Show only first 56 stations initially
       setDisplayedStations(allCountryStationsData.stations.slice(0, STATIONS_PER_LOAD));
       setCurrentOffset(STATIONS_PER_LOAD);
       const hasMore = allCountryStationsData.stations.length > STATIONS_PER_LOAD;
@@ -72,7 +280,6 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Auto-play on app startup based on settings
   useEffect(() => {
     const handleAutoPlay = async () => {
-      // Only auto-play once per session
       if (!autoPlayService.shouldAutoPlay()) {
         console.log('[AutoPlay] Skipping auto-play (already played this session)');
         return;
@@ -91,23 +298,18 @@ export const DiscoverNoUser = (): JSX.Element => {
       if (stationToPlay) {
         console.log('[AutoPlay] Auto-playing station:', stationToPlay.name);
         playStation(stationToPlay);
-        // Navigate to radio playing page
         setLocation(`/radio-playing?stationId=${stationToPlay._id}`);
       } else {
         console.log('[AutoPlay] No station found to auto-play');
       }
     };
 
-    // Delay auto-play slightly to ensure all contexts are ready
     const timer = setTimeout(() => {
       handleAutoPlay();
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, []); // Empty deps - only run once on component mount
-
-  const genres = genresData?.genres || [];
-  const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
+  }, []);
 
   // Load more country stations from already fetched data
   const loadMoreCountryStations = () => {
@@ -115,7 +317,6 @@ export const DiscoverNoUser = (): JSX.Element => {
 
     setIsLoadingMore(true);
     
-    // Simulate loading delay for better UX
     setTimeout(() => {
       const nextStations = allCountryStations.slice(currentOffset, currentOffset + STATIONS_PER_LOAD);
       
@@ -145,7 +346,6 @@ export const DiscoverNoUser = (): JSX.Element => {
     const handleScroll = () => {
       const currentScrollY = scrollContainer.scrollTop;
       
-      // Auto-hide header logic
       if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
         setShowHeader(false);
       } 
@@ -155,7 +355,6 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       lastScrollY.current = currentScrollY;
 
-      // Infinite scroll logic - load more when near bottom (500px before end)
       const scrollHeight = scrollContainer.scrollHeight;
       const scrollTop = scrollContainer.scrollTop;
       const clientHeight = scrollContainer.clientHeight;
@@ -169,11 +368,8 @@ export const DiscoverNoUser = (): JSX.Element => {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [isLoadingMore, hasMoreCountryStations, currentOffset, allCountryStations.length]);
 
-  // Fallback image - music note on pink gradient background
   const FALLBACK_IMAGE = '/images/fallback-station.png';
 
-
-  // Helper function to get station image
   const getStationImage = (station: Station) => {
     if (station.favicon) {
       return station.favicon.startsWith('http') 
@@ -183,24 +379,18 @@ export const DiscoverNoUser = (): JSX.Element => {
     return FALLBACK_IMAGE;
   };
 
-  // Helper function to get station tags as array
   const getStationTags = (station: Station): string[] => {
     if (!station.tags) return [];
     if (Array.isArray(station.tags)) return station.tags;
     return station.tags.split(',').map(tag => tag.trim());
   };
 
-  // Helper function to get first category/tag
   const getStationCategory = (station: Station): string => {
     const tags = getStationTags(station);
     if (tags.length > 0) return tags[0];
     return station.country || 'Radio';
   };
 
-  // Genre positions
-  const genrePositions = [236, 445, 664, 916, 1142, 1394, 1646, 1872];
-
-  // Station card positions
   const stationRow1Positions = [236, 466, 696, 926, 1156, 1386, 1616];
   const stationRow2Positions = [236, 466, 696, 926, 1156, 1386, 1616];
 
@@ -248,11 +438,10 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Country Selector */}
         <div 
-          className="absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] pointer-events-auto cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors flex-shrink-0"
+          className={`absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] pointer-events-auto cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors flex-shrink-0 ${getFocusClasses(isFocused(6))}`}
           style={{ padding: '11px 14.316px 11px 15px', justifyContent: 'center', alignItems: 'center' }}
           onClick={() => setIsCountrySelectorOpen(true)}
           data-testid="button-country-selector"
-          data-tv-focusable="true"
         >
           <div className="flex items-center gap-[10.66px]">
             <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
@@ -284,7 +473,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-50 pointer-events-auto">
           {/* Discover - Active */}
           <Link href="/discover-no-user">
-            <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
+            <div className={`absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0 ${getFocusClasses(isFocused(0))}`} data-testid="button-discover">
               <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   {t('discover')}
@@ -302,7 +491,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Genres */}
           <Link href="/genres">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px] ${getFocusClasses(isFocused(1))}`} data-testid="button-genres">
               <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   {t('genres')}
@@ -320,7 +509,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Search */}
           <Link href="/search">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px] ${getFocusClasses(isFocused(2))}`} data-testid="button-search">
               <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   {t('search')}
@@ -338,7 +527,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Favorites */}
           <Link href="/favorites">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px] ${getFocusClasses(isFocused(3))}`} data-testid="button-favorites">
               <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   {t('favorites')}
@@ -356,7 +545,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Records */}
           <Link href="/discover-no-user">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px] ${getFocusClasses(isFocused(4))}`} data-testid="button-records">
               <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   {t('profile_nav_records')}
@@ -373,7 +562,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
           {/* Settings */}
           <Link href="/settings">
-            <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
+            <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px] ${getFocusClasses(isFocused(5))}`} data-testid="button-settings">
               <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
                 <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                   {t('settings')}
@@ -410,10 +599,11 @@ export const DiscoverNoUser = (): JSX.Element => {
           {t('popular_genres')}
         </p>
 
-        {/* Genre Pills - Horizontal Scrollable - All genres from API */}
+        {/* Genre Pills - Horizontal Scrollable */}
         <div className="absolute left-[64px] top-[59px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide">
           <div className="flex py-[15px] px-[10px]" style={{ gap: '20px' }}>
             {genres.map((genre, index) => {
+              const focusIdx = genresStart + index;
               return (
                 <Link 
                   key={genre.slug || index} 
@@ -421,8 +611,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   style={{ marginRight: '20px', display: 'inline-block', flexShrink: 0 }}
                 >
                   <div 
-                    className="relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-                    data-tv-focusable="true"
+                    className={`relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                     data-testid={genre.slug}
                     style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}
                   >
@@ -447,64 +636,68 @@ export const DiscoverNoUser = (): JSX.Element => {
         </p>
 
         {/* Popular Radio Station Cards - Row 1 */}
-        {popularStations.slice(0, 7).map((station, index) => (
-          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
-            <div 
-              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[297px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              style={{ left: `${stationRow1Positions[index] - 162}px` }}
-              data-testid={`card-station-${station._id}`}
-              data-tv-focusable="true"
-            >
-              <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-                <img
-                  alt={station.name}
-                  className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                  src={getStationImage(station)}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-                  }}
-                />
+        {popularStations.slice(0, 7).map((station, index) => {
+          const focusIdx = popularStationsStart + index;
+          return (
+            <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+              <div 
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[297px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                style={{ left: `${stationRow1Positions[index] - 162}px` }}
+                data-testid={`card-station-${station._id}`}
+              >
+                <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+                  <img
+                    alt={station.name}
+                    className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                    src={getStationImage(station)}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                    }}
+                  />
+                </div>
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                  {station.name}
+                </p>
+                <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                  {getStationCategory(station)}
+                </p>
+                <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
               </div>
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.name}
-              </p>
-              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {getStationCategory(station)}
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
 
         {/* Popular Radio Station Cards - Row 2 */}
-        {popularStations.slice(7, 14).map((station, index) => (
-          <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
-            <div 
-              className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[591px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
-              style={{ left: `${stationRow2Positions[index] - 162}px` }}
-              data-testid={`card-station-${station._id}`}
-              data-tv-focusable="true"
-            >
-              <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
-                <img
-                  alt={station.name}
-                  className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                  src={getStationImage(station)}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-                  }}
-                />
+        {popularStations.slice(7, 14).map((station, index) => {
+          const focusIdx = popularStationsStart + 7 + index;
+          return (
+            <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+              <div 
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[591px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                style={{ left: `${stationRow2Positions[index] - 162}px` }}
+                data-testid={`card-station-${station._id}`}
+              >
+                <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+                  <img
+                    alt={station.name}
+                    className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                    src={getStationImage(station)}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                    }}
+                  />
+                </div>
+                <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                  {station.name}
+                </p>
+                <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
+                  {getStationCategory(station)}
+                </p>
+                <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
               </div>
-              <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {station.name}
-              </p>
-              <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                {getStationCategory(station)}
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
 
         {/* See More Card */}
         <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1454px] overflow-clip rounded-[11px] top-[591px] w-[200px]">
@@ -528,18 +721,18 @@ export const DiscoverNoUser = (): JSX.Element => {
           const row = Math.floor(index / 7);
           const col = index % 7;
           const positions = [236, 466, 696, 926, 1156, 1386, 1616];
-          const topPosition = 1013 + (row * 294); // 294px between rows
+          const topPosition = 1013 + (row * 294);
+          const focusIdx = countryStationsStart + index;
           
           return (
             <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
               <div 
-                className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors"
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ 
                   left: `${positions[col] - 162}px`,
                   top: `${topPosition}px`
                 }}
                 data-testid={`card-station-${station._id}`}
-                data-tv-focusable="true"
               >
                 <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
                   <img

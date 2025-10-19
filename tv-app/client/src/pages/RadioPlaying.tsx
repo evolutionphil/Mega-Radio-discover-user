@@ -2,7 +2,8 @@ import { useLocation, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 import { useMemo, useEffect, useRef, useState, useCallback } from "react";
-import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
+import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { useCountry } from "@/contexts/CountryContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
@@ -11,8 +12,7 @@ import { CountrySelector } from "@/components/CountrySelector";
 
 
 export const RadioPlaying = (): JSX.Element => {
-  useTVNavigation();
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -107,24 +107,182 @@ export const RadioPlaying = (): JSX.Element => {
 
   const similarStations = similarData?.stations || [];
 
+  // Calculate totalItems: 6 (sidebar) + 1 (country) + 4 (playback) + similar stations
+  const totalItems = 6 + 1 + 4 + Math.min(similarStations.length, 8);
+
+  // Define sidebar routes
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/discover-no-user', '/settings'];
+
+  // Custom navigation logic for multi-section layout
+  const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
+    const current = focusIndex;
+    let newIndex = current;
+
+    // Sidebar section (0-5)
+    if (current >= 0 && current <= 5) {
+      if (direction === 'DOWN') {
+        newIndex = current < 5 ? current + 1 : current;
+      } else if (direction === 'UP') {
+        newIndex = current > 0 ? current - 1 : current;
+      } else if (direction === 'RIGHT') {
+        newIndex = 6; // Jump to country selector
+      }
+    }
+    // Country selector (6)
+    else if (current === 6) {
+      if (direction === 'DOWN') {
+        newIndex = 7; // Jump to first playback button (previous)
+      } else if (direction === 'UP') {
+        newIndex = 7; // Jump to playback controls
+      } else if (direction === 'LEFT') {
+        newIndex = 0; // Jump to sidebar
+      }
+    }
+    // Playback controls (7-10: previous, play/pause, next, favorite)
+    else if (current >= 7 && current <= 10) {
+      const relIndex = current - 7;
+
+      if (direction === 'LEFT') {
+        if (relIndex > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (relIndex < 3) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        newIndex = 6; // Jump to country selector
+      } else if (direction === 'DOWN') {
+        // Jump to similar stations if available
+        if (similarStations.length > 0) {
+          newIndex = 11; // First similar station
+        }
+      }
+    }
+    // Similar stations (11+) - horizontal list
+    else if (current >= 11) {
+      const relIndex = current - 11;
+
+      if (direction === 'LEFT') {
+        if (relIndex > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (current < totalItems - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        newIndex = 8; // Jump to play/pause button
+      } else if (direction === 'DOWN') {
+        // Stay on similar stations
+      }
+    }
+
+    // Clamp to valid range
+    newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
+    setFocusIndex(newIndex);
+  };
+
+  // Focus management with custom navigation
+  const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
+    totalItems,
+    cols: 1,
+    initialIndex: 8, // Start on play/pause button
+    onSelect: (index) => {
+      // Sidebar navigation (0-5)
+      if (index >= 0 && index <= 5) {
+        const route = sidebarRoutes[index];
+        if (route !== '#') {
+          setLocation(route);
+        }
+      }
+      // Country selector (6)
+      else if (index === 6) {
+        setIsCountrySelectorOpen(true);
+      }
+      // Previous button (7)
+      else if (index === 7) {
+        handlePrevious();
+      }
+      // Play/Pause button (8)
+      else if (index === 8) {
+        handlePlayPause();
+      }
+      // Next button (9)
+      else if (index === 9) {
+        handleNext();
+      }
+      // Favorite button (10)
+      else if (index === 10) {
+        if (station) {
+          toggleFavorite(station);
+        }
+      }
+      // Similar stations (11+)
+      else if (index >= 11) {
+        const stationIndex = index - 11;
+        const targetStation = similarStations[stationIndex];
+        if (targetStation) {
+          navigateToStation(targetStation);
+        }
+      }
+    },
+    onBack: () => {
+      // Go back in history, or to discover if no history
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        setLocation('/discover-no-user');
+      }
+    }
+  });
+
+  // Register page-specific key handler with custom navigation
+  usePageKeyHandler('/radio-playing', (e) => {
+    const key = (window as any).tvKey;
+    
+    switch(e.keyCode) {
+      case key?.UP || 38:
+        customHandleNavigation('UP');
+        break;
+      case key?.DOWN || 40:
+        customHandleNavigation('DOWN');
+        break;
+      case key?.LEFT || 37:
+        customHandleNavigation('LEFT');
+        break;
+      case key?.RIGHT || 39:
+        customHandleNavigation('RIGHT');
+        break;
+      case key?.ENTER || 13:
+        handleSelect();
+        break;
+    }
+  });
+
+  // Scroll similar station into view when focused
+  useEffect(() => {
+    if (focusIndex >= 11 && similarScrollRef.current) {
+      const stationIndex = focusIndex - 11;
+      const stationWidth = 200 + 19; // card width + gap
+      const scrollPosition = stationIndex * stationWidth;
+      
+      similarScrollRef.current.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+    }
+  }, [focusIndex]);
+
   // Auto-play when station loads using global player
   useEffect(() => {
     if (station) {
       console.log('[RadioPlaying] Auto-playing station via global player:', station.name);
       playStation(station);
-    }
-  }, [station]);
-
-  // Auto-focus play/pause button when station loads
-  useEffect(() => {
-    if (station && window.tvSpatialNav) {
-      setTimeout(() => {
-        const playPauseButton = document.querySelector('[data-testid="button-play-pause"]') as HTMLElement;
-        if (playPauseButton && window.tvSpatialNav) {
-          console.log('[RadioPlaying] Auto-focusing play/pause button');
-          window.tvSpatialNav.focus(playPauseButton);
-        }
-      }, 300);
     }
   }, [station]);
 
@@ -210,11 +368,10 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Country Selector */}
       <div 
-        className="absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50 flex-shrink-0"
+        className={`absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50 flex-shrink-0 ${getFocusClasses(isFocused(6))}`}
         style={{ padding: '11px 14.316px 11px 15px', justifyContent: 'center', alignItems: 'center' }}
         onClick={() => setIsCountrySelectorOpen(true)}
         data-testid="button-country-selector"
-        data-tv-focusable="true"
       >
         <div className="flex items-center gap-[10.66px]">
           <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
@@ -243,7 +400,7 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
         {/* Discover - Active */}
         <Link href="/discover-no-user">
-          <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover" data-tv-focusable="true">
+          <div className={`absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0 ${getFocusClasses(isFocused(0))}`} data-testid="button-discover">
             <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 {t('discover')}
@@ -261,7 +418,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Genres */}
         <Link href="/genres">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres" data-tv-focusable="true">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px] ${getFocusClasses(isFocused(1))}`} data-testid="button-genres">
             <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 {t('genres')}
@@ -279,7 +436,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Search */}
         <Link href="/search">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search" data-tv-focusable="true">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px] ${getFocusClasses(isFocused(2))}`} data-testid="button-search">
             <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 {t('search')}
@@ -297,7 +454,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Favorites */}
         <Link href="/favorites">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites" data-tv-focusable="true">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px] ${getFocusClasses(isFocused(3))}`} data-testid="button-favorites">
             <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 {t('favorites')}
@@ -315,7 +472,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Records */}
         <Link href="/discover-no-user">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records" data-tv-focusable="true">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px] ${getFocusClasses(isFocused(4))}`} data-testid="button-records">
             <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 {t('profile_nav_records')}
@@ -332,7 +489,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Settings */}
         <Link href="/settings">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings" data-tv-focusable="true">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px] ${getFocusClasses(isFocused(5))}`} data-testid="button-settings">
             <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
                 {t('settings')}
@@ -424,9 +581,8 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute h-[90.192px] left-[1372px] top-[356px] w-[469px]">
         {/* Previous Button */}
         <div 
-          className="absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+          className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(7))}`}
           onClick={handlePrevious}
-          data-tv-focusable="true"
           data-testid="button-previous"
         >
           <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -437,9 +593,8 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Play/Pause Button */}
         <div 
-          className="absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+          className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(8))}`}
           onClick={handlePlayPause}
-          data-tv-focusable="true"
           data-testid="button-play-pause"
         >
           {isPlaying ? (
@@ -456,9 +611,8 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Next Button */}
         <div 
-          className="absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+          className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(9))}`}
           onClick={handleNext}
-          data-tv-focusable="true"
           data-testid="button-next"
         >
           <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -473,9 +627,8 @@ export const RadioPlaying = (): JSX.Element => {
             isFavorite(station._id) 
               ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
               : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
-          }`}
+          } ${getFocusClasses(isFocused(10))}`}
           onClick={() => toggleFavorite(station)}
-          data-tv-focusable="true"
           data-testid="button-favorite"
         >
           <svg className="size-[50.508px]" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -495,13 +648,14 @@ export const RadioPlaying = (): JSX.Element => {
         className="absolute left-[236px] top-[633px] flex gap-[19px] overflow-x-auto scrollbar-hide w-[1610px]"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {similarStations.slice(0, 8).map((similarStation, index) => (
+        {similarStations.slice(0, 8).map((similarStation, index) => {
+          const focusIdx = 11 + index;
+          return (
           <div
             key={similarStation._id || index}
-            className="flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors relative"
+            className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors relative ${getFocusClasses(isFocused(focusIdx))}`}
             style={{ boxShadow: 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
             data-testid={`card-similar-${similarStation._id}`}
-            data-tv-focusable="true"
             onClick={() => navigateToStation(similarStation)}
           >
             <div className="bg-white left-[34px] ml-[34px] mt-[34px] overflow-clip rounded-[6.6px] size-[132px]">
@@ -521,7 +675,8 @@ export const RadioPlaying = (): JSX.Element => {
               {getStationTags(similarStation)[0] || similarStation.country || 'Radio'}
             </p>
           </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Country Selector Modal */}

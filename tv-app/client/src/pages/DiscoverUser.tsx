@@ -1,8 +1,321 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { megaRadioApi } from "@/services/megaRadioApi";
+import { recentlyPlayedService } from "@/services/recentlyPlayedService";
+import { CountrySelector } from "@/components/CountrySelector";
+import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
+import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
+import { useCountry } from "@/contexts/CountryContext";
+import { useLocalization } from "@/contexts/LocalizationContext";
+import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 
 export const DiscoverUser = (): JSX.Element => {
+  const { t } = useLocalization();
+  const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
+  const { isPlaying } = useGlobalPlayer();
+  const [, setLocation] = useLocation();
+  const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
+
+  // Fetch recently played stations
+  const recentStations = recentlyPlayedService.getRecentStations().slice(0, 8);
+  
+  // Fetch genres from API filtered by country
+  const { data: genresData } = useQuery({
+    queryKey: ['/api/genres/all', selectedCountryCode],
+    queryFn: () => megaRadioApi.getAllGenres(selectedCountryCode),
+  });
+
+  // Fetch popular stations filtered by selected country
+  const { data: popularRadiosData } = useQuery({
+    queryKey: ['/api/stations/popular', { limit: 13, country: selectedCountryCode }],
+    queryFn: () => megaRadioApi.getPopularStations({ limit: 13, country: selectedCountryCode }),
+  });
+
+  // Fetch country stations
+  const { data: countryStationsData } = useQuery({
+    queryKey: ['/api/stations/country', selectedCountryCode],
+    queryFn: () => megaRadioApi.getWorkingStations({ limit: 12, country: selectedCountryCode }),
+  });
+
+  // Create arrays from fetched data
+  const recentlyPlayedStations = recentStations || [];
+  const popularGenres = genresData?.genres?.slice(0, 8) || [];
+  const popularRadios = popularRadiosData?.stations || [];
+  const popularRadiosRow1 = popularRadios.slice(0, 6);
+  const popularRadiosRow2 = popularRadios.slice(6, 12);
+  const countryStations = countryStationsData?.stations || [];
+  const countryStationsRow1 = countryStations.slice(0, 6);
+  const countryStationsRow2 = countryStations.slice(6, 12);
+
+  // Use ACTUAL array lengths instead of hard-coded constants
+  const recentlyPlayedCount = recentlyPlayedStations.length;
+  const popularGenresCount = popularGenres.length;
+  const popularRadiosRow1Count = popularRadiosRow1.length;
+  const popularRadiosRow2Count = popularRadiosRow2.length + 1; // +1 for "See More" button
+  const countryStationsRow1Count = countryStationsRow1.length;
+  const countryStationsRow2Count = countryStationsRow2.length;
+
+  // Calculate section boundaries using ACTUAL counts
+  const recentlyPlayedStart = 7;
+  const recentlyPlayedEnd = recentlyPlayedStart + recentlyPlayedCount - 1;
+  const popularGenresStart = recentlyPlayedEnd + 1;
+  const popularGenresEnd = popularGenresStart + popularGenresCount - 1;
+  const popularRadiosRow1Start = popularGenresEnd + 1;
+  const popularRadiosRow1End = popularRadiosRow1Start + popularRadiosRow1Count - 1;
+  const popularRadiosRow2Start = popularRadiosRow1End + 1;
+  const popularRadiosRow2End = popularRadiosRow2Start + popularRadiosRow2Count - 1;
+  const countryStationsRow1Start = popularRadiosRow2End + 1;
+  const countryStationsRow1End = countryStationsRow1Start + countryStationsRow1Count - 1;
+  const countryStationsRow2Start = countryStationsRow1End + 1;
+  const countryStationsRow2End = countryStationsRow2Start + countryStationsRow2Count - 1;
+
+  // Calculate totalItems using ACTUAL counts: 6 sidebar + 1 country + sections
+  const totalItems = 6 + 1 + recentlyPlayedCount + popularGenresCount + 
+                     popularRadiosRow1Count + popularRadiosRow2Count + 
+                     countryStationsRow1Count + countryStationsRow2Count;
+
+  // Define sidebar routes
+  const sidebarRoutes = ['/discover', '/genres', '/search', '/favorites', '#', '/settings'];
+
+  // Custom navigation logic for complex multi-section layout
+  const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
+    const current = focusIndex;
+    let newIndex = current;
+
+    // Sidebar section (0-5)
+    if (current >= 0 && current <= 5) {
+      if (direction === 'DOWN') {
+        newIndex = current < 5 ? current + 1 : current;
+      } else if (direction === 'UP') {
+        newIndex = current > 0 ? current - 1 : current;
+      } else if (direction === 'RIGHT') {
+        newIndex = 6; // Jump to country selector
+      }
+    }
+    // Country selector (6)
+    else if (current === 6) {
+      if (direction === 'DOWN') {
+        newIndex = popularGenresStart; // Jump to first genre
+      } else if (direction === 'LEFT') {
+        newIndex = 0; // Jump to first sidebar item
+      }
+    }
+    // Recently Played section
+    else if (current >= recentlyPlayedStart && current <= recentlyPlayedEnd) {
+      const col = current - recentlyPlayedStart;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < recentlyPlayedCount - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        newIndex = 6; // Jump to country selector
+      } else if (direction === 'DOWN') {
+        // Jump to genres below
+        newIndex = popularGenresStart + Math.min(col, popularGenresCount - 1);
+      }
+    }
+    // Popular Genres section
+    else if (current >= popularGenresStart && current <= popularGenresEnd) {
+      const col = current - popularGenresStart;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < popularGenresCount - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        // Jump to recently played above
+        newIndex = recentlyPlayedStart + Math.min(col, recentlyPlayedCount - 1);
+      } else if (direction === 'DOWN') {
+        // Jump to popular radios row 1 below
+        newIndex = popularRadiosRow1Start + Math.min(col, popularRadiosRow1Count - 1);
+      }
+    }
+    // Popular Radios Row 1
+    else if (current >= popularRadiosRow1Start && current <= popularRadiosRow1End) {
+      const col = current - popularRadiosRow1Start;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < popularRadiosRow1Count - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        // Jump to genres above
+        newIndex = popularGenresStart + Math.min(col, popularGenresCount - 1);
+      } else if (direction === 'DOWN') {
+        // Jump to popular radios row 2 below
+        newIndex = popularRadiosRow2Start + Math.min(col, popularRadiosRow2Count - 1);
+      }
+    }
+    // Popular Radios Row 2 (includes "See More")
+    else if (current >= popularRadiosRow2Start && current <= popularRadiosRow2End) {
+      const col = current - popularRadiosRow2Start;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < popularRadiosRow2Count - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        // Jump to popular radios row 1 above
+        newIndex = popularRadiosRow1Start + Math.min(col, popularRadiosRow1Count - 1);
+      } else if (direction === 'DOWN') {
+        // Jump to country stations row 1 below
+        newIndex = countryStationsRow1Start + Math.min(col, countryStationsRow1Count - 1);
+      }
+    }
+    // Country Stations Row 1
+    else if (current >= countryStationsRow1Start && current <= countryStationsRow1End) {
+      const col = current - countryStationsRow1Start;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < countryStationsRow1Count - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        // Jump to popular radios row 2 above
+        newIndex = popularRadiosRow2Start + Math.min(col, popularRadiosRow2Count - 1);
+      } else if (direction === 'DOWN') {
+        // Jump to country stations row 2 below
+        newIndex = countryStationsRow2Start + Math.min(col, countryStationsRow2Count - 1);
+      }
+    }
+    // Country Stations Row 2
+    else if (current >= countryStationsRow2Start && current <= countryStationsRow2End) {
+      const col = current - countryStationsRow2Start;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < countryStationsRow2Count - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        // Jump to country stations row 1 above
+        newIndex = countryStationsRow1Start + Math.min(col, countryStationsRow1Count - 1);
+      }
+      // DOWN: no action (bottom of page)
+    }
+
+    // Clamp to valid range
+    newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
+    setFocusIndex(newIndex);
+  };
+
+  // Focus management with custom navigation
+  const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
+    totalItems,
+    cols: 1,
+    initialIndex: 0,
+    onSelect: (index) => {
+      // Sidebar navigation (0-5)
+      if (index >= 0 && index <= 5) {
+        const route = sidebarRoutes[index];
+        if (route !== '#') {
+          setLocation(route);
+        }
+      }
+      // Country selector (6)
+      else if (index === 6) {
+        setIsCountrySelectorOpen(true);
+      }
+      // Recently Played - Navigate to radio playing
+      else if (index >= recentlyPlayedStart && index <= recentlyPlayedEnd) {
+        setLocation('/radio-playing');
+      }
+      // Popular Genres - Navigate to genre list
+      else if (index >= popularGenresStart && index <= popularGenresEnd) {
+        setLocation('/genres');
+      }
+      // Popular Radios Row 1 - Navigate to radio playing
+      else if (index >= popularRadiosRow1Start && index <= popularRadiosRow1End) {
+        setLocation('/radio-playing');
+      }
+      // Popular Radios Row 2 (includes "See More") - Navigate to radio playing
+      else if (index >= popularRadiosRow2Start && index <= popularRadiosRow2End) {
+        setLocation('/radio-playing');
+      }
+      // Country Stations - Navigate to radio playing
+      else if (index >= countryStationsRow1Start && index <= countryStationsRow2End) {
+        setLocation('/radio-playing');
+      }
+    },
+    onBack: () => {
+      // No back action on discover page
+    }
+  });
+
+  // Register page-specific key handler with custom navigation
+  usePageKeyHandler('/discover', (e) => {
+    const key = (window as any).tvKey;
+    
+    switch(e.keyCode) {
+      case key?.UP || 38:
+        customHandleNavigation('UP');
+        break;
+      case key?.DOWN || 40:
+        customHandleNavigation('DOWN');
+        break;
+      case key?.LEFT || 37:
+        customHandleNavigation('LEFT');
+        break;
+      case key?.RIGHT || 39:
+        customHandleNavigation('RIGHT');
+        break;
+      case key?.ENTER || 13:
+        handleSelect();
+        break;
+    }
+  });
+
   return (
     <div className="relative w-[1920px] h-[2240px] bg-white overflow-y-auto" data-testid="page-discover">
+      {/* Country Selector Modal */}
+      {isCountrySelectorOpen && (
+        <CountrySelector 
+          isOpen={isCountrySelectorOpen}
+          onClose={() => setIsCountrySelectorOpen(false)}
+          selectedCountry={selectedCountry}
+          onSelectCountry={(country) => {
+            setIsCountrySelectorOpen(false);
+          }}
+        />
+      )}
+
       {/* Background Image */}
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
         <img
@@ -28,29 +341,31 @@ export const DiscoverUser = (): JSX.Element => {
       </div>
 
       {/* Top Right - Equalizer */}
-      <div className="absolute bg-[rgba(255,255,255,0.1)] left-[1281px] overflow-clip rounded-[30px] size-[51px] top-[67px]">
+      <div className={`absolute left-[1281px] overflow-clip rounded-[30px] size-[51px] top-[67px] transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
         <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
-          <div className="absolute bg-white h-[25px] left-0 rounded-[10px] top-0 w-[6.25px]" />
-          <div className="absolute bg-white h-[17.5px] left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px]" />
-          <div className="absolute bg-white h-[21.25px] left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px]" />
+          <div className={`absolute bg-white left-0 rounded-[10px] top-0 w-[6.25px] ${isPlaying ? 'animate-equalizer-1' : 'h-[25px]'}`} style={{ height: isPlaying ? undefined : '25px' }} />
+          <div className={`absolute bg-white left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px] ${isPlaying ? 'animate-equalizer-2' : 'h-[17.5px]'}`} style={{ height: isPlaying ? undefined : '17.5px' }} />
+          <div className={`absolute bg-white left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px] ${isPlaying ? 'animate-equalizer-3' : 'h-[21.25px]'}`} style={{ height: isPlaying ? undefined : '21.25px' }} />
         </div>
       </div>
 
       {/* Country Selector */}
       <div 
-        className="absolute left-[1351px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] flex-shrink-0"
+        className={`absolute left-[1351px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] flex-shrink-0 cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors ${getFocusClasses(isFocused(6))}`}
         style={{ padding: '11px 14.316px 11px 15px', justifyContent: 'center', alignItems: 'center' }}
+        onClick={() => setIsCountrySelectorOpen(true)}
+        data-testid="button-country-selector"
       >
         <div className="flex items-center gap-[10.66px]">
           <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
             <img
-              alt="Austria"
+              alt={selectedCountry}
               className="w-full h-full object-cover"
-              src="/images/austria-1.png"
+              src={selectedCountryFlag}
             />
           </div>
           <p className="font-['Ubuntu',Helvetica] font-bold leading-normal text-[24px] text-white whitespace-nowrap">
-            Austria
+            {selectedCountry}
           </p>
           <div className="flex items-center justify-center ml-auto">
             <div className="rotate-[270deg]">
@@ -84,10 +399,10 @@ export const DiscoverUser = (): JSX.Element => {
       <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px]">
         {/* Discover - Active */}
         <Link href="/discover">
-          <div className="absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0" data-testid="button-discover">
+          <div className={`absolute bg-[rgba(255,255,255,0.2)] left-0 overflow-clip rounded-[10px] size-[98px] top-0 ${getFocusClasses(isFocused(0))}`} data-testid="button-discover">
             <div className="absolute h-[61px] left-[13px] top-[19px] w-[72px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[36px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Discover
+                {t('discover')}
               </p>
               <div className="absolute left-[20px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/radio-icon.svg" />
@@ -98,10 +413,10 @@ export const DiscoverUser = (): JSX.Element => {
 
         {/* Genres */}
         <Link href="/genres">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px]" data-testid="button-genres">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[108px] ${getFocusClasses(isFocused(1))}`} data-testid="button-genres">
             <div className="absolute h-[61px] left-[19px] top-[19px] w-[59px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[29.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Genres
+                {t('genres')}
               </p>
               <div className="absolute left-[13px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/music-icon.svg" />
@@ -112,10 +427,10 @@ export const DiscoverUser = (): JSX.Element => {
 
         {/* Search */}
         <Link href="/search">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px]" data-testid="button-search">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[216px] ${getFocusClasses(isFocused(2))}`} data-testid="button-search">
             <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Search
+                {t('search')}
               </p>
               <div className="absolute left-[12px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/search-icon.svg" />
@@ -126,10 +441,10 @@ export const DiscoverUser = (): JSX.Element => {
 
         {/* Favorites */}
         <Link href="/favorites">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px]" data-testid="button-favorites">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[324px] ${getFocusClasses(isFocused(3))}`} data-testid="button-favorites">
             <div className="absolute h-[61px] left-[10px] top-[19px] w-[77px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Favorites
+                {t('favorites')}
               </p>
               <div className="absolute left-[22px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/heart-icon.svg" />
@@ -140,10 +455,10 @@ export const DiscoverUser = (): JSX.Element => {
 
         {/* Records */}
         <Link href="/discover">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px]" data-testid="button-records">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[432px] ${getFocusClasses(isFocused(4))}`} data-testid="button-records">
             <div className="absolute h-[61px] left-[16px] top-[19px] w-[66px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[33px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Records
+                {t('profile_nav_records')}
               </p>
               <div className="absolute left-[17px] size-[32px] top-0">
                 <div className="absolute bg-white left-[5.33px] rounded-[10.667px] size-[21.334px] top-[5.33px]" />
@@ -155,10 +470,10 @@ export const DiscoverUser = (): JSX.Element => {
 
         {/* Settings */}
         <Link href="/settings">
-          <div className="absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px]" data-testid="button-settings">
+          <div className={`absolute left-0 overflow-clip rounded-[10px] size-[98px] top-[540px] ${getFocusClasses(isFocused(5))}`} data-testid="button-settings">
             <div className="absolute h-[61px] left-[15px] top-[19px] w-[68px]">
               <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[34px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
-                Settings
+                {t('settings')}
               </p>
               <div className="absolute left-[18px] size-[32px] top-0">
                 <img alt="" className="block max-w-none size-full" src="/images/settings-icon.svg" />
@@ -170,16 +485,16 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Recently Played Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
-        Recently Played
+        {t('recently_played')}
       </p>
       <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[248px] translate-x-[-50%]">
-        See More
+        {t('see_more')}
       </p>
 
       {/* Recently Played Cards */}
       {/* Card 1 - BBC Radio */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-0">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[316px] w-[200px] ${getFocusClasses(isFocused(7))}`} data-testid="card-station-0">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/-hdd91mb-400x400-1.png" />
           </div>
@@ -195,7 +510,7 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Card 2 - WEEU */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-1">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[316px] w-[200px] ${getFocusClasses(isFocused(8))}`} data-testid="card-station-1">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/830-weeu-1-1.png" />
           </div>
@@ -211,7 +526,7 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Card 3 - CNN Featured */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] border-[#d2d2d2] border-[5.75px] border-solid h-[276px] left-[691.46px] rounded-[11.5px] top-[310px] w-[209.091px]" data-testid="card-station-2">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] border-[#d2d2d2] border-[5.75px] border-solid h-[276px] left-[691.46px] rounded-[11.5px] top-[310px] w-[209.091px] ${getFocusClasses(isFocused(9))}`} data-testid="card-station-2">
           <div className="h-[276px] overflow-clip relative rounded-[inherit] w-[209.091px]">
             <div className="absolute bg-white left-[35.55px] overflow-clip rounded-[6.9px] size-[138px] top-[35.55px]">
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/cnn-international-logo-1.png" />
@@ -229,7 +544,7 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Card 4 - NBC News */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-3">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[316px] w-[200px] ${getFocusClasses(isFocused(10))}`} data-testid="card-station-3">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/2616697-nbc-news-logo-stacked--1--1.png" />
           </div>
@@ -245,7 +560,7 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Card 5 - Power Türk */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-4">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[316px] w-[200px] ${getFocusClasses(isFocused(11))}`} data-testid="card-station-4">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
@@ -261,7 +576,7 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Card 6 - Cheddar */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-5">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[316px] w-[200px] ${getFocusClasses(isFocused(12))}`} data-testid="card-station-5">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/cheddar-news-1.png" />
           </div>
@@ -277,7 +592,7 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Card 7 - WNYC */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1616px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-6">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1616px] overflow-clip rounded-[11px] top-[316px] w-[200px] ${getFocusClasses(isFocused(13))}`} data-testid="card-station-6">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/c175--1--1.png" />
           </div>
@@ -293,7 +608,7 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Card 8 - Power Türk */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1846px] overflow-clip rounded-[11px] top-[316px] w-[200px]" data-testid="card-station-7">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1846px] overflow-clip rounded-[11px] top-[316px] w-[200px] ${getFocusClasses(isFocused(14))}`} data-testid="card-station-7">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/0b75jzrr-400x400-1-8.png" />
           </div>
@@ -309,61 +624,61 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Popular Genres Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[639px]">
-        Popular Genres
+        {t('popular_genres')}
       </p>
 
       {/* Genre Pills */}
       <Link href="/genres">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[236px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-0">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[236px] px-[72px] py-[28px] rounded-[20px] top-[713px] ${getFocusClasses(isFocused(15))}`} data-testid="button-genre-0">
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Pop</p>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
       </Link>
 
       <Link href="/genres">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[445px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-1">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[445px] px-[72px] py-[28px] rounded-[20px] top-[713px] ${getFocusClasses(isFocused(16))}`} data-testid="button-genre-1">
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Rock</p>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
       </Link>
 
       <Link href="/genres">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[664px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-2">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[664px] px-[72px] py-[28px] rounded-[20px] top-[713px] ${getFocusClasses(isFocused(17))}`} data-testid="button-genre-2">
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Hip Hop</p>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
       </Link>
 
       <Link href="/genres">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[916px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-3">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[916px] px-[72px] py-[28px] rounded-[20px] top-[713px] ${getFocusClasses(isFocused(18))}`} data-testid="button-genre-3">
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">News</p>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
       </Link>
 
       <Link href="/genres">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1142px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-4">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1142px] px-[72px] py-[28px] rounded-[20px] top-[713px] ${getFocusClasses(isFocused(19))}`} data-testid="button-genre-4">
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Country</p>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
       </Link>
 
       <Link href="/genres">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1394px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-5">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1394px] px-[72px] py-[28px] rounded-[20px] top-[713px] ${getFocusClasses(isFocused(20))}`} data-testid="button-genre-5">
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Hip Hop</p>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
       </Link>
 
       <Link href="/genres">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1646px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-6">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1646px] px-[72px] py-[28px] rounded-[20px] top-[713px] ${getFocusClasses(isFocused(21))}`} data-testid="button-genre-6">
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">News</p>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
       </Link>
 
       <Link href="/genres">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1872px] px-[72px] py-[28px] rounded-[20px] top-[713px]" data-testid="button-genre-7">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex gap-[10px] items-start left-[1872px] px-[72px] py-[28px] rounded-[20px] top-[713px] ${getFocusClasses(isFocused(22))}`} data-testid="button-genre-7">
           <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">Country</p>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
         </div>
@@ -371,15 +686,15 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Popular Radios Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[863px]">
-        Popular Radios
+        {t('popular_radios')}
       </p>
       <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[869px] translate-x-[-50%]">
-        See More
+        {t('see_more')}
       </p>
 
       {/* Popular Radios Cards - Row 1 */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-0">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[936px] w-[200px] ${getFocusClasses(isFocused(23))}`} data-testid="card-popular-0">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/logo-1.png" />
           </div>
@@ -390,7 +705,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-1">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[936px] w-[200px] ${getFocusClasses(isFocused(24))}`} data-testid="card-popular-1">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/c175-1.png" />
           </div>
@@ -401,7 +716,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-2">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[936px] w-[200px] ${getFocusClasses(isFocused(25))}`} data-testid="card-popular-2">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/ebg3ye6-1.png" />
           </div>
@@ -412,7 +727,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-3">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[936px] w-[200px] ${getFocusClasses(isFocused(26))}`} data-testid="card-popular-3">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/android-default-logo-1-3.png" />
           </div>
@@ -423,7 +738,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-4">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[936px] w-[200px] ${getFocusClasses(isFocused(27))}`} data-testid="card-popular-4">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
@@ -434,7 +749,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[936px] w-[200px]" data-testid="card-popular-5">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[936px] w-[200px] ${getFocusClasses(isFocused(28))}`} data-testid="card-popular-5">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/washington-d-1.png" />
           </div>
@@ -446,7 +761,7 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* Popular Radios Cards - Row 2 */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-6">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1230px] w-[200px] ${getFocusClasses(isFocused(29))}`} data-testid="card-popular-6">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/germany-bavaria-1.png" />
           </div>
@@ -457,7 +772,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-7">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1230px] w-[200px] ${getFocusClasses(isFocused(30))}`} data-testid="card-popular-7">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/830-weeu-1-1.png" />
           </div>
@@ -468,7 +783,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-8">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1230px] w-[200px] ${getFocusClasses(isFocused(31))}`} data-testid="card-popular-8">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
@@ -479,7 +794,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-9">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1230px] w-[200px] ${getFocusClasses(isFocused(32))}`} data-testid="card-popular-9">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
@@ -490,7 +805,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-10">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1230px] w-[200px] ${getFocusClasses(isFocused(33))}`} data-testid="card-popular-10">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/apple-icon-120x120-1.png" />
           </div>
@@ -501,7 +816,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="card-popular-11">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1230px] w-[200px] ${getFocusClasses(isFocused(34))}`} data-testid="card-popular-11">
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/80s-radio-1.png" />
           </div>
@@ -512,22 +827,22 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       {/* See More Card */}
-      <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1616px] overflow-clip rounded-[11px] top-[1230px] w-[200px]" data-testid="button-see-more">
-        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100.5px] not-italic text-[22px] text-center text-white top-[120px] translate-x-[-50%]">See More</p>
+      <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1616px] overflow-clip rounded-[11px] top-[1230px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(35))}`} data-testid="button-see-more">
+        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100.5px] not-italic text-[22px] text-center text-white top-[120px] translate-x-[-50%]">{t('see_more')}</p>
         <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
       </div>
 
       {/* More From Austria Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[1578px]">
-        More From Austria
+        More From {selectedCountry}
       </p>
       <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1792.5px] not-italic text-[22px] text-center text-white top-[1584px] translate-x-[-50%]">
-        See More
+        {t('see_more')}
       </p>
 
       {/* More From Austria Cards - Row 1 */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1652px] w-[200px] ${getFocusClasses(isFocused(36))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/powertu-rk-tv-logosu-1-12.png" />
           </div>
@@ -538,7 +853,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1652px] w-[200px] ${getFocusClasses(isFocused(37))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/0b75jzrr-400x400-1-8.png" />
           </div>
@@ -549,7 +864,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1652px] w-[200px] ${getFocusClasses(isFocused(38))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
@@ -560,7 +875,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1652px] w-[200px] ${getFocusClasses(isFocused(39))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/android-default-logo-1-3.png" />
           </div>
@@ -571,7 +886,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1652px] w-[200px] ${getFocusClasses(isFocused(40))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
@@ -582,7 +897,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1652px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1652px] w-[200px] ${getFocusClasses(isFocused(41))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
@@ -594,7 +909,7 @@ export const DiscoverUser = (): JSX.Element => {
 
       {/* More From Austria Cards - Row 2 */}
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[236px] overflow-clip rounded-[11px] top-[1946px] w-[200px] ${getFocusClasses(isFocused(42))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/powertu-rk-tv-logosu-1-12.png" />
           </div>
@@ -605,7 +920,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[466px] overflow-clip rounded-[11px] top-[1946px] w-[200px] ${getFocusClasses(isFocused(43))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/0b75jzrr-400x400-1-8.png" />
           </div>
@@ -616,7 +931,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[696px] overflow-clip rounded-[11px] top-[1946px] w-[200px] ${getFocusClasses(isFocused(44))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
@@ -627,7 +942,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[926px] overflow-clip rounded-[11px] top-[1946px] w-[200px] ${getFocusClasses(isFocused(45))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/android-default-logo-1-3.png" />
           </div>
@@ -638,7 +953,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1156px] overflow-clip rounded-[11px] top-[1946px] w-[200px] ${getFocusClasses(isFocused(46))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/meta-image--1--1-4.png" />
           </div>
@@ -649,7 +964,7 @@ export const DiscoverUser = (): JSX.Element => {
       </Link>
 
       <Link href="/radio-playing">
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1946px] w-[200px]">
+        <div className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1386px] overflow-clip rounded-[11px] top-[1946px] w-[200px] ${getFocusClasses(isFocused(47))}`}>
           <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
             <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/images/alem-fm-1-4.png" />
           </div>
