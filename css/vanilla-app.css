@@ -81,11 +81,16 @@ body {
     background: rgba(20, 20, 20, 0.95);
     backdrop-filter: blur(10px);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
+    display: none; /* Hidden by default */
     align-items: center;
     justify-content: space-between;
     padding: 0 60px;
     z-index: 1000;
+    transition: opacity 0.3s ease;
+}
+
+.player-bar.visible {
+    display: flex;
 }
 
 .player-info {

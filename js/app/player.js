@@ -64,6 +64,9 @@ var GlobalPlayer = (function() {
             // Update UI
             this.updatePlayerUI(station);
             
+            // Show player bar
+            this.showPlayerBar();
+            
             // Stop current playback
             this.stop();
             
@@ -172,11 +175,20 @@ var GlobalPlayer = (function() {
                     var station = JSON.parse(stored);
                     currentStation = station;
                     this.updatePlayerUI(station);
+                    // Don't show player bar on init - only show when actually playing
                     console.log('[GlobalPlayer] Loaded last played:', station.name);
                 }
             } catch (e) {
                 console.error('[GlobalPlayer] Error loading last played:', e);
             }
+        },
+        
+        showPlayerBar: function() {
+            $('#global-player-bar').addClass('visible');
+        },
+        
+        hidePlayerBar: function() {
+            $('#global-player-bar').removeClass('visible');
         },
         
         getCurrentStation: function() {
