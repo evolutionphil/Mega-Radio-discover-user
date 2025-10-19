@@ -47,21 +47,25 @@ export function FocusRouterProvider({ children }: { children: ReactNode }) {
       currentRoute = '/guide-1';
     }
     
-    const handler = handlersRef.current.get(currentRoute);
+    // Strip query params for handler lookup (e.g., /radio-playing?station=123 -> /radio-playing)
+    const routeWithoutQuery = currentRoute.split('?')[0];
+    
+    const handler = handlersRef.current.get(routeWithoutQuery);
     
     console.log('[FocusRouter] ⌨️  Key event:', {
       keyCode: e.keyCode,
       hash: hash,
       currentRoute: currentRoute,
+      routeForHandler: routeWithoutQuery,
       hasHandler: !!handler,
       registered: Array.from(handlersRef.current.keys())
     });
     
     if (handler) {
-      console.log('[FocusRouter] ✅ Dispatching to:', currentRoute);
+      console.log('[FocusRouter] ✅ Dispatching to:', routeWithoutQuery);
       handler(e);
     } else {
-      console.log('[FocusRouter] ⚠️  No handler for:', currentRoute);
+      console.log('[FocusRouter] ⚠️  No handler for:', routeWithoutQuery);
     }
   };
 
