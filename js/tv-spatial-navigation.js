@@ -1,12 +1,12 @@
 /**
- * TV Spatial Navigation - CROSS-REGION JUMPING
- * Smart navigation with sidebar <-> content jumping
+ * TV Spatial Navigation - SMART CROSS-REGION JUMPING
+ * Navigate within sections first, then jump between regions
  */
 
 (function() {
     'use strict';
     
-    console.log('[TV Spatial Nav] Script loaded - CROSS-JUMP v10.0');
+    console.log('[TV Spatial Nav] Script loaded - SMART JUMP v11.0');
     
     window.tvSpatialNav = {
         enabled: false,
@@ -16,7 +16,7 @@
         contentElements: [],
         
         init: function() {
-            console.log('[TV Spatial Nav] 🚀 Initializing CROSS-JUMP navigation...');
+            console.log('[TV Spatial Nav] 🚀 Initializing SMART JUMP navigation...');
             this.enabled = true;
             this.updateFocusableElements();
             
@@ -79,7 +79,6 @@
         },
         
         updateFocusableElements: function() {
-            // Include .focusable class (LGTV-master pattern)
             const selector = '.focusable, button:not([disabled]), a[href], [data-tv-focusable="true"], [tabindex]:not([tabindex="-1"])';
             
             var allElements = Array.from(document.querySelectorAll(selector));
@@ -97,14 +96,12 @@
                 var rectA = a.getBoundingClientRect();
                 var rectB = b.getBoundingClientRect();
                 
-                // Sidebar is at left: <200px
                 var isAInSidebar = rectA.left < 200;
                 var isBInSidebar = rectB.left < 200;
                 
                 if (isAInSidebar && !isBInSidebar) return -1;
                 if (!isAInSidebar && isBInSidebar) return 1;
                 
-                // Within same region, sort by top then left
                 if (Math.abs(rectA.top - rectB.top) > 10) {
                     return rectA.top - rectB.top;
                 }
@@ -143,23 +140,49 @@
             var currentInSidebar = this.isInSidebar(this.currentIndex);
             
             if (currentInSidebar) {
-                // Already in sidebar, can't go further left
                 console.log('[TV Nav] Already in sidebar, no LEFT movement');
                 return;
             }
             
-            // In content area - jump to nearest sidebar item
+            // In content area - try to move left within content first
             var currentEl = this.focusableElements[this.currentIndex];
             var currentRect = currentEl.getBoundingClientRect();
             
-            // Find closest sidebar item by vertical position
-            var closestSidebarItem = this.sidebarElements[0]; // Default to first
-            var minDistance = Math.abs(currentRect.top - closestSidebarItem.rect.top);
+            // Find element to the left in similar vertical position (same row)
+            var leftIndex = -1;
+            var minDistance = Infinity;
+            
+            for (var i = 0; i < this.contentElements.length; i++) {
+                var item = this.contentElements[i];
+                if (item.index === this.currentIndex) continue;
+                
+                // Must be to the left and in similar vertical position (within 100px)
+                if (item.rect.left < currentRect.left && 
+                    Math.abs(item.rect.top - currentRect.top) < 100) {
+                    var distance = currentRect.left - item.rect.left;
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        leftIndex = item.index;
+                    }
+                }
+            }
+            
+            if (leftIndex >= 0) {
+                // Found an item to the left - move to it
+                console.log('[TV Nav] Moving LEFT within content to index', leftIndex);
+                this.currentIndex = leftIndex;
+                this.focusElement(this.currentIndex);
+                return;
+            }
+            
+            // No item to the left - jump to sidebar
+            var closestSidebarItem = this.sidebarElements[0];
+            var minDist = Math.abs(currentRect.top - closestSidebarItem.rect.top);
             
             for (var i = 1; i < this.sidebarElements.length; i++) {
                 var distance = Math.abs(currentRect.top - this.sidebarElements[i].rect.top);
-                if (distance < minDistance) {
-                    minDistance = distance;
+                if (distance < minDist) {
+                    minDist = distance;
                     closestSidebarItem = this.sidebarElements[i];
                 }
             }
@@ -173,61 +196,36 @@
             this.updateFocusableElements();
             
             var currentInSidebar = this.isInSidebar(this.currentIndex);
+            var currentEl = this.focusableElements[this.currentIndex];
+            var currentRect = currentEl.getBoundingClientRect();
             
-            if (!currentInSidebar) {
-                // Already in content, try to move right within content
-                var currentEl = this.focusableElements[this.currentIndex];
-                var currentRect = currentEl.getBoundingClientRect();
-                
-                // Find next element on the right in similar vertical position
-                var nextIndex = -1;
-                var minDistance = Infinity;
-                
-                for (var i = 0; i < this.contentElements.length; i++) {
-                    var item = this.contentElements[i];
-                    if (item.index === this.currentIndex) continue;
-                    
-                    // Must be to the right and in similar vertical position
-                    if (item.rect.left > currentRect.left && 
-                        Math.abs(item.rect.top - currentRect.top) < 100) {
-                        var distance = item.rect.left - currentRect.left;
-                        if (distance < minDistance) {
-                            minDistance = distance;
-                            nextIndex = item.index;
-                        }
-                    }
-                }
-                
-                if (nextIndex >= 0) {
-                    console.log('[TV Nav] Moving RIGHT to index', nextIndex);
-                    this.currentIndex = nextIndex;
-                    this.focusElement(this.currentIndex);
-                } else {
-                    console.log('[TV Nav] No item to the right');
-                }
-                return;
-            }
+            // Find next element on the right in similar vertical position
+            var rightIndex = -1;
+            var minDistance = Infinity;
             
-            // In sidebar - jump to first content item
-            if (this.contentElements.length > 0) {
-                var currentEl = this.focusableElements[this.currentIndex];
-                var currentRect = currentEl.getBoundingClientRect();
+            var searchArray = currentInSidebar ? this.contentElements : this.contentElements;
+            
+            for (var i = 0; i < searchArray.length; i++) {
+                var item = searchArray[i];
+                if (item.index === this.currentIndex) continue;
                 
-                // Find closest content item by vertical position
-                var closestContentItem = this.contentElements[0];
-                var minDistance = Math.abs(currentRect.top - closestContentItem.rect.top);
-                
-                for (var i = 1; i < this.contentElements.length; i++) {
-                    var distance = Math.abs(currentRect.top - this.contentElements[i].rect.top);
+                // Must be to the right and in similar vertical position (within 100px)
+                if (item.rect.left > currentRect.left && 
+                    Math.abs(item.rect.top - currentRect.top) < 100) {
+                    var distance = item.rect.left - currentRect.left;
                     if (distance < minDistance) {
                         minDistance = distance;
-                        closestContentItem = this.contentElements[i];
+                        rightIndex = item.index;
                     }
                 }
-                
-                console.log('[TV Nav] Jumping RIGHT to content index', closestContentItem.index);
-                this.currentIndex = closestContentItem.index;
+            }
+            
+            if (rightIndex >= 0) {
+                console.log('[TV Nav] Moving RIGHT to index', rightIndex);
+                this.currentIndex = rightIndex;
                 this.focusElement(this.currentIndex);
+            } else {
+                console.log('[TV Nav] No item to the right');
             }
         },
         
@@ -363,11 +361,9 @@
     // Register the focus router dispatch function
     console.log('[TV Spatial Nav] 🔧 Registering focusRouterDispatch...');
     window.focusRouterDispatch = function(e) {
-        // e is the full Event object from tv-remote-keys.js
         console.log('[TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode:', e.keyCode);
         
         if (window.tvSpatialNav && window.tvSpatialNav.handleKey) {
-            // Pass the event directly - it already has keyCode, preventDefault, etc.
             return window.tvSpatialNav.handleKey(e);
         } else {
             console.warn('[TV Spatial Nav] ⚠️ tvSpatialNav not ready');
@@ -377,7 +373,6 @@
     
     console.log('[TV Spatial Nav] ✅ Ready');
     
-    // Initialize when DOM is ready
     $(document).ready(function() {
         console.log('[TV Spatial Nav] DOM ready');
     });
