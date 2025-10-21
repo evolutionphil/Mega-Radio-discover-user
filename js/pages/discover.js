@@ -294,18 +294,18 @@ var discover_page = {
         var html = '';
         var self = this;
         
-        // 8-column grid with absolute positioning
-        // Columns at: 0, 230, 460, 690, 920, 1150, 1380, 1610 (230px spacing)
+        // 7-column grid with absolute positioning
+        // Columns at: 0, 230, 460, 690, 920, 1150, 1380 (230px spacing)
         // Rows at: 0, 294 (294px spacing)
-        var columns = [0, 230, 460, 690, 920, 1150, 1380, 1610];
+        var columns = [0, 230, 460, 690, 920, 1150, 1380];
         var rows = [0, 294];
         
-        // Show up to 15 stations (7 in first row, 7 in second row, + 1 "See More" card)
-        var stations = this.data.popularStations.slice(0, 15);
+        // Show up to 13 stations (7 in first row, 6 in second row, + 1 "See More" card at position 7)
+        var stations = this.data.popularStations.slice(0, 13);
         
         stations.forEach(function(station, index) {
-            var col = index % 8;
-            var row = Math.floor(index / 8);
+            var col = index % 7;
+            var row = Math.floor(index / 7);
             
             if (row >= 2) return; // Only show 2 rows
             
@@ -317,7 +317,7 @@ var discover_page = {
         });
         
         // Add "See More" card at position: left: 1380px (7th column), top: 294px (second row)
-        if (stations.length >= 15) {
+        if (this.data.popularStations.length > 13) {
             html += self.renderSeeMoreCard(1380, 294, 'popular-see-more', 'popular');
         }
         
@@ -328,15 +328,15 @@ var discover_page = {
         var html = '';
         var self = this;
         
-        // Same 8-column grid layout
-        var columns = [0, 230, 460, 690, 920, 1150, 1380, 1610];
+        // Same 7-column grid layout
+        var columns = [0, 230, 460, 690, 920, 1150, 1380];
         var rows = [0, 294];
         
-        var stations = this.data.austriaStations.slice(0, 15);
+        var stations = this.data.austriaStations.slice(0, 13);
         
         stations.forEach(function(station, index) {
-            var col = index % 8;
-            var row = Math.floor(index / 8);
+            var col = index % 7;
+            var row = Math.floor(index / 7);
             
             if (row >= 2) return;
             
@@ -348,7 +348,7 @@ var discover_page = {
         });
         
         // Add "See More" card at position: left: 1380px, top: 294px
-        if (stations.length >= 15) {
+        if (this.data.austriaStations.length > 13) {
             html += self.renderSeeMoreCard(1380, 294, 'austria-see-more', 'austria');
         }
         
