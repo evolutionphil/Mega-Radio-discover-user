@@ -1,12 +1,12 @@
 /**
- * TV Spatial Navigation - SMART CROSS-REGION JUMPING
- * Navigate within sections first, then jump between regions
+ * TV Spatial Navigation - REGION-LOCKED UP/DOWN
+ * UP/DOWN stays within region, LEFT/RIGHT crosses regions
  */
 
 (function() {
     'use strict';
     
-    console.log('[TV Spatial Nav] Script loaded - SMART JUMP v11.0');
+    console.log('[TV Spatial Nav] Script loaded - REGION-LOCKED v12.0');
     
     window.tvSpatialNav = {
         enabled: false,
@@ -16,7 +16,7 @@
         contentElements: [],
         
         init: function() {
-            console.log('[TV Spatial Nav] 🚀 Initializing SMART JUMP navigation...');
+            console.log('[TV Spatial Nav] 🚀 Initializing REGION-LOCKED navigation...');
             this.enabled = true;
             this.updateFocusableElements();
             
@@ -232,29 +232,31 @@
         navigateUp: function() {
             this.updateFocusableElements();
             
+            var currentInSidebar = this.isInSidebar(this.currentIndex);
             var currentEl = this.focusableElements[this.currentIndex];
             var currentRect = currentEl.getBoundingClientRect();
+            
+            // UP/DOWN stays within same region (sidebar or content)
+            var searchArray = currentInSidebar ? this.sidebarElements : this.contentElements;
             
             // Find closest element above current position
             var bestIndex = -1;
             var minDistance = Infinity;
             
-            for (var i = 0; i < this.focusableElements.length; i++) {
-                if (i === this.currentIndex) continue;
-                
-                var el = this.focusableElements[i];
-                var rect = el.getBoundingClientRect();
+            for (var i = 0; i < searchArray.length; i++) {
+                var item = searchArray[i];
+                if (item.index === this.currentIndex) continue;
                 
                 // Must be above (smaller top value)
-                if (rect.top < currentRect.top - 20) {
+                if (item.rect.top < currentRect.top - 20) {
                     // Calculate distance (prefer items directly above)
-                    var verticalDist = currentRect.top - rect.top;
-                    var horizontalDist = Math.abs(rect.left - currentRect.left);
-                    var distance = verticalDist + (horizontalDist * 0.5);
+                    var verticalDist = currentRect.top - item.rect.top;
+                    var horizontalDist = Math.abs(item.rect.left - currentRect.left);
+                    var distance = verticalDist + (horizontalDist * 0.3);
                     
                     if (distance < minDistance) {
                         minDistance = distance;
-                        bestIndex = i;
+                        bestIndex = item.index;
                     }
                 }
             }
@@ -264,40 +266,44 @@
                 this.currentIndex = bestIndex;
                 this.focusElement(this.currentIndex);
             } else {
-                // Wrap to bottom
-                var bottomIndex = this.focusableElements.length - 1;
-                console.log('[TV Nav] Wrapping to bottom index', bottomIndex);
-                this.currentIndex = bottomIndex;
-                this.focusElement(this.currentIndex);
+                // Wrap to bottom within same region
+                if (searchArray.length > 0) {
+                    var bottomIndex = searchArray[searchArray.length - 1].index;
+                    console.log('[TV Nav] Wrapping to bottom index', bottomIndex);
+                    this.currentIndex = bottomIndex;
+                    this.focusElement(this.currentIndex);
+                }
             }
         },
         
         navigateDown: function() {
             this.updateFocusableElements();
             
+            var currentInSidebar = this.isInSidebar(this.currentIndex);
             var currentEl = this.focusableElements[this.currentIndex];
             var currentRect = currentEl.getBoundingClientRect();
+            
+            // UP/DOWN stays within same region (sidebar or content)
+            var searchArray = currentInSidebar ? this.sidebarElements : this.contentElements;
             
             // Find closest element below current position
             var bestIndex = -1;
             var minDistance = Infinity;
             
-            for (var i = 0; i < this.focusableElements.length; i++) {
-                if (i === this.currentIndex) continue;
-                
-                var el = this.focusableElements[i];
-                var rect = el.getBoundingClientRect();
+            for (var i = 0; i < searchArray.length; i++) {
+                var item = searchArray[i];
+                if (item.index === this.currentIndex) continue;
                 
                 // Must be below (larger top value)
-                if (rect.top > currentRect.top + 20) {
+                if (item.rect.top > currentRect.top + 20) {
                     // Calculate distance (prefer items directly below)
-                    var verticalDist = rect.top - currentRect.top;
-                    var horizontalDist = Math.abs(rect.left - currentRect.left);
-                    var distance = verticalDist + (horizontalDist * 0.5);
+                    var verticalDist = item.rect.top - currentRect.top;
+                    var horizontalDist = Math.abs(item.rect.left - currentRect.left);
+                    var distance = verticalDist + (horizontalDist * 0.3);
                     
                     if (distance < minDistance) {
                         minDistance = distance;
-                        bestIndex = i;
+                        bestIndex = item.index;
                     }
                 }
             }
@@ -307,10 +313,13 @@
                 this.currentIndex = bestIndex;
                 this.focusElement(this.currentIndex);
             } else {
-                // Wrap to top
-                console.log('[TV Nav] Wrapping to top index 0');
-                this.currentIndex = 0;
-                this.focusElement(this.currentIndex);
+                // Wrap to top within same region
+                if (searchArray.length > 0) {
+                    var topIndex = searchArray[0].index;
+                    console.log('[TV Nav] Wrapping to top index', topIndex);
+                    this.currentIndex = topIndex;
+                    this.focusElement(this.currentIndex);
+                }
             }
         },
         
