@@ -97,14 +97,11 @@ var MegaRadioAPI = (function() {
             console.log('[API] getAllGenres:', url);
             
             return this.fetchWithRetry(url)
-                .then(function(data) {
-                    // Handle null or invalid data
-                    if (!data || !Array.isArray(data)) {
-                        console.log('[API] Genres fetched: 0 (null response)');
-                        return [];
-                    }
-                    console.log('[API] Genres fetched:', data.length);
-                    return data;
+                .then(function(response) {
+                    // Extract genres from response object
+                    var genres = response && response.data ? response.data : [];
+                    console.log('[API] Genres fetched:', genres.length);
+                    return genres;
                 })
                 .catch(function(error) {
                     console.error('[API] Error fetching genres:', error);
@@ -122,14 +119,11 @@ var MegaRadioAPI = (function() {
             console.log('[API] getPopularStations:', url);
             
             return this.fetchWithRetry(url)
-                .then(function(data) {
-                    // Handle null or invalid data
-                    if (!data || !Array.isArray(data)) {
-                        console.log('[API] Popular stations fetched: 0 (null response)');
-                        return [];
-                    }
-                    console.log('[API] Popular stations fetched:', data.length);
-                    return data;
+                .then(function(response) {
+                    // Extract stations from response object
+                    var stations = response && response.stations ? response.stations : [];
+                    console.log('[API] Popular stations fetched:', stations.length);
+                    return stations;
                 })
                 .catch(function(error) {
                     console.error('[API] Error fetching popular stations:', error);
@@ -147,14 +141,11 @@ var MegaRadioAPI = (function() {
             console.log('[API] getWorkingStations:', url);
             
             return this.fetchWithRetry(url)
-                .then(function(data) {
-                    // Handle null or invalid data
-                    if (!data || !Array.isArray(data)) {
-                        console.log('[API] Working stations fetched: 0 (null response)');
-                        return [];
-                    }
-                    console.log('[API] Working stations fetched:', data.length);
-                    return data;
+                .then(function(response) {
+                    // Extract stations from response object
+                    var stations = response && response.stations ? response.stations : [];
+                    console.log('[API] Working stations fetched:', stations.length);
+                    return stations;
                 })
                 .catch(function(error) {
                     console.error('[API] Error fetching working stations:', error);
@@ -176,14 +167,11 @@ var MegaRadioAPI = (function() {
             console.log('[API] searchStations:', url);
             
             return this.fetchWithRetry(url)
-                .then(function(data) {
-                    // Handle null or invalid data
-                    if (!data || !Array.isArray(data)) {
-                        console.log('[API] Search results: 0 (null response)');
-                        return [];
-                    }
-                    console.log('[API] Search results:', data.length);
-                    return data;
+                .then(function(response) {
+                    // Extract stations from response object
+                    var stations = response && response.stations ? response.stations : [];
+                    console.log('[API] Search results:', stations.length);
+                    return stations;
                 })
                 .catch(function(error) {
                     console.error('[API] Error searching stations:', error);
@@ -205,14 +193,11 @@ var MegaRadioAPI = (function() {
             console.log('[API] getStationsByGenre:', url);
             
             return this.fetchWithRetry(url)
-                .then(function(data) {
-                    // Handle null or invalid data
-                    if (!data || !Array.isArray(data)) {
-                        console.log('[API] Stations by genre fetched: 0 (null response)');
-                        return [];
-                    }
-                    console.log('[API] Stations by genre fetched:', data.length);
-                    return data;
+                .then(function(response) {
+                    // Extract stations from response object
+                    var stations = response && response.stations ? response.stations : [];
+                    console.log('[API] Stations by genre fetched:', stations.length);
+                    return stations;
                 })
                 .catch(function(error) {
                     console.error('[API] Error fetching stations by genre:', error);
