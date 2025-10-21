@@ -46,7 +46,7 @@ var search_page = {
                 
                 <!-- Logo (top-left) -->
                 <div style="${StyleHelpers.position(31, 64, 323, 112)} z-index: 10;">
-                    <p style="position: absolute; bottom: 0; left: 18.67%; right: 0; top: 46.16%; ${StyleHelpers.text(53, TVTypography.weightRegular, TVColors.white)} white-space: pre-wrap;">
+                    <p style="position: absolute; bottom: 0; left: 18.67%; right: 0; top: 46.16%; ${StyleHelpers.text(53, TVTypography.weightRegular, TVColors.white)} white-space: nowrap;">
                         <span style="font-weight: ${TVTypography.weightBold};">mega</span>radio
                     </p>
                     <div style="position: absolute; bottom: 2.84%; left: 0; right: 65.2%; top: 0;">

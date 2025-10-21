@@ -96,7 +96,7 @@ var TVLayout = {
     renderLogo: function() {
         return `
             <div style="${StyleHelpers.position(TVSpacing.logoLeft, TVSpacing.logoTop, 323, 112)}">
-                <p style="${StyleHelpers.text(53, TVTypography.weightRegular, TVColors.white)} position: absolute; bottom: 0; left: 18.67%; right: 0; top: 46.16%; white-space: pre-wrap;">
+                <p style="${StyleHelpers.text(53, TVTypography.weightRegular, TVColors.white)} position: absolute; bottom: 0; left: 18.67%; right: 0; top: 46.16%; white-space: nowrap;">
                     <span style="font-family: ${TVTypography.fontFamily}; font-weight: ${TVTypography.weightBold};">mega</span>radio
                 </p>
                 <div style="position: absolute; bottom: 2.84%; left: 0; right: 65.2%; top: 0;">

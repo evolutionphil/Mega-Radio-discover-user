@@ -45,7 +45,7 @@ var discover_page = {
                 
                 <!-- Logo (top-left) -->
                 <div style="position: absolute; left: 64px; top: 31px; width: 323px; height: 112px; z-index: 10;">
-                    <p style="position: absolute; bottom: 0; left: 18.67%; right: 0; top: 46.16%; font-family: 'Ubuntu', Helvetica; font-size: 53px; font-weight: 400; color: #ffffff; font-style: normal; line-height: normal; white-space: pre-wrap; margin: 0;">
+                    <p style="position: absolute; bottom: 0; left: 18.67%; right: 0; top: 46.16%; font-family: 'Ubuntu', Helvetica; font-size: 53px; font-weight: 400; color: #ffffff; font-style: normal; line-height: normal; white-space: nowrap; margin: 0;">
                         <span style="font-weight: 700;">mega</span>radio
                     </p>
                     <div style="position: absolute; bottom: 2.84%; left: 0; right: 65.2%; top: 0;">

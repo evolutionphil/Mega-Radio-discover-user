@@ -24,16 +24,18 @@ var splash_page = {
                          src="${Utils.assetPath('images/waves-figma.png')}">
                 </div>
                 
-                <!-- Megaradio Logo -->
+                <!-- Megaradio Logo (Icon + Text) -->
                 <div style="position: absolute; height: 111.999px; left: 798px; top: 484px; width: 323.069px;">
-                    <p style="position: absolute; bottom: 0; font-family: 'Ubuntu', Helvetica; font-weight: 400; line-height: normal; left: 18.67%; font-style: normal; right: 0; font-size: 53.108px; color: #ffffff; top: 46.16%; white-space: pre-wrap;">
-                        <span style="font-family: 'Ubuntu', Helvetica; font-weight: 700;">mega</span>radio
-                    </p>
+                    <!-- Music Icon (left side) -->
                     <div style="position: absolute; bottom: 2.84%; left: 0; right: 65.2%; top: 0;">
                         <img alt="" 
                              style="display: block; max-width: none; width: 100%; height: 100%;" 
                              src="${Utils.assetPath('images/path-8-figma.svg')}">
                     </div>
+                    <!-- Text (right side, vertically centered with icon) -->
+                    <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 400; line-height: normal; left: 18.67%; font-style: normal; font-size: 53.108px; color: #ffffff; top: 46.16%; white-space: nowrap; margin: 0;">
+                        <span style="font-family: 'Ubuntu', Helvetica; font-weight: 700;">mega</span>radio
+                    </p>
                 </div>
                 
                 <!-- Pink Glow Circle (left side) -->
@@ -46,12 +48,12 @@ var splash_page = {
                 </div>
                 
                 <!-- "Listen freely" text -->
-                <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 500; line-height: normal; left: 901px; font-style: normal; color: #9b9b9b; font-size: 20px; top: 624px;">
+                <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 500; line-height: normal; left: 901px; font-style: normal; color: #9b9b9b; font-size: 20px; top: 624px; margin: 0;">
                     Listen freely
                 </p>
                 
                 <!-- "megaradio.live" text (bottom center) -->
-                <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 500; line-height: normal; left: 960px; font-style: normal; font-size: 22px; text-align: center; color: #ffffff; top: 984px; transform: translateX(-50%);">
+                <p style="position: absolute; font-family: 'Ubuntu', Helvetica; font-weight: 500; line-height: normal; left: 960px; font-style: normal; font-size: 22px; text-align: center; color: #ffffff; top: 984px; transform: translateX(-50%); margin: 0;">
                     megaradio.live
                 </p>
                 
