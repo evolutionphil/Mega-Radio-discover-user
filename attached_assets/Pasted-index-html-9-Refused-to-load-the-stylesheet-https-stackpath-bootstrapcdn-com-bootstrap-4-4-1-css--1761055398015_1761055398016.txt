@@ -1,0 +1,117 @@
+index.html:9 Refused to load the stylesheet 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' because it violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback.
+
+index.html:12 Refused to load the stylesheet 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css' because it violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback.
+
+index.html:1 Refused to load the script 'https://code.jquery.com/jquery-3.4.1.min.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+favorites.js:1          Failed to load resource: net::ERR_ACCESS_DENIED
+index.html:1 Refused to load the script 'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+index.html:1 Refused to load the script 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+polyfills.js?v=2:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js?v=2:108 [Polyfills] All polyfills loaded successfully
+tv-spatial-navigation.js?v=14:9 [TV Spatial Nav] Script loaded - CONTEXT-AWARE v14.0
+tv-spatial-navigation.js?v=14:453 [TV Spatial Nav] 🔧 Registering focusRouterDispatch...
+tv-spatial-navigation.js?v=14:465 [TV Spatial Nav] ✅ Ready
+tv-spatial-navigation.js?v=14:467 Uncaught ReferenceError: $ is not defined
+    at tv-spatial-navigation.js?v=14:467:5
+    at tv-spatial-navigation.js?v=14:470:3
+config.js?v=2:53 [Config] Platform detected: webos
+sidebar.js:104 Uncaught ReferenceError: $ is not defined
+    at sidebar.js:104:1
+country-modal.js:330 Uncaught ReferenceError: $ is not defined
+    at country-modal.js:330:1
+main.js:5 Uncaught ReferenceError: $ is not defined
+    at main.js:5:1
+tv-remote-keys.js?v=2:186 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=2:190 [TV Remote Keys] Key handler attached, waiting for React...
+index.html:1 Refused to load the stylesheet 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' because it violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback.
+
+index.html:1 Refused to load the stylesheet 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css' because it violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback.
+
+DevTools failed to load source map: Could not load content for file:///bootstrap.min.css.map: Unknown error
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 13
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 13
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 13
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 13
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 13
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 13
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 13
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 40
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: 'UP', key: 'ArrowUp', code: 'ArrowUp', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 38
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: 'LEFT', key: 'ArrowLeft', code: 'ArrowLeft', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 37
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 39
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174
+tv-remote-keys.js?v=2:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: undefined, …}
+tv-remote-keys.js?v=2:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js?v=14:455 [TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode: 13
+tv-spatial-navigation.js?v=14:43 [TV Nav] ⚠️ Navigation disabled!
+handleKey @ tv-spatial-navigation.js?v=14:43
+window.focusRouterDispatch @ tv-spatial-navigation.js?v=14:458
+window.handleTVKey @ tv-remote-keys.js?v=2:174

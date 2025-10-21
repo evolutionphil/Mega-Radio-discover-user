@@ -57,3 +57,5 @@ var AppConfig = {
 
 // Initialize platform detection
 AppConfig.detectPlatform();
+
+console.log('[Config.js] ✅ AppConfig loaded successfully:', AppConfig);
