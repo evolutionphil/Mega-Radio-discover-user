@@ -1,0 +1,772 @@
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] ⚠️  FocusRouter not available yet
+window.handleTVKey @ tv-remote-keys.js:176
+(anonymous) @ ripple.js:1
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] ⚠️  FocusRouter not available yet
+window.handleTVKey @ tv-remote-keys.js:176
+(anonymous) @ ripple.js:1
+ [Discover] Station clicked: 17142ca0-4faf-11e9-a4d7-52543be04c81
+ [GlobalPlayer] Playing: CITY23
+player.js:92 Uncaught TypeError: TVAudioPlayer.stop is not a function
+stop @ player.js:92
+play @ player.js:71
+(anonymous) @ discover.js:205
+dispatch @ jquery-3.4.1.min.js:2
+v.handle @ jquery-3.4.1.min.js:2
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] ⚠️  FocusRouter not available yet
+window.handleTVKey @ tv-remote-keys.js:176
+(anonymous) @ ripple.js:1
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] ⚠️  FocusRouter not available yet
+window.handleTVKey @ tv-remote-keys.js:176
+(anonymous) @ ripple.js:1
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] ⚠️  FocusRouter not available yet
+window.handleTVKey @ tv-remote-keys.js:176
+(anonymous) @ ripple.js:1
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] ⚠️  FocusRouter not available yet
+window.handleTVKey @ tv-remote-keys.js:176
+(anonymous) @ ripple.js:1
+ [Guide1] Enter pressed - navigating to Guide 2
+ [Router] Navigating to: guide-2
+ [Guide2] Cleaning up...
+ [Guide2] Initializing...
+ [Guide2] Rendered
+ [Guide2] Enter pressed - navigating to Guide 3
+ [Router] Navigating to: guide-3
+ [Guide3] Cleaning up...
+ [Guide3] Initializing...
+ [Guide3] Rendered
+ [Guide3] Enter pressed - navigating to Guide 4
+ [Router] Navigating to: guide-4
+ [Guide4] Cleaning up...
+ [Guide4] Initializing...
+ [Guide4] Rendered
+ [Guide4] Enter pressed - navigating to Discover
+ [Router] Navigating to: discover
+ [Discover] Cleaning up...
+ [Discover] Initializing...
+ [Discover] Rendered
+ [API] getAllGenres: https://themegaradio.com/api/genres?country=Austria&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/genres?country=Austria&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] ⚠️  FocusRouter not available yet
+window.handleTVKey @ tv-remote-keys.js:176
+(anonymous) @ ripple.js:1
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 4
+ [API] Popular stations fetched: 50
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 4
+ [API] Popular stations fetched: 50
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5012,"total_stations":5012,"posterImage":"","discoverableImage":"","isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:16.360Z","isDynamic":false},{"_id":"68a0352467a2b5b369eb41ba","name":"Music","slug":"music","stationCount":4046,"total_stations":4046,"isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:20.477Z","isDynamic":false},{"_id":"genre-rock","name":"
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 5
+ [API] Genres fetched: 9
+16c84635847ddad3.png:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 ()
+favorites.js:1 
+        
+        
+       Failed to load resource: net::ERR_FILE_NOT_FOUND
+ [Polyfills] Loading polyfills for Samsung Tizen TV...
+ [Polyfills] All polyfills loaded successfully
+ [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+ [TV Spatial Nav] 🔧 About to register focusRouterDispatch...
+ [TV Spatial Nav] ✅ focusRouterDispatch registered: function
+ [TV Spatial Nav] ✅ window.tvSpatialNav: object
+ [Config] Platform detected: webos
+ [TV Remote Keys] DOM ready, initializing...
+ [TV Remote Keys] Key handler attached, waiting for React...
+ [TV Spatial Nav] DOM ready
+ [TV Spatial Nav] focusRouterDispatch available: true
+ [CountryModal] Initializing...
+ [CountryModal] Initialized
+ 🎵 Mega Radio - Starting application...
+ [State] Initializing...
+ [State] Initialized
+ [Localization] Initializing...
+ [Localization] Loading language: en
+ [API] getTranslations: https://themegaradio.com/api/translations/en?tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/translations/en?tv=1
+ [API DEBUG] 📤 Request options: {}
+ [GlobalPlayer] Initializing...
+ [GlobalPlayer] Using TVAudioPlayer
+ [GlobalPlayer] Initialized
+ [Router] Initializing...
+ [Router] Navigating to: splash
+ [Splash] Initializing...
+ [Splash] Rendered
+ [Router] Initialized
+ ✅ Mega Radio - Application ready
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"mood_energetic":"Energetic","mood_relaxed":"Relaxed","mood_focused":"Focused","mood_nostalgic":"Nostalgic","mood_party":"Party","mood_chill":"Chill","mood_all":"All Moods","mood_selector":"How are you feeling?","mood_description":"Select your mood to get better recommendations","nav_for_you":"For You","for_you_subtitle":"Personalized stations based on your taste","your_music_profile":"Your Music Profile","profile_description":"Based on your listening history","avg_listen_time":"Average Listen 
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 623
+ [API] Translations loaded: 623 keys
+ [Localization] Language loaded: en
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scalePopupwindow called
+ [Splash] Timer complete, navigating to guide-1
+ [Router] Navigating to: guide-1
+ [Guide1] Cleaning up...
+ [Guide1] Initializing...
+ [Guide1] Rendered
+ [Guide1] Enter pressed - navigating to Guide 2
+ [Router] Navigating to: guide-2
+ [Guide2] Cleaning up...
+ [Guide2] Initializing...
+ [Guide2] Rendered
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+ [Guide1] Enter pressed - navigating to Guide 2
+ [Router] Navigating to: guide-2
+ [Guide2] Cleaning up...
+ [Guide2] Initializing...
+ [Guide2] Rendered
+ [Guide2] Enter pressed - navigating to Guide 3
+ [Router] Navigating to: guide-3
+ [Guide3] Cleaning up...
+ [Guide3] Initializing...
+ [Guide3] Rendered
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+ [Guide1] Enter pressed - navigating to Guide 2
+ [Router] Navigating to: guide-2
+ [Guide2] Cleaning up...
+ [Guide2] Initializing...
+ [Guide2] Rendered
+ [Guide2] Enter pressed - navigating to Guide 3
+ [Router] Navigating to: guide-3
+ [Guide3] Cleaning up...
+ [Guide3] Initializing...
+ [Guide3] Rendered
+ [Guide3] Enter pressed - navigating to Guide 4
+ [Router] Navigating to: guide-4
+ [Guide4] Cleaning up...
+ [Guide4] Initializing...
+ [Guide4] Rendered
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+ [Guide1] Enter pressed - navigating to Guide 2
+ [Router] Navigating to: guide-2
+ [Guide2] Cleaning up...
+ [Guide2] Initializing...
+ [Guide2] Rendered
+ [Guide2] Enter pressed - navigating to Guide 3
+ [Router] Navigating to: guide-3
+ [Guide3] Cleaning up...
+ [Guide3] Initializing...
+ [Guide3] Rendered
+ [Guide3] Enter pressed - navigating to Guide 4
+ [Router] Navigating to: guide-4
+ [Guide4] Cleaning up...
+ [Guide4] Initializing...
+ [Guide4] Rendered
+ [Guide4] Enter pressed - navigating to Discover
+ [Router] Navigating to: discover
+ [Discover] Cleaning up...
+ [Discover] Initializing...
+ [Discover] Rendered
+ [API] getAllGenres: https://themegaradio.com/api/genres?country=Austria&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/genres?country=Austria&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5012,"total_stations":5012,"posterImage":"","discoverableImage":"","isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:16.360Z","isDynamic":false},{"_id":"68a0352467a2b5b369eb41ba","name":"Music","slug":"music","stationCount":4046,"total_stations":4046,"isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:20.477Z","isDynamic":false},{"_id":"genre-rock","name":"
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 5
+ [API] Genres fetched: 9
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 4
+ [API] Popular stations fetched: 50
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 40
+ [TV Nav] No element found in direction: down - keeping current focus
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 4
+ [API] Popular stations fetched: 50
+ [Discover] Initializing TV spatial navigation...
+ [TV Nav] Found 41 focusable elements
+ [TV Nav] Element types: [object Object]
+ [TV Nav] Initialized with 41 focusable elements
+ [TV Nav] Initial focus on first element
+ [TV Nav] Focused: button-genre-0
+16c84635847ddad3.png:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 ()
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 39
+ [TV Nav] No element found in direction: right - keeping current focus
+ [TV Nav] Focused: button-genre-0
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 39
+ [TV Nav] No element found in direction: right - keeping current focus
+ [TV Nav] Focused: button-genre-0
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 39
+ [TV Nav] No element found in direction: right - keeping current focus
+ [TV Nav] Focused: button-genre-0
+ [Guide1] Enter pressed - navigating to Guide 2
+ [Router] Navigating to: guide-2
+ [Guide2] Cleaning up...
+ [Guide2] Initializing...
+ [Guide2] Rendered
+ [Guide2] Enter pressed - navigating to Guide 3
+ [Router] Navigating to: guide-3
+ [Guide3] Cleaning up...
+ [Guide3] Initializing...
+ [Guide3] Rendered
+ [Guide3] Enter pressed - navigating to Guide 4
+ [Router] Navigating to: guide-4
+ [Guide4] Cleaning up...
+ [Guide4] Initializing...
+ [Guide4] Rendered
+ [Guide4] Enter pressed - navigating to Discover
+ [Router] Navigating to: discover
+ [Discover] Cleaning up...
+ [Discover] Initializing...
+ [Discover] Rendered
+ [API] getAllGenres: https://themegaradio.com/api/genres?country=Austria&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/genres?country=Austria&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+ [TV Nav] ENTER pressed on: [object HTMLDivElement]
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5012,"total_stations":5012,"posterImage":"","discoverableImage":"","isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:16.360Z","isDynamic":false},{"_id":"68a0352467a2b5b369eb41ba","name":"Music","slug":"music","stationCount":4046,"total_stations":4046,"isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:20.477Z","isDynamic":false},{"_id":"genre-rock","name":"
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 5
+ [API] Genres fetched: 9
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 4
+ [API] Popular stations fetched: 50
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 4
+ [API] Popular stations fetched: 50
+16c84635847ddad3.png:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 ()
+ [Discover] Initializing TV spatial navigation...
+ [TV Nav] Found 41 focusable elements
+ [TV Nav] Element types: [object Object]
+ [TV Nav] Initialized with 41 focusable elements
+ [TV Nav] Initial focus on first element
+ [TV Nav] Focused: button-genre-0
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 39
+ [TV Nav] No element found in direction: right - keeping current focus
+ [TV Nav] Focused: button-genre-0
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 39
+ [TV Nav] No element found in direction: right - keeping current focus
+ [TV Nav] Focused: button-genre-0
+ [Guide1] Enter pressed - navigating to Guide 2
+ [Router] Navigating to: guide-2
+ [Guide2] Cleaning up...
+ [Guide2] Initializing...
+ [Guide2] Rendered
+ [Guide2] Enter pressed - navigating to Guide 3
+ [Router] Navigating to: guide-3
+ [Guide3] Cleaning up...
+ [Guide3] Initializing...
+ [Guide3] Rendered
+ [Guide3] Enter pressed - navigating to Guide 4
+ [Router] Navigating to: guide-4
+ [Guide4] Cleaning up...
+ [Guide4] Initializing...
+ [Guide4] Rendered
+ [Guide4] Enter pressed - navigating to Discover
+ [Router] Navigating to: discover
+ [Discover] Cleaning up...
+ [Discover] Initializing...
+ [Discover] Rendered
+ [API] getAllGenres: https://themegaradio.com/api/genres?country=Austria&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/genres?country=Austria&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+ [API DEBUG] 📤 Request options: {}
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+ [TV Nav] ENTER pressed on: [object HTMLDivElement]
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5012,"total_stations":5012,"posterImage":"","discoverableImage":"","isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:16.360Z","isDynamic":false},{"_id":"68a0352467a2b5b369eb41ba","name":"Music","slug":"music","stationCount":4046,"total_stations":4046,"isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:20.477Z","isDynamic":false},{"_id":"genre-rock","name":"
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 5
+ [API] Genres fetched: 9
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 4
+ [API] Popular stations fetched: 50
+ [API DEBUG] 📥 Response received:
+ [API DEBUG]   - Status: 200 
+ [API DEBUG]   - Headers: [object Object]
+ [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+ [API DEBUG] ✅ JSON parsed successfully
+ [API DEBUG] 📊 Data type: object
+ [API DEBUG] 📊 Data length/keys: 4
+ [API] Popular stations fetched: 50
+16c84635847ddad3.png:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 ()
+ [Discover] Initializing TV spatial navigation...
+ [TV Nav] Found 41 focusable elements
+ [TV Nav] Element types: [object Object]
+ [TV Nav] Initialized with 41 focusable elements
+ [TV Nav] Initial focus on first element
+ [TV Nav] Focused: button-genre-0
+chrome-extension://oakokfcahinkpjpigcnpagkpjkkbffpl/ripple.html:1 Error in event handler: TypeError: Cannot read properties of undefined (reading '0')
+    at NWWindow.<anonymous> (extensions::nw.Window:208:47)
+    at dispatchEventIfExists (extensions::nw.Window:851:15)
+    at onDocumentStartEnd (extensions::nw.Window:876:5)
+favorites.js:1 
+        
+        
+       Failed to load resource: net::ERR_FILE_NOT_FOUND
+ [Polyfills] Loading polyfills for Samsung Tizen TV...
+ [Polyfills] All polyfills loaded successfully
+tv-spatial-navigation.js:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+tv-spatial-navigation.js:310 [TV Spatial Nav] 🔧 About to register focusRouterDispatch...
+tv-spatial-navigation.js:318 [TV Spatial Nav] ✅ focusRouterDispatch registered: function
+tv-spatial-navigation.js:319 [TV Spatial Nav] ✅ window.tvSpatialNav: object
+config.js:53 [Config] Platform detected: webos
+tv-remote-keys.js:186 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js:190 [TV Remote Keys] Key handler attached, waiting for React...
+tv-spatial-navigation.js:324 [TV Spatial Nav] DOM ready
+tv-spatial-navigation.js:325 [TV Spatial Nav] focusRouterDispatch available: true
+chrome-extension://oakokfcahinkpjpigcnpagkpjkkbffpl/ripple.html:1 Error in event handler: TypeError: Cannot read properties of undefined (reading '0')
+    at NWWindow.<anonymous> (extensions::nw.Window:217:47)
+    at dispatchEventIfExists (extensions::nw.Window:851:15)
+    at onDocumentStartEnd (extensions::nw.Window:879:5)
+country-modal.js:49 [CountryModal] Initializing...
+country-modal.js:53 [CountryModal] Initialized
+ 🎵 Mega Radio - Starting application...
+state.js:151 [State] Initializing...
+state.js:165 [State] Initialized
+localization.js:12 [Localization] Initializing...
+localization.js:18 [Localization] Loading language: en
+api.js:212 [API] getTranslations: https://themegaradio.com/api/translations/en?tv=1
+api.js:36 [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/translations/en?tv=1
+api.js:37 [API DEBUG] 📤 Request options: {}
+player.js:13 [GlobalPlayer] Initializing...
+player.js:18 [GlobalPlayer] Using TVAudioPlayer
+player.js:30 [GlobalPlayer] Initialized
+router.js:64 [Router] Initializing...
+router.js:12 [Router] Navigating to: splash
+splash.js:11 [Splash] Initializing...
+splash.js:92 [Splash] Rendered
+router.js:77 [Router] Initialized
+ ✅ Mega Radio - Application ready
+api.js:41 [API DEBUG] 📥 Response received:
+api.js:42 [API DEBUG]   - Status: 200 
+api.js:43 [API DEBUG]   - Headers: Object
+api.js:54 [API DEBUG] 📄 Raw response text (first 500 chars): {"mood_energetic":"Energetic","mood_relaxed":"Relaxed","mood_focused":"Focused","mood_nostalgic":"Nostalgic","mood_party":"Party","mood_chill":"Chill","mood_all":"All Moods","mood_selector":"How are you feeling?","mood_description":"Select your mood to get better recommendations","nav_for_you":"For You","for_you_subtitle":"Personalized stations based on your taste","your_music_profile":"Your Music Profile","profile_description":"Based on your listening history","avg_listen_time":"Average Listen 
+api.js:63 [API DEBUG] ✅ JSON parsed successfully
+api.js:64 [API DEBUG] 📊 Data type: object
+api.js:65 [API DEBUG] 📊 Data length/keys: 623
+api.js:216 [API] Translations loaded: 623 keys
+localization.js:25 [Localization] Language loaded: en
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scalePopupwindow called
+splash.js:102 [Splash] Timer complete, navigating to guide-1
+router.js:12 [Router] Navigating to: guide-1
+guide-1.js:95 [Guide1] Cleaning up...
+guide-1.js:13 [Guide1] Initializing...
+guide-1.js:72 [Guide1] Rendered
+guide-1.js:87 [Guide1] Enter pressed - navigating to Guide 2
+router.js:12 [Router] Navigating to: guide-2
+guide-2.js:92 [Guide2] Cleaning up...
+guide-2.js:13 [Guide2] Initializing...
+guide-2.js:71 [Guide2] Rendered
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 13
+tv-spatial-navigation.js:69 [TV Nav] ⏎ ENTER key
+tv-spatial-navigation.js:79 [TV Nav] Key not handled: 13
+guide-1.js:87 [Guide1] Enter pressed - navigating to Guide 2
+router.js:12 [Router] Navigating to: guide-2
+guide-2.js:92 [Guide2] Cleaning up...
+guide-2.js:13 [Guide2] Initializing...
+guide-2.js:71 [Guide2] Rendered
+guide-2.js:84 [Guide2] Enter pressed - navigating to Guide 3
+router.js:12 [Router] Navigating to: guide-3
+guide-3.js:93 [Guide3] Cleaning up...
+guide-3.js:13 [Guide3] Initializing...
+guide-3.js:72 [Guide3] Rendered
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 13
+tv-spatial-navigation.js:69 [TV Nav] ⏎ ENTER key
+tv-spatial-navigation.js:79 [TV Nav] Key not handled: 13
+guide-1.js:87 [Guide1] Enter pressed - navigating to Guide 2
+router.js:12 [Router] Navigating to: guide-2
+guide-2.js:92 [Guide2] Cleaning up...
+guide-2.js:13 [Guide2] Initializing...
+guide-2.js:71 [Guide2] Rendered
+guide-2.js:84 [Guide2] Enter pressed - navigating to Guide 3
+router.js:12 [Router] Navigating to: guide-3
+guide-3.js:93 [Guide3] Cleaning up...
+guide-3.js:13 [Guide3] Initializing...
+guide-3.js:72 [Guide3] Rendered
+guide-3.js:85 [Guide3] Enter pressed - navigating to Guide 4
+router.js:12 [Router] Navigating to: guide-4
+guide-4.js:93 [Guide4] Cleaning up...
+guide-4.js:13 [Guide4] Initializing...
+guide-4.js:72 [Guide4] Rendered
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 13
+tv-spatial-navigation.js:69 [TV Nav] ⏎ ENTER key
+tv-spatial-navigation.js:79 [TV Nav] Key not handled: 13
+guide-1.js:87 [Guide1] Enter pressed - navigating to Guide 2
+router.js:12 [Router] Navigating to: guide-2
+guide-2.js:92 [Guide2] Cleaning up...
+guide-2.js:13 [Guide2] Initializing...
+guide-2.js:71 [Guide2] Rendered
+guide-2.js:84 [Guide2] Enter pressed - navigating to Guide 3
+router.js:12 [Router] Navigating to: guide-3
+guide-3.js:93 [Guide3] Cleaning up...
+guide-3.js:13 [Guide3] Initializing...
+guide-3.js:72 [Guide3] Rendered
+guide-3.js:85 [Guide3] Enter pressed - navigating to Guide 4
+router.js:12 [Router] Navigating to: guide-4
+guide-4.js:93 [Guide4] Cleaning up...
+guide-4.js:13 [Guide4] Initializing...
+guide-4.js:72 [Guide4] Rendered
+guide-4.js:85 [Guide4] Enter pressed - navigating to Discover
+router.js:12 [Router] Navigating to: discover
+discover.js:464 [Discover] Cleaning up...
+discover.js:26 [Discover] Initializing...
+discover.js:164 [Discover] Rendered
+api.js:97 [API] getAllGenres: https://themegaradio.com/api/genres?country=Austria&tv=1
+api.js:36 [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/genres?country=Austria&tv=1
+api.js:37 [API DEBUG] 📤 Request options: {}
+api.js:119 [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+api.js:36 [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+api.js:37 [API DEBUG] 📤 Request options: {}
+api.js:119 [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+api.js:36 [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+api.js:37 [API DEBUG] 📤 Request options: {}
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 13
+tv-spatial-navigation.js:69 [TV Nav] ⏎ ENTER key
+tv-spatial-navigation.js:79 [TV Nav] Key not handled: 13
+api.js:41 [API DEBUG] 📥 Response received:
+api.js:42 [API DEBUG]   - Status: 200 
+api.js:43 [API DEBUG]   - Headers: Object
+api.js:54 [API DEBUG] 📄 Raw response text (first 500 chars): {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5012,"total_stations":5012,"posterImage":"","discoverableImage":"","isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:16.360Z","isDynamic":false},{"_id":"68a0352467a2b5b369eb41ba","name":"Music","slug":"music","stationCount":4046,"total_stations":4046,"isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:20.477Z","isDynamic":false},{"_id":"genre-rock","name":"
+api.js:63 [API DEBUG] ✅ JSON parsed successfully
+api.js:64 [API DEBUG] 📊 Data type: object
+api.js:65 [API DEBUG] 📊 Data length/keys: 5
+api.js:103 [API] Genres fetched: 9
+api.js:41 [API DEBUG] 📥 Response received:
+api.js:42 [API DEBUG]   - Status: 200 
+api.js:43 [API DEBUG]   - Headers: Object
+api.js:54 [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+api.js:63 [API DEBUG] ✅ JSON parsed successfully
+api.js:64 [API DEBUG] 📊 Data type: object
+api.js:65 [API DEBUG] 📊 Data length/keys: 4
+api.js:125 [API] Popular stations fetched: 50
+api.js:41 [API DEBUG] 📥 Response received:
+api.js:42 [API DEBUG]   - Status: 200 
+api.js:43 [API DEBUG]   - Headers: Object
+api.js:54 [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+api.js:63 [API DEBUG] ✅ JSON parsed successfully
+api.js:64 [API DEBUG] 📊 Data type: object
+api.js:65 [API DEBUG] 📊 Data length/keys: 4
+api.js:125 [API] Popular stations fetched: 50
+discover.js:246 [Discover] Initializing TV spatial navigation...
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:16 [TV Nav] Initialized with 41 focusable elements
+tv-spatial-navigation.js:28 [TV Nav] Initial focus on first element
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+16c84635847ddad3.png:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 ()
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 39
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 39
+tv-spatial-navigation.js:59 [TV Nav] ➡️ RIGHT key
+tv-spatial-navigation.js:278 [TV Nav] 🧭 navigate() called, direction: right
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:280 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:287 [TV Nav] ❌ No element found in direction: right - keeping current focus
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 40
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 40
+tv-spatial-navigation.js:64 [TV Nav] ⬇️ DOWN key
+tv-spatial-navigation.js:278 [TV Nav] 🧭 navigate() called, direction: down
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:280 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:287 [TV Nav] ❌ No element found in direction: down - keeping current focus
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 40
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 40
+tv-spatial-navigation.js:64 [TV Nav] ⬇️ DOWN key
+tv-spatial-navigation.js:278 [TV Nav] 🧭 navigate() called, direction: down
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:280 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:287 [TV Nav] ❌ No element found in direction: down - keeping current focus
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 40
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 40
+tv-spatial-navigation.js:64 [TV Nav] ⬇️ DOWN key
+tv-spatial-navigation.js:278 [TV Nav] 🧭 navigate() called, direction: down
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:280 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:287 [TV Nav] ❌ No element found in direction: down - keeping current focus
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 40
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 40
+tv-spatial-navigation.js:64 [TV Nav] ⬇️ DOWN key
+tv-spatial-navigation.js:278 [TV Nav] 🧭 navigate() called, direction: down
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:280 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:287 [TV Nav] ❌ No element found in direction: down - keeping current focus
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 40
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 40
+tv-spatial-navigation.js:64 [TV Nav] ⬇️ DOWN key
+tv-spatial-navigation.js:278 [TV Nav] 🧭 navigate() called, direction: down
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:280 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:287 [TV Nav] ❌ No element found in direction: down - keeping current focus
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 39
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 39
+tv-spatial-navigation.js:59 [TV Nav] ➡️ RIGHT key
+tv-spatial-navigation.js:278 [TV Nav] 🧭 navigate() called, direction: right
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:280 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:287 [TV Nav] ❌ No element found in direction: right - keeping current focus
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 39
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 39
+tv-spatial-navigation.js:59 [TV Nav] ➡️ RIGHT key
+tv-spatial-navigation.js:278 [TV Nav] 🧭 navigate() called, direction: right
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:280 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:287 [TV Nav] ❌ No element found in direction: right - keeping current focus
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 39
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 39
+tv-spatial-navigation.js:59 [TV Nav] ➡️ RIGHT key
+tv-spatial-navigation.js:278 [TV Nav] 🧭 navigate() called, direction: right
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:280 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:287 [TV Nav] ❌ No element found in direction: right - keeping current focus
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
+guide-1.js:87 [Guide1] Enter pressed - navigating to Guide 2
+router.js:12 [Router] Navigating to: guide-2
+guide-2.js:92 [Guide2] Cleaning up...
+guide-2.js:13 [Guide2] Initializing...
+guide-2.js:71 [Guide2] Rendered
+guide-2.js:84 [Guide2] Enter pressed - navigating to Guide 3
+router.js:12 [Router] Navigating to: guide-3
+guide-3.js:93 [Guide3] Cleaning up...
+guide-3.js:13 [Guide3] Initializing...
+guide-3.js:72 [Guide3] Rendered
+guide-3.js:85 [Guide3] Enter pressed - navigating to Guide 4
+router.js:12 [Router] Navigating to: guide-4
+guide-4.js:93 [Guide4] Cleaning up...
+guide-4.js:13 [Guide4] Initializing...
+guide-4.js:72 [Guide4] Rendered
+guide-4.js:85 [Guide4] Enter pressed - navigating to Discover
+router.js:12 [Router] Navigating to: discover
+discover.js:464 [Discover] Cleaning up...
+discover.js:26 [Discover] Initializing...
+discover.js:164 [Discover] Rendered
+api.js:97 [API] getAllGenres: https://themegaradio.com/api/genres?country=Austria&tv=1
+api.js:36 [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/genres?country=Austria&tv=1
+api.js:37 [API DEBUG] 📤 Request options: {}
+api.js:119 [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+api.js:36 [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+api.js:37 [API DEBUG] 📤 Request options: {}
+api.js:119 [API] getPopularStations: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+api.js:36 [API DEBUG] 🔍 Starting fetch to: https://themegaradio.com/api/stations?search=&limit=50&country=Austria&sort=votes&tv=1
+api.js:37 [API DEBUG] 📤 Request options: {}
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:171 [TV Keys] 📤 Dispatching to FocusRouter
+tv-spatial-navigation.js:314 [TV Spatial Nav] 🎯 focusRouterDispatch called, key: 13
+tv-spatial-navigation.js:37 [TV Nav] 🎮 handleKey called, enabled: true keyCode: 13
+tv-spatial-navigation.js:69 [TV Nav] ⏎ ENTER key
+tv-spatial-navigation.js:71 [TV Nav] ENTER pressed on: <div class=​"genre-pill focusable" style=​"padding:​ 28px 72px;​ border-radius:​ 20px;​ background:​ rgba(255, 255, 255, 0.14)​;​ box-shadow:​ inset 1.1px 1.1px 12.1px 0px rgba(255, 255, 255, 0.12)​;​ display:​ flex;​ align-items:​ center;​ justify-content:​ center;​ flex-shrink:​ 0;​ cursor:​ pointer;​ transition:​ all 0.2s;​" data-tv-focusable=​"true" tabindex=​"0" data-focus-index=​"100" data-genre-slug=​"pop" data-testid=​"button-genre-0">​…​</div>​
+api.js:41 [API DEBUG] 📥 Response received:
+api.js:42 [API DEBUG]   - Status: 200 
+api.js:43 [API DEBUG]   - Headers: Object
+api.js:54 [API DEBUG] 📄 Raw response text (first 500 chars): {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5012,"total_stations":5012,"posterImage":"","discoverableImage":"","isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:16.360Z","isDynamic":false},{"_id":"68a0352467a2b5b369eb41ba","name":"Music","slug":"music","stationCount":4046,"total_stations":4046,"isDiscoverable":true,"discoverable":true,"createdAt":"2025-08-18T18:34:20.477Z","isDynamic":false},{"_id":"genre-rock","name":"
+api.js:63 [API DEBUG] ✅ JSON parsed successfully
+api.js:64 [API DEBUG] 📊 Data type: object
+api.js:65 [API DEBUG] 📊 Data length/keys: 5
+api.js:103 [API] Genres fetched: 9
+api.js:41 [API DEBUG] 📥 Response received:
+api.js:42 [API DEBUG]   - Status: 200 
+api.js:43 [API DEBUG]   - Headers: Object
+api.js:54 [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+api.js:63 [API DEBUG] ✅ JSON parsed successfully
+api.js:64 [API DEBUG] 📊 Data type: object
+api.js:65 [API DEBUG] 📊 Data length/keys: 4
+api.js:125 [API] Popular stations fetched: 50
+api.js:41 [API DEBUG] 📥 Response received:
+api.js:42 [API DEBUG]   - Status: 200 
+api.js:43 [API DEBUG]   - Headers: Object
+api.js:54 [API DEBUG] 📄 Raw response text (first 500 chars): {"stations":[{"_id":"68a8c462bd66579311aaddcb","stationuuid":"96057c18-0601-11e8-ae97-52543be04c81","name":"Austrian Rock Radio","url":"http://live.antenne.at/arr","urlResolved":"http://live.antenne.at/arr","homepage":"http://www.austrianrockradio.at/","favicon":"https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png","tags":"rock","country":"Austria","countryCode":"AT","state":"","votes":2753,"averageRating":0,"totalRatings":0,"ratingBreakdown":{"stars1":0,"stars2":0,"sta
+api.js:63 [API DEBUG] ✅ JSON parsed successfully
+api.js:64 [API DEBUG] 📊 Data type: object
+api.js:65 [API DEBUG] 📊 Data length/keys: 4
+api.js:125 [API] Popular stations fetched: 50
+16c84635847ddad3.png:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 ()
+discover.js:246 [Discover] Initializing TV spatial navigation...
+tv-spatial-navigation.js:100 [TV Nav] Found 41 focusable elements
+tv-spatial-navigation.js:109 [TV Nav] Element types: Object
+tv-spatial-navigation.js:16 [TV Nav] Initialized with 41 focusable elements
+tv-spatial-navigation.js:28 [TV Nav] Initial focus on first element
+tv-spatial-navigation.js:128 [TV Nav] Focused: button-genre-0
