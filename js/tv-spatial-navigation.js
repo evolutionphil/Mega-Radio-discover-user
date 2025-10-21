@@ -1,30 +1,33 @@
 /**
- * TV Spatial Navigation - INDEX-BASED (LGTV-Master Pattern)
- * Simple index-based navigation like LGTV-master reference
+ * TV Spatial Navigation - 2D GRID NAVIGATION
+ * Smart grid-based navigation with UP/DOWN/LEFT/RIGHT
  */
 
 (function() {
     'use strict';
     
-    console.log('[TV Spatial Nav] Script loaded - INDEX-BASED v7.0');
+    console.log('[TV Spatial Nav] Script loaded - 2D GRID v9.0');
     
     window.tvSpatialNav = {
         enabled: false,
         currentIndex: 0,
         focusableElements: [],
+        grid: [],
         
         init: function() {
-            console.log('[TV Spatial Nav] 🚀 Initializing INDEX-BASED navigation...');
+            console.log('[TV Spatial Nav] 🚀 Initializing 2D GRID navigation...');
             this.enabled = true;
             this.updateFocusableElements();
             
             if (this.focusableElements.length > 0) {
                 console.log('[TV Nav] ✅ Found', this.focusableElements.length, 'focusable elements');
                 
+                // Build grid structure
+                this.buildGrid();
+                
                 // ALWAYS start on Discover sidebar button (index 0)
                 this.currentIndex = 0;
                 
-                // Log what we found at index 0
                 var firstEl = this.focusableElements[0];
                 var testid = firstEl.dataset.testid || firstEl.id || 'unknown';
                 console.log('[TV Nav] 🎯 Starting at index 0:', testid);
@@ -47,22 +50,22 @@
             switch(key) {
                 case 37: // LEFT
                     console.log('[TV Nav] ⬅️ LEFT');
-                    this.navigate(-1);
+                    this.navigateLeft();
                     e.preventDefault();
                     return false;
                 case 38: // UP
                     console.log('[TV Nav] ⬆️ UP');
-                    this.navigate(-1);
+                    this.navigateUp();
                     e.preventDefault();
                     return false;
                 case 39: // RIGHT
                     console.log('[TV Nav] ➡️ RIGHT');
-                    this.navigate(1);
+                    this.navigateRight();
                     e.preventDefault();
                     return false;
                 case 40: // DOWN
                     console.log('[TV Nav] ⬇️ DOWN');
-                    this.navigate(1);
+                    this.navigateDown();
                     e.preventDefault();
                     return false;
                 case 13: // ENTER
@@ -79,7 +82,6 @@
             // Include .focusable class (LGTV-master pattern)
             const selector = '.focusable, button:not([disabled]), a[href], [data-tv-focusable="true"], [tabindex]:not([tabindex="-1"])';
             
-            // Get all elements and sort by position (top-to-bottom, left-to-right)
             var allElements = Array.from(document.querySelectorAll(selector));
             
             // Filter visible elements
@@ -102,7 +104,7 @@
                 if (isAInSidebar && !isBInSidebar) return -1;
                 if (!isAInSidebar && isBInSidebar) return 1;
                 
-                // If both in sidebar, sort by top position (Discover, Genres, Search, Favorites, Settings)
+                // If both in sidebar, sort by top position
                 if (isAInSidebar && isBInSidebar) {
                     return rectA.top - rectB.top;
                 }
@@ -115,37 +117,156 @@
             });
             
             console.log('[TV Nav] 📋 Updated:', this.focusableElements.length, 'elements');
+        },
+        
+        buildGrid: function() {
+            // Build a 2D grid structure based on element positions
+            this.grid = [];
+            var rows = [];
+            var currentRow = [];
+            var lastTop = -1;
             
-            // Debug: log first 10 elements
-            for (var i = 0; i < Math.min(10, this.focusableElements.length); i++) {
+            for (var i = 0; i < this.focusableElements.length; i++) {
                 var el = this.focusableElements[i];
-                var testid = el.dataset.testid || el.id || 'element-' + i;
-                console.log('[TV Nav] 📍 [' + i + ']:', testid);
+                var rect = el.getBoundingClientRect();
+                
+                // Check if this is a sidebar element (special handling)
+                var isSidebar = rect.left < 200;
+                
+                if (isSidebar) {
+                    // Each sidebar item gets its own row
+                    if (currentRow.length > 0) {
+                        rows.push(currentRow);
+                        currentRow = [];
+                    }
+                    rows.push([i]);
+                    lastTop = rect.top;
+                } else {
+                    // Main content: group by vertical position (same row = within 50px)
+                    if (lastTop === -1 || Math.abs(rect.top - lastTop) < 50) {
+                        currentRow.push(i);
+                        lastTop = rect.top;
+                    } else {
+                        if (currentRow.length > 0) {
+                            rows.push(currentRow);
+                        }
+                        currentRow = [i];
+                        lastTop = rect.top;
+                    }
+                }
+            }
+            
+            // Push last row
+            if (currentRow.length > 0) {
+                rows.push(currentRow);
+            }
+            
+            this.grid = rows;
+            
+            console.log('[TV Nav] 📐 Grid built:', this.grid.length, 'rows');
+            for (var r = 0; r < Math.min(5, this.grid.length); r++) {
+                console.log('[TV Nav]   Row', r + ':', this.grid[r].length, 'items');
             }
         },
         
-        navigate: function(direction) {
+        getCurrentPosition: function() {
+            // Find current element's row and column in grid
+            for (var r = 0; r < this.grid.length; r++) {
+                for (var c = 0; c < this.grid[r].length; c++) {
+                    if (this.grid[r][c] === this.currentIndex) {
+                        return { row: r, col: c };
+                    }
+                }
+            }
+            return { row: 0, col: 0 };
+        },
+        
+        navigateLeft: function() {
             this.updateFocusableElements();
+            this.buildGrid();
             
-            if (this.focusableElements.length === 0) {
-                console.warn('[TV Nav] ⚠️ No focusable elements');
-                return;
+            var pos = this.getCurrentPosition();
+            console.log('[TV Nav] Current pos: row', pos.row, 'col', pos.col);
+            
+            // Try to move left in same row
+            if (pos.col > 0) {
+                var newIndex = this.grid[pos.row][pos.col - 1];
+                console.log('[TV Nav] Moving left in row to index', newIndex);
+                this.currentIndex = newIndex;
+                this.focusElement(this.currentIndex);
+            } else {
+                console.log('[TV Nav] Already at leftmost position');
             }
+        },
+        
+        navigateRight: function() {
+            this.updateFocusableElements();
+            this.buildGrid();
             
-            // Simple index increment/decrement (LGTV-master pattern)
-            var newIndex = this.currentIndex + direction;
+            var pos = this.getCurrentPosition();
+            console.log('[TV Nav] Current pos: row', pos.row, 'col', pos.col);
             
-            // Wrap around
-            if (newIndex < 0) {
-                newIndex = this.focusableElements.length - 1;
-            } else if (newIndex >= this.focusableElements.length) {
-                newIndex = 0;
+            // Try to move right in same row
+            if (pos.col < this.grid[pos.row].length - 1) {
+                var newIndex = this.grid[pos.row][pos.col + 1];
+                console.log('[TV Nav] Moving right in row to index', newIndex);
+                this.currentIndex = newIndex;
+                this.focusElement(this.currentIndex);
+            } else {
+                console.log('[TV Nav] Already at rightmost position');
             }
+        },
+        
+        navigateUp: function() {
+            this.updateFocusableElements();
+            this.buildGrid();
             
-            console.log('[TV Nav] 🔢 Index:', this.currentIndex, '→', newIndex);
+            var pos = this.getCurrentPosition();
+            console.log('[TV Nav] Current pos: row', pos.row, 'col', pos.col);
             
-            this.currentIndex = newIndex;
-            this.focusElement(this.currentIndex);
+            // Try to move up to previous row
+            if (pos.row > 0) {
+                var targetRow = pos.row - 1;
+                var targetCol = Math.min(pos.col, this.grid[targetRow].length - 1);
+                var newIndex = this.grid[targetRow][targetCol];
+                console.log('[TV Nav] Moving up to row', targetRow, 'index', newIndex);
+                this.currentIndex = newIndex;
+                this.focusElement(this.currentIndex);
+            } else {
+                // Wrap to bottom
+                var targetRow = this.grid.length - 1;
+                var targetCol = Math.min(pos.col, this.grid[targetRow].length - 1);
+                var newIndex = this.grid[targetRow][targetCol];
+                console.log('[TV Nav] Wrapping to bottom row', targetRow, 'index', newIndex);
+                this.currentIndex = newIndex;
+                this.focusElement(this.currentIndex);
+            }
+        },
+        
+        navigateDown: function() {
+            this.updateFocusableElements();
+            this.buildGrid();
+            
+            var pos = this.getCurrentPosition();
+            console.log('[TV Nav] Current pos: row', pos.row, 'col', pos.col);
+            
+            // Try to move down to next row
+            if (pos.row < this.grid.length - 1) {
+                var targetRow = pos.row + 1;
+                var targetCol = Math.min(pos.col, this.grid[targetRow].length - 1);
+                var newIndex = this.grid[targetRow][targetCol];
+                console.log('[TV Nav] Moving down to row', targetRow, 'index', newIndex);
+                this.currentIndex = newIndex;
+                this.focusElement(this.currentIndex);
+            } else {
+                // Wrap to top
+                var targetRow = 0;
+                var targetCol = Math.min(pos.col, this.grid[targetRow].length - 1);
+                var newIndex = this.grid[targetRow][targetCol];
+                console.log('[TV Nav] Wrapping to top row', targetRow, 'index', newIndex);
+                this.currentIndex = newIndex;
+                this.focusElement(this.currentIndex);
+            }
         },
         
         focusElement: function(index) {
@@ -154,7 +275,7 @@
                 return;
             }
             
-            // Remove 'active' class and styles from all elements (LGTV-master pattern)
+            // Remove 'active' class and styles from all elements
             for (var i = 0; i < this.focusableElements.length; i++) {
                 var el = this.focusableElements[i];
                 el.classList.remove('active');
