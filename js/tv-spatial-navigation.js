@@ -6,7 +6,7 @@
 (function() {
     'use strict';
     
-    console.log('[TV Spatial Nav] Script loaded - INDEX-BASED v6.0');
+    console.log('[TV Spatial Nav] Script loaded - INDEX-BASED v7.0');
     
     window.tvSpatialNav = {
         enabled: false,
@@ -21,27 +21,13 @@
             if (this.focusableElements.length > 0) {
                 console.log('[TV Nav] ✅ Found', this.focusableElements.length, 'focusable elements');
                 
-                // Find Discover button and focus it (user requirement)
-                var discoverIndex = -1;
-                for (var i = 0; i < this.focusableElements.length; i++) {
-                    var el = this.focusableElements[i];
-                    var testid = el.dataset.testid || '';
-                    var text = el.textContent || '';
-                    
-                    if (testid.includes('discover') || testid.includes('sidebar-discover') ||
-                        text.trim().toLowerCase() === 'discover') {
-                        discoverIndex = i;
-                        break;
-                    }
-                }
+                // ALWAYS start on Discover sidebar button (index 0)
+                this.currentIndex = 0;
                 
-                if (discoverIndex >= 0) {
-                    console.log('[TV Nav] 🎯 Found Discover button at index', discoverIndex);
-                    this.currentIndex = discoverIndex;
-                } else {
-                    console.log('[TV Nav] ⚠️ Discover not found, starting at index 0');
-                    this.currentIndex = 0;
-                }
+                // Log what we found at index 0
+                var firstEl = this.focusableElements[0];
+                var testid = firstEl.dataset.testid || firstEl.id || 'unknown';
+                console.log('[TV Nav] 🎯 Starting at index 0:', testid);
                 
                 this.focusElement(this.currentIndex);
             } else {
@@ -90,17 +76,52 @@
         },
         
         updateFocusableElements: function() {
-            const selector = 'button:not([disabled]), a[href], [data-tv-focusable="true"], [tabindex]:not([tabindex="-1"])';
+            // Include .focusable class (LGTV-master pattern)
+            const selector = '.focusable, button:not([disabled]), a[href], [data-tv-focusable="true"], [tabindex]:not([tabindex="-1"])';
             
-            this.focusableElements = Array.from(document.querySelectorAll(selector))
-                .filter(function(el) {
-                    const rect = el.getBoundingClientRect();
-                    const isVisible = rect.width > 0 && rect.height > 0;
-                    const hasParent = el.offsetParent !== null;
-                    return isVisible && hasParent;
-                });
+            // Get all elements and sort by position (top-to-bottom, left-to-right)
+            var allElements = Array.from(document.querySelectorAll(selector));
+            
+            // Filter visible elements
+            this.focusableElements = allElements.filter(function(el) {
+                var rect = el.getBoundingClientRect();
+                var isVisible = rect.width > 0 && rect.height > 0;
+                var hasParent = el.offsetParent !== null;
+                return isVisible && hasParent;
+            });
+            
+            // Sort by position: sidebar first (left), then by top position, then by left position
+            this.focusableElements.sort(function(a, b) {
+                var rectA = a.getBoundingClientRect();
+                var rectB = b.getBoundingClientRect();
+                
+                // Sidebar is at left: 64px - these go first
+                var isAInSidebar = rectA.left < 200;
+                var isBInSidebar = rectB.left < 200;
+                
+                if (isAInSidebar && !isBInSidebar) return -1;
+                if (!isAInSidebar && isBInSidebar) return 1;
+                
+                // If both in sidebar, sort by top position (Discover, Genres, Search, Favorites, Settings)
+                if (isAInSidebar && isBInSidebar) {
+                    return rectA.top - rectB.top;
+                }
+                
+                // For main content, sort by top then left
+                if (Math.abs(rectA.top - rectB.top) > 10) {
+                    return rectA.top - rectB.top;
+                }
+                return rectA.left - rectB.left;
+            });
             
             console.log('[TV Nav] 📋 Updated:', this.focusableElements.length, 'elements');
+            
+            // Debug: log first 10 elements
+            for (var i = 0; i < Math.min(10, this.focusableElements.length); i++) {
+                var el = this.focusableElements[i];
+                var testid = el.dataset.testid || el.id || 'element-' + i;
+                console.log('[TV Nav] 📍 [' + i + ']:', testid);
+            }
         },
         
         navigate: function(direction) {
@@ -133,7 +154,7 @@
                 return;
             }
             
-            // Remove 'active' class from all elements (LGTV-master pattern)
+            // Remove 'active' class and styles from all elements (LGTV-master pattern)
             for (var i = 0; i < this.focusableElements.length; i++) {
                 var el = this.focusableElements[i];
                 el.classList.remove('active');
