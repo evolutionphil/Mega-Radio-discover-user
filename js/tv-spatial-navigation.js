@@ -1,29 +1,29 @@
 /**
- * TV Spatial Navigation - 2D GRID NAVIGATION
- * Smart grid-based navigation with UP/DOWN/LEFT/RIGHT
+ * TV Spatial Navigation - CROSS-REGION JUMPING
+ * Smart navigation with sidebar <-> content jumping
  */
 
 (function() {
     'use strict';
     
-    console.log('[TV Spatial Nav] Script loaded - 2D GRID v9.0');
+    console.log('[TV Spatial Nav] Script loaded - CROSS-JUMP v10.0');
     
     window.tvSpatialNav = {
         enabled: false,
         currentIndex: 0,
         focusableElements: [],
-        grid: [],
+        sidebarElements: [],
+        contentElements: [],
         
         init: function() {
-            console.log('[TV Spatial Nav] 🚀 Initializing 2D GRID navigation...');
+            console.log('[TV Spatial Nav] 🚀 Initializing CROSS-JUMP navigation...');
             this.enabled = true;
             this.updateFocusableElements();
             
             if (this.focusableElements.length > 0) {
                 console.log('[TV Nav] ✅ Found', this.focusableElements.length, 'focusable elements');
-                
-                // Build grid structure
-                this.buildGrid();
+                console.log('[TV Nav] 📍 Sidebar:', this.sidebarElements.length, 'items');
+                console.log('[TV Nav] 📍 Content:', this.contentElements.length, 'items');
                 
                 // ALWAYS start on Discover sidebar button (index 0)
                 this.currentIndex = 0;
@@ -85,186 +85,233 @@
             var allElements = Array.from(document.querySelectorAll(selector));
             
             // Filter visible elements
-            this.focusableElements = allElements.filter(function(el) {
+            var visibleElements = allElements.filter(function(el) {
                 var rect = el.getBoundingClientRect();
                 var isVisible = rect.width > 0 && rect.height > 0;
                 var hasParent = el.offsetParent !== null;
                 return isVisible && hasParent;
             });
             
-            // Sort by position: sidebar first (left), then by top position, then by left position
-            this.focusableElements.sort(function(a, b) {
+            // Sort by position: sidebar first, then content area
+            visibleElements.sort(function(a, b) {
                 var rectA = a.getBoundingClientRect();
                 var rectB = b.getBoundingClientRect();
                 
-                // Sidebar is at left: 64px - these go first
+                // Sidebar is at left: <200px
                 var isAInSidebar = rectA.left < 200;
                 var isBInSidebar = rectB.left < 200;
                 
                 if (isAInSidebar && !isBInSidebar) return -1;
                 if (!isAInSidebar && isBInSidebar) return 1;
                 
-                // If both in sidebar, sort by top position
-                if (isAInSidebar && isBInSidebar) {
-                    return rectA.top - rectB.top;
-                }
-                
-                // For main content, sort by top then left
+                // Within same region, sort by top then left
                 if (Math.abs(rectA.top - rectB.top) > 10) {
                     return rectA.top - rectB.top;
                 }
                 return rectA.left - rectB.left;
             });
             
-            console.log('[TV Nav] 📋 Updated:', this.focusableElements.length, 'elements');
-        },
-        
-        buildGrid: function() {
-            // Build a 2D grid structure based on element positions
-            this.grid = [];
-            var rows = [];
-            var currentRow = [];
-            var lastTop = -1;
+            this.focusableElements = visibleElements;
+            
+            // Separate into sidebar and content arrays
+            this.sidebarElements = [];
+            this.contentElements = [];
             
             for (var i = 0; i < this.focusableElements.length; i++) {
                 var el = this.focusableElements[i];
                 var rect = el.getBoundingClientRect();
                 
-                // Check if this is a sidebar element (special handling)
-                var isSidebar = rect.left < 200;
-                
-                if (isSidebar) {
-                    // Each sidebar item gets its own row
-                    if (currentRow.length > 0) {
-                        rows.push(currentRow);
-                        currentRow = [];
-                    }
-                    rows.push([i]);
-                    lastTop = rect.top;
+                if (rect.left < 200) {
+                    this.sidebarElements.push({ index: i, element: el, rect: rect });
                 } else {
-                    // Main content: group by vertical position (same row = within 50px)
-                    if (lastTop === -1 || Math.abs(rect.top - lastTop) < 50) {
-                        currentRow.push(i);
-                        lastTop = rect.top;
-                    } else {
-                        if (currentRow.length > 0) {
-                            rows.push(currentRow);
-                        }
-                        currentRow = [i];
-                        lastTop = rect.top;
-                    }
+                    this.contentElements.push({ index: i, element: el, rect: rect });
                 }
             }
             
-            // Push last row
-            if (currentRow.length > 0) {
-                rows.push(currentRow);
-            }
-            
-            this.grid = rows;
-            
-            console.log('[TV Nav] 📐 Grid built:', this.grid.length, 'rows');
-            for (var r = 0; r < Math.min(5, this.grid.length); r++) {
-                console.log('[TV Nav]   Row', r + ':', this.grid[r].length, 'items');
-            }
+            console.log('[TV Nav] 📋 Updated:', this.focusableElements.length, 'elements');
         },
         
-        getCurrentPosition: function() {
-            // Find current element's row and column in grid
-            for (var r = 0; r < this.grid.length; r++) {
-                for (var c = 0; c < this.grid[r].length; c++) {
-                    if (this.grid[r][c] === this.currentIndex) {
-                        return { row: r, col: c };
-                    }
-                }
-            }
-            return { row: 0, col: 0 };
+        isInSidebar: function(index) {
+            if (index < 0 || index >= this.focusableElements.length) return false;
+            var rect = this.focusableElements[index].getBoundingClientRect();
+            return rect.left < 200;
         },
         
         navigateLeft: function() {
             this.updateFocusableElements();
-            this.buildGrid();
             
-            var pos = this.getCurrentPosition();
-            console.log('[TV Nav] Current pos: row', pos.row, 'col', pos.col);
+            var currentInSidebar = this.isInSidebar(this.currentIndex);
             
-            // Try to move left in same row
-            if (pos.col > 0) {
-                var newIndex = this.grid[pos.row][pos.col - 1];
-                console.log('[TV Nav] Moving left in row to index', newIndex);
-                this.currentIndex = newIndex;
-                this.focusElement(this.currentIndex);
-            } else {
-                console.log('[TV Nav] Already at leftmost position');
+            if (currentInSidebar) {
+                // Already in sidebar, can't go further left
+                console.log('[TV Nav] Already in sidebar, no LEFT movement');
+                return;
             }
+            
+            // In content area - jump to nearest sidebar item
+            var currentEl = this.focusableElements[this.currentIndex];
+            var currentRect = currentEl.getBoundingClientRect();
+            
+            // Find closest sidebar item by vertical position
+            var closestSidebarItem = this.sidebarElements[0]; // Default to first
+            var minDistance = Math.abs(currentRect.top - closestSidebarItem.rect.top);
+            
+            for (var i = 1; i < this.sidebarElements.length; i++) {
+                var distance = Math.abs(currentRect.top - this.sidebarElements[i].rect.top);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestSidebarItem = this.sidebarElements[i];
+                }
+            }
+            
+            console.log('[TV Nav] Jumping LEFT to sidebar index', closestSidebarItem.index);
+            this.currentIndex = closestSidebarItem.index;
+            this.focusElement(this.currentIndex);
         },
         
         navigateRight: function() {
             this.updateFocusableElements();
-            this.buildGrid();
             
-            var pos = this.getCurrentPosition();
-            console.log('[TV Nav] Current pos: row', pos.row, 'col', pos.col);
+            var currentInSidebar = this.isInSidebar(this.currentIndex);
             
-            // Try to move right in same row
-            if (pos.col < this.grid[pos.row].length - 1) {
-                var newIndex = this.grid[pos.row][pos.col + 1];
-                console.log('[TV Nav] Moving right in row to index', newIndex);
-                this.currentIndex = newIndex;
+            if (!currentInSidebar) {
+                // Already in content, try to move right within content
+                var currentEl = this.focusableElements[this.currentIndex];
+                var currentRect = currentEl.getBoundingClientRect();
+                
+                // Find next element on the right in similar vertical position
+                var nextIndex = -1;
+                var minDistance = Infinity;
+                
+                for (var i = 0; i < this.contentElements.length; i++) {
+                    var item = this.contentElements[i];
+                    if (item.index === this.currentIndex) continue;
+                    
+                    // Must be to the right and in similar vertical position
+                    if (item.rect.left > currentRect.left && 
+                        Math.abs(item.rect.top - currentRect.top) < 100) {
+                        var distance = item.rect.left - currentRect.left;
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            nextIndex = item.index;
+                        }
+                    }
+                }
+                
+                if (nextIndex >= 0) {
+                    console.log('[TV Nav] Moving RIGHT to index', nextIndex);
+                    this.currentIndex = nextIndex;
+                    this.focusElement(this.currentIndex);
+                } else {
+                    console.log('[TV Nav] No item to the right');
+                }
+                return;
+            }
+            
+            // In sidebar - jump to first content item
+            if (this.contentElements.length > 0) {
+                var currentEl = this.focusableElements[this.currentIndex];
+                var currentRect = currentEl.getBoundingClientRect();
+                
+                // Find closest content item by vertical position
+                var closestContentItem = this.contentElements[0];
+                var minDistance = Math.abs(currentRect.top - closestContentItem.rect.top);
+                
+                for (var i = 1; i < this.contentElements.length; i++) {
+                    var distance = Math.abs(currentRect.top - this.contentElements[i].rect.top);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestContentItem = this.contentElements[i];
+                    }
+                }
+                
+                console.log('[TV Nav] Jumping RIGHT to content index', closestContentItem.index);
+                this.currentIndex = closestContentItem.index;
                 this.focusElement(this.currentIndex);
-            } else {
-                console.log('[TV Nav] Already at rightmost position');
             }
         },
         
         navigateUp: function() {
             this.updateFocusableElements();
-            this.buildGrid();
             
-            var pos = this.getCurrentPosition();
-            console.log('[TV Nav] Current pos: row', pos.row, 'col', pos.col);
+            var currentEl = this.focusableElements[this.currentIndex];
+            var currentRect = currentEl.getBoundingClientRect();
             
-            // Try to move up to previous row
-            if (pos.row > 0) {
-                var targetRow = pos.row - 1;
-                var targetCol = Math.min(pos.col, this.grid[targetRow].length - 1);
-                var newIndex = this.grid[targetRow][targetCol];
-                console.log('[TV Nav] Moving up to row', targetRow, 'index', newIndex);
-                this.currentIndex = newIndex;
+            // Find closest element above current position
+            var bestIndex = -1;
+            var minDistance = Infinity;
+            
+            for (var i = 0; i < this.focusableElements.length; i++) {
+                if (i === this.currentIndex) continue;
+                
+                var el = this.focusableElements[i];
+                var rect = el.getBoundingClientRect();
+                
+                // Must be above (smaller top value)
+                if (rect.top < currentRect.top - 20) {
+                    // Calculate distance (prefer items directly above)
+                    var verticalDist = currentRect.top - rect.top;
+                    var horizontalDist = Math.abs(rect.left - currentRect.left);
+                    var distance = verticalDist + (horizontalDist * 0.5);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        bestIndex = i;
+                    }
+                }
+            }
+            
+            if (bestIndex >= 0) {
+                console.log('[TV Nav] Moving UP to index', bestIndex);
+                this.currentIndex = bestIndex;
                 this.focusElement(this.currentIndex);
             } else {
                 // Wrap to bottom
-                var targetRow = this.grid.length - 1;
-                var targetCol = Math.min(pos.col, this.grid[targetRow].length - 1);
-                var newIndex = this.grid[targetRow][targetCol];
-                console.log('[TV Nav] Wrapping to bottom row', targetRow, 'index', newIndex);
-                this.currentIndex = newIndex;
+                var bottomIndex = this.focusableElements.length - 1;
+                console.log('[TV Nav] Wrapping to bottom index', bottomIndex);
+                this.currentIndex = bottomIndex;
                 this.focusElement(this.currentIndex);
             }
         },
         
         navigateDown: function() {
             this.updateFocusableElements();
-            this.buildGrid();
             
-            var pos = this.getCurrentPosition();
-            console.log('[TV Nav] Current pos: row', pos.row, 'col', pos.col);
+            var currentEl = this.focusableElements[this.currentIndex];
+            var currentRect = currentEl.getBoundingClientRect();
             
-            // Try to move down to next row
-            if (pos.row < this.grid.length - 1) {
-                var targetRow = pos.row + 1;
-                var targetCol = Math.min(pos.col, this.grid[targetRow].length - 1);
-                var newIndex = this.grid[targetRow][targetCol];
-                console.log('[TV Nav] Moving down to row', targetRow, 'index', newIndex);
-                this.currentIndex = newIndex;
+            // Find closest element below current position
+            var bestIndex = -1;
+            var minDistance = Infinity;
+            
+            for (var i = 0; i < this.focusableElements.length; i++) {
+                if (i === this.currentIndex) continue;
+                
+                var el = this.focusableElements[i];
+                var rect = el.getBoundingClientRect();
+                
+                // Must be below (larger top value)
+                if (rect.top > currentRect.top + 20) {
+                    // Calculate distance (prefer items directly below)
+                    var verticalDist = rect.top - currentRect.top;
+                    var horizontalDist = Math.abs(rect.left - currentRect.left);
+                    var distance = verticalDist + (horizontalDist * 0.5);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        bestIndex = i;
+                    }
+                }
+            }
+            
+            if (bestIndex >= 0) {
+                console.log('[TV Nav] Moving DOWN to index', bestIndex);
+                this.currentIndex = bestIndex;
                 this.focusElement(this.currentIndex);
             } else {
                 // Wrap to top
-                var targetRow = 0;
-                var targetCol = Math.min(pos.col, this.grid[targetRow].length - 1);
-                var newIndex = this.grid[targetRow][targetCol];
-                console.log('[TV Nav] Wrapping to top row', targetRow, 'index', newIndex);
-                this.currentIndex = newIndex;
+                console.log('[TV Nav] Wrapping to top index 0');
+                this.currentIndex = 0;
                 this.focusElement(this.currentIndex);
             }
         },
