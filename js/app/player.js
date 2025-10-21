@@ -71,13 +71,17 @@ var GlobalPlayer = (function() {
             this.stop();
             
             // Play new station
-            if (typeof TVAudioPlayer !== 'undefined') {
-                TVAudioPlayer.play(station.url);
-            } else {
-                audioElement.src = station.url;
+            if (audioElement instanceof TVAudioPlayer) {
+                // TVAudioPlayer - takes URL as parameter
+                audioElement.play(station.url || station.urlResolved);
+            } else if (audioElement instanceof Audio) {
+                // HTML5 Audio - set src then play
+                audioElement.src = station.url || station.urlResolved;
                 audioElement.play().catch(function(error) {
                     console.error('[GlobalPlayer] Play error:', error);
                 });
+            } else {
+                console.error('[GlobalPlayer] audioElement not available');
             }
             
             isPlaying = true;
@@ -88,9 +92,11 @@ var GlobalPlayer = (function() {
         },
         
         stop: function() {
-            if (typeof TVAudioPlayer !== 'undefined') {
-                TVAudioPlayer.stop();
-            } else {
+            if (audioElement && audioElement.stop) {
+                // TVAudioPlayer instance
+                audioElement.stop();
+            } else if (audioElement && audioElement.pause) {
+                // HTML5 Audio
                 audioElement.pause();
                 audioElement.currentTime = 0;
             }
@@ -114,9 +120,7 @@ var GlobalPlayer = (function() {
         },
         
         pause: function() {
-            if (typeof TVAudioPlayer !== 'undefined') {
-                TVAudioPlayer.pause();
-            } else {
+            if (audioElement && audioElement.pause) {
                 audioElement.pause();
             }
             
@@ -126,10 +130,16 @@ var GlobalPlayer = (function() {
         },
         
         resume: function() {
-            if (typeof TVAudioPlayer !== 'undefined') {
-                TVAudioPlayer.resume();
-            } else {
-                audioElement.play();
+            if (!currentStation) return;
+            
+            if (audioElement instanceof TVAudioPlayer) {
+                // TVAudioPlayer - needs URL to resume
+                audioElement.play(currentStation.url || currentStation.urlResolved);
+            } else if (audioElement instanceof Audio) {
+                // HTML5 Audio - just resume playback
+                audioElement.play().catch(function(error) {
+                    console.error('[GlobalPlayer] Resume error:', error);
+                });
             }
             
             isPlaying = true;

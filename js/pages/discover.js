@@ -239,6 +239,14 @@ var discover_page = {
             self.renderGenres();
             self.renderPopularStations();
             self.renderAustriaStations();
+            
+            // Initialize TV spatial navigation after all content is rendered
+            setTimeout(function() {
+                if (window.tvSpatialNav) {
+                    console.log('[Discover] Initializing TV spatial navigation...');
+                    window.tvSpatialNav.init();
+                }
+            }, 50);
         }).catch(function(error) {
             console.error('[Discover] Error loading data:', error);
         });

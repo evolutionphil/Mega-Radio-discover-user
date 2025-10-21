@@ -292,28 +292,35 @@
         }
     };
     
+    console.log('[TV Spatial Nav] 🔧 About to register focusRouterDispatch...');
+    
     // Connect to TV remote keys system
     window.focusRouterDispatch = function(e) {
+        console.log('[TV Spatial Nav] 🎯 focusRouterDispatch called, key:', e.keyCode);
         return window.tvSpatialNav.handleKey(e);
     };
+    
+    console.log('[TV Spatial Nav] ✅ focusRouterDispatch registered:', typeof window.focusRouterDispatch);
+    console.log('[TV Spatial Nav] ✅ window.tvSpatialNav:', typeof window.tvSpatialNav);
     
     // Auto-initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
             console.log('[TV Spatial Nav] DOM ready');
-            // Will be initialized by router when page loads
+            console.log('[TV Spatial Nav] focusRouterDispatch available:', !!window.focusRouterDispatch);
         });
     } else {
         console.log('[TV Spatial Nav] DOM already ready');
+        console.log('[TV Spatial Nav] focusRouterDispatch available:', !!window.focusRouterDispatch);
     }
     
-    // Re-initialize when pages change
-    window.addEventListener('hashchange', function() {
-        setTimeout(function() {
-            if (window.tvSpatialNav && window.tvSpatialNav.enabled) {
-                console.log('[TV Spatial Nav] Page changed, re-initializing...');
-                window.tvSpatialNav.init();
-            }
-        }, 100); // Small delay to let content render
-    });
+    // Re-initialize when pages change (disabled - pages handle init themselves)
+    // window.addEventListener('hashchange', function() {
+    //     setTimeout(function() {
+    //         if (window.tvSpatialNav && window.tvSpatialNav.enabled) {
+    //             console.log('[TV Spatial Nav] Page changed, re-initializing...');
+    //             window.tvSpatialNav.init();
+    //         }
+    //     }, 100);
+    // });
 })();
