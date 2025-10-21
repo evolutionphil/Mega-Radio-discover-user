@@ -34,29 +34,39 @@
         },
         
         handleKey: function(e) {
-            if (!this.enabled) return true;
+            console.log('[TV Nav] 🎮 handleKey called, enabled:', this.enabled, 'keyCode:', e.keyCode);
+            
+            if (!this.enabled) {
+                console.warn('[TV Nav] ⚠️ Navigation disabled!');
+                return true;
+            }
             
             var key = e.keyCode;
             
             // Handle arrow keys for navigation
             switch(key) {
                 case 37: // LEFT
+                    console.log('[TV Nav] ⬅️ LEFT key');
                     this.navigate('left');
                     e.preventDefault();
                     return false;
                 case 38: // UP
+                    console.log('[TV Nav] ⬆️ UP key');
                     this.navigate('up');
                     e.preventDefault();
                     return false;
                 case 39: // RIGHT
+                    console.log('[TV Nav] ➡️ RIGHT key');
                     this.navigate('right');
                     e.preventDefault();
                     return false;
                 case 40: // DOWN
+                    console.log('[TV Nav] ⬇️ DOWN key');
                     this.navigate('down');
                     e.preventDefault();
                     return false;
                 case 13: // ENTER
+                    console.log('[TV Nav] ⏎ ENTER key');
                     if (this.focusedElement) {
                         console.log('[TV Nav] ENTER pressed on:', this.focusedElement);
                         this.focusedElement.click();
@@ -66,6 +76,7 @@
                     break;
             }
             
+            console.log('[TV Nav] Key not handled:', key);
             return true;
         },
         
@@ -264,12 +275,16 @@
         },
         
         navigate: function(direction) {
+            console.log('[TV Nav] 🧭 navigate() called, direction:', direction);
+            this.updateFocusableElements();
+            console.log('[TV Nav] Found', this.focusableElements.length, 'focusable elements');
+            
             const nextElement = this.findBestMatch(direction);
             if (nextElement) {
-                console.log('[TV Nav] Moving', direction, 'to:', nextElement.dataset.testid || nextElement.tagName);
+                console.log('[TV Nav] ✅ Moving', direction, 'to:', nextElement.dataset.testid || nextElement.tagName);
                 this.focus(nextElement);
             } else {
-                console.log('[TV Nav] No element found in direction:', direction, '- keeping current focus');
+                console.log('[TV Nav] ❌ No element found in direction:', direction, '- keeping current focus');
                 // Keep focus on current element when no valid target found
                 if (this.focusedElement) {
                     // Re-apply focus styling to ensure it's visible
