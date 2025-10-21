@@ -267,6 +267,8 @@ var discover_page = {
             html += `
                 <div class="genre-pill focusable" 
                      style="${pillStyle}"
+                     data-tv-focusable="true"
+                     tabindex="0"
                      data-focus-index="${focusIndex}"
                      data-genre-slug="${genre.slug || genre.name.toLowerCase().replace(/\s+/g, '-')}"
                      data-testid="button-genre-${index}">
@@ -359,6 +361,8 @@ var discover_page = {
         return `
             <div class="station-card focusable" 
                  style="position: absolute; left: ${left}px; top: ${top}px; width: 200px; height: 264px; cursor: pointer; transition: all 0.2s;"
+                 data-tv-focusable="true"
+                 tabindex="0"
                  data-focus-index="${focusIndex}"
                  data-station-id="${station.stationuuid || station._id}"
                  data-testid="card-station-${section}-${index}">
@@ -394,6 +398,8 @@ var discover_page = {
         return `
             <div class="see-more-card focusable" 
                  style="position: absolute; left: ${left}px; top: ${top}px; width: 200px; height: 264px; cursor: pointer; transition: all 0.2s;"
+                 data-tv-focusable="true"
+                 tabindex="0"
                  data-focus-index="${focusIndex}"
                  data-section="${section}"
                  data-testid="card-see-more-${section}">

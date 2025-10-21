@@ -14,7 +14,7 @@ var GlobalPlayer = (function() {
             
             // Use TV audio player if available, otherwise HTML5 Audio
             if (typeof TVAudioPlayer !== 'undefined') {
-                audioElement = TVAudioPlayer;
+                audioElement = new TVAudioPlayer('tv-audio-container');
                 console.log('[GlobalPlayer] Using TVAudioPlayer');
             } else {
                 audioElement = new Audio();

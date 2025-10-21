@@ -7,6 +7,7 @@
     window.tvSpatialNav = {
         focusedElement: null,
         focusableElements: [],
+        enabled: true,
         
         init: function() {
             this.updateFocusableElements();
@@ -30,6 +31,42 @@
             } else {
                 console.warn('[TV Nav] No focusable elements found!');
             }
+        },
+        
+        handleKey: function(e) {
+            if (!this.enabled) return true;
+            
+            var key = e.keyCode;
+            
+            // Handle arrow keys for navigation
+            switch(key) {
+                case 37: // LEFT
+                    this.navigate('left');
+                    e.preventDefault();
+                    return false;
+                case 38: // UP
+                    this.navigate('up');
+                    e.preventDefault();
+                    return false;
+                case 39: // RIGHT
+                    this.navigate('right');
+                    e.preventDefault();
+                    return false;
+                case 40: // DOWN
+                    this.navigate('down');
+                    e.preventDefault();
+                    return false;
+                case 13: // ENTER
+                    if (this.focusedElement) {
+                        console.log('[TV Nav] ENTER pressed on:', this.focusedElement);
+                        this.focusedElement.click();
+                        e.preventDefault();
+                        return false;
+                    }
+                    break;
+            }
+            
+            return true;
         },
         
         updateFocusableElements: function() {
@@ -255,15 +292,28 @@
         }
     };
     
-    // Initialize when DOM is ready - but DON'T call init() yet!
-    // Let the React hook (useTVNavigation) handle initialization after elements render
+    // Connect to TV remote keys system
+    window.focusRouterDispatch = function(e) {
+        return window.tvSpatialNav.handleKey(e);
+    };
+    
+    // Auto-initialize when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('[TV Spatial Nav] DOM ready, waiting for React...');
-            // DON'T call init() here - React hook will call it
+            console.log('[TV Spatial Nav] DOM ready');
+            // Will be initialized by router when page loads
         });
     } else {
-        console.log('[TV Spatial Nav] DOM already ready, waiting for React...');
-        // DON'T call init() here - React hook will call it
+        console.log('[TV Spatial Nav] DOM already ready');
     }
+    
+    // Re-initialize when pages change
+    window.addEventListener('hashchange', function() {
+        setTimeout(function() {
+            if (window.tvSpatialNav && window.tvSpatialNav.enabled) {
+                console.log('[TV Spatial Nav] Page changed, re-initializing...');
+                window.tvSpatialNav.init();
+            }
+        }, 100); // Small delay to let content render
+    });
 })();
