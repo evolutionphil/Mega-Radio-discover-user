@@ -48,7 +48,7 @@ var CountryModal = {
     init: function() {
         console.log('[CountryModal] Initializing...');
         this.filteredCountries = this.countries.slice();
-        this.selectedCountry = State.get('currentCountryCode') || 'US';
+        this.selectedCountry = (typeof State !== 'undefined' && State.get('currentCountryCode')) || 'US';
         this.bindEvents();
         console.log('[CountryModal] Initialized');
     },
@@ -63,7 +63,7 @@ var CountryModal = {
         this.isVisible = true;
         this.searchQuery = '';
         this.filteredCountries = this.countries.slice();
-        this.selectedCountry = State.get('currentCountryCode') || 'US';
+        this.selectedCountry = (typeof State !== 'undefined' && State.get('currentCountryCode')) || 'US';
         
         this.render();
         
