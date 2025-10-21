@@ -1,12 +1,12 @@
 /**
- * TV Spatial Navigation - STRICT REGION-LOCK
- * UP/DOWN absolutely locked within regions
+ * TV Spatial Navigation - CONTEXT-AWARE JUMPING
+ * Smart jumping based on sidebar position
  */
 
 (function() {
     'use strict';
     
-    console.log('[TV Spatial Nav] Script loaded - STRICT LOCK v13.0');
+    console.log('[TV Spatial Nav] Script loaded - CONTEXT-AWARE v14.0');
     
     window.tvSpatialNav = {
         enabled: false,
@@ -16,7 +16,7 @@
         contentElements: [],
         
         init: function() {
-            console.log('[TV Spatial Nav] 🚀 Initializing STRICT LOCK navigation...');
+            console.log('[TV Spatial Nav] 🚀 Initializing CONTEXT-AWARE navigation...');
             this.enabled = true;
             this.updateFocusableElements();
             
@@ -199,14 +199,62 @@
             var currentEl = this.focusableElements[this.currentIndex];
             var currentRect = currentEl.getBoundingClientRect();
             
-            // Find next element on the right in similar vertical position
+            if (currentInSidebar) {
+                // CONTEXT-AWARE JUMPING from sidebar
+                var testid = currentEl.dataset.testid || '';
+                console.log('[TV Nav] 🎯 From sidebar item:', testid);
+                
+                // Check if this is Discover button (should jump to genre pills at top)
+                var isDiscover = testid.includes('discover') || currentRect.top < 300;
+                
+                var targetItem = null;
+                
+                if (isDiscover) {
+                    // From Discover: Jump to first genre pill (top of content)
+                    console.log('[TV Nav] 📍 Context: Discover → Jump to first genre pill');
+                    targetItem = this.contentElements[0]; // First content item
+                } else {
+                    // From other sidebar items: Jump to stations (below genres)
+                    console.log('[TV Nav] 📍 Context: Other sidebar → Jump to stations');
+                    
+                    // Find first item that's below genre pills (vertical position > 500)
+                    for (var i = 0; i < this.contentElements.length; i++) {
+                        var item = this.contentElements[i];
+                        if (item.rect.top > 500) {
+                            targetItem = item;
+                            break;
+                        }
+                    }
+                    
+                    // Fallback: use vertical alignment
+                    if (!targetItem) {
+                        targetItem = this.contentElements[0];
+                        var minDist = Math.abs(currentRect.top - targetItem.rect.top);
+                        
+                        for (var i = 1; i < this.contentElements.length; i++) {
+                            var distance = Math.abs(currentRect.top - this.contentElements[i].rect.top);
+                            if (distance < minDist) {
+                                minDist = distance;
+                                targetItem = this.contentElements[i];
+                            }
+                        }
+                    }
+                }
+                
+                if (targetItem) {
+                    console.log('[TV Nav] Jumping RIGHT to content index', targetItem.index);
+                    this.currentIndex = targetItem.index;
+                    this.focusElement(this.currentIndex);
+                }
+                return;
+            }
+            
+            // In content area - move right within content
             var rightIndex = -1;
             var minDistance = Infinity;
             
-            var searchArray = currentInSidebar ? this.contentElements : this.contentElements;
-            
-            for (var i = 0; i < searchArray.length; i++) {
-                var item = searchArray[i];
+            for (var i = 0; i < this.contentElements.length; i++) {
+                var item = this.contentElements[i];
                 if (item.index === this.currentIndex) continue;
                 
                 // Must be to the right and in similar vertical position (within 100px)
@@ -254,7 +302,6 @@
                 // STRICT CHECK: Must be in same region
                 var itemInSidebar = this.isInSidebar(item.index);
                 if (itemInSidebar !== currentInSidebar) {
-                    console.log('[TV Nav] ⚠️ Skipping item', item.index, '- wrong region');
                     continue;
                 }
                 
@@ -276,7 +323,7 @@
                 // FINAL CHECK: Make sure we're not jumping to wrong region
                 var targetInSidebar = this.isInSidebar(bestIndex);
                 if (targetInSidebar !== currentInSidebar) {
-                    console.log('[TV Nav] ⛔ BLOCKED: Would jump from', currentInSidebar ? 'sidebar' : 'content', 'to', targetInSidebar ? 'sidebar' : 'content');
+                    console.log('[TV Nav] ⛔ BLOCKED: Would jump regions');
                     return;
                 }
                 
@@ -319,7 +366,6 @@
                 // STRICT CHECK: Must be in same region
                 var itemInSidebar = this.isInSidebar(item.index);
                 if (itemInSidebar !== currentInSidebar) {
-                    console.log('[TV Nav] ⚠️ Skipping item', item.index, '- wrong region');
                     continue;
                 }
                 
@@ -341,7 +387,7 @@
                 // FINAL CHECK: Make sure we're not jumping to wrong region
                 var targetInSidebar = this.isInSidebar(bestIndex);
                 if (targetInSidebar !== currentInSidebar) {
-                    console.log('[TV Nav] ⛔ BLOCKED: Would jump from', currentInSidebar ? 'sidebar' : 'content', 'to', targetInSidebar ? 'sidebar' : 'content');
+                    console.log('[TV Nav] ⛔ BLOCKED: Would jump regions');
                     return;
                 }
                 
