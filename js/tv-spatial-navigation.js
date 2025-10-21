@@ -194,14 +194,13 @@
     
     // Register the focus router dispatch function
     console.log('[TV Spatial Nav] 🔧 Registering focusRouterDispatch...');
-    window.focusRouterDispatch = function(keyCode) {
-        console.log('[TV Spatial Nav] 🎯 focusRouterDispatch called, key:', keyCode);
+    window.focusRouterDispatch = function(e) {
+        // e is the full Event object from tv-remote-keys.js
+        console.log('[TV Spatial Nav] 🎯 focusRouterDispatch called, keyCode:', e.keyCode);
         
         if (window.tvSpatialNav && window.tvSpatialNav.handleKey) {
-            return window.tvSpatialNav.handleKey({ 
-                keyCode: keyCode, 
-                preventDefault: function() {} 
-            });
+            // Pass the event directly - it already has keyCode, preventDefault, etc.
+            return window.tvSpatialNav.handleKey(e);
         } else {
             console.warn('[TV Spatial Nav] ⚠️ tvSpatialNav not ready');
             return true;
