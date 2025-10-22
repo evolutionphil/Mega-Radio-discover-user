@@ -670,8 +670,12 @@ export const RadioPlaying = (): JSX.Element => {
           return (
           <div
             key={similarStation._id || index}
-            className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors relative ${getFocusClasses(isFocused(focusIdx))}`}
-            style={{ boxShadow: 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
+            className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
+              isFocused(focusIdx) 
+                ? 'border-[6px] border-[#ff4199] scale-105 shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
+                : 'border-[6px] border-transparent'
+            }`}
+            style={{ boxShadow: isFocused(focusIdx) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
             data-testid={`card-similar-${similarStation._id}`}
             onClick={() => navigateToStation(similarStation)}
           >
