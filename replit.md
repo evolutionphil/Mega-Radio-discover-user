@@ -29,12 +29,19 @@ Root (Main Development Project)
 
 ## Recent Changes
 
-### October 22, 2025 - Focus System Refinements & Exit Modal
+### October 22, 2025 - Critical Fixes: Guide Pages & Country Selector
+- **FIXED:** Guide pages (Guide1-4) now display background images correctly (removed invalid `object-50%-50%` CSS class)
+- **FIXED:** Country Selector completely rebuilt with proper Samsung TV remote support:
+  - Simple arrow key navigation (UP/DOWN to navigate countries)
+  - ENTER to select country, BACK to close modal
+  - Live search filtering with keyboard input
+  - Pink focus indicator on selected country
+  - Removed conflicting old TV spatial navigation system
 - Fixed country selector button focus (index 6→5) on DiscoverNoUser page for proper pink border visibility
 - Fixed Favorites page focus system to include sidebar (indices 0-4) with bidirectional navigation between sidebar and favorites grid
 - Added exit confirmation modal on Discover home page with two-button focus (Cancel/Exit) to prevent accidental app exits
 - Fixed GenreList data initialization to properly handle cached query data and genre changes on subsequent visits
-- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761162125146.js
+- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761162414784.js
 
 ### October 19, 2025 - Simplified to Single Index (LGTV Pattern)
 - Consolidated project structure: Root is main development, tv-app/ is Samsung TV build output only

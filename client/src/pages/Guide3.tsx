@@ -62,7 +62,7 @@ export const Guide3 = (): JSX.Element => {
           <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
             <img 
               alt="" 
-              className="absolute max-w-none object-50%-50% object-cover size-full" 
+              className="absolute max-w-none object-center object-cover size-full" 
               src={assetPath("images/discover-background.png")}
               onLoad={() => handleImageLoad('discover-background.png')}
               onError={() => handleImageError('discover-background.png', assetPath('images/discover-background.png'))}
