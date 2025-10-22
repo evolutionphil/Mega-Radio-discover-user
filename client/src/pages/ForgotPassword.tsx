@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { assetPath } from "@/lib/assetPath";
 
 export const ForgotPassword = (): JSX.Element => {
   return (
@@ -12,7 +13,7 @@ export const ForgotPassword = (): JSX.Element => {
         <img
           className="absolute left-0 top-0 w-[24px] h-[24px]"
           alt="Back"
-          src="/images/vuesax-linear-undo.svg"
+          src={assetPath("images/vuesax-linear-undo.svg")}
         />
         </div>
       </Link>
@@ -31,7 +32,7 @@ export const ForgotPassword = (): JSX.Element => {
         <img
           className="absolute left-[20px] top-[18px] w-[38px] h-[38px]"
           alt="Email"
-          src="/images/vuesax-bold-sms.svg"
+          src={assetPath("images/vuesax-bold-sms.svg")}
         />
         <p className="absolute left-[77px] top-[21.84px] font-['Ubuntu',Helvetica] font-medium text-[25.945px] text-[#7e7e7e] leading-normal">
           Email

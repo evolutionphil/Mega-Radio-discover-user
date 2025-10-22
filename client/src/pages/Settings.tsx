@@ -85,7 +85,7 @@ export const Settings = (): JSX.Element => {
         <img
           alt=""
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
-          src="/images/hand-crowd-disco-1.png"
+          src={assetPath("images/hand-crowd-disco-1.png")}
         />
       </div>
 

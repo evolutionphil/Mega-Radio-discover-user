@@ -2,6 +2,7 @@ import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { Station } from "@/services/megaRadioApi";
 import { useLocation } from "wouter";
+import { assetPath } from "@/lib/assetPath";
 
 
 export const GlobalPlayer = (): JSX.Element | null => {
@@ -21,7 +22,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
   }
 
   // Fallback image - music note on pink gradient background
-  const FALLBACK_IMAGE = '/images/fallback-station.png';
+  const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   const getStationImage = (station: Station) => {
     if (station.favicon) {

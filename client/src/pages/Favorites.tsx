@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { Sidebar } from "@/components/Sidebar";
+import { assetPath } from "@/lib/assetPath";
 
 export const Favorites = (): JSX.Element => {
   const { favorites } = useFavorites();
@@ -61,7 +62,7 @@ export const Favorites = (): JSX.Element => {
   });
 
   // Fallback image - music note on pink gradient background
-  const FALLBACK_IMAGE = '/images/fallback-station.png';
+  const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
@@ -95,7 +96,7 @@ export const Favorites = (): JSX.Element => {
           <img
             alt=""
             className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-            src="/images/hand-crowd-disco-1.png"
+            src={assetPath("images/hand-crowd-disco-1.png")}
           />
         </div>
 

@@ -233,7 +233,7 @@ export const Genres = (): JSX.Element => {
         <img
           alt=""
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
-          src="/images/hand-crowd-disco-1.png"
+          src={assetPath("images/hand-crowd-disco-1.png")}
         />
       </div>
 
@@ -287,7 +287,7 @@ export const Genres = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/images/arrow.svg"
+                  src={assetPath("images/arrow.svg")}
                 />
               </div>
             </div>

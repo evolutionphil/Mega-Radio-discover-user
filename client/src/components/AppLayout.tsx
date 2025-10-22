@@ -5,6 +5,7 @@ import { useCountry } from "@/contexts/CountryContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { Sidebar } from "@/components/Sidebar";
 import { getFocusClasses } from "@/hooks/useFocusManager";
+import { assetPath } from "@/lib/assetPath";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -54,7 +55,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
           <img
             alt=""
             className="block max-w-none size-full"
-            src="/images/path-8.svg"
+            src={assetPath("images/path-8.svg")}
           />
         </div>
       </div>
@@ -87,9 +88,9 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                 <img
                   alt={selectedCountry}
                   className="w-full h-full object-cover"
-                  src={selectedCountryFlag || '/images/austria-1.png'}
+                  src={selectedCountryFlag || assetPath('images/austria-1.png')}
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/images/austria-1.png';
+                    (e.target as HTMLImageElement).src = assetPath('images/austria-1.png');
                   }}
                 />
               </div>
@@ -102,7 +103,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
                     <img
                       alt=""
                       className="block max-w-none size-full"
-                      src="/images/arrow.svg"
+                      src={assetPath("images/arrow.svg")}
                     />
                   </div>
                 </div>

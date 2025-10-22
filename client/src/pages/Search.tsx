@@ -270,7 +270,7 @@ export const Search = (): JSX.Element => {
   // Input only focuses when user explicitly presses ENTER on it (handled in onSelect)
 
   // Fallback image
-  const FALLBACK_IMAGE = '/images/fallback-station.png';
+  const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
@@ -358,7 +358,7 @@ export const Search = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/images/arrow.svg"
+                  src={assetPath("images/arrow.svg")}
                 />
               </div>
             </div>
@@ -402,7 +402,7 @@ export const Search = (): JSX.Element => {
             <img
               alt=""
               className="block max-w-none size-full"
-              src="/images/search-icon.svg"
+              src={assetPath("images/search-icon.svg")}
             />
           </div>
         </div>

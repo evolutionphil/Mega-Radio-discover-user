@@ -7,6 +7,7 @@ import { useRef, useEffect, useState } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
+import { assetPath } from "@/lib/assetPath";
 
 export const GenreList = (): JSX.Element => {
   const [location, setLocation] = useLocation();
@@ -113,7 +114,7 @@ export const GenreList = (): JSX.Element => {
   };
 
   // Fallback image - music note on pink gradient background
-  const FALLBACK_IMAGE = '/images/fallback-station.png';
+  const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
@@ -194,7 +195,7 @@ export const GenreList = (): JSX.Element => {
           <img
             alt=""
             className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-            src="/images/hand-crowd-disco-1.png"
+            src={assetPath("images/hand-crowd-disco-1.png")}
           />
         </div>
 
@@ -215,7 +216,7 @@ export const GenreList = (): JSX.Element => {
               <img
                 alt="back"
                 className="block max-w-none size-full"
-                src="/images/arrow.svg"
+                src={assetPath("images/arrow.svg")}
               />
             </div>
           </div>

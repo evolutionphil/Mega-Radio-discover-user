@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { assetPath } from "@/lib/assetPath";
 
 export const MailSent = (): JSX.Element => {
   return (
@@ -8,7 +9,7 @@ export const MailSent = (): JSX.Element => {
         <img
           className="absolute left-[159px] top-0 w-[66px] h-[66px]"
           alt="Success"
-          src="/images/vuesax-linear-tick-circle.svg"
+          src={assetPath("images/vuesax-linear-tick-circle.svg")}
         />
 
         {/* Message */}

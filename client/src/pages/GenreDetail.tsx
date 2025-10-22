@@ -209,7 +209,7 @@ export const GenreDetail = (): JSX.Element => {
                 <img
                   alt=""
                   className="block max-w-none size-full"
-                  src="/images/arrow.svg"
+                  src={assetPath("images/arrow.svg")}
                 />
               </div>
             </div>

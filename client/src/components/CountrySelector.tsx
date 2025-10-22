@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { megaRadioApi } from '@/services/megaRadioApi';
 import { useLocalization } from '@/contexts/LocalizationContext';
+import { assetPath } from '@/lib/assetPath';
 
 interface Country {
   name: string;
@@ -268,7 +269,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
             <img
               alt="back"
               className="block max-w-none size-full"
-              src="/images/arrow.svg"
+              src={assetPath("images/arrow.svg")}
             />
           </div>
         </div>
@@ -294,7 +295,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                   <img
                     alt="search"
                     className="block max-w-none size-full"
-                    src="/images/search-icon.svg"
+                    src={assetPath("images/search-icon.svg")}
                   />
                 </div>
                 <input

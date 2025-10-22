@@ -368,7 +368,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [isLoadingMore, hasMoreCountryStations, currentOffset, allCountryStations.length]);
 
-  const FALLBACK_IMAGE = '/images/fallback-station.png';
+  const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   const getStationImage = (station: Station) => {
     if (station.favicon) {
@@ -401,7 +401,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         <img
           alt=""
           className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-          src="/images/hand-crowd-disco-1.png"
+          src={assetPath("images/hand-crowd-disco-1.png")}
         />
       </div>
 
@@ -460,7 +460,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <img
                     alt=""
                     className="block max-w-none size-full"
-                    src="/images/arrow.svg"
+                    src={assetPath("images/arrow.svg")}
                   />
                 </div>
               </div>
