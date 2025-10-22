@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useLocalization } from './LocalizationContext';
+import { assetPath } from '@/lib/assetPath';
 
 interface CountryContextType {
   selectedCountry: string;
@@ -26,7 +27,7 @@ export const CountryProvider = ({ children }: { children: ReactNode }) => {
   
   const [selectedCountryFlag, setSelectedCountryFlag] = useState<string>(() => {
     const saved = localStorage.getItem('selectedCountryFlag');
-    return saved || '/images/austria-1.png';
+    return saved || assetPath('images/austria-1.png');
   });
 
   // Update from localization when first detected

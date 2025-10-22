@@ -10,6 +10,7 @@ import { useFavorites } from "@/contexts/FavoritesContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { CountrySelector } from "@/components/CountrySelector";
 import { Sidebar } from "@/components/Sidebar";
+import { assetPath } from "@/lib/assetPath";
 
 
 export const RadioPlaying = (): JSX.Element => {
@@ -60,7 +61,7 @@ export const RadioPlaying = (): JSX.Element => {
   }, [stationId]);
 
   // Fallback image - music note on pink gradient background
-  const FALLBACK_IMAGE = '/images/fallback-station.png';
+  const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   const getStationImage = (station: Station) => {
     if (station.favicon) {
@@ -248,12 +249,9 @@ export const RadioPlaying = (): JSX.Element => {
       }
     },
     onBack: () => {
-      // Go back in history, or to discover if no history
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        setLocation('/discover-no-user');
-      }
+      // Always go back to discover for Samsung TV compatibility
+      console.log('[RadioPlaying] Back button - navigating to Discover');
+      setLocation('/discover-no-user');
     }
   });
 
@@ -276,6 +274,10 @@ export const RadioPlaying = (): JSX.Element => {
         break;
       case key?.ENTER || 13:
         handleSelect();
+        break;
+      case key?.RETURN || 461 || 10009:
+        console.log('[RadioPlaying] RETURN key - going back to Discover');
+        handleBack();
         break;
     }
   });
@@ -388,7 +390,7 @@ export const RadioPlaying = (): JSX.Element => {
           <img
             alt=""
             className="block max-w-none size-full"
-            src="/images/path-8.svg"
+            src={assetPath("images/path-8.svg")}
           />
         </div>
       </div>

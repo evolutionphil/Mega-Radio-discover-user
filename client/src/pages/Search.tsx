@@ -265,18 +265,8 @@ export const Search = (): JSX.Element => {
     }
   });
 
-  // Special handling: Focus input element when index 6 is focused
-  useEffect(() => {
-    if (focusIndex === 6 && inputRef.current) {
-      console.log('[Search] Focus index 7 (search input) - calling .focus() on input element');
-      inputRef.current.focus();
-      
-      // Show Samsung keyboard if on Samsung TV
-      if ((window as any).tizen || (window as any).webapis) {
-        console.log('[Search] Samsung TV detected - keyboard should appear');
-      }
-    }
-  }, [focusIndex]);
+  // REMOVED: Auto-focus on navigation was blocking navigation on Samsung TV
+  // Input only focuses when user explicitly presses ENTER on it (handled in onSelect)
 
   // Fallback image
   const FALLBACK_IMAGE = '/images/fallback-station.png';
