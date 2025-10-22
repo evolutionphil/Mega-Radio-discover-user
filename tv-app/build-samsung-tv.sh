@@ -21,10 +21,11 @@ NEW_JS_FILE="assets/index-${TIMESTAMP}.js"
 echo "🔄 Renaming to: ${NEW_JS_FILE} (cache busting)"
 mv "dist/public/${VITE_JS_FILE}" "dist/public/${NEW_JS_FILE}"
 
-# Step 3: Copy bundle to assets folder
+# Step 3: Copy bundle and CSS to assets folder
 echo "📂 Copying bundle to assets..."
 mkdir -p assets
-cp -r dist/public/assets/* assets/
+cp -r dist/public/assets/*.js assets/ 2>/dev/null || true
+cp -r dist/public/assets/*.css assets/ 2>/dev/null || true
 
 # Step 4: Copy images
 echo "📂 Copying images..."
@@ -49,10 +50,16 @@ cp client/public/css/tv-styles.css css/ 2>/dev/null || true
 # Step 6: Copy webOS SDK
 cp -r client/public/webOSTVjs-1.2.0 . 2>/dev/null || true
 
-# Step 7: Update index.html with new bundle reference (IN-PLACE)
+# Step 7: Update index.html with new bundle reference and add Tailwind CSS (IN-PLACE)
 echo "🔧 Updating index.html with bundle: ${NEW_JS_FILE}"
 sed -i "s|assets/index-[^\"]*\.js|${NEW_JS_FILE}|g" index.html
 sed -i "s|v=[0-9]*|v=${TIMESTAMP}|g" index.html
+
+# Step 7.5: Add Tailwind CSS link if not already present
+if ! grep -q "assets/style.css" index.html; then
+  echo "🔧 Adding Tailwind CSS link..."
+  sed -i "s|<link rel=\"stylesheet\" href=\"./css/tv-styles.css|<link rel=\"stylesheet\" href=\"./assets/style.css?v=${TIMESTAMP}\">\n  <link rel=\"stylesheet\" href=\"./css/tv-styles.css|g" index.html
+fi
 
 # Step 8: Remove type="module" from script tag (IIFE doesn't need it)
 echo "🔧 Removing type=\"module\" from script tag..."

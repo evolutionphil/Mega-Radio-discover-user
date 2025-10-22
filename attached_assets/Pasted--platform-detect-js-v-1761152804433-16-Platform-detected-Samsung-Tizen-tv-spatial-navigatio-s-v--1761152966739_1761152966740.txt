@@ -1,0 +1,94 @@
+﻿
+platform-detect.js?v=1761152804433:16 Platform detected: Samsung Tizen
+tv-spatial-navigatio…s?v=1761152804433:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+index-1761152804433.js:104 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-1761152804433.js:104 [MegaRadio API] BASE_URL: https://themegaradio.com
+tv-spatial-navigatio…v=1761152804433:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1761152804433:186 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1761152804433:190 [TV Remote Keys] Key handler attached, waiting for React...
+index-1761152804433.js:104 [Splash] 🎬 Component mounted
+index-1761152804433.js:104 [Splash] 📂 Image paths to load: 
+Object
+index-1761152804433.js:104 [FocusRouter] Dispatch function registered to window
+index-1761152804433.js:104 [CountryContext] Setting country from localization: United States US
+index-1761152804433.js:104 [Localization] Browser language detected: de-DE
+index-1761152804433.js:104 [Localization] Using language: de
+index-1761152804433.js:104 [Localization] Detected country: Germany DE
+index-1761152804433.js:104 [Localization] Fetching translations for: de
+index-1761152804433.js:104 [CountryContext] Setting country from localization: Germany DE
+index-1761152804433.js:104 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigatio…?v=1761152804433:52 [TV Nav] Found 0 focusable elements
+index-1761152804433.js:104 [useTVNavigation] Initialization complete
+index-1761152804433.js:104 [Splash] ✅ Image loaded successfully: path-8.svg
+index-1761152804433.js:104 [Splash] ✅ Image loaded successfully: waves.svg
+index-1761152804433.js:104 [Splash] ✅ Image loaded successfully: monitor.svg
+index-1761152804433.js:104 [Splash] ✅ Image loaded successfully: ellipse2.svg
+index-1761152804433.js:104 [Splash] ✅ Image loaded successfully: tablet.svg
+index-1761152804433.js:104 [Splash] ✅ Image loaded successfully: phone.svg
+index-1761152804433.js:104 [Splash] ✅ Image loaded successfully: frame445.png
+index-1761152804433.js:104 [Localization] API response received
+index-1761152804433.js:104 [Localization] Loaded 623 translations
+index-1761152804433.js:104 [Splash] ⏱️  Timer completed, navigating to Guide 1
+index-1761152804433.js:104 [Splash] 📊 Final image load status: 
+{path-8.svg: true, waves.svg: true, monitor.svg: true, ellipse2.svg: true, tablet.svg: true, …}
+index-1761152804433.js:104 [Splash] 👋 Component unmounting
+index-1761152804433.js:119 [Guide1] 🎬 Component mounted
+index-1761152804433.js:119 [Guide1] 📂 Image paths to load: 
+{background: "./images/discover-background.png", arrow: "./images/arrow.svg", icon: "./images/radio-icon.svg"}
+index-1761152804433.js:104 [FocusRouter] Registering handler for route: /guide-1
+index-1761152804433.js:119 [Guide1] ✅ Image loaded successfully: radio-icon.svg
+index-1761152804433.js:119 [Guide1] ✅ Image loaded successfully: arrow.svg
+index-1761152804433.js:119 [Guide1] ✅ Image loaded successfully: discover-background.png
+tv-remote-keys.js?v=1761152804433:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761152804433:171 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761152804433.js:104 [FocusRouter] ⌨️  Key event: 
+{keyCode: 13, hash: "#/guide-1", currentRoute: "/guide-1", routeForHandler: "/guide-1", hasHandler: true, …}
+index-1761152804433.js:104 [FocusRouter] ✅ Dispatching to: /guide-1
+index-1761152804433.js:119 [Guide1] ⌨️  Key pressed: 13 ENTER
+index-1761152804433.js:119 [Guide1] ✅ OK/Enter - navigating to Guide 2
+index-1761152804433.js:119 [Guide1] 👋 Component unmounting
+index-1761152804433.js:104 [FocusRouter] Unregistering handler for route: /guide-1
+index-1761152804433.js:119 [Guide2] 🎬 Component mounted
+index-1761152804433.js:119 [Guide2] 📂 Image paths to load: 
+{background: "./images/discover-background.png", arrow: "./images/arrow.svg", icon: "./images/music-icon.svg"}
+index-1761152804433.js:104 [FocusRouter] Registering handler for route: /guide-2
+index-1761152804433.js:119 [Guide2] ✅ Image loaded successfully: discover-background.png
+index-1761152804433.js:119 [Guide2] ✅ Image loaded successfully: arrow.svg
+index-1761152804433.js:119 [Guide2] ✅ Image loaded successfully: music-icon.svg
+tv-remote-keys.js?v=1761152804433:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761152804433:171 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761152804433.js:104 [FocusRouter] ⌨️  Key event: 
+{keyCode: 13, hash: "#/guide-2", currentRoute: "/guide-2", routeForHandler: "/guide-2", hasHandler: true, …}
+index-1761152804433.js:104 [FocusRouter] ✅ Dispatching to: /guide-2
+index-1761152804433.js:119 [Guide2] ⌨️  Key pressed: 13
+index-1761152804433.js:119 [Guide2] ✅ OK/Enter - navigating to Guide 3
+index-1761152804433.js:119 [Guide2] 👋 Component unmounting
+index-1761152804433.js:104 [FocusRouter] Unregistering handler for route: /guide-2
+index-1761152804433.js:119 [Guide3] 🎬 Component mounted
+index-1761152804433.js:119 [Guide3] 📂 Image paths to load: 
+{background: "./images/discover-background.png", arrow: "./images/arrow.svg", icon: "./images/search-icon.svg"}
+index-1761152804433.js:104 [FocusRouter] Registering handler for route: /guide-3
+index-1761152804433.js:119 [Guide3] ✅ Image loaded successfully: discover-background.png
+index-1761152804433.js:119 [Guide3] ✅ Image loaded successfully: arrow.svg
+index-1761152804433.js:119 [Guide3] ✅ Image loaded successfully: search-icon.svg
+tv-remote-keys.js?v=1761152804433:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761152804433:171 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761152804433.js:104 [FocusRouter] ⌨️  Key event: 
+{keyCode: 13, hash: "#/guide-3", currentRoute: "/guide-3", routeForHandler: "/guide-3", hasHandler: true, …}
+index-1761152804433.js:104 [FocusRouter] ✅ Dispatching to: /guide-3
+index-1761152804433.js:119 [Guide3] ⌨️  Key pressed: 13
+index-1761152804433.js:119 [Guide3] ✅ OK/Enter - navigating to Guide 4
+index-1761152804433.js:119 [Guide3] 👋 Component unmounting
+index-1761152804433.js:104 [FocusRouter] Unregistering handler for route: /guide-3
+index-1761152804433.js:119 [Guide4] 🎬 Component mounted
+index-1761152804433.js:119 [Guide4] 📂 Image paths to load: 
+{background: "./images/discover-background.png", arrow: "./images/arrow.svg", icon: "./images/heart-icon.svg"}
+index-1761152804433.js:104 [FocusRouter] Registering handler for route: /guide-4
+index-1761152804433.js:119 [Guide4] ✅ Image loaded successfully: discover-background.png
+index-1761152804433.js:119 [Guide4] ✅ Image loaded successfully: arrow.svg
+index-1761152804433.js:119 [Guide4] ✅ Image loaded successfully: heart-icon.svg
+﻿
+​
