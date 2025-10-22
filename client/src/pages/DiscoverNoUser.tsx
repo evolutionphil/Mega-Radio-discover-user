@@ -243,6 +243,12 @@ export const DiscoverNoUser = (): JSX.Element => {
 
   // Register page-specific key handler with custom navigation
   usePageKeyHandler('/discover-no-user', (e) => {
+    // Ignore all key events when country selector modal is open
+    if (isCountrySelectorOpen) {
+      console.log('[DiscoverNoUser] Key event ignored - country selector modal is open');
+      return;
+    }
+
     const key = (window as any).tvKey;
     
     switch(e.keyCode) {
@@ -259,6 +265,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         customHandleNavigation('RIGHT');
         break;
       case key?.ENTER || 13:
+        console.log('[DiscoverNoUser] ENTER key pressed - calling handleSelect()');
         handleSelect();
         break;
     }
@@ -367,6 +374,33 @@ export const DiscoverNoUser = (): JSX.Element => {
     scrollContainer.addEventListener('scroll', handleScroll);
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [isLoadingMore, hasMoreCountryStations, currentOffset, allCountryStations.length]);
+
+  // Auto-scroll focused element into view
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+    
+    const scrollContainer = scrollContainerRef.current;
+    let scrollTarget = 0;
+
+    // Determine scroll position based on focused section
+    if (focusIndex >= genresStart && focusIndex <= genresEnd) {
+      // Genres section at top
+      scrollTarget = 0;
+    } else if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
+      // Popular stations section
+      const row = Math.floor((focusIndex - popularStationsStart) / 7);
+      scrollTarget = 180 + (row * 294); // Base offset + row height
+    } else if (focusIndex >= countryStationsStart) {
+      // Country stations section
+      const row = Math.floor((focusIndex - countryStationsStart) / 7);
+      scrollTarget = 600 + (row * 294); // Popular stations end + row height
+    }
+
+    scrollContainer.scrollTo({
+      top: scrollTarget,
+      behavior: 'smooth'
+    });
+  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 

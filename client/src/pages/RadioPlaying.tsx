@@ -251,6 +251,12 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Register RETURN key handler at the TOP - works even on loading screen
   usePageKeyHandler('/radio-playing', (e) => {
+    // Ignore all key events when country selector modal is open
+    if (isCountrySelectorOpen) {
+      console.log('[RadioPlaying] Key event ignored - country selector modal is open');
+      return;
+    }
+
     const key = (window as any).tvKey;
     
     // RETURN key handler ALWAYS works, even when loading
