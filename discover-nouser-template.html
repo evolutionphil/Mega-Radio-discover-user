@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>Mega Radio - Discover</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="discover-nouser-styles.css">
+</head>
+<body>
+    <div style="position: relative; top: 0; left: 0; width: 1920px; min-height: 1900px; overflow-y: auto; background: #0e0e0e;">
+        
+        <!-- Background Image (exact Figma position: left: -10px, top: -523px) - FIXED for scroll -->
+        <div style="position: fixed; left: -10px; top: -523px; width: 1939px; height: 1292px; z-index: 0;">
+            <img src="images/hand-crowd-disco-1.png" 
+                 alt="Background" 
+                 style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+        </div>
+        
+        <!-- Gradient Overlay - FIXED for scroll -->
+        <div style="position: fixed; top: 0; left: 0; width: 1920px; height: 1080px; background: linear-gradient(180deg, rgba(14, 14, 14, 0) 0.88%, #0e0e0e 48.611%); z-index: 1; pointer-events: none;"></div>
+        
+        <!-- Logo (top-left: 64px, 31px) -->
+        <div style="position: absolute; left: 64px; top: 31px; width: 323px; height: 112px; z-index: 10;">
+            <p style="position: absolute; bottom: 0; left: 18.67%; right: 0; top: 46.16%; font-family: 'Ubuntu', Helvetica; font-size: 53px; font-weight: 400; color: #ffffff; font-style: normal; line-height: normal; white-space: nowrap; margin: 0;">
+                <span style="font-weight: 700;">mega</span>radio
+            </p>
+            <div style="position: absolute; bottom: 2.84%; left: 0; right: 65.2%; top: 0;">
+                <img alt="Logo" 
+                     style="width: 100%; height: 100%; object-fit: contain;" 
+                     src="images/path-8-figma.svg">
+            </div>
+        </div>
+        
+        <!-- Equalizer Icon (left: 1281px, top: 67px) -->
+        <div class="focusable" 
+             data-focus-index="0"
+             style="position: absolute; left: 1281px; top: 67px; width: 48px; height: 48px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; z-index: 10;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="10" width="2" height="11" fill="#ffffff"/>
+                <rect x="8" y="6" width="2" height="15" fill="#ffffff"/>
+                <rect x="13" y="3" width="2" height="18" fill="#ffffff"/>
+                <rect x="18" y="8" width="2" height="13" fill="#ffffff"/>
+            </svg>
+        </div>
+        
+        <!-- Country Selector - Austria (left: 1351px, top: 67px) -->
+        <div class="focusable" 
+             id="tv-country-selector"
+             data-focus-index="1"
+             style="position: absolute; left: 1351px; top: 67px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px 20px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: row; align-items: center; gap: 12px; z-index: 10;">
+            <span style="font-size: 24px;">🇦🇹</span>
+            <span style="font-family: 'Ubuntu', Helvetica; font-size: 20px; font-weight: 500; color: #ffffff;">Austria</span>
+            <span style="font-family: 'Ubuntu', Helvetica; font-size: 16px; font-weight: 400; color: #ffffff;">▼</span>
+        </div>
+        
+        <!-- User Profile (left: 1648px, top: 59px) -->
+        <div class="focusable" 
+             id="tv-user-profile"
+             data-focus-index="2"
+             style="position: absolute; left: 1648px; top: 59px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 8px 16px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: row; align-items: center; gap: 12px; z-index: 10;">
+            <div style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.2); border-radius: 24px; display: flex; align-items: center; justify-content: center;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="8" r="4" fill="#ffffff"/>
+                    <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20V21H4V20Z" fill="#ffffff"/>
+                </svg>
+            </div>
+            <span style="font-family: 'Ubuntu', Helvetica; font-size: 18px; font-weight: 500; color: #ffffff;">Talha Çay</span>
+        </div>
+        
+        <!-- Popular Genres Section (left: 236px, top: 242px) -->
+        <div style="position: absolute; left: 236px; top: 242px; z-index: 5;">
+            <h2 style="font-family: 'Ubuntu', Helvetica; font-size: 32px; font-weight: 700; color: #ffffff; margin: 0 0 32px 0;">
+                Popular Genres
+            </h2>
+            <div style="display: flex; flex-direction: row; gap: 16px; overflow-x: auto; overflow-y: hidden; padding-bottom: 16px; max-width: 1648px;" id="genres-container">
+                <!-- Genre pills will be inserted here -->
+                <div class="genre-pill focusable" 
+                     style="padding: 28px 72px; border-radius: 20px; background: rgba(255, 255, 255, 0.14); box-shadow: inset 1.1px 1.1px 12.1px 0px rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; transition: all 0.2s;">
+                    <span style="font-family: 'Ubuntu', Helvetica; font-size: 20px; font-weight: 700; color: #ffffff; white-space: nowrap;">Pop</span>
+                </div>
+                <div class="genre-pill focusable" 
+                     style="padding: 28px 72px; border-radius: 20px; background: rgba(255, 255, 255, 0.14); box-shadow: inset 1.1px 1.1px 12.1px 0px rgba(255, 255, 255, 0.12); border: 5.5px solid #b4b4b4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; transition: all 0.2s;">
+                    <span style="font-family: 'Ubuntu', Helvetica; font-size: 20px; font-weight: 700; color: #ffffff; white-space: nowrap;">Hip Hop</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Popular Radios Section (left: 236px, top: 465px) -->
+        <div style="position: absolute; left: 236px; top: 465px; z-index: 5;">
+            <div style="position: relative; margin-bottom: 55px;">
+                <h2 style="font-family: 'Ubuntu', Helvetica; font-size: 32px; font-weight: 700; color: #ffffff; margin: 0;">
+                    Popular Radios
+                </h2>
+                <div class="focusable"
+                     style="position: absolute; left: 1556.5px; top: 19px; transform: translateX(-50%); cursor: pointer; transition: all 0.2s;">
+                    <span style="font-family: 'Ubuntu', Helvetica; font-size: 18px; font-weight: 400; color: #9b9b9b;">See More</span>
+                </div>
+            </div>
+            <div style="position: relative; width: 1648px; height: 588px;" id="popular-stations-container">
+                <!-- Station cards (7 columns, 2 rows grid) -->
+                <!-- COLUMN 1 (left: 0px) -->
+                <div class="station-card focusable" style="position: absolute; left: 0px; top: 0px; width: 200px; height: 264px;">
+                    <div style="width: 200px; height: 264px; background: rgba(255, 255, 255, 0.14); border-radius: 11px; box-shadow: inset 1.1px 1.1px 12.1px 0px rgba(255, 255, 255, 0.12); overflow: hidden; position: relative;">
+                        <div style="position: absolute; left: 34px; top: 34px; width: 132px; height: 132px; background: #ffffff; border-radius: 6.6px; overflow: hidden;">
+                            <img src="station-logo.png" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        </div>
+                        <div style="position: absolute; left: 0; right: 0; top: 187px; text-align: center; padding: 0 12px;">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-size: 22px; font-weight: 500; color: #ffffff; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                Station Name
+                            </p>
+                        </div>
+                        <div style="position: absolute; left: 0; right: 0; top: 218.2px; text-align: center; padding: 0 12px;">
+                            <p style="font-family: 'Ubuntu', Helvetica; font-size: 18px; font-weight: 300; color: #9b9b9b; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                Genre
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat for 7 columns × 2 rows = 14 cards total -->
+            </div>
+        </div>
+        
+        <!-- More From Austria Section (left: 236px, top: 1181px) -->
+        <div style="position: absolute; left: 236px; top: 1181px; z-index: 5;">
+            <div style="position: relative; margin-bottom: 55px;">
+                <h2 style="font-family: 'Ubuntu', Helvetica; font-size: 32px; font-weight: 700; color: #ffffff; margin: 0;">
+                    More From Austria
+                </h2>
+                <div class="focusable"
+                     style="position: absolute; left: 1556.5px; top: 5px; transform: translateX(-50%); cursor: pointer; transition: all 0.2s;">
+                    <span style="font-family: 'Ubuntu', Helvetica; font-size: 18px; font-weight: 400; color: #9b9b9b;">See More</span>
+                </div>
+            </div>
+            <div style="position: relative; width: 1648px; height: 588px;" id="austria-stations-container">
+                <!-- Station cards (same as Popular Radios) -->
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
