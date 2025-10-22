@@ -30,6 +30,9 @@ function makePathsRelative() {
 
 export default defineConfig({
   plugins: [react(), makePathsRelative()],
+  css: {
+    postcss: path.resolve(import.meta.dirname, ".."), // Use postcss.config.js from root
+  },
   base: './', // Use relative paths for all assets
   resolve: {
     alias: {
