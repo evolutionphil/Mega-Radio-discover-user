@@ -27,25 +27,32 @@ export const GenreList = (): JSX.Element => {
   const [page, setPage] = useState(1);
   const STATIONS_PER_PAGE = 21; // 7 columns x 3 rows
 
-  // Fetch stations by genre and country (OPTIMIZED: 50 initial)
+  // Fetch stations by genre and country
   const { data: stationsData, isLoading } = useQuery({
-    queryKey: ['/api/stations/genre', genreSlug, selectedCountryCode],
+    queryKey: ['genre-stations-v2', genreSlug, selectedCountryCode], // Changed key to bust cache
     queryFn: async () => {
-      // Fetch stations by genre for the selected country
+      console.log('[GenreList] Fetching stations for genre:', genreSlug, 'country:', selectedCountryCode);
       const result = await megaRadioApi.getAllStations({ 
         country: selectedCountryCode,
-        limit: 50,
+        limit: 200, // Fetch more stations for better UX
         genre: genreSlug
       });
+      console.log('[GenreList] Query result:', result?.stations?.length || 0, 'stations');
       return result;
     },
+    staleTime: 30000, // 30 seconds
+    gcTime: 60000, // 1 minute (renamed from cacheTime in v5)
   });
 
   // Initialize when data loads - show first 21 stations
   useEffect(() => {
-    if (stationsData?.stations) {
+    console.log('[GenreList] Data effect - stationsData:', stationsData?.stations?.length || 0);
+    if (stationsData?.stations && stationsData.stations.length > 0) {
+      console.log('[GenreList] Setting stations:', stationsData.stations.length);
       setAllStations(stationsData.stations);
-      setDisplayedStations(stationsData.stations.slice(0, STATIONS_PER_PAGE));
+      const firstBatch = stationsData.stations.slice(0, STATIONS_PER_PAGE);
+      console.log('[GenreList] First batch:', firstBatch.length);
+      setDisplayedStations(firstBatch);
       setHasMore(stationsData.stations.length > STATIONS_PER_PAGE);
       setPage(1);
     }
@@ -53,6 +60,7 @@ export const GenreList = (): JSX.Element => {
 
   // Reset pagination when genre or country changes
   useEffect(() => {
+    console.log('[GenreList] Reset effect - genre:', genreSlug, 'country:', selectedCountryCode);
     setPage(1);
     setHasMore(true);
     setDisplayedStations([]);

@@ -168,14 +168,19 @@ export const megaRadioApi = {
     if (params?.page) queryParams.append('page', params.page.toString());
     if (params?.limit) queryParams.append('limit', params.limit.toString());
     if (params?.search) queryParams.append('search', params.search);
-    if (params?.country) queryParams.append('country', params.country);
+    if (params?.country) {
+      // Convert country code to name for API
+      const countryName = getCountryNameFromCode(params.country);
+      queryParams.append('country', countryName);
+      console.log(`[API] getAllStations: Converting ${params.country} -> ${countryName}`);
+    }
     if (params?.language) queryParams.append('language', params.language);
     if (params?.genre) queryParams.append('genre', params.genre);
     if (params?.sort) queryParams.append('sort', params.sort);
 
     try {
       const url = buildApiUrl('/stations', queryParams);
-      console.log('[API] getAllStations:', url);
+      console.log('[API] getAllStations URL:', url);
       const response = await fetch(url);
       console.log('[API] getAllStations response:', response.status);
       if (!response.ok) {
@@ -184,7 +189,7 @@ export const megaRadioApi = {
       const data = await response.json();
       // API returns { stations: [...] } or just [...]
       const stations = data.stations || (Array.isArray(data) ? data : []);
-      console.log('[API] getAllStations fetched:', stations.length);
+      console.log('[API] getAllStations fetched:', stations.length, 'stations');
       return { stations, pagination: {} };
     } catch (error) {
       console.error('[API] getAllStations failed:', error);
