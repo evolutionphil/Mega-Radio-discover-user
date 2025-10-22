@@ -70,8 +70,8 @@ export const Search = (): JSX.Element => {
     ? recentlyPlayedStations 
     : (popularStationsData?.stations || []);
 
-  // Calculate totalItems: 5 (sidebar) + 1 (country) + 1 (input) + results + recent
-  const totalItems = 5 + 1 + 1 + searchResults.length + recentStations.length;
+  // Calculate totalItems: 5 (sidebar) + 1 (input) + results + recent (NO country selector)
+  const totalItems = 5 + 1 + searchResults.length + recentStations.length;
 
   // Define sidebar routes (removed Records)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -89,41 +89,31 @@ export const Search = (): JSX.Element => {
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 5; // Jump to country selector
+        newIndex = 5; // Jump to search input
       }
     }
-    // Country selector (5)
+    // Search input (5)
     else if (current === 5) {
       if (direction === 'DOWN') {
-        newIndex = 6; // Jump to search input
-      } else if (direction === 'LEFT') {
-        newIndex = 0; // Jump to first sidebar item
-      }
-    }
-    // Search input (6)
-    else if (current === 6) {
-      if (direction === 'UP') {
-        newIndex = 5; // Jump to country selector
-      } else if (direction === 'DOWN') {
         // Jump to first search result or first recent station
         if (searchResults.length > 0) {
-          newIndex = 7; // First search result
+          newIndex = 6; // First search result
         } else if (recentStations.length > 0) {
-          newIndex = 7; // First recent station (no search results)
+          newIndex = 6; // First recent station (no search results)
         }
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to sidebar
       }
     }
-    // Search results section (7 to 7+searchResults.length-1)
-    else if (current >= 7 && current < 7 + searchResults.length) {
-      const relIndex = current - 7;
+    // Search results section (6 to 6+searchResults.length-1)
+    else if (current >= 6 && current < 6 + searchResults.length) {
+      const relIndex = current - 6;
 
       if (direction === 'UP') {
         if (relIndex > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 6; // Jump to search input
+          newIndex = 5; // Jump to search input
         }
       } else if (direction === 'DOWN') {
         if (relIndex < searchResults.length - 1) {
@@ -131,7 +121,7 @@ export const Search = (): JSX.Element => {
         } else {
           // Jump to recently played if available
           if (recentStations.length > 0) {
-            newIndex = 7 + searchResults.length; // First recent station
+            newIndex = 6 + searchResults.length; // First recent station
           }
         }
       } else if (direction === 'LEFT') {
@@ -139,8 +129,8 @@ export const Search = (): JSX.Element => {
       }
     }
     // Recently played section (2-column grid)
-    else if (current >= 7 + searchResults.length) {
-      const recentStartIndex = 7 + searchResults.length;
+    else if (current >= 6 + searchResults.length) {
+      const recentStartIndex = 6 + searchResults.length;
       const relIndex = current - recentStartIndex;
       const row = Math.floor(relIndex / 2);
       const col = relIndex % 2;
@@ -161,9 +151,9 @@ export const Search = (): JSX.Element => {
         } else {
           // Jump to search results or search input
           if (searchResults.length > 0) {
-            newIndex = 7 + searchResults.length - 1; // Last search result
+            newIndex = 6 + searchResults.length - 1; // Last search result
           } else {
-            newIndex = 6; // Search input
+            newIndex = 5; // Search input
           }
         }
       } else if (direction === 'DOWN') {
@@ -195,7 +185,7 @@ export const Search = (): JSX.Element => {
   const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 6, // Start on search input
+    initialIndex: 5, // Start on search input
     onSelect: (index) => {
       console.log('[Search] 🎯 onSelect triggered - index:', index);
       
@@ -208,13 +198,8 @@ export const Search = (): JSX.Element => {
           setLocation(route);
         }
       }
-      // Country selector (5)
+      // Search input (5) - LGTV pattern: focus input and set cursor to end
       else if (index === 5) {
-        console.log('[Search] 🌍 Country selector selected - opening modal');
-        setIsCountrySelectorOpen(true);
-      }
-      // Search input (6) - LGTV pattern: focus input and set cursor to end
-      else if (index === 6) {
         console.log('[Search] ⌨️  Search input selected');
         console.log('[Search] 📝 Focusing input field and setting cursor to end');
         if (inputRef.current) {
@@ -225,9 +210,9 @@ export const Search = (): JSX.Element => {
           console.log('[Search] ❌ Input ref is null');
         }
       }
-      // Search results (7 to 7+searchResults.length-1)
-      else if (index >= 7 && index < 7 + searchResults.length) {
-        const resultIndex = index - 7;
+      // Search results (6 to 6+searchResults.length-1)
+      else if (index >= 6 && index < 6 + searchResults.length) {
+        const resultIndex = index - 6;
         const station = searchResults[resultIndex];
         console.log('[Search] 🎵 Search result selected:', resultIndex);
         if (station) {
@@ -236,9 +221,9 @@ export const Search = (): JSX.Element => {
           setLocation(`/radio-playing?station=${station._id}`);
         }
       }
-      // Recently played (7+searchResults.length onwards)
-      else if (index >= 7 + searchResults.length) {
-        const recentIndex = index - 7 - searchResults.length;
+      // Recently played (6+searchResults.length onwards)
+      else if (index >= 6 + searchResults.length) {
+        const recentIndex = index - 6 - searchResults.length;
         const station = recentStations[recentIndex];
         console.log('[Search] 🕒 Recently played selected:', recentIndex);
         if (station) {
@@ -254,10 +239,10 @@ export const Search = (): JSX.Element => {
     }
   });
   
-  // Fix: Blur input when focusIndex moves away from search input (index 6)
+  // Fix: Blur input when focusIndex moves away from search input (index 5)
   useEffect(() => {
     console.log('[Search] 👁️ focusIndex changed to:', focusIndex);
-    if (focusIndex !== 6 && inputRef.current) {
+    if (focusIndex !== 5 && inputRef.current) {
       console.log('[Search] 🚫 Focus moved away from search input - blurring to prevent keyboard');
       inputRef.current.blur();
     }
@@ -265,6 +250,12 @@ export const Search = (): JSX.Element => {
 
   // Register page-specific key handler with custom navigation
   usePageKeyHandler('/search', (e) => {
+    // Ignore all key events when country selector modal is open
+    if (isCountrySelectorOpen) {
+      console.log('[Search] Key event ignored - country selector modal is open');
+      return;
+    }
+
     const key = (window as any).tvKey;
     console.log('[Search] ⌨️ Key pressed:', e.keyCode, 'key:', e.key);
     
@@ -351,48 +342,7 @@ export const Search = (): JSX.Element => {
         />
       </div>
 
-      {/* Equalizer Icon */}
-      <div className={`absolute left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
-        <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
-          <div className={`absolute bg-white left-0 rounded-[10px] top-0 w-[6.25px] ${isPlaying ? 'animate-equalizer-1' : 'h-[25px]'}`} style={{ height: isPlaying ? undefined : '25px' }} />
-          <div className={`absolute bg-white left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px] ${isPlaying ? 'animate-equalizer-2' : 'h-[17.5px]'}`} style={{ height: isPlaying ? undefined : '17.5px' }} />
-          <div className={`absolute bg-white left-[17.5px] rounded-[10px] top-[3.75px] w-[6.25px] ${isPlaying ? 'animate-equalizer-3' : 'h-[21.25px]'}`} style={{ height: isPlaying ? undefined : '21.25px' }} />
-        </div>
-      </div>
-
-      {/* Country Selector */}
-      <div 
-        className={`absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors flex-shrink-0 ${getFocusClasses(isFocused(6))}`}
-        style={{ padding: '11px 14.316px 11px 15px', justifyContent: 'center', alignItems: 'center' }}
-        onClick={() => setIsCountrySelectorOpen(true)}
-        data-testid="button-country-selector"
-      >
-        <div className="flex items-center gap-[10.66px]">
-          <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
-            <img
-              alt={selectedCountry}
-              className="w-full h-full object-cover"
-              src={selectedCountryFlag}
-            />
-          </div>
-          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal text-[24px] text-white whitespace-nowrap">
-            {selectedCountry}
-          </p>
-          <div className="flex items-center justify-center ml-auto">
-            <div className="rotate-[270deg]">
-              <div className="relative size-[23.684px]">
-                <img
-                  alt=""
-                  className="block max-w-none size-full"
-                  src={assetPath("images/arrow.svg")}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Country Selector Modal */}
+      {/* Country Selector Modal - Hidden on Search page */}
       <CountrySelector 
         isOpen={isCountrySelectorOpen}
         onClose={() => setIsCountrySelectorOpen(false)}
@@ -412,7 +362,7 @@ export const Search = (): JSX.Element => {
 
       {/* Search Input */}
       <div 
-        className={`absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px] ${getFocusClasses(isFocused(6))}`}
+        className={`absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px] ${getFocusClasses(isFocused(5))}`}
         data-testid="input-search"
       >
         <div className="h-[91px] overflow-clip relative rounded-[inherit] w-[774px]">
