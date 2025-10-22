@@ -57,7 +57,9 @@ sed -i 's|<base href="/">||g' index.html
 echo "🔧 Moving React script to end of body..."
 BUNDLE_SCRIPT=$(grep -o '<script src="\./assets/index-[^"]*\.js"></script>' index.html)
 sed -i "s|${BUNDLE_SCRIPT}||g" index.html
-sed -i "s|</body>|  ${BUNDLE_SCRIPT}\n  </body>|g" index.html
+# Add globalThis polyfill before React script
+POLYFILL='<script>if(typeof globalThis==="undefined"){window.globalThis=window;}</script>'
+sed -i "s|</body>|  ${POLYFILL}\n  ${BUNDLE_SCRIPT}\n  </body>|g" index.html
 
 echo "✅ Build complete!"
 echo ""
