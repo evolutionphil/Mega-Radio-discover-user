@@ -57,9 +57,9 @@ sed -i 's|<base href="/">||g' index.html
 echo "🔧 Moving React script to end of body..."
 BUNDLE_SCRIPT=$(grep -o '<script src="\./assets/index-[^"]*\.js"></script>' index.html)
 sed -i "s|${BUNDLE_SCRIPT}||g" index.html
-# Add globalThis polyfill before React script
-POLYFILL='<script>if(typeof globalThis==="undefined"){window.globalThis=window;}</script>'
-sed -i "s|</body>|  ${POLYFILL}\n  ${BUNDLE_SCRIPT}\n  </body>|g" index.html
+# Add polyfills for older Samsung TV browsers
+POLYFILLS='<script>if(typeof globalThis==="undefined"){window.globalThis=window;}if(!Object.fromEntries){Object.fromEntries=function(e){var t={};for(var r of e){t[r[0]]=r[1]}return t}}</script>'
+sed -i "s|</body>|  ${POLYFILLS}\n  ${BUNDLE_SCRIPT}\n  </body>|g" index.html
 
 echo "✅ Build complete!"
 echo ""
