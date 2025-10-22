@@ -49,6 +49,10 @@ sed -i "s|v=[0-9]*|v=${TIMESTAMP}|g" index.html
 echo "🔧 Removing type=\"module\" from script tag..."
 sed -i 's|<script type="module" crossorigin|<script|g' index.html
 
+# Step 9: Remove base href (causes path issues on Samsung TV file system)
+echo "🔧 Removing base href tag..."
+sed -i 's|<base href="/">||g' index.html
+
 echo "✅ Build complete!"
 echo ""
 echo "📱 Samsung TV App ready in: tv-app/"
