@@ -1,0 +1,128 @@
+Fetch Polyfill] Loading Samsung TV fetch handler...
+fetch-polyfill-samsung.js:135 [Fetch Polyfill] Samsung TV fetch handler loaded
+polyfills.js:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js:20 [Polyfills] Added globalThis
+polyfills.js:36 [Polyfills] Added Object.fromEntries
+polyfills.js:86 [Polyfills] Added String.prototype.replaceAll
+polyfills.js:105 [Polyfills] Added Promise.allSettled
+polyfills.js:108 [Polyfills] All polyfills loaded successfully
+platform-detect.js:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js?v=1760735328:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+index-cfmiNDI2.js:134 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-cfmiNDI2.js:134 [MegaRadio API] BASE_URL: https://themegaradio.com
+tv-spatial-navigatio…js?v=1760735328:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1760735328:185 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1760735328:189 [TV Remote Keys] Key handler attached, waiting for React...
+index-cfmiNDI2.js:134 [Localization] Browser language detected: de-DE
+index-cfmiNDI2.js:134 [Localization] Using language: de
+index-cfmiNDI2.js:134 [Localization] Detected country: Germany DE
+index-cfmiNDI2.js:134 [Localization] Fetching translations for: de
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/translations/de?tv=1
+index-cfmiNDI2.js:134 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js?v=1760735328:52 [TV Nav] Found 0 focusable elements
+index-cfmiNDI2.js:134 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/translations/de?tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 25409
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 25409
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"mood_energetic":"Energisch","mood_relaxed":"Entspannt","mood_focused":"Konzentriert","mood_nostalg...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+Array(623)
+index-cfmiNDI2.js:134 [Localization] API response received
+index-cfmiNDI2.js:134 [Localization] Loaded 623 translations
+index-cfmiNDI2.js:134 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js?v=1760735328:52 [TV Nav] Found 5 focusable elements
+tv-spatial-navigation.js?v=1760735328:61 [TV Nav] Element types: 
+{button-login-apple: 1, button-login-facebook: 1, button-login-google: 1, button-login-email: 1, button-continue-without-login: 1}
+index-cfmiNDI2.js:134 [useTVNavigation] Initializing focus (focused element exists in DOM: null )
+tv-spatial-navigation.js?v=1760735328:52 [TV Nav] Found 5 focusable elements
+tv-spatial-navigation.js?v=1760735328:61 [TV Nav] Element types: 
+{button-login-apple: 1, button-login-facebook: 1, button-login-google: 1, button-login-email: 1, button-continue-without-login: 1}
+tv-spatial-navigation.js?v=1760735328:15 [TV Nav] Initialized with 5 focusable elements
+tv-spatial-navigation.js?v=1760735328:27 [TV Nav] Initial focus on first element
+tv-spatial-navigation.js?v=1760735328:80 [TV Nav] Focused: button-login-apple
+index-cfmiNDI2.js:134 [useTVNavigation] Initialization complete
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigatio…js?v=1760735328:232 [TV Nav] Moving DOWN to: button-login-facebook
+tv-spatial-navigation.js?v=1760735328:80 [TV Nav] Focused: button-login-facebook
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigatio…js?v=1760735328:232 [TV Nav] Moving DOWN to: button-login-google
+tv-spatial-navigation.js?v=1760735328:80 [TV Nav] Focused: button-login-google
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigatio…js?v=1760735328:232 [TV Nav] Moving DOWN to: button-login-email
+tv-spatial-navigation.js?v=1760735328:80 [TV Nav] Focused: button-login-email
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 40 ArrowDown
+tv-spatial-navigatio…js?v=1760735328:232 [TV Nav] Moving DOWN to: button-continue-without-login
+tv-spatial-navigation.js?v=1760735328:80 [TV Nav] Focused: button-continue-without-login
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 13 Enter
+index-cfmiNDI2.js:134 [DiscoverNoUser] Setting country from localization: Germany DE
+index-cfmiNDI2.js:134 [DiscoverNoUser] Fetching genres for country code: DE
+index-cfmiNDI2.js:134 [API] getAllGenres: Converting DE -> Germany
+index-cfmiNDI2.js:134 [API] getAllGenres URL: https://themegaradio.com/api/genres?country=Germany&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres?country=Germany&tv=1
+index-cfmiNDI2.js:134 [DiscoverNoUser] Fetching popular stations for country: DE
+index-cfmiNDI2.js:134 [API] getPopularStations: Converting DE -> Germany
+index-cfmiNDI2.js:134 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+index-cfmiNDI2.js:134 [DiscoverNoUser] Fetching stations for country code: DE
+index-cfmiNDI2.js:134 [API] getWorkingStations: Converting DE -> Germany
+index-cfmiNDI2.js:134 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=500&country=Germany&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=500&country=Germany&tv=1
+index-cfmiNDI2.js:134 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js?v=1760735328:52 [TV Nav] Found 8 focusable elements
+tv-spatial-navigation.js?v=1760735328:61 [TV Nav] Element types: 
+{button-country-selector: 1, button-login-header: 1, button-discover: 1, button-genres: 1, button-search: 1, …}
+index-cfmiNDI2.js:134 [useTVNavigation] Initializing focus (focused element exists in DOM: false )
+tv-spatial-navigation.js?v=1760735328:52 [TV Nav] Found 8 focusable elements
+tv-spatial-navigation.js?v=1760735328:61 [TV Nav] Element types: 
+{button-country-selector: 1, button-login-header: 1, button-discover: 1, button-genres: 1, button-search: 1, …}
+tv-spatial-navigation.js?v=1760735328:15 [TV Nav] Initialized with 8 focusable elements
+tv-spatial-navigation.js?v=1760735328:24 [TV Nav] Initial focus on Discover button
+tv-spatial-navigation.js?v=1760735328:80 [TV Nav] Focused: button-discover
+index-cfmiNDI2.js:134 [useTVNavigation] Initialization complete
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/genres?country=Germany&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 2119
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 2119
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"data":[{"_id":"genre-pop","name":"Pop","slug":"pop","description":"Popular music","stationCount":5...
+index-cfmiNDI2.js:134 [API] getAllGenres response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(5) ["data", "count", "currentPage", "perPage", "totalPages"]
+index-cfmiNDI2.js:134 [API] getAllGenres fetched: 9
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 29194
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 29194
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c47dbd66579311ab228c","stationuuid":"78012206-1aa1-11e9-a80b-52543be04c81",...
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-cfmiNDI2.js:134 [API] getPopularStations fetched: 24 stations
+tv-spatial-navigation.js?v=1760735328:52 [TV Nav] Found 40 focusable elements
+tv-spatial-navigation.js?v=1760735328:61 [TV Nav] Element types: 
+{button-country-selector: 1, button-login-header: 1, button-discover: 1, button-genres: 1, button-search: 1, …}
+index-cfmiNDI2.js:134 [useTVNavigation] Element count changed: 8 -> 40
+tv-spatial-navigation.js?v=1760735328:52 [TV Nav] Found 40 focusable elements
+tv-spatial-navigation.js?v=1760735328:61 [TV Nav] Element types: 
+{button-country-selector: 1, button-login-header: 1, button-discover: 1, button-genres: 1, button-search: 1, …}
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=&limit=500&country=Germany&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 609446
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 609446
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[{"_id":"68a8c4a5bd66579311ab852c","stationuuid":"c83f96db-ea3f-405f-82c1-7356a7553bea",...
+index-cfmiNDI2.js:134 [API] Response status: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-cfmiNDI2.js:134 [API] Working stations fetched: 500
+index-cfmiNDI2.js:134 Country changed: Germany, total stations: 500
+index-cfmiNDI2.js:134 Initial load: showing 56 stations, hasMore=true
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 39 ArrowRight
+tv-spatial-navigatio…js?v=1760735328:232 [TV Nav] Moving RIGHT to: A
+tv-spatial-navigation.js?v=1760735328:80 [TV Nav] Focused: Pop
+tv-spatial-navigation.js?v=1760735328:52 [TV Nav] Found 96 focusable elements
+tv-spatial-navigation.js?v=1760735328:61 [TV Nav] Element types: 
+{button-country-selector: 1, button-login-header: 1, button-discover: 1, button-genres: 1, button-search: 1, …}
+index-cfmiNDI2.js:134 [useTVNavigation] Element count changed: 40 -> 96
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigatio…js?v=1760735328:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-discover
+tv-spatial-navigatio…js?v=1760735328:133 [TV Nav] Blocking UP from content to sidebar - current: undefined - candidate: button-genres
+﻿

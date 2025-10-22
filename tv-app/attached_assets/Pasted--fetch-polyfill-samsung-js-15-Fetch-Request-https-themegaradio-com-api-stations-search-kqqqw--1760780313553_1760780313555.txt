@@ -1,0 +1,89 @@
+﻿
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=kqqqw+111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kqqqw+1111111&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 94
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 94
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[],"totalCount":0,"count":0,"pagination":{"page":1,"limit":4,"total":0,"pages":0}}...
+index-cfmiNDI2.js:134 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-cfmiNDI2.js:134 [API] searchStations fetched: 0
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 229 1
+index-cfmiNDI2.js:134 [API] searchStations: https://themegaradio.com/api/stations?search=kqqqw+1111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=kqqqw+1111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kqqqw+11111111&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 94
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 94
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[],"totalCount":0,"count":0,"pagination":{"page":1,"limit":4,"total":0,"pages":0}}...
+index-cfmiNDI2.js:134 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-cfmiNDI2.js:134 [API] searchStations fetched: 0
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 229 1
+index-cfmiNDI2.js:134 [API] searchStations: https://themegaradio.com/api/stations?search=kqqqw+11111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=kqqqw+11111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kqqqw+111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 94
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 94
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[],"totalCount":0,"count":0,"pagination":{"page":1,"limit":4,"total":0,"pages":0}}...
+index-cfmiNDI2.js:134 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-cfmiNDI2.js:134 [API] searchStations fetched: 0
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 229 1
+index-cfmiNDI2.js:134 [API] searchStations: https://themegaradio.com/api/stations?search=kqqqw+111111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=kqqqw+111111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kqqqw+1111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 94
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 94
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[],"totalCount":0,"count":0,"pagination":{"page":1,"limit":4,"total":0,"pages":0}}...
+index-cfmiNDI2.js:134 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-cfmiNDI2.js:134 [API] searchStations fetched: 0
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kqqqw+11111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 94
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 94
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[],"totalCount":0,"count":0,"pagination":{"page":1,"limit":4,"total":0,"pages":0}}...
+index-cfmiNDI2.js:134 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-cfmiNDI2.js:134 [API] searchStations fetched: 0
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 229 1
+index-cfmiNDI2.js:134 [API] searchStations: https://themegaradio.com/api/stations?search=kqqqw+1111111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=kqqqw+1111111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kqqqw+111111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 94
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 94
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[],"totalCount":0,"count":0,"pagination":{"page":1,"limit":4,"total":0,"pages":0}}...
+index-cfmiNDI2.js:134 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-cfmiNDI2.js:134 [API] searchStations fetched: 0
+fetch-polyfill-samsung.js:50 [Fetch] Response status: 200 for https://themegaradio.com/api/stations?search=kqqqw+1111111111111&limit=4&tv=1
+fetch-polyfill-samsung.js:51 [Fetch] Response ready state: 4
+fetch-polyfill-samsung.js:59 [Fetch] Got responseText, length: 94
+fetch-polyfill-samsung.js:74 [Fetch] Final response text length: 94
+fetch-polyfill-samsung.js:75 [Fetch] Response preview: {"stations":[],"totalCount":0,"count":0,"pagination":{"page":1,"limit":4,"total":0,"pages":0}}...
+index-cfmiNDI2.js:134 [API] searchStations response: 200
+fetch-polyfill-samsung.js:100 [Fetch] JSON parsed successfully, keys: 
+(4) ["stations", "totalCount", "count", "pagination"]
+index-cfmiNDI2.js:134 [API] searchStations fetched: 0
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 65385 Cancel
+tv-remote-keys.js?v=1760735328:136 [TV Keys] Key pressed: 38 ArrowUp
+tv-spatial-navigatio…js?v=1760735328:133 [TV Nav] Blocking UP from content to sidebar - current: recent-station-0 - candidate: button-discover
+tv-spatial-navigatio…js?v=1760735328:133 [TV Nav] Blocking UP from content to sidebar - current: recent-station-0 - candidate: button-genres
+tv-spatial-navigatio…js?v=1760735328:133 [TV Nav] Blocking UP from content to sidebar - current: recent-station-0 - candidate: button-search
+tv-spatial-navigatio…js?v=1760735328:133 [TV Nav] Blocking UP from content to sidebar - current: recent-station-0 - candidate: button-favorites
+tv-spatial-navigatio…js?v=1760735328:133 [TV Nav] Blocking UP from content to sidebar - current: recent-station-0 - candidate: button-records
+tv-spatial-navigatio…js?v=1760735328:133 [TV Nav] Blocking UP from content to sidebar - current: recent-station-0 - candidate: button-settings
+tv-spatial-navigatio…js?v=1760735328:232 [TV Nav] Moving UP to: input-search
+tv-spatial-navigation.js?v=1760735328:80 [TV Nav] Focused: input-search
+﻿
+​
