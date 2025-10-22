@@ -149,9 +149,10 @@ export const Favorites = (): JSX.Element => {
   };
 
   return (
-    <div className="fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-favorites">
-      {/* Background Image */}
-      <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
+    <>
+      <div className="fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-favorites">
+        {/* Background Image */}
+        <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
           <img
             alt=""
             className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
@@ -238,9 +239,10 @@ export const Favorites = (): JSX.Element => {
             })}
           </>
         )}
+      </div>
 
       {/* Sidebar */}
       <Sidebar activePage="favorites" isFocused={isFocused} getFocusClasses={getFocusClasses} />
-    </div>
+    </>
   );
 };
