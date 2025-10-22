@@ -80,8 +80,15 @@ export const RadioPlaying = (): JSX.Element => {
   // Fetch station details
   const { data: stationData, isLoading: isLoadingStation, error: stationError } = useQuery({
     queryKey: ['station', stationId],
-    queryFn: () => megaRadioApi.getStationById(stationId!),
+    queryFn: async () => {
+      console.log('[RadioPlaying] Fetching station details for:', stationId);
+      const result = await megaRadioApi.getStationById(stationId!);
+      console.log('[RadioPlaying] Station details fetched:', result?.station?.name);
+      return result;
+    },
     enabled: !!stationId,
+    retry: 2,
+    staleTime: 30000,
   });
 
   const station = stationData?.station;
@@ -336,10 +343,30 @@ export const RadioPlaying = (): JSX.Element => {
     setUpdateTrigger(prev => prev + 1);
   };
 
-  if (!station) {
+  // Show error state
+  if (stationError) {
+    console.error('[RadioPlaying] Error loading station:', stationError);
     return (
-      <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex items-center justify-center">
-        <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white">Loading...</p>
+      <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
+        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">Failed to load station</p>
+        <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-gray-400">
+          {stationError instanceof Error ? stationError.message : 'Unknown error'}
+        </p>
+        <Link href="/discover-no-user">
+          <button className="bg-[#ff4199] hover:bg-[#ff1a85] px-12 py-4 rounded-[30px] font-['Ubuntu',Helvetica] font-bold text-[24px] text-white transition-colors">
+            Back to Discover
+          </button>
+        </Link>
+      </div>
+    );
+  }
+
+  // Show loading state
+  if (isLoadingStation || !station) {
+    return (
+      <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
+        <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#ff4199]"></div>
+        <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white">Loading station...</p>
       </div>
     );
   }
