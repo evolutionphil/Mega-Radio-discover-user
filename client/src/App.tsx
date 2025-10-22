@@ -25,7 +25,6 @@ import { DiscoverUser } from "@/pages/DiscoverUser";
 import { DiscoverNoUser } from "@/pages/DiscoverNoUser";
 import { RadioPlaying } from "@/pages/RadioPlaying";
 import { Genres } from "@/pages/Genres";
-import { GenreDetail } from "@/pages/GenreDetail";
 import { GenreList } from "@/pages/GenreList";
 import { Search } from "@/pages/Search";
 import { Favorites } from "@/pages/Favorites";
@@ -53,7 +52,6 @@ function Router() {
       <Route path="/discover-no-user" component={DiscoverNoUser} />
       <Route path="/radio-playing" component={RadioPlaying} />
       <Route path="/genres" component={Genres} />
-      <Route path="/genre/:id" component={GenreDetail} />
       <Route path="/genre-list" component={GenreList} />
       <Route path="/search" component={Search} />
       <Route path="/favorites" component={Favorites} />
