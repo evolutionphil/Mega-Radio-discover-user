@@ -11,8 +11,8 @@ rm -rf dist/public/assets/*.js
 echo "📦 Building React bundle..."
 vite build --config vite.config.tv.ts
 
-# Step 2: Extract the hashed bundle filename from Vite output
-VITE_JS_FILE=$(grep -oP 'src="/assets/index-[^"]+\.js"' dist/public/index.html | sed 's/src="//g' | sed 's/"//g' | sed 's/^\///g')
+# Step 2: Extract the hashed bundle filename from Vite output (handle relative paths)
+VITE_JS_FILE=$(grep -oP 'src="\./assets/index-[^"]+\.js"' dist/public/index.html | sed 's/src="\.\/\|src="\///g' | sed 's/"//g')
 echo "✓ Vite bundle: ${VITE_JS_FILE}"
 
 # Step 2.5: RENAME bundle with timestamp for Samsung TV cache busting
