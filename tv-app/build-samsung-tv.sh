@@ -31,6 +31,15 @@ echo "📂 Copying images..."
 mkdir -p images
 cp -r client/public/images/* images/ 2>/dev/null || true
 
+# Step 4.5: Rename misnamed SVG files (they have .png extension but are actually SVG)
+echo "🔧 Fixing misnamed SVG files..."
+for f in images/ellipse2.png images/waves.png images/monitor.png images/phone.png images/tablet.png; do
+  if [ -f "$f" ]; then
+    base=$(basename "$f" .png)
+    mv "$f" "images/${base}.svg"
+  fi
+done
+
 # Step 5: Copy TV scripts
 echo "📂 Copying TV scripts..."
 mkdir -p js css
