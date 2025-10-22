@@ -258,13 +258,19 @@ export const DiscoverNoUser = (): JSX.Element => {
       const key = (window as any).tvKey;
       
       switch(e.keyCode) {
-        case key?.LEFT || 37:
+        case key?.LEFT:
+        case 37:
+          e.preventDefault();
           setExitModalFocusIndex(0); // Cancel button
           break;
-        case key?.RIGHT || 39:
+        case key?.RIGHT:
+        case 39:
+          e.preventDefault();
           setExitModalFocusIndex(1); // Exit button
           break;
-        case key?.ENTER || 13:
+        case key?.ENTER:
+        case 13:
+          e.preventDefault();
           if (exitModalFocusIndex === 0) {
             // Cancel - close modal
             setIsExitModalOpen(false);
@@ -273,7 +279,10 @@ export const DiscoverNoUser = (): JSX.Element => {
             setLocation('/');
           }
           break;
-        case key?.RETURN || 461 || 10009:
+        case key?.RETURN:
+        case 461:
+        case 10009:
+          e.preventDefault();
           // Back button also cancels the exit modal
           setIsExitModalOpen(false);
           break;
@@ -290,19 +299,24 @@ export const DiscoverNoUser = (): JSX.Element => {
     const key = (window as any).tvKey;
     
     switch(e.keyCode) {
-      case key?.UP || 38:
+      case key?.UP:
+      case 38:
         customHandleNavigation('UP');
         break;
-      case key?.DOWN || 40:
+      case key?.DOWN:
+      case 40:
         customHandleNavigation('DOWN');
         break;
-      case key?.LEFT || 37:
+      case key?.LEFT:
+      case 37:
         customHandleNavigation('LEFT');
         break;
-      case key?.RIGHT || 39:
+      case key?.RIGHT:
+      case 39:
         customHandleNavigation('RIGHT');
         break;
-      case key?.ENTER || 13:
+      case key?.ENTER:
+      case 13:
         console.log('[DiscoverNoUser] ENTER key pressed - calling handleSelect()');
         handleSelect();
         break;
