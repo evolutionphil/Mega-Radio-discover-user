@@ -53,6 +53,12 @@ sed -i 's|<script type="module" crossorigin|<script|g' index.html
 echo "🔧 Removing base href tag..."
 sed -i 's|<base href="/">||g' index.html
 
+# Step 10: Move React bundle script from head to end of body (must load after #root div)
+echo "🔧 Moving React script to end of body..."
+BUNDLE_SCRIPT=$(grep -o '<script src="\./assets/index-[^"]*\.js"></script>' index.html)
+sed -i "s|${BUNDLE_SCRIPT}||g" index.html
+sed -i "s|</body>|  ${BUNDLE_SCRIPT}\n  </body>|g" index.html
+
 echo "✅ Build complete!"
 echo ""
 echo "📱 Samsung TV App ready in: tv-app/"
