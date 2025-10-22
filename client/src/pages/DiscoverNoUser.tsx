@@ -18,6 +18,8 @@ export const DiscoverNoUser = (): JSX.Element => {
   const { playStation, isPlaying } = useGlobalPlayer();
   const [, setLocation] = useLocation();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
+  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+  const [exitModalFocusIndex, setExitModalFocusIndex] = useState(0);
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
@@ -243,12 +245,42 @@ export const DiscoverNoUser = (): JSX.Element => {
       }
     },
     onBack: () => {
-      // No back action on discover page
+      // Show exit confirmation modal
+      setIsExitModalOpen(true);
+      setExitModalFocusIndex(0); // Focus on "Cancel" button
     }
   });
 
   // Register page-specific key handler with custom navigation
   usePageKeyHandler('/discover-no-user', (e) => {
+    // Exit modal key handler (highest priority)
+    if (isExitModalOpen) {
+      const key = (window as any).tvKey;
+      
+      switch(e.keyCode) {
+        case key?.LEFT || 37:
+          setExitModalFocusIndex(0); // Cancel button
+          break;
+        case key?.RIGHT || 39:
+          setExitModalFocusIndex(1); // Exit button
+          break;
+        case key?.ENTER || 13:
+          if (exitModalFocusIndex === 0) {
+            // Cancel - close modal
+            setIsExitModalOpen(false);
+          } else {
+            // Exit - navigate to splash/login page
+            setLocation('/');
+          }
+          break;
+        case key?.RETURN || 461 || 10009:
+          // Back button also cancels the exit modal
+          setIsExitModalOpen(false);
+          break;
+      }
+      return; // Consume event
+    }
+
     // Ignore all key events when country selector modal is open
     if (isCountrySelectorOpen) {
       console.log('[DiscoverNoUser] Key event ignored - country selector modal is open');
@@ -721,6 +753,52 @@ export const DiscoverNoUser = (): JSX.Element => {
           setCountry(country.name, country.code, country.flag);
         }}
       />
+
+      {/* Exit Confirmation Modal */}
+      {isExitModalOpen && (
+        <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center" data-testid="modal-exit-confirmation">
+          <div className="bg-[#1a1a1a] rounded-[20px] p-12 w-[600px] border-2 border-[rgba(255,255,255,0.1)]">
+            {/* Title */}
+            <h2 className="font-['Ubuntu',Helvetica] font-bold text-[36px] text-white text-center mb-6">
+              {t('exit_app') || 'Exit App?'}
+            </h2>
+            
+            {/* Message */}
+            <p className="font-['Ubuntu',Helvetica] font-normal text-[24px] text-white/70 text-center mb-10">
+              {t('are_you_sure_exit') || 'Are you sure you want to exit MegaRadio?'}
+            </p>
+            
+            {/* Buttons */}
+            <div className="flex gap-6 justify-center">
+              {/* Cancel Button */}
+              <button
+                className={`px-12 py-4 rounded-[30px] font-['Ubuntu',Helvetica] font-bold text-[24px] transition-all ${
+                  exitModalFocusIndex === 0
+                    ? 'bg-white text-black border-4 border-[#ff4199]'
+                    : 'bg-[rgba(255,255,255,0.1)] text-white border-2 border-[rgba(255,255,255,0.2)]'
+                }`}
+                onClick={() => setIsExitModalOpen(false)}
+                data-testid="button-exit-cancel"
+              >
+                {t('cancel') || 'Cancel'}
+              </button>
+              
+              {/* Exit Button */}
+              <button
+                className={`px-12 py-4 rounded-[30px] font-['Ubuntu',Helvetica] font-bold text-[24px] transition-all ${
+                  exitModalFocusIndex === 1
+                    ? 'bg-[#ff4199] text-white border-4 border-[#ff4199]'
+                    : 'bg-[rgba(255,65,153,0.3)] text-white border-2 border-[rgba(255,65,153,0.5)]'
+                }`}
+                onClick={() => setLocation('/')}
+                data-testid="button-exit-confirm"
+              >
+                {t('exit') || 'Exit'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
