@@ -45,7 +45,8 @@ export const GenreList = (): JSX.Element => {
     gcTime: 60000, // 1 minute (renamed from cacheTime in v5)
   });
 
-  // Initialize when data loads - show first 21 stations
+  // Initialize/Update when data loads - show first 21 stations
+  // This effect runs whenever stationsData.stations array changes (by reference or content)
   useEffect(() => {
     console.log('[GenreList] Data effect - stationsData:', stationsData?.stations?.length || 0);
     if (stationsData?.stations && stationsData.stations.length > 0) {
@@ -56,17 +57,15 @@ export const GenreList = (): JSX.Element => {
       setDisplayedStations(firstBatch);
       setHasMore(stationsData.stations.length > STATIONS_PER_PAGE);
       setPage(1);
+    } else if (stationsData?.stations && stationsData.stations.length === 0) {
+      // No stations found for this genre/country combo
+      console.log('[GenreList] No stations found');
+      setAllStations([]);
+      setDisplayedStations([]);
+      setHasMore(false);
+      setPage(1);
     }
-  }, [stationsData]);
-
-  // Reset pagination when genre or country changes
-  useEffect(() => {
-    console.log('[GenreList] Reset effect - genre:', genreSlug, 'country:', selectedCountryCode);
-    setPage(1);
-    setHasMore(true);
-    setDisplayedStations([]);
-    setAllStations([]);
-  }, [genreSlug, selectedCountryCode]);
+  }, [stationsData?.stations, genreSlug, selectedCountryCode]);
 
   // Infinite scroll detection
   useEffect(() => {
