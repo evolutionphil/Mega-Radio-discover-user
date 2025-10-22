@@ -123,6 +123,19 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       isNavigatingRef.current = false;
       console.log('[CountrySelector] Modal opened - reset isNavigating flag to FALSE');
       
+      // Add RETURN key handler for Samsung TV
+      const handleKeyDown = (e: KeyboardEvent) => {
+        const key = (window as any).tvKey;
+        if (e.keyCode === (key?.RETURN || 461) || e.keyCode === 10009) {
+          console.log('[CountrySelector] RETURN key - closing modal');
+          e.preventDefault();
+          e.stopPropagation();
+          onClose();
+        }
+      };
+      
+      document.addEventListener('keydown', handleKeyDown);
+      
       const timeout = setTimeout(() => {
         if ((window as any).tvSpatialNav) {
           console.log('[CountrySelector] Initializing TV navigation');
@@ -145,9 +158,13 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           }
         }
       }, 200);
-      return () => clearTimeout(timeout);
+      
+      return () => {
+        clearTimeout(timeout);
+        document.removeEventListener('keydown', handleKeyDown);
+      };
     }
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   // Update TV navigation when filtered countries change (after search)
   // Only update focusable elements, don't re-initialize everything

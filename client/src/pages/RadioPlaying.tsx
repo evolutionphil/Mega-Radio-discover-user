@@ -14,11 +14,13 @@ import { assetPath } from "@/lib/assetPath";
 
 
 export const RadioPlaying = (): JSX.Element => {
+  console.log('[RadioPlaying] 🎬 Component mounting/rendering');
   const [location, setLocation] = useLocation();
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { playStation, togglePlayPause, isPlaying, isBuffering } = useGlobalPlayer();
+  console.log('[RadioPlaying] 🎮 Global player state:', { isPlaying, isBuffering });
   
   // Station history for Previous button (stores station IDs)
   const stationHistoryRef = useRef<string[]>([]);
@@ -35,36 +37,46 @@ export const RadioPlaying = (): JSX.Element => {
   
   // Parse station ID from URL query params (supports both hash and pre-hash params)
   const stationId = useMemo(() => {
-    console.log('[RadioPlaying] Parsing station ID from:', {
-      wouterLocation: location,
-      windowSearch: window.location.search,
-      windowHash: window.location.hash,
-      fullURL: window.location.href
+    console.log('[RadioPlaying] 🔍 Parsing station ID from URL');
+    console.log('[RadioPlaying] 📍 Wouter location:', location);
+    console.log('[RadioPlaying] 📍 window.location.search:', window.location.search);
+    console.log('[RadioPlaying] 📍 window.location.hash:', window.location.hash);
+    console.log('[RadioPlaying] 📍 window.location.href:', window.location.href);
+    console.log('[RadioPlaying] 📍 Full URL breakdown:', {
+      protocol: window.location.protocol,
+      host: window.location.host,
+      pathname: window.location.pathname,
+      search: window.location.search,
+      hash: window.location.hash
     });
 
     // Try to get from wouter location first (hash-based: /#/radio-playing?station=123)
     const queryStart = location.indexOf('?');
     if (queryStart !== -1) {
       const queryString = location.substring(queryStart + 1);
+      console.log('[RadioPlaying] 🔎 Found query string in wouter location:', queryString);
       const searchParams = new URLSearchParams(queryString);
       const id = searchParams.get('station') || searchParams.get('stationId');
       if (id) {
         console.log('[RadioPlaying] ✅ Found station ID in hash params:', id);
         return id;
       }
+      console.log('[RadioPlaying] ⚠️ Query string found but no station/stationId param');
     }
 
     // Fallback: Try window.location.search (pre-hash: /?stationId=123#/radio-playing)
     if (window.location.search) {
+      console.log('[RadioPlaying] 🔎 Trying window.location.search:', window.location.search);
       const searchParams = new URLSearchParams(window.location.search);
       const id = searchParams.get('station') || searchParams.get('stationId');
       if (id) {
         console.log('[RadioPlaying] ✅ Found station ID in pre-hash params:', id);
         return id;
       }
+      console.log('[RadioPlaying] ⚠️ window.location.search found but no station/stationId param');
     }
 
-    console.log('[RadioPlaying] ❌ No station ID found in URL');
+    console.log('[RadioPlaying] ❌ No station ID found in URL - returning null');
     return null;
   }, [location, updateTrigger]);
   
@@ -102,9 +114,12 @@ export const RadioPlaying = (): JSX.Element => {
   const { data: stationData, isLoading: isLoadingStation, error: stationError } = useQuery({
     queryKey: ['station', stationId],
     queryFn: async () => {
-      console.log('[RadioPlaying] Fetching station details for:', stationId);
+      console.log('[RadioPlaying] 📡 Fetching station details for stationId:', stationId);
       const result = await megaRadioApi.getStationById(stationId!);
-      console.log('[RadioPlaying] Station details fetched:', result?.station?.name);
+      console.log('[RadioPlaying] ✅ Station details fetched successfully');
+      console.log('[RadioPlaying] 📻 Station name:', result?.station?.name);
+      console.log('[RadioPlaying] 📻 Station URL:', result?.station?.url);
+      console.log('[RadioPlaying] 📻 Station data:', result?.station);
       return result;
     },
     enabled: !!stationId,
@@ -113,6 +128,16 @@ export const RadioPlaying = (): JSX.Element => {
   });
 
   const station = stationData?.station;
+  
+  console.log('[RadioPlaying] 🎯 Query state:', {
+    stationId,
+    enabled: !!stationId,
+    isLoadingStation,
+    hasStationData: !!stationData,
+    hasStation: !!station,
+    stationName: station?.name,
+    error: stationError
+  });
 
 
   // Fetch station metadata
@@ -224,6 +249,37 @@ export const RadioPlaying = (): JSX.Element => {
     setFocusIndex(newIndex);
   };
 
+  // Register RETURN key handler at the TOP - works even on loading screen
+  usePageKeyHandler('/radio-playing', (e) => {
+    const key = (window as any).tvKey;
+    
+    // RETURN key handler ALWAYS works, even when loading
+    if (e.keyCode === (key?.RETURN || 461) || e.keyCode === 10009) {
+      console.log('[RadioPlaying] 🔙 RETURN key pressed - navigating to Discover');
+      setLocation('/discover-no-user');
+      return;
+    }
+    
+    // Other key handlers only work after station loads
+    switch(e.keyCode) {
+      case key?.UP || 38:
+        customHandleNavigation('UP');
+        break;
+      case key?.DOWN || 40:
+        customHandleNavigation('DOWN');
+        break;
+      case key?.LEFT || 37:
+        customHandleNavigation('LEFT');
+        break;
+      case key?.RIGHT || 39:
+        customHandleNavigation('RIGHT');
+        break;
+      case key?.ENTER || 13:
+        handleSelect();
+        break;
+    }
+  });
+
   // Focus management with custom navigation
   const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
     totalItems,
@@ -270,35 +326,8 @@ export const RadioPlaying = (): JSX.Element => {
     },
     onBack: () => {
       // Always go back to discover for Samsung TV compatibility
-      console.log('[RadioPlaying] Back button - navigating to Discover');
+      console.log('[RadioPlaying] 🔙 Back button - navigating to Discover');
       setLocation('/discover-no-user');
-    }
-  });
-
-  // Register page-specific key handler with custom navigation
-  usePageKeyHandler('/radio-playing', (e) => {
-    const key = (window as any).tvKey;
-    
-    switch(e.keyCode) {
-      case key?.UP || 38:
-        customHandleNavigation('UP');
-        break;
-      case key?.DOWN || 40:
-        customHandleNavigation('DOWN');
-        break;
-      case key?.LEFT || 37:
-        customHandleNavigation('LEFT');
-        break;
-      case key?.RIGHT || 39:
-        customHandleNavigation('RIGHT');
-        break;
-      case key?.ENTER || 13:
-        handleSelect();
-        break;
-      case key?.RETURN || 461 || 10009:
-        console.log('[RadioPlaying] RETURN key - going back to Discover');
-        setLocation('/discover-no-user');
-        break;
     }
   });
 
@@ -318,9 +347,21 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Auto-play when station loads using global player
   useEffect(() => {
+    console.log('[RadioPlaying] 🎵 Auto-play effect triggered');
+    console.log('[RadioPlaying] 🎵 Has station:', !!station);
     if (station) {
-      console.log('[RadioPlaying] Auto-playing station via global player:', station.name);
+      console.log('[RadioPlaying] 🎵 Station data available:', {
+        name: station.name,
+        id: station._id,
+        url: station.url,
+        codec: station.codec,
+        bitrate: station.bitrate
+      });
+      console.log('[RadioPlaying] ▶️ Starting auto-play via global player');
       playStation(station);
+      console.log('[RadioPlaying] ✅ Auto-play initiated');
+    } else {
+      console.log('[RadioPlaying] ⏳ Waiting for station data to auto-play');
     }
   }, [station]);
 
@@ -402,17 +443,18 @@ export const RadioPlaying = (): JSX.Element => {
   }
 
   if (isLoadingStation || !station) {
-    console.log('[RadioPlaying] 🔄 Loading state:', {
-      isLoadingStation,
-      hasStation: !!station,
-      stationId,
-      stationData
-    });
+    console.log('[RadioPlaying] 🔄 LOADING STATE - Showing loading screen');
+    console.log('[RadioPlaying] 🔄 isLoadingStation:', isLoadingStation);
+    console.log('[RadioPlaying] 🔄 hasStation:', !!station);
+    console.log('[RadioPlaying] 🔄 stationId:', stationId);
+    console.log('[RadioPlaying] 🔄 stationData:', stationData);
+    console.log('[RadioPlaying] 🔄 Station is:', station ? 'AVAILABLE' : 'NULL');
     return (
       <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#ff4199]"></div>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white">Loading station...</p>
         <p className="font-['Ubuntu',Helvetica] font-normal text-[20px] text-gray-500">Station ID: {stationId}</p>
+        <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-gray-600 mt-4">Press RETURN to go back</p>
       </div>
     );
   }

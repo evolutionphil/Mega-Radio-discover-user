@@ -13,6 +13,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
 
 export const Search = (): JSX.Element => {
+  console.log('[Search] 🎬 Component mounting/rendering');
   const [, setLocation] = useLocation();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
   const { playStation, isPlaying } = useGlobalPlayer();
@@ -77,6 +78,7 @@ export const Search = (): JSX.Element => {
 
   // Custom navigation logic for multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
+    console.log('[Search] 🎮 Navigation:', direction, 'from focusIndex:', focusIndex);
     const current = focusIndex;
     let newIndex = current;
 
@@ -174,6 +176,7 @@ export const Search = (): JSX.Element => {
 
     // Clamp to valid range
     newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
+    console.log('[Search] 🎯 New focusIndex:', newIndex);
     setFocusIndex(newIndex);
   };
 
@@ -194,35 +197,41 @@ export const Search = (): JSX.Element => {
     cols: 1,
     initialIndex: 6, // Start on search input
     onSelect: (index) => {
-      console.log('[Search] 🎯 handleMenuClick - index:', index);
+      console.log('[Search] 🎯 onSelect triggered - index:', index);
       
       // Sidebar navigation (0-4)
       if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
+        console.log('[Search] 📍 Sidebar item selected:', index, 'route:', route);
         if (route !== '#') {
-          console.log('[Search] 📍 Navigating to sidebar route:', route);
+          console.log('[Search] 🚀 Navigating to sidebar route:', route);
           setLocation(route);
         }
       }
       // Country selector (5)
       else if (index === 5) {
-        console.log('[Search] 🌍 Opening country selector');
+        console.log('[Search] 🌍 Country selector selected - opening modal');
         setIsCountrySelectorOpen(true);
       }
       // Search input (6) - LGTV pattern: focus input and set cursor to end
       else if (index === 6) {
-        console.log('[Search] ⌨️  Search input selected - focusing input field (LGTV pattern)');
+        console.log('[Search] ⌨️  Search input selected');
+        console.log('[Search] 📝 Focusing input field and setting cursor to end');
         if (inputRef.current) {
           inputRef.current.focus();
+          console.log('[Search] ✅ Input focused');
           setInputCursorToEnd();
+        } else {
+          console.log('[Search] ❌ Input ref is null');
         }
       }
       // Search results (7 to 7+searchResults.length-1)
       else if (index >= 7 && index < 7 + searchResults.length) {
         const resultIndex = index - 7;
         const station = searchResults[resultIndex];
+        console.log('[Search] 🎵 Search result selected:', resultIndex);
         if (station) {
-          console.log('[Search] ▶️  Playing search result:', station.name);
+          console.log('[Search] ▶️  Playing search result:', station.name, 'id:', station._id);
           playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
         }
@@ -231,36 +240,53 @@ export const Search = (): JSX.Element => {
       else if (index >= 7 + searchResults.length) {
         const recentIndex = index - 7 - searchResults.length;
         const station = recentStations[recentIndex];
+        console.log('[Search] 🕒 Recently played selected:', recentIndex);
         if (station) {
-          console.log('[Search] ▶️  Playing recently played:', station.name);
+          console.log('[Search] ▶️  Playing recently played:', station.name, 'id:', station._id);
           playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
         }
       }
     },
     onBack: () => {
+      console.log('[Search] 🔙 Back button pressed - navigating to Discover');
       setLocation('/discover-no-user');
     }
   });
+  
+  // Fix: Blur input when focusIndex moves away from search input (index 6)
+  useEffect(() => {
+    console.log('[Search] 👁️ focusIndex changed to:', focusIndex);
+    if (focusIndex !== 6 && inputRef.current) {
+      console.log('[Search] 🚫 Focus moved away from search input - blurring to prevent keyboard');
+      inputRef.current.blur();
+    }
+  }, [focusIndex]);
 
   // Register page-specific key handler with custom navigation
   usePageKeyHandler('/search', (e) => {
     const key = (window as any).tvKey;
+    console.log('[Search] ⌨️ Key pressed:', e.keyCode, 'key:', e.key);
     
     switch(e.keyCode) {
       case key?.UP || 38:
+        console.log('[Search] ⬆️ UP key');
         customHandleNavigation('UP');
         break;
       case key?.DOWN || 40:
+        console.log('[Search] ⬇️ DOWN key');
         customHandleNavigation('DOWN');
         break;
       case key?.LEFT || 37:
+        console.log('[Search] ⬅️ LEFT key');
         customHandleNavigation('LEFT');
         break;
       case key?.RIGHT || 39:
+        console.log('[Search] ➡️ RIGHT key');
         customHandleNavigation('RIGHT');
         break;
       case key?.ENTER || 13:
+        console.log('[Search] ✅ ENTER key');
         handleSelect();
         break;
     }
@@ -394,7 +420,16 @@ export const Search = (): JSX.Element => {
             ref={inputRef}
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              console.log('[Search] 📝 Search query changed to:', e.target.value);
+              setSearchQuery(e.target.value);
+            }}
+            onFocus={() => {
+              console.log('[Search] 🎯 Input focused - keyboard should appear');
+            }}
+            onBlur={() => {
+              console.log('[Search] 👋 Input blurred - keyboard should hide');
+            }}
             placeholder="Kral Ra"
             className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[650px] placeholder:text-[rgba(255,255,255,0.5)]"
           />

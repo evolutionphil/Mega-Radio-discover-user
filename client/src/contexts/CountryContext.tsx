@@ -27,6 +27,12 @@ export const CountryProvider = ({ children }: { children: ReactNode }) => {
   
   const [selectedCountryFlag, setSelectedCountryFlag] = useState<string>(() => {
     const saved = localStorage.getItem('selectedCountryFlag');
+    // Fix: Clear old absolute paths that cause ERR_ACCESS_DENIED on Samsung TV
+    if (saved && saved.startsWith('/images/')) {
+      console.log('[CountryContext] Clearing old absolute path from localStorage:', saved);
+      localStorage.removeItem('selectedCountryFlag');
+      return assetPath('images/austria-1.png');
+    }
     return saved || assetPath('images/austria-1.png');
   });
 
