@@ -167,15 +167,20 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   }, [isOpen, onClose]);
 
   // Update TV navigation when filtered countries change (after search)
-  // Only update focusable elements, don't re-initialize everything
+  // Use updateFocusableElements() to avoid stealing focus from search input
   useEffect(() => {
     if (isOpen && filteredCountries.length > 0) {
       const timeout = setTimeout(() => {
         if ((window as any).tvSpatialNav) {
           console.log('[CountrySelector] Updating focusable elements for', filteredCountries.length, 'countries');
+          // Just update the focusable elements list without stealing focus
           (window as any).tvSpatialNav.updateFocusableElements();
+          
+          // Log for debugging
+          const countryElements = document.querySelectorAll('[data-testid^="country-option-"]');
+          console.log('[CountrySelector] Found', countryElements.length, 'country elements in DOM');
         }
-      }, 300);
+      }, 100);
       return () => clearTimeout(timeout);
     }
   }, [isOpen, filteredCountries.length]);
@@ -340,10 +345,14 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                     // Handle DOWN arrow to exit input and focus first country
                     if (e.key === 'ArrowDown' || e.keyCode === 40) {
                       e.preventDefault();
-                      const firstCountry = document.querySelector('[data-testid^="country-option-"]') as HTMLElement;
-                      if (firstCountry && (window as any).tvSpatialNav) {
-                        console.log('[CountrySelector] DOWN pressed - focusing first country');
-                        (window as any).tvSpatialNav.focus(firstCountry);
+                      if ((window as any).tvSpatialNav) {
+                        console.log('[CountrySelector] DOWN pressed - re-initializing and focusing first country');
+                        // Re-initialize TV navigation to ensure all countries are registered
+                        (window as any).tvSpatialNav.init();
+                        const firstCountry = document.querySelector('[data-testid^="country-option-"]') as HTMLElement;
+                        if (firstCountry) {
+                          (window as any).tvSpatialNav.focus(firstCountry);
+                        }
                       }
                     }
                     // Handle UP arrow
