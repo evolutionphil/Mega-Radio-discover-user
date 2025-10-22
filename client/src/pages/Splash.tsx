@@ -1,20 +1,52 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { assetPath } from "@/lib/assetPath";
 
 export const Splash = (): JSX.Element => {
   const [, setLocation] = useLocation();
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   
   // Initialize TV navigation
   useTVNavigation();
 
+  // Log component mount and image paths
+  useEffect(() => {
+    console.log('[Splash] 🎬 Component mounted');
+    const imagePaths = {
+      waves: assetPath("images/waves.png"),
+      logo: assetPath("images/path-8.svg"),
+      ellipse: assetPath("images/ellipse2.png"),
+      monitor: assetPath("images/monitor.png"),
+      tablet: assetPath("images/tablet.png"),
+      phone: assetPath("images/phone.png"),
+      frame: assetPath("images/frame445.png")
+    };
+    console.log('[Splash] 📂 Image paths to load:', imagePaths);
+
+    return () => {
+      console.log('[Splash] 👋 Component unmounting');
+    };
+  }, []);
+
+  const handleImageLoad = (name: string) => {
+    console.log(`[Splash] ✅ Image loaded successfully: ${name}`);
+    setLoadedImages(prev => ({ ...prev, [name]: true }));
+  };
+
+  const handleImageError = (name: string, path: string) => {
+    console.error(`[Splash] ❌ Image FAILED to load: ${name} at path: ${path}`);
+    setLoadedImages(prev => ({ ...prev, [name]: false }));
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
+      console.log('[Splash] ⏱️  Timer completed, navigating to Guide 1');
+      console.log('[Splash] 📊 Final image load status:', loadedImages);
       setLocation("/guide-1");
     }, 3000); // 3 seconds for splash screen, then show guides
     return () => clearTimeout(timer);
-  }, [setLocation]);
+  }, [setLocation, loadedImages]);
 
   return (
     <div className="bg-[#0e0e0e] fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-splash">
@@ -30,6 +62,8 @@ export const Splash = (): JSX.Element => {
           alt="" 
           className="block max-w-none size-full opacity-40" 
           src={assetPath("images/waves.png")}
+          onLoad={() => handleImageLoad('waves.png')}
+          onError={() => handleImageError('waves.png', assetPath("images/waves.png"))}
         />
       </div>
 
@@ -43,6 +77,8 @@ export const Splash = (): JSX.Element => {
             alt="" 
             className="block max-w-none size-full" 
             src={assetPath("images/path-8.svg")}
+            onLoad={() => handleImageLoad('path-8.svg')}
+            onError={() => handleImageError('path-8.svg', assetPath("images/path-8.svg"))}
           />
         </div>
       </div>
@@ -60,6 +96,8 @@ export const Splash = (): JSX.Element => {
             alt="" 
             className="block max-w-none size-full opacity-30" 
             src={assetPath("images/ellipse2.png")}
+            onLoad={() => handleImageLoad('ellipse2.png')}
+            onError={() => handleImageError('ellipse2.png', assetPath("images/ellipse2.png"))}
           />
         </div>
       </div>
@@ -82,6 +120,8 @@ export const Splash = (): JSX.Element => {
             alt="" 
             className="block max-w-none size-full" 
             src={assetPath("images/monitor.png")}
+            onLoad={() => handleImageLoad('monitor.png')}
+            onError={() => handleImageError('monitor.png', assetPath("images/monitor.png"))}
           />
         </div>
         
@@ -92,6 +132,8 @@ export const Splash = (): JSX.Element => {
               alt="" 
               className="block max-w-none size-full" 
               src={assetPath("images/tablet.png")}
+              onLoad={() => handleImageLoad('tablet.png')}
+              onError={() => handleImageError('tablet.png', assetPath("images/tablet.png"))}
             />
           </div>
         </div>
@@ -102,6 +144,8 @@ export const Splash = (): JSX.Element => {
             alt="" 
             className="block max-w-none size-full" 
             src={assetPath("images/phone.png")}
+            onLoad={() => handleImageLoad('phone.png')}
+            onError={() => handleImageError('phone.png', assetPath("images/phone.png"))}
           />
         </div>
       </div>
@@ -114,6 +158,8 @@ export const Splash = (): JSX.Element => {
           alt="" 
           className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full opacity-20" 
           src={assetPath("images/frame445.png")}
+          onLoad={() => handleImageLoad('frame445.png')}
+          onError={() => handleImageError('frame445.png', assetPath("images/frame445.png"))}
         />
       </div>
 
