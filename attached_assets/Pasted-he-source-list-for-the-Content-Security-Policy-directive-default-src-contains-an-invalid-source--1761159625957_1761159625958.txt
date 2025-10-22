@@ -1,0 +1,24 @@
+he source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.Understand this error
+39The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?Understand this error
+39The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.Understand this error
+/~:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.Understand this error
+/~:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?Understand this error
+/~:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.Understand this error
+_app-0121cacc7622d27b.js:1 Uncaught (in promise) TypeError: i.enterprise.execute is not a function
+    at _app-0121cacc7622d27b.js:1:42048Understand this error
+9Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+ingest.app.coframe.com/ingest/v2/batched_events/68c9ad4d4cddb58cf3a1f93d/:1  Failed to load resource: the server responded with a status of 502 ()Understand this error
+_app-0121cacc7622d27b.js:28 [Coframe] Mutation callback infinite loop protection triggered, disconnecting mutation observer Object
+(anonymous) @ _app-0121cacc7622d27b.js:28Understand this error
+injected.js:27 [Splash] ❌ Image FAILED to load: phone.png at path: /images/phone.png
+(anonymous) @ injected.js:27Understand this error
+injected.js:27 [Splash] ❌ Image FAILED to load: tablet.png at path: /images/tablet.png
+(anonymous) @ injected.js:27Understand this error
+injected.js:27 [Splash] ❌ Image FAILED to load: monitor.png at path: /images/monitor.png
+(anonymous) @ injected.js:27Understand this error
+injected.js:27 [Splash] ❌ Image FAILED to load: ellipse2.png at path: /images/ellipse2.png
+(anonymous) @ injected.js:27Understand this error
+injected.js:27 [Splash] ❌ Image FAILED to load: waves.png at path: /images/waves.png
+(anonymous) @ injected.js:27Understand this error
+favicon.ico:1  Failed to load resource: net::ERR_CERT_COMMON_NAME_INVALIDUnderstand this error
+cropped-cbetlogo-192x192.jpg:1  Failed to load resource: net::ERR_CERT_AUTHORITY_INVALIDUnderstand this error
