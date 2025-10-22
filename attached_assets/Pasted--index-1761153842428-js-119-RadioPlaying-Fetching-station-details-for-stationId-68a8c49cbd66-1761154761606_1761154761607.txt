@@ -1,0 +1,82 @@
+﻿
+index-1761153842428.js:119 [RadioPlaying] 📡 Fetching station details for stationId: 68a8c49cbd66579311ab7060
+index-1761153842428.js:104 [FocusRouter] Registering handler for route: /radio-playing
+index-1761153842428.js:119 [useFocusManager] 🎯 Initialized with: 
+{totalItems: 18, cols: 1, rows: undefined, initialIndex: 8, enableWrapping: false}
+index-1761153842428.js:119 [useFocusManager] 👁️  Focus changed: 
+{focusIndex: 8, totalItems: 18, cols: 1, row: 8, col: 0}
+index-1761153842428.js:119 [RadioPlaying] 🎵 Auto-play effect triggered
+index-1761153842428.js:119 [RadioPlaying] 🎵 Has station: true
+index-1761153842428.js:119 [RadioPlaying] 🎵 Station data available: 
+{name: "Sunshine Live - Die 90er", id: "68a8c49cbd66579311ab7060", url: "http://sunsl.streamabc.net/sunsl-90er-mp3-192-9697…=playerid:stream.sunshine-live.de;skey:1755885439", codec: "MP3", bitrate: 0}
+index-1761153842428.js:119 [RadioPlaying] ▶️ Starting auto-play via global player
+index-1761153842428.js:104 [GlobalPlayer] Playing station: Sunshine Live - Die 90er URL: http://sunsl.streamabc.net/sunsl-90er-mp3-192-9697679?sABC=68n8ns7s%230%23s…unshine-live.de&amsparams=playerid:stream.sunshine-live.de;skey:1755885439
+VM36:1 adding listener
+VM36:1 Entered AVPlayManager.prepareAsync()
+index-1761153842428.js:104 [GlobalPlayer] Saved last played station to localStorage
+index-1761153842428.js:104 [RecentlyPlayed] Station added: Sunshine Live - Die 90er
+index-1761153842428.js:119 [RadioPlaying] ✅ Auto-play initiated
+index-1761153842428.js:119 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761153842428.js:119 [RadioPlaying] 🎮 Global player state: 
+{isPlaying: true, isBuffering: false}
+index-1761153842428.js:119 [RadioPlaying] 🎯 Query state: 
+{stationId: "68a8c49cbd66579311ab7060", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761153842428.js:119 [RadioPlaying] ✅ Station details fetched successfully
+index-1761153842428.js:119 [RadioPlaying] 📻 Station name: Sunshine Live - Die 90er
+index-1761153842428.js:119 [RadioPlaying] 📻 Station URL: http://sunsl.streamabc.net/sunsl-90er-mp3-192-9697679?sABC=68n8ns7s%230%23s…unshine-live.de&amsparams=playerid:stream.sunshine-live.de;skey:1755885439
+index-1761153842428.js:119 [RadioPlaying] 📻 Station data: 
+{_id: "68a8c49cbd66579311ab7060", stationuuid: "962c0376-0601-11e8-ae97-52543be04c81", name: "Sunshine Live - Die 90er", url: "http://sunsl.streamabc.net/sunsl-90er-mp3-192-9697…=playerid:stream.sunshine-live.de;skey:1755885439", urlResolved: "http://sunsl.streamabc.net/sunsl-90er-mp3-192-9697…=playerid:stream.sunshine-live.de;skey:1755885439", …}
+tv-audio-player.js?v=1761153842428:44 Buffering started
+index-1761153842428.js:104 [GlobalPlayer] Audio buffering
+index-1761153842428.js:119 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761153842428.js:119 [RadioPlaying] 🎮 Global player state: 
+{isPlaying: true, isBuffering: true}
+index-1761153842428.js:119 [RadioPlaying] 🎯 Query state: 
+{stationId: "68a8c49cbd66579311ab7060", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+tv-remote-keys.js?v=1761153842428:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 10009, keyName: "RETURN", key: "XF86Back", code: "Escape", platform: "samsung", …}
+tv-remote-keys.js?v=1761153842428:171 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761153842428.js:104 [FocusRouter] ⌨️  Key event: 
+{keyCode: 10009, hash: "#/radio-playing", currentRoute: "/radio-playing", routeForHandler: "/radio-playing", hasHandler: true, …}
+index-1761153842428.js:104 [FocusRouter] ✅ Dispatching to: /radio-playing
+index-1761153842428.js:119 [RadioPlaying] 🔙 RETURN key pressed - navigating to Discover
+index-1761153842428.js:119 [CountrySelector] useMemo: Recalculating filtered countries for query: 
+index-1761153842428.js:119 [CountrySelector] ===== RENDER INFO =====
+index-1761153842428.js:119 [CountrySelector] Total countries loaded: 0
+index-1761153842428.js:119 [CountrySelector] Search query: ""
+index-1761153842428.js:119 [CountrySelector] Filtered count: 0
+index-1761153842428.js:119 [CountrySelector] ========================
+index-1761153842428.js:119 [CountrySelector] Not rendering - isOpen is false
+index-1761153842428.js:104 [FocusRouter] Unregistering handler for route: /radio-playing
+index-1761153842428.js:119 [CountrySelector] Search query updated to: 
+index-1761153842428.js:119 [useFocusManager] 🎯 Initialized with: 
+{totalItems: 28, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-1761153842428.js:119 [useFocusManager] 👁️  Focus changed: 
+{focusIndex: 0, totalItems: 28, cols: 1, row: 0, col: 0}
+index-1761153842428.js:104 [FocusRouter] Registering handler for route: /discover-no-user
+index-1761153842428.js:119 Country changed: Germany, total stations: 50
+index-1761153842428.js:119 Initial load: showing 56 stations, hasMore=false
+index-1761153842428.js:119 [CountrySelector] ===== RENDER INFO =====
+index-1761153842428.js:119 [CountrySelector] Total countries loaded: 0
+index-1761153842428.js:119 [CountrySelector] Search query: ""
+index-1761153842428.js:119 [CountrySelector] Filtered count: 0
+index-1761153842428.js:119 [CountrySelector] ========================
+index-1761153842428.js:119 [CountrySelector] Not rendering - isOpen is false
+tv-audio-player.js?v=1761153842428:48 Buffering complete
+index-1761153842428.js:104 [GlobalPlayer] Audio ready
+index-1761153842428.js:104 [GlobalPlayer] Audio playing
+index-1761153842428.js:119 [useFocusManager] 👁️  Focus changed: 
+{focusIndex: 0, totalItems: 78, cols: 1, row: 0, col: 0}
+index-1761153842428.js:119 [CountrySelector] ===== RENDER INFO =====
+index-1761153842428.js:119 [CountrySelector] Total countries loaded: 0
+index-1761153842428.js:119 [CountrySelector] Search query: ""
+index-1761153842428.js:119 [CountrySelector] Filtered count: 0
+index-1761153842428.js:119 [CountrySelector] ========================
+index-1761153842428.js:119 [CountrySelector] Not rendering - isOpen is false
+index-1761153842428.js:119 [AutoPlay] Skipping auto-play (already played this session)
+tv-remote-keys.js?v=1761153842428:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 10009, keyName: "RETURN", key: "XF86Back", code: "Escape", platform: "samsung", …}
+tv-remote-keys.js?v=1761153842428:171 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761153842428.js:104 [FocusRouter] ⌨️  Key event: 
+{keyCode: 10009, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeForHandler: "/discover-no-user", hasHandler: true, …}
+index-1761153842428.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user

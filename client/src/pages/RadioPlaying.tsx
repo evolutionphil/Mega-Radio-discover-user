@@ -195,14 +195,14 @@ export const RadioPlaying = (): JSX.Element => {
       if (direction === 'DOWN') {
         newIndex = 6; // Jump to first playback button (previous)
       } else if (direction === 'UP') {
-        newIndex = 6; // Jump to playback controls
+        newIndex = 0; // Jump to sidebar top
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to sidebar
       }
     }
     // Playback controls (6-9: previous, play/pause, next, favorite)
     else if (current >= 6 && current <= 9) {
-      const relIndex = current - 7;
+      const relIndex = current - 6;
 
       if (direction === 'LEFT') {
         if (relIndex > 0) {
@@ -215,17 +215,17 @@ export const RadioPlaying = (): JSX.Element => {
           newIndex = current + 1;
         }
       } else if (direction === 'UP') {
-        newIndex = 6; // Jump to country selector
+        newIndex = 5; // Jump to country selector
       } else if (direction === 'DOWN') {
         // Jump to similar stations if available
         if (similarStations.length > 0) {
-          newIndex = 11; // First similar station
+          newIndex = 10; // First similar station
         }
       }
     }
-    // Similar stations (11+) - horizontal list
-    else if (current >= 11) {
-      const relIndex = current - 11;
+    // Similar stations (10+) - horizontal list
+    else if (current >= 10) {
+      const relIndex = current - 10;
 
       if (direction === 'LEFT') {
         if (relIndex > 0) {
@@ -238,7 +238,7 @@ export const RadioPlaying = (): JSX.Element => {
           newIndex = current + 1;
         }
       } else if (direction === 'UP') {
-        newIndex = 8; // Jump to play/pause button
+        newIndex = 7; // Jump to play/pause button
       } else if (direction === 'DOWN') {
         // Stay on similar stations
       }
@@ -286,38 +286,38 @@ export const RadioPlaying = (): JSX.Element => {
     cols: 1,
     initialIndex: 8, // Start on play/pause button
     onSelect: (index) => {
-      // Sidebar navigation (0-5)
-      if (index >= 0 && index <= 5) {
+      // Sidebar navigation (0-4)
+      if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
         if (route !== '#') {
           setLocation(route);
         }
       }
-      // Country selector (6)
-      else if (index === 6) {
+      // Country selector (5)
+      else if (index === 5) {
         setIsCountrySelectorOpen(true);
       }
-      // Previous button (7)
-      else if (index === 7) {
+      // Previous button (6)
+      else if (index === 6) {
         handlePrevious();
       }
-      // Play/Pause button (8)
-      else if (index === 8) {
+      // Play/Pause button (7)
+      else if (index === 7) {
         handlePlayPause();
       }
-      // Next button (9)
-      else if (index === 9) {
+      // Next button (8)
+      else if (index === 8) {
         handleNext();
       }
-      // Favorite button (10)
-      else if (index === 10) {
+      // Favorite button (9)
+      else if (index === 9) {
         if (station) {
           toggleFavorite(station);
         }
       }
-      // Similar stations (11+)
-      else if (index >= 11) {
-        const stationIndex = index - 11;
+      // Similar stations (10+)
+      else if (index >= 10) {
+        const stationIndex = index - 10;
         const targetStation = similarStations[stationIndex];
         if (targetStation) {
           navigateToStation(targetStation);
@@ -333,9 +333,9 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Scroll similar station into view when focused
   useEffect(() => {
-    if (focusIndex >= 11 && similarScrollRef.current) {
-      const stationIndex = focusIndex - 11;
-      const stationWidth = 200 + 19; // card width + gap
+    if (focusIndex >= 10 && similarScrollRef.current) {
+      const stationIndex = focusIndex - 10;
+      const stationWidth = 200 + 24; // card width + gap
       const scrollPosition = stationIndex * stationWidth;
       
       similarScrollRef.current.scrollTo({
@@ -492,7 +492,7 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Country Selector */}
       <div 
-        className={`absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50 flex-shrink-0 ${getFocusClasses(isFocused(6))}`}
+        className={`absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors z-50 flex-shrink-0 ${getFocusClasses(isFocused(5))}`}
         style={{ padding: '11px 14.316px 11px 15px', justifyContent: 'center', alignItems: 'center' }}
         onClick={() => setIsCountrySelectorOpen(true)}
         data-testid="button-country-selector"
@@ -598,7 +598,7 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute h-[90.192px] left-[1372px] top-[356px] w-[469px]">
         {/* Previous Button */}
         <div 
-          className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(7))}`}
+          className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(6))}`}
           onClick={handlePrevious}
           data-testid="button-previous"
         >
@@ -610,7 +610,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Play/Pause Button */}
         <div 
-          className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(8))}`}
+          className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(7))}`}
           onClick={handlePlayPause}
           data-testid="button-play-pause"
         >
@@ -628,7 +628,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Next Button */}
         <div 
-          className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(9))}`}
+          className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(8))}`}
           onClick={handleNext}
           data-testid="button-next"
         >
@@ -644,7 +644,7 @@ export const RadioPlaying = (): JSX.Element => {
             isFavorite(station._id) 
               ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
               : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
-          } ${getFocusClasses(isFocused(10))}`}
+          } ${getFocusClasses(isFocused(9))}`}
           onClick={() => toggleFavorite(station)}
           data-testid="button-favorite"
         >
@@ -662,24 +662,24 @@ export const RadioPlaying = (): JSX.Element => {
       {/* Similar Radios Horizontal Scroll */}
       <div 
         ref={similarScrollRef}
-        className="absolute left-[236px] top-[633px] flex gap-[19px] overflow-x-auto scrollbar-hide w-[1610px]"
+        className="absolute left-[236px] top-[633px] flex gap-[24px] overflow-x-auto scrollbar-hide w-[1610px]"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {similarStations.slice(0, 8).map((similarStation, index) => {
-          const focusIdx = 11 + index;
+          const focusIdx = 10 + index;
           return (
           <div
             key={similarStation._id || index}
             className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
               isFocused(focusIdx) 
-                ? 'border-[6px] border-[#ff4199] scale-105 shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
-                : 'border-[6px] border-transparent'
+                ? 'border-[4px] border-[#ff4199] shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
+                : 'border-[4px] border-transparent'
             }`}
             style={{ boxShadow: isFocused(focusIdx) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
             data-testid={`card-similar-${similarStation._id}`}
             onClick={() => navigateToStation(similarStation)}
           >
-            <div className="bg-white left-[34px] ml-[34px] mt-[34px] overflow-clip rounded-[6.6px] size-[132px]">
+            <div className="bg-white mx-auto mt-[34px] overflow-clip rounded-[6.6px] size-[132px]">
               <img
                 className="w-full h-full object-cover"
                 alt={similarStation.name}
