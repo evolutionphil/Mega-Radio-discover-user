@@ -85,7 +85,13 @@ export const DiscoverNoUser = (): JSX.Element => {
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 5; // Jump to country selector
+        if (current === 0) {
+          // From Discover, jump to first Popular Genre
+          newIndex = genresStart;
+        } else {
+          // From other sidebar items, jump to country selector
+          newIndex = 5;
+        }
       }
     }
     // Country selector (5)
