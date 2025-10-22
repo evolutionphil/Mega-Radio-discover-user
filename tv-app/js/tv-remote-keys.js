@@ -141,6 +141,36 @@
             return false;
         }
         
+        // Handle media control buttons (Play/Pause/FF/RW)
+        if (window.globalPlayer) {
+            switch(key) {
+                case tvKey.PLAY:
+                    console.log('[TV Keys] ▶️  PLAY button pressed');
+                    if (!window.globalPlayer.isPlaying) {
+                        window.globalPlayer.resume();
+                    }
+                    e.preventDefault();
+                    return false;
+                case tvKey.PAUSE:
+                    console.log('[TV Keys] ⏸️  PAUSE button pressed');
+                    if (window.globalPlayer.isPlaying) {
+                        window.globalPlayer.pause();
+                    }
+                    e.preventDefault();
+                    return false;
+                case tvKey.PLAYPAUSE:
+                    console.log('[TV Keys] ⏯️  PLAY/PAUSE button pressed');
+                    window.globalPlayer.togglePlayPause();
+                    e.preventDefault();
+                    return false;
+                case tvKey.STOP:
+                    console.log('[TV Keys] ⏹️  STOP button pressed');
+                    window.globalPlayer.stop();
+                    e.preventDefault();
+                    return false;
+            }
+        }
+        
         // Handle color button navigation (global shortcuts)
         switch(key) {
             case tvKey.RED:

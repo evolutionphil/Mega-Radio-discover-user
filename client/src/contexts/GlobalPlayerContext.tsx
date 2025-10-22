@@ -132,6 +132,18 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Expose player controls to window for TV remote media buttons
+  useEffect(() => {
+    (window as any).globalPlayer = {
+      togglePlayPause,
+      pause: pauseStation,
+      resume: resumeStation,
+      stop: stopStation,
+      isPlaying,
+      currentStation,
+    };
+  }, [isPlaying, currentStation]);
+
   return (
     <GlobalPlayerContext.Provider
       value={{
