@@ -1,0 +1,80 @@
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scalePopupwindow called
+/C:/css/tv-styles.css?v=1761151627199:1 
+        
+        
+       Failed to load resource: net::ERR_FILE_NOT_FOUND
+/C:/assets/index-1761151627199.js:1 
+        
+        
+       Failed to load resource: net::ERR_FILE_NOT_FOUND
+/C:/webOSTVjs-1.2.0/webOSTV.js:1 
+        
+        
+       Failed to load resource: net::ERR_FILE_NOT_FOUND
+chrome-extension://oakokfcahinkpjpigcnpagkpjkkbffpl/ripple.html:1 Error in event handler: TypeError: Cannot read properties of undefined (reading '0')
+    at NWWindow.<anonymous> (extensions::nw.Window:208:47)
+    at dispatchEventIfExists (extensions::nw.Window:851:15)
+    at onDocumentStartEnd (extensions::nw.Window:876:5)
+/C:/js/platform-detect.js?v=1761151627199:1 
+        
+        
+       Failed to load resource: net::ERR_FILE_NOT_FOUND
+/C:/js/tv-spatial-navigation.js?v=1761151627199:1 
+        
+        
+       Failed to load resource: net::ERR_FILE_NOT_FOUND
+/C:/js/tv-remote-keys.js?v=1761151627199:1 
+        
+        
+       Failed to load resource: net::ERR_FILE_NOT_FOUND
+/C:/js/tv-audio-player.js?v=1761151627199:1 
+        
+        
+       Failed to load resource: net::ERR_FILE_NOT_FOUND
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scalePopupwindow called
+chrome-extension://oakokfcahinkpjpigcnpagkpjkkbffpl/ripple.html:1 Error in event handler: TypeError: Cannot read properties of undefined (reading '0')
+    at NWWindow.<anonymous> (extensions::nw.Window:217:47)
+    at dispatchEventIfExists (extensions::nw.Window:851:15)
+    at onDocumentStartEnd (extensions::nw.Window:879:5)
+index-1761151891841.js:104 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-1761151891841.js:104 [MegaRadio API] BASE_URL: https://themegaradio.com
+index-1761151891841.js:41 Uncaught Error: Minified React error #299; visit https://reactjs.org/docs/error-decoder.html?invariant=299 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at gt.createRoot (index-1761151891841.js:41:55698)
+    at index-1761151891841.js:119:171092
+    at index-1761151891841.js:119:171150
+platform-detect.js?v=1761151891841:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js?v=1761151891841:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+tv-spatial-navigation.js?v=1761151891841:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1761151891841:186 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1761151891841:190 [TV Remote Keys] Key handler attached, waiting for React...
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scalePopupwindow called
