@@ -1,5 +1,4 @@
 import { Link, useLocation } from "wouter";
-import { AppLayout } from "@/components/AppLayout";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { Station } from "@/services/megaRadioApi";
@@ -15,25 +14,86 @@ export const Favorites = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  // Focus management for favorites grid (7 columns)
-  const totalItems = favorites.length || 1; // 1 for empty state CTA button
-  const { focusIndex, handleNavigation, handleSelect, handleBack, isFocused } = useFocusManager({
+  // Define sidebar routes (5 items)
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
+  
+  // Calculate totalItems: 5 sidebar + favorites (or 1 for empty state)
+  const favoritesStart = 5;
+  const totalItems = 5 + (favorites.length || 1);
+  
+  // Focus management with custom navigation
+  const { focusIndex, handleNavigation: baseHandleNavigation, handleSelect, handleBack, isFocused, setFocusIndex } = useFocusManager({
     totalItems,
-    cols: favorites.length > 0 ? 7 : 1,
+    cols: 1,
+    initialIndex: favoritesStart,
     onSelect: (index) => {
-      if (favorites.length === 0) {
-        // Empty state: go to discover
-        setLocation('/discover-no-user');
-      } else {
-        // Navigate to radio playing page
-        const station = favorites[index];
-        if (station) {
-          setLocation(`/radio-playing?station=${station._id}`);
+      // Sidebar navigation (0-4)
+      if (index >= 0 && index <= 4) {
+        setLocation(sidebarRoutes[index]);
+      }
+      // Favorites section
+      else if (index >= favoritesStart) {
+        if (favorites.length === 0) {
+          // Empty state: go to discover
+          setLocation('/discover-no-user');
+        } else {
+          // Navigate to radio playing page
+          const stationIndex = index - favoritesStart;
+          const station = favorites[stationIndex];
+          if (station) {
+            setLocation(`/radio-playing?station=${station._id}`);
+          }
         }
       }
     },
     onBack: () => setLocation('/discover-no-user')
   });
+
+  // Custom navigation logic
+  const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
+    const current = focusIndex;
+    let newIndex = current;
+
+    // Sidebar section (0-4)
+    if (current >= 0 && current <= 4) {
+      if (direction === 'DOWN') {
+        newIndex = current < 4 ? current + 1 : current;
+      } else if (direction === 'UP') {
+        newIndex = current > 0 ? current - 1 : current;
+      } else if (direction === 'RIGHT') {
+        newIndex = favoritesStart; // Jump to first favorite
+      }
+    }
+    // Favorites section
+    else if (current >= favoritesStart) {
+      const relIndex = current - favoritesStart;
+      const row = Math.floor(relIndex / 7);
+      const col = relIndex % 7;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 3; // Jump to Favorites sidebar item
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < 6 && current < totalItems - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        if (row > 0) {
+          newIndex = current - 7;
+        }
+      } else if (direction === 'DOWN') {
+        const nextRow = current + 7;
+        if (nextRow < totalItems) {
+          newIndex = nextRow;
+        }
+      }
+    }
+
+    setFocusIndex(newIndex);
+  };
 
   // Register page-specific key handler
   usePageKeyHandler('/favorites', (e) => {
@@ -41,16 +101,16 @@ export const Favorites = (): JSX.Element => {
     
     switch(e.keyCode) {
       case key?.UP || 38:
-        handleNavigation('UP');
+        customHandleNavigation('UP');
         break;
       case key?.DOWN || 40:
-        handleNavigation('DOWN');
+        customHandleNavigation('DOWN');
         break;
       case key?.LEFT || 37:
-        handleNavigation('LEFT');
+        customHandleNavigation('LEFT');
         break;
       case key?.RIGHT || 39:
-        handleNavigation('RIGHT');
+        customHandleNavigation('RIGHT');
         break;
       case key?.ENTER || 13:
         handleSelect();
@@ -89,10 +149,9 @@ export const Favorites = (): JSX.Element => {
   };
 
   return (
-    <AppLayout currentPage="favorites" scrollContainerRef={scrollContainerRef}>
-      <div ref={scrollContainerRef} className="relative w-[1920px] h-[1080px] overflow-y-auto" data-testid="page-favorites">
-        {/* Background Image */}
-        <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
+    <div className="fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-favorites">
+      {/* Background Image */}
+      <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
           <img
             alt=""
             className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
@@ -127,7 +186,7 @@ export const Favorites = (): JSX.Element => {
 
             {/* Call to Action */}
             <Link href="/discover-no-user">
-              <div className={`absolute left-[calc(50%+87.5px)] top-[calc(50%+98px)] translate-x-[-50%] cursor-pointer hover:opacity-80 transition-opacity ${getFocusClasses(isFocused(0))}`} data-testid="button-discover-cta" onClick={() => setLocation('/discover-no-user')}>
+              <div className={`absolute left-[calc(50%+87.5px)] top-[calc(50%+98px)] translate-x-[-50%] cursor-pointer hover:opacity-80 transition-opacity ${getFocusClasses(isFocused(favoritesStart))}`} data-testid="button-discover-cta" onClick={() => setLocation('/discover-no-user')}>
                 <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[#ff4199] text-[24px] text-center">
                   {t('discover_stations_near_you') || 'Discover stations near to you!'}
                 </p>
@@ -151,7 +210,7 @@ export const Favorites = (): JSX.Element => {
               return (
                 <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
                   <div 
-                    className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(index))}`}
+                    className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(favoritesStart + index))}`}
                     style={{ left: `${leftPosition}px`, top: `${topPosition}px` }}
                     data-testid={`station-card-${index}`}
                     onClick={() => setLocation(`/radio-playing?station=${station._id}`)}
@@ -179,7 +238,9 @@ export const Favorites = (): JSX.Element => {
             })}
           </>
         )}
-      </div>
-    </AppLayout>
+
+      {/* Sidebar */}
+      <Sidebar activePage="favorites" isFocused={isFocused} getFocusClasses={getFocusClasses} />
+    </div>
   );
 };
