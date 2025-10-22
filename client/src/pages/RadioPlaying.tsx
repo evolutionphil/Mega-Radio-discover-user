@@ -33,19 +33,39 @@ export const RadioPlaying = (): JSX.Element => {
   // Similar stations scroll ref
   const similarScrollRef = useRef<HTMLDivElement>(null);
   
-  // Parse station ID from URL query params (wouter location string)
+  // Parse station ID from URL query params (supports both hash and pre-hash params)
   const stationId = useMemo(() => {
-    // Wouter's location includes the path + query: "/radio-playing?station=123"
+    console.log('[RadioPlaying] Parsing station ID from:', {
+      wouterLocation: location,
+      windowSearch: window.location.search,
+      windowHash: window.location.hash,
+      fullURL: window.location.href
+    });
+
+    // Try to get from wouter location first (hash-based: /#/radio-playing?station=123)
     const queryStart = location.indexOf('?');
-    if (queryStart === -1) {
-      console.log('[RadioPlaying] No query params in location:', location);
-      return null;
+    if (queryStart !== -1) {
+      const queryString = location.substring(queryStart + 1);
+      const searchParams = new URLSearchParams(queryString);
+      const id = searchParams.get('station') || searchParams.get('stationId');
+      if (id) {
+        console.log('[RadioPlaying] ✅ Found station ID in hash params:', id);
+        return id;
+      }
     }
-    const queryString = location.substring(queryStart + 1);
-    const searchParams = new URLSearchParams(queryString);
-    const id = searchParams.get('station');
-    console.log('[RadioPlaying] Parsed station ID:', id, 'from location:', location);
-    return id;
+
+    // Fallback: Try window.location.search (pre-hash: /?stationId=123#/radio-playing)
+    if (window.location.search) {
+      const searchParams = new URLSearchParams(window.location.search);
+      const id = searchParams.get('station') || searchParams.get('stationId');
+      if (id) {
+        console.log('[RadioPlaying] ✅ Found station ID in pre-hash params:', id);
+        return id;
+      }
+    }
+
+    console.log('[RadioPlaying] ❌ No station ID found in URL');
+    return null;
   }, [location, updateTrigger]);
   
   // Track station history when station ID changes
@@ -363,12 +383,36 @@ export const RadioPlaying = (): JSX.Element => {
     );
   }
 
-  // Show loading state
+  // Show loading state with better debugging
+  if (!stationId) {
+    console.error('[RadioPlaying] ❌ No station ID - cannot load station');
+    return (
+      <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
+        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">No Station Selected</p>
+        <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-gray-400">
+          Please select a station to play
+        </p>
+        <Link href="/discover-no-user">
+          <button className="bg-[#ff4199] hover:bg-[#ff1a85] px-12 py-4 rounded-[30px] font-['Ubuntu',Helvetica] font-bold text-[24px] text-white transition-colors">
+            Back to Discover
+          </button>
+        </Link>
+      </div>
+    );
+  }
+
   if (isLoadingStation || !station) {
+    console.log('[RadioPlaying] 🔄 Loading state:', {
+      isLoadingStation,
+      hasStation: !!station,
+      stationId,
+      stationData
+    });
     return (
       <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#ff4199]"></div>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white">Loading station...</p>
+        <p className="font-['Ubuntu',Helvetica] font-normal text-[20px] text-gray-500">Station ID: {stationId}</p>
       </div>
     );
   }
