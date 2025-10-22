@@ -59,16 +59,14 @@ export const Guide4 = (): JSX.Element => {
       >
         {/* Background Image with Dark Overlay */}
         <div className="absolute h-[1897px] left-0 top-0 w-[1920px]">
-          <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
-            <img 
-              alt="" 
-              className="absolute max-w-none object-center object-cover size-full" 
-              src={assetPath("images/discover-background.png")}
-              onLoad={() => handleImageLoad('discover-background.png')}
-              onError={() => handleImageError('discover-background.png', assetPath('images/discover-background.png'))}
-            />
-            <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
-          </div>
+          <img 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-cover" 
+            src={assetPath("images/discover-background.png")}
+            onLoad={() => handleImageLoad('discover-background.png')}
+            onError={() => handleImageError('discover-background.png', assetPath('images/discover-background.png'))}
+          />
+          <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
         </div>
 
         {/* Arrow pointing to Favorites button */}

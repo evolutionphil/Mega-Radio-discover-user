@@ -29,7 +29,7 @@ Root (Main Development Project)
 
 ## Recent Changes
 
-### October 22, 2025 - Comprehensive Bug Fixes: Remote Control, Player & Images
+### October 22, 2025 - Final Polish: Exit Modal, Guide Images & Page Cleanup
 - **CRITICAL FIX:** Fixed switch case syntax bug across ALL pages that prevented Samsung TV remote navigation:
   - Replaced invalid `case key?.UP || 38:` with proper multi-case syntax `case key?.UP: case 38:`
   - Fixed in ALL pages including DiscoverNoUser, DiscoverUser, Genres, CountrySelector, and all others
@@ -55,7 +55,25 @@ Root (Main Development Project)
 - **GENRES PAGE:** Fixed focus indices (sidebar: 0-4, country selector: 5, popular genres: 6-13, all genres: 14+)
 - **COUNTRY SELECTOR:** Completely rebuilt with simple arrow navigation (UP/DOWN to navigate, ENTER to select, BACK to close)
 - **BACKGROUND IMAGES:** Fixed invalid `object-50%-50%` CSS class → `object-center` in Guide1-4, Settings, Genres pages
-- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761164649727.js
+- **EXIT MODAL CENTERING:** Fixed exit confirmation modal to match country selector positioning:
+  - Changed from flex centering to absolute positioning (left: 660px, top: 340px)
+  - Modal now properly centered on screen like country selector
+  - Added backdrop blur for consistency
+- **EXIT APP FUNCTIONALITY:** Fixed exit button to actually close app instead of restarting:
+  - Now calls `tizen.application.getCurrentApplication().exit()` on Samsung TV
+  - Falls back to `window.close()` on other platforms
+  - No longer navigates to splash page (which caused restart)
+- **GUIDE PAGES BACKGROUND:** Fixed background images not displaying on Guide 1-4 pages:
+  - Removed unnecessary wrapper divs with pointer-events-none
+  - Changed from `object-center object-cover size-full` to `inset-0 w-full h-full object-cover`
+  - Background images now properly visible on all guide pages
+- **REMOVED UNUSED PAGE:** Deleted GenreDetail.tsx page and route (was never used, all genre navigation goes through GenreList)
+- **EXIT MODAL KEYBOARD:** Fixed keyboard handler to also exit app properly (not just button):
+  - Both Enter key and button click now call same Tizen exit logic
+  - Remote users can now properly exit app using arrow keys + Enter
+- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761165235695.js
+
+### October 22, 2025 - Comprehensive Bug Fixes: Remote Control, Player & Images
 
 ### October 19, 2025 - Simplified to Single Index (LGTV Pattern)
 - Consolidated project structure: Root is main development, tv-app/ is Samsung TV build output only

@@ -275,8 +275,18 @@ export const DiscoverNoUser = (): JSX.Element => {
             // Cancel - close modal
             setIsExitModalOpen(false);
           } else {
-            // Exit - navigate to splash/login page
-            setLocation('/');
+            // Exit - actually close the app
+            console.log('[DiscoverNoUser] Exit app via keyboard - calling tizen.application.getCurrentApplication().exit()');
+            if (typeof window !== 'undefined' && (window as any).tizen) {
+              try {
+                (window as any).tizen.application.getCurrentApplication().exit();
+              } catch (err) {
+                console.error('[DiscoverNoUser] Failed to exit via Tizen API:', err);
+                window.close();
+              }
+            } else {
+              window.close();
+            }
           }
           break;
         case key?.RETURN:
@@ -778,22 +788,34 @@ export const DiscoverNoUser = (): JSX.Element => {
         }}
       />
 
-      {/* Exit Confirmation Modal */}
+      {/* Exit Confirmation Modal - Centered like Country Selector */}
       {isExitModalOpen && (
-        <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center" data-testid="modal-exit-confirmation">
-          <div className="bg-[#1a1a1a] rounded-[20px] p-12 w-[600px] border-2 border-[rgba(255,255,255,0.1)]">
+        <div className="fixed top-0 left-0 w-[1920px] h-[1080px] z-[100]">
+          {/* Backdrop */}
+          <div className="absolute top-0 left-0 w-[1920px] h-[1080px] bg-black/80 backdrop-blur-[7px]" />
+          
+          {/* Modal Container - Centered */}
+          <div 
+            className="absolute bg-[#1a1a1a] rounded-[20px] border-2 border-[rgba(255,255,255,0.1)]"
+            style={{ left: '660px', top: '340px', width: '600px', height: '400px' }}
+            data-testid="modal-exit-confirmation"
+          >
             {/* Title */}
-            <h2 className="font-['Ubuntu',Helvetica] font-bold text-[36px] text-white text-center mb-6">
-              {t('exit_app') || 'Exit App?'}
-            </h2>
+            <div className="absolute top-[50px] left-[50px] right-[50px]">
+              <h2 className="font-['Ubuntu',Helvetica] font-bold text-[36px] text-white text-center">
+                {t('exit_app') || 'Exit App?'}
+              </h2>
+            </div>
             
             {/* Message */}
-            <p className="font-['Ubuntu',Helvetica] font-normal text-[24px] text-white/70 text-center mb-10">
-              {t('are_you_sure_exit') || 'Are you sure you want to exit MegaRadio?'}
-            </p>
+            <div className="absolute top-[130px] left-[50px] right-[50px]">
+              <p className="font-['Ubuntu',Helvetica] font-normal text-[24px] text-white/70 text-center">
+                {t('are_you_sure_exit') || 'Are you sure you want to exit MegaRadio?'}
+              </p>
+            </div>
             
             {/* Buttons */}
-            <div className="flex gap-6 justify-center">
+            <div className="absolute bottom-[50px] left-[50px] right-[50px] flex gap-6 justify-center">
               {/* Cancel Button */}
               <button
                 className={`px-12 py-4 rounded-[30px] font-['Ubuntu',Helvetica] font-bold text-[24px] transition-all ${
@@ -814,7 +836,19 @@ export const DiscoverNoUser = (): JSX.Element => {
                     ? 'bg-[#ff4199] text-white border-4 border-[#ff4199]'
                     : 'bg-[rgba(255,65,153,0.3)] text-white border-2 border-[rgba(255,65,153,0.5)]'
                 }`}
-                onClick={() => setLocation('/')}
+                onClick={() => {
+                  console.log('[DiscoverNoUser] Exit app - calling tizen.application.getCurrentApplication().exit()');
+                  if (typeof window !== 'undefined' && (window as any).tizen) {
+                    try {
+                      (window as any).tizen.application.getCurrentApplication().exit();
+                    } catch (e) {
+                      console.error('[DiscoverNoUser] Failed to exit via Tizen API:', e);
+                      window.close();
+                    }
+                  } else {
+                    window.close();
+                  }
+                }}
                 data-testid="button-exit-confirm"
               >
                 {t('exit') || 'Exit'}
