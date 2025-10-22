@@ -124,7 +124,7 @@ export const Settings = (): JSX.Element => {
 
         {/* Last Played Option */}
         <div 
-          className={`absolute left-[30px] top-[95px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(6))}`}
+          className={`absolute left-[30px] top-[95px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(5))}`}
           onClick={() => handlePlayAtStartChange("last-played")}
           data-testid="option-last-played"
         >
@@ -144,7 +144,7 @@ export const Settings = (): JSX.Element => {
 
         {/* Random Option */}
         <div 
-          className={`absolute left-[30px] top-[152px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(7))}`}
+          className={`absolute left-[30px] top-[152px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(6))}`}
           onClick={() => handlePlayAtStartChange("random")}
           data-testid="option-random"
         >
@@ -164,7 +164,7 @@ export const Settings = (): JSX.Element => {
 
         {/* Favorite Option */}
         <div 
-          className={`absolute left-[30px] top-[209px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(8))}`}
+          className={`absolute left-[30px] top-[209px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(7))}`}
           onClick={() => handlePlayAtStartChange("favorite")}
           data-testid="option-favorite"
         >
@@ -184,7 +184,7 @@ export const Settings = (): JSX.Element => {
 
         {/* None Option */}
         <div 
-          className={`absolute left-[30px] top-[266px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(9))}`}
+          className={`absolute left-[30px] top-[266px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(8))}`}
           onClick={() => handlePlayAtStartChange("none")}
           data-testid="option-none"
         >
