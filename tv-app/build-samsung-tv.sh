@@ -45,6 +45,10 @@ echo "🔧 Updating index.html with bundle: ${NEW_JS_FILE}"
 sed -i "s|assets/index-[^\"]*\.js|${NEW_JS_FILE}|g" index.html
 sed -i "s|v=[0-9]*|v=${TIMESTAMP}|g" index.html
 
+# Step 8: Remove type="module" from script tag (IIFE doesn't need it)
+echo "🔧 Removing type=\"module\" from script tag..."
+sed -i 's|<script type="module" crossorigin|<script|g' index.html
+
 echo "✅ Build complete!"
 echo ""
 echo "📱 Samsung TV App ready in: tv-app/"
