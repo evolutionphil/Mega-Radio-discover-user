@@ -85,12 +85,12 @@ export const DiscoverNoUser = (): JSX.Element => {
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        if (current === 0) {
-          // From Discover, jump to first Popular Genre
+        if (current === 0 || current === 1) {
+          // From Discover or Genres, jump to first Popular Genre
           newIndex = genresStart;
         } else {
-          // From other sidebar items, jump to country selector
-          newIndex = 5;
+          // From Search, Favorites, or Settings, jump to first Popular Station
+          newIndex = popularStationsStart;
         }
       }
     }
@@ -112,7 +112,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         if (col > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 0; // Jump to sidebar
+          newIndex = 2; // Jump to Search sidebar item
         }
       } else if (direction === 'RIGHT') {
         if (col < 6 && current < popularStationsEnd) {
