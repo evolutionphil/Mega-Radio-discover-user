@@ -29,13 +29,29 @@
                 self.currentUrl = url;
                 
                 try {
-                    // Stop current playback if any
-                    if (self.isPlaying) {
-                        webapis.avplay.stop();
-                        webapis.avplay.close();
+                    // Always close player before opening new stream to reset state
+                    try {
+                        var state = webapis.avplay.getState();
+                        console.log('[Samsung Player] Current state:', state);
+                        
+                        // Close player if it's in any state except NONE or IDLE
+                        if (state !== 'NONE' && state !== 'IDLE') {
+                            console.log('[Samsung Player] Closing player to reset state');
+                            webapis.avplay.stop();
+                            webapis.avplay.close();
+                        }
+                    } catch (stateError) {
+                        // If we can't get state, try to close anyway
+                        console.log('[Samsung Player] State check failed, attempting close:', stateError);
+                        try {
+                            webapis.avplay.close();
+                        } catch (e) {
+                            // Ignore close errors
+                        }
                     }
                     
                     // Open new stream
+                    console.log('[Samsung Player] Opening URL:', url);
                     webapis.avplay.open(url);
                     
                     // Set up event listeners

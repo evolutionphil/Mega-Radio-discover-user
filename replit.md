@@ -29,20 +29,33 @@ Root (Main Development Project)
 
 ## Recent Changes
 
-### October 22, 2025 - Major Bug Fixes: Remote Control & Navigation
-- **CRITICAL FIX:** Fixed switch case syntax bug across ALL pages that prevented Samsung TV remote navigation from working:
+### October 22, 2025 - Comprehensive Bug Fixes: Remote Control, Player & Images
+- **CRITICAL FIX:** Fixed switch case syntax bug across ALL pages that prevented Samsung TV remote navigation:
   - Replaced invalid `case key?.UP || 38:` with proper multi-case syntax `case key?.UP: case 38:`
-  - Fixed in 9 pages: DiscoverNoUser, DiscoverUser, Genres, Settings, Search, Favorites, GenreList, GenreDetail, RadioPlaying
+  - Fixed in ALL pages including DiscoverNoUser, DiscoverUser, Genres, CountrySelector, and all others
   - All arrow keys, ENTER, and RETURN buttons now work correctly on Samsung TV remote
-- **MEDIA BUTTONS:** Wired up Play/Pause/Stop remote control buttons to GlobalPlayer:
-  - Exposed GlobalPlayer methods to window object
-  - Added global handlers in tv-remote-keys.js for PLAY (415), PAUSE (19), PLAYPAUSE (10252), STOP (413)
-  - Media buttons now work globally across all pages to control radio playback
-- **EXIT MODAL:** Fixed exit confirmation modal on Discover home page (BACK button now correctly closes modal)
+- **EXIT MODAL FIX:** Fixed exit confirmation modal on Discover page:
+  - Added missing BACK button handler that triggers handleBack()
+  - Added comprehensive debug logs to track modal state and button presses
+  - Modal now properly opens when BACK button is pressed on Discover home page
+- **SAMSUNG PLAYER FIX:** Fixed `PLAYER_ERROR_INVALID_STATE` errors:
+  - Added proper state checking before opening new streams
+  - Player now calls getState() and properly closes if not in IDLE/NONE state
+  - Prevents errors when switching between stations quickly
+- **IMAGE LOADING FIX:** Fixed 400 errors from null favicon values:
+  - Updated getStationImage() in 6 files (GlobalPlayer, DiscoverNoUser, RadioPlaying, Favorites, GenreList, Search)
+  - Added checks for null, undefined, empty string, and the string "null"
+  - All station images now properly fall back to default image instead of loading `/api/image/null`
+- **GENRELIST SIDEBAR NAV:** Fixed missing sidebar navigation on GenreList page:
+  - Added full sidebar focus management (indices 0-4)
+  - Back button moved to index 5, stations start at index 6
+  - Users can now navigate LEFT from genre stations to sidebar menu
+  - Added custom navigation logic for bidirectional sidebar ↔ content flow
+- **MEDIA BUTTONS:** Wired up Play/Pause/Stop remote control buttons to GlobalPlayer
 - **GENRES PAGE:** Fixed focus indices (sidebar: 0-4, country selector: 5, popular genres: 6-13, all genres: 14+)
 - **COUNTRY SELECTOR:** Completely rebuilt with simple arrow navigation (UP/DOWN to navigate, ENTER to select, BACK to close)
 - **BACKGROUND IMAGES:** Fixed invalid `object-50%-50%` CSS class → `object-center` in Guide1-4, Settings, Genres pages
-- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761163324714.js
+- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761164649727.js
 
 ### October 19, 2025 - Simplified to Single Index (LGTV Pattern)
 - Consolidated project structure: Root is main development, tv-app/ is Samsung TV build output only

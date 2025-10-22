@@ -296,7 +296,8 @@ export const Search = (): JSX.Element => {
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
-    if (station.favicon) {
+    // Check for null, undefined, empty string, or the string "null"
+    if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
       return station.favicon.startsWith('http') 
         ? station.favicon 
         : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
