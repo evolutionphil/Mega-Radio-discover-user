@@ -29,6 +29,13 @@ Root (Main Development Project)
 
 ## Recent Changes
 
+### October 22, 2025 - Focus System Refinements & Exit Modal
+- Fixed country selector button focus (index 6→5) on DiscoverNoUser page for proper pink border visibility
+- Fixed Favorites page focus system to include sidebar (indices 0-4) with bidirectional navigation between sidebar and favorites grid
+- Added exit confirmation modal on Discover home page with two-button focus (Cancel/Exit) to prevent accidental app exits
+- Fixed GenreList data initialization to properly handle cached query data and genre changes on subsequent visits
+- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761162125146.js
+
 ### October 19, 2025 - Simplified to Single Index (LGTV Pattern)
 - Consolidated project structure: Root is main development, tv-app/ is Samsung TV build output only
 - Implemented single index.html pattern (like LGTV reference) - ONE file, manually editable
