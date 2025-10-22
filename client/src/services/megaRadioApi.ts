@@ -182,8 +182,10 @@ export const megaRadioApi = {
         throw new Error(`HTTP ${response.status}`);
       }
       const data = await response.json();
-      console.log('[API] getAllStations fetched:', data.stations?.length || 0);
-      return { stations: Array.isArray(data) ? data : [], pagination: {} };
+      // API returns { stations: [...] } or just [...]
+      const stations = data.stations || (Array.isArray(data) ? data : []);
+      console.log('[API] getAllStations fetched:', stations.length);
+      return { stations, pagination: {} };
     } catch (error) {
       console.error('[API] getAllStations failed:', error);
       return { stations: [], pagination: {} };
