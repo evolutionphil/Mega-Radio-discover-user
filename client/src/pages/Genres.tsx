@@ -9,6 +9,7 @@ import { useLocalization } from "@/contexts/LocalizationContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { Sidebar } from "@/components/Sidebar";
+import { assetPath } from "@/lib/assetPath";
 
 export const Genres = (): JSX.Element => {
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
@@ -248,7 +249,7 @@ export const Genres = (): JSX.Element => {
           <img
             alt=""
             className="block max-w-none size-full"
-            src="/images/path-8.svg"
+            src={assetPath("images/path-8.svg")}
           />
         </div>
       </div>

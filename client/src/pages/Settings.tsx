@@ -4,6 +4,7 @@ import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { Sidebar } from "@/components/Sidebar";
+import { assetPath } from "@/lib/assetPath";
 
 type PlayAtStartMode = "last-played" | "random" | "favorite" | "none";
 
@@ -100,7 +101,7 @@ export const Settings = (): JSX.Element => {
           <img
             alt=""
             className="block max-w-none size-full"
-            src="/images/path-8.svg"
+            src={assetPath("images/path-8.svg")}
           />
         </div>
       </div>

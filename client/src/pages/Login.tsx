@@ -4,6 +4,7 @@ import { SiGoogle } from "react-icons/si";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { useEffect } from "react";
+import { assetPath } from "@/lib/assetPath";
 
 export const Login = (): JSX.Element => {
   useTVNavigation();
@@ -33,7 +34,7 @@ export const Login = (): JSX.Element => {
           <img
             className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
             alt="Path"
-            src="/images/path-8.svg"
+            src={assetPath("images/path-8.svg")}
           />
         </div>
 

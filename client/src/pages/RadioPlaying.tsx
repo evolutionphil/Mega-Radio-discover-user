@@ -277,7 +277,7 @@ export const RadioPlaying = (): JSX.Element => {
         break;
       case key?.RETURN || 461 || 10009:
         console.log('[RadioPlaying] RETURN key - going back to Discover');
-        handleBack();
+        setLocation('/discover-no-user');
         break;
     }
   });

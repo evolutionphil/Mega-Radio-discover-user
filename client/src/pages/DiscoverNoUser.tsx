@@ -10,6 +10,7 @@ import { useLocalization } from "@/contexts/LocalizationContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { autoPlayService } from "@/services/autoPlayService";
 import { Sidebar } from "@/components/Sidebar";
+import { assetPath } from "@/lib/assetPath";
 
 export const DiscoverNoUser = (): JSX.Element => {
   const { t } = useLocalization();
@@ -416,7 +417,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           <img
             alt=""
             className="block max-w-none size-full"
-            src="/images/path-8.svg"
+            src={assetPath("images/path-8.svg")}
           />
         </div>
       </div>

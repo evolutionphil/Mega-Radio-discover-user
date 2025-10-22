@@ -10,6 +10,7 @@ import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { recentlyPlayedService } from "@/services/recentlyPlayedService";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { Sidebar } from "@/components/Sidebar";
+import { assetPath } from "@/lib/assetPath";
 
 export const Search = (): JSX.Element => {
   const [, setLocation] = useLocation();
@@ -320,7 +321,7 @@ export const Search = (): JSX.Element => {
         <img
           className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
           alt="Path"
-          src="/images/path-8.svg"
+          src={assetPath("images/path-8.svg")}
         />
       </div>
 

@@ -7,6 +7,7 @@ import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { CountrySelector } from "@/components/CountrySelector";
 import { Sidebar } from "@/components/Sidebar";
+import { assetPath } from "@/lib/assetPath";
 
 export const GenreDetail = (): JSX.Element => {
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
@@ -171,7 +172,7 @@ export const GenreDetail = (): JSX.Element => {
         <img
           className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
           alt="Path"
-          src="/images/path-8.svg"
+          src={assetPath("images/path-8.svg")}
         />
       </div>
 
