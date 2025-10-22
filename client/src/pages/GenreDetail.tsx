@@ -141,19 +141,24 @@ export const GenreDetail = (): JSX.Element => {
     const key = (window as any).tvKey;
     
     switch(e.keyCode) {
-      case key?.UP || 38:
+      case key?.UP:
+      case 38:
         customHandleNavigation('UP');
         break;
-      case key?.DOWN || 40:
+      case key?.DOWN:
+      case 40:
         customHandleNavigation('DOWN');
         break;
-      case key?.LEFT || 37:
+      case key?.LEFT:
+      case 37:
         customHandleNavigation('LEFT');
         break;
-      case key?.RIGHT || 39:
+      case key?.RIGHT:
+      case 39:
         customHandleNavigation('RIGHT');
         break;
-      case key?.ENTER || 13:
+      case key?.ENTER:
+      case 13:
         handleSelect();
         break;
     }

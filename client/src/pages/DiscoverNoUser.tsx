@@ -203,7 +203,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   };
 
   // Focus management with custom navigation
-  const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
+  const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
     initialIndex: 0,
@@ -319,6 +319,15 @@ export const DiscoverNoUser = (): JSX.Element => {
       case 13:
         console.log('[DiscoverNoUser] ENTER key pressed - calling handleSelect()');
         handleSelect();
+        break;
+      case key?.RETURN:
+      case 461:
+      case 10009:
+        console.log('[DiscoverNoUser] 🔙 BACK/RETURN key pressed - should show exit modal');
+        console.log('[DiscoverNoUser] Current modal state - isExitModalOpen:', isExitModalOpen);
+        e.preventDefault();
+        handleBack();
+        console.log('[DiscoverNoUser] ✅ handleBack() called to trigger exit modal');
         break;
     }
   });

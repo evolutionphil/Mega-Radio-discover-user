@@ -29,19 +29,20 @@ Root (Main Development Project)
 
 ## Recent Changes
 
-### October 22, 2025 - Critical Fixes: Guide Pages & Country Selector
-- **FIXED:** Guide pages (Guide1-4) now display background images correctly (removed invalid `object-50%-50%` CSS class)
-- **FIXED:** Country Selector completely rebuilt with proper Samsung TV remote support:
-  - Simple arrow key navigation (UP/DOWN to navigate countries)
-  - ENTER to select country, BACK to close modal
-  - Live search filtering with keyboard input
-  - Pink focus indicator on selected country
-  - Removed conflicting old TV spatial navigation system
-- Fixed country selector button focus (index 6→5) on DiscoverNoUser page for proper pink border visibility
-- Fixed Favorites page focus system to include sidebar (indices 0-4) with bidirectional navigation between sidebar and favorites grid
-- Added exit confirmation modal on Discover home page with two-button focus (Cancel/Exit) to prevent accidental app exits
-- Fixed GenreList data initialization to properly handle cached query data and genre changes on subsequent visits
-- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761162414784.js
+### October 22, 2025 - Major Bug Fixes: Remote Control & Navigation
+- **CRITICAL FIX:** Fixed switch case syntax bug across ALL pages that prevented Samsung TV remote navigation from working:
+  - Replaced invalid `case key?.UP || 38:` with proper multi-case syntax `case key?.UP: case 38:`
+  - Fixed in 9 pages: DiscoverNoUser, DiscoverUser, Genres, Settings, Search, Favorites, GenreList, GenreDetail, RadioPlaying
+  - All arrow keys, ENTER, and RETURN buttons now work correctly on Samsung TV remote
+- **MEDIA BUTTONS:** Wired up Play/Pause/Stop remote control buttons to GlobalPlayer:
+  - Exposed GlobalPlayer methods to window object
+  - Added global handlers in tv-remote-keys.js for PLAY (415), PAUSE (19), PLAYPAUSE (10252), STOP (413)
+  - Media buttons now work globally across all pages to control radio playback
+- **EXIT MODAL:** Fixed exit confirmation modal on Discover home page (BACK button now correctly closes modal)
+- **GENRES PAGE:** Fixed focus indices (sidebar: 0-4, country selector: 5, popular genres: 6-13, all genres: 14+)
+- **COUNTRY SELECTOR:** Completely rebuilt with simple arrow navigation (UP/DOWN to navigate, ENTER to select, BACK to close)
+- **BACKGROUND IMAGES:** Fixed invalid `object-50%-50%` CSS class → `object-center` in Guide1-4, Settings, Genres pages
+- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761163324714.js
 
 ### October 19, 2025 - Simplified to Single Index (LGTV Pattern)
 - Consolidated project structure: Root is main development, tv-app/ is Samsung TV build output only

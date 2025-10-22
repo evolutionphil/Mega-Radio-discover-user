@@ -260,23 +260,28 @@ export const Search = (): JSX.Element => {
     console.log('[Search] ⌨️ Key pressed:', e.keyCode, 'key:', e.key);
     
     switch(e.keyCode) {
-      case key?.UP || 38:
+      case key?.UP:
+      case 38:
         console.log('[Search] ⬆️ UP key');
         customHandleNavigation('UP');
         break;
-      case key?.DOWN || 40:
+      case key?.DOWN:
+      case 40:
         console.log('[Search] ⬇️ DOWN key');
         customHandleNavigation('DOWN');
         break;
-      case key?.LEFT || 37:
+      case key?.LEFT:
+      case 37:
         console.log('[Search] ⬅️ LEFT key');
         customHandleNavigation('LEFT');
         break;
-      case key?.RIGHT || 39:
+      case key?.RIGHT:
+      case 39:
         console.log('[Search] ➡️ RIGHT key');
         customHandleNavigation('RIGHT');
         break;
-      case key?.ENTER || 13:
+      case key?.ENTER:
+      case 13:
         console.log('[Search] ✅ ENTER key');
         handleSelect();
         break;
