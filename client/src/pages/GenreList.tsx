@@ -117,7 +117,8 @@ export const GenreList = (): JSX.Element => {
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
-    if (station.favicon) {
+    // Check for null, undefined, empty string, or the string "null"
+    if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
       return station.favicon.startsWith('http') 
         ? station.favicon 
         : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
@@ -139,18 +140,87 @@ export const GenreList = (): JSX.Element => {
     return station.country || 'Radio';
   };
 
-  // Focus management for grid: 1 back button + stations (7 cols)
-  const totalItems = 1 + displayedStations.length;
-  const { focusIndex, handleNavigation, handleSelect, handleBack, isFocused } = useFocusManager({
+  // Focus management with sidebar: 5 sidebar + 1 back button + stations
+  // Sidebar: 0-4, Back button: 5, Stations: 6+
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
+  const backButtonIndex = 5;
+  const stationsStart = 6;
+  const totalItems = 5 + 1 + displayedStations.length;
+
+  // Custom navigation for sidebar + content
+  const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
+    const current = focusIndex;
+    let newIndex = current;
+
+    // Sidebar (0-4)
+    if (current >= 0 && current <= 4) {
+      if (direction === 'DOWN') {
+        newIndex = current < 4 ? current + 1 : current;
+      } else if (direction === 'UP') {
+        newIndex = current > 0 ? current - 1 : current;
+      } else if (direction === 'RIGHT') {
+        newIndex = backButtonIndex; // Jump to back button
+      }
+    }
+    // Back button (5)
+    else if (current === backButtonIndex) {
+      if (direction === 'LEFT') {
+        newIndex = 1; // Jump to Genres in sidebar (current page)
+      } else if (direction === 'DOWN') {
+        newIndex = stationsStart; // Jump to first station
+      }
+    }
+    // Stations grid (6+) - 7 columns
+    else if (current >= stationsStart) {
+      const relIndex = current - stationsStart;
+      const row = Math.floor(relIndex / 7);
+      const col = relIndex % 7;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to first sidebar item (Discover)
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < 6 && current < totalItems - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        if (row > 0) {
+          newIndex = current - 7;
+        } else {
+          newIndex = backButtonIndex; // Jump to back button
+        }
+      } else if (direction === 'DOWN') {
+        const nextIndex = current + 7;
+        if (nextIndex < totalItems) {
+          newIndex = nextIndex;
+        }
+      }
+    }
+
+    newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
+    setFocusIndex(newIndex);
+  };
+
+  const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
     totalItems,
-    cols: 7,
+    cols: 1,
+    initialIndex: 1, // Start on Genres in sidebar
     onSelect: (index) => {
-      if (index === 0) {
-        // Back button
+      // Sidebar (0-4)
+      if (index >= 0 && index <= 4) {
+        const route = sidebarRoutes[index];
+        setLocation(route);
+      }
+      // Back button (5)
+      else if (index === backButtonIndex) {
         setLocation('/genres');
-      } else {
-        // Station card
-        const stationIndex = index - 1;
+      }
+      // Stations (6+)
+      else if (index >= stationsStart) {
+        const stationIndex = index - stationsStart;
         const station = displayedStations[stationIndex];
         if (station) {
           setLocation(`/radio-playing?station=${station._id}`);
@@ -160,26 +230,26 @@ export const GenreList = (): JSX.Element => {
     onBack: () => setLocation('/genres')
   });
 
-  // Register page-specific key handler
+  // Register page-specific key handler with custom navigation
   usePageKeyHandler('/genre-list', (e) => {
     const key = (window as any).tvKey;
     
     switch(e.keyCode) {
       case key?.UP:
       case 38:
-        handleNavigation('UP');
+        customHandleNavigation('UP');
         break;
       case key?.DOWN:
       case 40:
-        handleNavigation('DOWN');
+        customHandleNavigation('DOWN');
         break;
       case key?.LEFT:
       case 37:
-        handleNavigation('LEFT');
+        customHandleNavigation('LEFT');
         break;
       case key?.RIGHT:
       case 39:
-        handleNavigation('RIGHT');
+        customHandleNavigation('RIGHT');
         break;
       case key?.ENTER:
       case 13:
@@ -211,7 +281,7 @@ export const GenreList = (): JSX.Element => {
         {/* Back Button */}
         <Link href="/genres">
           <div 
-            className={`absolute h-[24px] left-[236px] top-[211px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity ${getFocusClasses(isFocused(0))}`}
+            className={`absolute h-[24px] left-[236px] top-[211px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity ${getFocusClasses(isFocused(backButtonIndex))}`}
             data-testid="button-back"
             onClick={() => setLocation('/genres')}
           >
@@ -243,7 +313,7 @@ export const GenreList = (): JSX.Element => {
           return (
             <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
               <div 
-                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(index + 1))}`}
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(index + stationsStart))}`}
                 style={{ left: `${leftPosition}px`, top: `${topPosition}px` }}
                 data-testid={`station-card-${index}`}
                 onClick={() => setLocation(`/radio-playing?station=${station._id}`)}
