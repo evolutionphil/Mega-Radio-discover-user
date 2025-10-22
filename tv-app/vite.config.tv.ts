@@ -2,17 +2,19 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-// Plugin to replace /figmaAssets/ paths with images/ for Samsung TV
-function replaceFigmaAssetPaths() {
+// Plugin to replace absolute paths with relative paths for Samsung TV
+function makePathsRelative() {
   return {
-    name: 'replace-figma-asset-paths',
+    name: 'make-paths-relative',
     enforce: 'post' as const,
     generateBundle(_options: any, bundle: any) {
       for (const fileName in bundle) {
         const chunk = bundle[fileName];
         if (chunk.type === 'chunk' && chunk.code) {
-          // Replace all /figmaAssets/ paths with images/
-          chunk.code = chunk.code.replace(/\/figmaAssets\//g, 'images/');
+          // Replace all absolute image/asset paths with relative paths
+          chunk.code = chunk.code.replace(/\/figmaAssets\//g, './images/');
+          chunk.code = chunk.code.replace(/\/images\//g, './images/');
+          chunk.code = chunk.code.replace(/\/assets\//g, './assets/');
         }
       }
     },
@@ -20,7 +22,8 @@ function replaceFigmaAssetPaths() {
 }
 
 export default defineConfig({
-  plugins: [react(), replaceFigmaAssetPaths()],
+  plugins: [react(), makePathsRelative()],
+  base: './', // Use relative paths for all assets
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "..", "client", "src"),
