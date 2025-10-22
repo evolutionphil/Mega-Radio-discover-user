@@ -42,22 +42,29 @@ export const Settings = (): JSX.Element => {
     const key = (window as any).tvKey;
     
     switch(e.keyCode) {
-      case key?.UP || 38:
+      case key?.UP:
+      case 38:
         handleNavigation('UP');
         break;
-      case key?.DOWN || 40:
+      case key?.DOWN:
+      case 40:
         handleNavigation('DOWN');
         break;
-      case key?.LEFT || 37:
+      case key?.LEFT:
+      case 37:
         handleNavigation('LEFT');
         break;
-      case key?.RIGHT || 39:
+      case key?.RIGHT:
+      case 39:
         handleNavigation('RIGHT');
         break;
-      case key?.ENTER || 13:
+      case key?.ENTER:
+      case 13:
         handleSelect();
         break;
-      case key?.RETURN || 461 || 10009:
+      case key?.RETURN:
+      case 461:
+      case 10009:
         handleBack();
         break;
     }
@@ -84,7 +91,7 @@ export const Settings = (): JSX.Element => {
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
         <img
           alt=""
-          className="absolute inset-0 max-w-none object-50%-50% object-cover pointer-events-none size-full"
+          className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full"
           src={assetPath("images/hand-crowd-disco-1.png")}
         />
       </div>

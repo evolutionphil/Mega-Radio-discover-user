@@ -106,17 +106,20 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       const key = (window as any).tvKey;
       
       switch(e.keyCode) {
-        case key?.UP || 38:
+        case key?.UP:
+        case 38:
           e.preventDefault();
           setFocusIndex(prev => Math.max(0, prev - 1));
           break;
           
-        case key?.DOWN || 40:
+        case key?.DOWN:
+        case 40:
           e.preventDefault();
           setFocusIndex(prev => Math.min(filteredCountries.length - 1, prev + 1));
           break;
           
-        case key?.ENTER || 13:
+        case key?.ENTER:
+        case 13:
           e.preventDefault();
           if (filteredCountries[focusIndex]) {
             console.log('[CountrySelector] Selecting country:', filteredCountries[focusIndex].name);
@@ -125,7 +128,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           }
           break;
           
-        case key?.RETURN || 461:
+        case key?.RETURN:
+        case 461:
         case 10009:
           e.preventDefault();
           console.log('[CountrySelector] RETURN key - closing modal');
