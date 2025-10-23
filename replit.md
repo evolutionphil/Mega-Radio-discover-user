@@ -67,6 +67,16 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025)
 
+### Folder Structure Consolidation:
+**Single `tv-app/` folder for all builds** - Eliminated separate client/ folder
+   - Moved all source code from `client/src/` to `tv-app/src/`
+   - Updated `vite.config.ts`: root now points to `tv-app/`, build outputs to `tv-app/assets/`
+   - Updated `server/vite-runtime.ts`: references `tv-app/` instead of `client/` for both dev and production
+   - Web preview and TV production builds now use same source folder
+   - Simplified project structure: one folder for development, preview, and TV builds
+
+## Previous Changes
+
 ### Bug Fixes & Enhancements:
 1. **Onboarding Persistence** - Guides now show only on first app launch
    - Splash.tsx: Checks localStorage for 'onboardingCompleted' flag
