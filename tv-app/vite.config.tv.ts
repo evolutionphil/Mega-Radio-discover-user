@@ -43,10 +43,18 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
     target: 'es2015', // Compatible with older TVs
+    cssCodeSplit: false, // Generate a single CSS file instead of splitting
     rollupOptions: {
       output: {
         format: 'iife', // IIFE format instead of ES modules for TV compatibility
         inlineDynamicImports: true, // Bundle everything into one file
+        assetFileNames: (assetInfo) => {
+          // Keep CSS as style.css for easier reference
+          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+            return 'assets/style.css';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
       },
     },
   },
