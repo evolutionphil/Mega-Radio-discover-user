@@ -185,6 +185,13 @@ export const GenreList = (): JSX.Element => {
   const backButtonIndex = 5;
   const stationsStart = 6;
   const totalItems = 5 + 1 + displayedStations.length;
+  
+  console.log('🎯 [GENRE LIST DEBUG] Focus setup:', {
+    totalItems,
+    displayedStations: displayedStations.length,
+    stationsStart,
+    willStartAt: stationsStart
+  });
 
   // Custom navigation for sidebar + content
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
@@ -246,7 +253,7 @@ export const GenreList = (): JSX.Element => {
   const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 1, // Start on Genres in sidebar
+    initialIndex: stationsStart, // Start on first station (index 6)
     onSelect: (index) => {
       // Sidebar (0-4)
       if (index >= 0 && index <= 4) {
