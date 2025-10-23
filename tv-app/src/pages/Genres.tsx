@@ -4,6 +4,7 @@ import { megaRadioApi } from "@/services/megaRadioApi";
 import { useEffect, useRef, useMemo, useState } from "react";
 import { useCountry } from "@/contexts/CountryContext";
 import { CountrySelector } from "@/components/CountrySelector";
+import { CountryTrigger } from "@/components/CountryTrigger";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
@@ -273,36 +274,13 @@ export const Genres = (): JSX.Element => {
       </div>
 
       {/* Country Selector */}
-      <div 
-        className={`absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[#6b4f8a] cursor-pointer hover:bg-[#7d5fa0] transition-colors z-50 flex-shrink-0 ${getFocusClasses(isFocused(6))}`}
-        style={{ padding: '11px 14.316px 11px 15px', justifyContent: 'center', alignItems: 'center' }}
+      <CountryTrigger
+        selectedCountry={selectedCountry}
+        selectedCountryCode={selectedCountryCode}
         onClick={() => setIsCountrySelectorOpen(true)}
-        data-testid="button-country-selector"
-      >
-        <div className="flex items-center gap-[10.66px]">
-          <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
-            <img
-              alt={selectedCountry}
-              className="w-full h-full object-cover"
-              src={selectedCountryFlag}
-            />
-          </div>
-          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal text-[24px] text-white whitespace-nowrap">
-            {selectedCountry}
-          </p>
-          <div className="flex items-center justify-center ml-auto">
-            <div className="rotate-[270deg]">
-              <div className="relative size-[23.684px]">
-                <img
-                  alt=""
-                  className="block max-w-none size-full"
-                  src={assetPath("images/arrow.svg")}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        focusClasses={getFocusClasses(isFocused(6))}
+        className="absolute left-[1453px] top-[67px] z-50"
+      />
 
       {/* Country Selector Modal */}
       <CountrySelector 
