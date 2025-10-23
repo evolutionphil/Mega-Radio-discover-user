@@ -1,6 +1,6 @@
-# Mega Radio - Samsung Tizen TV App
+# Mega Radio - TV App (Samsung Tizen + LG webOS)
 
-This is the official Samsung Tizen TV project for Mega Radio.
+This is the unified TV project for Mega Radio, supporting **both Samsung Tizen and LG webOS** platforms from a single folder (LGTV pattern).
 
 ## Project Structure
 
@@ -51,6 +51,14 @@ This script will:
 4. Keep all Samsung configuration files unchanged
 
 **Note:** All paths in the generated HTML are relative for TV compatibility.
+
+## Platform Support
+
+This single folder supports **BOTH** platforms:
+- **Samsung Tizen TV**: Uses `config.xml`, `.project`, `.tproject`
+- **LG webOS TV**: Uses `appinfo.json`, `webOSTVjs-1.2.0/`
+
+The same React bundle and assets work for both!
 
 ## Deploying to Samsung TV
 
@@ -140,7 +148,56 @@ This ensures the latest React build is packaged for the TV app.
 2. Verify `js/tv-audio-player.js` is loaded
 3. Use Remote Web Inspector to check for errors
 
+## Deploying to LG webOS TV
+
+### Prerequisites
+
+1. **Install LG webOS TV SDK CLI tools:**
+   ```bash
+   npm install -g @webosose/ares-cli
+   ```
+
+2. **Enable Developer Mode on your LG TV:**
+   - Download "Developer Mode" app from LG Content Store
+   - Launch it and turn ON Developer Mode
+   - Note your TV's IP address
+
+### Method 1: Package and Install
+
+1. **Package the app:**
+   ```bash
+   cd tv-app
+   ares-package .
+   ```
+   This creates: `com.megaradio.tv_1.0.0_all.ipk`
+
+2. **Add your TV to ares-cli:**
+   ```bash
+   ares-setup-device
+   ```
+   Follow prompts to add your TV (name, IP address, port 9922, passphrase)
+
+3. **Install on TV:**
+   ```bash
+   ares-install --device YOUR_TV_NAME com.megaradio.tv_1.0.0_all.ipk
+   ```
+
+4. **Launch the app:**
+   ```bash
+   ares-launch --device YOUR_TV_NAME com.megaradio.tv
+   ```
+
+### Method 2: Direct Launch (Development)
+
+For quick testing without packaging:
+```bash
+ares-install --device YOUR_TV_NAME .
+ares-launch --device YOUR_TV_NAME com.megaradio.tv
+```
+
 ## Remote Debugging
+
+### Samsung TV
 
 To debug on real Samsung TV:
 
@@ -150,6 +207,14 @@ To debug on real Samsung TV:
 4. Your TV will appear under "Remote Target"
 5. Click "inspect" to open DevTools
 
+### LG webOS TV
+
+To debug on real LG TV:
+```bash
+ares-inspect --device YOUR_TV_NAME com.megaradio.tv
+```
+This opens Chrome DevTools connected to your LG TV app.
+
 ## Current Status
 
 ✅ React app integrated with Samsung Tizen project
@@ -157,4 +222,6 @@ To debug on real Samsung TV:
 ✅ TV platform scripts included
 ✅ Remote control navigation ready
 ✅ Audio playback system configured
-✅ Ready for deployment to Samsung TV
+✅ Ready for deployment to Samsung Tizen TV
+✅ Ready for deployment to LG webOS TV
+✅ Single unified codebase for both platforms
