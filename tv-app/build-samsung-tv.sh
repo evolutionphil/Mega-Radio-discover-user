@@ -1,91 +1,81 @@
 #!/bin/bash
+set -e
 
 echo "🔨 Building Mega Radio Samsung TV App (Country-Filtered Genres v3.0)..."
 
-# Step 0: Clean old bundles (CRITICAL for Samsung TV cache busting)
+# Step 0: Restore clean index.html from template
+echo "🧹 Restoring clean index.html from template..."
+cp index.template.html index.html
+
+# Step 1: Clean old builds and caches
 echo "🧹 Cleaning old bundles and caches..."
-rm -rf assets/*.js
-rm -rf assets/*.css
-rm -rf dist
-rm -rf node_modules/.vite
-rm -rf ../node_modules/.vite
+rm -rf dist/ .vite/ node_modules/.vite/
+rm -f assets/index-*.js
 
-# Step 1: Build React app with Vite (TV-specific IIFE format)
+# Step 2: Build React app with Vite (TV-specific IIFE format)
 echo "📦 Building React bundle with latest code..."
-vite build --config vite.config.tv.ts
+vite build --config vite.config.tv.ts | tee /tmp/vite-build.log
 
-# Step 2: Extract the hashed bundle filename from Vite output (get first match only)
-VITE_JS_FILE=$(grep -oP 'src="\./assets/index-[^"]+\.js"' dist/public/index.html | head -1 | sed 's/src="\.\/\|src="\///g' | sed 's/"//g')
-echo "✓ Vite bundle: ${VITE_JS_FILE}"
+# Step 3: Extract the hashed bundle filename from Vite output
+VITE_JS_FILE=$(grep -oP 'dist/public/assets/index-[^.]+\.js' /tmp/vite-build.log | head -1 | xargs basename)
+echo "✓ Vite bundle: assets/${VITE_JS_FILE}"
 
-# Step 2.5: RENAME bundle with timestamp for Samsung TV cache busting
-TIMESTAMP=$(date +%s%3N)  # Milliseconds timestamp
-NEW_JS_FILE="assets/index-${TIMESTAMP}.js"
-echo "🔄 Renaming to: ${NEW_JS_FILE} (cache busting)"
-mv "dist/public/${VITE_JS_FILE}" "dist/public/${NEW_JS_FILE}"
+# Step 4: Create timestamp for cache busting
+TIMESTAMP=$(date +%s%3N)
+NEW_JS_FILE="index-${TIMESTAMP}.js"
+echo "🔄 Renaming to: assets/${NEW_JS_FILE} (cache busting)"
 
-# Step 3: Copy bundle and CSS to assets folder
+# Step 5: Copy bundle to assets/ folder with new name
 echo "📂 Copying bundle to assets..."
-mkdir -p assets
-cp -r dist/public/assets/*.js assets/ 2>/dev/null || true
-cp -r dist/public/assets/*.css assets/ 2>/dev/null || true
+mkdir -p assets/
+cp "dist/public/assets/${VITE_JS_FILE}" "assets/${NEW_JS_FILE}"
 
-# Step 4: Copy images
+# Step 6: Copy CSS
+cp dist/public/assets/*.css assets/ 2>/dev/null || true
+
+# Step 7: Copy images
 echo "📂 Copying images..."
-mkdir -p images
-cp -r public/images/* images/ 2>/dev/null || true
+mkdir -p images/
+cp -r dist/public/images/* images/ 2>/dev/null || cp -r ../figmaAssets/* images/ 2>/dev/null || true
 
-# Step 4.5: Rename misnamed SVG files (they have .png extension but are actually SVG)
+# Step 8: Fix misnamed SVG files
 echo "🔧 Fixing misnamed SVG files..."
-for f in images/ellipse2.png images/waves.png images/monitor.png images/phone.png images/tablet.png; do
-  if [ -f "$f" ]; then
-    base=$(basename "$f" .png)
-    mv "$f" "images/${base}.svg"
+for f in images/*.png; do
+  if file "$f" 2>/dev/null | grep -q "SVG"; then
+    mv "$f" "${f%.png}.svg"
   fi
 done
 
-# Step 5: Copy TV scripts
+# Step 9: Copy TV scripts
 echo "📂 Copying TV scripts..."
-mkdir -p js css
-cp public/js/*.js js/ 2>/dev/null || true
-cp public/css/tv-styles.css css/ 2>/dev/null || true
+mkdir -p js/
+cp -r public/js/* js/ 2>/dev/null || true
 
-# Step 6: Copy webOS SDK
-cp -r public/webOSTVjs-1.2.0 . 2>/dev/null || true
+# Step 10: Update index.html from dist and fix for TV
+echo "🔧 Updating index.html from dist..."
+cp dist/public/index.html index.html
 
-# Step 7: Update index.html with new bundle reference and add Tailwind CSS (IN-PLACE)
-echo "🔧 Updating index.html with bundle: ${NEW_JS_FILE}"
-sed -i "s|assets/index-[^\"]*\.js|${NEW_JS_FILE}|g" index.html
-sed -i "s|v=[0-9]*|v=${TIMESTAMP}|g" index.html
+# Step 11: Replace Vite's bundle reference with our cache-busted filename
+sed -i "s|assets/${VITE_JS_FILE}|assets/${NEW_JS_FILE}|g" index.html
 
-# Step 7.5: Add Tailwind CSS link if not already present
-if ! grep -q "assets/style.css" index.html; then
-  echo "🔧 Adding Tailwind CSS link..."
-  sed -i "s|<link rel=\"stylesheet\" href=\"./css/tv-styles.css|<link rel=\"stylesheet\" href=\"./assets/style.css?v=${TIMESTAMP}\">\n  <link rel=\"stylesheet\" href=\"./css/tv-styles.css|g" index.html
-fi
+# Step 12: Remove type="module" from React script tag (Samsung TV doesn't support ES modules)
+sed -i 's/<script type="module" /<script /g' index.html
 
-# Step 8: Remove type="module" from script tag (IIFE doesn't need it)
-echo "🔧 Removing type=\"module\" from script tag..."
-sed -i 's|<script type="module" crossorigin|<script|g' index.html
-
-# Step 9: Remove base href (causes path issues on Samsung TV file system)
-echo "🔧 Removing base href tag..."
-sed -i 's|<base href="/">||g' index.html
-
-# Step 10: Move React bundle script from head to end of body (must load after #root div)
-echo "🔧 Moving React script to end of body..."
-BUNDLE_SCRIPT=$(grep -o '<script src="\./assets/index-[^"]*\.js"></script>' index.html)
-sed -i "s|${BUNDLE_SCRIPT}||g" index.html
-# Add polyfills for older Samsung TV browsers
-POLYFILLS='<script>if(typeof globalThis==="undefined"){window.globalThis=window;}if(!Object.fromEntries){Object.fromEntries=function(e){var t={};for(var r of e){t[r[0]]=r[1]}return t}}</script>'
-sed -i "s|</body>|  ${POLYFILLS}\n  ${BUNDLE_SCRIPT}\n  </body>|g" index.html
+# Step 13: Add cache-busting query params to all script/link tags
+echo "🔧 Adding cache-busting to all resources..."
+sed -i "s|src=\"\\./js/platform-detect.js\"|src=\"./js/platform-detect.js?v=${TIMESTAMP}\"|g" index.html
+sed -i "s|src=\"\\./js/tv-spatial-navigation.js\"|src=\"./js/tv-spatial-navigation.js?v=${TIMESTAMP}\"|g" index.html
+sed -i "s|src=\"\\./js/tv-remote-keys.js\"|src=\"./js/tv-remote-keys.js?v=${TIMESTAMP}\"|g" index.html
+sed -i "s|src=\"\\./js/tv-audio-player.js\"|src=\"./js/tv-audio-player.js?v=${TIMESTAMP}\"|g" index.html
+sed -i "s|href=\"\\./assets/style.css\"|href=\"./assets/style.css?v=${TIMESTAMP}\"|g" index.html
+sed -i "s|href=\"\\./css/tv-styles.css\"|href=\"./css/tv-styles.css?v=${TIMESTAMP}\"|g" index.html
 
 echo "✅ Build complete!"
 echo ""
 echo "🔥 VERSION 3.0 - Country-Filtered Genres Enabled"
 echo "📱 Samsung TV App ready in: tv-app/"
 echo "   ONE index.html: tv-app/index.html"
-echo "   Bundle: ${NEW_JS_FILE} (🆕 NEW FILENAME - cache busted!)"
+echo "   Bundle: assets/${NEW_JS_FILE} (🆕 NEW FILENAME - cache busted!)"
 echo "   Version: ${TIMESTAMP}"
 echo ""
 echo "🚀 Deploy the entire tv-app/ folder to Samsung TV"
