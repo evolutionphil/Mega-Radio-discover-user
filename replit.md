@@ -67,18 +67,21 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025 - Latest)
 
+### Country-Filtered Genres Implementation (COMPLETED):
+**Genres now correctly filter by selected country** - Per API documentation requirements
+   - Fixed `megaRadioApi.getAllGenres()` to use `filters` parameter with JSON object containing `countrycode` and `searchQuery`
+   - Updated `Genres.tsx` to use `getAllGenres(selectedCountryCode)` instead of `getDiscoverableGenres()`
+   - Fixed `getStationsByGenre()` to convert country code to country name before API call
+   - Updated `GenreList.tsx` to use proper `/api/genres/:slug/stations` endpoint via `getStationsByGenre()`
+   - Genres list now dynamically updates when country changes (e.g., USA shows 50+ genres, Algeria shows 9 genres)
+   - Station lists now properly filter by BOTH genre AND selected country
+   - **IMPORTANT:** Browser cache may show old behavior - users must clear browser cache or use incognito window to see changes
+
 ### Server Path Fix (Critical):
 **Fixed fatal bug preventing app from loading** - Server was looking for files in deleted `client/` folder
    - Updated server/vite.ts to use correct `tv-app/` path instead of old `client/` path
    - Resolved "Unexpected token '<'" errors (HTML being served instead of JavaScript)
    - App now loads correctly in browser
-
-### All Genres API Implementation (In Progress):
-**Attempted to fetch all 2,452+ genres instead of country-limited 9** - Browser cache preventing deployment
-   - Changed Genres.tsx to use getDiscoverableGenres() API endpoint (fetches all genres globally)
-   - Verified API returns full genre list (2,452 genres vs 9 country-specific)
-   - Code updated but browser aggressively caching old JavaScript preventing new code from loading
-   - User needs to clear browser cache or use incognito window to see updated version
 
 ### Auto-Scroll on Genres Page:
 **Smooth scrolling follows focus** - Navigation experience improved
