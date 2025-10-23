@@ -65,6 +65,27 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
 
+## Recent Changes (October 23, 2025 - Latest)
+
+### Server Path Fix (Critical):
+**Fixed fatal bug preventing app from loading** - Server was looking for files in deleted `client/` folder
+   - Updated server/vite.ts to use correct `tv-app/` path instead of old `client/` path
+   - Resolved "Unexpected token '<'" errors (HTML being served instead of JavaScript)
+   - App now loads correctly in browser
+
+### All Genres API Implementation (In Progress):
+**Attempted to fetch all 2,452+ genres instead of country-limited 9** - Browser cache preventing deployment
+   - Changed Genres.tsx to use getDiscoverableGenres() API endpoint (fetches all genres globally)
+   - Verified API returns full genre list (2,452 genres vs 9 country-specific)
+   - Code updated but browser aggressively caching old JavaScript preventing new code from loading
+   - User needs to clear browser cache or use incognito window to see updated version
+
+### Auto-Scroll on Genres Page:
+**Smooth scrolling follows focus** - Navigation experience improved
+   - Added useEffect to auto-scroll based on focusIndex
+   - Calculates scroll position for sidebar, country selector, popular genres, and all genres sections
+   - Smooth behavior ensures focused genre is always visible
+
 ## Recent Changes (October 23, 2025)
 
 ### Country Selector Improvements:
