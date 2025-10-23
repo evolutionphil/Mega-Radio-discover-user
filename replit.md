@@ -64,3 +64,27 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+
+## Recent Changes (October 23, 2025)
+
+### Bug Fixes & Enhancements:
+1. **Onboarding Persistence** - Guides now show only on first app launch
+   - Splash.tsx: Checks localStorage for 'onboardingCompleted' flag
+   - Guide4.tsx: Sets completion flag when user clicks "Get Started"
+   - Subsequent app launches skip directly to Discover page
+
+2. **Country Search Filtering** - Enhanced debugging and verification
+   - Added comprehensive logging to CountrySelector.tsx
+   - Tracks real-time filtering with search query updates
+   - Verifies Turkish character support (e.g., "türkiye")
+
+3. **Country Button Design Consistency** - Unified across all pages
+   - Updated DiscoverNoUser.tsx to match RadioPlaying.tsx design
+   - Direct flagcdn.com URL construction for all country flags
+   - Inline SVG arrow icon for consistency
+
+4. **Genre Filtering Verification** - API confirmed working correctly
+   - Direct API testing: genre=rock (4,409 stations), genre=jazz (jazz stations), genre=hip-hop (hip-hop stations)
+   - Added extensive logging to GenreList.tsx and megaRadioApi.ts
+   - Validates stations match requested genre, warns if API returns incorrect data
+   - All navigation paths use genre.slug correctly (verified)
