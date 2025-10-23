@@ -12,7 +12,6 @@ import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
 
-// VERSION 2.0 - ALL GENRES FIX - DO NOT REMOVE THIS COMMENT
 export const Genres = (): JSX.Element => {
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
   const { isPlaying } = useGlobalPlayer();
@@ -21,13 +20,13 @@ export const Genres = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
-  // FETCH ALL GENRES using getDiscoverableGenres (returns 2452+ genres, not just 9)
+  // FETCH COUNTRY-FILTERED GENRES using getAllGenres with selected country
   const { data: genresData } = useQuery({
-    queryKey: ['/api/genres/discoverable'],
+    queryKey: ['/api/genres', selectedCountryCode],
     queryFn: async () => {
-      console.log('[Genres v2] 🚀 FETCHING ALL GENRES via getDiscoverableGenres');
-      const result = await megaRadioApi.getDiscoverableGenres();
-      console.log('[Genres v2] ✅ Fetched', result.genres?.length, 'total genres');
+      console.log('[Genres] 🎵 Fetching genres for country:', selectedCountryCode, selectedCountry);
+      const result = await megaRadioApi.getAllGenres(selectedCountryCode);
+      console.log('[Genres] ✅ Fetched', result.genres?.length, 'genres for', selectedCountry);
       return result;
     },
     staleTime: 60000, // 1 minute cache
