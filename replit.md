@@ -67,6 +67,18 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025)
 
+### Country Selector Improvements:
+**Unified design and fixed selection behavior** - All pages now use consistent country button styling
+   - Created shared CountryTrigger component with purple background (#6b4f8a), flag, and arrow icon
+   - Replaced duplicate implementations in DiscoverNoUser.tsx, Genres.tsx, RadioPlaying.tsx
+   - Fixed CountrySelector to focus on currently selected country when opened (prevents accidental selection changes)
+   - Modal initialization only runs on open, allowing proper arrow key navigation
+
+### Genre Navigation Fix:
+**Genre filtering now works correctly** - Clicking "Rock" shows rock stations instead of pop
+   - GenreList.tsx now reads genre parameter from both hash-based params (#/genre-list?genre=rock) and window.location.search (/?genre=rock#/genre-list)
+   - Fixes issue where hash-based routing prevented genre parameter from being read correctly
+
 ### Folder Structure Consolidation:
 **Single `tv-app/` folder for all builds** - Eliminated separate client/ folder
    - Moved all source code from `client/src/` to `tv-app/src/`
