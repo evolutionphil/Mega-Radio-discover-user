@@ -76,8 +76,10 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ### Genre Navigation Fix:
 **Genre filtering now works correctly** - Clicking "Rock" shows rock stations instead of pop
-   - GenreList.tsx now reads genre parameter from both hash-based params (#/genre-list?genre=rock) and window.location.search (/?genre=rock#/genre-list)
-   - Fixes issue where hash-based routing prevented genre parameter from being read correctly
+   - GenreList.tsx now correctly reads genre parameter from wouter's location (works with hash-based routing)
+   - Fixed Genres.tsx focus indices mismatch: handleSelect now uses correct indices (7-14 for popular genres, 15+ for all genres)
+   - Fixed navigation logic to properly jump between sidebar (0-4), country selector (6), and genre sections
+   - Fixes issue where clicking one genre would navigate to a different genre
 
 ### Folder Structure Consolidation:
 **Single `tv-app/` folder for all builds** - Eliminated separate client/ folder
