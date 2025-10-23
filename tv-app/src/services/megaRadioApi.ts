@@ -1,4 +1,5 @@
-// Mega Radio API Service
+// Mega Radio API Service - VERSION 3.0 - COUNTRY FILTERED GENRES
+console.log('🔥 megaRadioApi.ts VERSION 3.0 LOADED - Country-filtered genres enabled');
 const BASE_URL = 'https://themegaradio.com';
 const API_PREFIX = '/api';
 
