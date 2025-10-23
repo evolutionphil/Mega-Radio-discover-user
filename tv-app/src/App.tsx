@@ -52,7 +52,7 @@ function Router() {
       <Route path="/discover-no-user" component={DiscoverNoUser} />
       <Route path="/radio-playing" component={RadioPlaying} />
       <Route path="/genres" component={Genres} />
-      <Route path="/genre-list" component={GenreList} />
+      <Route path="/genre-list/:genre?" component={GenreList} />
       <Route path="/search" component={Search} />
       <Route path="/favorites" component={Favorites} />
       <Route path="/settings" component={Settings} />
