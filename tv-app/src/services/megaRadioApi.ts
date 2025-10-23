@@ -378,12 +378,20 @@ export const megaRadioApi = {
     const queryParams = new URLSearchParams();
     if (params?.page) queryParams.append('page', params.page.toString());
     if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.country) queryParams.append('country', params.country);
+    if (params?.country) {
+      // Convert country code to name for API
+      const countryName = getCountryNameFromCode(params.country);
+      queryParams.append('country', countryName);
+      console.log(`[API] getStationsByGenre: Converting ${params.country} -> ${countryName}`);
+    }
     if (params?.sort) queryParams.append('sort', params.sort);
 
     const url = buildApiUrl(`/genres/${slug}/stations`, queryParams);
+    console.log('[API] getStationsByGenre URL:', url);
     const response = await fetch(url);
-    return response.json();
+    const data = await response.json();
+    console.log('[API] getStationsByGenre fetched:', data.stations?.length || 0, 'stations');
+    return data;
   },
 
   getDiscoverableGenres: async (): Promise<{ genres: Genre[] }> => {
