@@ -64,3 +64,39 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+
+## Recent Changes (October 23, 2025 - Latest)
+
+### Samsung TV Build v3.3 (TRUE INFINITE SCROLL):
+**Implemented true lazy loading with API pagination** - Users can now scroll through 1000+ stations
+   - Created production build with timestamp: `1761253575071`
+   - Bundle: `tv-app/assets/index-1761253575071.js` (425KB - full React app)
+   - CSS: `tv-app/assets/style.css` (69KB - Full Tailwind CSS)
+   - **INFINITE SCROLL IMPLEMENTATION:**
+     - ✅ **DiscoverNoUser.tsx**: Changed from 50-station limit to true infinite scroll
+       - Fetches 100 stations per batch with offset-based pagination
+       - Dual triggers: Scroll-based (< 1000px from bottom) + Focus-based (last 2 rows)
+       - API call: `getWorkingStations({ limit: 100, country, offset })`
+     - ✅ **GenreList.tsx**: Changed from 200-station limit to true infinite scroll
+       - Fetches 100 stations per batch with offset-based pagination
+       - Dual triggers: Scroll-based (< 1000px from bottom) + Focus-based (last 2 rows)
+       - API call: `getStationsByGenre(genre, { country, limit: 100, offset, sort: 'votes' })`
+     - ✅ **megaRadioApi.ts**: Added offset parameter support to both methods
+   - **Technical Details**:
+     - Offset-based pagination: offset=0, offset=100, offset=200, etc.
+     - Automatic loading when approaching last 2 rows (14 stations)
+     - hasMore flag prevents unnecessary API calls
+     - Loading indicators provide user feedback
+   - **Result**: Users can scroll through all available stations (Austria: 1000+, Germany: 2000+)
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
+### Samsung TV Build v3.2 (UI CLEANUP):
+**Removed "See all" texts from Discover page** - Cleaner interface
+   - Removed "See all" text from Popular Stations section
+   - Removed "See all" text from More from Country section
+
+### Samsung TV Build v3.1 (COMPLETE NAVIGATION FIXES):
+**Fixed all three navigation issues on Samsung TV** - GenreList sidebar jump, CountrySelector search navigation, Discover genre scrolling
+   - GenreList: LEFT/UP from first station now jumps to Genres sidebar (index 1)
+   - CountrySelector: DOWN key from search input properly navigates to country list
+   - Discover: Shows ALL genres (removed 8-item limit) enabling horizontal scrolling through 50+ genres
