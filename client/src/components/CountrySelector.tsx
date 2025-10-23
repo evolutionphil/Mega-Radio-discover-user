@@ -58,8 +58,17 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   }, [countriesData]);
 
   const filteredCountries = useMemo(() => {
-    return countries
-      .filter(country => country.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    console.log('[CountrySelector] filteredCountries memo running - searchQuery:', searchQuery);
+    console.log('[CountrySelector] Total countries before filter:', countries.length);
+    
+    const filtered = countries
+      .filter(country => {
+        const matches = country.name.toLowerCase().includes(searchQuery.toLowerCase());
+        if (searchQuery && matches) {
+          console.log('[CountrySelector] Match found:', country.name, 'for query:', searchQuery);
+        }
+        return matches;
+      })
       .sort((a, b) => {
         if (!searchQuery) {
           return (b.stationcount || 0) - (a.stationcount || 0);
@@ -81,6 +90,13 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         
         return a.name.localeCompare(b.name);
       });
+    
+    console.log('[CountrySelector] Filtered countries count:', filtered.length);
+    if (filtered.length > 0 && filtered.length <= 5) {
+      console.log('[CountrySelector] Filtered country names:', filtered.map(c => c.name));
+    }
+    
+    return filtered;
   }, [countries, searchQuery]);
 
   // Reset focus when filtered countries change

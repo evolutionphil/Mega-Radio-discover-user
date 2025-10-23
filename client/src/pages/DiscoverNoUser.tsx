@@ -579,10 +579,10 @@ export const DiscoverNoUser = (): JSX.Element => {
         >
           <div className="flex items-center gap-[10.66px]">
             <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
-              <img
+              <img 
+                src={`https://flagcdn.com/w40/${selectedCountryCode.toLowerCase()}.png`}
                 alt={selectedCountry}
                 className="w-full h-full object-cover"
-                src={selectedCountryFlag}
               />
             </div>
             <p className="font-['Ubuntu',Helvetica] font-bold leading-normal text-[24px] text-white whitespace-nowrap">
@@ -591,11 +591,9 @@ export const DiscoverNoUser = (): JSX.Element => {
             <div className="flex items-center justify-center ml-auto">
               <div className="rotate-[270deg]">
                 <div className="relative size-[23.684px]">
-                  <img
-                    alt=""
-                    className="block max-w-none size-full"
-                    src={assetPath("images/arrow.svg")}
-                  />
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                    <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </div>
               </div>
             </div>
