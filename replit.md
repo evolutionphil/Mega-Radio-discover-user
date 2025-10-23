@@ -67,6 +67,18 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025 - Latest)
 
+### Project Structure Cleanup & Consolidation (COMPLETED):
+**Unified all code into single tv-app/ folder** - Eliminated 50+ duplicate files
+   - **Problem**: Multiple scattered folders (root css/, js/, images/, tv-app/server/, etc.) caused confusion
+   - **Solution**: Consolidated everything into one main `tv-app/` folder following LGTV-master pattern
+   - **Deleted**:
+     - Root-level duplicate folders: `css/`, `js/`, `images/`, `webOSTVjs-1.2.0/`
+     - Duplicate server code: `tv-app/server/`, `tv-app/shared/` (kept root versions)
+     - Duplicate configs: `tv-app/vite.config.ts`, `tv-app/package.json`, `vite.config.tv.ts` from root
+     - Unused files: `*.zip`, `run-tv-app.sh`, `tv-app/build-tv-app.sh`, pasted log files
+   - **Result**: ONE unified folder structure - development uses root `server/`+`shared/` with `tv-app/src/`, TV deployment uses entire `tv-app/` folder
+   - **Benefits**: Single source of truth, no duplication, simpler maintenance, cleaner project
+
 ### Search Page Focus Navigation Fix (COMPLETED):
 **Fixed phantom index preventing RIGHT navigation to Recently Played** - One key press now works
    - **Root Cause**: React Query cached search results counted even when search input empty, creating phantom indices
