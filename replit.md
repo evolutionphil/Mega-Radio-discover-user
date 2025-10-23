@@ -4,7 +4,7 @@
 
 Mega Radio is a full-stack web radio streaming application designed for TV and large screen interfaces. It offers access to global radio stations from over 238 countries, categorized by genres and countries. Key features include an onboarding process, station discovery, favorites management, and continuous audio playback, all tailored for an immersive television viewing experience.
 
-## Project Structure (LGTV Simple Pattern)
+## Project Structure (LGTV Unified Pattern)
 
 ```
 Root (Main Development Project)
@@ -13,19 +13,22 @@ Root (Main Development Project)
 ├── shared/           ← Shared types/schemas
 ├── package.json      ← Dependencies & scripts
 ├── vite.config.ts    ← Vite configuration
-└── tv-app/           ← Samsung TV build output (deploy this folder)
+└── tv-app/           ← UNIFIED TV build (Samsung + LG from ONE folder)
     ├── index.html           ← Single entry point (LGTV pattern)
     ├── assets/              ← Compiled React bundle
     ├── images/              ← All SVG icons/images
     ├── js/                  ← TV scripts (keys, audio, polyfills)
     ├── css/                 ← Styles
-    ├── config.xml           ← Samsung TV config
+    ├── config.xml           ← Samsung Tizen config
+    ├── appinfo.json         ← LG webOS config
+    ├── webOSTVjs-1.2.0/     ← LG SDK
     └── build-samsung-tv.sh  ← Build script
 ```
 
 **Development:** Run `npm run dev` from root
-**Samsung TV Build:** `cd tv-app && bash build-samsung-tv.sh`
-**Deploy:** Upload entire `tv-app/` folder to Samsung TV
+**TV Build:** `cd tv-app && bash build-samsung-tv.sh`
+**Deploy Samsung:** Upload entire `tv-app/` folder to Tizen Studio
+**Deploy LG:** `cd tv-app && ares-package . && ares-install --device YOUR_TV com.megaradio.tv_1.0.0_all.ipk`
 
 ## Recent Changes
 
@@ -92,13 +95,19 @@ Root (Main Development Project)
 
 ### October 22, 2025 - Comprehensive Bug Fixes: Remote Control, Player & Images
 
-### October 19, 2025 - Simplified to Single Index (LGTV Pattern)
-- Consolidated project structure: Root is main development, tv-app/ is Samsung TV build output only
+### October 23, 2025 - Unified TV Folder (LGTV Pattern)
+- **REMOVED lg-app/ folder** - it was redundant and against LGTV pattern
+- **tv-app/ now unified for BOTH platforms** - Samsung Tizen + LG webOS in ONE folder
+- Single codebase has both config.xml (Samsung) and appinfo.json (LG)
+- Matches lgtv-master reference pattern: ONE folder, not separate Samsung/LG directories
+- Updated documentation to reflect unified deployment approach
+
+### October 19, 2025 - Single Index Pattern Implementation
 - Implemented single index.html pattern (like LGTV reference) - ONE file, manually editable
 - Build script now updates bundle references IN-PLACE instead of regenerating HTML
 - Fixed FocusRouter to use window.location.hash directly for Samsung TV hash-based routing
 - Added base tag (`<base href="/">`) to fix image loading (no more file:/// errors)
-- All assets (images, scripts) in correct locations for Samsung TV deployment
+- All assets (images, scripts) in correct locations for TV deployment
 - Cache-busting with timestamps on all TV scripts
 
 ### October 19, 2025 - LGTV Focus Pattern Migration

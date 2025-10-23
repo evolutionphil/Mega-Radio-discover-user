@@ -1,9 +1,9 @@
 {
     "vendor": "Mega Radio",
-    "largeIcon": "client/public/figmaAssets/logo.png",
-    "icon": "client/public/figmaAssets/logo.png",
+    "largeIcon": "images/logo.png",
+    "icon": "images/logo.png",
     "main": "index.html",
-    "id": "megaradio.player",
+    "id": "com.megaradio.tv",
     "title": "Mega Radio",
     "type": "web",
     "resolution": "1920x1080",
