@@ -640,10 +640,6 @@ export const DiscoverNoUser = (): JSX.Element => {
           {t('homepage_popular_stations')}
         </p>
 
-        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1630.5px] not-italic text-[22px] text-center text-white top-[242px] translate-x-[-50%]">
-          {t('homepage_see_all')}
-        </p>
-
         {/* Popular Radio Station Cards - Row 1 */}
         {popularStations.slice(0, 7).map((station, index) => {
           const focusIdx = popularStationsStart + index;
@@ -719,10 +715,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         {/* More From [Country] Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[939px]">
           {t('more_from')} {selectedCountry}
-        </p>
-
-        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[1630.5px] not-italic text-[22px] text-center text-white top-[944px] translate-x-[-50%]">
-          {t('homepage_see_all')}
         </p>
 
         {/* Country Stations - Dynamic Rows with Infinite Scroll */}
