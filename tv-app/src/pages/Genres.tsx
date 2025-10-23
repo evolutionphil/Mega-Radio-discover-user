@@ -183,8 +183,17 @@ export const Genres = (): JSX.Element => {
         const genreIndex = index - 7;
         const genre = popularGenres[genreIndex];
         if (genre) {
-          console.log('[Genres] Navigating to genre:', genre.name, 'slug:', genre.slug);
-          setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`);
+          console.log('🎯 [GENRE NAV DEBUG] Popular genre clicked:', {
+            index,
+            genreIndex,
+            genreName: genre.name,
+            genreSlug: genre.slug,
+            targetURL: `/genre-list/${encodeURIComponent(genre.slug)}`
+          });
+          const newLocation = `/genre-list/${encodeURIComponent(genre.slug)}`;
+          console.log('🎯 [GENRE NAV DEBUG] Setting location to:', newLocation);
+          setLocation(newLocation);
+          console.log('🎯 [GENRE NAV DEBUG] setLocation called successfully');
         }
       }
       // All genres (15+)
@@ -192,8 +201,17 @@ export const Genres = (): JSX.Element => {
         const genreIndex = index - 15;
         const genre = allGenres[genreIndex];
         if (genre) {
-          console.log('[Genres] Navigating to genre:', genre.name, 'slug:', genre.slug);
-          setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`);
+          console.log('🎯 [GENRE NAV DEBUG] All genre clicked:', {
+            index,
+            genreIndex,
+            genreName: genre.name,
+            genreSlug: genre.slug,
+            targetURL: `/genre-list/${encodeURIComponent(genre.slug)}`
+          });
+          const newLocation = `/genre-list/${encodeURIComponent(genre.slug)}`;
+          console.log('🎯 [GENRE NAV DEBUG] Setting location to:', newLocation);
+          setLocation(newLocation);
+          console.log('🎯 [GENRE NAV DEBUG] setLocation called successfully');
         }
       }
     },
