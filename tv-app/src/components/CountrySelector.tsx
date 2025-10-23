@@ -313,9 +313,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
               {searchQuery ? (t('no_countries_found') || 'No countries found') : (t('loading') || 'Loading...')}
             </div>
           ) : (
-            filteredCountries.map((country, index) => (
-              <div
-                key={country.code}
+            <>
+              {filteredCountries.map((country, index) => (
+                <div
+                  key={`${country.code}-${searchQuery}-${index}`}
                 className={`flex items-center gap-4 px-6 py-4 rounded-[10px] cursor-pointer transition-all mb-2 ${
                   focusIndex === index
                     ? 'bg-[#ff4199] border-2 border-[#ff4199]'
@@ -345,8 +346,9 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                     {country.stationcount} {t('stations') || 'stations'}
                   </div>
                 )}
-              </div>
-            ))
+                </div>
+              ))}
+            </>
           )}
         </div>
 
