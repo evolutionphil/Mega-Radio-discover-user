@@ -572,7 +572,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Country Selector */}
         <div 
-          className={`absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] pointer-events-auto cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors flex-shrink-0 ${getFocusClasses(isFocused(5))}`}
+          className={`absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[#6b4f8a] pointer-events-auto cursor-pointer hover:bg-[#7d5fa0] transition-colors flex-shrink-0 ${getFocusClasses(isFocused(5))}`}
           style={{ padding: '11px 14.316px 11px 15px', justifyContent: 'center', alignItems: 'center' }}
           onClick={() => setIsCountrySelectorOpen(true)}
           data-testid="button-country-selector"
