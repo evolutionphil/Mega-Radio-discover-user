@@ -51,15 +51,17 @@ echo "📂 Copying TV scripts..."
 mkdir -p js/
 cp -r public/js/* js/ 2>/dev/null || true
 
-# Step 10: Update index.html from dist and fix for TV
-echo "🔧 Updating index.html from dist..."
-cp dist/public/index.html index.html
+# Step 10: DON'T copy dist/public/index.html - it has wrong script order!
+# Instead, update our template with the new bundle filename
 
-# Step 11: Replace Vite's bundle reference with our cache-busted filename
-sed -i "s|assets/${VITE_JS_FILE}|assets/${NEW_JS_FILE}|g" index.html
+# Step 11: Update template with cache-busted bundle filename
+echo "🔧 Updating index.html with bundle: assets/${NEW_JS_FILE}"
+cp index.template.html index.html
+sed -i "s|/src/main.tsx|assets/${NEW_JS_FILE}|g" index.html
 
 # Step 12: Remove type="module" from React script tag (Samsung TV doesn't support ES modules)
-sed -i 's/<script type="module" /<script /g' index.html
+echo "🔧 Removing type=\"module\" from script tag..."
+sed -i 's|<script type="module" |<script |g' index.html
 
 # Step 13: Add cache-busting query params to all script/link tags
 echo "🔧 Adding cache-busting to all resources..."
