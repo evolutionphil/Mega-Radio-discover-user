@@ -1,0 +1,369 @@
+platform-detect.js?v=1761212702034:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js?v=1761212702034:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+index-1761212702034.js:104 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-1761212702034.js:104 [MegaRadio API] BASE_URL: https://themegaradio.com
+index-1761212702034.js:104 [Splash] 🎬 Component mounted
+index-1761212702034.js:104 [FocusRouter] Dispatch function registered to window
+index-1761212702034.js:104 [CountryContext] Setting country from localization: United States US
+index-1761212702034.js:104 [Localization] Browser language detected: de-DE
+index-1761212702034.js:104 [Localization] Using language: de
+index-1761212702034.js:104 [Localization] Detected country: Germany DE
+index-1761212702034.js:104 [Localization] Fetching translations for: de
+tv-spatial-navigation.js?v=1761212702034:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1761212702034:216 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1761212702034:220 [TV Remote Keys] Key handler attached, waiting for React...
+index-1761212702034.js:104 [CountryContext] Setting country from localization: Germany DE
+index-1761212702034.js:104 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js?v=1761212702034:52 [TV Nav] Found 0 focusable elements
+index-1761212702034.js:104 [useTVNavigation] Initialization complete
+index-1761212702034.js:104 [Localization] API response received
+index-1761212702034.js:104 [Localization] Loaded 623 translations
+index-1761212702034.js:104 [Splash] ⏱️  Timer completed, checking onboarding status
+index-1761212702034.js:104 [Splash] 🎓 First launch, navigating to Guide 1
+index-1761212702034.js:104 [Splash] 👋 Component unmounting
+index-1761212702034.js:119 [Guide1] 🎬 Component mounted
+index-1761212702034.js:119 [Guide1] 📂 Image paths to load: {background: './images/discover-background.png', arrow: './images/arrow.svg', icon: './images/radio-icon.svg'}
+index-1761212702034.js:104 [FocusRouter] Registering handler for route: /guide-1
+index-1761212702034.js:119 [Guide1] ✅ Image loaded successfully: radio-icon.svg
+index-1761212702034.js:119 [Guide1] ✅ Image loaded successfully: arrow.svg
+index-1761212702034.js:119 [Guide1] ✅ Image loaded successfully: discover-background.png
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: '#/guide-1', currentRoute: '/guide-1', routeForHandler: '/guide-1', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /guide-1
+index-1761212702034.js:119 [Guide1] ⌨️  Key pressed: 13 ENTER
+index-1761212702034.js:119 [Guide1] ✅ OK/Enter - navigating to Guide 2
+index-1761212702034.js:119 [Guide1] 👋 Component unmounting
+index-1761212702034.js:104 [FocusRouter] Unregistering handler for route: /guide-1
+index-1761212702034.js:119 [Guide2] 🎬 Component mounted
+index-1761212702034.js:119 [Guide2] 📂 Image paths to load: {background: './images/discover-background.png', arrow: './images/arrow.svg', icon: './images/music-icon.svg'}
+index-1761212702034.js:104 [FocusRouter] Registering handler for route: /guide-2
+index-1761212702034.js:119 [Guide2] ✅ Image loaded successfully: discover-background.png
+index-1761212702034.js:119 [Guide2] ✅ Image loaded successfully: arrow.svg
+index-1761212702034.js:119 [Guide2] ✅ Image loaded successfully: music-icon.svg
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: '#/guide-2', currentRoute: '/guide-2', routeForHandler: '/guide-2', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /guide-2
+index-1761212702034.js:119 [Guide2] ⌨️  Key pressed: 13
+index-1761212702034.js:119 [Guide2] ✅ OK/Enter - navigating to Guide 3
+index-1761212702034.js:119 [Guide2] 👋 Component unmounting
+index-1761212702034.js:104 [FocusRouter] Unregistering handler for route: /guide-2
+index-1761212702034.js:119 [Guide3] 🎬 Component mounted
+index-1761212702034.js:119 [Guide3] 📂 Image paths to load: {background: './images/discover-background.png', arrow: './images/arrow.svg', icon: './images/search-icon.svg'}
+index-1761212702034.js:104 [FocusRouter] Registering handler for route: /guide-3
+index-1761212702034.js:119 [Guide3] ✅ Image loaded successfully: discover-background.png
+index-1761212702034.js:119 [Guide3] ✅ Image loaded successfully: arrow.svg
+index-1761212702034.js:119 [Guide3] ✅ Image loaded successfully: search-icon.svg
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: '#/guide-3', currentRoute: '/guide-3', routeForHandler: '/guide-3', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /guide-3
+index-1761212702034.js:119 [Guide3] ⌨️  Key pressed: 13
+index-1761212702034.js:119 [Guide3] ✅ OK/Enter - navigating to Guide 4
+index-1761212702034.js:119 [Guide3] 👋 Component unmounting
+index-1761212702034.js:104 [FocusRouter] Unregistering handler for route: /guide-3
+index-1761212702034.js:119 [Guide4] 🎬 Component mounted
+index-1761212702034.js:119 [Guide4] 📂 Image paths to load: {background: './images/discover-background.png', arrow: './images/arrow.svg', icon: './images/heart-icon.svg'}
+index-1761212702034.js:104 [FocusRouter] Registering handler for route: /guide-4
+index-1761212702034.js:119 [Guide4] ✅ Image loaded successfully: discover-background.png
+index-1761212702034.js:119 [Guide4] ✅ Image loaded successfully: arrow.svg
+index-1761212702034.js:119 [Guide4] ✅ Image loaded successfully: heart-icon.svg
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: '#/guide-4', currentRoute: '/guide-4', routeForHandler: '/guide-4', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /guide-4
+index-1761212702034.js:119 [Guide4] ⌨️  Key pressed: 13
+index-1761212702034.js:119 [Guide4] ✅ OK/Enter - completing onboarding and navigating to Discover
+index-1761212702034.js:119 [Guide4] 💾 Onboarding completion saved to localStorage
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: 
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 0
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 0
+index-1761212702034.js:119 [Guide4] 👋 Component unmounting
+index-1761212702034.js:104 [FocusRouter] Unregistering handler for route: /guide-4
+index-1761212702034.js:119 [DiscoverNoUser] Fetching genres for country code: DE
+index-1761212702034.js:104 [API] getAllGenres: Converting DE -> Germany
+index-1761212702034.js:104 [API] getAllGenres URL: https://themegaradio.com/api/genres?country=Germany&tv=1
+index-1761212702034.js:119 [DiscoverNoUser] Fetching popular stations for country: DE
+index-1761212702034.js:104 [API] getPopularStations: Converting DE -> Germany
+index-1761212702034.js:104 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+index-1761212702034.js:119 [DiscoverNoUser] Fetching INITIAL 50 stations for country code: DE
+index-1761212702034.js:104 [API] getWorkingStations: Converting DE -> Germany
+index-1761212702034.js:104 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=50&country=Germany&tv=1
+index-1761212702034.js:119 [useFocusManager] 🎯 Initialized with: {totalItems: 6, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-1761212702034.js:119 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 6, cols: 1, row: 0, col: 0}
+index-1761212702034.js:104 [FocusRouter] Registering handler for route: /discover-no-user
+index-1761212702034.js:104 [API] getPopularStations fetched: 24 stations
+index-1761212702034.js:119 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 20, cols: 1, row: 0, col: 0}
+index-1761212702034.js:104 [API] Response status: 200
+index-1761212702034.js:104 [API] Working stations fetched: 50
+index-1761212702034.js:119 Country changed: Germany, total stations: 50
+index-1761212702034.js:119 Initial load: showing 56 stations, hasMore=false
+index-1761212702034.js:119 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 70, cols: 1, row: 0, col: 0}
+index-1761212702034.js:119 [AutoPlay] Play at start mode: last-played
+index-1761212702034.js:119 [AutoPlay] Getting station for mode: last-played
+index-1761212702034.js:119 [AutoPlay] No station found to auto-play
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [useFocusManager] 👁️  Focus changed: {focusIndex: 20, totalItems: 70, cols: 1, row: 20, col: 0}
+index-1761212702034.js:104 [API] getAllGenres response: 200
+index-1761212702034.js:104 [API] getAllGenres fetched: 9
+index-1761212702034.js:119 [useFocusManager] 👁️  Focus changed: {focusIndex: 20, totalItems: 78, cols: 1, row: 20, col: 0}
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: 'LEFT', key: 'ArrowLeft', code: 'ArrowLeft', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 78, cols: 1, row: 0, col: 0}
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [useFocusManager] 👁️  Focus changed: {focusIndex: 20, totalItems: 78, cols: 1, row: 20, col: 0}
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: 'UP', key: 'ArrowUp', code: 'ArrowUp', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [useFocusManager] 👁️  Focus changed: {focusIndex: 5, totalItems: 78, cols: 1, row: 5, col: 0}
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] ENTER key pressed - calling handleSelect()
+index-1761212702034.js:119 [useFocusManager] ✅ Select pressed: {focusIndex: 5, totalItems: 78, hasHandler: true}
+index-1761212702034.js:119 [CountrySelector] Fetching countries...
+index-1761212702034.js:104 [API] getAllCountries: https://themegaradio.com/api/countries?tv=1
+index-1761212702034.js:119 [CountrySelector] Modal opened - search input focused
+index-1761212702034.js:119 [CountrySelector] Activating search mode - focusing input
+index-1761212702034.js:119 [CountrySelector] Input focused - TV keyboard should appear
+index-1761212702034.js:104 [API] getAllCountries response: 200
+index-1761212702034.js:104 [API] getAllCountries raw data type: array
+index-1761212702034.js:104 [API] getAllCountries fetched: 238
+index-1761212702034.js:119 [CountrySelector] Countries received: 238
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: 
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 238
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: 't', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Search changed: t
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: t
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Match found: Afghanistan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Antarctica for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Antigua And Barbuda for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Argentina for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Ascension And Tristan Da Cunha Saint Helena for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Australia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Austria for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Bhutan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Botswana for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: British Indian Ocean Territory for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: British Virgin Islands for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Christmas Island for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Costa Rica for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Coted Ivoire for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Croatia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Djibouti for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Egypt for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Equatorial Guinea for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Eritrea for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Estonia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Eswatini for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Ethiopia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Federated States Of Micronesia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Gibraltar for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Guatemala for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Haiti for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Italy for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Kazakhstan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Kiribati for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Kuwait for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Kyrgyzstan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Latvia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Lesotho for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Liechtenstein for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Lithuania for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Malta for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Martinique for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Mauritania for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Mauritius for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Mayotte for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Montenegro for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Montserrat for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Pakistan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Portugal for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Puerto Rico for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Qatar for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Republic Of North Macedonia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Saint Kitts And Nevis for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Saint Lucia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Saint Pierre And Miquelon for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Saint Vincent And The Grenadines for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Sao Tome And Principe for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: South Africa for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: South Sudan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: State Of Palestine for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Switzerland for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Taiwan, Republic Of China for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Tajikistan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Thailand for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Bahamas for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Cayman Islands for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Central African Republic for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Cocos Keeling Islands for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Comoros for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Congo for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Cook Islands for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Democratic Peoples Republic Of Korea for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Democratic Republic Of The Congo for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Dominican Republic for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Falkland Islands Malvinas for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Faroe Islands for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The French Southern Territories for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Gambia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Holy See for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Lao Peoples Democratic Republic for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Marshall Islands for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Netherlands for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Niger for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Philippines for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Republic Of Korea for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Republic Of Moldova for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Russian Federation for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Sudan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The Turks And Caicos Islands for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The United Arab Emirates for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The United Kingdom Of Great Britain And Northern Ireland for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The United States Minor Outlying Islands for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: The United States Of America for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Timor Leste for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Togo for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Tonga for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Trinidad And Tobago for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Tunisia for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Turkmenistan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Tuvalu for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Türkiye for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: United Republic Of Tanzania for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Uzbekistan for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Vanuatu for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Vietnam for query: t
+index-1761212702034.js:119 [CountrySelector] Match found: Wallis And Futuna for query: t
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 101
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: 'ü', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Search changed: tü
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: tü
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Match found: Türkiye for query: tü
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 1
+index-1761212702034.js:119 [CountrySelector] Filtered country names: ['Türkiye']
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: 'r', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Search changed: tür
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: tür
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Match found: Türkiye for query: tür
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 1
+index-1761212702034.js:119 [CountrySelector] Filtered country names: ['Türkiye']
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: 'k', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Search changed: türk
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: türk
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Match found: Türkiye for query: türk
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 1
+index-1761212702034.js:119 [CountrySelector] Filtered country names: ['Türkiye']
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: 'i', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Search changed: türki
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: türki
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Match found: Türkiye for query: türki
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 1
+index-1761212702034.js:119 [CountrySelector] Filtered country names: ['Türkiye']
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: 'z', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Search changed: türkiz
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: türkiz
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 0
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: 'i', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Search changed: türki
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: türki
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Match found: Türkiye for query: türki
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 1
+index-1761212702034.js:119 [CountrySelector] Filtered country names: ['Türkiye']
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: 'y', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Search changed: türkiy
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: türkiy
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Match found: Türkiye for query: türkiy
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 1
+index-1761212702034.js:119 [CountrySelector] Filtered country names: ['Türkiye']
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: 'e', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Search changed: türkiye
+index-1761212702034.js:119 [CountrySelector] filteredCountries memo running - searchQuery: türkiye
+index-1761212702034.js:119 [CountrySelector] Total countries before filter: 238
+index-1761212702034.js:119 [CountrySelector] Match found: Türkiye for query: türkiye
+index-1761212702034.js:119 [CountrySelector] Filtered countries count: 1
+index-1761212702034.js:119 [CountrySelector] Filtered country names: ['Türkiye']
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: '', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 229, keyName: 'UNKNOWN', key: '', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 229, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 65376, keyName: 'UNKNOWN', key: 'Select', code: '', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 65376, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761212702034.js:119 [CountrySelector] Deactivating search mode - blurring input
+index-1761212702034.js:119 [CountrySelector] Input blurred
+tv-remote-keys.js?v=1761212702034:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761212702034:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761212702034.js:104 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+index-1761212702034.js:104 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761212702034.js:119 [DiscoverNoUser] Key event ignored - country selector modal is open

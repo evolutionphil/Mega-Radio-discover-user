@@ -26,8 +26,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { t } = useLocalization();
 
-  // Fetch countries from API
-  const { data: countriesData } = useQuery({
+  // Fetch countries from API (fetch upfront, cache for instant modal opening)
+  const { data: countriesData, isLoading: countriesLoading } = useQuery({
     queryKey: ['/api/countries'],
     queryFn: async () => {
       console.log('[CountrySelector] Fetching countries...');
@@ -35,12 +35,15 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       console.log('[CountrySelector] Countries received:', result.countries?.length || 0);
       return result;
     },
-    enabled: isOpen,
+    staleTime: 300000, // Cache for 5 minutes
   });
 
   // Map API countries to component format with flag URLs
   const countries: Country[] = useMemo(() => {
-    return (countriesData?.countries || [])
+    const apiCountries = countriesData?.countries || [];
+    console.log('[CountrySelector] Mapping countries, API returned:', apiCountries.length);
+    
+    const mapped = apiCountries
       .filter(country => country.name && country.iso_3166_1)
       .map(country => {
         const flagUrl = country.iso_3166_1 === 'XX' || country.iso_3166_1.length !== 2
@@ -55,6 +58,9 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         };
       })
       .sort((a, b) => (b.stationcount || 0) - (a.stationcount || 0));
+    
+    console.log('[CountrySelector] Mapped countries:', mapped.length);
+    return mapped;
   }, [countriesData]);
 
   const filteredCountries = useMemo(() => {
@@ -122,6 +128,9 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = (window as any).tvKey;
+      
+      // CRITICAL: Stop ALL key events from propagating to parent pages
+      e.stopPropagation();
       
       // When search input is focused, only handle navigation keys (let input handle typing)
       if (isSearchFocused) {
@@ -218,7 +227,13 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   if (!isOpen) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-[1920px] h-[1080px] z-50">
+    <div 
+      className="fixed top-0 left-0 w-[1920px] h-[1080px] z-50"
+      onKeyDown={(e) => {
+        // CRITICAL: Block all keyboard events from reaching parent pages
+        e.stopPropagation();
+      }}
+    >
       {/* Backdrop */}
       <div 
         className="absolute top-0 left-0 w-[1920px] h-[1080px] backdrop-blur-[7px] backdrop-filter"
@@ -276,9 +291,13 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
             scrollbarColor: '#ff4199 rgba(255,255,255,0.1)'
           }}
         >
-          {filteredCountries.length === 0 ? (
+          {countriesLoading ? (
+            <div className="text-center text-white font-['Ubuntu',Helvetica] text-[24px] mt-20">
+              {t('loading') || 'Loading countries...'}
+            </div>
+          ) : filteredCountries.length === 0 ? (
             <div className="text-center text-white/50 font-['Ubuntu',Helvetica] text-[20px] mt-10">
-              {t('no_countries_found') || 'No countries found'}
+              {searchQuery ? (t('no_countries_found') || 'No countries found') : (t('loading') || 'Loading...')}
             </div>
           ) : (
             filteredCountries.map((country, index) => (
