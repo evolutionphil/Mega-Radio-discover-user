@@ -49,6 +49,13 @@ export const Search = (): JSX.Element => {
     queryFn: () => megaRadioApi.searchStations({ q: debouncedSearchQuery, limit: 4 }),
     enabled: debouncedSearchQuery.length > 0,
   });
+  
+  console.log('🔍 [SEARCH DATA DEBUG]:', {
+    searchData,
+    searchDataType: typeof searchData,
+    searchDataResults: searchData?.results,
+    resultsLength: searchData?.results?.length
+  });
 
   // Fetch popular stations as fallback
   const { data: popularStationsData } = useQuery({
