@@ -19,55 +19,33 @@ export const Genres = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
-  // Fetch stations from selected country to extract real genres (OPTIMIZED: 50 initial)
-  const { data: stationsData, refetch: refetchStations } = useQuery({
-    queryKey: ['/api/stations/country', selectedCountryCode],
-    queryFn: () => megaRadioApi.getWorkingStations({ 
-      country: selectedCountryCode,
-      limit: 50 
-    }),
+  // Fetch genres from API (NO HARDCODED GENRES!)
+  const { data: genresData, refetch: refetchGenres } = useQuery({
+    queryKey: ['/api/genres', selectedCountryCode],
+    queryFn: () => megaRadioApi.getAllGenres(selectedCountryCode),
   });
 
   // Force refetch when country changes
   useEffect(() => {
     console.log('[Genres] Country changed to:', selectedCountryCode);
-    refetchStations();
-  }, [selectedCountryCode, refetchStations]);
+    refetchGenres();
+  }, [selectedCountryCode, refetchGenres]);
 
-  // Extract unique genres from stations' tags
+  // Extract genres from API response (NEVER hardcoded!)
   const allGenres = useMemo(() => {
-    if (!stationsData?.stations) return [];
+    if (!genresData?.genres) {
+      console.log('[Genres] No genres data from API');
+      return [];
+    }
     
-    const genreMap = new Map<string, { name: string; slug: string; stationCount: number }>();
+    console.log('[Genres] Loaded genres from API:', genresData.genres.length);
     
-    stationsData.stations.forEach(station => {
-      if (!station.tags) return;
-      
-      const tags = Array.isArray(station.tags) 
-        ? station.tags 
-        : station.tags.split(',').map(t => t.trim());
-      
-      tags.forEach(tag => {
-        if (!tag) return;
-        const slug = tag.toLowerCase().replace(/\s+/g, '-');
-        
-        if (genreMap.has(slug)) {
-          genreMap.get(slug)!.stationCount++;
-        } else {
-          genreMap.set(slug, {
-            name: tag,
-            slug: slug,
-            stationCount: 1
-          });
-        }
-      });
-    });
-    
-    // Convert to array and sort by station count (most popular first)
-    return Array.from(genreMap.values())
-      .filter(g => g.stationCount >= 3)
-      .sort((a, b) => b.stationCount - a.stationCount);
-  }, [stationsData]);
+    return genresData.genres.map(genre => ({
+      name: genre.name,
+      slug: genre.name.toLowerCase().replace(/\s+/g, '-'),
+      stationCount: genre.stationcount || 0
+    }));
+  }, [genresData]);
 
   const popularGenres = allGenres.slice(0, 8);
 

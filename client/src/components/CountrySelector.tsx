@@ -21,7 +21,9 @@ interface CountrySelectorProps {
 export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry }: CountrySelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [focusIndex, setFocusIndex] = useState(0);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const { t } = useLocalization();
 
   // Fetch countries from API
@@ -105,50 +107,97 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = (window as any).tvKey;
       
-      switch(e.keyCode) {
-        case key?.UP:
-        case 38:
-          e.preventDefault();
-          setFocusIndex(prev => Math.max(0, prev - 1));
-          break;
-          
-        case key?.DOWN:
-        case 40:
-          e.preventDefault();
-          setFocusIndex(prev => Math.min(filteredCountries.length - 1, prev + 1));
-          break;
-          
-        case key?.ENTER:
-        case 13:
-          e.preventDefault();
-          if (filteredCountries[focusIndex]) {
-            console.log('[CountrySelector] Selecting country:', filteredCountries[focusIndex].name);
-            onSelectCountry(filteredCountries[focusIndex]);
+      // When search input is focused, only handle navigation keys (let input handle typing)
+      if (isSearchFocused) {
+        switch(e.keyCode) {
+          case key?.DOWN:
+          case 40:
+            // Move focus from search to country list
+            e.preventDefault();
+            setIsSearchFocused(false);
+            setFocusIndex(0);
+            break;
+            
+          case key?.RETURN:
+          case 461:
+          case 10009:
+            e.preventDefault();
+            console.log('[CountrySelector] RETURN key - closing modal');
             onClose();
-          }
-          break;
-          
-        case key?.RETURN:
-        case 461:
-        case 10009:
-          e.preventDefault();
-          console.log('[CountrySelector] RETURN key - closing modal');
-          onClose();
-          break;
+            break;
+            
+          // Let all other keys (letters, numbers, backspace) be handled by the input element
+          default:
+            break;
+        }
+      } else {
+        // Country list navigation
+        switch(e.keyCode) {
+          case key?.UP:
+          case 38:
+            e.preventDefault();
+            if (focusIndex === 0) {
+              // Move back to search mode (virtual keyboard focus)
+              setIsSearchFocused(true);
+              console.log('[CountrySelector] Search mode activated - type to search');
+            } else {
+              setFocusIndex(prev => Math.max(0, prev - 1));
+            }
+            break;
+            
+          case key?.DOWN:
+          case 40:
+            e.preventDefault();
+            setFocusIndex(prev => Math.min(filteredCountries.length - 1, prev + 1));
+            break;
+            
+          case key?.ENTER:
+          case 13:
+            e.preventDefault();
+            if (filteredCountries[focusIndex]) {
+              console.log('[CountrySelector] Selecting country:', filteredCountries[focusIndex].name);
+              onSelectCountry(filteredCountries[focusIndex]);
+              onClose();
+            }
+            break;
+            
+          case key?.RETURN:
+          case 461:
+          case 10009:
+            e.preventDefault();
+            console.log('[CountrySelector] RETURN key - closing modal');
+            onClose();
+            break;
+        }
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, filteredCountries, focusIndex, onSelectCountry, onClose]);
+  }, [isOpen, filteredCountries, focusIndex, onSelectCountry, onClose, isSearchFocused]);
 
   // Reset when modal opens
   useEffect(() => {
     if (isOpen) {
       setSearchQuery('');
       setFocusIndex(0);
+      setIsSearchFocused(false); // Start with list focused
+      console.log('[CountrySelector] Modal opened - press UP from first country to search');
+    } else {
+      setIsSearchFocused(false);
     }
   }, [isOpen]);
+
+  // Auto-focus search input when search mode is activated
+  useEffect(() => {
+    if (isSearchFocused && searchInputRef.current) {
+      console.log('[CountrySelector] Activating search mode - focusing input');
+      searchInputRef.current.focus();
+    } else if (!isSearchFocused && searchInputRef.current && document.activeElement === searchInputRef.current) {
+      console.log('[CountrySelector] Deactivating search mode - blurring input');
+      searchInputRef.current.blur();
+    }
+  }, [isSearchFocused]);
 
   if (!isOpen) return null;
 
@@ -173,18 +222,31 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           </h2>
         </div>
 
-        {/* Search Input */}
+        {/* Search Input - Real input for TV keyboard */}
         <div className="absolute top-[90px] left-[40px] right-[40px]">
           <input
+            ref={searchInputRef}
             type="text"
             placeholder={t('search_countries') || 'Search countries...'}
             value={searchQuery}
             onChange={(e) => {
-              console.log('[CountrySelector] Search input changed:', e.target.value);
+              console.log('[CountrySelector] Search changed:', e.target.value);
               setSearchQuery(e.target.value);
               setFocusIndex(0);
             }}
-            className="w-full px-6 py-4 rounded-[15px] bg-[rgba(255,255,255,0.1)] border-2 border-[rgba(255,255,255,0.2)] text-white text-[20px] font-['Ubuntu',Helvetica] placeholder-white/50 focus:border-[#ff4199] focus:outline-none"
+            onFocus={() => {
+              console.log('[CountrySelector] Input focused - TV keyboard should appear');
+              setIsSearchFocused(true);
+            }}
+            onBlur={() => {
+              console.log('[CountrySelector] Input blurred');
+              // Don't set isSearchFocused to false here - let arrow keys control it
+            }}
+            className={`w-full px-6 py-4 rounded-[15px] bg-[rgba(255,255,255,0.1)] border-2 text-white text-[20px] font-['Ubuntu',Helvetica] placeholder-white/50 focus:outline-none transition-colors ${
+              isSearchFocused 
+                ? 'border-[#ff4199]' 
+                : 'border-[rgba(255,255,255,0.2)]'
+            }`}
             data-testid="input-country-search"
           />
         </div>
@@ -240,9 +302,16 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           )}
         </div>
 
-        {/* Close button hint */}
-        <div className="absolute bottom-[10px] right-[40px] text-white/50 font-['Ubuntu',Helvetica] text-[14px]">
-          {t('press_back_to_close') || 'Press BACK to close'}
+        {/* Navigation hints */}
+        <div className="absolute bottom-[10px] left-[40px] right-[40px] flex justify-between text-white/50 font-['Ubuntu',Helvetica] text-[14px]">
+          <div>
+            {isSearchFocused 
+              ? (t('type_to_search') || 'Type to search • Press ↓ for list') 
+              : (t('press_up_to_search') || 'Press ↑ to search • Type to filter')}
+          </div>
+          <div>
+            {t('press_back_to_close') || 'Press BACK to close'}
+          </div>
         </div>
       </div>
     </div>
