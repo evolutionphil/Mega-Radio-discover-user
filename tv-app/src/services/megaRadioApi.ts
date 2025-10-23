@@ -330,12 +330,19 @@ export const megaRadioApi = {
   // Genres
   getAllGenres: async (country?: string): Promise<{ genres: Genre[] }> => {
     try {
-      let params: URLSearchParams | undefined = undefined;
+      const params = new URLSearchParams();
+      
+      // Add filters parameter with country filtering if provided
       if (country) {
         const countryName = getCountryNameFromCode(country);
-        params = new URLSearchParams({ country: countryName });
-        console.log(`[API] getAllGenres: Converting ${country} -> ${countryName}`);
+        const filters = JSON.stringify({
+          countrycode: countryName,
+          searchQuery: ''
+        });
+        params.append('filters', filters);
+        console.log(`[API] getAllGenres: Filtering by country ${country} -> ${countryName}`);
       }
+      
       const url = buildApiUrl('/genres', params);
       console.log('[API] getAllGenres URL:', url);
       const response = await fetch(url);
@@ -344,7 +351,7 @@ export const megaRadioApi = {
         throw new Error(`HTTP ${response.status}`);
       }
       const result = await response.json();
-      console.log('[API] getAllGenres fetched:', result.data?.length || 0);
+      console.log('[API] getAllGenres fetched:', result.data?.length || 0, 'genres');
       return { genres: result.data || [] };
     } catch (error) {
       console.error('[API] getAllGenres failed:', error);
