@@ -158,17 +158,43 @@ export const RadioPlaying = (): JSX.Element => {
       if (!station) return { stations: [] };
       const countryCode = station.countrycode || station.country;
       if (countryCode) {
-        return megaRadioApi.getWorkingStations({ 
+        const data = await megaRadioApi.getWorkingStations({ 
           limit: 50, 
           country: countryCode 
         });
+        // Filter out current station and shuffle for variety
+        const filtered = data.stations.filter(s => s._id !== stationId);
+        // Shuffle array to get different stations each time
+        for (let i = filtered.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+        }
+        return { stations: filtered };
       }
-      return megaRadioApi.getSimilarStations(stationId!, 50);
+      const data = await megaRadioApi.getSimilarStations(stationId!, 50);
+      // Also filter and shuffle similar stations
+      const filtered = data.stations.filter(s => s._id !== stationId);
+      for (let i = filtered.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+      }
+      return { stations: filtered };
     },
     enabled: !!stationId && !!station,
+    // Don't use cache for similar stations - always fetch fresh
+    staleTime: 0,
+    cacheTime: 0,
   });
 
   const similarStations = similarData?.stations || [];
+  
+  // Log when similar stations change
+  useEffect(() => {
+    if (similarStations.length > 0) {
+      console.log('[RadioPlaying] Similar stations updated:', similarStations.length, 'stations');
+      console.log('[RadioPlaying] First 3 similar:', similarStations.slice(0, 3).map(s => s.name));
+    }
+  }, [similarStations]);
 
   // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations
   const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 8);
