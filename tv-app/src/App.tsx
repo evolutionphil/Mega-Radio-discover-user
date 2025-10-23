@@ -14,14 +14,10 @@ import NotFound from "@/pages/not-found";
 
 import { Splash } from "@/pages/Splash";
 import { Login } from "@/pages/Login";
-import { LoginWithEmail } from "@/pages/LoginWithEmail";
-import { ForgotPassword } from "@/pages/ForgotPassword";
-import { MailSent } from "@/pages/MailSent";
 import { Guide1 } from "@/pages/Guide1";
 import { Guide2 } from "@/pages/Guide2";
 import { Guide3 } from "@/pages/Guide3";
 import { Guide4 } from "@/pages/Guide4";
-import { DiscoverUser } from "@/pages/DiscoverUser";
 import { DiscoverNoUser } from "@/pages/DiscoverNoUser";
 import { RadioPlaying } from "@/pages/RadioPlaying";
 import { Genres } from "@/pages/Genres";
@@ -34,12 +30,9 @@ function Router() {
   return (
     <WouterRouter hook={useHashLocation}>
       <Switch>
-        {/* Authentication Flow */}
+        {/* Splash & Onboarding */}
         <Route path="/" component={Splash} />
         <Route path="/login" component={Login} />
-      <Route path="/login-with-email" component={LoginWithEmail} />
-      <Route path="/forgot-password" component={ForgotPassword} />
-      <Route path="/mail-sent" component={MailSent} />
       
       {/* Onboarding Guide Pages */}
       <Route path="/guide-1" component={Guide1} />
@@ -48,7 +41,6 @@ function Router() {
       <Route path="/guide-4" component={Guide4} />
       
       {/* Main Application Pages */}
-      <Route path="/discover" component={DiscoverUser} />
       <Route path="/discover-no-user" component={DiscoverNoUser} />
       <Route path="/radio-playing" component={RadioPlaying} />
       <Route path="/genres" component={Genres} />
