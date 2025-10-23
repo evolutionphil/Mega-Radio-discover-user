@@ -453,6 +453,15 @@ export const Search = (): JSX.Element => {
         const topPositions = [136, 430, 724]; // Added 30px gap between rows (card height 264px + 30px gap)
         const focusIdx = 6 + searchResults.length + index;
         
+        console.log(`🎨 [RECENTLY PLAYED] Rendering station ${index}:`, {
+          name: station.name,
+          focusIdx,
+          searchResultsLength: searchResults.length,
+          currentFocusIndex: focusIndex,
+          isFocused: isFocused(focusIdx),
+          calculation: `6 + ${searchResults.length} + ${index} = ${focusIdx}`
+        });
+        
         return (
           <div 
             key={station._id || index}
