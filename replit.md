@@ -78,6 +78,7 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
      - Unused files: `*.zip`, `run-tv-app.sh`, `tv-app/build-tv-app.sh`, pasted log files
    - **Result**: ONE unified folder structure - development uses root `server/`+`shared/` with `tv-app/src/`, TV deployment uses entire `tv-app/` folder
    - **Benefits**: Single source of truth, no duplication, simpler maintenance, cleaner project
+   - **See**: CLEANUP_SUMMARY.md for detailed breakdown and folder structure diagram
 
 ### Search Page Focus Navigation Fix (COMPLETED):
 **Fixed phantom index preventing RIGHT navigation to Recently Played** - One key press now works
