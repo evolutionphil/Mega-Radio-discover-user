@@ -50,8 +50,8 @@ export const Genres = (): JSX.Element => {
 
   const popularGenres = allGenres.slice(0, 8);
 
-  // Calculate totalItems: 5 (sidebar) + 1 (country selector) + 8 (popular genres) + allGenres.length
-  const totalItems = 5 + 1 + popularGenres.length + allGenres.length;
+  // Calculate totalItems: 5 (sidebar) + 1 (equalizer) + 1 (country selector) + 8 (popular genres) + allGenres.length
+  const totalItems = 5 + 1 + 1 + popularGenres.length + allGenres.length;
 
   // Define sidebar routes (NO PROFILE - 5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -68,20 +68,20 @@ export const Genres = (): JSX.Element => {
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 5; // Jump to country selector
+        newIndex = 6; // Jump to country selector
       }
     }
-    // Country selector (5)
-    else if (current === 5) {
+    // Country selector (6)
+    else if (current === 6) {
       if (direction === 'DOWN') {
-        newIndex = 6; // Jump to first popular genre
+        newIndex = 7; // Jump to first popular genre
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to first sidebar item
       }
     }
-    // Popular genres section (6-13) - 4 cols × 2 rows
-    else if (current >= 6 && current <= 13) {
-      const relIndex = current - 6;
+    // Popular genres section (7-14) - 4 cols × 2 rows
+    else if (current >= 7 && current <= 14) {
+      const relIndex = current - 7;
       const row = Math.floor(relIndex / 4);
       const col = relIndex % 4;
 
@@ -92,28 +92,28 @@ export const Genres = (): JSX.Element => {
           newIndex = 0; // Jump to sidebar
         }
       } else if (direction === 'RIGHT') {
-        if (col < 3 && current < 13) {
+        if (col < 3 && current < 14) {
           newIndex = current + 1;
         }
       } else if (direction === 'UP') {
         if (row > 0) {
           newIndex = current - 4;
         } else {
-          newIndex = 5; // Jump to country selector
+          newIndex = 6; // Jump to country selector
         }
       } else if (direction === 'DOWN') {
-        if (row < 1 && current + 4 <= 13) {
+        if (row < 1 && current + 4 <= 14) {
           newIndex = current + 4;
         } else {
           // Jump to All genres section below (6-col grid)
           // Map to corresponding column in 6-col grid
-          newIndex = 14 + Math.min(col, 5);
+          newIndex = 15 + Math.min(col, 5);
         }
       }
     }
-    // All genres section (14+) - 6 cols grid
-    else if (current >= 14) {
-      const relIndex = current - 14;
+    // All genres section (15+) - 6 cols grid
+    else if (current >= 15) {
+      const relIndex = current - 15;
       const row = Math.floor(relIndex / 6);
       const col = relIndex % 6;
 
@@ -134,7 +134,7 @@ export const Genres = (): JSX.Element => {
           // Jump to popular genres above (4-col grid)
           // Map to corresponding column in 4-col grid
           const targetCol = Math.min(col, 3);
-          newIndex = 10 + targetCol; // Row 2 of popular genres
+          newIndex = 11 + targetCol; // Row 2 of popular genres
         }
       } else if (direction === 'DOWN') {
         const nextIndex = current + 6;
