@@ -29,6 +29,23 @@ Root (Main Development Project)
 
 ## Recent Changes
 
+### October 23, 2025 - UX Improvements: Genre Scrolling, Similar Stations & Navigation
+- **GENRES HORIZONTAL SCROLLING (Discover Page):** Popular genres now scroll smoothly into view when navigating left/right with arrow keys
+  - Added scrollGenreIntoView() function that centers focused genre in viewport
+  - Uses scrollIntoView({ behavior: 'smooth', inline: 'center' }) for smooth animation
+  - Genre container has scroll-smooth CSS class for native smooth scrolling
+- **SIMILAR STATIONS FIX (RadioPlaying Page):** Similar stations now update and vary each time station changes
+  - Filters out current station from similar list (no self-reference)
+  - Shuffles array using Fisher-Yates algorithm for variety
+  - Disabled query caching (staleTime: 0, cacheTime: 0) for fresh data
+  - Different similar stations appear each time user changes station
+- **GLOBAL PLAYER BAR:** Verified it correctly hides on /radio-playing page (has own full-screen player)
+- **PAGE UP/DOWN NAVIGATION:** Quick section jumping with PageUp/PageDown keys
+  - Discover page: PageDown → country stations, PageUp → genres section
+  - Radio Playing page: PageDown → similar stations, PageUp → playback controls
+  - Provides fast navigation shortcuts without disrupting arrow key navigation
+- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761205956264.js
+
 ### October 22, 2025 - Final Polish: Exit Modal, Guide Images & Page Cleanup
 - **CRITICAL FIX:** Fixed switch case syntax bug across ALL pages that prevented Samsung TV remote navigation:
   - Replaced invalid `case key?.UP || 38:` with proper multi-case syntax `case key?.UP: case 38:`
