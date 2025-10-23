@@ -464,8 +464,10 @@ export const RadioPlaying = (): JSX.Element => {
     return (
       <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#ff4199]"></div>
-        <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white">Loading station...</p>
-        <p className="font-['Ubuntu',Helvetica] font-normal text-[20px] text-gray-500">Station ID: {stationId}</p>
+        <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white animate-pulse">
+          {stationData?.station?.name || 'Loading station...'}
+        </p>
+        <p className="font-['Ubuntu',Helvetica] font-normal text-[20px] text-gray-500">Please wait</p>
         <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-gray-600 mt-4">Press RETURN to go back</p>
       </div>
     );
@@ -610,7 +612,7 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute h-[90.192px] left-[1372px] top-[356px] w-[469px]">
         {/* Previous Button */}
         <div 
-          className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(6))}`}
+          className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${getFocusClasses(isFocused(6))} ${isFocused(6) ? 'animate-pulse-soft' : ''}`}
           onClick={handlePrevious}
           data-testid="button-previous"
         >
@@ -622,7 +624,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Play/Pause Button */}
         <div 
-          className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(7))}`}
+          className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(7))} ${isPlaying ? 'animate-pulse-soft' : ''}`}
           onClick={handlePlayPause}
           data-testid="button-play-pause"
         >
@@ -640,7 +642,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Next Button */}
         <div 
-          className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(8))}`}
+          className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${getFocusClasses(isFocused(8))} ${isFocused(8) ? 'animate-pulse-soft' : ''}`}
           onClick={handleNext}
           data-testid="button-next"
         >
@@ -652,11 +654,11 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Favorite Button */}
         <div 
-          className={`absolute border-[3.608px] border-solid left-[378.81px] rounded-[72.655px] size-[90.192px] top-0 cursor-pointer transition-colors flex items-center justify-center ${
+          className={`absolute border-[3.608px] border-solid left-[378.81px] rounded-[72.655px] size-[90.192px] top-0 cursor-pointer transition-all flex items-center justify-center ${
             isFavorite(station._id) 
-              ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
+              ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a] animate-pulse-soft' 
               : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
-          } ${getFocusClasses(isFocused(9))}`}
+          } ${getFocusClasses(isFocused(9))} ${isFocused(9) ? 'animate-pulse-soft' : ''}`}
           onClick={() => toggleFavorite(station)}
           data-testid="button-favorite"
         >
