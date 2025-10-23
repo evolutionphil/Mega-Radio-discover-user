@@ -247,10 +247,12 @@ export const megaRadioApi = {
   getWorkingStations: async (params?: {
     limit?: number;
     country?: string;
+    offset?: number;
   }): Promise<{ stations: Station[] }> => {
     const queryParams = new URLSearchParams();
     queryParams.append('search', '');
     if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.offset) queryParams.append('offset', params.offset.toString());
     if (params?.country) {
       const countryName = getCountryNameFromCode(params.country);
       queryParams.append('country', countryName);
@@ -271,7 +273,7 @@ export const megaRadioApi = {
       }
       const data = await response.json();
       const stations = data.stations || [];
-      console.log('[API] Working stations fetched:', stations.length);
+      console.log('[API] Working stations fetched:', stations.length, `(offset: ${params?.offset || 0})`);
       return { stations };
     } catch (error) {
       console.error('[API] Failed to fetch working stations:', error);
@@ -374,11 +376,13 @@ export const megaRadioApi = {
       limit?: number;
       country?: string;
       sort?: 'votes' | 'recent' | 'random' | 'clickcount';
+      offset?: number;
     }
   ): Promise<{ stations: Station[]; pagination: any; genre: Genre }> => {
     const queryParams = new URLSearchParams();
     if (params?.page) queryParams.append('page', params.page.toString());
     if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.offset) queryParams.append('offset', params.offset.toString());
     if (params?.country) {
       // Convert country code to name for API
       const countryName = getCountryNameFromCode(params.country);
@@ -391,7 +395,7 @@ export const megaRadioApi = {
     console.log('[API] getStationsByGenre URL:', url);
     const response = await fetch(url);
     const data = await response.json();
-    console.log('[API] getStationsByGenre fetched:', data.stations?.length || 0, 'stations');
+    console.log('[API] getStationsByGenre fetched:', data.stations?.length || 0, `stations (offset: ${params?.offset || 0})`);
     return data;
   },
 
