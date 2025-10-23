@@ -67,6 +67,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025 - Latest)
 
+### Samsung TV Build v3.4 (SIDEBAR FOCUS FIX):
+**Fixed sidebar focus behavior** - Focus properly jumps between sidebar elements
+   - Created production build with timestamp: `1761253902949`
+   - Bundle: `tv-app/assets/index-1761253902949.js` (425KB - full React app)
+   - **SIDEBAR FIX:**
+     - ✅ **Sidebar.tsx**: Removed persistent white opacity background from all sidebar items
+     - Now sidebar items only show focus ring when actually focused
+     - Fixed issue where Discovery had white opacity cover even when not focused
+     - Focus properly jumps between all sidebar elements (Discover, Genres, Search, Favorites, Settings)
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.3 (TRUE INFINITE SCROLL):
 **Implemented true lazy loading with API pagination** - Users can now scroll through 1000+ stations
    - Created production build with timestamp: `1761253575071`
