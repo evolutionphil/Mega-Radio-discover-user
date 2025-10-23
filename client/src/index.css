@@ -2,51 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* TV layout - 1920x1080 scaled to fit any screen */
+/* Web preview - full size display (user can zoom browser if needed) */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
   background-color: #0e0e0e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 #root {
   width: 1920px;
   height: 1080px;
-  transform-origin: center center;
   position: relative;
-  /* Scale to fit viewport while maintaining aspect ratio */
-  transform: scale(0.5);
-}
-
-/* Responsive scaling for different screen sizes */
-@media (min-width: 960px) {
-  #root {
-    transform: scale(0.5);
-  }
-}
-
-@media (min-width: 1280px) {
-  #root {
-    transform: scale(0.65);
-  }
-}
-
-@media (min-width: 1600px) {
-  #root {
-    transform: scale(0.8);
-  }
-}
-
-@media (min-width: 1920px) and (min-height: 1080px) {
-  #root {
-    transform: scale(1);
-  }
+  margin: 0;
 }
 
 @layer components {
