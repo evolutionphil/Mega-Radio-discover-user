@@ -281,6 +281,19 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                 scrollContainerRef.current.scrollTop = 0;
               }
             }}
+            onKeyDown={(e) => {
+              // Handle DOWN key to exit search and go to list
+              const key = (window as any).tvKey;
+              if (e.keyCode === 40 || e.keyCode === key?.DOWN) {
+                e.preventDefault();
+                console.log('[CountrySelector] DOWN from input - moving to list');
+                setIsSearchFocused(false);
+                setFocusIndex(0);
+                if (searchInputRef.current) {
+                  searchInputRef.current.blur();
+                }
+              }
+            }}
             onFocus={() => {
               console.log('[CountrySelector] Input focused - TV keyboard should appear');
               setIsSearchFocused(true);
