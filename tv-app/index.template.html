@@ -13,53 +13,65 @@
     <link rel="stylesheet" href="./assets/style.css" id="main-styles">
     <link rel="stylesheet" href="./css/tv-styles.css" id="tv-styles">
     <script>
-      // Log CSS loading
-      var mainStyles = document.getElementById('main-styles');
-      var tvStyles = document.getElementById('tv-styles');
-      
-      if (mainStyles) {
-        mainStyles.onload = function() {
-          console.log('✅ CSS LOADED: assets/style.css (main Tailwind styles)');
-        };
-        mainStyles.onerror = function() {
-          console.error('❌ CSS FAILED TO LOAD: assets/style.css');
-        };
-      }
-      
-      if (tvStyles) {
-        tvStyles.onload = function() {
-          console.log('✅ CSS LOADED: css/tv-styles.css (TV-specific styles)');
-        };
-        tvStyles.onerror = function() {
-          console.error('❌ CSS FAILED TO LOAD: css/tv-styles.css');
-        };
-      }
-      
-      // Verify styles are applied after a short delay
-      setTimeout(function() {
-        var rootDiv = document.getElementById('root');
-        if (rootDiv) {
-          var computedStyle = window.getComputedStyle(rootDiv);
-          console.log('🎨 CSS CHECK: #root computed styles:', {
-            display: computedStyle.display,
-            position: computedStyle.position,
-            width: computedStyle.width,
-            height: computedStyle.height
+      // CSS Loading Detection (compatible with older browsers)
+      (function() {
+        // Wait for DOM to be ready
+        function checkCSS() {
+          console.log('🔍 CSS CHECK: Starting verification...');
+          
+          // Check if link elements exist
+          var mainStyles = document.getElementById('main-styles');
+          var tvStyles = document.getElementById('tv-styles');
+          console.log('📄 CSS Links found:', {
+            mainStyles: !!mainStyles,
+            tvStyles: !!tvStyles
           });
+          
+          // Check if stylesheets are loaded by testing if styles are applied
+          var testDiv = document.createElement('div');
+          testDiv.className = 'hidden bg-red-500 flex';
+          testDiv.style.cssText = 'position:absolute;left:-9999px;';
+          document.body.appendChild(testDiv);
+          
+          var computedStyle = window.getComputedStyle(testDiv);
+          var isHidden = computedStyle.display === 'none';
+          var hasBg = computedStyle.backgroundColor && computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)' && computedStyle.backgroundColor !== 'transparent';
+          var hasFlex = computedStyle.display === 'flex' || computedStyle.display === 'none';
+          
+          console.log('🎨 Tailwind Test Results:', {
+            display: computedStyle.display,
+            bgColor: computedStyle.backgroundColor,
+            hiddenWorks: isHidden,
+            bgWorks: hasBg
+          });
+          
+          if (isHidden) {
+            console.log('✅ TAILWIND CSS: Working correctly!');
+          } else {
+            console.error('❌ TAILWIND CSS: Not applied!');
+            console.error('🔍 DEBUG: Checking CSS file accessibility...');
+            console.error('   assets/style.css path: ./assets/style.css');
+            console.error('   css/tv-styles.css path: ./css/tv-styles.css');
+          }
+          
+          document.body.removeChild(testDiv);
+          
+          // Check root element
+          var rootDiv = document.getElementById('root');
+          if (rootDiv) {
+            var rootStyle = window.getComputedStyle(rootDiv);
+            console.log('🎯 #root element styles:', {
+              display: rootStyle.display,
+              position: rootStyle.position,
+              width: rootStyle.width,
+              height: rootStyle.height
+            });
+          }
         }
         
-        // Check if Tailwind is loaded by looking for common classes
-        var testDiv = document.createElement('div');
-        testDiv.className = 'hidden';
-        document.body.appendChild(testDiv);
-        var hiddenStyle = window.getComputedStyle(testDiv);
-        if (hiddenStyle.display === 'none') {
-          console.log('✅ TAILWIND CSS: Working correctly (hidden class applied)');
-        } else {
-          console.error('❌ TAILWIND CSS: Not working (hidden class not applied)');
-        }
-        document.body.removeChild(testDiv);
-      }, 100);
+        // Run check after a delay to ensure CSS is loaded
+        setTimeout(checkCSS, 500);
+      })();
     </script>
     <title>Mega Radio - TV</title>
   </head>
