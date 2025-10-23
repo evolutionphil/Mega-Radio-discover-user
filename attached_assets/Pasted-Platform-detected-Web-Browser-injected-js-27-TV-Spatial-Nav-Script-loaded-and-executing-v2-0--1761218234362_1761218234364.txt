@@ -1,0 +1,119 @@
+Platform detected: Web Browser
+injected.js:27 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+injected.js:27 [TV Spatial Nav] DOM ready, waiting for React...
+injected.js:27 [TV Remote Keys] DOM ready, initializing...
+injected.js:27 [TV Remote Keys] Key handler attached, waiting for React...
+_app-aef9fb05a1e2cac2.js:28 Fetch finished loading: POST "https://sp.replit.com/v1/t".
+(anonymous) @ _app-aef9fb05a1e2cac2.js:28
+o @ sdk.min.js:1
+dispatch @ fetch-dispatcher.ts:11
+(anonymous) @ index.ts:122
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+g @ index.ts:93
+(anonymous) @ delivery.js:28
+(anonymous) @ delivery.js:11
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+(anonymous) @ delivery.js:4
+o @ delivery.js:27
+(anonymous) @ event-queue.js:325
+(anonymous) @ event-queue.js:323
+n @ _app-aef9fb05a1e2cac2.js:28
+setTimeout
+(anonymous) @ _app-aef9fb05a1e2cac2.js:28
+(anonymous) @ event-queue.js:321
+(anonymous) @ event-queue.js:320
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+s @ tslib.es6.js:73
+Promise.then
+a @ tslib.es6.js:76
+s @ tslib.es6.js:73
+Promise.then
+a @ tslib.es6.js:76
+(anonymous) @ tslib.es6.js:76
+u @ tslib.es6.js:72
+n.flushOne @ event-queue.js:273
+(anonymous) @ event-queue.js:181
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+s @ tslib.es6.js:73
+Promise.then
+a @ tslib.es6.js:76
+(anonymous) @ tslib.es6.js:76
+u @ tslib.es6.js:72
+n.deliver @ event-queue.js:169
+(anonymous) @ event-queue.js:135
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+n.dispatchSingle @ event-queue.js:128
+(anonymous) @ dispatch.js:25
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+p @ dispatch.js:18
+(anonymous) @ index.ts:460
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+n._dispatch @ index.ts:454
+(anonymous) @ index.ts:253
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+n.track @ index.ts:241
+R @ _app-aef9fb05a1e2cac2.js:1
+J @ 4232-29d9572f56fd08ed.js:1
+refresh @ 4232-29d9572f56fd08ed.js:1
+(anonymous) @ 4232-29d9572f56fd08ed.js:1
+(anonymous) @ _app-aef9fb05a1e2cac2.js:4
+(anonymous) @ _app-aef9fb05a1e2cac2.js:4
+onClick @ _app-aef9fb05a1e2cac2.js:4
+(anonymous) @ _app-aef9fb05a1e2cac2.js:4
+eB @ framework-1ec55fd654cca386.js:1
+eH @ framework-1ec55fd654cca386.js:1
+(anonymous) @ framework-1ec55fd654cca386.js:1
+re @ framework-1ec55fd654cca386.js:1
+rt @ framework-1ec55fd654cca386.js:1
+(anonymous) @ framework-1ec55fd654cca386.js:1
+uT @ framework-1ec55fd654cca386.js:1
+eM @ framework-1ec55fd654cca386.js:1
+ru @ framework-1ec55fd654cca386.js:1
+tB @ framework-1ec55fd654cca386.js:1
+tD @ framework-1ec55fd654cca386.js:1
+n @ _app-aef9fb05a1e2cac2.js:28
+_app-aef9fb05a1e2cac2.js:28 Fetch failed loading: POST "https://region1.analytics.google.com/g/collect?v=2&tid=G-MPJY3F1YEL&gtm=45je5al1v9135634466za200&_p=1761173980036&gcd=13l3lPl2l2l1&npa=0&dma_cps=syphamo&dma=1&ul=en-us&sr=1920x1080&cid=1905123715.1760882739&ecid=2099088982&ir=1&uaa=x86&uab=64&uafvl=Google%2520Chrome%3B141.0.7390.108%7CNot%253FA_Brand%3B8.0.0.0%7CChromium%3B141.0.7390.108&uamb=0&uam=&uap=Windows&uapv=15.0.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=EBAIAAQ&tag_exp=101509157~103116026~103200004~103233427~104527906~104528501~104684208~104684211~104948813~105322302~115480710~115616985~115938465~115938469~116130039&dl=https%3A%2F%2Freplit.com%2F%40office343%2FMega-Radio-discover-user&dp=%2F%40office343%2FMega-Radio-discover-user&dt=replEnvironmentDesktop&sid=1761209672&sct=15&seg=1&_tu=wAQ&_s=287&tfd=44243637".
+(anonymous) @ _app-aef9fb05a1e2cac2.js:28
+bd @ js?id=G-MPJY3F1YEL&cx=c&_slc=1:268
+sl @ js?id=G-MPJY3F1YEL&cx=c&_slc=1:427
+MN @ js?id=G-MPJY3F1YEL&cx=c&_slc=1:934
+k.flush @ js?id=G-MPJY3F1YEL&cx=c&_slc=1:941
+(anonymous) @ js?id=G-MPJY3F1YEL&cx=c&_slc=1:939
+n @ _app-aef9fb05a1e2cac2.js:28
+_app-aef9fb05a1e2cac2.js:28 Fetch finished loading: POST "https://sp.replit.com/v1/m".
+(anonymous) @ _app-aef9fb05a1e2cac2.js:28
+o @ sdk.min.js:1
+(anonymous) @ remote-metrics.ts:138
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+t.send @ sdk.min.js:1
+(anonymous) @ remote-metrics.ts:125
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+t.flush @ sdk.min.js:1
+l @ remote-metrics.ts:83
+n @ _app-aef9fb05a1e2cac2.js:28
