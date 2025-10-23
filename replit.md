@@ -2,119 +2,7 @@
 
 ## Overview
 
-Mega Radio is a full-stack web radio streaming application designed for TV and large screen interfaces. It offers access to global radio stations from over 238 countries, categorized by genres and countries. Key features include an onboarding process, station discovery, favorites management, and continuous audio playback, all tailored for an immersive television viewing experience.
-
-## Project Structure (LGTV Unified Pattern)
-
-```
-Root (Main Development Project)
-├── client/           ← React frontend source
-├── server/           ← Express backend source
-├── shared/           ← Shared types/schemas
-├── package.json      ← Dependencies & scripts
-├── vite.config.ts    ← Vite configuration
-└── tv-app/           ← UNIFIED TV build (Samsung + LG from ONE folder)
-    ├── index.html           ← Single entry point (LGTV pattern)
-    ├── assets/              ← Compiled React bundle
-    ├── images/              ← All SVG icons/images
-    ├── js/                  ← TV scripts (keys, audio, polyfills)
-    ├── css/                 ← Styles
-    ├── config.xml           ← Samsung Tizen config
-    ├── appinfo.json         ← LG webOS config
-    ├── webOSTVjs-1.2.0/     ← LG SDK
-    └── build-samsung-tv.sh  ← Build script
-```
-
-**Development:** Run `npm run dev` from root
-**TV Build:** `cd tv-app && bash build-samsung-tv.sh`
-**Deploy Samsung:** Upload entire `tv-app/` folder to Tizen Studio
-**Deploy LG:** `cd tv-app && ares-package . && ares-install --device YOUR_TV com.megaradio.tv_1.0.0_all.ipk`
-
-## Recent Changes
-
-### October 23, 2025 - UX Improvements: Genre Scrolling, Similar Stations & Navigation
-- **GENRES HORIZONTAL SCROLLING (Discover Page):** Popular genres now scroll smoothly into view when navigating left/right with arrow keys
-  - Added scrollGenreIntoView() function that centers focused genre in viewport
-  - Uses scrollIntoView({ behavior: 'smooth', inline: 'center' }) for smooth animation
-  - Genre container has scroll-smooth CSS class for native smooth scrolling
-- **SIMILAR STATIONS FIX (RadioPlaying Page):** Similar stations now update and vary each time station changes
-  - Filters out current station from similar list (no self-reference)
-  - Shuffles array using Fisher-Yates algorithm for variety
-  - Disabled query caching (staleTime: 0, cacheTime: 0) for fresh data
-  - Different similar stations appear each time user changes station
-- **GLOBAL PLAYER BAR:** Verified it correctly hides on /radio-playing page (has own full-screen player)
-- **PAGE UP/DOWN NAVIGATION:** Quick section jumping with PageUp/PageDown keys
-  - Discover page: PageDown → country stations, PageUp → genres section
-  - Radio Playing page: PageDown → similar stations, PageUp → playback controls
-  - Provides fast navigation shortcuts without disrupting arrow key navigation
-- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761205956264.js
-
-### October 22, 2025 - Final Polish: Exit Modal, Guide Images & Page Cleanup
-- **CRITICAL FIX:** Fixed switch case syntax bug across ALL pages that prevented Samsung TV remote navigation:
-  - Replaced invalid `case key?.UP || 38:` with proper multi-case syntax `case key?.UP: case 38:`
-  - Fixed in ALL pages including DiscoverNoUser, DiscoverUser, Genres, CountrySelector, and all others
-  - All arrow keys, ENTER, and RETURN buttons now work correctly on Samsung TV remote
-- **EXIT MODAL FIX:** Fixed exit confirmation modal on Discover page:
-  - Added missing BACK button handler that triggers handleBack()
-  - Added comprehensive debug logs to track modal state and button presses
-  - Modal now properly opens when BACK button is pressed on Discover home page
-- **SAMSUNG PLAYER FIX:** Fixed `PLAYER_ERROR_INVALID_STATE` errors:
-  - Added proper state checking before opening new streams
-  - Player now calls getState() and properly closes if not in IDLE/NONE state
-  - Prevents errors when switching between stations quickly
-- **IMAGE LOADING FIX:** Fixed 400 errors from null favicon values:
-  - Updated getStationImage() in 6 files (GlobalPlayer, DiscoverNoUser, RadioPlaying, Favorites, GenreList, Search)
-  - Added checks for null, undefined, empty string, and the string "null"
-  - All station images now properly fall back to default image instead of loading `/api/image/null`
-- **GENRELIST SIDEBAR NAV:** Fixed missing sidebar navigation on GenreList page:
-  - Added full sidebar focus management (indices 0-4)
-  - Back button moved to index 5, stations start at index 6
-  - Users can now navigate LEFT from genre stations to sidebar menu
-  - Added custom navigation logic for bidirectional sidebar ↔ content flow
-- **MEDIA BUTTONS:** Wired up Play/Pause/Stop remote control buttons to GlobalPlayer
-- **GENRES PAGE:** Fixed focus indices (sidebar: 0-4, country selector: 5, popular genres: 6-13, all genres: 14+)
-- **COUNTRY SELECTOR:** Completely rebuilt with simple arrow navigation (UP/DOWN to navigate, ENTER to select, BACK to close)
-- **BACKGROUND IMAGES:** Fixed invalid `object-50%-50%` CSS class → `object-center` in Guide1-4, Settings, Genres pages
-- **EXIT MODAL CENTERING:** Fixed exit confirmation modal to match country selector positioning:
-  - Changed from flex centering to absolute positioning (left: 660px, top: 340px)
-  - Modal now properly centered on screen like country selector
-  - Added backdrop blur for consistency
-- **EXIT APP FUNCTIONALITY:** Fixed exit button to actually close app instead of restarting:
-  - Now calls `tizen.application.getCurrentApplication().exit()` on Samsung TV
-  - Falls back to `window.close()` on other platforms
-  - No longer navigates to splash page (which caused restart)
-- **GUIDE PAGES BACKGROUND:** Fixed background images not displaying on Guide 1-4 pages:
-  - Removed unnecessary wrapper divs with pointer-events-none
-  - Changed from `object-center object-cover size-full` to `inset-0 w-full h-full object-cover`
-  - Background images now properly visible on all guide pages
-- **REMOVED UNUSED PAGE:** Deleted GenreDetail.tsx page and route (was never used, all genre navigation goes through GenreList)
-- **EXIT MODAL KEYBOARD:** Fixed keyboard handler to also exit app properly (not just button):
-  - Both Enter key and button click now call same Tizen exit logic
-  - Remote users can now properly exit app using arrow keys + Enter
-- All Samsung TV builds successfully deployed with updated bundle: assets/index-1761165235695.js
-
-### October 22, 2025 - Comprehensive Bug Fixes: Remote Control, Player & Images
-
-### October 23, 2025 - Unified TV Folder (LGTV Pattern)
-- **REMOVED lg-app/ folder** - it was redundant and against LGTV pattern
-- **tv-app/ now unified for BOTH platforms** - Samsung Tizen + LG webOS in ONE folder
-- Single codebase has both config.xml (Samsung) and appinfo.json (LG)
-- Matches lgtv-master reference pattern: ONE folder, not separate Samsung/LG directories
-- Updated documentation to reflect unified deployment approach
-
-### October 19, 2025 - Single Index Pattern Implementation
-- Implemented single index.html pattern (like LGTV reference) - ONE file, manually editable
-- Build script now updates bundle references IN-PLACE instead of regenerating HTML
-- Fixed FocusRouter to use window.location.hash directly for Samsung TV hash-based routing
-- Added base tag (`<base href="/">`) to fix image loading (no more file:/// errors)
-- All assets (images, scripts) in correct locations for TV deployment
-- Cache-busting with timestamps on all TV scripts
-
-### October 19, 2025 - LGTV Focus Pattern Migration
-- Migrated ALL 9 pages to LGTV focus pattern with `useFocusManager` + `usePageKeyHandler` + `getFocusClasses`
-- Fixed critical bug: Dynamic array lengths prevent focus landing on non-existent elements
-- Custom navigation logic for multi-section layouts with different grid column counts
-- Focus system adapts dynamically to sparse datasets and empty arrays
+Mega Radio is a full-stack web radio streaming application tailored for TV and large screen interfaces. It provides access to global radio stations from over 238 countries, organized by genres and countries. The application features an intuitive onboarding process, station discovery, favorites management, and continuous audio playback, all designed for an immersive television viewing experience. The project aims to deliver a high-quality radio streaming service on smart TVs.
 
 ## User Preferences
 
@@ -124,56 +12,55 @@ Preferred communication style: Simple, everyday language.
 
 ### UI/UX Decisions
 
-The application is optimized for TV with a fixed 1920x1080px resolution, featuring large, easily focusable elements. It includes an auto-hide header with smooth transitions. The UI is built using Shadcn/ui components (based on Radix UI primitives) and styled with Tailwind CSS, following a "new-york" design system with custom CSS variables.
+The application is optimized for TV with a fixed 1920x1080px resolution, featuring large, easily focusable elements and an auto-hide header with smooth transitions. It utilizes Shadcn/ui components (based on Radix UI primitives) and Tailwind CSS, adhering to a "new-york" design system with custom CSS variables.
 
 ### Technical Implementations
 
 **Frontend:**
 -   **Framework:** React 18 with TypeScript.
--   **Routing:** Wouter (hash-based routing is **REQUIRED** for Samsung TV compatibility).
--   **State Management:** TanStack Query for server state, custom API wrapper for error handling, infinite scroll.
--   **Design Patterns:** Component-based architecture, page-based routing, shared schema definitions, Zod for validation with React Hook Form.
+-   **Routing:** Wouter, specifically using hash-based routing for Samsung TV compatibility.
+-   **State Management:** TanStack Query for server state, complemented by a custom API wrapper for error handling and infinite scroll.
+-   **Design Patterns:** Component-based architecture, page-based routing, shared schema definitions, and Zod for validation with React Hook Form.
 
 **Backend:**
 -   **Framework:** Express.js for HTTP server and API routing, integrated with Vite.
 -   **Data Layer:** Drizzle ORM for type-safe PostgreSQL operations (Neon serverless), with Zod for schema validation.
--   **API:** RESTful API endpoints under `/api`, JSON format.
+-   **API:** RESTful API endpoints under `/api`, communicating in JSON format.
 
 **Platform Compatibility:**
--   **Samsung Tizen TV:** Targets Chromium 76 (ES2015/ES6) with polyfills for ES2019+ features, `&&` checks instead of optional chaining, IIFE bundle format, and a custom fetch polyfill using `XMLHttpRequest`.
--   **LG webOS:** Uses HTML5 Audio/Video for playback and `webOSTVjs-1.2.0` SDK.
--   **Platform Detection:** Automatic via user agent.
--   **Remote Control Navigation:** Migrated to LGTV focus pattern with `useFocusManager` + `usePageKeyHandler` + `getFocusClasses`. All main pages (DiscoverNoUser, DiscoverUser, Genres, GenreDetail, Search, RadioPlaying, Settings, Favorites, GenreList) use state-based focus tracking with dynamic array lengths to prevent focus landing on non-existent elements.
--   **Focus Index Mapping:** Sidebar (0-5) + Country Selector (6) + Page Content (7+). Each page implements custom navigation logic for multi-section layouts with different grid column counts.
--   **Audio Playback:** Dual implementation using `webapis.avplay` for Tizen and HTML5 Audio/Video for webOS/browsers, with a unified interface.
--   **TV-Specific Styling:** Custom CSS for focus states, hidden cursor, scrollbar hiding, and platform-specific visibility.
+-   **Unified TV Build:** A single `tv-app/` folder serves both Samsung Tizen and LG webOS, containing respective configuration files (`config.xml` for Samsung, `appinfo.json` for LG).
+-   **Samsung Tizen TV:** Targets Chromium 76 (ES2015/ES6), requiring polyfills for newer JavaScript features, `&&` checks instead of optional chaining, IIFE bundle format, and a custom fetch polyfill.
+-   **LG webOS:** Leverages HTML5 Audio/Video for playback and the `webOSTVjs-1.2.0` SDK.
+-   **Platform Detection:** Automatic detection via user agent.
+-   **Remote Control Navigation:** Implements an LGTV focus pattern using `useFocusManager`, `usePageKeyHandler`, and `getFocusClasses`. This system dynamically adapts to varying array lengths and multi-section layouts, ensuring focus lands on existing elements.
+-   **Audio Playback:** A unified interface manages dual audio playback implementations: `webapis.avplay` for Tizen and HTML5 Audio/Video for webOS/browsers.
+-   **TV-Specific Styling:** Custom CSS handles focus states, hidden cursors, scrollbar hiding, and platform-specific visibility.
 
 **Application Flow:**
--   **Onboarding:** Guided tour for Discover, Genres, Search, and Favorites.
--   **Main Pages:** Discover, Genres, Search, Favorites, Settings, Radio Playing (full-screen playback).
--   **Auto-Play:** Supports "Last Played", "Random", "Favorite", or "None" modes on startup.
+-   **Onboarding:** Guided tour for new users across key sections.
+-   **Main Pages:** Discover, Genres, Search, Favorites, Settings, and a full-screen Radio Playing interface.
+-   **Auto-Play:** Configurable startup modes including "Last Played", "Random", "Favorite", or "None".
 
 **Localization & Internationalization:**
--   Automatic language detection (Samsung Tizen, LG webOS, browser).
--   Supports 48 languages via API translations using `LocalizationProvider` context.
+-   Supports 48 languages via API translations and automatic language detection based on the platform.
 
 ### System Design Choices
 
 **Global Player:**
--   `GlobalPlayerContext` manages continuous audio playback across all pages with a persistent player bar.
+-   A `GlobalPlayerContext` ensures continuous audio playback and manages a persistent player bar across all application pages.
 
 **Fixed Layout:**
--   Uses `fixed inset-0 w-[1920px] h-[1080px] overflow-hidden` for consistent layout rendering across TV platforms and web browsers.
+-   The application uses a `fixed inset-0 w-[1920px] h-[1080px] overflow-hidden` CSS property for consistent layout rendering across all TV platforms and web browsers.
 
 ## External Dependencies
 
 -   **Database:** Neon Database (@neondatabase/serverless) for PostgreSQL.
 -   **ORM:** Drizzle ORM (drizzle-orm).
 -   **Build Tool:** Vite.
--   **UI Components:** Radix UI primitives, Tailwind CSS, Lucide React (icons - though mostly replaced by custom SVGs), Shadcn/ui.
+-   **UI Components:** Radix UI primitives, Tailwind CSS, Shadcn/ui.
 -   **Forms & Validation:** React Hook Form (@hookform/resolvers), Zod.
 -   **Async State:** TanStack Query.
 -   **Routing:** Wouter.
 -   **Typing:** TypeScript.
--   **Fonts:** Ubuntu font family (Google Fonts).
+-   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
