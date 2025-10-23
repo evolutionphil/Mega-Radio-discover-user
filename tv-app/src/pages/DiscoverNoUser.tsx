@@ -60,7 +60,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     },
   });
 
-  const genres = genresData?.genres?.slice(0, 8) || [];
+  const genres = genresData?.genres || []; // Show ALL genres, not just 8
   const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
 
   // Calculate dynamic section boundaries (5 sidebar + 1 country selector = 6)

@@ -137,6 +137,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           case 40:
             // Move focus from search to country list
             e.preventDefault();
+            console.log('[CountrySelector] DOWN key pressed - moving to country list');
+            if (searchInputRef.current) {
+              searchInputRef.current.blur(); // Remove focus from input
+            }
             setIsSearchFocused(false);
             setFocusIndex(0);
             break;

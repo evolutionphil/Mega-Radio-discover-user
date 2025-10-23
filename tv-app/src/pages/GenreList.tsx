@@ -217,7 +217,7 @@ export const GenreList = (): JSX.Element => {
         if (col > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 0; // Jump to first sidebar item (Discover)
+          newIndex = 1; // Jump to Genres in sidebar (index 1)
         }
       } else if (direction === 'RIGHT') {
         if (col < 6 && current < totalItems - 1) {
@@ -227,7 +227,7 @@ export const GenreList = (): JSX.Element => {
         if (row > 0) {
           newIndex = current - 7;
         } else {
-          newIndex = 1; // Jump to Genres in sidebar
+          newIndex = 1; // Jump to Genres in sidebar (index 1)
         }
       } else if (direction === 'DOWN') {
         const nextIndex = current + 7;
