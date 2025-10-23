@@ -11,7 +11,6 @@
       @import url("https://fonts.googleapis.com/css?family=Ubuntu:300,500,400,700");
     </style>
     <title>Mega Radio - TV</title>
-    <script crossorigin src="./assets/index-1761227390397.js"></script>
   </head>
   <body>
     <div id="root"></div>
@@ -20,20 +19,21 @@
     <script type="text/javascript" src="./webOSTVjs-1.2.0/webOSTV.js"></script>
     
     <!-- TV Platform Detection -->
-    <script type="text/javascript" src="./js/platform-detect.js?v=1761227390397"></script>
+    <script type="text/javascript" src="./js/platform-detect.js"></script>
     
     <!-- TV Spatial Navigation (must load before remote keys) -->
-    <script type="text/javascript" src="./js/tv-spatial-navigation.js?v=1761227390397"></script>
+    <script type="text/javascript" src="./js/tv-spatial-navigation.js"></script>
     
     <!-- TV Remote Control Keys -->
-    <script type="text/javascript" src="./js/tv-remote-keys.js?v=1761227390397"></script>
+    <script type="text/javascript" src="./js/tv-remote-keys.js"></script>
     
     <!-- TV Audio Player -->
-    <script type="text/javascript" src="./js/tv-audio-player.js?v=1761227390397"></script>
+    <script type="text/javascript" src="./js/tv-audio-player.js"></script>
     
     <!-- Polyfills for older Samsung TV browsers -->
     <script>if(typeof globalThis==="undefined"){window.globalThis=window;}if(!Object.fromEntries){Object.fromEntries=function(e){var t={};for(var r of e){t[r[0]]=r[1]}return t}}</script>
   
     <!-- React App Bundle - Vite will inject this -->
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
