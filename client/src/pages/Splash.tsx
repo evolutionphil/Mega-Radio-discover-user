@@ -38,7 +38,7 @@ export const Splash = (): JSX.Element => {
   }, [setLocation]);
 
   return (
-    <div className="bg-[#0e0e0e] fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-splash">
+    <div className="bg-[#0e0e0e] absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-splash">
       {/* Animated Waves - Center Background */}
       <div 
         className="absolute inset-[34.91%_41.51%] animate-pulse"

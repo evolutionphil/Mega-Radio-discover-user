@@ -41,12 +41,12 @@ export const GlobalPlayer = (): JSX.Element | null => {
     <>
       {/* Backdrop Blur Background - Exact from Figma */}
       <div 
-        className="fixed backdrop-blur-[13px] bg-[rgba(0,0,0,0.61)] h-[155px] left-0 opacity-[0.82] top-[925px] w-[1920px] z-50"
+        className="absolute backdrop-blur-[13px] bg-[rgba(0,0,0,0.61)] h-[155px] left-0 opacity-[0.82] top-[925px] w-[1920px] z-50"
         style={{ backdropFilter: 'blur(13px)' }}
       />
 
       {/* Station Logo */}
-      <div className="fixed bg-white left-[235px] overflow-clip rounded-[4.45px] size-[89px] top-[958px] z-50">
+      <div className="absolute bg-white left-[235px] overflow-clip rounded-[4.45px] size-[89px] top-[958px] z-50">
         <img 
           src={getStationImage(currentStation)}
           alt={currentStation.name}
@@ -58,18 +58,18 @@ export const GlobalPlayer = (): JSX.Element | null => {
       </div>
 
       {/* Station Name */}
-      <p className="fixed font-['Ubuntu',Helvetica] font-medium leading-normal left-[357px] not-italic text-[24px] text-white top-[976px] z-50">
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[357px] not-italic text-[24px] text-white top-[976px] z-50">
         {currentStation.name}
       </p>
 
       {/* Now Playing / Country */}
-      <p className="fixed font-['Ubuntu',Helvetica] font-light leading-normal left-[357px] not-italic text-[20px] text-white top-[1007.2px] z-50 max-w-[800px] truncate">
+      <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[357px] not-italic text-[20px] text-white top-[1007.2px] z-50 max-w-[800px] truncate">
         {displayText}
       </p>
 
       {/* Previous Button */}
       <div 
-        className="fixed bg-black border-[#ff4199] border-[5px] border-solid left-[1210px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+        className="absolute bg-black border-[#ff4199] border-[5px] border-solid left-[1210px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
         data-tv-focusable="true"
         data-testid="button-global-previous"
       >
@@ -81,7 +81,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Play/Pause Button */}
       <div 
-        className="fixed bg-black left-[1336.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+        className="absolute bg-black left-[1336.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
         onClick={togglePlayPause}
         data-tv-focusable="true"
         data-testid="button-global-play-pause"
@@ -100,7 +100,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Next Button */}
       <div 
-        className="fixed bg-black left-[1462.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+        className="absolute bg-black left-[1462.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
         data-tv-focusable="true"
         data-testid="button-global-next"
       >
@@ -112,7 +112,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Favorite Button */}
       <div 
-        className={`fixed border-[3.608px] border-solid left-[1588.81px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center ${
+        className={`absolute border-[3.608px] border-solid left-[1588.81px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center ${
           isFavorite(currentStation._id) 
             ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
             : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
@@ -128,7 +128,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Equalizer Button (Now Playing visualization) */}
       <div 
-        className={`fixed border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center ${isPlaying ? 'bg-[#ff4199] border-[#ff4199]' : 'border-black hover:bg-[rgba(255,255,255,0.1)]'}`}
+        className={`absolute border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center ${isPlaying ? 'bg-[#ff4199] border-[#ff4199]' : 'border-black hover:bg-[rgba(255,255,255,0.1)]'}`}
         data-tv-focusable="true"
         data-testid="button-global-equalizer"
       >

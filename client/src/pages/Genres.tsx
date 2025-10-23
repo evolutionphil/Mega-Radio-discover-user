@@ -236,7 +236,7 @@ export const Genres = (): JSX.Element => {
   });
 
   return (
-    <div ref={scrollContainerRef} className="fixed inset-0 w-[1920px] h-[1080px] overflow-y-auto overflow-x-hidden" data-testid="page-genres">
+    <div ref={scrollContainerRef} className="absolute inset-0 w-[1920px] h-[1080px] overflow-y-auto overflow-x-hidden" data-testid="page-genres">
       {/* Background Image */}
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
         <img

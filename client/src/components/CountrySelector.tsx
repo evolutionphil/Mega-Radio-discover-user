@@ -228,7 +228,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
   return (
     <div 
-      className="fixed top-0 left-0 w-[1920px] h-[1080px] z-50"
+      className="absolute top-0 left-0 w-[1920px] h-[1080px] z-50"
       onKeyDown={(e) => {
         // CRITICAL: Block all keyboard events from reaching parent pages
         e.stopPropagation();
