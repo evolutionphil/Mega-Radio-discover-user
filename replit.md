@@ -67,6 +67,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025 - Latest)
 
+### Samsung TV Build v3.6 (COUNTRY SELECTOR DOWN KEY FIX):
+**Fixed focus stuck on search input** - DOWN key now properly navigates to country list
+   - Created production build with timestamp: `1761254491910`
+   - Bundle: `tv-app/assets/index-1761254491910.js` (425KB - full React app)
+   - **COUNTRY SELECTOR FIX:**
+     - ✅ **CountrySelector.tsx**: Added onKeyDown handler directly to input element
+     - Fixed issue where pressing DOWN key wouldn't exit search input
+     - Now pressing DOWN from search input properly moves focus to country list
+     - Input properly blurs and first country gets focused
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.5 (ALL GENRES FIX):
 **Fixed genre limit - Now shows all 184 genres for Austria** - API was limiting to 9 genres per page
    - Created production build with timestamp: `1761254145567`
