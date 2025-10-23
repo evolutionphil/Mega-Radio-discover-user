@@ -28,14 +28,30 @@ export const Guide4 = (): JSX.Element => {
     
     // OK/Enter key (13) on Samsung TV
     if (e.keyCode === 13 || e.keyCode === key?.ENTER) {
-      console.log('[Guide4] ✅ OK/Enter - navigating to Discover');
+      console.log('[Guide4] ✅ OK/Enter - completing onboarding and navigating to Discover');
       e.preventDefault();
+      
+      try {
+        localStorage.setItem('onboardingCompleted', 'true');
+        console.log('[Guide4] 💾 Onboarding completion saved to localStorage');
+      } catch (error) {
+        console.warn('[Guide4] ⚠️  Could not save to localStorage:', error);
+      }
+      
       setLocation('/discover-no-user');
     }
   });
 
   const handleClick = () => {
-    console.log('[Guide4] 🖱️  Clicked - navigating to Discover');
+    console.log('[Guide4] 🖱️  Clicked - completing onboarding and navigating to Discover');
+    
+    try {
+      localStorage.setItem('onboardingCompleted', 'true');
+      console.log('[Guide4] 💾 Onboarding completion saved to localStorage');
+    } catch (error) {
+      console.warn('[Guide4] ⚠️  Could not save to localStorage:', error);
+    }
+    
     setLocation('/discover-no-user');
   };
 

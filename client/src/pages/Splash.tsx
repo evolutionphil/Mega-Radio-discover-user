@@ -18,9 +18,22 @@ export const Splash = (): JSX.Element => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log('[Splash] ⏱️  Timer completed, navigating to Guide 1');
-      setLocation("/guide-1");
-    }, 3000); // 3 seconds for splash screen, then show guides
+      console.log('[Splash] ⏱️  Timer completed, checking onboarding status');
+      
+      try {
+        const onboardingCompleted = localStorage.getItem('onboardingCompleted');
+        if (onboardingCompleted) {
+          console.log('[Splash] ✅ Onboarding already completed, navigating to Discover');
+          setLocation("/discover-no-user");
+        } else {
+          console.log('[Splash] 🎓 First launch, navigating to Guide 1');
+          setLocation("/guide-1");
+        }
+      } catch (error) {
+        console.warn('[Splash] ⚠️  localStorage not available, showing guides:', error);
+        setLocation("/guide-1");
+      }
+    }, 3000);
     return () => clearTimeout(timer);
   }, [setLocation]);
 
