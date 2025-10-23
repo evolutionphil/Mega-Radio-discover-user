@@ -184,7 +184,7 @@ export const Genres = (): JSX.Element => {
         const genre = popularGenres[genreIndex];
         if (genre) {
           console.log('[Genres] Navigating to genre:', genre.name, 'slug:', genre.slug);
-          setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`);
+          setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`);
         }
       }
       // All genres (15+)
@@ -193,7 +193,7 @@ export const Genres = (): JSX.Element => {
         const genre = allGenres[genreIndex];
         if (genre) {
           console.log('[Genres] Navigating to genre:', genre.name, 'slug:', genre.slug);
-          setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`);
+          setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`);
         }
       }
     },

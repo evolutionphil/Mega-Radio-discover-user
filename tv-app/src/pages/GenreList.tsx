@@ -15,10 +15,10 @@ export const GenreList = (): JSX.Element => {
   const { t } = useLocalization();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  // Extract genre slug from URL - wouter location includes the query params after hash
-  // Example: location = "/genre-list?genre=rock" (from #/genre-list?genre=rock)
-  const urlParams = new URLSearchParams(location.split('?')[1] || '');
-  let genreSlug = urlParams.get('genre') || 'pop';
+  // Extract genre slug from URL path - wouter with hash routing
+  // Example: location = "/genre-list/rock" (from #/genre-list/rock)
+  const pathParts = location.split('/');
+  let genreSlug = pathParts[2] || 'pop'; // /genre-list/SLUG
   
   console.log('[GenreList] Full location:', location);
   console.log('[GenreList] Extracted genre slug:', genreSlug);

@@ -67,10 +67,21 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025 - Latest)
 
+### Genre Navigation Fix (COMPLETED):
+**Fixed genre parameter not being read** - International genre now shows international stations
+   - **Root Cause**: Hash-based routing doesn't preserve query parameters (`?genre=rock`)
+   - **Solution**: Changed from query params to path-based routing (`/genre-list/rock`)
+   - Updated GenreList.tsx to read genre from path: `pathParts[2]`
+   - Updated Genres.tsx to navigate to `/genre-list/:genre` instead of `/genre-list?genre=:genre`
+   - Updated App.tsx route to accept optional genre parameter: `/genre-list/:genre?`
+   - **Result**: Clicking "International" now correctly shows international stations instead of pop stations
+
+## Recent Changes (October 23, 2025)
+
 ### Samsung TV Build v3.0 (FINAL - READY FOR DEPLOYMENT):
 **Complete working Samsung TV build with country-filtered genres** - ALL ISSUES FIXED!
-   - Created production build with timestamp: `1761229583544`
-   - Bundle: `tv-app/assets/index-1761229583544.js` (465KB - full React app)
+   - Created production build with timestamp: `1761229987899`
+   - Bundle: `tv-app/assets/index-1761229987899.js` (465KB - full React app)
    - CSS: `tv-app/assets/style.css` (67KB - FULL Tailwind CSS working!)
    - **ALL FIXES COMPLETED:**
      - ✅ Fixed white screen issue: React bundle now loads LAST (after DOM is ready)
