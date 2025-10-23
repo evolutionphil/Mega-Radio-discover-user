@@ -63,19 +63,12 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     return mapped;
   }, [countriesData]);
 
-  // Compute filtered countries directly in render (no useMemo) to force updates
-  const getFilteredCountries = () => {
-    console.log('[CountrySelector] RENDER - Computing filtered countries - searchQuery:', searchQuery);
-    console.log('[CountrySelector] RENDER - Total countries:', countries.length);
+  // Filter and sort countries based on search query
+  const filteredCountries = useMemo(() => {
+    console.log('[CountrySelector] Filtering countries - searchQuery:', searchQuery);
     
     const filtered = countries
-      .filter(country => {
-        const matches = country.name.toLowerCase().includes(searchQuery.toLowerCase());
-        if (searchQuery && matches) {
-          console.log('[CountrySelector] RENDER - Match found:', country.name);
-        }
-        return matches;
-      })
+      .filter(country => country.name.toLowerCase().includes(searchQuery.toLowerCase()))
       .sort((a, b) => {
         if (!searchQuery) {
           return (b.stationcount || 0) - (a.stationcount || 0);
@@ -98,15 +91,9 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         return a.name.localeCompare(b.name);
       });
     
-    console.log('[CountrySelector] RENDER - Filtered count:', filtered.length);
-    if (filtered.length > 0 && filtered.length <= 5) {
-      console.log('[CountrySelector] RENDER - Filtered names:', filtered.map(c => c.name));
-    }
-    
+    console.log('[CountrySelector] Filtered count:', filtered.length);
     return filtered;
-  };
-  
-  const filteredCountries = getFilteredCountries();
+  }, [countries, searchQuery]);
 
   // Reset focus when filtered countries change
   useEffect(() => {
@@ -212,17 +199,26 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, filteredCountries, focusIndex, onSelectCountry, onClose, isSearchFocused]);
 
-  // Reset when modal opens
+  // Reset when modal opens and focus on currently selected country
+  // Only run when isOpen changes, not when filteredCountries changes (to allow navigation)
   useEffect(() => {
     if (isOpen) {
       setSearchQuery('');
-      setFocusIndex(0);
       setIsSearchFocused(true); // Auto-focus search input for easier typing
+      
+      // Find the currently selected country in the FULL country list and focus on it
+      const currentIndex = countries.findIndex(
+        country => country.name === selectedCountry
+      );
+      const initialIndex = currentIndex >= 0 ? currentIndex : 0;
+      setFocusIndex(initialIndex);
+      
       console.log('[CountrySelector] Modal opened - search input focused');
+      console.log('[CountrySelector] Current country:', selectedCountry, 'at index:', initialIndex);
     } else {
       setIsSearchFocused(false);
     }
-  }, [isOpen]);
+  }, [isOpen, selectedCountry, countries]);
 
   // Auto-focus search input when search mode is activated
   useEffect(() => {
