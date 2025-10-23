@@ -155,8 +155,8 @@ export const Genres = (): JSX.Element => {
   useEffect(() => {
     // On first mount, jump to first popular genre
     if (!hasNavigatedToGenre && popularGenres.length > 0) {
-      console.log('[Genres] First mount - jumping to first genre');
-      setFocusIndex(6); // First popular genre
+      console.log('[Genres] First mount - jumping to first popular genre at index 7');
+      setFocusIndex(7); // First popular genre (index 7)
       setHasNavigatedToGenre(true);
     }
   }, [popularGenres.length, hasNavigatedToGenre]);
