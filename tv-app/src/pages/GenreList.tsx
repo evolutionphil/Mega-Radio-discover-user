@@ -179,12 +179,11 @@ export const GenreList = (): JSX.Element => {
     return station.country || 'Radio';
   };
 
-  // Focus management with sidebar: 5 sidebar + 1 back button + stations
-  // Sidebar: 0-4, Back button: 5, Stations: 6+
+  // Focus management with sidebar: 5 sidebar + stations
+  // Sidebar: 0-4, Stations: 5+
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
-  const backButtonIndex = 5;
-  const stationsStart = 6;
-  const totalItems = 5 + 1 + displayedStations.length;
+  const stationsStart = 5;
+  const totalItems = 5 + displayedStations.length;
   
   console.log('🎯 [GENRE LIST DEBUG] Focus setup:', {
     totalItems,
@@ -205,18 +204,10 @@ export const GenreList = (): JSX.Element => {
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = backButtonIndex; // Jump to back button
-      }
-    }
-    // Back button (5)
-    else if (current === backButtonIndex) {
-      if (direction === 'LEFT') {
-        newIndex = 1; // Jump to Genres in sidebar (current page)
-      } else if (direction === 'DOWN') {
         newIndex = stationsStart; // Jump to first station
       }
     }
-    // Stations grid (6+) - 7 columns
+    // Stations grid (5+) - 7 columns
     else if (current >= stationsStart) {
       const relIndex = current - stationsStart;
       const row = Math.floor(relIndex / 7);
@@ -236,7 +227,7 @@ export const GenreList = (): JSX.Element => {
         if (row > 0) {
           newIndex = current - 7;
         } else {
-          newIndex = backButtonIndex; // Jump to back button
+          newIndex = 1; // Jump to Genres in sidebar
         }
       } else if (direction === 'DOWN') {
         const nextIndex = current + 7;
@@ -253,18 +244,14 @@ export const GenreList = (): JSX.Element => {
   const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: stationsStart, // Start on first station (index 6)
+    initialIndex: stationsStart, // Start on first station (index 5)
     onSelect: (index) => {
       // Sidebar (0-4)
       if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
         setLocation(route);
       }
-      // Back button (5)
-      else if (index === backButtonIndex) {
-        setLocation('/genres');
-      }
-      // Stations (6+)
+      // Stations (5+)
       else if (index >= stationsStart) {
         const stationIndex = index - stationsStart;
         const station = displayedStations[stationIndex];
@@ -361,26 +348,6 @@ export const GenreList = (): JSX.Element => {
 
         {/* Gradient Overlay */}
         <div className="absolute bg-gradient-to-b from-[18.333%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[15.185%] top-0 w-[1920px]" />
-
-        {/* Back Button */}
-        <Link href="/genres">
-          <div 
-            className={`absolute h-[24px] left-[236px] top-[211px] w-[71px] cursor-pointer hover:opacity-80 transition-opacity ${getFocusClasses(isFocused(backButtonIndex))}`}
-            data-testid="button-back"
-            onClick={() => setLocation('/genres')}
-          >
-            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[#c8c8c8] text-[19.027px] top-px">
-              {t('back') || 'Back'}
-            </p>
-            <div className="absolute left-0 size-[24px] top-0">
-              <img
-                alt="back"
-                className="block max-w-none size-full"
-                src={assetPath("images/arrow.svg")}
-              />
-            </div>
-          </div>
-        </Link>
 
         {/* Genre Title */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
