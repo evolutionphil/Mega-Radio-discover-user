@@ -20,17 +20,18 @@ export const Genres = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
-  // Fetch genres from API (NO HARDCODED GENRES!)
-  const { data: genresData, refetch: refetchGenres } = useQuery({
-    queryKey: ['/api/genres', selectedCountryCode],
-    queryFn: () => megaRadioApi.getAllGenres(selectedCountryCode),
+  // ===  FETCH ALL GENRES (NO COUNTRY FILTER) ===
+  // Using getDiscoverableGenres to get ALL available genres
+  const { data: genresData } = useQuery({
+    queryKey: ['/api/genres/discoverable'],
+    queryFn: async () => {
+      console.log('[Genres] 🔥 Calling getDiscoverableGenres API (ALL GENRES)');
+      const result = await megaRadioApi.getDiscoverableGenres();
+      console.log('[Genres] ✅ getDiscoverableGenres returned:', result.genres?.length, 'genres');
+      return result;
+    },
+    staleTime: 300000, // Cache for 5 minutes since genres don't change often
   });
-
-  // Force refetch when country changes
-  useEffect(() => {
-    console.log('[Genres] Country changed to:', selectedCountryCode);
-    refetchGenres();
-  }, [selectedCountryCode, refetchGenres]);
 
   // Extract genres from API response (NEVER hardcoded!)
   const allGenres = useMemo(() => {
