@@ -175,21 +175,40 @@ export const megaRadioApi = {
       console.log(`[API] getAllStations: Converting ${params.country} -> ${countryName}`);
     }
     if (params?.language) queryParams.append('language', params.language);
-    if (params?.genre) queryParams.append('genre', params.genre);
+    if (params?.genre) {
+      console.log(`[API] getAllStations: Genre parameter BEFORE adding to URL: "${params.genre}"`);
+      queryParams.append('genre', params.genre);
+      console.log(`[API] getAllStations: Genre added to queryParams, current params:`, queryParams.toString());
+    }
     if (params?.sort) queryParams.append('sort', params.sort);
 
     try {
       const url = buildApiUrl('/stations', queryParams);
-      console.log('[API] getAllStations URL:', url);
+      console.log('[API] getAllStations FULL URL:', url);
+      console.log('[API] getAllStations Query string:', queryParams.toString());
+      
       const response = await fetch(url);
-      console.log('[API] getAllStations response:', response.status);
+      console.log('[API] getAllStations response status:', response.status);
+      
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
+      
       const data = await response.json();
       // API returns { stations: [...] } or just [...]
       const stations = data.stations || (Array.isArray(data) ? data : []);
       console.log('[API] getAllStations fetched:', stations.length, 'stations');
+      
+      // If genre was requested, check if results match
+      if (params?.genre && stations.length > 0) {
+        console.log('[API] getAllStations: Genre filter was requested:', params.genre);
+        console.log('[API] getAllStations: Sample station tags from results:');
+        stations.slice(0, 3).forEach((s: Station, i: number) => {
+          console.log(`  Station ${i + 1}: ${s.name}`);
+          console.log(`    Tags: ${Array.isArray(s.tags) ? s.tags.join(', ') : s.tags || 'none'}`);
+        });
+      }
+      
       return { stations, pagination: {} };
     } catch (error) {
       console.error('[API] getAllStations failed:', error);

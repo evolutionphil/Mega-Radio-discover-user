@@ -38,13 +38,52 @@ export const GenreList = (): JSX.Element => {
   const { data: stationsData, isLoading, refetch } = useQuery({
     queryKey: ['genre-stations-v3', genreSlug, selectedCountryCode], // v3 to bust old cache
     queryFn: async () => {
-      console.log('[GenreList] Fetching stations for genre:', genreSlug, 'country:', selectedCountryCode);
-      const result = await megaRadioApi.getAllStations({ 
+      console.log('[GenreList] ===== GENRE FILTER REQUEST =====');
+      console.log('[GenreList] Genre slug:', genreSlug);
+      console.log('[GenreList] Genre name:', genreName);
+      console.log('[GenreList] Country code:', selectedCountryCode);
+      console.log('[GenreList] Calling API with params:', { 
         country: selectedCountryCode,
-        limit: 200, // Fetch more stations for better UX
+        limit: 200,
         genre: genreSlug
       });
-      console.log('[GenreList] Query result:', result?.stations?.length || 0, 'stations for genre:', genreSlug);
+      
+      const result = await megaRadioApi.getAllStations({ 
+        country: selectedCountryCode,
+        limit: 200,
+        genre: genreSlug
+      });
+      
+      console.log('[GenreList] ===== GENRE FILTER RESPONSE =====');
+      console.log('[GenreList] Total stations received:', result?.stations?.length || 0);
+      console.log('[GenreList] Expected genre:', genreSlug);
+      
+      if (result?.stations && result.stations.length > 0) {
+        // Log first 3 stations with their tags to verify genre filtering
+        console.log('[GenreList] First 3 stations:');
+        result.stations.slice(0, 3).forEach((station, idx) => {
+          console.log(`  ${idx + 1}. ${station.name}`);
+          console.log(`     Tags: ${Array.isArray(station.tags) ? station.tags.join(', ') : station.tags || 'none'}`);
+          console.log(`     Country: ${station.country || station.countrycode || 'unknown'}`);
+        });
+        
+        // Check if stations actually match the genre
+        const genreLower = genreSlug.toLowerCase();
+        const matchingStations = result.stations.filter(station => {
+          const tags = Array.isArray(station.tags) 
+            ? station.tags.map(t => t.toLowerCase()) 
+            : (station.tags || '').toLowerCase().split(',').map(t => t.trim());
+          return tags.some(tag => tag.includes(genreLower) || genreLower.includes(tag));
+        });
+        
+        console.log('[GenreList] Stations matching genre:', matchingStations.length, '/', result.stations.length);
+        if (matchingStations.length === 0) {
+          console.warn('[GenreList] ⚠️ WARNING: No stations match the requested genre!');
+          console.warn('[GenreList] This suggests API is not filtering by genre correctly');
+        }
+      }
+      
+      console.log('[GenreList] =====================================');
       return result;
     },
     staleTime: 0, // Always fetch fresh data for genre changes
