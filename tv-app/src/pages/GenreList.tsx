@@ -36,30 +36,30 @@ export const GenreList = (): JSX.Element => {
   
   console.log('[GenreList] URL genre slug:', genreSlug, '| Display name:', genreName);
 
-  // Infinite scroll state
-  const [allStations, setAllStations] = useState<Station[]>([]);
+  // TRUE INFINITE SCROLL state - API-based pagination with offset
   const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
+  const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(1);
-  const STATIONS_PER_PAGE = 21; // 7 columns x 3 rows
+  const STATIONS_PER_LOAD = 100; // Fetch 100 stations per batch
 
-  // Fetch stations by genre and country using proper genre endpoint
+  // Fetch initial 100 stations with offset=0 for TRUE infinite scroll
   console.log('🔍 [GENRE LIST DEBUG] Creating query with:', {
-    queryKey: ['genre-stations', genreSlug, selectedCountryCode],
+    queryKey: ['genre-stations/initial', genreSlug, selectedCountryCode],
     genreSlug,
     selectedCountryCode
   });
   
   const { data: stationsData, isLoading, refetch } = useQuery({
-    queryKey: ['genre-stations', genreSlug, selectedCountryCode],
+    queryKey: ['genre-stations/initial', genreSlug, selectedCountryCode],
     queryFn: async () => {
       console.log('🎵 [GENRE LIST DEBUG] Query function executing...');
-      console.log('🎵 [GENRE LIST DEBUG] Fetching stations for genre:', genreSlug, 'country:', selectedCountryCode);
+      console.log('🎵 [GENRE LIST DEBUG] Fetching INITIAL 100 stations for genre:', genreSlug, 'country:', selectedCountryCode, 'offset=0');
       
       const result = await megaRadioApi.getStationsByGenre(genreSlug, { 
         country: selectedCountryCode,
-        limit: 200,
+        limit: 100,
+        offset: 0,
         sort: 'votes'
       });
       
@@ -79,8 +79,7 @@ export const GenreList = (): JSX.Element => {
     refetch();
   }, [genreSlug, refetch]);
 
-  // Initialize/Update when data loads - show first 21 stations
-  // This effect runs whenever stationsData.stations array changes (by reference or content)
+  // Initialize when initial data loads - TRUE INFINITE SCROLL
   useEffect(() => {
     console.log('📊 [GENRE LIST DEBUG] Data effect triggered');
     console.log('📊 [GENRE LIST DEBUG] Stations data:', stationsData?.stations?.length || 0);
@@ -88,68 +87,86 @@ export const GenreList = (): JSX.Element => {
     console.log('📊 [GENRE LIST DEBUG] Current country:', selectedCountryCode);
     
     if (stationsData?.stations && stationsData.stations.length > 0) {
-      console.log('📊 [GENRE LIST DEBUG] Setting stations:', stationsData.stations.length);
-      console.log('📊 [GENRE LIST DEBUG] First 3 stations:', stationsData.stations.slice(0, 3).map((s: any) => s.name));
-      setAllStations(stationsData.stations);
-      const firstBatch = stationsData.stations.slice(0, STATIONS_PER_PAGE);
-      console.log('📊 [GENRE LIST DEBUG] First batch size:', firstBatch.length);
-      setDisplayedStations(firstBatch);
-      setHasMore(stationsData.stations.length > STATIONS_PER_PAGE);
-      setPage(1);
+      const stations = stationsData.stations;
+      console.log('📊 [GENRE LIST DEBUG] Setting initial stations:', stations.length);
+      console.log('📊 [GENRE LIST DEBUG] First 3 stations:', stations.slice(0, 3).map((s: any) => s.name));
+      
+      setDisplayedStations(stations);
+      setCurrentOffset(100); // Next fetch will use offset=100
+      
+      // If we got less than 100 stations, there's no more to load
+      const hasMoreStations = stations.length >= 100;
+      setHasMore(hasMoreStations);
+      console.log(`[GenreList] Initial load: ${stations.length} stations, hasMore=${hasMoreStations}, nextOffset=100`);
     } else if (stationsData?.stations && stationsData.stations.length === 0) {
       // No stations found for this genre/country combo
       console.log('⚠️ [GENRE LIST DEBUG] No stations found for this genre/country');
-      setAllStations([]);
       setDisplayedStations([]);
       setHasMore(false);
-      setPage(1);
+      setCurrentOffset(0);
     }
   }, [stationsData?.stations, genreSlug, selectedCountryCode]);
 
-  // Infinite scroll detection
+  // TRUE INFINITE SCROLL - Fetch next batch from API using offset
+  const loadMore = async () => {
+    if (isLoadingMore || !hasMore) {
+      console.log(`[GenreList] Skipping load - isLoadingMore=${isLoadingMore}, hasMore=${hasMore}`);
+      return;
+    }
+
+    setIsLoadingMore(true);
+    console.log(`[GenreList] 🚀 Fetching next batch - offset=${currentOffset}, limit=100, genre=${genreSlug}, country=${selectedCountryCode}`);
+    
+    try {
+      const result = await megaRadioApi.getStationsByGenre(genreSlug, { 
+        country: selectedCountryCode,
+        limit: 100,
+        offset: currentOffset,
+        sort: 'votes'
+      });
+      
+      const newStations = result.stations || [];
+      console.log(`[GenreList] ✅ Fetched ${newStations.length} stations from API`);
+      
+      if (newStations.length > 0) {
+        setDisplayedStations(prev => [...prev, ...newStations]);
+        setCurrentOffset(prev => prev + 100); // Increment offset for next fetch
+        
+        // If we got less than 100 stations, we've reached the end
+        const hasMoreStations = newStations.length >= 100;
+        setHasMore(hasMoreStations);
+        console.log(`[GenreList] After load: total=${displayedStations.length + newStations.length}, hasMore=${hasMoreStations}, nextOffset=${currentOffset + 100}`);
+      } else {
+        setHasMore(false);
+        console.log('[GenreList] No more stations available');
+      }
+    } catch (error) {
+      console.error('[GenreList] Failed to fetch more stations:', error);
+      setHasMore(false);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
+  // TRUE INFINITE SCROLL trigger - Scroll-based (when within 1000px of bottom)
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
 
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      const scrolledToBottom = scrollTop + clientHeight >= scrollHeight - 300;
+      const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
       
-      if (scrolledToBottom && hasMore && !isLoadingMore) {
+      // Trigger load when within 1000px of bottom
+      if (distanceFromBottom < 1000 && hasMore && !isLoadingMore) {
+        console.log('[GenreList] 📜 Scroll trigger - loading more stations');
         loadMore();
       }
     };
 
     scrollContainer.addEventListener('scroll', handleScroll);
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, [hasMore, isLoadingMore, allStations.length]);
-
-  // Load more stations - client-side pagination
-  const loadMore = () => {
-    if (isLoadingMore || !hasMore) return;
-    
-    setIsLoadingMore(true);
-    
-    setTimeout(() => {
-      const nextPage = page + 1;
-      const startIdx = page * STATIONS_PER_PAGE;
-      const endIdx = startIdx + STATIONS_PER_PAGE;
-      
-      const nextBatch = allStations.slice(startIdx, endIdx);
-      
-      if (nextBatch.length > 0) {
-        setDisplayedStations(prev => [...prev, ...nextBatch]);
-        setPage(nextPage);
-        setHasMore(endIdx < allStations.length);
-        console.log(`[GenreList] Loaded page ${nextPage}, showing ${endIdx}/${allStations.length} stations`);
-      } else {
-        setHasMore(false);
-        console.log('[GenreList] No more stations to load');
-      }
-      
-      setIsLoadingMore(false);
-    }, 100);
-  };
+  }, [hasMore, isLoadingMore, currentOffset]);
 
   // Fallback image - music note on pink gradient background
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
@@ -300,6 +317,21 @@ export const GenreList = (): JSX.Element => {
       }
     }
   }, [focusIndex]);
+
+  // TRUE INFINITE SCROLL trigger - Focus-based (when within last 14 items / 2 rows)
+  useEffect(() => {
+    // Only trigger for station items section
+    if (focusIndex >= stationsStart) {
+      const stationIndex = focusIndex - stationsStart;
+      const distanceFromEnd = displayedStations.length - stationIndex;
+      
+      // If user is within last 14 items (2 rows × 7 columns), load more
+      if (distanceFromEnd <= 14 && hasMore && !isLoadingMore) {
+        console.log(`[GenreList] 🎯 Focus trigger - user at station ${stationIndex}/${displayedStations.length}, loading more`);
+        loadMore();
+      }
+    }
+  }, [focusIndex, stationsStart, displayedStations.length, hasMore, isLoadingMore]);
 
   // Register page-specific key handler with custom navigation
   usePageKeyHandler('/genre-list', (e) => {

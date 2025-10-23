@@ -25,13 +25,12 @@ export const DiscoverNoUser = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   
-  // Infinite scroll state for country stations
-  const [allCountryStations, setAllCountryStations] = useState<Station[]>([]);
+  // Infinite scroll state for country stations - TRUE INFINITE SCROLL with API
   const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
   const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
-  const STATIONS_PER_LOAD = 56;
+  const STATIONS_PER_LOAD = 100; // Fetch 100 stations per batch
 
   // Fetch ALL genres from API filtered by country
   const { data: genresData } = useQuery({
@@ -51,12 +50,12 @@ export const DiscoverNoUser = (): JSX.Element => {
     },
   });
 
-  // Fetch initial 50 stations ONLY (lazy load rest asynchronously)
-  const { data: allCountryStationsData } = useQuery({
-    queryKey: ['/api/stations/country', selectedCountryCode],
+  // Fetch initial 100 stations with offset=0 for TRUE infinite scroll
+  const { data: initialStationsData, isLoading: isInitialLoading } = useQuery({
+    queryKey: ['/api/stations/country/initial', selectedCountryCode],
     queryFn: () => {
-      console.log('[DiscoverNoUser] Fetching INITIAL 50 stations for country code:', selectedCountryCode);
-      return megaRadioApi.getWorkingStations({ limit: 50, country: selectedCountryCode });
+      console.log('[DiscoverNoUser] Fetching INITIAL 100 stations for country code:', selectedCountryCode, 'offset=0');
+      return megaRadioApi.getWorkingStations({ limit: 100, country: selectedCountryCode, offset: 0 });
     },
   });
 
@@ -371,18 +370,20 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   });
 
-  // Initialize country stations when data is loaded or country changes
+  // Initialize country stations when initial data is loaded or country changes
   useEffect(() => {
-    if (allCountryStationsData?.stations) {
-      console.log(`Country changed: ${selectedCountry}, total stations: ${allCountryStationsData.stations.length}`);
-      setAllCountryStations(allCountryStationsData.stations);
-      setDisplayedStations(allCountryStationsData.stations.slice(0, STATIONS_PER_LOAD));
-      setCurrentOffset(STATIONS_PER_LOAD);
-      const hasMore = allCountryStationsData.stations.length > STATIONS_PER_LOAD;
+    if (initialStationsData?.stations) {
+      const stations = initialStationsData.stations;
+      console.log(`[DiscoverNoUser] Country changed: ${selectedCountry}, initial fetch: ${stations.length} stations`);
+      setDisplayedStations(stations);
+      setCurrentOffset(100); // Next fetch will use offset=100
+      
+      // If we got less than 100 stations, there's no more to load
+      const hasMore = stations.length >= 100;
       setHasMoreCountryStations(hasMore);
-      console.log(`Initial load: showing 56 stations, hasMore=${hasMore}`);
+      console.log(`[DiscoverNoUser] Initial load: ${stations.length} stations, hasMore=${hasMore}, nextOffset=100`);
     }
-  }, [allCountryStationsData, selectedCountryCode]);
+  }, [initialStationsData, selectedCountryCode]);
 
   // Auto-play on app startup based on settings
   useEffect(() => {
@@ -418,34 +419,47 @@ export const DiscoverNoUser = (): JSX.Element => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Load more country stations from already fetched data
-  const loadMoreCountryStations = () => {
-    if (isLoadingMore || !hasMoreCountryStations) return;
+  // TRUE INFINITE SCROLL - Fetch next batch from API using offset
+  const loadMoreCountryStations = async () => {
+    if (isLoadingMore || !hasMoreCountryStations) {
+      console.log(`[DiscoverNoUser] Skipping load - isLoadingMore=${isLoadingMore}, hasMore=${hasMoreCountryStations}`);
+      return;
+    }
 
     setIsLoadingMore(true);
+    console.log(`[DiscoverNoUser] 🚀 Fetching next batch - offset=${currentOffset}, limit=100, country=${selectedCountryCode}`);
     
-    setTimeout(() => {
-      const nextStations = allCountryStations.slice(currentOffset, currentOffset + STATIONS_PER_LOAD);
+    try {
+      const result = await megaRadioApi.getWorkingStations({ 
+        limit: 100, 
+        country: selectedCountryCode, 
+        offset: currentOffset 
+      });
       
-      console.log(`Loading more: offset=${currentOffset}, nextStations=${nextStations.length}, total=${allCountryStations.length}`);
+      const newStations = result.stations || [];
+      console.log(`[DiscoverNoUser] ✅ Fetched ${newStations.length} stations from API`);
       
-      if (nextStations.length > 0) {
-        setDisplayedStations(prev => [...prev, ...nextStations]);
-        const newOffset = currentOffset + STATIONS_PER_LOAD;
-        setCurrentOffset(newOffset);
-        const hasMore = newOffset < allCountryStations.length;
+      if (newStations.length > 0) {
+        setDisplayedStations(prev => [...prev, ...newStations]);
+        setCurrentOffset(prev => prev + 100); // Increment offset for next fetch
+        
+        // If we got less than 100 stations, we've reached the end
+        const hasMore = newStations.length >= 100;
         setHasMoreCountryStations(hasMore);
-        console.log(`After load: displayed=${displayedStations.length + nextStations.length}, hasMore=${hasMore}`);
+        console.log(`[DiscoverNoUser] After load: total=${displayedStations.length + newStations.length}, hasMore=${hasMore}, nextOffset=${currentOffset + 100}`);
       } else {
         setHasMoreCountryStations(false);
-        console.log('No more stations to load');
+        console.log('[DiscoverNoUser] No more stations available');
       }
-      
+    } catch (error) {
+      console.error('[DiscoverNoUser] Failed to fetch more stations:', error);
+      setHasMoreCountryStations(false);
+    } finally {
       setIsLoadingMore(false);
-    }, 300);
+    }
   };
 
-  // Auto-hide header on scroll down + infinite scroll for country stations
+  // Auto-hide header on scroll down + TRUE INFINITE SCROLL trigger (scroll-based)
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
@@ -466,14 +480,31 @@ export const DiscoverNoUser = (): JSX.Element => {
       const scrollTop = scrollContainer.scrollTop;
       const clientHeight = scrollContainer.clientHeight;
       
-      if (scrollHeight - scrollTop - clientHeight < 500 && hasMoreCountryStations && !isLoadingMore) {
+      // Trigger load when within 1000px of bottom
+      if (scrollHeight - scrollTop - clientHeight < 1000 && hasMoreCountryStations && !isLoadingMore) {
+        console.log('[DiscoverNoUser] 📜 Scroll trigger - loading more stations');
         loadMoreCountryStations();
       }
     };
 
     scrollContainer.addEventListener('scroll', handleScroll);
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, [isLoadingMore, hasMoreCountryStations, currentOffset, allCountryStations.length]);
+  }, [isLoadingMore, hasMoreCountryStations, currentOffset]);
+
+  // TRUE INFINITE SCROLL trigger - Focus-based (when within last 14 items / 2 rows)
+  useEffect(() => {
+    // Only trigger for country stations section
+    if (focusIndex >= countryStationsStart) {
+      const stationIndex = focusIndex - countryStationsStart;
+      const distanceFromEnd = displayedStations.length - stationIndex;
+      
+      // If user is within last 14 items (2 rows × 7 columns), load more
+      if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
+        console.log(`[DiscoverNoUser] 🎯 Focus trigger - user at station ${stationIndex}/${displayedStations.length}, loading more`);
+        loadMoreCountryStations();
+      }
+    }
+  }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
   // Auto-scroll focused element into view
   useEffect(() => {
