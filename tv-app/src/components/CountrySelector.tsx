@@ -269,9 +269,14 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
             placeholder={t('search_countries') || 'Search countries...'}
             value={searchQuery}
             onChange={(e) => {
-              console.log('[CountrySelector] Search changed:', e.target.value);
-              setSearchQuery(e.target.value);
+              const newValue = e.target.value;
+              console.log('[CountrySelector] Search changed:', newValue);
+              setSearchQuery(newValue);
               setFocusIndex(0);
+              // Force scroll to top immediately
+              if (scrollContainerRef.current) {
+                scrollContainerRef.current.scrollTop = 0;
+              }
             }}
             onFocus={() => {
               console.log('[CountrySelector] Input focused - TV keyboard should appear');
@@ -292,7 +297,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
         {/* Country List */}
         <div
-          key={`country-list-${searchQuery}-${filteredCountries.length}`}
           ref={scrollContainerRef}
           className="absolute top-[160px] left-[40px] right-[40px] bottom-[30px] overflow-y-auto pr-2"
           style={{

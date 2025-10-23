@@ -1,0 +1,143 @@
+injected.js:27 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'web', …}
+injected.js:27 [TV Keys] 📤 Dispatching to FocusRouter
+injected.js:27 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+injected.js:27 [FocusRouter] ✅ Dispatching to: /discover-no-user
+injected.js:27 [DiscoverNoUser] ENTER key pressed - calling handleSelect()
+injected.js:27 [useFocusManager] ✅ Select pressed: {focusIndex: 5, totalItems: 78, hasHandler: true}
+injected.js:27 [CountrySelector] Modal opened - search input focused
+injected.js:27 [CountrySelector] Activating search mode - focusing input
+injected.js:27 [CountrySelector] Input focused - TV keyboard should appear
+injected.js:27 [CountrySelector] Search changed: t
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: t
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Afghanistan for query: t
+injected.js:27 [CountrySelector] Match found: Antarctica for query: t
+injected.js:27 [CountrySelector] Match found: Antigua And Barbuda for query: t
+injected.js:27 [CountrySelector] Match found: Argentina for query: t
+injected.js:27 [CountrySelector] Match found: Ascension And Tristan Da Cunha Saint Helena for query: t
+injected.js:27 [CountrySelector] Match found: Australia for query: t
+injected.js:27 [CountrySelector] Match found: Austria for query: t
+injected.js:27 [CountrySelector] Match found: Bhutan for query: t
+injected.js:27 [CountrySelector] Match found: Botswana for query: t
+injected.js:27 [CountrySelector] Match found: British Indian Ocean Territory for query: t
+injected.js:27 [CountrySelector] Match found: British Virgin Islands for query: t
+injected.js:27 [CountrySelector] Match found: Christmas Island for query: t
+injected.js:27 [CountrySelector] Match found: Costa Rica for query: t
+injected.js:27 [CountrySelector] Match found: Coted Ivoire for query: t
+injected.js:27 [CountrySelector] Match found: Croatia for query: t
+injected.js:27 [CountrySelector] Match found: Djibouti for query: t
+injected.js:27 [CountrySelector] Match found: Egypt for query: t
+injected.js:27 [CountrySelector] Match found: Equatorial Guinea for query: t
+injected.js:27 [CountrySelector] Match found: Eritrea for query: t
+injected.js:27 [CountrySelector] Match found: Estonia for query: t
+injected.js:27 [CountrySelector] Match found: Eswatini for query: t
+injected.js:27 [CountrySelector] Match found: Ethiopia for query: t
+injected.js:27 [CountrySelector] Match found: Federated States Of Micronesia for query: t
+injected.js:27 [CountrySelector] Match found: Gibraltar for query: t
+injected.js:27 [CountrySelector] Match found: Guatemala for query: t
+injected.js:27 [CountrySelector] Match found: Haiti for query: t
+injected.js:27 [CountrySelector] Match found: Italy for query: t
+injected.js:27 [CountrySelector] Match found: Kazakhstan for query: t
+injected.js:27 [CountrySelector] Match found: Kiribati for query: t
+injected.js:27 [CountrySelector] Match found: Kuwait for query: t
+injected.js:27 [CountrySelector] Match found: Kyrgyzstan for query: t
+injected.js:27 [CountrySelector] Match found: Latvia for query: t
+injected.js:27 [CountrySelector] Match found: Lesotho for query: t
+injected.js:27 [CountrySelector] Match found: Liechtenstein for query: t
+injected.js:27 [CountrySelector] Match found: Lithuania for query: t
+injected.js:27 [CountrySelector] Match found: Malta for query: t
+injected.js:27 [CountrySelector] Match found: Martinique for query: t
+injected.js:27 [CountrySelector] Match found: Mauritania for query: t
+injected.js:27 [CountrySelector] Match found: Mauritius for query: t
+injected.js:27 [CountrySelector] Match found: Mayotte for query: t
+injected.js:27 [CountrySelector] Match found: Montenegro for query: t
+injected.js:27 [CountrySelector] Match found: Montserrat for query: t
+injected.js:27 [CountrySelector] Match found: Pakistan for query: t
+injected.js:27 [CountrySelector] Match found: Portugal for query: t
+injected.js:27 [CountrySelector] Match found: Puerto Rico for query: t
+injected.js:27 [CountrySelector] Match found: Qatar for query: t
+injected.js:27 [CountrySelector] Match found: Republic Of North Macedonia for query: t
+injected.js:27 [CountrySelector] Match found: Saint Kitts And Nevis for query: t
+injected.js:27 [CountrySelector] Match found: Saint Lucia for query: t
+injected.js:27 [CountrySelector] Match found: Saint Pierre And Miquelon for query: t
+injected.js:27 [CountrySelector] Match found: Saint Vincent And The Grenadines for query: t
+injected.js:27 [CountrySelector] Match found: Sao Tome And Principe for query: t
+injected.js:27 [CountrySelector] Match found: South Africa for query: t
+injected.js:27 [CountrySelector] Match found: South Sudan for query: t
+injected.js:27 [CountrySelector] Match found: State Of Palestine for query: t
+injected.js:27 [CountrySelector] Match found: Switzerland for query: t
+injected.js:27 [CountrySelector] Match found: Taiwan, Republic Of China for query: t
+injected.js:27 [CountrySelector] Match found: Tajikistan for query: t
+injected.js:27 [CountrySelector] Match found: Thailand for query: t
+injected.js:27 [CountrySelector] Match found: The Bahamas for query: t
+injected.js:27 [CountrySelector] Match found: The Cayman Islands for query: t
+injected.js:27 [CountrySelector] Match found: The Central African Republic for query: t
+injected.js:27 [CountrySelector] Match found: The Cocos Keeling Islands for query: t
+injected.js:27 [CountrySelector] Match found: The Comoros for query: t
+injected.js:27 [CountrySelector] Match found: The Congo for query: t
+injected.js:27 [CountrySelector] Match found: The Cook Islands for query: t
+injected.js:27 [CountrySelector] Match found: The Democratic Peoples Republic Of Korea for query: t
+injected.js:27 [CountrySelector] Match found: The Democratic Republic Of The Congo for query: t
+injected.js:27 [CountrySelector] Match found: The Dominican Republic for query: t
+injected.js:27 [CountrySelector] Match found: The Falkland Islands Malvinas for query: t
+injected.js:27 [CountrySelector] Match found: The Faroe Islands for query: t
+injected.js:27 [CountrySelector] Match found: The French Southern Territories for query: t
+injected.js:27 [CountrySelector] Match found: The Gambia for query: t
+injected.js:27 [CountrySelector] Match found: The Holy See for query: t
+injected.js:27 [CountrySelector] Match found: The Lao Peoples Democratic Republic for query: t
+injected.js:27 [CountrySelector] Match found: The Marshall Islands for query: t
+injected.js:27 [CountrySelector] Match found: The Netherlands for query: t
+injected.js:27 [CountrySelector] Match found: The Niger for query: t
+injected.js:27 [CountrySelector] Match found: The Philippines for query: t
+injected.js:27 [CountrySelector] Match found: The Republic Of Korea for query: t
+injected.js:27 [CountrySelector] Match found: The Republic Of Moldova for query: t
+injected.js:27 [CountrySelector] Match found: The Russian Federation for query: t
+injected.js:27 [CountrySelector] Match found: The Sudan for query: t
+injected.js:27 [CountrySelector] Match found: The Turks And Caicos Islands for query: t
+injected.js:27 [CountrySelector] Match found: The United Arab Emirates for query: t
+injected.js:27 [CountrySelector] Match found: The United Kingdom Of Great Britain And Northern Ireland for query: t
+injected.js:27 [CountrySelector] Match found: The United States Minor Outlying Islands for query: t
+injected.js:27 [CountrySelector] Match found: The United States Of America for query: t
+injected.js:27 [CountrySelector] Match found: Timor Leste for query: t
+injected.js:27 [CountrySelector] Match found: Togo for query: t
+injected.js:27 [CountrySelector] Match found: Tonga for query: t
+injected.js:27 [CountrySelector] Match found: Trinidad And Tobago for query: t
+injected.js:27 [CountrySelector] Match found: Tunisia for query: t
+injected.js:27 [CountrySelector] Match found: Turkmenistan for query: t
+injected.js:27 [CountrySelector] Match found: Tuvalu for query: t
+injected.js:27 [CountrySelector] Match found: Türkiye for query: t
+injected.js:27 [CountrySelector] Match found: United Republic Of Tanzania for query: t
+injected.js:27 [CountrySelector] Match found: Uzbekistan for query: t
+injected.js:27 [CountrySelector] Match found: Vanuatu for query: t
+injected.js:27 [CountrySelector] Match found: Vietnam for query: t
+injected.js:27 [CountrySelector] Match found: Wallis And Futuna for query: t
+injected.js:27 [CountrySelector] Filtered countries count: 101
+injected.js:27 [CountrySelector] Search changed: tü
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: tü
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Türkiye for query: tü
+injected.js:27 [CountrySelector] Filtered countries count: 1
+injected.js:27 [CountrySelector] Filtered country names: ['Türkiye']
+injected.js:27 [CountrySelector] Search changed: tür
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: tür
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Türkiye for query: tür
+injected.js:27 [CountrySelector] Filtered countries count: 1
+injected.js:27 [CountrySelector] Filtered country names: ['Türkiye']
+injected.js:27 [CountrySelector] Search changed: türe
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: türe
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Filtered countries count: 0
+injected.js:27 [CountrySelector] Search changed: tür
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: tür
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Türkiye for query: tür
+injected.js:27 [CountrySelector] Filtered countries count: 1
+injected.js:27 [CountrySelector] Filtered country names: ['Türkiye']
+injected.js:27 [CountrySelector] Search changed: türk
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: türk
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Türkiye for query: türk
+injected.js:27 [CountrySelector] Filtered countries count: 1
+injected.js:27 [CountrySelector] Filtered country names: ['Türkiye']
+injected.js:27 [CountrySelector] Input blurred
