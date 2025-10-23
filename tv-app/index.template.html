@@ -10,8 +10,57 @@
     <style>
       @import url("https://fonts.googleapis.com/css?family=Ubuntu:300,500,400,700");
     </style>
-    <link rel="stylesheet" href="./assets/style.css">
-    <link rel="stylesheet" href="./css/tv-styles.css">
+    <link rel="stylesheet" href="./assets/style.css" id="main-styles">
+    <link rel="stylesheet" href="./css/tv-styles.css" id="tv-styles">
+    <script>
+      // Log CSS loading
+      var mainStyles = document.getElementById('main-styles');
+      var tvStyles = document.getElementById('tv-styles');
+      
+      if (mainStyles) {
+        mainStyles.onload = function() {
+          console.log('✅ CSS LOADED: assets/style.css (main Tailwind styles)');
+        };
+        mainStyles.onerror = function() {
+          console.error('❌ CSS FAILED TO LOAD: assets/style.css');
+        };
+      }
+      
+      if (tvStyles) {
+        tvStyles.onload = function() {
+          console.log('✅ CSS LOADED: css/tv-styles.css (TV-specific styles)');
+        };
+        tvStyles.onerror = function() {
+          console.error('❌ CSS FAILED TO LOAD: css/tv-styles.css');
+        };
+      }
+      
+      // Verify styles are applied after a short delay
+      setTimeout(function() {
+        var rootDiv = document.getElementById('root');
+        if (rootDiv) {
+          var computedStyle = window.getComputedStyle(rootDiv);
+          console.log('🎨 CSS CHECK: #root computed styles:', {
+            display: computedStyle.display,
+            position: computedStyle.position,
+            width: computedStyle.width,
+            height: computedStyle.height
+          });
+        }
+        
+        // Check if Tailwind is loaded by looking for common classes
+        var testDiv = document.createElement('div');
+        testDiv.className = 'hidden';
+        document.body.appendChild(testDiv);
+        var hiddenStyle = window.getComputedStyle(testDiv);
+        if (hiddenStyle.display === 'none') {
+          console.log('✅ TAILWIND CSS: Working correctly (hidden class applied)');
+        } else {
+          console.error('❌ TAILWIND CSS: Not working (hidden class not applied)');
+        }
+        document.body.removeChild(testDiv);
+      }, 100);
+    </script>
     <title>Mega Radio - TV</title>
   </head>
   <body>
