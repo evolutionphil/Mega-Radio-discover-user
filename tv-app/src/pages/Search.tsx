@@ -408,7 +408,7 @@ export const Search = (): JSX.Element => {
       {/* Search Results */}
       {searchQuery.length > 0 && searchResults.map((station, index) => {
         const topPositions = [259, 359, 459, 559];
-        const focusIdx = 7 + index;
+        const focusIdx = 6 + index;
         
         return (
           <div
@@ -451,7 +451,7 @@ export const Search = (): JSX.Element => {
         const col = index % 2;
         const leftPositions = [1110, 1340];
         const topPositions = [136, 400, 650];
-        const focusIdx = 7 + searchResults.length + index;
+        const focusIdx = 6 + searchResults.length + index;
         
         return (
           <div 
