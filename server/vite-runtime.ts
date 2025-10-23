@@ -29,10 +29,10 @@ export async function setupVite(app: Express, server: Server) {
   const vite = await createViteServer({
     ...viteConfig,
     configFile: false,
-    root: path.resolve(import.meta.dirname, "..", "client"),
+    root: path.resolve(import.meta.dirname, "..", "tv-app"),
     resolve: {
       alias: {
-        "@": path.resolve(import.meta.dirname, "..", "client", "src"),
+        "@": path.resolve(import.meta.dirname, "..", "tv-app", "src"),
         "@shared": path.resolve(import.meta.dirname, "..", "shared"),
         "@assets": path.resolve(import.meta.dirname, "..", "attached_assets"),
       },
@@ -56,7 +56,7 @@ export async function setupVite(app: Express, server: Server) {
       const clientTemplate = path.resolve(
         import.meta.dirname,
         "..",
-        "client",
+        "tv-app",
         "index.html",
       );
 
@@ -75,7 +75,7 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  const distPath = path.resolve(import.meta.dirname, "..", "tv-app");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
