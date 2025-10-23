@@ -112,6 +112,14 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     }
   }, [filteredCountries.length, focusIndex]);
 
+  // Scroll to top when search query changes
+  useEffect(() => {
+    if (scrollContainerRef.current && searchQuery) {
+      scrollContainerRef.current.scrollTop = 0;
+      console.log('[CountrySelector] Scrolled to top due to search query change');
+    }
+  }, [searchQuery]);
+
   // Scroll focused item into view
   useEffect(() => {
     if (scrollContainerRef.current && filteredCountries.length > 0) {
