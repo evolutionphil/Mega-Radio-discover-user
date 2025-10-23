@@ -63,14 +63,15 @@ export const Search = (): JSX.Element => {
     queryFn: () => megaRadioApi.getPopularStations({ limit: 6, country: selectedCountryCode }),
   });
 
-  const searchResults = searchData?.results || [];
+  // Only show search results when there's an active search query
+  // This prevents counting cached results when input is empty
+  const visibleSearchResults = debouncedSearchQuery.length > 0 ? (searchData?.results || []) : [];
   
   console.log('🔍 [SEARCH DEBUG] Current state:', {
     searchQuery,
     debouncedSearchQuery,
-    searchResultsLength: searchResults.length,
-    recentlyPlayedLength: recentlyPlayedStations.length,
-    totalItems: 5 + 1 + searchResults.length + (recentlyPlayedStations.length > 0 ? recentlyPlayedStations.length : (popularStationsData?.stations.length || 0))
+    visibleSearchResultsLength: visibleSearchResults.length,
+    recentlyPlayedLength: recentlyPlayedStations.length
   });
   
   // Load recently played stations from localStorage
@@ -85,8 +86,8 @@ export const Search = (): JSX.Element => {
     ? recentlyPlayedStations 
     : (popularStationsData?.stations || []);
 
-  // Calculate totalItems: 5 (sidebar) + 1 (input) + results + recent (NO country selector)
-  const totalItems = 5 + 1 + searchResults.length + recentStations.length;
+  // Calculate totalItems: 5 (sidebar) + 1 (input) + visible results + recent (NO country selector)
+  const totalItems = 5 + 1 + visibleSearchResults.length + recentStations.length;
 
   // Define sidebar routes (removed Records)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -111,7 +112,7 @@ export const Search = (): JSX.Element => {
     else if (current === 5) {
       if (direction === 'DOWN') {
         // Jump to first search result or first recent station
-        if (searchResults.length > 0) {
+        if (visibleSearchResults.length > 0) {
           newIndex = 6; // First search result
         } else if (recentStations.length > 0) {
           newIndex = 6; // First recent station (no search results)
@@ -119,15 +120,15 @@ export const Search = (): JSX.Element => {
       } else if (direction === 'RIGHT') {
         // Jump directly to recently played section
         if (recentStations.length > 0) {
-          newIndex = 6 + searchResults.length; // First recent station
+          newIndex = 6 + visibleSearchResults.length; // First recent station
           console.log('[Search] RIGHT from search input - jumping to recently played');
         }
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to sidebar
       }
     }
-    // Search results section (6 to 6+searchResults.length-1)
-    else if (current >= 6 && current < 6 + searchResults.length) {
+    // Search results section (6 to 6+visibleSearchResults.length-1)
+    else if (current >= 6 && current < 6 + visibleSearchResults.length) {
       const relIndex = current - 6;
 
       if (direction === 'UP') {
@@ -137,12 +138,12 @@ export const Search = (): JSX.Element => {
           newIndex = 5; // Jump to search input
         }
       } else if (direction === 'DOWN') {
-        if (relIndex < searchResults.length - 1) {
+        if (relIndex < visibleSearchResults.length - 1) {
           newIndex = current + 1;
         } else {
           // Jump to recently played if available
           if (recentStations.length > 0) {
-            newIndex = 6 + searchResults.length; // First recent station
+            newIndex = 6 + visibleSearchResults.length; // First recent station
           }
         }
       } else if (direction === 'LEFT') {
@@ -150,8 +151,8 @@ export const Search = (): JSX.Element => {
       }
     }
     // Recently played section (2-column grid)
-    else if (current >= 6 + searchResults.length) {
-      const recentStartIndex = 6 + searchResults.length;
+    else if (current >= 6 + visibleSearchResults.length) {
+      const recentStartIndex = 6 + visibleSearchResults.length;
       const relIndex = current - recentStartIndex;
       const row = Math.floor(relIndex / 2);
       const col = relIndex % 2;
@@ -171,8 +172,8 @@ export const Search = (): JSX.Element => {
           newIndex = current - 2;
         } else {
           // Jump to search results or search input
-          if (searchResults.length > 0) {
-            newIndex = 6 + searchResults.length - 1; // Last search result
+          if (visibleSearchResults.length > 0) {
+            newIndex = 6 + visibleSearchResults.length - 1; // Last search result
           } else {
             newIndex = 5; // Search input
           }
@@ -231,10 +232,10 @@ export const Search = (): JSX.Element => {
           console.log('[Search] ❌ Input ref is null');
         }
       }
-      // Search results (6 to 6+searchResults.length-1)
-      else if (index >= 6 && index < 6 + searchResults.length) {
+      // Search results (6 to 6+visibleSearchResults.length-1)
+      else if (index >= 6 && index < 6 + visibleSearchResults.length) {
         const resultIndex = index - 6;
-        const station = searchResults[resultIndex];
+        const station = visibleSearchResults[resultIndex];
         console.log('[Search] 🎵 Search result selected:', resultIndex);
         if (station) {
           console.log('[Search] ▶️  Playing search result:', station.name, 'id:', station._id);
@@ -242,9 +243,9 @@ export const Search = (): JSX.Element => {
           setLocation(`/radio-playing?station=${station._id}`);
         }
       }
-      // Recently played (6+searchResults.length onwards)
-      else if (index >= 6 + searchResults.length) {
-        const recentIndex = index - 6 - searchResults.length;
+      // Recently played (6+visibleSearchResults.length onwards)
+      else if (index >= 6 + visibleSearchResults.length) {
+        const recentIndex = index - 6 - visibleSearchResults.length;
         const station = recentStations[recentIndex];
         console.log('[Search] 🕒 Recently played selected:', recentIndex);
         if (station) {
@@ -421,7 +422,7 @@ export const Search = (): JSX.Element => {
       </div>
 
       {/* Search Results */}
-      {searchQuery.length > 0 && searchResults.map((station, index) => {
+      {searchQuery.length > 0 && visibleSearchResults.map((station, index) => {
         const topPositions = [259, 359, 459, 559];
         const focusIdx = 6 + index;
         
@@ -449,7 +450,7 @@ export const Search = (): JSX.Element => {
       })}
 
       {/* No results message */}
-      {searchQuery.length > 0 && searchResults.length === 0 && (
+      {searchQuery.length > 0 && visibleSearchResults.length === 0 && (
         <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[246px] not-italic text-[22px] text-[rgba(255,255,255,0.5)] top-[259px]">
           No stations found for "{searchQuery}"
         </p>
@@ -466,15 +467,15 @@ export const Search = (): JSX.Element => {
         const col = index % 2;
         const leftPositions = [1110, 1340];
         const topPositions = [136, 430, 724]; // Added 30px gap between rows (card height 264px + 30px gap)
-        const focusIdx = 6 + searchResults.length + index;
+        const focusIdx = 6 + visibleSearchResults.length + index;
         
         console.log(`🎨 [RECENTLY PLAYED] Rendering station ${index}:`, {
           name: station.name,
           focusIdx,
-          searchResultsLength: searchResults.length,
+          visibleSearchResultsLength: visibleSearchResults.length,
           currentFocusIndex: focusIndex,
           isFocused: isFocused(focusIdx),
-          calculation: `6 + ${searchResults.length} + ${index} = ${focusIdx}`
+          calculation: `6 + ${visibleSearchResults.length} + ${index} = ${focusIdx}`
         });
         
         return (

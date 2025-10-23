@@ -67,6 +67,16 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025 - Latest)
 
+### Search Page Focus Navigation Fix (COMPLETED):
+**Fixed phantom index preventing RIGHT navigation to Recently Played** - One key press now works
+   - **Root Cause**: React Query cached search results counted even when search input empty, creating phantom indices
+   - **Solution**: Introduced `visibleSearchResults` that only shows results when `debouncedSearchQuery.length > 0`
+   - **Changes**:
+     - Created `visibleSearchResults` array that clears when search input is empty
+     - Replaced all `searchResults` references with `visibleSearchResults` in navigation, totalItems, rendering, and onSelect
+     - Prevents counting cached search results that aren't being rendered
+   - **Result**: Pressing RIGHT from search input now immediately jumps to first Recently Played item at index 6
+
 ### Genre Navigation Fix (COMPLETED):
 **Fixed genre parameter not being read** - International genre now shows international stations
    - **Root Cause**: Hash-based routing doesn't preserve query parameters (`?genre=rock`)
