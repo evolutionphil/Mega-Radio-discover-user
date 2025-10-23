@@ -17,11 +17,16 @@ export const GenreList = (): JSX.Element => {
   
   // Extract genre slug from URL path - wouter with hash routing
   // Example: location = "/genre-list/rock" (from #/genre-list/rock)
-  const pathParts = location.split('/');
-  let genreSlug = pathParts[2] || 'pop'; // /genre-list/SLUG
+  console.log('🔍 [GENRE LIST DEBUG] ===== COMPONENT RENDER =====');
+  console.log('🔍 [GENRE LIST DEBUG] Raw location from wouter:', location);
+  console.log('🔍 [GENRE LIST DEBUG] Window hash:', window.location.hash);
   
-  console.log('[GenreList] Full location:', location);
-  console.log('[GenreList] Extracted genre slug:', genreSlug);
+  const pathParts = location.split('/');
+  console.log('🔍 [GENRE LIST DEBUG] Path parts:', pathParts);
+  
+  let genreSlug = pathParts[2] || 'pop'; // /genre-list/SLUG
+  console.log('🔍 [GENRE LIST DEBUG] Extracted genre slug:', genreSlug);
+  console.log('🔍 [GENRE LIST DEBUG] Selected country:', selectedCountryCode);
   
   // Convert slug back to display name (e.g., "rock" -> "Rock", "hip-hop" -> "Hip Hop")
   const genreName = genreSlug
@@ -40,10 +45,17 @@ export const GenreList = (): JSX.Element => {
   const STATIONS_PER_PAGE = 21; // 7 columns x 3 rows
 
   // Fetch stations by genre and country using proper genre endpoint
+  console.log('🔍 [GENRE LIST DEBUG] Creating query with:', {
+    queryKey: ['genre-stations', genreSlug, selectedCountryCode],
+    genreSlug,
+    selectedCountryCode
+  });
+  
   const { data: stationsData, isLoading, refetch } = useQuery({
     queryKey: ['genre-stations', genreSlug, selectedCountryCode],
     queryFn: async () => {
-      console.log('[GenreList] 🎵 Fetching stations for genre:', genreSlug, 'country:', selectedCountryCode);
+      console.log('🎵 [GENRE LIST DEBUG] Query function executing...');
+      console.log('🎵 [GENRE LIST DEBUG] Fetching stations for genre:', genreSlug, 'country:', selectedCountryCode);
       
       const result = await megaRadioApi.getStationsByGenre(genreSlug, { 
         country: selectedCountryCode,
@@ -51,7 +63,8 @@ export const GenreList = (): JSX.Element => {
         sort: 'votes'
       });
       
-      console.log('[GenreList] ✅ Fetched', result?.stations?.length || 0, 'stations for genre:', genreSlug);
+      console.log('✅ [GENRE LIST DEBUG] Fetched', result?.stations?.length || 0, 'stations');
+      console.log('✅ [GENRE LIST DEBUG] First 3 stations:', result?.stations?.slice(0, 3).map((s: any) => s.name));
       return result;
     },
     staleTime: 0, // Always fetch fresh data for genre changes
@@ -60,25 +73,32 @@ export const GenreList = (): JSX.Element => {
   
   // Force refetch when genre changes
   useEffect(() => {
-    console.log('[GenreList] Genre changed to:', genreSlug);
+    console.log('🔄 [GENRE LIST DEBUG] Genre effect triggered');
+    console.log('🔄 [GENRE LIST DEBUG] Current genre slug:', genreSlug);
+    console.log('🔄 [GENRE LIST DEBUG] Calling refetch...');
     refetch();
   }, [genreSlug, refetch]);
 
   // Initialize/Update when data loads - show first 21 stations
   // This effect runs whenever stationsData.stations array changes (by reference or content)
   useEffect(() => {
-    console.log('[GenreList] Data effect - stationsData:', stationsData?.stations?.length || 0);
+    console.log('📊 [GENRE LIST DEBUG] Data effect triggered');
+    console.log('📊 [GENRE LIST DEBUG] Stations data:', stationsData?.stations?.length || 0);
+    console.log('📊 [GENRE LIST DEBUG] Current genre:', genreSlug);
+    console.log('📊 [GENRE LIST DEBUG] Current country:', selectedCountryCode);
+    
     if (stationsData?.stations && stationsData.stations.length > 0) {
-      console.log('[GenreList] Setting stations:', stationsData.stations.length);
+      console.log('📊 [GENRE LIST DEBUG] Setting stations:', stationsData.stations.length);
+      console.log('📊 [GENRE LIST DEBUG] First 3 stations:', stationsData.stations.slice(0, 3).map((s: any) => s.name));
       setAllStations(stationsData.stations);
       const firstBatch = stationsData.stations.slice(0, STATIONS_PER_PAGE);
-      console.log('[GenreList] First batch:', firstBatch.length);
+      console.log('📊 [GENRE LIST DEBUG] First batch size:', firstBatch.length);
       setDisplayedStations(firstBatch);
       setHasMore(stationsData.stations.length > STATIONS_PER_PAGE);
       setPage(1);
     } else if (stationsData?.stations && stationsData.stations.length === 0) {
       // No stations found for this genre/country combo
-      console.log('[GenreList] No stations found');
+      console.log('⚠️ [GENRE LIST DEBUG] No stations found for this genre/country');
       setAllStations([]);
       setDisplayedStations([]);
       setHasMore(false);
