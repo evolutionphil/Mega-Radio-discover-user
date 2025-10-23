@@ -58,6 +58,14 @@ export const Search = (): JSX.Element => {
 
   const searchResults = searchData?.results || [];
   
+  console.log('🔍 [SEARCH DEBUG] Current state:', {
+    searchQuery,
+    debouncedSearchQuery,
+    searchResultsLength: searchResults.length,
+    recentlyPlayedLength: recentlyPlayedStations.length,
+    totalItems: 5 + 1 + searchResults.length + (recentlyPlayedStations.length > 0 ? recentlyPlayedStations.length : (popularStationsData?.stations.length || 0))
+  });
+  
   // Load recently played stations from localStorage
   useEffect(() => {
     const recent = recentlyPlayedService.getStations();
