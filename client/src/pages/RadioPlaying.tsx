@@ -315,6 +315,22 @@ export const RadioPlaying = (): JSX.Element => {
       case 13:
         handleSelect();
         break;
+      case key?.PAGE_DOWN:
+      case 34:
+        // Jump to similar stations section
+        e.preventDefault();
+        if (similarStations.length > 0) {
+          setFocusIndex(10); // First similar station
+          console.log('[RadioPlaying] PageDown - jumped to similar stations');
+        }
+        break;
+      case key?.PAGE_UP:
+      case 33:
+        // Jump back to playback controls
+        e.preventDefault();
+        setFocusIndex(7); // Play/pause button
+        console.log('[RadioPlaying] PageUp - jumped to playback controls');
+        break;
     }
   });
 

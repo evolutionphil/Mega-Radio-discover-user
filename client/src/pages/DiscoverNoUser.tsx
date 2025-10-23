@@ -344,6 +344,20 @@ export const DiscoverNoUser = (): JSX.Element => {
         console.log('[DiscoverNoUser] ENTER key pressed - calling handleSelect()');
         handleSelect();
         break;
+      case key?.PAGE_DOWN:
+      case 34:
+        // Jump down to country stations section
+        e.preventDefault();
+        setFocusIndex(countryStationsStart);
+        console.log('[DiscoverNoUser] PageDown - jumped to country stations');
+        break;
+      case key?.PAGE_UP:
+      case 33:
+        // Jump back up to genres section
+        e.preventDefault();
+        setFocusIndex(genresStart);
+        console.log('[DiscoverNoUser] PageUp - jumped to genres');
+        break;
       case key?.RETURN:
       case 461:
       case 10009:
