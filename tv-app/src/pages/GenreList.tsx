@@ -16,8 +16,24 @@ export const GenreList = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   // Extract genre slug from URL query params
-  const urlParams = new URLSearchParams(location.split('?')[1] || '');
-  const genreSlug = urlParams.get('genre') || 'pop';
+  // Check BOTH hash-based params and window.location.search (for hash routing compatibility)
+  let genreSlug = 'pop'; // default
+  
+  // Try hash-based params first: #/genre-list?genre=rock
+  const hashParams = new URLSearchParams(location.split('?')[1] || '');
+  if (hashParams.get('genre')) {
+    genreSlug = hashParams.get('genre') || 'pop';
+    console.log('[GenreList] Genre from hash params:', genreSlug);
+  }
+  // Fallback: Try window.location.search (pre-hash: /?genre=rock#/genre-list)
+  else if (window.location.search) {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get('genre')) {
+      genreSlug = searchParams.get('genre') || 'pop';
+      console.log('[GenreList] Genre from window.location.search:', genreSlug);
+    }
+  }
+  
   // Convert slug back to display name (e.g., "rock" -> "Rock", "hip-hop" -> "Hip Hop")
   const genreName = genreSlug
     .split('-')
