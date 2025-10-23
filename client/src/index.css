@@ -2,29 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* TV App - Fixed 1920x1080 layout with smart scaling for web preview */
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #0e0e0e;
-}
-
-/* Root container - scale to fit browser window while maintaining TV aspect ratio */
-#root {
-  position: relative;
-  width: 1920px;
-  height: 1080px;
-  transform-origin: top left;
-}
-
-/* Auto-scale based on browser window size */
-@media (max-width: 1920px), (max-height: 1080px) {
-  #root {
-    transform: scale(calc(min(100vw / 1920, 100vh / 1080)));
-  }
-}
-
 @layer components {
   .all-\[unset\] {
     all: unset;
