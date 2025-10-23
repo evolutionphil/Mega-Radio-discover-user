@@ -236,6 +236,37 @@ export const Genres = (): JSX.Element => {
     }
   });
 
+  // Auto-scroll to show focused genre
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+    
+    const scrollContainer = scrollContainerRef.current;
+    let scrollTarget = 0;
+
+    // Determine scroll position based on focused section
+    if (focusIndex >= 0 && focusIndex <= 6) {
+      // Sidebar or country selector - stay at top
+      scrollTarget = 0;
+    } else if (focusIndex >= 7 && focusIndex <= 10) {
+      // Popular genres row 1 - stay at top to see title
+      scrollTarget = 0;
+    } else if (focusIndex >= 11 && focusIndex <= 14) {
+      // Popular genres row 2 - scroll slightly to show both rows
+      scrollTarget = 150;
+    } else if (focusIndex >= 15) {
+      // All genres section - scroll more to show the grid
+      const genreIndex = focusIndex - 15;
+      const row = Math.floor(genreIndex / 6);
+      // Base offset (400px for popular genres) + row height (170px per row)
+      scrollTarget = 400 + (row * 170);
+    }
+
+    scrollContainer.scrollTo({
+      top: scrollTarget,
+      behavior: 'smooth'
+    });
+  }, [focusIndex]);
+
   return (
     <div ref={scrollContainerRef} className="absolute inset-0 w-[1920px] h-[1080px] overflow-y-auto overflow-x-hidden" data-testid="page-genres">
       {/* Background Image */}
