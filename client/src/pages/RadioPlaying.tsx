@@ -464,7 +464,7 @@ export const RadioPlaying = (): JSX.Element => {
   if (stationError) {
     console.error('[RadioPlaying] Error loading station:', stationError);
     return (
-      <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
+      <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">Failed to load station</p>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-gray-400">
           {stationError instanceof Error ? stationError.message : 'Unknown error'}
@@ -482,7 +482,7 @@ export const RadioPlaying = (): JSX.Element => {
   if (!stationId) {
     console.error('[RadioPlaying] ❌ No station ID - cannot load station');
     return (
-      <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
+      <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">No Station Selected</p>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-gray-400">
           Please select a station to play
@@ -504,7 +504,7 @@ export const RadioPlaying = (): JSX.Element => {
     console.log('[RadioPlaying] 🔄 stationData:', stationData);
     console.log('[RadioPlaying] 🔄 Station is:', station ? 'AVAILABLE' : 'NULL');
     return (
-      <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
+      <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#ff4199]"></div>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white animate-pulse">
           {stationData?.station?.name || 'Loading station...'}
@@ -521,7 +521,7 @@ export const RadioPlaying = (): JSX.Element => {
   const countryCode = station.countrycode || station.countryCode || 'XX';
 
   return (
-    <div className="fixed inset-0 w-[1920px] h-[1080px] overflow-y-auto scrollbar-hide" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
+    <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-y-auto scrollbar-hide" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
 
       {/* Logo */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">

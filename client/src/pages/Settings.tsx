@@ -86,7 +86,7 @@ export const Settings = (): JSX.Element => {
   };
 
   return (
-    <div className="fixed inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-settings">
+    <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-settings">
       {/* Background Image */}
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
         <img

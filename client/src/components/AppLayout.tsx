@@ -45,9 +45,9 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
   }, [scrollContainerRef]);
 
   return (
-    <div className="fixed inset-0 w-[1920px] h-[1080px] bg-black overflow-hidden">
+    <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black overflow-hidden">
       {/* Logo - Top Left - EXACT MATCH TO DISCOVERNO USER */}
-      <div className="fixed h-[57px] left-[30px] top-[64px] w-[164.421px] z-50 pointer-events-auto">
+      <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50 pointer-events-auto">
         <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
@@ -63,7 +63,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
       {/* Header Controls - Hidden for Search page, Auto-hides on scroll */}
       {!hideHeaderControls && (
         <div 
-          className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
+          className="absolute top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
           style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
         >
           {/* Equalizer Icon - EXACT POSITION FROM DISCOVERNO USER */}

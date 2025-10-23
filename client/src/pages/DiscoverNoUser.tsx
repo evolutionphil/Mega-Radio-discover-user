@@ -529,9 +529,9 @@ export const DiscoverNoUser = (): JSX.Element => {
   const stationRow2Positions = [236, 466, 696, 926, 1156, 1386, 1616];
 
   return (
-    <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-discover-no-user">
-      {/* Background Image - Fixed */}
-      <div className="fixed h-[1292px] left-[-10px] top-[-523px] w-[1939px] z-0">
+    <div className="absolute inset-0 w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-discover-no-user">
+      {/* Background Image */}
+      <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px] z-0">
         <img
           alt=""
           className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
@@ -539,11 +539,11 @@ export const DiscoverNoUser = (): JSX.Element => {
         />
       </div>
 
-      {/* Gradient Overlay - Fixed */}
-      <div className="fixed bg-gradient-to-b from-[0.88%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[48.611%] top-0 w-[1920px] z-0" />
+      {/* Gradient Overlay */}
+      <div className="absolute bg-gradient-to-b from-[0.88%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[48.611%] top-0 w-[1920px] z-0" />
 
       {/* Logo - ALWAYS VISIBLE, NEVER HIDES */}
-      <div className="fixed h-[57px] left-[30px] top-[64px] w-[164.421px] z-50 pointer-events-auto">
+      <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50 pointer-events-auto">
         <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
         </p>
@@ -558,7 +558,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
       {/* Header Controls Section - Auto-hides on scroll down (Equalizer, Country, Login) */}
       <div 
-        className="fixed top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
+        className="absolute top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
         style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
       >
         {/* Equalizer */}
@@ -820,7 +820,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
       {/* Exit Confirmation Modal - Centered like Country Selector */}
       {isExitModalOpen && (
-        <div className="fixed top-0 left-0 w-[1920px] h-[1080px] z-[100]">
+        <div className="absolute top-0 left-0 w-[1920px] h-[1080px] z-[100]">
           {/* Backdrop */}
           <div className="absolute top-0 left-0 w-[1920px] h-[1080px] bg-black/80 backdrop-blur-[7px]" />
           
