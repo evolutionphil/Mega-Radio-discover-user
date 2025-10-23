@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Web Preview Scaling - Makes 1920x1080 TV app fit in browser window */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #0e0e0e;
+}
+
+#root {
+  transform-origin: top left;
+  /* Scale down to fit browser window while maintaining 1920x1080 aspect ratio */
+  width: 1920px;
+  height: 1080px;
+}
+
+/* Auto-scale for smaller screens (web preview) */
+@media (max-width: 1920px), (max-height: 1080px) {
+  #root {
+    transform: scale(calc(min(100vw / 1920, 100vh / 1080)));
+  }
+}
+
 @layer components {
   .all-\[unset\] {
     all: unset;
