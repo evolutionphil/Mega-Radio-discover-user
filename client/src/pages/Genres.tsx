@@ -43,7 +43,7 @@ export const Genres = (): JSX.Element => {
     return genresData.genres.map(genre => ({
       name: genre.name,
       slug: genre.name.toLowerCase().replace(/\s+/g, '-'),
-      stationCount: genre.stationcount || 0
+      stationCount: genre.stationCount || 0
     }));
   }, [genresData]);
 
@@ -148,11 +148,23 @@ export const Genres = (): JSX.Element => {
     setFocusIndex(newIndex);
   };
 
+  // When navigating from another page, jump to first genre instead of sidebar
+  const [hasNavigatedToGenre, setHasNavigatedToGenre] = useState(false);
+  
+  useEffect(() => {
+    // On first mount, jump to first popular genre
+    if (!hasNavigatedToGenre && popularGenres.length > 0) {
+      console.log('[Genres] First mount - jumping to first genre');
+      setFocusIndex(6); // First popular genre
+      setHasNavigatedToGenre(true);
+    }
+  }, [popularGenres.length, hasNavigatedToGenre]);
+
   // Focus management with custom navigation
   const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 1, // Start on Genres in sidebar (current page)
+    initialIndex: 6, // Start on first popular genre
     onSelect: (index) => {
       // Sidebar navigation (0-4) - 5 items
       if (index >= 0 && index <= 4) {
@@ -170,7 +182,8 @@ export const Genres = (): JSX.Element => {
         const genreIndex = index - 6;
         const genre = popularGenres[genreIndex];
         if (genre) {
-          setLocation(`/genre-list?genre=${encodeURIComponent(genre.name)}`);
+          console.log('[Genres] Navigating to genre:', genre.name, 'slug:', genre.slug);
+          setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`);
         }
       }
       // All genres (14+)
@@ -178,7 +191,8 @@ export const Genres = (): JSX.Element => {
         const genreIndex = index - 14;
         const genre = allGenres[genreIndex];
         if (genre) {
-          setLocation(`/genre-list?genre=${encodeURIComponent(genre.name)}`);
+          console.log('[Genres] Navigating to genre:', genre.name, 'slug:', genre.slug);
+          setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`);
         }
       }
     },
@@ -319,12 +333,12 @@ export const Genres = (): JSX.Element => {
         ];
         const focusIdx = 7 + index;
         return (
-          <Link key={genre.slug || index} href={`/genre-list?genre=${encodeURIComponent(genre.name)}`}>
+          <Link key={genre.slug || index} href={`/genre-list?genre=${encodeURIComponent(genre.slug)}`}>
             <div 
               className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[309px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
               data-testid={`card-genre-${genre.slug}`}
               style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
-              onClick={() => setLocation(`/genre-list?genre=${encodeURIComponent(genre.name)}`)}
+              onClick={() => setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`)}
             >
               <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">
                 {genre.name}
@@ -348,12 +362,12 @@ export const Genres = (): JSX.Element => {
         ];
         const focusIdx = 11 + index;
         return (
-          <Link key={genre.slug || index} href={`/genre-list?genre=${encodeURIComponent(genre.name)}`}>
+          <Link key={genre.slug || index} href={`/genre-list?genre=${encodeURIComponent(genre.slug)}`}>
             <div 
               className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[467px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
               data-testid={`card-genre-${genre.slug}`}
               style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
-              onClick={() => setLocation(`/genre-list?genre=${encodeURIComponent(genre.name)}`)}
+              onClick={() => setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`)}
             >
               <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">
                 {genre.name}
@@ -388,7 +402,7 @@ export const Genres = (): JSX.Element => {
         const focusIdx = 15 + index;
         
         return (
-          <Link key={genre.slug || index} href={`/genre-list?genre=${encodeURIComponent(genre.name)}`}>
+          <Link key={genre.slug || index} href={`/genre-list?genre=${encodeURIComponent(genre.slug)}`}>
             <div 
               className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[30px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
               data-testid={`card-genre-all-${genre.slug}`}
@@ -397,7 +411,7 @@ export const Genres = (): JSX.Element => {
                 width: `${positions[col].width}px`,
                 top: `${topPosition}px`
               }}
-              onClick={() => setLocation(`/genre-list?genre=${encodeURIComponent(genre.name)}`)}
+              onClick={() => setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`)}
             >
               <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[20px] text-center text-white">
                 {genre.name}

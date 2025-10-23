@@ -101,6 +101,12 @@ export const Search = (): JSX.Element => {
         } else if (recentStations.length > 0) {
           newIndex = 6; // First recent station (no search results)
         }
+      } else if (direction === 'RIGHT') {
+        // Jump directly to recently played section
+        if (recentStations.length > 0) {
+          newIndex = 6 + searchResults.length; // First recent station
+          console.log('[Search] RIGHT from search input - jumping to recently played');
+        }
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to sidebar
       }

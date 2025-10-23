@@ -18,7 +18,13 @@ export const GenreList = (): JSX.Element => {
   // Extract genre slug from URL query params
   const urlParams = new URLSearchParams(location.split('?')[1] || '');
   const genreSlug = urlParams.get('genre') || 'pop';
-  const genreName = genreSlug.charAt(0).toUpperCase() + genreSlug.slice(1).replace(/-/g, ' ');
+  // Convert slug back to display name (e.g., "rock" -> "Rock", "hip-hop" -> "Hip Hop")
+  const genreName = genreSlug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  
+  console.log('[GenreList] URL genre slug:', genreSlug, '| Display name:', genreName);
 
   // Infinite scroll state
   const [allStations, setAllStations] = useState<Station[]>([]);
@@ -29,8 +35,8 @@ export const GenreList = (): JSX.Element => {
   const STATIONS_PER_PAGE = 21; // 7 columns x 3 rows
 
   // Fetch stations by genre and country
-  const { data: stationsData, isLoading } = useQuery({
-    queryKey: ['genre-stations-v2', genreSlug, selectedCountryCode], // Changed key to bust cache
+  const { data: stationsData, isLoading, refetch } = useQuery({
+    queryKey: ['genre-stations-v3', genreSlug, selectedCountryCode], // v3 to bust old cache
     queryFn: async () => {
       console.log('[GenreList] Fetching stations for genre:', genreSlug, 'country:', selectedCountryCode);
       const result = await megaRadioApi.getAllStations({ 
@@ -38,12 +44,18 @@ export const GenreList = (): JSX.Element => {
         limit: 200, // Fetch more stations for better UX
         genre: genreSlug
       });
-      console.log('[GenreList] Query result:', result?.stations?.length || 0, 'stations');
+      console.log('[GenreList] Query result:', result?.stations?.length || 0, 'stations for genre:', genreSlug);
       return result;
     },
-    staleTime: 30000, // 30 seconds
+    staleTime: 0, // Always fetch fresh data for genre changes
     gcTime: 60000, // 1 minute (renamed from cacheTime in v5)
   });
+  
+  // Force refetch when genre changes
+  useEffect(() => {
+    console.log('[GenreList] Genre changed to:', genreSlug);
+    refetch();
+  }, [genreSlug, refetch]);
 
   // Initialize/Update when data loads - show first 21 stations
   // This effect runs whenever stationsData.stations array changes (by reference or content)
