@@ -165,7 +165,7 @@ export const Genres = (): JSX.Element => {
   const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 6, // Start on first popular genre
+    initialIndex: 7, // Start on first popular genre
     onSelect: (index) => {
       // Sidebar navigation (0-4) - 5 items
       if (index >= 0 && index <= 4) {
@@ -174,22 +174,22 @@ export const Genres = (): JSX.Element => {
           setLocation(route);
         }
       }
-      // Country selector (5)
-      else if (index === 5) {
+      // Country selector (6)
+      else if (index === 6) {
         setIsCountrySelectorOpen(true);
       }
-      // Popular genres (6-13)
-      else if (index >= 6 && index <= 13) {
-        const genreIndex = index - 6;
+      // Popular genres (7-14)
+      else if (index >= 7 && index <= 14) {
+        const genreIndex = index - 7;
         const genre = popularGenres[genreIndex];
         if (genre) {
           console.log('[Genres] Navigating to genre:', genre.name, 'slug:', genre.slug);
           setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`);
         }
       }
-      // All genres (14+)
-      else if (index >= 14) {
-        const genreIndex = index - 14;
+      // All genres (15+)
+      else if (index >= 15) {
+        const genreIndex = index - 15;
         const genre = allGenres[genreIndex];
         if (genre) {
           console.log('[Genres] Navigating to genre:', genre.name, 'slug:', genre.slug);
