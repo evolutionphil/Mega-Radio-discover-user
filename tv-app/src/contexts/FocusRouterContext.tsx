@@ -50,19 +50,36 @@ export function FocusRouterProvider({ children }: { children: ReactNode }) {
     // Strip query params for handler lookup (e.g., /radio-playing?station=123 -> /radio-playing)
     const routeWithoutQuery = currentRoute.split('?')[0];
     
-    const handler = handlersRef.current.get(routeWithoutQuery);
+    // Try exact match first
+    let handler = handlersRef.current.get(routeWithoutQuery);
+    let matchedRoute = routeWithoutQuery;
+    
+    // If no exact match, try base route matching (e.g., /genre-list/rock -> /genre-list)
+    if (!handler) {
+      const pathParts = routeWithoutQuery.split('/').filter(p => p);
+      // Try progressively shorter paths (e.g., /genre-list/rock -> /genre-list)
+      for (let i = pathParts.length; i > 0; i--) {
+        const basePath = '/' + pathParts.slice(0, i).join('/');
+        if (handlersRef.current.has(basePath)) {
+          handler = handlersRef.current.get(basePath);
+          matchedRoute = basePath;
+          break;
+        }
+      }
+    }
     
     console.log('[FocusRouter] ⌨️  Key event:', {
       keyCode: e.keyCode,
       hash: hash,
       currentRoute: currentRoute,
-      routeForHandler: routeWithoutQuery,
+      routeWithoutQuery: routeWithoutQuery,
+      matchedRoute: matchedRoute,
       hasHandler: !!handler,
       registered: Array.from(handlersRef.current.keys())
     });
     
     if (handler) {
-      console.log('[FocusRouter] ✅ Dispatching to:', routeWithoutQuery);
+      console.log('[FocusRouter] ✅ Dispatching to:', matchedRoute);
       handler(e);
     } else {
       console.log('[FocusRouter] ⚠️  No handler for:', routeWithoutQuery);
