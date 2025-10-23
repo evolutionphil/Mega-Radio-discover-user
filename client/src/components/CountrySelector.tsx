@@ -181,8 +181,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     if (isOpen) {
       setSearchQuery('');
       setFocusIndex(0);
-      setIsSearchFocused(false); // Start with list focused
-      console.log('[CountrySelector] Modal opened - press UP from first country to search');
+      setIsSearchFocused(true); // Auto-focus search input for easier typing
+      console.log('[CountrySelector] Modal opened - search input focused');
     } else {
       setIsSearchFocused(false);
     }
