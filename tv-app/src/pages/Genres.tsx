@@ -360,12 +360,12 @@ export const Genres = (): JSX.Element => {
         ];
         const focusIdx = 7 + index;
         return (
-          <Link key={genre.slug || index} href={`/genre-list?genre=${encodeURIComponent(genre.slug)}`}>
+          <Link key={genre.slug || index} href={`/genre-list/${encodeURIComponent(genre.slug)}`}>
             <div 
               className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[309px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
               data-testid={`card-genre-${genre.slug}`}
               style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
-              onClick={() => setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`)}
+              onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
               <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">
                 {genre.name}
@@ -389,12 +389,12 @@ export const Genres = (): JSX.Element => {
         ];
         const focusIdx = 11 + index;
         return (
-          <Link key={genre.slug || index} href={`/genre-list?genre=${encodeURIComponent(genre.slug)}`}>
+          <Link key={genre.slug || index} href={`/genre-list/${encodeURIComponent(genre.slug)}`}>
             <div 
               className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[467px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
               data-testid={`card-genre-${genre.slug}`}
               style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
-              onClick={() => setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`)}
+              onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
               <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">
                 {genre.name}
@@ -429,7 +429,7 @@ export const Genres = (): JSX.Element => {
         const focusIdx = 15 + index;
         
         return (
-          <Link key={genre.slug || index} href={`/genre-list?genre=${encodeURIComponent(genre.slug)}`}>
+          <Link key={genre.slug || index} href={`/genre-list/${encodeURIComponent(genre.slug)}`}>
             <div 
               className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[30px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
               data-testid={`card-genre-all-${genre.slug}`}
@@ -438,7 +438,7 @@ export const Genres = (): JSX.Element => {
                 width: `${positions[col].width}px`,
                 top: `${topPosition}px`
               }}
-              onClick={() => setLocation(`/genre-list?genre=${encodeURIComponent(genre.slug)}`)}
+              onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
               <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[20px] text-center text-white">
                 {genre.name}

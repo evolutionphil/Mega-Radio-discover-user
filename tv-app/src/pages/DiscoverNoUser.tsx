@@ -246,7 +246,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         const genreIndex = index - genresStart;
         const genre = genres[genreIndex];
         if (genre) {
-          setLocation(`/genre-list?genre=${genre.slug}`);
+          setLocation(`/genre-list/${genre.slug}`);
         }
       }
       // Country stations - dynamic boundary
@@ -615,7 +615,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               return (
                 <Link 
                   key={genre.slug || index} 
-                  href={`/genre-list?genre=${genre.slug}`}
+                  href={`/genre-list/${genre.slug}`}
                   style={{ marginRight: '20px', display: 'inline-block', flexShrink: 0 }}
                 >
                   <div 
