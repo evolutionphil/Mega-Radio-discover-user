@@ -33,7 +33,6 @@ export async function setupVite(app: Express, server: Server) {
     resolve: {
       alias: {
         "@": path.resolve(import.meta.dirname, "..", "tv-app", "src"),
-        "@shared": path.resolve(import.meta.dirname, "..", "shared"),
         "@assets": path.resolve(import.meta.dirname, "..", "attached_assets"),
       },
     },
