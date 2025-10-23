@@ -67,6 +67,16 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025 - Latest)
 
+### Samsung TV Build v3.0 (FRESH BUILD CREATED):
+**New Samsung TV build with country-filtered genres** - Ready for deployment
+   - Created fresh build with timestamp: `1761226547405`
+   - Bundle: `tv-app/assets/index-1761226547405.js` (14KB - cache busted)
+   - Build script updated to use tv-app/ structure instead of old client/ paths
+   - All Vite caches cleared before build to ensure latest code
+   - VERSION 3.0 marker confirmed in bundle
+   - Build includes all country-filtered genres functionality
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV (contains index.html, assets/, images/, js/, css/)
+
 ### Country-Filtered Genres Implementation (COMPLETED):
 **Genres now correctly filter by selected country** - Per API documentation requirements
    - Fixed `megaRadioApi.getAllGenres()` to use `filters` parameter with JSON object containing `countrycode` and `searchQuery`
@@ -75,7 +85,7 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
    - Updated `GenreList.tsx` to use proper `/api/genres/:slug/stations` endpoint via `getStationsByGenre()`
    - Genres list now dynamically updates when country changes (e.g., USA shows 50+ genres, Algeria shows 9 genres)
    - Station lists now properly filter by BOTH genre AND selected country
-   - **IMPORTANT:** Browser cache may show old behavior - users must clear browser cache or use incognito window to see changes
+   - Fresh TV build created to bypass any caching issues
 
 ### Server Path Fix (Critical):
 **Fixed fatal bug preventing app from loading** - Server was looking for files in deleted `client/` folder

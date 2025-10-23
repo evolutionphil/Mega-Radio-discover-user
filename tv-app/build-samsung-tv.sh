@@ -1,18 +1,21 @@
 #!/bin/bash
 
-echo "🔨 Building Mega Radio Samsung TV App (LGTV Simple Pattern)..."
+echo "🔨 Building Mega Radio Samsung TV App (Country-Filtered Genres v3.0)..."
 
 # Step 0: Clean old bundles (CRITICAL for Samsung TV cache busting)
-echo "🧹 Cleaning old bundles..."
+echo "🧹 Cleaning old bundles and caches..."
 rm -rf assets/*.js
-rm -rf dist/public/assets/*.js
+rm -rf assets/*.css
+rm -rf dist
+rm -rf node_modules/.vite
+rm -rf ../node_modules/.vite
 
 # Step 1: Build React app with Vite (TV-specific IIFE format)
-echo "📦 Building React bundle..."
+echo "📦 Building React bundle with latest code..."
 vite build --config vite.config.tv.ts
 
-# Step 2: Extract the hashed bundle filename from Vite output (handle relative paths)
-VITE_JS_FILE=$(grep -oP 'src="\./assets/index-[^"]+\.js"' dist/public/index.html | sed 's/src="\.\/\|src="\///g' | sed 's/"//g')
+# Step 2: Extract the hashed bundle filename from Vite output (get first match only)
+VITE_JS_FILE=$(grep -oP 'src="\./assets/index-[^"]+\.js"' dist/public/index.html | head -1 | sed 's/src="\.\/\|src="\///g' | sed 's/"//g')
 echo "✓ Vite bundle: ${VITE_JS_FILE}"
 
 # Step 2.5: RENAME bundle with timestamp for Samsung TV cache busting
@@ -30,7 +33,7 @@ cp -r dist/public/assets/*.css assets/ 2>/dev/null || true
 # Step 4: Copy images
 echo "📂 Copying images..."
 mkdir -p images
-cp -r client/public/images/* images/ 2>/dev/null || true
+cp -r public/images/* images/ 2>/dev/null || true
 
 # Step 4.5: Rename misnamed SVG files (they have .png extension but are actually SVG)
 echo "🔧 Fixing misnamed SVG files..."
@@ -44,11 +47,11 @@ done
 # Step 5: Copy TV scripts
 echo "📂 Copying TV scripts..."
 mkdir -p js css
-cp client/public/js/*.js js/ 2>/dev/null || true
-cp client/public/css/tv-styles.css css/ 2>/dev/null || true
+cp public/js/*.js js/ 2>/dev/null || true
+cp public/css/tv-styles.css css/ 2>/dev/null || true
 
 # Step 6: Copy webOS SDK
-cp -r client/public/webOSTVjs-1.2.0 . 2>/dev/null || true
+cp -r public/webOSTVjs-1.2.0 . 2>/dev/null || true
 
 # Step 7: Update index.html with new bundle reference and add Tailwind CSS (IN-PLACE)
 echo "🔧 Updating index.html with bundle: ${NEW_JS_FILE}"
@@ -79,9 +82,11 @@ sed -i "s|</body>|  ${POLYFILLS}\n  ${BUNDLE_SCRIPT}\n  </body>|g" index.html
 
 echo "✅ Build complete!"
 echo ""
+echo "🔥 VERSION 3.0 - Country-Filtered Genres Enabled"
 echo "📱 Samsung TV App ready in: tv-app/"
 echo "   ONE index.html: tv-app/index.html"
 echo "   Bundle: ${NEW_JS_FILE} (🆕 NEW FILENAME - cache busted!)"
 echo "   Version: ${TIMESTAMP}"
 echo ""
 echo "🚀 Deploy the entire tv-app/ folder to Samsung TV"
+echo "   The app will now show country-filtered genres!"
