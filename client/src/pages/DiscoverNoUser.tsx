@@ -75,6 +75,17 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Define sidebar routes (NO PROFILE - 5 items: Discover, Genres, Search, Favorites, Settings)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
+  // Scroll genre container to show focused genre
+  const scrollGenreIntoView = (genreIndex: number) => {
+    const genreContainer = document.querySelector('[data-genre-container]');
+    if (!genreContainer) return;
+    
+    const genrePills = genreContainer.querySelectorAll('[data-genre-pill]');
+    if (genrePills[genreIndex]) {
+      genrePills[genreIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  };
+
   // Custom navigation logic for complex multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
@@ -90,6 +101,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         if (current === 0 || current === 1) {
           // From Discover or Genres, jump to first Popular Genre
           newIndex = genresStart;
+          scrollGenreIntoView(0);
         } else {
           // From Search, Favorites, or Settings, jump to first Popular Station
           newIndex = popularStationsStart;
@@ -140,19 +152,21 @@ export const DiscoverNoUser = (): JSX.Element => {
         }
       }
     }
-    // Genres section - dynamic boundaries
+    // Genres section - dynamic boundaries (horizontal scrolling)
     else if (current >= genresStart && current <= genresEnd) {
       const col = current - genresStart;
 
       if (direction === 'LEFT') {
         if (col > 0) {
           newIndex = current - 1;
+          scrollGenreIntoView(col - 1);
         } else {
           newIndex = 0; // Jump to sidebar
         }
       } else if (direction === 'RIGHT') {
         if (col < genres.length - 1) {
           newIndex = current + 1;
+          scrollGenreIntoView(col + 1);
         }
       } else if (direction === 'UP') {
         newIndex = 5; // Jump to country selector
@@ -599,7 +613,10 @@ export const DiscoverNoUser = (): JSX.Element => {
         </p>
 
         {/* Genre Pills - Horizontal Scrollable */}
-        <div className="absolute left-[64px] top-[59px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide">
+        <div 
+          className="absolute left-[64px] top-[59px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
+          data-genre-container
+        >
           <div className="flex py-[15px] px-[10px]" style={{ gap: '20px' }}>
             {genres.map((genre, index) => {
               const focusIdx = genresStart + index;
@@ -612,6 +629,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                   <div 
                     className={`relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                     data-testid={genre.slug}
+                    data-genre-pill
                     style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}
                   >
                     <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-center text-white whitespace-nowrap">
