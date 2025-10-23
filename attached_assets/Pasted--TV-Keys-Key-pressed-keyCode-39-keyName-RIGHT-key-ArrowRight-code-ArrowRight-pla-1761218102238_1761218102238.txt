@@ -1,0 +1,145 @@
+[TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'web', …}
+injected.js:27 [TV Keys] 📤 Dispatching to FocusRouter
+injected.js:27 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+injected.js:27 [FocusRouter] ✅ Dispatching to: /discover-no-user
+injected.js:27 [useFocusManager] 👁️  Focus changed: {focusIndex: 20, totalItems: 78, cols: 1, row: 20, col: 0}
+injected.js:27 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'web', …}
+injected.js:27 [TV Keys] 📤 Dispatching to FocusRouter
+injected.js:27 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+injected.js:27 [FocusRouter] ✅ Dispatching to: /discover-no-user
+injected.js:27 [useFocusManager] 👁️  Focus changed: {focusIndex: 21, totalItems: 78, cols: 1, row: 21, col: 0}
+injected.js:27 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'web', …}
+injected.js:27 [TV Keys] 📤 Dispatching to FocusRouter
+injected.js:27 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+injected.js:27 [FocusRouter] ✅ Dispatching to: /discover-no-user
+injected.js:27 [useFocusManager] 👁️  Focus changed: {focusIndex: 22, totalItems: 78, cols: 1, row: 22, col: 0}
+injected.js:27 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'web', …}
+injected.js:27 [TV Keys] 📤 Dispatching to FocusRouter
+injected.js:27 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+injected.js:27 [FocusRouter] ✅ Dispatching to: /discover-no-user
+injected.js:27 [useFocusManager] 👁️  Focus changed: {focusIndex: 23, totalItems: 78, cols: 1, row: 23, col: 0}
+injected.js:27 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'web', …}
+injected.js:27 [TV Keys] 📤 Dispatching to FocusRouter
+injected.js:27 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+injected.js:27 [FocusRouter] ✅ Dispatching to: /discover-no-user
+injected.js:27 [useFocusManager] 👁️  Focus changed: {focusIndex: 24, totalItems: 78, cols: 1, row: 24, col: 0}
+injected.js:27 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: 'UP', key: 'ArrowUp', code: 'ArrowUp', platform: 'web', …}
+injected.js:27 [TV Keys] 📤 Dispatching to FocusRouter
+injected.js:27 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+injected.js:27 [FocusRouter] ✅ Dispatching to: /discover-no-user
+injected.js:27 [useFocusManager] 👁️  Focus changed: {focusIndex: 5, totalItems: 78, cols: 1, row: 5, col: 0}
+injected.js:27 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'web', …}
+injected.js:27 [TV Keys] 📤 Dispatching to FocusRouter
+injected.js:27 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeForHandler: '/discover-no-user', hasHandler: true, …}
+injected.js:27 [FocusRouter] ✅ Dispatching to: /discover-no-user
+injected.js:27 [DiscoverNoUser] ENTER key pressed - calling handleSelect()
+injected.js:27 [useFocusManager] ✅ Select pressed: {focusIndex: 5, totalItems: 78, hasHandler: true}
+injected.js:27 [CountrySelector] Modal opened - search input focused
+injected.js:27 [CountrySelector] Activating search mode - focusing input
+injected.js:27 [CountrySelector] Input focused - TV keyboard should appear
+injected.js:27 [CountrySelector] Search changed: g
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: g
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Afghanistan for query: g
+injected.js:27 [CountrySelector] Match found: Algeria for query: g
+injected.js:27 [CountrySelector] Match found: Angola for query: g
+injected.js:27 [CountrySelector] Match found: Anguilla for query: g
+injected.js:27 [CountrySelector] Match found: Antigua And Barbuda for query: g
+injected.js:27 [CountrySelector] Match found: Argentina for query: g
+injected.js:27 [CountrySelector] Match found: Bangladesh for query: g
+injected.js:27 [CountrySelector] Match found: Belgium for query: g
+injected.js:27 [CountrySelector] Match found: Bosnia And Herzegovina for query: g
+injected.js:27 [CountrySelector] Match found: British Virgin Islands for query: g
+injected.js:27 [CountrySelector] Match found: Bulgaria for query: g
+injected.js:27 [CountrySelector] Match found: Egypt for query: g
+injected.js:27 [CountrySelector] Match found: Equatorial Guinea for query: g
+injected.js:27 [CountrySelector] Match found: French Guiana for query: g
+injected.js:27 [CountrySelector] Match found: Gabon for query: g
+injected.js:27 [CountrySelector] Match found: Georgia for query: g
+injected.js:27 [CountrySelector] Match found: Germany for query: g
+injected.js:27 [CountrySelector] Match found: Ghana for query: g
+injected.js:27 [CountrySelector] Match found: Gibraltar for query: g
+injected.js:27 [CountrySelector] Match found: Greece for query: g
+injected.js:27 [CountrySelector] Match found: Greenland for query: g
+injected.js:27 [CountrySelector] Match found: Grenada for query: g
+injected.js:27 [CountrySelector] Match found: Guadeloupe for query: g
+injected.js:27 [CountrySelector] Match found: Guam for query: g
+injected.js:27 [CountrySelector] Match found: Guatemala for query: g
+injected.js:27 [CountrySelector] Match found: Guernsey for query: g
+injected.js:27 [CountrySelector] Match found: Guinea for query: g
+injected.js:27 [CountrySelector] Match found: Guinea Bissau for query: g
+injected.js:27 [CountrySelector] Match found: Guyana for query: g
+injected.js:27 [CountrySelector] Match found: Hong Kong for query: g
+injected.js:27 [CountrySelector] Match found: Hungary for query: g
+injected.js:27 [CountrySelector] Match found: Kyrgyzstan for query: g
+injected.js:27 [CountrySelector] Match found: Luxembourg for query: g
+injected.js:27 [CountrySelector] Match found: Madagascar for query: g
+injected.js:27 [CountrySelector] Match found: Mongolia for query: g
+injected.js:27 [CountrySelector] Match found: Montenegro for query: g
+injected.js:27 [CountrySelector] Match found: Nicaragua for query: g
+injected.js:27 [CountrySelector] Match found: Nigeria for query: g
+injected.js:27 [CountrySelector] Match found: Papua New Guinea for query: g
+injected.js:27 [CountrySelector] Match found: Paraguay for query: g
+injected.js:27 [CountrySelector] Match found: Portugal for query: g
+injected.js:27 [CountrySelector] Match found: Saint Vincent And The Grenadines for query: g
+injected.js:27 [CountrySelector] Match found: Senegal for query: g
+injected.js:27 [CountrySelector] Match found: Singapore for query: g
+injected.js:27 [CountrySelector] Match found: The Cocos Keeling Islands for query: g
+injected.js:27 [CountrySelector] Match found: The Congo for query: g
+injected.js:27 [CountrySelector] Match found: The Democratic Republic Of The Congo for query: g
+injected.js:27 [CountrySelector] Match found: The Gambia for query: g
+injected.js:27 [CountrySelector] Match found: The Niger for query: g
+injected.js:27 [CountrySelector] Match found: The United Kingdom Of Great Britain And Northern Ireland for query: g
+injected.js:27 [CountrySelector] Match found: The United States Minor Outlying Islands for query: g
+injected.js:27 [CountrySelector] Match found: Togo for query: g
+injected.js:27 [CountrySelector] Match found: Tonga for query: g
+injected.js:27 [CountrySelector] Match found: Trinidad And Tobago for query: g
+injected.js:27 [CountrySelector] Match found: US Virgin Islands for query: g
+injected.js:27 [CountrySelector] Match found: Uganda for query: g
+injected.js:27 [CountrySelector] Match found: Uruguay for query: g
+injected.js:27 [CountrySelector] Filtered countries count: 57
+injected.js:27 [CountrySelector] Search changed: ge
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: ge
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Algeria for query: ge
+injected.js:27 [CountrySelector] Match found: Argentina for query: ge
+injected.js:27 [CountrySelector] Match found: Georgia for query: ge
+injected.js:27 [CountrySelector] Match found: Germany for query: ge
+injected.js:27 [CountrySelector] Match found: Nigeria for query: ge
+injected.js:27 [CountrySelector] Match found: The Niger for query: ge
+injected.js:27 [CountrySelector] Filtered countries count: 6
+injected.js:27 [CountrySelector] Search changed: ger
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: ger
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Algeria for query: ger
+injected.js:27 [CountrySelector] Match found: Germany for query: ger
+injected.js:27 [CountrySelector] Match found: Nigeria for query: ger
+injected.js:27 [CountrySelector] Match found: The Niger for query: ger
+injected.js:27 [CountrySelector] Filtered countries count: 4
+injected.js:27 [CountrySelector] Filtered country names: (4) ['Germany', 'Algeria', 'Nigeria', 'The Niger']
+injected.js:27 [CountrySelector] Search changed: germ
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: germ
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Germany for query: germ
+injected.js:27 [CountrySelector] Filtered countries count: 1
+injected.js:27 [CountrySelector] Filtered country names: ['Germany']
+injected.js:27 [CountrySelector] Search changed: germa
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: germa
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Germany for query: germa
+injected.js:27 [CountrySelector] Filtered countries count: 1
+injected.js:27 [CountrySelector] Filtered country names: ['Germany']
+injected.js:27 [CountrySelector] Search changed: german
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: german
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Germany for query: german
+injected.js:27 [CountrySelector] Filtered countries count: 1
+injected.js:27 [CountrySelector] Filtered country names: ['Germany']
+injected.js:27 [CountrySelector] Search changed: germany
+injected.js:27 [CountrySelector] filteredCountries memo running - searchQuery: germany
+injected.js:27 [CountrySelector] Total countries before filter: 238
+injected.js:27 [CountrySelector] Match found: Germany for query: germany
+injected.js:27 [CountrySelector] Filtered countries count: 1
+injected.js:27 [CountrySelector] Filtered country names: ['Germany']
+injected.js:27 [CountrySelector] Input blurred
+_app-aef9fb05a1e2cac2.js:28 Fetch finished loading: POST "https://logs.browser-intake-us5-datadoghq.com/api/v2/logs?ddsource=browser&ddtags=sdk_version%3A4.46.0%2Capi%3Afetch%2Cenv%3Aproduction%2Cservice%3Awebsite%2Cversion%3A67f69c33&dd-api-key=pub31a5047a3a4692afb84a423db984dc57&dd-evp-origin-version=4.46.0&dd-evp-origin=browser&dd-request-id=0dba43b5-a0a4-417a-9d33-6d45bbd45d0c".
