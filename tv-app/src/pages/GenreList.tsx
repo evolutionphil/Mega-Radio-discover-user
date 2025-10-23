@@ -15,24 +15,13 @@ export const GenreList = (): JSX.Element => {
   const { t } = useLocalization();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  // Extract genre slug from URL query params
-  // Check BOTH hash-based params and window.location.search (for hash routing compatibility)
-  let genreSlug = 'pop'; // default
+  // Extract genre slug from URL - wouter location includes the query params after hash
+  // Example: location = "/genre-list?genre=rock" (from #/genre-list?genre=rock)
+  const urlParams = new URLSearchParams(location.split('?')[1] || '');
+  let genreSlug = urlParams.get('genre') || 'pop';
   
-  // Try hash-based params first: #/genre-list?genre=rock
-  const hashParams = new URLSearchParams(location.split('?')[1] || '');
-  if (hashParams.get('genre')) {
-    genreSlug = hashParams.get('genre') || 'pop';
-    console.log('[GenreList] Genre from hash params:', genreSlug);
-  }
-  // Fallback: Try window.location.search (pre-hash: /?genre=rock#/genre-list)
-  else if (window.location.search) {
-    const searchParams = new URLSearchParams(window.location.search);
-    if (searchParams.get('genre')) {
-      genreSlug = searchParams.get('genre') || 'pop';
-      console.log('[GenreList] Genre from window.location.search:', genreSlug);
-    }
-  }
+  console.log('[GenreList] Full location:', location);
+  console.log('[GenreList] Extracted genre slug:', genreSlug);
   
   // Convert slug back to display name (e.g., "rock" -> "Rock", "hip-hop" -> "Hip Hop")
   const genreName = genreSlug
