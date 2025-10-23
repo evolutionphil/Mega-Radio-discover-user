@@ -67,6 +67,18 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 23, 2025 - Latest)
 
+### Samsung TV Build v3.5 (ALL GENRES FIX):
+**Fixed genre limit - Now shows all 184 genres for Austria** - API was limiting to 9 genres per page
+   - Created production build with timestamp: `1761254145567`
+   - Bundle: `tv-app/assets/index-1761254145567.js` (425KB - full React app)
+   - **GENRE LIMIT FIX:**
+     - ✅ **megaRadioApi.ts**: Added `limit=500` parameter to getAllGenres API call
+     - Fixed issue where only 9 genres were showing (API default pagination)
+     - Austria now shows all 184 genres instead of just 9
+     - API was returning: `count: 184, perPage: 9, totalPages: 21`
+     - Now fetches all genres in single request with limit=500
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.4 (SIDEBAR FOCUS FIX):
 **Fixed sidebar focus behavior** - Focus properly jumps between sidebar elements
    - Created production build with timestamp: `1761253902949`

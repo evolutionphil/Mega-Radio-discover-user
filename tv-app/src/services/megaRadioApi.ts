@@ -346,6 +346,9 @@ export const megaRadioApi = {
         console.log(`[API] getAllGenres: Filtering by country ${country} -> ${countryName}`);
       }
       
+      // Add limit to fetch all genres (default API limit is only 9 per page)
+      params.append('limit', '500');
+      
       const url = buildApiUrl('/genres', params);
       console.log('[API] getAllGenres URL:', url);
       const response = await fetch(url);
@@ -354,7 +357,7 @@ export const megaRadioApi = {
         throw new Error(`HTTP ${response.status}`);
       }
       const result = await response.json();
-      console.log('[API] getAllGenres fetched:', result.data?.length || 0, 'genres');
+      console.log('[API] getAllGenres fetched:', result.data?.length || 0, 'genres (total:', result.count || 0, ')');
       return { genres: result.data || [] };
     } catch (error) {
       console.error('[API] getAllGenres failed:', error);
