@@ -230,6 +230,44 @@ export const GenreList = (): JSX.Element => {
     onBack: () => setLocation('/genres')
   });
 
+  // Auto-scroll when focus changes to station items
+  useEffect(() => {
+    if (focusIndex >= stationsStart && scrollContainerRef.current) {
+      const stationIndex = focusIndex - stationsStart;
+      const container = scrollContainerRef.current;
+      
+      // Find the focused station element using data attribute
+      const focusedElement = container.querySelector(`[data-station-index="${stationIndex}"]`);
+      
+      if (focusedElement) {
+        const containerRect = container.getBoundingClientRect();
+        const elementRect = focusedElement.getBoundingClientRect();
+        
+        // Calculate relative position within scroll container
+        const relativeTop = elementRect.top - containerRect.top + container.scrollTop;
+        const relativeBottom = relativeTop + elementRect.height;
+        
+        const currentScroll = container.scrollTop;
+        const containerHeight = container.clientHeight;
+        const visibleTop = currentScroll;
+        const visibleBottom = currentScroll + containerHeight;
+        
+        // Add padding to keep element away from edges
+        const topPadding = 200;
+        const bottomPadding = 100;
+        
+        // Scroll if item is not fully visible
+        if (relativeTop < visibleTop + topPadding) {
+          // Scroll up
+          container.scrollTo({ top: Math.max(0, relativeTop - topPadding), behavior: 'smooth' });
+        } else if (relativeBottom > visibleBottom - bottomPadding) {
+          // Scroll down
+          container.scrollTo({ top: relativeBottom - containerHeight + bottomPadding, behavior: 'smooth' });
+        }
+      }
+    }
+  }, [focusIndex]);
+
   // Register page-specific key handler with custom navigation
   usePageKeyHandler('/genre-list', (e) => {
     const key = (window as any).tvKey;
@@ -316,6 +354,7 @@ export const GenreList = (): JSX.Element => {
                 className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(index + stationsStart))}`}
                 style={{ left: `${leftPosition}px`, top: `${topPosition}px` }}
                 data-testid={`station-card-${index}`}
+                data-station-index={index}
                 onClick={() => setLocation(`/radio-playing?station=${station._id}`)}
               >
                 <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">

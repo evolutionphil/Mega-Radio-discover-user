@@ -20,13 +20,19 @@ export const Genres = (): JSX.Element => {
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
   // Fetch stations from selected country to extract real genres (OPTIMIZED: 50 initial)
-  const { data: stationsData } = useQuery({
+  const { data: stationsData, refetch: refetchStations } = useQuery({
     queryKey: ['/api/stations/country', selectedCountryCode],
     queryFn: () => megaRadioApi.getWorkingStations({ 
       country: selectedCountryCode,
       limit: 50 
     }),
   });
+
+  // Force refetch when country changes
+  useEffect(() => {
+    console.log('[Genres] Country changed to:', selectedCountryCode);
+    refetchStations();
+  }, [selectedCountryCode, refetchStations]);
 
   // Extract unique genres from stations' tags
   const allGenres = useMemo(() => {
