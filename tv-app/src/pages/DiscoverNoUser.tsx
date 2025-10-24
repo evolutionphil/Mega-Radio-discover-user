@@ -76,28 +76,12 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Define sidebar routes (NO PROFILE - 5 items: Discover, Genres, Search, Favorites, Settings)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
-  // Scroll genre container to show focused genre (using same approach as RadioPlaying similar stations)
-  useEffect(() => {
-    if (focusIndex >= genresStart && focusIndex <= genresEnd && genreScrollRef.current) {
-      const genreIndex = focusIndex - genresStart;
-      // Calculate scroll position based on genre pill width + gap
-      // Genre pills have varying widths, but we can estimate average width
-      const pillWidth = 250; // Approximate width of genre pill
-      const gap = 20; // Gap between pills
-      const scrollPosition = genreIndex * (pillWidth + gap);
-      
-      console.log('[DiscoverNoUser] 🎯 Scrolling genre container to position:', scrollPosition, 'for genre index:', genreIndex);
-      
-      genreScrollRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: 'smooth'
-      });
-    }
-  }, [focusIndex, genresStart, genresEnd]);
-
-  // Custom navigation logic for complex multi-section layout
-  const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
-    const current = focusIndex;
+  // Focus management with custom navigation
+  const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
+    totalItems,
+    cols: 1,
+    initialIndex: 0,
+    onSelect: (index) => {
     let newIndex = current;
 
     // Sidebar section (0-4) - 5 items
@@ -270,6 +254,25 @@ export const DiscoverNoUser = (): JSX.Element => {
       setExitModalFocusIndex(0); // Focus on "Cancel" button
     }
   });
+
+  // Scroll genre container to show focused genre (using same approach as RadioPlaying similar stations)
+  useEffect(() => {
+    if (focusIndex >= genresStart && focusIndex <= genresEnd && genreScrollRef.current) {
+      const genreIndex = focusIndex - genresStart;
+      // Calculate scroll position based on genre pill width + gap
+      // Genre pills have varying widths, but we can estimate average width
+      const pillWidth = 250; // Approximate width of genre pill
+      const gap = 20; // Gap between pills
+      const scrollPosition = genreIndex * (pillWidth + gap);
+      
+      console.log('[DiscoverNoUser] 🎯 Scrolling genre container to position:', scrollPosition, 'for genre index:', genreIndex);
+      
+      genreScrollRef.current.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+    }
+  }, [focusIndex, genresStart, genresEnd]);
 
   // Listen for 'focusSidebar' event from GlobalPlayer to jump back to sidebar
   useEffect(() => {
