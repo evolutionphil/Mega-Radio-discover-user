@@ -386,11 +386,14 @@ export const megaRadioApi = {
     if (params?.page) queryParams.append('page', params.page.toString());
     if (params?.limit) queryParams.append('limit', params.limit.toString());
     if (params?.offset) queryParams.append('offset', params.offset.toString());
-    if (params?.country) {
-      // Convert country code to name for API
+    if (params?.country && params.country !== 'GLOBAL') {
+      // GLOBAL means worldwide - don't filter by country
+      // Only add country filter for specific countries
       const countryName = getCountryNameFromCode(params.country);
       queryParams.append('country', countryName);
       console.log(`[API] getStationsByGenre: Converting ${params.country} -> ${countryName}`);
+    } else if (params?.country === 'GLOBAL') {
+      console.log(`[API] getStationsByGenre: GLOBAL country - fetching all stations worldwide (no country filter)`);
     }
     if (params?.sort) queryParams.append('sort', params.sort);
 
