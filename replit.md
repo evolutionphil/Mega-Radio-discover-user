@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mega Radio is a full-stack web radio streaming application designed for TV and large screen interfaces. It offers access to global radio stations from over 238 countries, categorized by genres and countries. The application aims to provide intuitive onboarding, station discovery, favorites management, and continuous audio playback, all optimized for an immersive television experience. The project's ambition is to deliver a high-quality radio streaming service on smart TVs with significant market potential.
+Mega Radio is a full-stack web radio streaming application designed for TV and large screen interfaces, offering access to global radio stations from over 238 countries. It aims to provide intuitive onboarding, station discovery, favorites management, and continuous audio playback, optimized for an immersive television experience. The project's ambition is to deliver a high-quality radio streaming service on smart TVs with significant market potential.
 
 ## User Preferences
 
@@ -12,7 +12,7 @@ Preferred communication style: Simple, everyday language.
 
 ### UI/UX Decisions
 
-The application is optimized for TV with a fixed 1920x1080px resolution, featuring large, easily focusable elements and an auto-hide header with smooth transitions. It utilizes Shadcn/ui components (based on Radix UI primitives) and Tailwind CSS, adhering to a "new-york" design system with custom CSS variables.
+The application is optimized for TV with a fixed 1920x1080px resolution, featuring large, easily focusable elements and an auto-hide header with smooth transitions. It utilizes Shadcn/ui components (based on Radix UI primitives) and Tailwind CSS, adhering to a "new-york" design system with custom CSS variables. The layout uses a fixed `inset-0 w-[1920px] h-[1080px] overflow-hidden` CSS property for consistent rendering.
 
 ### Technical Implementations
 
@@ -28,11 +28,9 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **API:** RESTful API endpoints under `/api`, communicating in JSON format.
 
 **Platform Compatibility:**
--   **Unified TV Build:** A single `tv-app/` folder contains configurations for both Samsung Tizen and LG webOS.
--   **Samsung Tizen TV:** Targets Chromium 76, requiring polyfills and specific JavaScript syntax workarounds.
--   **LG webOS:** Leverages HTML5 Audio/Video for playback and the `webOSTVjs-1.2.0` SDK.
+-   **Unified TV Build:** A single `tv-app/` folder contains configurations for both Samsung Tizen (targeting Chromium 76 with polyfills) and LG webOS (leveraging HTML5 Audio/Video and `webOSTVjs-1.2.0` SDK).
 -   **Platform Detection:** Automatic detection via user agent.
--   **Remote Control Navigation:** Implements an LGTV focus pattern using `useFocusManager`, `usePageKeyHandler`, and `getFocusClasses` for dynamic adaptation to layouts.
+-   **Remote Control Navigation:** Implements an LGTV focus pattern using `useFocusManager`, `usePageKeyHandler`, and `getFocusClasses` for dynamic adaptation to layouts, including specific fixes for sidebar focus, country selector interactions, and two-step return button behavior for modals and keyboards. PAGE_UP/DOWN and CH_UP/CH_DOWN keys jump to the global player.
 -   **Audio Playback:** A unified interface manages `webapis.avplay` for Tizen and HTML5 Audio/Video for webOS/browsers.
 -   **TV-Specific Styling:** Custom CSS handles focus states, hidden cursors, scrollbar hiding, and platform-specific visibility.
 
@@ -41,23 +39,21 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Main Pages:** Discover, Genres, Search, Favorites, Settings, and a full-screen Radio Playing interface.
 -   **Auto-Play:** Configurable startup modes (Last Played, Random, Favorite, None).
 -   **Localization & Internationalization:** Supports 48 languages via API translations and automatic language detection.
+-   **Global Country Support:** Defaults to "Global" country if no country is saved, allowing browsing of worldwide stations and genres.
 
 ### System Design Choices
 
 **Global Player:**
--   A `GlobalPlayerContext` ensures continuous audio playback and manages a persistent player bar.
--   Fetches "Now Playing" metadata from themegaradio.com API every 30 seconds via `megaRadioApi.getStationMetadata()`.
--   Displays metadata in pink (#ff4199) on global player bar (visible on Discover, Genres, Search, Favorites, Settings).
--   Global player bar is automatically hidden on RadioPlaying page to avoid duplication with full-screen player.
-
-**Fixed Layout:**
--   The application uses a `fixed inset-0 w-[1920px] h-[1080px] overflow-hidden` CSS property for consistent rendering across platforms.
+-   A `GlobalPlayerContext` ensures continuous audio playback and manages a persistent player bar, fetching "Now Playing" metadata from themegaradio.com API every 30 seconds.
+-   Metadata is displayed in pink (#ff4199).
+-   The global player bar is automatically hidden on the RadioPlaying page to avoid duplication.
+-   Playback continues uninterrupted when navigating between pages.
 
 **Infinite Scrolling:**
--   Implemented true lazy loading with API pagination for station lists (Discover, GenreList), fetching 100 stations per batch with offset-based pagination. This supports scrolling through thousands of stations.
+-   Implemented true lazy loading with API pagination for station lists (Discover, GenreList), fetching 100 stations per batch with offset-based pagination.
 
-**Navigation Enhancements:**
--   Focus management ensures proper navigation with TV remote controls, including specific fixes for sidebar focus, country selector interactions, and two-step return button behavior for modals and keyboards.
+**Focus Glow Effects:**
+-   Uses CSS focus pseudo-classes (`:focus`) and `tabIndex={0}` for improved TV compatibility and glow effects on interactive elements.
 
 ## External Dependencies
 
@@ -71,150 +67,3 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
-
-## Recent Changes (October 24, 2025 - Latest)
-
-### Samsung TV Build v3.25 (GLOBAL GENRES FIX):
-**Fixed Genres Page Global Country Support** - Genres page now correctly shows all genres when Global country is selected
-   - Created production build with timestamp: `1761313522828`
-   - Bundle: `tv-app/assets/index-1761313522828.js` (427.76KB - full React app)
-   - **BUG FIX:**
-     - ✅ Genres page now fetches global genres when "GLOBAL" country is selected
-     - ✅ Calls `megaRadioApi.getAllGenres()` without country parameter for Global
-     - ✅ Shows all worldwide genres on /#/genres when Global is selected
-     - ✅ Consistent with DiscoverNoUser page behavior
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.24 (FIXED 1920x1080px RESOLUTION):
-**Enforced Exact 1920x1080px Screen Size** - TV app now uses exact fixed resolution on both Samsung & LG TVs
-   - Created production build with timestamp: `1761313379997`
-   - Bundle: `tv-app/assets/index-1761313379997.js` (427.55KB - full React app)
-   - **RESOLUTION FIX:**
-     - ✅ Viewport meta tag: `width=1920, height=1080, initial-scale=1.0, maximum-scale=1.0, user-scalable=no`
-     - ✅ html/body: Fixed to exactly 1920x1080px with `position: fixed`
-     - ✅ #root: Fixed to exactly 1920x1080px with `position: fixed` and `overflow: hidden`
-     - ✅ Ensures consistent rendering across all Samsung and LG TV models
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.23 (LONG STATION NAME TRUNCATION):
-**Fixed Long Station Names Overflow** - Station names now truncate with ellipsis (...) when too long
-   - Created production build with timestamp: `1761313244770`
-   - Bundle: `tv-app/assets/index-1761313244770.js` (427.55KB - full React app)
-   - **BUG FIX:**
-     - ✅ RadioPlaying page: Station name truncates at 1200px width with ellipsis
-     - ✅ GlobalPlayer bar: Station name truncates at 800px width with ellipsis
-     - ✅ Prevents text overflow for very long station names
-     - ✅ Added `truncate` and `max-w-[...]` CSS classes
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.22 (GUIDE BACKGROUND FIX):
-**Fixed Guide Pages Background Positioning** - Background image now aligns correctly from the top
-   - Created production build with timestamp: `1761313110283`
-   - Bundle: `tv-app/assets/index-1761313110283.js` (427.50KB - full React app)
-   - **BUG FIX:**
-     - ✅ Changed background position from `50%` (center) to `center top`
-     - ✅ Fixed all 4 guide pages (Guide1, Guide2, Guide3, Guide4)
-     - ✅ Background image now displays correctly aligned to the top
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.21 (GLOBAL COUNTRY SUPPORT):
-**Added Global Country Option** - Users can now browse stations from all countries worldwide
-   - Created production build with timestamp: `1761312751978`
-   - Bundle: `tv-app/assets/index-1761312751978.js` (427.47KB - full React app)
-   - **NEW FEATURE: GLOBAL COUNTRY**
-     - ✅ Added "Global" as first option in CountrySelector with blue globe SVG icon
-     - ✅ Country code "GLOBAL" fetches stations without country filter
-     - ✅ Shows "(Global)" suffix in section titles when Global is selected
-     - ✅ Popular Stations section displays global top stations
-     - ✅ Popular Genres section displays all genres worldwide
-     - ✅ Infinite scroll works with global stations (no country filter)
-   - **API INTEGRATION:**
-     - ✅ `megaRadioApi.getAllGenres()` - no country parameter when Global
-     - ✅ `megaRadioApi.getPopularStations({ limit: 24 })` - no country parameter
-     - ✅ `megaRadioApi.getWorkingStations({ limit: 100, offset })` - no country parameter
-   - **UI ENHANCEMENTS:**
-     - ✅ Globe icon: Blue circle with white latitude/longitude lines
-     - ✅ Section titles: "Popular Stations (Global)" and "Popular Genres (Global)"
-     - ✅ Global option always appears first in country selector
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.20 (SIMILAR STATIONS SPACING FIX):
-**Fixed Similar Stations Padding on Samsung TV** - Replaced gap with margin-right for better compatibility
-   - Created production build with timestamp: `1761312151071`
-   - Bundle: `tv-app/assets/index-1761312151071.js` (426.43KB - full React app)
-   - **SAMSUNG TV COMPATIBILITY FIX:**
-     - ✅ Replaced `gap-[24px]` with `mr-[24px]` on similar station cards
-     - ✅ Chromium 76 on Samsung TV doesn't fully support CSS gap property
-     - ✅ Each station card now has explicit 24px margin-right spacing
-     - ✅ Ensures consistent spacing between similar stations on all platforms
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.19 (PAGE_UP/DOWN + GLOW FIX):
-**Fixed Global Player Navigation & Focus Glow** - PAGE_UP/DOWN keys jump to player, CSS-based glow effects
-   - Created production build with timestamp: `1761309977335`
-   - Bundle: `tv-app/assets/index-1761309977335.js` (426.43KB - full React app)
-   - **KEY NAVIGATION FIXES:**
-     - ✅ PAGE_UP (33) and PAGE_DOWN (34) now jump to global player
-     - ✅ CH_UP (427) and CH_DOWN (428) also jump to global player
-     - ✅ All keys focus the play/pause button of global player bar
-     - ✅ Works on DiscoverNoUser page (more pages to follow)
-   - **FOCUS GLOW IMPROVEMENTS:**
-     - ✅ Switched to CSS focus pseudo-classes (`:focus`) for better TV compatibility
-     - ✅ Added `tabIndex={0}` to all global player buttons for proper DOM focus
-     - ✅ Pink glow: `shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)]`
-     - ✅ Play/Pause: 4px pink border + glow when focused
-     - ✅ Next: 4px pink border + glow when focused
-     - ✅ Previous: Pink glow (already has pink border)
-     - ✅ Favorite: Pink border + glow when focused (if not favorited)
-     - ✅ Equalizer: Pink border + glow when focused (if not playing)
-   - **PLAYBACK CONTINUITY:**
-     - ✅ Verified back button on RadioPlaying page does NOT stop playback
-     - ✅ GlobalPlayerContext continues playing when navigating between pages
-   - **Technical Details:**
-     - Uses Tailwind `focus:` pseudo-classes instead of JavaScript event handlers
-     - More compatible with TV spatial navigation system
-     - Maintains smooth transitions and pulse animations
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.18 (GLOBAL PLAYER GLOW EFFECTS - DEPRECATED):
-**Added CH_UP/CH_DOWN Keys to Jump to Global Player** - Samsung TV remote channel keys now jump to global player controls
-   - Created production build with timestamp: `1761309508602`
-   - Bundle: `tv-app/assets/index-1761309508602.js` (425.88KB - full React app)
-   - **NEW FEATURE:**
-     - ✅ CH_UP (keycode 427) and CH_DOWN (keycode 428) now jump to global player
-     - ✅ Implemented on DiscoverNoUser page (additional pages coming soon)
-     - ✅ Focuses the play/pause button of the global player bar
-     - ✅ Only works when global player is visible (station is playing)
-   - **Technical Details:**
-     - Detects Samsung TV-specific channel keycodes
-     - Uses DOM querySelector to find and focus global player button
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.16 (GENRES SMOOTH SCROLL):
-**Improved Popular Genres Horizontal Scrolling** - Genres now scroll smoothly like similar stations
-   - Created production build with timestamp: `1761309229112`
-   - Bundle: `tv-app/assets/index-1761309229112.js` (425.66KB - full React app)
-   - **SCROLL IMPROVEMENTS:**
-     - ✅ Added genreScrollRef for direct scroll control
-     - ✅ Replaced scrollIntoView with scrollTo for smoother scrolling
-     - ✅ Matches similar stations scroll behavior
-     - ✅ Calculates scroll position based on genre width + gap
-   - **Technical Details:**
-     - Uses scrollTo({ left: position, behavior: 'smooth' }) instead of scrollIntoView
-     - More responsive to LEFT/RIGHT remote control inputs
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.15 (GLOBAL PLAYER HIDE FIX):
-**Fixed Global Player Bar Hiding on RadioPlaying Page** - GlobalPlayer now correctly hides on station detail page
-   - Created production build with timestamp: `1761309003382`
-   - Bundle: `tv-app/assets/index-1761309003382.js` (425.75KB - full React app)
-   - **CRITICAL BUG FIX:**
-     - ✅ GlobalPlayer component moved inside Router (was outside, couldn't detect routes)
-     - ✅ GlobalPlayer now correctly uses wouter's useLocation hook
-     - ✅ Properly hides on `/radio-playing` page to avoid duplication
-     - ✅ Shows on all other pages (Discover, Genres, Search, Favorites, Settings)
-   - **Technical Details:**
-     - Issue: GlobalPlayer was rendered outside WouterRouter in App.tsx
-     - Fix: Moved <GlobalPlayer /> inside WouterRouter after <Switch>
-     - Result: location hook now returns "/radio-playing" instead of "/"
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
