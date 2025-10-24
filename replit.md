@@ -70,6 +70,18 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.30 (REAL STATION COUNTS):
+**Fixed Station Counts Display** - All countries now show real station counts from API, Global shows actual total
+   - Created production build with timestamp: `1761314382921`
+   - Bundle: `tv-app/assets/index-1761314382921.js` (430.21KB - full React app)
+   - **DATA FIX:**
+     - ✅ Global now shows real total station count (sum of all countries)
+     - ✅ All countries display their actual station counts from API (even if 0)
+     - ✅ Removed hardcoded 999999 for Global
+     - ✅ Added number formatting with commas (e.g., "50,000 stations")
+     - ✅ Station counts always visible when available from API
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.29 (IMPROVED GLOBE ICON):
 **Enhanced Global Country Icon** - Global option now has a beautiful gradient globe icon
    - Created production build with timestamp: `1761314194082`
