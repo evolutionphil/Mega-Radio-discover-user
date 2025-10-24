@@ -13,7 +13,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
 
 export const Genres = (): JSX.Element => {
-  const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
+  const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isPlaying } = useGlobalPlayer();
   const { t } = useLocalization();
   const [, setLocation] = useLocation();
@@ -343,7 +343,8 @@ export const Genres = (): JSX.Element => {
         onClose={() => setIsCountrySelectorOpen(false)}
         selectedCountry={selectedCountry}
         onSelectCountry={(country) => {
-          // Country selection is handled by CountryContext
+          console.log('[Genres] Country selected:', country.name, country.code);
+          setCountry(country.name, country.code, country.flag);
           setIsCountrySelectorOpen(false);
         }}
       />

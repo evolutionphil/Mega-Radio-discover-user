@@ -71,14 +71,15 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 ## Recent Changes (October 24, 2025 - Latest)
 
 ### Samsung TV Build v3.33 (CRITICAL FIXES):
-**Fixed Genre Stations, Flag Icon, Auto-Detection, and Station Counts** - Resolved four major issues
-   - Created production build with timestamp: `1761319653963`
-   - Bundle: `tv-app/assets/index-1761319653963.js` (432.93KB - full React app)
+**Fixed Genre Stations, Flag Icon, Auto-Detection, and Station Counts** - Resolved five major issues
+   - Created production build with timestamp: `1761319824573`
+   - Bundle: `tv-app/assets/index-1761319824573.js` (433.02KB - full React app)
    - **CRITICAL FIXES:**
      - ✅ **Genre List Global Fix**: Genre stations now load for Global country (API call no longer sends `country=GLOBAL` parameter, fetches all stations worldwide)
      - ✅ **Flag Icon Fix**: Global country now shows gradient globe SVG instead of trying to load non-existent `flagcdn.com/w40/global.png`
      - ✅ **Auto-Detection Fix**: App now detects language/country on first visit (e.g., German language → Germany country), Global is only used as fallback when no detection is possible
      - ✅ **Station Count Fix**: Removed confusing "0 Sender" display in country selector (API doesn't provide station counts per country)
+     - ✅ **Genres Country Selection Fix**: Changing country from Genres page now properly updates and refetches genre list
    - **BEHAVIOR CHANGE:**
      - App respects detected browser language and auto-selects country
      - Global is no longer the default - it's only for when detection fails
