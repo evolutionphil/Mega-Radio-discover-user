@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { megaRadioApi } from '@/services/megaRadioApi';
-import { detectCountryAsync, type GeoLocationResult } from '@/utils/geolocation';
+import { detectCountry, type GeoLocationResult } from '@/utils/geolocation';
 
 interface LocalizationContextType {
   language: string;
@@ -110,9 +110,9 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const initializeLocalization = async () => {
       try {
-        // HYBRID GEOLOCATION: Try Tizen SystemInfo LOCALE API first, then Samsung/LG TV APIs, then fallback to language
-        console.log('[Localization] 🌍 Starting hybrid geolocation (with Tizen SystemInfo LOCALE API)...');
-        const geoResult = await detectCountryAsync();
+        // HYBRID GEOLOCATION: Try Samsung/LG TV APIs first, then fallback to language
+        console.log('[Localization] 🌍 Starting hybrid geolocation...');
+        const geoResult = detectCountry();
         setGeoLocationResult(geoResult);
         setDetectedCountry(geoResult.countryName);
         setDetectedCountryCode(geoResult.countryCode);

@@ -148,130 +148,8 @@ const LANGUAGE_TO_COUNTRY: Record<string, { name: string; code: string }> = {
 export interface GeoLocationResult {
   countryName: string;
   countryCode: string;
-  detectionMethod: 'tizen-systeminfo' | 'samsung-tv' | 'lg-webos' | 'language-fallback' | 'default';
+  detectionMethod: 'samsung-tv' | 'lg-webos' | 'language-fallback' | 'default';
   success: boolean;
-}
-
-/**
- * Detect country using Tizen SystemInfo LOCALE API (official method - ASYNC)
- * Returns a Promise with the country detection result
- */
-function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> {
-  return new Promise((resolve) => {
-    try {
-      // Check if Tizen SystemInfo API is available
-      if (typeof window.tizen === 'undefined' || !window.tizen.systeminfo) {
-        console.log('[Geolocation] ℹ️ Tizen SystemInfo API not available (likely emulator or non-Samsung device)');
-        resolve(null);
-        return;
-      }
-
-      console.log('[Geolocation] ✅ Tizen SystemInfo API detected - getting LOCALE property...');
-      
-      // Wrap the API call in try-catch for safety
-      try {
-        // Get LOCALE property (official Tizen method)
-        window.tizen.systeminfo.getPropertyValue(
-          "LOCALE",
-          (locale: any) => {
-            console.log('═══════════════════════════════════════════════════════════════');
-            console.log('[Geolocation] 🔍 TIZEN SYSTEMINFO LOCALE API - DETAILED DEBUG');
-            console.log('═══════════════════════════════════════════════════════════════');
-            console.log('[Geolocation] 📦 Raw Tizen LOCALE object:', locale);
-            console.log('[Geolocation] 📦 Locale object type:', typeof locale);
-            console.log('[Geolocation] 📦 Locale object keys:', Object.keys(locale));
-            console.log('[Geolocation] 📦 Full object JSON:', JSON.stringify(locale, null, 2));
-            
-            // Log all properties
-            console.log('--- ALL LOCALE PROPERTIES ---');
-            for (const key in locale) {
-              console.log(`[Geolocation]   ${key}:`, locale[key], `(type: ${typeof locale[key]})`);
-            }
-            console.log('--- END PROPERTIES ---');
-            
-            // Extract country code from locale
-            // Tizen may return "en_US", "de_DE", etc. - extract the part after underscore
-            console.log('[Geolocation] 🔎 Extracting country code from locale.country:', locale.country);
-            let countryCode = locale.country;
-            
-            if (countryCode && countryCode.includes('_')) {
-              // Extract region code after underscore: "en_US" → "US"
-              const parts = countryCode.split('_');
-              const originalCode = countryCode;
-              countryCode = parts[1];
-              console.log('[Geolocation] 🔧 Parsing locale string:', originalCode);
-              console.log('[Geolocation] 🔧 Split parts:', parts);
-              console.log('[Geolocation] 🔧 Language part (parts[0]):', parts[0]);
-              console.log('[Geolocation] 🔧 Country part (parts[1]):', parts[1]);
-              console.log('[Geolocation] ✂️ Extracted country code:', originalCode, '→', countryCode);
-            } else {
-              console.log('[Geolocation] ℹ️ No underscore found in country code, using as-is:', countryCode);
-            }
-            
-            // Check other possible properties that might have country info
-            if (locale.language) {
-              console.log('[Geolocation] 🌐 locale.language:', locale.language);
-            }
-            if (locale.region) {
-              console.log('[Geolocation] 🌍 locale.region:', locale.region);
-            }
-            if (locale.timezone) {
-              console.log('[Geolocation] 🕐 locale.timezone:', locale.timezone);
-            }
-            
-            if (countryCode && countryCode.length === 2) {
-              const upperCode = countryCode.toUpperCase();
-              const countryName = COUNTRY_CODE_TO_NAME[upperCode];
-              
-              if (!countryName) {
-                console.warn('[Geolocation] ⚠️ Tizen SystemInfo returned unmapped country code:', upperCode, '(using code as name)');
-              }
-              
-              console.log('[Geolocation] ✅ FINAL RESULT - Country detected:', countryName || upperCode, upperCode);
-              console.log('[Geolocation] ✅ Detection method: tizen-systeminfo (official Tizen API)');
-              console.log('═══════════════════════════════════════════════════════════════');
-              resolve({
-                countryName: countryName || upperCode,
-                countryCode: upperCode,
-                detectionMethod: 'tizen-systeminfo',
-                success: true,
-              });
-            } else {
-              console.warn('[Geolocation] ⚠️ INVALID COUNTRY CODE:', locale.country);
-              console.warn('[Geolocation] ⚠️ Expected 2-letter code, got:', countryCode, `(length: ${countryCode?.length || 0})`);
-              console.log('═══════════════════════════════════════════════════════════════');
-              resolve(null);
-            }
-          },
-          (error: Error) => {
-            console.error('═══════════════════════════════════════════════════════════════');
-            console.error('[Geolocation] ❌ TIZEN SYSTEMINFO LOCALE API ERROR');
-            console.error('[Geolocation] ❌ Error:', error);
-            console.error('[Geolocation] ❌ Error message:', error?.message || 'Unknown error');
-            console.error('[Geolocation] ❌ Error stack:', error?.stack || 'No stack trace');
-            console.error('═══════════════════════════════════════════════════════════════');
-            console.log('[Geolocation] 🔄 Falling back to next detection method...');
-            resolve(null);
-          }
-        );
-        
-        // Set timeout to prevent hanging (2 seconds max)
-        setTimeout(() => {
-          console.warn('[Geolocation] ⏱️ Tizen SystemInfo LOCALE timeout (2s) - falling back to next method');
-          resolve(null);
-        }, 2000);
-        
-      } catch (apiError) {
-        console.error('[Geolocation] ❌ Tizen SystemInfo API call failed:', apiError);
-        console.log('[Geolocation] 🔄 Falling back to next detection method...');
-        resolve(null);
-      }
-    } catch (error) {
-      console.error('[Geolocation] ❌ Tizen SystemInfo check failed (outer catch):', error);
-      console.log('[Geolocation] 🔄 Falling back to next detection method...');
-      resolve(null);
-    }
-  });
 }
 
 /**
@@ -280,12 +158,7 @@ function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> 
 function detectSamsungTizenCountry(): GeoLocationResult | null {
   try {
     // Check if Samsung webapis is available
-    if (typeof window.webapis === 'undefined' || !window.webapis.productinfo) {
-      console.log('[Geolocation] ℹ️ Samsung productinfo API not available (likely emulator or non-Samsung device)');
-      return null;
-    }
-    
-    try {
+    if (typeof window.webapis !== 'undefined' && window.webapis.productinfo) {
       const countryCode = window.webapis.productinfo.getCountryCode();
       
       if (countryCode && countryCode.length === 2) {
@@ -305,14 +178,9 @@ function detectSamsungTizenCountry(): GeoLocationResult | null {
           success: true,
         };
       }
-    } catch (apiError) {
-      console.error('[Geolocation] ❌ Samsung productinfo API call failed:', apiError);
-      console.log('[Geolocation] 🔄 Falling back to next detection method...');
-      return null;
     }
   } catch (error) {
-    console.error('[Geolocation] ❌ Samsung Tizen detection failed (outer catch):', error);
-    console.log('[Geolocation] 🔄 Falling back to next detection method...');
+    console.error('[Geolocation] ❌ Samsung Tizen detection failed:', error);
   }
   
   return null;
@@ -352,12 +220,7 @@ const ISO3_TO_ISO2: Record<string, string> = {
 function detectLGWebOSCountry(): GeoLocationResult | null {
   try {
     // Check if LG webOS systemInfo is available
-    if (typeof window.webOS === 'undefined' || !window.webOS.systemInfo) {
-      console.log('[Geolocation] ℹ️ LG webOS systemInfo not available (likely emulator or non-LG device)');
-      return null;
-    }
-    
-    try {
+    if (typeof window.webOS !== 'undefined' && window.webOS.systemInfo) {
       let countryCode: string | null = null;
       
       // Priority 1: smartServiceCountry (2-letter code, e.g., 'GB', 'US')
@@ -413,14 +276,9 @@ function detectLGWebOSCountry(): GeoLocationResult | null {
       } else {
         console.warn('[Geolocation] ⚠️ LG webOS systemInfo available but no valid country code found');
       }
-    } catch (apiError) {
-      console.error('[Geolocation] ❌ LG webOS API call failed:', apiError);
-      console.log('[Geolocation] 🔄 Falling back to next detection method...');
-      return null;
     }
   } catch (error) {
-    console.error('[Geolocation] ❌ LG webOS detection failed (outer catch):', error);
-    console.log('[Geolocation] 🔄 Falling back to next detection method...');
+    console.error('[Geolocation] ❌ LG webOS detection failed:', error);
   }
   
   return null;
@@ -428,45 +286,15 @@ function detectLGWebOSCountry(): GeoLocationResult | null {
 
 /**
  * Detect browser language and map to country (fallback)
- * Enhanced to parse region code from locale (e.g., de-AT, de-DE, en-GB)
  */
 function detectLanguageBasedCountry(): GeoLocationResult {
   try {
     const browserLang = navigator.language || navigator.languages?.[0] || 'en';
-    console.log('[Geolocation] 📍 Browser locale detected:', browserLang);
-    
-    // Try to extract region code from locale (e.g., "de-AT" -> "AT", "en-GB" -> "GB")
-    if (browserLang.includes('-')) {
-      const parts = browserLang.split('-');
-      const regionCode = parts[1]?.toUpperCase();
-      
-      // Check if region code is a valid country code
-      if (regionCode && regionCode.length === 2 && COUNTRY_CODE_TO_NAME[regionCode]) {
-        const countryName = COUNTRY_CODE_TO_NAME[regionCode];
-        console.log('[Geolocation] ✅ Region code detected from locale:', countryName, regionCode);
-        return {
-          countryName,
-          countryCode: regionCode,
-          detectionMethod: 'language-fallback',
-          success: true,
-        };
-      } else if (regionCode && regionCode.length === 2) {
-        // Valid 2-letter code but not in our mapping - use it anyway
-        console.warn('[Geolocation] ⚠️ Unmapped region code from locale:', regionCode, '(using as country code)');
-        return {
-          countryName: regionCode,
-          countryCode: regionCode,
-          detectionMethod: 'language-fallback',
-          success: true,
-        };
-      }
-    }
-    
-    // Fallback to language-only mapping if no valid region code
     const langCode = browserLang.toLowerCase().substring(0, 2);
+    
     const countryInfo = LANGUAGE_TO_COUNTRY[langCode] || LANGUAGE_TO_COUNTRY['en'];
     
-    console.log('[Geolocation] 🔄 Language-only fallback:', countryInfo.name, countryInfo.code);
+    console.log('[Geolocation] 🔄 Language-based fallback:', countryInfo.name, countryInfo.code);
     return {
       countryName: countryInfo.name,
       countryCode: countryInfo.code,
@@ -487,12 +315,11 @@ function detectLanguageBasedCountry(): GeoLocationResult {
 /**
  * Main hybrid geolocation function (synchronous)
  * Tries multiple detection methods in priority order
- * Note: Does NOT include Tizen SystemInfo (async) - use detectCountryAsync() for that
  */
 export function detectCountry(): GeoLocationResult {
-  console.log('[Geolocation] 🌍 Starting hybrid country detection (synchronous)...');
+  console.log('[Geolocation] 🌍 Starting hybrid country detection...');
   
-  // Priority 1: Samsung Tizen productinfo API (instant, accurate)
+  // Priority 1: Samsung Tizen native API (instant, accurate)
   const samsungResult = detectSamsungTizenCountry();
   if (samsungResult) {
     return samsungResult;
@@ -509,35 +336,6 @@ export function detectCountry(): GeoLocationResult {
 }
 
 /**
- * Async version of hybrid geolocation - tries Tizen SystemInfo LOCALE API first
- * Use this for better Tizen TV detection
- */
-export async function detectCountryAsync(): Promise<GeoLocationResult> {
-  console.log('[Geolocation] 🌍 Starting hybrid country detection (async with Tizen SystemInfo)...');
-  
-  // Priority 1: Tizen SystemInfo LOCALE API (official Tizen method - ASYNC)
-  const tizenSystemInfoResult = await detectTizenSystemInfoCountryAsync();
-  if (tizenSystemInfoResult) {
-    return tizenSystemInfoResult;
-  }
-  
-  // Priority 2: Samsung Tizen productinfo API (instant, accurate)
-  const samsungResult = detectSamsungTizenCountry();
-  if (samsungResult) {
-    return samsungResult;
-  }
-  
-  // Priority 3: LG webOS native API (instant, accurate)
-  const lgResult = detectLGWebOSCountry();
-  if (lgResult) {
-    return lgResult;
-  }
-  
-  // Priority 4: Language-based fallback (always works)
-  return detectLanguageBasedCountry();
-}
-
-/**
  * Get country flag URL from country code
  */
 export function getCountryFlagUrl(countryCode: string): string {
@@ -548,16 +346,9 @@ export function getCountryFlagUrl(countryCode: string): string {
   return `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
 }
 
-// Type declarations for Samsung/LG/Tizen APIs
+// Type declarations for Samsung/LG APIs
 declare global {
   interface Window {
-    tizen?: {
-      systeminfo?: {
-        getPropertyValue: (property: string, successCallback: (value: any) => void, errorCallback?: (error: Error) => void) => void;
-        addPropertyValueChangeListener: (property: string, successCallback: (value: any) => void, errorCallback?: (error: Error) => void) => number;
-        removePropertyValueChangeListener: (listenerId: number) => void;
-      };
-    };
     webapis?: {
       productinfo?: {
         getCountryCode: () => string;

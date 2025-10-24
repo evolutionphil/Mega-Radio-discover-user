@@ -11,6 +11,11 @@ export const Guide2 = (): JSX.Element => {
   // Component lifecycle logging
   useEffect(() => {
     console.log('[Guide2] 🎬 Component mounted');
+    console.log('[Guide2] 📂 Image paths to load:', {
+      background: '/images/discover-background.png',
+      arrow: '/images/arrow.svg',
+      icon: '/images/music-icon.svg'
+    });
     return () => {
       console.log('[Guide2] 👋 Component unmounting');
     };
@@ -53,12 +58,16 @@ export const Guide2 = (): JSX.Element => {
         onClick={handleClick}
       >
         {/* Background Image with Dark Overlay */}
-        <div 
-          className="absolute h-[1897px] left-0 top-0 w-[1920px]"
-          style={{
-            background: `linear-gradient(0deg, rgba(0, 0, 0, 0.70) 0%, rgba(0, 0, 0, 0.70) 100%), url(${assetPath("images/discover-background.png")}) lightgray 50% / cover no-repeat`
-          }}
-        />
+        <div className="absolute h-[1897px] left-0 top-0 w-[1920px]">
+          <img 
+            alt="" 
+            className="absolute inset-0 w-full h-full object-cover" 
+            src={assetPath("images/discover-background.png")}
+            onLoad={() => handleImageLoad('discover-background.png')}
+            onError={() => handleImageError('discover-background.png', assetPath('images/discover-background.png'))}
+          />
+          <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
+        </div>
 
         {/* Arrow pointing to Genres button */}
         <div className="absolute flex items-center justify-center left-[188px] top-[381px] z-20">

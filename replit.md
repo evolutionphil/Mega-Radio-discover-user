@@ -1,7 +1,7 @@
 # Mega Radio - TV Application
 
 ## Overview
-Mega Radio is a full-stack web radio streaming application optimized for TV and large screen interfaces. It offers access to global radio stations from over 238 countries, categorized by genres and countries. Key features include intuitive onboarding, station discovery, favorites management, and continuous audio playback, aiming to deliver a high-quality radio streaming experience on smart TVs.
+Mega Radio is a full-stack web radio streaming application optimized for TV and large screen interfaces. It provides access to global radio stations from over 238 countries, categorized by genres and countries, with features like intuitive onboarding, station discovery, favorites management, and continuous audio playback. The project aims to deliver a high-quality radio streaming service on smart TVs.
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
@@ -9,12 +9,12 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### UI/UX Decisions
-The application targets a fixed 1920x1080px resolution, featuring large, focusable elements and an auto-hide header. It utilizes Shadcn/ui components (based on Radix UI primitives) and Tailwind CSS, adhering to a "new-york" design system.
+The application is designed for a fixed 1920x1080px resolution with large, focusable elements and an auto-hide header. It uses Shadcn/ui components (based on Radix UI primitives) and Tailwind CSS, following a "new-york" design system.
 
 ### Technical Implementations
 **Frontend:**
 -   **Framework:** React 18 with TypeScript.
--   **Routing:** Wouter, using hash-based routing for Samsung TV compatibility.
+-   **Routing:** Wouter, utilizing hash-based routing for Samsung TV compatibility.
 -   **State Management:** TanStack Query for server state.
 -   **Design Patterns:** Component-based architecture, page-based routing, shared schema definitions, and Zod with React Hook Form for validation.
 
@@ -24,10 +24,10 @@ The application targets a fixed 1920x1080px resolution, featuring large, focusab
 -   **API:** RESTful API endpoints under `/api`, communicating in JSON.
 
 **Platform Compatibility:**
--   **Unified TV Build:** A single `tv-app/` folder supports both Samsung Tizen and LG webOS configurations.
+-   **Unified TV Build:** A single `tv-app/` folder for Samsung Tizen and LG webOS configurations.
 -   **Target Platforms:** Samsung Tizen TV (Chromium 76 with polyfills) and LG webOS (HTML5 Audio/Video, `webOSTVjs-1.2.0` SDK).
 -   **Platform Detection:** Automatic via user agent.
--   **Remote Control Navigation:** Custom focus management (`useFocusManager`, `usePageKeyHandler`, `getFocusClasses`) adapts to dynamic layouts.
+-   **Remote Control Navigation:** Custom focus management (`useFocusManager`, `usePageKeyHandler`, `getFocusClasses`) for dynamic layout adaptation.
 -   **Audio Playback:** Unified interface managing `webapis.avplay` for Tizen and HTML5 Audio/Video for webOS/browsers.
 -   **TV-Specific Styling:** Custom CSS for focus states, hidden cursors, scrollbar hiding, and platform-specific visibility.
 
@@ -38,11 +38,6 @@ The application targets a fixed 1920x1080px resolution, featuring large, focusab
 
 **Localization & Internationalization:**
 -   Supports 48 languages via API translations and automatic language detection.
--   **Hybrid Geolocation System** (Priority-based):
-    1.  **Tizen SystemInfo LOCALE API** (`tizen.systeminfo.getPropertyValue("LOCALE")`) for direct country code.
-    2.  **Samsung webapis.productinfo** for fast synchronous country detection.
-    3.  **LG webOS.systemInfo** for native webOS country detection.
-    4.  **Browser Locale Parsing** extracts region from `navigator.language` (e.g., `de-AT` → Austria).
 
 ### System Design Choices
 **Global Player:**
@@ -52,7 +47,7 @@ The application targets a fixed 1920x1080px resolution, featuring large, focusab
 -   Uses `fixed inset-0 w-[1920px] h-[1080px] overflow-hidden` CSS for consistent rendering.
 
 **Navigation and Focus Management:**
--   Robust focus management across the application, with seamless transitions between components and pages.
+-   Implemented robust focus management across the application, including seamless transitions between components and pages (e.g., sidebar, player bar, search inputs, lists).
 -   Enhanced navigation with `PAGE_UP`/`PAGE_DOWN` keys for quick access to the Global Player.
 -   Improved infinite scrolling for station lists using offset-based API pagination and dual triggers (scroll/focus).
 
@@ -68,3 +63,18 @@ The application targets a fixed 1920x1080px resolution, featuring large, focusab
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+
+## Recent Changes (October 24, 2025 - Latest)
+
+### Samsung TV Build v3.16 (FLOWING WAVE SPLASH ANIMATION):
+**Beautiful animated splash screen with fluid wave motion**
+   - Created production build with timestamp: `1761296865275`
+   - Bundle: `tv-app/assets/index-1761296865275.js` (435.87 KB - production-ready)
+   - **SPLASH SCREEN ANIMATION UPGRADE:**
+     - ✅ **Flowing Wave Effect**: Custom keyframe animation replacing basic pulse
+     - ✅ **Multi-Dimensional Motion**: Combines scale (1.0→1.15), rotation (±1deg), opacity (0.3→0.5), vertical float (-12px)
+     - ✅ **Smooth & Elegant**: 6-second duration with ease-in-out timing for premium feel
+     - ✅ **GPU-Optimized**: Uses transform and opacity for smooth 60fps animation
+     - ✅ **Breathing Effect**: Waves expand, rotate gently, and float upward in seamless loop
+   - **ARCHITECT APPROVED**: Smooth fluid motion, negligible performance impact, no visual glitches
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS

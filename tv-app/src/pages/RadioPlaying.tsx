@@ -27,6 +27,9 @@ export const RadioPlaying = (): JSX.Element => {
   const stationHistoryRef = useRef<string[]>([]);
   const isNavigatingBackRef = useRef(false);
   
+  // Force update trigger for station changes
+  const [updateTrigger, setUpdateTrigger] = useState(0);
+  
   // Country selector state
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   
@@ -76,7 +79,7 @@ export const RadioPlaying = (): JSX.Element => {
 
     console.log('[RadioPlaying] ❌ No station ID found in URL - returning null');
     return null;
-  }, [location]);
+  }, [location, updateTrigger]);
   
   // Track station history when station ID changes
   useEffect(() => {
@@ -195,65 +198,12 @@ export const RadioPlaying = (): JSX.Element => {
   }, [similarStations]);
 
   // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (increased to 20)
-  const totalItems = useMemo(() => {
-    return 5 + 1 + 4 + Math.min(similarStations.length, 20);
-  }, [similarStations.length]);
+  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20);
 
   // Define sidebar routes (NO PROFILE - 5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
   // Custom navigation logic for multi-section layout
-
-  // Focus management with custom navigation
-  const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
-    totalItems,
-    cols: 1,
-    initialIndex: 8, // Start on play/pause button
-    onSelect: (index) => {
-      // Sidebar navigation (0-4)
-      if (index >= 0 && index <= 4) {
-        const route = sidebarRoutes[index];
-        if (route !== '#') {
-          setLocation(route);
-        }
-      }
-      // Country selector (5)
-      else if (index === 5) {
-        setIsCountrySelectorOpen(true);
-      }
-      // Previous button (6)
-      else if (index === 6) {
-        handlePrevious();
-      }
-      // Play/Pause button (7)
-      else if (index === 7) {
-        handlePlayPause();
-      }
-      // Next button (8)
-      else if (index === 8) {
-        handleNext();
-      }
-      // Favorite button (9)
-      else if (index === 9) {
-        if (station) {
-          toggleFavorite(station);
-        }
-      }
-      // Similar stations (10+)
-      else if (index >= 10) {
-        const stationIndex = index - 10;
-        const targetStation = similarStations[stationIndex];
-        if (targetStation) {
-          navigateToStation(targetStation);
-        }
-      }
-    },
-    onBack: () => {
-      // Always go back to discover for Samsung TV compatibility
-      console.log('[RadioPlaying] 🔙 Back button - navigating to Discover');
-      setLocation('/discover-no-user');
-    }
-  });
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
@@ -327,8 +277,16 @@ export const RadioPlaying = (): JSX.Element => {
     setFocusIndex(newIndex);
   };
 
-  // Register page-specific key handler
+  // Register RETURN key handler at the TOP - works even on loading screen
   usePageKeyHandler('/radio-playing', (e) => {
+    // Ignore all key events when country selector modal is open
+    if (isCountrySelectorOpen) {
+      console.log('[RadioPlaying] Key event ignored - country selector modal is open');
+      return;
+    }
+
+    const key = (window as any).tvKey;
+    
     // RETURN key handler ALWAYS works, even when loading
     if (e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009) {
       console.log('[RadioPlaying] 🔙 RETURN key pressed - navigating to Discover');
@@ -376,6 +334,58 @@ export const RadioPlaying = (): JSX.Element => {
         break;
     }
   });
+
+  // Focus management with custom navigation
+  const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
+    totalItems,
+    cols: 1,
+    initialIndex: 8, // Start on play/pause button
+    onSelect: (index) => {
+      // Sidebar navigation (0-4)
+      if (index >= 0 && index <= 4) {
+        const route = sidebarRoutes[index];
+        if (route !== '#') {
+          setLocation(route);
+        }
+      }
+      // Country selector (5)
+      else if (index === 5) {
+        setIsCountrySelectorOpen(true);
+      }
+      // Previous button (6)
+      else if (index === 6) {
+        handlePrevious();
+      }
+      // Play/Pause button (7)
+      else if (index === 7) {
+        handlePlayPause();
+      }
+      // Next button (8)
+      else if (index === 8) {
+        handleNext();
+      }
+      // Favorite button (9)
+      else if (index === 9) {
+        if (station) {
+          toggleFavorite(station);
+        }
+      }
+      // Similar stations (10+)
+      else if (index >= 10) {
+        const stationIndex = index - 10;
+        const targetStation = similarStations[stationIndex];
+        if (targetStation) {
+          navigateToStation(targetStation);
+        }
+      }
+    },
+    onBack: () => {
+      // Always go back to discover for Samsung TV compatibility
+      console.log('[RadioPlaying] 🔙 Back button - navigating to Discover');
+      setLocation('/discover-no-user');
+    }
+  });
+
   // Auto-focus sync: When user focuses on RadioPlaying controls (6-9), jump to GlobalPlayer
   useEffect(() => {
     // Only redirect if focus is on player controls (indices 6-9)
@@ -429,7 +439,7 @@ export const RadioPlaying = (): JSX.Element => {
     } else {
       console.log('[RadioPlaying] ⏳ Waiting for station data to auto-play');
     }
-  }, [station, playStation]);
+  }, [station]);
 
   const handlePlayPause = () => {
     togglePlayPause();
@@ -446,7 +456,9 @@ export const RadioPlaying = (): JSX.Element => {
     isNavigatingBackRef.current = true;
     
     console.log('[RadioPlaying] Going to previous station:', previousStationId);
-    setLocation(`/radio-playing?station=${previousStationId}`);
+    const newUrl = `${window.location.pathname}?station=${previousStationId}${window.location.hash}`;
+    window.history.pushState({}, '', newUrl);
+    setUpdateTrigger(prev => prev + 1);
   };
 
   const handleNext = () => {
@@ -457,13 +469,17 @@ export const RadioPlaying = (): JSX.Element => {
     
     const nextStation = similarStations[0];
     console.log('[RadioPlaying] Going to next station:', nextStation.name, nextStation._id);
-    setLocation(`/radio-playing?station=${nextStation._id}`);
+    const newUrl = `${window.location.pathname}?station=${nextStation._id}${window.location.hash}`;
+    window.history.pushState({}, '', newUrl);
+    setUpdateTrigger(prev => prev + 1);
   };
 
   const navigateToStation = (targetStation: Station) => {
     console.log('[RadioPlaying] Navigating to station:', targetStation.name, targetStation._id);
     playStation(targetStation);
-    setLocation(`/radio-playing?station=${targetStation._id}`);
+    const newUrl = `${window.location.pathname}?station=${targetStation._id}${window.location.hash}`;
+    window.history.pushState({}, '', newUrl);
+    setUpdateTrigger(prev => prev + 1);
   };
 
   // Show error state
