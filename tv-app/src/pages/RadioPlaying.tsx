@@ -134,7 +134,7 @@ export const RadioPlaying = (): JSX.Element => {
     enabled: !!stationId,
     retry: 2,
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
-    cacheTime: 24 * 60 * 60 * 1000, // 24 hours
+    gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
   const station = stationData?.station;

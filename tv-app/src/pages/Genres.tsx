@@ -37,7 +37,7 @@ export const Genres = (): JSX.Element => {
       return result;
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
-    cacheTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
   // Extract genres from API response (NEVER hardcoded!)

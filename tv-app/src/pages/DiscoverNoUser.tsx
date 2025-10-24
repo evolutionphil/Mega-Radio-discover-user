@@ -46,7 +46,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       return megaRadioApi.getAllGenres(selectedCountryCode);
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
-    cacheTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
   // Fetch popular stations filtered by selected country (or global if GLOBAL selected)
@@ -62,7 +62,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       return megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode });
     },
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
-    cacheTime: 24 * 60 * 60 * 1000, // 24 hours
+    gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
   // Fetch initial 100 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
@@ -78,7 +78,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       return megaRadioApi.getWorkingStations({ limit: 100, country: selectedCountryCode, offset: 0 });
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
-    cacheTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
   const genres = genresData?.genres || []; // Show ALL genres, not just 8
