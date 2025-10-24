@@ -41,7 +41,11 @@ export const Splash = (): JSX.Element => {
     <div className="bg-[#0e0e0e] absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-splash">
       {/* Animated Waves - Center Background */}
       <div 
-        className="absolute inset-[34.91%_41.51%] animate-[flowingWaves_6s_ease-in-out_infinite]"
+        className="absolute inset-[34.91%_41.51%] animate-pulse"
+        style={{ 
+          animationDuration: '3s',
+          animationTimingFunction: 'ease-in-out'
+        }}
       >
         <img 
           alt="" 
@@ -148,29 +152,6 @@ export const Splash = (): JSX.Element => {
           100% {
             opacity: 0.15;
             transform: translateY(0px) scale(1);
-          }
-        }
-
-        @keyframes flowingWaves {
-          0% {
-            opacity: 0.3;
-            transform: scale(1) rotate(0deg) translateY(0px);
-          }
-          25% {
-            opacity: 0.45;
-            transform: scale(1.08) rotate(1deg) translateY(-8px);
-          }
-          50% {
-            opacity: 0.5;
-            transform: scale(1.15) rotate(0deg) translateY(-12px);
-          }
-          75% {
-            opacity: 0.45;
-            transform: scale(1.08) rotate(-1deg) translateY(-8px);
-          }
-          100% {
-            opacity: 0.3;
-            transform: scale(1) rotate(0deg) translateY(0px);
           }
         }
       `}</style>
