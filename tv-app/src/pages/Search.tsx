@@ -408,7 +408,7 @@ export const Search = (): JSX.Element => {
             onBlur={() => {
               console.log('[Search] 👋 Input blurred - keyboard should hide');
             }}
-            placeholder="Kral Ra"
+            placeholder={t('search_placeholder') || 'Search...'}
             className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[650px] placeholder:text-[rgba(255,255,255,0.5)]"
           />
           <div className="absolute left-[32.43px] size-[31.134px] top-[29.84px] pointer-events-none">
@@ -452,7 +452,7 @@ export const Search = (): JSX.Element => {
       {/* No results message */}
       {searchQuery.length > 0 && visibleSearchResults.length === 0 && (
         <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[246px] not-italic text-[22px] text-[rgba(255,255,255,0.5)] top-[259px]">
-          No stations found for "{searchQuery}"
+          {t('no_results_found') || `No stations found for "${searchQuery}"`}
         </p>
       )}
 
