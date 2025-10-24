@@ -148,8 +148,29 @@ const LANGUAGE_TO_COUNTRY: Record<string, { name: string; code: string }> = {
 export interface GeoLocationResult {
   countryName: string;
   countryCode: string;
-  detectionMethod: 'samsung-tv' | 'lg-webos' | 'language-fallback' | 'default';
+  detectionMethod: 'tizen-systeminfo' | 'samsung-tv' | 'lg-webos' | 'language-fallback' | 'default';
   success: boolean;
+}
+
+/**
+ * Detect country using Tizen SystemInfo LOCALE API (official method)
+ * Note: This is synchronous check only - does not use async callback
+ */
+function detectTizenSystemInfoCountry(): GeoLocationResult | null {
+  try {
+    // Check if Tizen SystemInfo API is available
+    if (typeof window.tizen !== 'undefined' && window.tizen.systeminfo) {
+      // Note: We can't use async getPropertyValue here, but we can try to access
+      // the locale directly if it's cached or available synchronously
+      console.log('[Geolocation] Tizen SystemInfo API detected (async API - skipping synchronous check)');
+      // Skip this method for now - would require making detectCountry async
+      // which would break the current architecture
+    }
+  } catch (error) {
+    console.error('[Geolocation] Tizen SystemInfo check failed:', error);
+  }
+  
+  return null;
 }
 
 /**
@@ -349,19 +370,26 @@ function detectLanguageBasedCountry(): GeoLocationResult {
 export function detectCountry(): GeoLocationResult {
   console.log('[Geolocation] 🌍 Starting hybrid country detection...');
   
-  // Priority 1: Samsung Tizen native API (instant, accurate)
+  // Priority 1: Tizen SystemInfo LOCALE API (official Tizen method)
+  // Note: Currently skipped due to async nature - would require architecture change
+  const tizenSystemInfoResult = detectTizenSystemInfoCountry();
+  if (tizenSystemInfoResult) {
+    return tizenSystemInfoResult;
+  }
+  
+  // Priority 2: Samsung Tizen productinfo API (instant, accurate)
   const samsungResult = detectSamsungTizenCountry();
   if (samsungResult) {
     return samsungResult;
   }
   
-  // Priority 2: LG webOS native API (instant, accurate)
+  // Priority 3: LG webOS native API (instant, accurate)
   const lgResult = detectLGWebOSCountry();
   if (lgResult) {
     return lgResult;
   }
   
-  // Priority 3: Language-based fallback (always works)
+  // Priority 4: Language-based fallback (always works)
   return detectLanguageBasedCountry();
 }
 
@@ -376,9 +404,16 @@ export function getCountryFlagUrl(countryCode: string): string {
   return `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
 }
 
-// Type declarations for Samsung/LG APIs
+// Type declarations for Samsung/LG/Tizen APIs
 declare global {
   interface Window {
+    tizen?: {
+      systeminfo?: {
+        getPropertyValue: (property: string, successCallback: (value: any) => void, errorCallback?: (error: Error) => void) => void;
+        addPropertyValueChangeListener: (property: string, successCallback: (value: any) => void, errorCallback?: (error: Error) => void) => number;
+        removePropertyValueChangeListener: (listenerId: number) => void;
+      };
+    };
     webapis?: {
       productinfo?: {
         getCountryCode: () => string;
