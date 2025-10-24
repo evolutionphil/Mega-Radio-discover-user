@@ -74,6 +74,16 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.22 (GUIDE BACKGROUND FIX):
+**Fixed Guide Pages Background Positioning** - Background image now aligns correctly from the top
+   - Created production build with timestamp: `1761313110283`
+   - Bundle: `tv-app/assets/index-1761313110283.js` (427.50KB - full React app)
+   - **BUG FIX:**
+     - ✅ Changed background position from `50%` (center) to `center top`
+     - ✅ Fixed all 4 guide pages (Guide1, Guide2, Guide3, Guide4)
+     - ✅ Background image now displays correctly aligned to the top
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.21 (GLOBAL COUNTRY SUPPORT):
 **Added Global Country Option** - Users can now browse stations from all countries worldwide
    - Created production build with timestamp: `1761312751978`
