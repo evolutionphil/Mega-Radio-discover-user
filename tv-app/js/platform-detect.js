@@ -29,4 +29,28 @@
         isWeb: function() { return window.platform === 'web'; },
         getPlatform: function() { return window.platform; }
     };
+    
+    // Samsung TV-specific initialization
+    if (window.platform === 'samsung') {
+        console.log('[Samsung TV] Initializing Samsung-specific features...');
+        
+        // Disable screensaver (important for radio playback)
+        try {
+            if (typeof webapis !== 'undefined' && webapis.appcommon && webapis.appcommon.setScreenSaver) {
+                webapis.appcommon.setScreenSaver(
+                    webapis.appcommon.AppCommonScreenSaverState.SCREEN_SAVER_OFF,
+                    function(result) {
+                        console.log('[Samsung TV] ✅ Screensaver disabled successfully:', result);
+                    },
+                    function(error) {
+                        console.warn('[Samsung TV] ⚠️ Failed to disable screensaver:', JSON.stringify(error));
+                    }
+                );
+            } else {
+                console.warn('[Samsung TV] ⚠️ webapis.appcommon.setScreenSaver not available');
+            }
+        } catch (e) {
+            console.error('[Samsung TV] ❌ Error disabling screensaver:', e);
+        }
+    }
 })();
