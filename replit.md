@@ -70,6 +70,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.29 (IMPROVED GLOBE ICON):
+**Enhanced Global Country Icon** - Global option now has a beautiful gradient globe icon
+   - Created production build with timestamp: `1761314194082`
+   - Bundle: `tv-app/assets/index-1761314194082.js` (430.07KB - full React app)
+   - **UI IMPROVEMENT:**
+     - ✅ Globe icon now features a blue gradient (light to dark blue)
+     - ✅ Added meridians and parallels for better globe representation
+     - ✅ More visually appealing and recognizable as a world/global icon
+     - ✅ Consistent across CountrySelector and CountryTrigger components
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.28 (NO AUTO-PLAY BY DEFAULT):
 **Auto-Play Default Changed to "None"** - App no longer auto-plays any station on startup
    - Created production build with timestamp: `1761314020982`
