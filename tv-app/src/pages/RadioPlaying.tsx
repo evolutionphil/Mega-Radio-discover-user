@@ -27,9 +27,6 @@ export const RadioPlaying = (): JSX.Element => {
   const stationHistoryRef = useRef<string[]>([]);
   const isNavigatingBackRef = useRef(false);
   
-  // Force update trigger for station changes
-  const [updateTrigger, setUpdateTrigger] = useState(0);
-  
   // Country selector state
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   
@@ -79,7 +76,7 @@ export const RadioPlaying = (): JSX.Element => {
 
     console.log('[RadioPlaying] ❌ No station ID found in URL - returning null');
     return null;
-  }, [location, updateTrigger]);
+  }, [location]);
   
   // Track station history when station ID changes
   useEffect(() => {
@@ -456,9 +453,7 @@ export const RadioPlaying = (): JSX.Element => {
     isNavigatingBackRef.current = true;
     
     console.log('[RadioPlaying] Going to previous station:', previousStationId);
-    const newUrl = `${window.location.pathname}?station=${previousStationId}${window.location.hash}`;
-    window.history.pushState({}, '', newUrl);
-    setUpdateTrigger(prev => prev + 1);
+    setLocation(`/radio-playing?station=${previousStationId}`);
   };
 
   const handleNext = () => {
@@ -469,17 +464,13 @@ export const RadioPlaying = (): JSX.Element => {
     
     const nextStation = similarStations[0];
     console.log('[RadioPlaying] Going to next station:', nextStation.name, nextStation._id);
-    const newUrl = `${window.location.pathname}?station=${nextStation._id}${window.location.hash}`;
-    window.history.pushState({}, '', newUrl);
-    setUpdateTrigger(prev => prev + 1);
+    setLocation(`/radio-playing?station=${nextStation._id}`);
   };
 
   const navigateToStation = (targetStation: Station) => {
     console.log('[RadioPlaying] Navigating to station:', targetStation.name, targetStation._id);
     playStation(targetStation);
-    const newUrl = `${window.location.pathname}?station=${targetStation._id}${window.location.hash}`;
-    window.history.pushState({}, '', newUrl);
-    setUpdateTrigger(prev => prev + 1);
+    setLocation(`/radio-playing?station=${targetStation._id}`);
   };
 
   // Show error state

@@ -521,6 +521,14 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
+  // Auto-scroll genre pills horizontally when focused
+  useEffect(() => {
+    if (focusIndex >= genresStart && focusIndex <= genresEnd) {
+      const genreIndex = focusIndex - genresStart;
+      scrollGenreIntoView(genreIndex);
+    }
+  }, [focusIndex, genresStart, genresEnd]);
+
   // Auto-scroll focused element into view
   useEffect(() => {
     if (!scrollContainerRef.current) return;

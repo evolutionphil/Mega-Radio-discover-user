@@ -71,6 +71,15 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Development - Critical Bug Fixes (React Error #310 + Genre Scrolling):
+**Fixed infinite render loop and genre navigation issues**
+   - ✅ **React Error #310 Fixed**: Removed `updateTrigger` useState causing infinite loop in RadioPlaying.tsx
+   - ✅ **Navigation Fixed**: Changed from `window.history.pushState()` to `setLocation()` for proper routing
+   - ✅ **Genre Scrolling Fixed**: Added useEffect to auto-scroll genre pills horizontally when focused
+   - ✅ **Black Screen Resolved**: RadioPlaying page now renders correctly without crashes
+   - **IMPACT:** Users can now navigate to station detail pages without black screen crashes
+   - **TESTING:** Works in development environment, ready for production build
+
 ### Development - Tizen SystemInfo LOCALE API Activated:
 **Added official Tizen geolocation API as primary detection method**
    - ✅ **Tizen SystemInfo API**: Now uses `tizen.systeminfo.getPropertyValue("LOCALE")` to get country directly from TV settings
