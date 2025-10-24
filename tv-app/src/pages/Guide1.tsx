@@ -11,11 +11,6 @@ export const Guide1 = (): JSX.Element => {
   // Component lifecycle logging
   useEffect(() => {
     console.log('[Guide1] 🎬 Component mounted');
-    console.log('[Guide1] 📂 Image paths to load:', {
-      background: '/images/discover-background.png',
-      arrow: '/images/arrow.svg',
-      icon: '/images/radio-icon.svg'
-    });
     return () => {
       console.log('[Guide1] 👋 Component unmounting');
     };
@@ -67,16 +62,12 @@ export const Guide1 = (): JSX.Element => {
         onClick={handleClick}
       >
         {/* Background Image with Dark Overlay */}
-        <div className="absolute h-[1897px] left-0 top-0 w-[1920px]">
-          <img 
-            alt="" 
-            className="absolute inset-0 w-full h-full object-cover" 
-            src={assetPath("images/discover-background.png")}
-            onLoad={() => handleImageLoad('discover-background.png')}
-            onError={() => handleImageError('discover-background.png', assetPath('images/discover-background.png'))}
-          />
-          <div className="absolute bg-[rgba(0,0,0,0.7)] inset-0" />
-        </div>
+        <div 
+          className="absolute h-[1897px] left-0 top-0 w-[1920px]"
+          style={{
+            background: `linear-gradient(0deg, rgba(0, 0, 0, 0.70) 0%, rgba(0, 0, 0, 0.70) 100%), url(${assetPath("images/discover-background.png")}) lightgray 50% / cover no-repeat`
+          }}
+        />
 
         {/* Highlighted Discover Button */}
         <div className="absolute bg-[rgba(255,255,255,0.2)] left-[64px] overflow-clip rounded-[10px] size-[98px] top-[242px] z-20" data-testid="button-discover-highlighted">
