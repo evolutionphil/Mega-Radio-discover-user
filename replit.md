@@ -74,26 +74,34 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
-### Samsung TV Build v3.18 (GLOBAL PLAYER GLOW EFFECTS):
-**Enhanced Global Player Focus States with Pink Glow** - All global player buttons now have beautiful glow effects when focused
-   - Created production build with timestamp: `1761309653486`
-   - Bundle: `tv-app/assets/index-1761309653486.js` (427.33KB - full React app)
-   - **FOCUS ENHANCEMENTS:**
-     - ✅ Added pink glow effect to ALL global player buttons when focused
-     - ✅ Dual box-shadow: `0 0 30px rgba(255,65,153,0.8)` + `0 0 60px rgba(255,65,153,0.5)`
-     - ✅ Play/Pause button: 4px pink border when focused
-     - ✅ Next button: 4px pink border when focused
-     - ✅ Previous button: Already has pink border, gains glow
-     - ✅ Favorite button: Pink border + glow when focused (if not favorited)
-     - ✅ Equalizer button: Pink border + glow when focused (if not playing)
-     - ✅ Smooth 0.3s transitions for all focus states
+### Samsung TV Build v3.19 (PAGE_UP/DOWN + GLOW FIX):
+**Fixed Global Player Navigation & Focus Glow** - PAGE_UP/DOWN keys jump to player, CSS-based glow effects
+   - Created production build with timestamp: `1761309977335`
+   - Bundle: `tv-app/assets/index-1761309977335.js` (426.43KB - full React app)
+   - **KEY NAVIGATION FIXES:**
+     - ✅ PAGE_UP (33) and PAGE_DOWN (34) now jump to global player
+     - ✅ CH_UP (427) and CH_DOWN (428) also jump to global player
+     - ✅ All keys focus the play/pause button of global player bar
+     - ✅ Works on DiscoverNoUser page (more pages to follow)
+   - **FOCUS GLOW IMPROVEMENTS:**
+     - ✅ Switched to CSS focus pseudo-classes (`:focus`) for better TV compatibility
+     - ✅ Added `tabIndex={0}` to all global player buttons for proper DOM focus
+     - ✅ Pink glow: `shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)]`
+     - ✅ Play/Pause: 4px pink border + glow when focused
+     - ✅ Next: 4px pink border + glow when focused
+     - ✅ Previous: Pink glow (already has pink border)
+     - ✅ Favorite: Pink border + glow when focused (if not favorited)
+     - ✅ Equalizer: Pink border + glow when focused (if not playing)
+   - **PLAYBACK CONTINUITY:**
+     - ✅ Verified back button on RadioPlaying page does NOT stop playback
+     - ✅ GlobalPlayerContext continues playing when navigating between pages
    - **Technical Details:**
-     - Uses onFocus/onBlur event handlers for dynamic style updates
-     - Maintains pulse animation while adding glow effect
-     - Compatible with TV spatial navigation system
+     - Uses Tailwind `focus:` pseudo-classes instead of JavaScript event handlers
+     - More compatible with TV spatial navigation system
+     - Maintains smooth transitions and pulse animations
    - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
 
-### Samsung TV Build v3.17 (CH_UP/CH_DOWN GLOBAL PLAYER):
+### Samsung TV Build v3.18 (GLOBAL PLAYER GLOW EFFECTS - DEPRECATED):
 **Added CH_UP/CH_DOWN Keys to Jump to Global Player** - Samsung TV remote channel keys now jump to global player controls
    - Created production build with timestamp: `1761309508602`
    - Bundle: `tv-app/assets/index-1761309508602.js` (425.88KB - full React app)
