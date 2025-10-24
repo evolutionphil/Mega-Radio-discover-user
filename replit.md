@@ -2,7 +2,7 @@
 
 ## Overview
 
-Mega Radio is a full-stack web radio streaming application designed for TV and large screen interfaces, offering access to global radio stations from over 238 countries. It aims to provide intuitive onboarding, station discovery, favorites management, and continuous audio playback, optimized for an immersive television experience. The project's ambition is to deliver a high-quality radio streaming service on smart TVs with significant market potential.
+Mega Radio is a full-stack web radio streaming application optimized for TV and large screen interfaces. It provides access to global radio stations from over 238 countries with intuitive onboarding, station discovery, favorites management, and continuous audio playback. The project aims to deliver a high-quality radio streaming service on smart TVs with significant market potential.
 
 ## User Preferences
 
@@ -12,7 +12,7 @@ Preferred communication style: Simple, everyday language.
 
 ### UI/UX Decisions
 
-The application is optimized for TV with a fixed 1920x1080px resolution, featuring large, easily focusable elements and an auto-hide header with smooth transitions. It utilizes Shadcn/ui components (based on Radix UI primitives) and Tailwind CSS, adhering to a "new-york" design system with custom CSS variables. The layout uses a fixed `inset-0 w-[1920px] h-[1080px] overflow-hidden` CSS property for consistent rendering.
+The application is optimized for TV with a fixed 1920x1080px resolution, utilizing large, easily focusable elements and an auto-hide header with smooth transitions. It uses Shadcn/ui components (based on Radix UI primitives) and Tailwind CSS, following a "new-york" design system with custom CSS variables. The layout uses a fixed `inset-0 w-[1920px] h-[1080px] overflow-hidden` CSS property for consistent rendering. Focus glow effects are implemented using CSS `:focus` and `tabIndex={0}`.
 
 ### Technical Implementations
 
@@ -30,30 +30,27 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 **Platform Compatibility:**
 -   **Unified TV Build:** A single `tv-app/` folder contains configurations for both Samsung Tizen (targeting Chromium 76 with polyfills) and LG webOS (leveraging HTML5 Audio/Video and `webOSTVjs-1.2.0` SDK).
 -   **Platform Detection:** Automatic detection via user agent.
--   **Remote Control Navigation:** Implements an LGTV focus pattern using `useFocusManager`, `usePageKeyHandler`, and `getFocusClasses` for dynamic adaptation to layouts, including specific fixes for sidebar focus, country selector interactions, and two-step return button behavior for modals and keyboards. PAGE_UP/DOWN and CH_UP/CH_DOWN keys jump to the global player.
+-   **Remote Control Navigation:** Implements an LGTV focus pattern using `useFocusManager`, `usePageKeyHandler`, and `getFocusClasses` for dynamic adaptation, including specific fixes for sidebar focus, country selector interactions, and two-step return button behavior. PAGE_UP/DOWN and CH_UP/CH_DOWN keys jump to the global player.
 -   **Audio Playback:** A unified interface manages `webapis.avplay` for Tizen and HTML5 Audio/Video for webOS/browsers.
 -   **TV-Specific Styling:** Custom CSS handles focus states, hidden cursors, scrollbar hiding, and platform-specific visibility.
 
 **Application Flow:**
 -   **Onboarding:** Guided tour for new users.
 -   **Main Pages:** Discover, Genres, Search, Favorites, Settings, and a full-screen Radio Playing interface.
--   **Auto-Play:** Configurable startup modes (Last Played, Random, Favorite, None).
+-   **Auto-Play:** Configurable startup modes (Last Played, Random, Favorite, None), with "None" as the default.
 -   **Localization & Internationalization:** Supports 48 languages via API translations and automatic language detection.
--   **Global Country Support:** Defaults to "Global" country if no country is saved, allowing browsing of worldwide stations and genres.
+-   **Global Country Support:** Defaults to "Global" country if no country is saved, allowing browsing of worldwide stations and genres, with a dedicated globe icon.
 
 ### System Design Choices
 
 **Global Player:**
 -   A `GlobalPlayerContext` ensures continuous audio playback and manages a persistent player bar, fetching "Now Playing" metadata from themegaradio.com API every 30 seconds.
--   Metadata is displayed in pink (#ff4199).
+-   Metadata is displayed in pink (#ff4199) and truncates long song titles.
 -   The global player bar is automatically hidden on the RadioPlaying page to avoid duplication.
 -   Playback continues uninterrupted when navigating between pages.
 
 **Infinite Scrolling:**
 -   Implemented true lazy loading with API pagination for station lists (Discover, GenreList), fetching 100 stations per batch with offset-based pagination.
-
-**Focus Glow Effects:**
--   Uses CSS focus pseudo-classes (`:focus`) and `tabIndex={0}` for improved TV compatibility and glow effects on interactive elements.
 
 ## External Dependencies
 
@@ -67,140 +64,22 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+-   **Analytics:** Google Analytics 4.
 
 ## Recent Changes (October 24, 2025 - Latest)
 
-### Samsung TV Build v3.36 (HORIZONTAL GENRE CARDS):
-**Genre Cards Now Horizontal Layout** - Genre name left-aligned with station count on same line
-   - Created production build with timestamp: `1761320699878`
-   - Bundle: `tv-app/assets/index-1761320699878.js` (430.18KB - full React app)
-   - **UI IMPROVEMENT:**
-     - ✅ **Horizontal Genre Layout**: Genre name now left-aligned with station count on the same line
-     - ✅ **Cleaner Design**: More compact and professional card layout
-     - ✅ **Better Space Utilization**: Genre name uses flex-1 to take available space, station count right-aligned
-   - **APPLIES TO:**
-     - Popular Genres Row 1 (4 cards)
-     - Popular Genres Row 2 (4 cards)
-     - All Genres Grid (6 columns, scrollable)
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.35 (GOOGLE ANALYTICS FIX + COUNTRY AUTO-DETECTION):
-**Fixed Google Analytics + Country Auto-Detection** - GA now properly tracks events, country detection working
-   - Created production build with timestamp: `1761320575707`
-   - Bundle: `tv-app/assets/index-1761320575707.js` (430.33KB - full React app)
-   - **CRITICAL FIXES:**
-     - ✅ **Google Analytics Working**: Fixed build script to include GA Measurement ID in bundle (previously missing)
-     - ✅ **GA Tracking Active**: Now properly tracks page views, station plays, favorites, country changes, and errors
-     - ✅ **Country Auto-Detection**: Now properly detects country from browser/TV language on first visit
-     - ✅ **Timing Issue Resolved**: Fixed race condition where detection values weren't available during initial state setup
-     - ✅ **Respects User Choice**: Once user manually selects a country, it persists and doesn't get overridden
-     - ✅ **Global as Fallback**: Only uses Global when no language/country can be detected
-   - **HOW IT WORKS:**
-     - First visit (no localStorage): Auto-detects from browser/TV language → e.g., German → Germany
-     - Subsequent visits (has localStorage): Uses saved country → Respects user's manual selection
-     - Detection order: localStorage > Detected Country > Global (fallback)
-   - **TESTING:** To test auto-detection, clear localStorage: `localStorage.clear()` in browser console
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.34 (GENRE NAME TRUNCATION):
-**Genre Name Truncation Fix** - Long genre names now truncate with ellipsis to prevent text overflow
-   - Created production build with timestamp: `1761320216788`
-   - Bundle: `tv-app/assets/index-1761320216788.js` (430.38KB - full React app)
-   - **UI FIX:**
-     - ✅ **Genre Name Truncation**: All genre cards now truncate long names with ellipsis (e.g., "Club dance electronic house...")
-     - ✅ **Prevents Text Wrapping**: Genre names no longer break card layout by wrapping to multiple lines
-     - ✅ **Consistent Design**: All three genre sections (Popular Row 1, Popular Row 2, All Genres grid) now truncate uniformly
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.33 (CRITICAL FIXES):
-**Fixed Genre Stations, Flag Icon, Auto-Detection, and Station Counts** - Resolved five major issues
-   - Created production build with timestamp: `1761320082821`
-   - Bundle: `tv-app/assets/index-1761320082821.js` (430.33KB - full React app)
-   - **CRITICAL FIXES:**
-     - ✅ **Genre List Global Fix**: Genre stations now load for Global country (API call no longer sends `country=GLOBAL` parameter, fetches all stations worldwide)
-     - ✅ **Flag Icon Fix**: Global country now shows gradient globe SVG instead of trying to load non-existent `flagcdn.com/w40/global.png`
-     - ✅ **Auto-Detection Fix**: App now detects language/country on first visit (e.g., German language → Germany country), Global is only used as fallback when no detection is possible
-     - ✅ **Station Count Fix**: Removed confusing "0 Sender" display in country selector (API doesn't provide station counts per country)
-     - ✅ **Genres Country Selection Fix**: Changing country from Genres page now properly updates and refetches genre list
-   - **UI IMPROVEMENT:**
-     - ✅ **Updated Globe Icon**: Now using a beautiful cyan/lime globe icon for Global country (replaces gradient SVG)
-   - **BEHAVIOR CHANGE:**
-     - App respects detected browser language and auto-selects country
-     - Global is no longer the default - it's only for when detection fails
-     - Genre lists with Global country now show all worldwide stations (not filtered)
-   - **CSP UPDATED:**
-     - Added Google Analytics domains to Content Security Policy in `config.xml` and `index.html`
-     - Fixed `script-src` to allow `https://www.googletagmanager.com`
-     - Fixed `connect-src` to allow analytics data transmission
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.32 (GOOGLE ANALYTICS INTEGRATION):
-**Google Analytics 4 Integration** - Real-time analytics tracking for users, stations, and errors
-   - Created production build with timestamp: `1761318681367` (SUPERSEDED by v3.33)
-   - Bundle: `tv-app/assets/index-1761318681367.js` (432.65KB - full React app)
-   - **ANALYTICS FEATURES:**
-     - ✅ Automatic page view tracking on all route changes (including initial page load)
-     - ✅ Station play events tracked with country and genre metadata
-     - ✅ Favorite add/remove events tracked with station names
-     - ✅ Country selection changes tracked
-     - ✅ Error tracking for audio playback failures and system errors
-     - ✅ Script load error handling for Samsung TV compatibility
-     - ✅ Privacy-compliant: no user IDs or sensitive data tracked
-   - **SETUP:** Google Analytics Measurement ID configured via `VITE_GA_MEASUREMENT_ID` secret
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.31 (TRUNCATE METADATA):
-**Truncated Now Playing Metadata** - Song names and metadata now truncate to prevent overflow
-   - Created production build with timestamp: `1761314580114`
-   - Bundle: `tv-app/assets/index-1761314580114.js` (430.26KB - full React app)
-   - **UI FIX:**
-     - ✅ RadioPlaying page: Metadata max-width set to 700px with truncate
-     - ✅ GlobalPlayer bar: Metadata max-width set to 500px with truncate
-     - ✅ Long song titles now show with ellipsis: "Artist Name - Very Long Song Title That Would..."
-     - ✅ Country name in global player uses whitespace-nowrap to prevent wrapping
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.30 (REAL STATION COUNTS):
-**Fixed Station Counts Display** - All countries now show real station counts from API, Global shows actual total
-   - Created production build with timestamp: `1761314382921`
-   - Bundle: `tv-app/assets/index-1761314382921.js` (430.21KB - full React app)
-   - **DATA FIX:**
-     - ✅ Global now shows real total station count (sum of all countries)
-     - ✅ All countries display their actual station counts from API (even if 0)
-     - ✅ Removed hardcoded 999999 for Global
-     - ✅ Added number formatting with commas (e.g., "50,000 stations")
-     - ✅ Station counts always visible when available from API
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.29 (IMPROVED GLOBE ICON):
-**Enhanced Global Country Icon** - Global option now has a beautiful gradient globe icon
-   - Created production build with timestamp: `1761314194082`
-   - Bundle: `tv-app/assets/index-1761314194082.js` (430.07KB - full React app)
-   - **UI IMPROVEMENT:**
-     - ✅ Globe icon now features a blue gradient (light to dark blue)
-     - ✅ Added meridians and parallels for better globe representation
-     - ✅ More visually appealing and recognizable as a world/global icon
-     - ✅ Consistent across CountrySelector and CountryTrigger components
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.28 (NO AUTO-PLAY BY DEFAULT):
-**Auto-Play Default Changed to "None"** - App no longer auto-plays any station on startup
-   - Created production build with timestamp: `1761314020982`
-   - Bundle: `tv-app/assets/index-1761314020982.js` (428.51KB - full React app)
-   - **BEHAVIOR CHANGE:**
-     - ✅ Default auto-play mode changed from "last-played" to "none"
-     - ✅ App will not automatically start playing music on first launch
-     - ✅ Users must manually select and play a station
-     - ✅ Setting can still be changed to "last-played", "random", or "favorite" in Settings
-   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
-
-### Samsung TV Build v3.27 (SHORTER STATION NAMES):
-**Shortened Station Name Display** - Station names now truncate earlier to prevent overflow
-   - Created production build with timestamp: `1761313868353`
-   - Bundle: `tv-app/assets/index-1761313868353.js` (428.52KB - full React app)
-   - **UI FIX:**
-     - ✅ RadioPlaying page: Station name max-width reduced from 1200px to 600px
-     - ✅ GlobalPlayer bar: Station name max-width reduced from 800px to 450px
-     - ✅ Long station names now show as: "WORLD CLUB DOME Radio - Das offizielle Radio ..."
-     - ✅ Better readability on TV screens with ellipsis truncation
+### Samsung TV Build v3.38 (SCROLLABLE SIMILAR & POPULAR SECTIONS):
+**Made Similar & Popular Radios Scrollable** - Both sections now in a single scrollable container
+   - Created production build with timestamp: `1761321263994`
+   - Bundle: `tv-app/assets/index-1761321263994.js` (432.13KB - full React app)
+   - **IMPROVEMENT:**
+     - ✅ **Scrollable Container**: Both Similar and Popular Radios sections now in a single 521px-high scrollable area
+     - ✅ **Vertical Scrolling**: Users can scroll down to see all stations (20 Similar + 20 Popular)
+     - ✅ **Full-Size Cards**: Back to 200px x 264px cards with 132px logos (matching Discover page design)
+     - ✅ **Clean Layout**: Sections stack vertically with proper spacing between them
+   - **LAYOUT:**
+     - Container: left-236px, top-559px, width-1610px, height-521px
+     - Similar Radios: First section with title + horizontal scroll
+     - Popular Radios: Second section below Similar with title + horizontal scroll
+     - Each horizontal row scrolls left/right, container scrolls up/down
    - **DEPLOY:** Entire `tv-app/` folder to Samsung TV

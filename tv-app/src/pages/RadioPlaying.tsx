@@ -197,8 +197,32 @@ export const RadioPlaying = (): JSX.Element => {
     }
   }, [similarStations]);
 
-  // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (increased to 20)
-  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20);
+  // Fetch popular stations from GLOBAL (random selection)
+  const { data: popularData } = useQuery({
+    queryKey: ['popular-global-stations', stationId],
+    queryFn: async () => {
+      const data = await megaRadioApi.getPopularStations({ 
+        limit: 100, 
+        // No country filter - get global popular stations
+      });
+      // Filter out current station and shuffle for random variety
+      const filtered = data.stations.filter(s => s._id !== stationId);
+      // Shuffle array to get different stations each time
+      for (let i = filtered.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+      }
+      return { stations: filtered };
+    },
+    enabled: !!stationId,
+    staleTime: 0, // Always fetch fresh for randomness
+    gcTime: 0,
+  });
+
+  const popularStations = popularData?.stations || [];
+
+  // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (20) + popular stations (20)
+  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20) + Math.min(popularStations.length, 20);
 
   // Define sidebar routes (NO PROFILE - 5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -522,7 +546,7 @@ export const RadioPlaying = (): JSX.Element => {
   const countryCode = station.countrycode || station.countryCode || 'XX';
 
   return (
-    <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-y-auto scrollbar-hide" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
+    <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
 
       {/* Logo */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
@@ -690,50 +714,97 @@ export const RadioPlaying = (): JSX.Element => {
         </div>
       </div>
 
-      {/* Similar Radios Section */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[559px]">
-        {t('similar_radios') || 'Similar Radios'}
-      </p>
-
-      {/* Similar Radios Horizontal Scroll - INCREASED TO 20 stations */}
+      {/* Scrollable Content Area for Similar & Popular Radios */}
       <div 
         ref={similarScrollRef}
-        className="absolute left-[236px] top-[633px] flex overflow-x-auto scrollbar-hide w-[1610px] scroll-smooth"
+        className="absolute left-[236px] top-[559px] w-[1610px] h-[521px] overflow-y-auto overflow-x-hidden scrollbar-hide"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {similarStations.slice(0, 20).map((similarStation, index) => {
-          const focusIdx = 10 + index;
-          return (
-          <div
-            key={similarStation._id || index}
-            className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] mr-[24px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
-              isFocused(focusIdx) 
-                ? 'border-[4px] border-[#ff4199] shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
-                : 'border-[4px] border-transparent'
-            }`}
-            style={{ boxShadow: isFocused(focusIdx) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
-            data-testid={`card-similar-${similarStation._id}`}
-            onClick={() => navigateToStation(similarStation)}
-          >
-            <div className="bg-white mx-auto mt-[34px] overflow-clip rounded-[6.6px] size-[132px]">
-              <img
-                className="w-full h-full object-cover"
-                alt={similarStation.name}
-                src={getStationImage(similarStation)}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-                }}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
-              {similarStation.name}
-            </p>
-            <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
-              {getStationTags(similarStation)[0] || similarStation.country || 'Radio'}
-            </p>
+        <div className="relative pb-[40px]">
+          {/* Similar Radios Section */}
+          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal not-italic text-[32px] text-white mb-[16px]">
+            {t('similar_radios') || 'Similar Radios'}
+          </p>
+
+          {/* Similar Radios Horizontal Scroll */}
+          <div className="flex overflow-x-auto scrollbar-hide scroll-smooth mb-[60px]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {similarStations.slice(0, 20).map((similarStation, index) => {
+              const focusIdx = 10 + index;
+              return (
+              <div
+                key={similarStation._id || index}
+                className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] mr-[24px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
+                  isFocused(focusIdx) 
+                    ? 'border-[4px] border-[#ff4199] shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
+                    : 'border-[4px] border-transparent'
+                }`}
+                style={{ boxShadow: isFocused(focusIdx) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
+                data-testid={`card-similar-${similarStation._id}`}
+                onClick={() => navigateToStation(similarStation)}
+              >
+                <div className="bg-white mx-auto mt-[34px] overflow-clip rounded-[6.6px] size-[132px]">
+                  <img
+                    className="w-full h-full object-cover"
+                    alt={similarStation.name}
+                    src={getStationImage(similarStation)}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                    }}
+                  />
+                </div>
+                <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
+                  {similarStation.name}
+                </p>
+                <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
+                  {getStationTags(similarStation)[0] || similarStation.country || 'Radio'}
+                </p>
+              </div>
+              )
+            })}
           </div>
-          )
-        })}
+
+          {/* Popular Radios Section */}
+          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal not-italic text-[32px] text-white mb-[16px]">
+            {t('popular_radios') || 'Popular Radios'}
+          </p>
+
+          {/* Popular Radios Horizontal Scroll */}
+          <div className="flex overflow-x-auto scrollbar-hide scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {popularStations.slice(0, 20).map((popularStation, index) => {
+              const focusIdx = 30 + index; // Start after similar stations (10-29)
+              return (
+              <div
+                key={popularStation._id || index}
+                className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] mr-[24px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
+                  isFocused(focusIdx) 
+                    ? 'border-[4px] border-[#ff4199] shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
+                    : 'border-[4px] border-transparent'
+                }`}
+                style={{ boxShadow: isFocused(focusIdx) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
+                data-testid={`card-popular-${popularStation._id}`}
+                onClick={() => navigateToStation(popularStation)}
+              >
+                <div className="bg-white mx-auto mt-[34px] overflow-clip rounded-[6.6px] size-[132px]">
+                  <img
+                    className="w-full h-full object-cover"
+                    alt={popularStation.name}
+                    src={getStationImage(popularStation)}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                    }}
+                  />
+                </div>
+                <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
+                  {popularStation.name}
+                </p>
+                <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
+                  {getStationTags(popularStation)[0] || popularStation.country || 'Radio'}
+                </p>
+              </div>
+              )
+            })}
+          </div>
+        </div>
       </div>
 
       {/* Country Selector Modal */}
