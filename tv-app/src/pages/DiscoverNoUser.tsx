@@ -359,12 +359,12 @@ export const DiscoverNoUser = (): JSX.Element => {
         // Jump to global player controls if visible
         e.preventDefault();
         {
-          const { setGlobalPlayerFocused } = (window as any).globalPlayerContext || {};
-          if (setGlobalPlayerFocused) {
-            setGlobalPlayerFocused(true);
-            console.log('[DiscoverNoUser] PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN - activated global player focus');
+          const globalPlayerButton = document.querySelector('[data-testid="button-global-play-pause"]') as HTMLElement;
+          if (globalPlayerButton) {
+            globalPlayerButton.focus();
+            console.log('[DiscoverNoUser] PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN - jumped to global player');
           } else {
-            console.log('[DiscoverNoUser] PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN - global player context not available');
+            console.log('[DiscoverNoUser] PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN - global player not visible');
           }
         }
         break;
