@@ -698,7 +698,7 @@ export const RadioPlaying = (): JSX.Element => {
       {/* Similar Radios Horizontal Scroll - INCREASED TO 20 stations */}
       <div 
         ref={similarScrollRef}
-        className="absolute left-[236px] top-[633px] flex gap-[24px] overflow-x-auto scrollbar-hide w-[1610px] scroll-smooth"
+        className="absolute left-[236px] top-[633px] flex overflow-x-auto scrollbar-hide w-[1610px] scroll-smooth"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {similarStations.slice(0, 20).map((similarStation, index) => {
@@ -706,7 +706,7 @@ export const RadioPlaying = (): JSX.Element => {
           return (
           <div
             key={similarStation._id || index}
-            className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
+            className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] mr-[24px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
               isFocused(focusIdx) 
                 ? 'border-[4px] border-[#ff4199] shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
                 : 'border-[4px] border-transparent'
