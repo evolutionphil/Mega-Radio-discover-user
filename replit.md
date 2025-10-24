@@ -63,3 +63,18 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+
+## Recent Changes (October 24, 2025 - Latest)
+
+### Samsung TV Build v3.16 (FLOWING WAVE SPLASH ANIMATION):
+**Beautiful animated splash screen with fluid wave motion**
+   - Created production build with timestamp: `1761296865275`
+   - Bundle: `tv-app/assets/index-1761296865275.js` (435.87 KB - production-ready)
+   - **SPLASH SCREEN ANIMATION UPGRADE:**
+     - ✅ **Flowing Wave Effect**: Custom keyframe animation replacing basic pulse
+     - ✅ **Multi-Dimensional Motion**: Combines scale (1.0→1.15), rotation (±1deg), opacity (0.3→0.5), vertical float (-12px)
+     - ✅ **Smooth & Elegant**: 6-second duration with ease-in-out timing for premium feel
+     - ✅ **GPU-Optimized**: Uses transform and opacity for smooth 60fps animation
+     - ✅ **Breathing Effect**: Waves expand, rotate gently, and float upward in seamless loop
+   - **ARCHITECT APPROVED**: Smooth fluid motion, negligible performance impact, no visual glitches
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS
