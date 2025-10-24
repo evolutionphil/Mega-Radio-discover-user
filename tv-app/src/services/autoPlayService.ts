@@ -11,7 +11,7 @@ export const autoPlayService = {
     if (mode && ["last-played", "random", "favorite", "none"].includes(mode)) {
       return mode as PlayAtStartMode;
     }
-    return "last-played"; // default
+    return "none"; // default - no auto-play
   },
 
   /**

@@ -70,6 +70,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.28 (NO AUTO-PLAY BY DEFAULT):
+**Auto-Play Default Changed to "None"** - App no longer auto-plays any station on startup
+   - Created production build with timestamp: `1761314020982`
+   - Bundle: `tv-app/assets/index-1761314020982.js` (428.51KB - full React app)
+   - **BEHAVIOR CHANGE:**
+     - ✅ Default auto-play mode changed from "last-played" to "none"
+     - ✅ App will not automatically start playing music on first launch
+     - ✅ Users must manually select and play a station
+     - ✅ Setting can still be changed to "last-played", "random", or "favorite" in Settings
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.27 (SHORTER STATION NAMES):
 **Shortened Station Name Display** - Station names now truncate earlier to prevent overflow
    - Created production build with timestamp: `1761313868353`
