@@ -7,15 +7,11 @@ interface GlobalPlayerContextType {
   isPlaying: boolean;
   isBuffering: boolean;
   nowPlayingMetadata: string | null;
-  isGlobalPlayerFocused: boolean;
-  globalPlayerFocusIndex: number;
   playStation: (station: Station) => void;
   pauseStation: () => void;
   resumeStation: () => void;
   stopStation: () => void;
   togglePlayPause: () => void;
-  setGlobalPlayerFocused: (focused: boolean) => void;
-  setGlobalPlayerFocusIndex: (index: number) => void;
 }
 
 const GlobalPlayerContext = createContext<GlobalPlayerContextType | undefined>(undefined);
@@ -25,8 +21,6 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
   const [nowPlayingMetadata, setNowPlayingMetadata] = useState<string | null>(null);
-  const [isGlobalPlayerFocused, setIsGlobalPlayerFocused] = useState(false);
-  const [globalPlayerFocusIndex, setGlobalPlayerFocusIndex] = useState(1); // Start on play/pause (index 1)
   const audioPlayerRef = useRef<any>(null);
   const metadataIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -186,18 +180,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       isPlaying,
       currentStation,
     };
-    (window as any).globalPlayerContext = {
-      setGlobalPlayerFocused: (focused: boolean) => {
-        setIsGlobalPlayerFocused(focused);
-        if (focused) {
-          setGlobalPlayerFocusIndex(1); // Reset to play/pause button
-        }
-      },
-      setGlobalPlayerFocusIndex,
-      isGlobalPlayerFocused,
-      globalPlayerFocusIndex
-    };
-  }, [isPlaying, currentStation, isGlobalPlayerFocused, globalPlayerFocusIndex]);
+  }, [isPlaying, currentStation]);
 
   return (
     <GlobalPlayerContext.Provider
@@ -206,20 +189,11 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         isPlaying,
         isBuffering,
         nowPlayingMetadata,
-        isGlobalPlayerFocused,
-        globalPlayerFocusIndex,
         playStation,
         pauseStation,
         resumeStation,
         stopStation,
         togglePlayPause,
-        setGlobalPlayerFocused: (focused: boolean) => {
-          setIsGlobalPlayerFocused(focused);
-          if (focused) {
-            setGlobalPlayerFocusIndex(1); // Reset to play/pause button when entering
-          }
-        },
-        setGlobalPlayerFocusIndex,
       }}
     >
       {/* Hidden audio container */}
