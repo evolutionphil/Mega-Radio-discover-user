@@ -99,10 +99,9 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         return a.name.localeCompare(b.name);
       });
     
-    // Add Global option at the beginning if it matches search
-    if ('global'.includes(searchQuery.toLowerCase())) {
-      filtered.unshift(globalOption);
-    }
+    // ALWAYS add Global option at the beginning, regardless of search query
+    // This ensures users can always select Global even when filtering for other countries
+    filtered.unshift(globalOption);
     
     console.log('[CountrySelector] Filtered count:', filtered.length);
     return filtered;
@@ -227,8 +226,9 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       setSearchQuery('');
       setIsSearchFocused(true); // Auto-focus search input for easier typing
       
-      // Find the currently selected country in the FULL country list and focus on it
-      const currentIndex = countries.findIndex(
+      // Find the currently selected country in the FILTERED country list and focus on it
+      // (filteredCountries includes the injected Global option at index 0)
+      const currentIndex = filteredCountries.findIndex(
         country => country.name === selectedCountry
       );
       const initialIndex = currentIndex >= 0 ? currentIndex : 0;
