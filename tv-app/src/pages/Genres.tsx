@@ -21,6 +21,7 @@ export const Genres = (): JSX.Element => {
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
   // FETCH COUNTRY-FILTERED GENRES using getAllGenres with selected country (or global if GLOBAL selected)
+  // CACHE: 7 days
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres', selectedCountryCode],
     queryFn: async () => {
@@ -35,7 +36,8 @@ export const Genres = (): JSX.Element => {
       console.log('[Genres] ✅ Fetched', result.genres?.length, 'genres for', selectedCountry);
       return result;
     },
-    staleTime: 60000, // 1 minute cache
+    staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    cacheTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
   // Extract genres from API response (NEVER hardcoded!)
