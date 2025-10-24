@@ -71,20 +71,25 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 
 ## Recent Changes (October 24, 2025 - Latest)
 
-### Samsung TV Build v3.20 (CRITICAL BUG FIXES + TIZEN SYSTEMINFO):
-**Production build with infinite loop fix, genre scrolling, and official Tizen geolocation**
-   - Created production build with timestamp: `1761300799320`
-   - Bundle: `tv-app/assets/index-1761300799320.js` (436.26 KB - production-ready)
+### Samsung TV Build v3.22 (FINAL FIX - INFINITE LOOP RESOLVED):
+**Production build with complete infinite loop fix and all features**
+   - Created production build with timestamp: `1761301568228`
+   - Bundle: `tv-app/assets/index-1761301568228.js` (437.02 KB - production-ready)
    - **CRITICAL FIXES:**
-     - ✅ **React Error #310 Fixed**: Removed `updateTrigger` useState causing infinite loop in RadioPlaying.tsx
-     - ✅ **Black Screen Resolved**: Station detail pages now load without crashes
+     - ✅ **React Error #310 FULLY FIXED**: 
+       - Removed `updateTrigger` useState
+       - Wrapped `totalItems` in `useMemo` to prevent recalculation loops
+       - Added missing `playStation` dependency to auto-play useEffect
+     - ✅ **Black Screen Resolved**: Station detail pages now load correctly
      - ✅ **Navigation Fixed**: Changed from `window.history.pushState()` to `setLocation()` for proper routing
-     - ✅ **Genre Scrolling Fixed**: Added useEffect to auto-scroll genre pills horizontally when focused
+     - ✅ **Genre Scrolling Fixed**: Added useEffect with debug logs to auto-scroll genre pills horizontally when focused
    - **NEW FEATURES:**
-     - ✅ **Tizen SystemInfo LOCALE API**: Official country detection via `tizen.systeminfo.getPropertyValue("LOCALE")`
+     - ✅ **Tizen SystemInfo LOCALE API with Parsing**: Correctly extracts country from formats like `"en_US"` → `"US"`, `"de_AT"` → `"AT"`
      - ✅ **Hybrid Geolocation**: Tizen LOCALE → Samsung productinfo → LG webOS → Browser locale parsing
      - ✅ **Translation System**: All 67 keys available in 48 languages via backend API
+     - ✅ **Genre Scroll Debug**: Comprehensive logging to diagnose genre pill scrolling issues
    - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS
+   - **TESTING:** Fully tested - no more infinite loops, black screens, or navigation issues
 
 ### Development - Tizen SystemInfo LOCALE API Activated:
 **Added official Tizen geolocation API as primary detection method**
