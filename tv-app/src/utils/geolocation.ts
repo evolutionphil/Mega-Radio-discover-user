@@ -170,8 +170,17 @@ function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> 
             console.log('[Geolocation] Tizen LOCALE received:', locale);
             
             // Extract country code from locale
-            if (locale.country && locale.country.length === 2) {
-              const upperCode = locale.country.toUpperCase();
+            // Tizen may return "en_US", "de_DE", etc. - extract the part after underscore
+            let countryCode = locale.country;
+            
+            if (countryCode && countryCode.includes('_')) {
+              // Extract region code after underscore: "en_US" → "US"
+              countryCode = countryCode.split('_')[1];
+              console.log('[Geolocation] Extracted country code from locale:', locale.country, '→', countryCode);
+            }
+            
+            if (countryCode && countryCode.length === 2) {
+              const upperCode = countryCode.toUpperCase();
               const countryName = COUNTRY_CODE_TO_NAME[upperCode];
               
               if (!countryName) {

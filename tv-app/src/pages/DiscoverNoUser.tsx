@@ -77,12 +77,21 @@ export const DiscoverNoUser = (): JSX.Element => {
 
   // Scroll genre container to show focused genre
   const scrollGenreIntoView = (genreIndex: number) => {
+    console.log('[DiscoverNoUser] 🔍 scrollGenreIntoView called with index:', genreIndex);
     const genreContainer = document.querySelector('[data-genre-container]');
-    if (!genreContainer) return;
+    if (!genreContainer) {
+      console.warn('[DiscoverNoUser] ⚠️ Genre container not found!');
+      return;
+    }
     
     const genrePills = genreContainer.querySelectorAll('[data-genre-pill]');
+    console.log('[DiscoverNoUser] Found', genrePills.length, 'genre pills');
+    
     if (genrePills[genreIndex]) {
+      console.log('[DiscoverNoUser] ✅ Scrolling genre pill', genreIndex, 'into view');
       genrePills[genreIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    } else {
+      console.warn('[DiscoverNoUser] ⚠️ Genre pill at index', genreIndex, 'not found!');
     }
   };
 
@@ -523,9 +532,13 @@ export const DiscoverNoUser = (): JSX.Element => {
 
   // Auto-scroll genre pills horizontally when focused
   useEffect(() => {
+    console.log('[DiscoverNoUser] 🎯 Focus changed - checking if in genre section. focusIndex:', focusIndex, 'genresStart:', genresStart, 'genresEnd:', genresEnd);
     if (focusIndex >= genresStart && focusIndex <= genresEnd) {
       const genreIndex = focusIndex - genresStart;
+      console.log('[DiscoverNoUser] 🎬 In genre section! Triggering scroll for genre index:', genreIndex);
       scrollGenreIntoView(genreIndex);
+    } else {
+      console.log('[DiscoverNoUser] Not in genre section');
     }
   }, [focusIndex, genresStart, genresEnd]);
 
