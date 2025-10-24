@@ -24,6 +24,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
+  const genreScrollRef = useRef<HTMLDivElement>(null);
   
   // Infinite scroll state for country stations - TRUE INFINITE SCROLL with API
   const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
@@ -75,25 +76,24 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Define sidebar routes (NO PROFILE - 5 items: Discover, Genres, Search, Favorites, Settings)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
-  // Scroll genre container to show focused genre
-  const scrollGenreIntoView = (genreIndex: number) => {
-    console.log('[DiscoverNoUser] 🔍 scrollGenreIntoView called with index:', genreIndex);
-    const genreContainer = document.querySelector('[data-genre-container]');
-    if (!genreContainer) {
-      console.warn('[DiscoverNoUser] ⚠️ Genre container not found!');
-      return;
+  // Scroll genre container to show focused genre (using same approach as RadioPlaying similar stations)
+  useEffect(() => {
+    if (focusIndex >= genresStart && focusIndex <= genresEnd && genreScrollRef.current) {
+      const genreIndex = focusIndex - genresStart;
+      // Calculate scroll position based on genre pill width + gap
+      // Genre pills have varying widths, but we can estimate average width
+      const pillWidth = 250; // Approximate width of genre pill
+      const gap = 20; // Gap between pills
+      const scrollPosition = genreIndex * (pillWidth + gap);
+      
+      console.log('[DiscoverNoUser] 🎯 Scrolling genre container to position:', scrollPosition, 'for genre index:', genreIndex);
+      
+      genreScrollRef.current.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
     }
-    
-    const genrePills = genreContainer.querySelectorAll('[data-genre-pill]');
-    console.log('[DiscoverNoUser] Found', genrePills.length, 'genre pills');
-    
-    if (genrePills[genreIndex]) {
-      console.log('[DiscoverNoUser] ✅ Scrolling genre pill', genreIndex, 'into view');
-      genrePills[genreIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    } else {
-      console.warn('[DiscoverNoUser] ⚠️ Genre pill at index', genreIndex, 'not found!');
-    }
-  };
+  }, [focusIndex, genresStart, genresEnd]);
 
   // Custom navigation logic for complex multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
@@ -110,7 +110,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         if (current === 0 || current === 1) {
           // From Discover or Genres, jump to first Popular Genre
           newIndex = genresStart;
-          scrollGenreIntoView(0);
         } else {
           // From Search, Favorites, or Settings, jump to first Popular Station
           newIndex = popularStationsStart;
@@ -168,14 +167,12 @@ export const DiscoverNoUser = (): JSX.Element => {
       if (direction === 'LEFT') {
         if (col > 0) {
           newIndex = current - 1;
-          scrollGenreIntoView(col - 1);
         } else {
           newIndex = 0; // Jump to sidebar
         }
       } else if (direction === 'RIGHT') {
         if (col < genres.length - 1) {
           newIndex = current + 1;
-          scrollGenreIntoView(col + 1);
         }
       } else if (direction === 'UP') {
         newIndex = 5; // Jump to country selector
@@ -531,16 +528,6 @@ export const DiscoverNoUser = (): JSX.Element => {
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
   // Auto-scroll genre pills horizontally when focused
-  useEffect(() => {
-    console.log('[DiscoverNoUser] 🎯 Focus changed - checking if in genre section. focusIndex:', focusIndex, 'genresStart:', genresStart, 'genresEnd:', genresEnd);
-    if (focusIndex >= genresStart && focusIndex <= genresEnd) {
-      const genreIndex = focusIndex - genresStart;
-      console.log('[DiscoverNoUser] 🎬 In genre section! Triggering scroll for genre index:', genreIndex);
-      scrollGenreIntoView(genreIndex);
-    } else {
-      console.log('[DiscoverNoUser] Not in genre section');
-    }
-  }, [focusIndex, genresStart, genresEnd]);
 
   // Auto-scroll focused element into view
   useEffect(() => {
@@ -673,8 +660,8 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Genre Pills - Horizontal Scrollable */}
         <div 
+          ref={genreScrollRef}
           className="absolute left-[64px] top-[59px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
-          data-genre-container
         >
           <div className="flex py-[15px] px-[10px]" style={{ gap: '20px' }}>
             {genres.map((genre, index) => {
