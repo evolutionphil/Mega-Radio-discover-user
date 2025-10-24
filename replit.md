@@ -69,6 +69,8 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ### Samsung TV Build v3.10 (ENHANCED SIMILAR STATIONS):
 **Enhanced Similar Stations on Radio Playing page** - Now shows 20 swipeable stations instead of 8
+   - Created production build with timestamp: `1761304288874`
+   - Bundle: `tv-app/assets/index-1761304288874.js` (425KB - full React app)
    - **SIMILAR STATIONS ENHANCEMENTS:**
      - ✅ Increased API fetch from 50 to 100 stations for more variety
      - ✅ Display increased from 8 to 20 similar stations
