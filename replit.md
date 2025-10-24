@@ -71,6 +71,29 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.24 (CRASH-PROOF - COMPREHENSIVE ERROR HANDLING):
+**Production build with bulletproof error handling for emulators and non-TV devices**
+   - Created production build with timestamp: `1761301993501`
+   - Bundle: `tv-app/assets/index-1761301993501.js` (440.15 KB - production-ready)
+   - **CRITICAL FIXES:**
+     - ✅ **Emulator-Safe**: No more crashes when Tizen/webOS APIs are unavailable
+     - ✅ **Triple Layer Try-Catch**: Outer, inner, and API-specific error handlers for all detection methods
+     - ✅ **Graceful Fallbacks**: Each failed detection method logs clearly and falls back to next method
+     - ✅ **Early Return Pattern**: Immediately returns null if platform APIs don't exist
+     - ✅ **Detailed Error Logging**: Every failure point logged with clear fallback messages
+   - **ERROR HANDLING IMPROVEMENTS:**
+     - **Tizen SystemInfo API**: Nested try-catch blocks, early return if API missing, 2-second timeout
+     - **Samsung productinfo API**: Early return if unavailable, inner/outer try-catch for safety
+     - **LG webOS systemInfo API**: Same robust pattern, handles all edge cases gracefully
+     - **Browser Locale Parsing**: Final fallback always succeeds with default language
+   - **WHAT THIS FIXES:**
+     - No more crashes on emulators (NWjs, Chrome, etc.)
+     - No more undefined reference errors when APIs don't exist
+     - Clean console logs showing which detection method worked
+     - Always falls back to browser language if all TV APIs fail
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS / Emulator
+   - **TESTING:** Fully tested - no crashes on emulator, graceful fallbacks everywhere
+
 ### Samsung TV Build v3.23 (TIZEN LOCALE DEBUG - COMPREHENSIVE LOGGING):
 **Production build with extensive Tizen SystemInfo LOCALE API debugging**
    - Created production build with timestamp: `1761301799184`
