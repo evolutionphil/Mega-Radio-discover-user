@@ -70,9 +70,27 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.33 (CRITICAL FIXES):
+**Fixed Genre Stations, Flag Icon, and Auto-Detection** - Resolved three major issues
+   - Created production build with timestamp: `1761319408664`
+   - Bundle: `tv-app/assets/index-1761319408664.js` (433.30KB - full React app)
+   - **CRITICAL FIXES:**
+     - ✅ **Genre List Global Fix**: Genre stations now load for Global country (API call no longer sends `country=GLOBAL` parameter, fetches all stations worldwide)
+     - ✅ **Flag Icon Fix**: Global country now shows gradient globe SVG instead of trying to load non-existent `flagcdn.com/w40/global.png`
+     - ✅ **Auto-Detection Fix**: App now detects language/country on first visit (e.g., German language → Germany country), Global is only used as fallback when no detection is possible
+   - **BEHAVIOR CHANGE:**
+     - App respects detected browser language and auto-selects country
+     - Global is no longer the default - it's only for when detection fails
+     - Genre lists with Global country now show all worldwide stations (not filtered)
+   - **CSP UPDATED:**
+     - Added Google Analytics domains to Content Security Policy in `config.xml` and `index.html`
+     - Fixed `script-src` to allow `https://www.googletagmanager.com`
+     - Fixed `connect-src` to allow analytics data transmission
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.32 (GOOGLE ANALYTICS INTEGRATION):
 **Google Analytics 4 Integration** - Real-time analytics tracking for users, stations, and errors
-   - Created production build with timestamp: `1761318681367`
+   - Created production build with timestamp: `1761318681367` (SUPERSEDED by v3.33)
    - Bundle: `tv-app/assets/index-1761318681367.js` (432.65KB - full React app)
    - **ANALYTICS FEATURES:**
      - ✅ Automatic page view tracking on all route changes (including initial page load)

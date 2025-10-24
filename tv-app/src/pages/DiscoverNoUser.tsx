@@ -675,7 +675,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               const focusIdx = genresStart + index;
               return (
                 <Link 
-                  key={genre.slug || index} 
+                  key={`${genre.slug}-${index}`} 
                   href={`/genre-list/${genre.slug}`}
                   style={{ marginRight: '20px', display: 'inline-block', flexShrink: 0 }}
                 >
