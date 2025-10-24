@@ -38,6 +38,11 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 
 **Localization & Internationalization:**
 -   Supports 48 languages via API translations and automatic language detection.
+-   **Hybrid Geolocation System** (Priority-based):
+    1. **Tizen SystemInfo LOCALE API** (`tizen.systeminfo.getPropertyValue("LOCALE")`) - Official Tizen method for direct country code
+    2. **Samsung webapis.productinfo** - Fast synchronous country detection
+    3. **LG webOS.systemInfo** - Native webOS country detection
+    4. **Browser Locale Parsing** - Extracts region from navigator.language (de-AT → Austria, en-GB → UK)
 
 ### System Design Choices
 **Global Player:**
@@ -65,6 +70,18 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
 
 ## Recent Changes (October 24, 2025 - Latest)
+
+### Development - Tizen SystemInfo LOCALE API Activated:
+**Added official Tizen geolocation API as primary detection method**
+   - ✅ **Tizen SystemInfo API**: Now uses `tizen.systeminfo.getPropertyValue("LOCALE")` to get country directly from TV settings
+   - ✅ **Priority-Based Detection**: 
+     1. Tizen LOCALE (async, official)
+     2. Samsung productinfo (sync, fast)
+     3. LG webOS (sync, fast)
+     4. Browser locale parsing (universal fallback)
+   - ✅ **2-Second Timeout**: Prevents hanging if Tizen API is slow
+   - ✅ **Graceful Fallback**: Falls back to other methods if Tizen API unavailable
+   - **STATUS:** Active in development, ready for next Samsung TV build
 
 ### Samsung TV Build v3.19 (SCREENSAVER DISABLED):
 **Disabled Samsung TV screensaver for uninterrupted radio playback**
