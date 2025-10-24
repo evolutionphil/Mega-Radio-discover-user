@@ -74,6 +74,27 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.21 (GLOBAL COUNTRY SUPPORT):
+**Added Global Country Option** - Users can now browse stations from all countries worldwide
+   - Created production build with timestamp: `1761312751978`
+   - Bundle: `tv-app/assets/index-1761312751978.js` (427.47KB - full React app)
+   - **NEW FEATURE: GLOBAL COUNTRY**
+     - ✅ Added "Global" as first option in CountrySelector with blue globe SVG icon
+     - ✅ Country code "GLOBAL" fetches stations without country filter
+     - ✅ Shows "(Global)" suffix in section titles when Global is selected
+     - ✅ Popular Stations section displays global top stations
+     - ✅ Popular Genres section displays all genres worldwide
+     - ✅ Infinite scroll works with global stations (no country filter)
+   - **API INTEGRATION:**
+     - ✅ `megaRadioApi.getAllGenres()` - no country parameter when Global
+     - ✅ `megaRadioApi.getPopularStations({ limit: 24 })` - no country parameter
+     - ✅ `megaRadioApi.getWorkingStations({ limit: 100, offset })` - no country parameter
+   - **UI ENHANCEMENTS:**
+     - ✅ Globe icon: Blue circle with white latitude/longitude lines
+     - ✅ Section titles: "Popular Stations (Global)" and "Popular Genres (Global)"
+     - ✅ Global option always appears first in country selector
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.20 (SIMILAR STATIONS SPACING FIX):
 **Fixed Similar Stations Padding on Samsung TV** - Replaced gap with margin-right for better compatibility
    - Created production build with timestamp: `1761312151071`

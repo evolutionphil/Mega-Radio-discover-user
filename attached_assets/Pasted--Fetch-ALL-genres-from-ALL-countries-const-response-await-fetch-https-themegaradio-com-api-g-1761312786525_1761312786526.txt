@@ -1,0 +1,67 @@
+// Fetch ALL genres from ALL countries
+const response = await fetch('https://themegaradio.com/api/genres?tv=1&limit=100');
+const data = await response.json();
+console.log(data.genres); // Array of all genres globally
+That's it! Just call /api/genres?tv=1 without any countrycode parameter.
+
+📊 Three Genre Endpoints
+Endpoint	Use Case	Returns
+GET /api/genres?tv=1	All genres globally	All 100+ genres worldwide
+GET /api/genres?countrycode=Germany&tv=1	Genres for specific country	Genres available in Germany
+GET /api/genres/discoverable?tv=1	Featured genres only	Top 13 popular genres
+💻 Samsung TV Code Example
+// api/GenreService.js
+class GenreService {
+  /**
+   * Get all genres globally (no country filter)
+   */
+  async getGlobalGenres() {
+    try {
+      const response = await fetch(
+        'https://themegaradio.com/api/genres?tv=1&limit=100&sortColumn=stationCount&sortOrder=desc',
+        {
+          method: 'GET',
+          headers: {
+            'User-Agent': 'Tizen/6.0 Samsung TV',
+            'Accept': 'application/json'
+          }
+        }
+      );
+      const data = await response.json();
+      
+      console.log(`✅ Loaded ${data.genres.length} global genres`);
+      
+      return data.genres;
+    } catch (error) {
+      console.error('❌ Failed to fetch genres:', error);
+      throw error;
+    }
+  }
+  /**
+   * Get genres for specific country
+   */
+  async getCountryGenres(countryName) {
+    const url = `https://themegaradio.com/api/genres?tv=1&countrycode=${encodeURIComponent(countryName)}&limit=100`;
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Tizen/6.0 Samsung TV',
+        'Accept': 'application/json'
+      }
+    });
+    const data = await response.json();
+    return data.genres;
+  }
+}
+🌍 How It Works with Country Filter
+// When country is "all" (global)
+if (selectedCountry === 'all') {
+  // Fetch global genres (no country parameter)
+  GET /api/genres?tv=1
+}
+// When country is specific (e.g., "Germany")
+if (selectedCountry === 'Germany') {
+  // Fetch Germany genres only
+  GET /api/genres?tv=1&countrycode=Germany
+}
