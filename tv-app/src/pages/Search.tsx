@@ -44,10 +44,13 @@ export const Search = (): JSX.Element => {
   }, [searchQuery]);
 
   // Search for stations based on debounced query
+  // CACHE: 24 hours
   const { data: searchData } = useQuery({
     queryKey: ['/api/stations/search', debouncedSearchQuery],
     queryFn: () => megaRadioApi.searchStations({ q: debouncedSearchQuery, limit: 4 }),
     enabled: debouncedSearchQuery.length > 0,
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+    gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
   
   console.log('🔍 [SEARCH DATA DEBUG]:', {
@@ -58,9 +61,12 @@ export const Search = (): JSX.Element => {
   });
 
   // Fetch popular stations as fallback
+  // CACHE: 24 hours
   const { data: popularStationsData } = useQuery({
     queryKey: ['/api/stations/popular', { limit: 6, country: selectedCountryCode }],
     queryFn: () => megaRadioApi.getPopularStations({ limit: 6, country: selectedCountryCode }),
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+    gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
   // Only show search results when there's an active search query
