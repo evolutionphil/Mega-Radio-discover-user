@@ -148,9 +148,13 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           case key?.RETURN:
           case 461:
           case 10009:
+            // TWO-STEP BEHAVIOR: First press closes keyboard, second press closes modal
             e.preventDefault();
-            console.log('[CountrySelector] RETURN key - closing modal');
-            onClose();
+            console.log('[CountrySelector] RETURN key - closing keyboard (first press)');
+            if (searchInputRef.current) {
+              searchInputRef.current.blur(); // Close keyboard
+            }
+            setIsSearchFocused(false); // Move to country list mode
             break;
             
           // Let all other keys (letters, numbers, backspace) be handled by the input element

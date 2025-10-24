@@ -65,7 +65,18 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
 
-## Recent Changes (October 23, 2025 - Latest)
+## Recent Changes (October 24, 2025 - Latest)
+
+### Samsung TV Build v3.7 (TWO-STEP RETURN BUTTON):
+**Fixed RETURN button behavior** - Two-step back button: first closes keyboard, second closes modal
+   - Created production build with timestamp: `1761292418170`
+   - Bundle: `tv-app/assets/index-1761292418170.js` (425KB - full React app)
+   - **TWO-STEP RETURN FIX:**
+     - ✅ **CountrySelector.tsx**: Implemented two-step RETURN button behavior
+     - **First RETURN press**: Closes keyboard (blurs input, sets isSearchFocused=false)
+     - **Second RETURN press**: Closes the modal (only when keyboard is already closed)
+     - Prevents accidental modal closure when user just wants to exit keyboard
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
 
 ### Samsung TV Build v3.6 (COUNTRY SELECTOR DOWN KEY FIX):
 **Fixed focus stuck on search input** - DOWN key now properly navigates to country list
