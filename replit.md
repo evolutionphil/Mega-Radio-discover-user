@@ -68,6 +68,21 @@ The application is optimized for TV with a fixed 1920x1080px resolution, utilizi
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.46 (PULSE + GLOW EFFECT):
+**Added Pulse Animation to Control Buttons** - Enhanced visual feedback
+   - Created production build with timestamp: `1761323068810`
+   - Bundle: `tv-app/assets/index-1761323068810.js` (433.95KB - full React app)
+   - **NEW FEATURE:**
+     - ✅ **Pulse + Glow**: Control buttons now show both pulse animation AND pink glow when focused
+     - ✅ **Visual Feedback**: Subtle pulsing makes it even clearer which button is selected
+     - ✅ **Better UX**: Combined pulse and glow create a more dynamic and noticeable effect
+   - **APPLIES TO:**
+     - Previous Button (focus index 6)
+     - Play/Pause Button (focus index 7)
+     - Next Button (focus index 8)
+     - Heart/Favorite Button (focus index 9)
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.45 (DISCOVER PAGE SWIPE LOGIC):
 **Applied Discover Page Swipe Logic to Similar & Popular Radios** - Smooth horizontal scrolling
    - Created production build with timestamp: `1761322957721`

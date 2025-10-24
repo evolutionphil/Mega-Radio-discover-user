@@ -768,7 +768,7 @@ export const RadioPlaying = (): JSX.Element => {
         {/* Previous Button */}
         <div 
           className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
-            isFocused(6) ? 'border-[4px] border-[#ff4199]' : 'border-[4px] border-transparent'
+            isFocused(6) ? 'border-[4px] border-[#ff4199] animate-pulse-soft' : 'border-[4px] border-transparent'
           }`}
           style={{
             boxShadow: isFocused(6) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'none'
@@ -785,7 +785,7 @@ export const RadioPlaying = (): JSX.Element => {
         {/* Play/Pause Button */}
         <div 
           className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
-            isFocused(7) ? 'border-[4px] border-[#ff4199]' : 'border-[4px] border-transparent'
+            isFocused(7) ? 'border-[4px] border-[#ff4199] animate-pulse-soft' : 'border-[4px] border-transparent'
           }`}
           style={{
             boxShadow: isFocused(7) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'none'
@@ -808,7 +808,7 @@ export const RadioPlaying = (): JSX.Element => {
         {/* Next Button */}
         <div 
           className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
-            isFocused(8) ? 'border-[4px] border-[#ff4199]' : 'border-[4px] border-transparent'
+            isFocused(8) ? 'border-[4px] border-[#ff4199] animate-pulse-soft' : 'border-[4px] border-transparent'
           }`}
           style={{
             boxShadow: isFocused(8) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'none'
@@ -828,7 +828,7 @@ export const RadioPlaying = (): JSX.Element => {
             isFavorite(station._id) 
               ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
               : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
-          } ${isFocused(9) ? 'border-[#ff4199]' : ''}`}
+          } ${isFocused(9) ? 'border-[#ff4199] animate-pulse-soft' : ''}`}
           style={{
             boxShadow: isFocused(9) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'none'
           }}
