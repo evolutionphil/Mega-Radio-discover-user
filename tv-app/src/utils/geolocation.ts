@@ -153,24 +153,62 @@ export interface GeoLocationResult {
 }
 
 /**
- * Detect country using Tizen SystemInfo LOCALE API (official method)
- * Note: This is synchronous check only - does not use async callback
+ * Detect country using Tizen SystemInfo LOCALE API (official method - ASYNC)
+ * Returns a Promise with the country detection result
  */
-function detectTizenSystemInfoCountry(): GeoLocationResult | null {
-  try {
-    // Check if Tizen SystemInfo API is available
-    if (typeof window.tizen !== 'undefined' && window.tizen.systeminfo) {
-      // Note: We can't use async getPropertyValue here, but we can try to access
-      // the locale directly if it's cached or available synchronously
-      console.log('[Geolocation] Tizen SystemInfo API detected (async API - skipping synchronous check)');
-      // Skip this method for now - would require making detectCountry async
-      // which would break the current architecture
+function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> {
+  return new Promise((resolve) => {
+    try {
+      // Check if Tizen SystemInfo API is available
+      if (typeof window.tizen !== 'undefined' && window.tizen.systeminfo) {
+        console.log('[Geolocation] ✅ Tizen SystemInfo API detected - getting LOCALE property...');
+        
+        // Get LOCALE property (official Tizen method)
+        window.tizen.systeminfo.getPropertyValue(
+          "LOCALE",
+          (locale: any) => {
+            console.log('[Geolocation] Tizen LOCALE received:', locale);
+            
+            // Extract country code from locale
+            if (locale.country && locale.country.length === 2) {
+              const upperCode = locale.country.toUpperCase();
+              const countryName = COUNTRY_CODE_TO_NAME[upperCode];
+              
+              if (!countryName) {
+                console.warn('[Geolocation] ⚠️ Tizen SystemInfo returned unmapped country code:', upperCode, '(using code as name)');
+              }
+              
+              console.log('[Geolocation] ✅ Tizen SystemInfo LOCALE country detected:', countryName || upperCode, upperCode);
+              resolve({
+                countryName: countryName || upperCode,
+                countryCode: upperCode,
+                detectionMethod: 'tizen-systeminfo',
+                success: true,
+              });
+            } else {
+              console.warn('[Geolocation] ⚠️ Tizen SystemInfo LOCALE returned invalid country:', locale.country);
+              resolve(null);
+            }
+          },
+          (error: Error) => {
+            console.error('[Geolocation] ❌ Tizen SystemInfo LOCALE error:', error);
+            resolve(null);
+          }
+        );
+        
+        // Set timeout to prevent hanging (2 seconds max)
+        setTimeout(() => {
+          console.warn('[Geolocation] ⏱️ Tizen SystemInfo LOCALE timeout - falling back');
+          resolve(null);
+        }, 2000);
+      } else {
+        resolve(null);
+      }
+    } catch (error) {
+      console.error('[Geolocation] ❌ Tizen SystemInfo check failed:', error);
+      resolve(null);
     }
-  } catch (error) {
-    console.error('[Geolocation] Tizen SystemInfo check failed:', error);
-  }
-  
-  return null;
+  });
 }
 
 /**
@@ -366,13 +404,36 @@ function detectLanguageBasedCountry(): GeoLocationResult {
 /**
  * Main hybrid geolocation function (synchronous)
  * Tries multiple detection methods in priority order
+ * Note: Does NOT include Tizen SystemInfo (async) - use detectCountryAsync() for that
  */
 export function detectCountry(): GeoLocationResult {
-  console.log('[Geolocation] 🌍 Starting hybrid country detection...');
+  console.log('[Geolocation] 🌍 Starting hybrid country detection (synchronous)...');
   
-  // Priority 1: Tizen SystemInfo LOCALE API (official Tizen method)
-  // Note: Currently skipped due to async nature - would require architecture change
-  const tizenSystemInfoResult = detectTizenSystemInfoCountry();
+  // Priority 1: Samsung Tizen productinfo API (instant, accurate)
+  const samsungResult = detectSamsungTizenCountry();
+  if (samsungResult) {
+    return samsungResult;
+  }
+  
+  // Priority 2: LG webOS native API (instant, accurate)
+  const lgResult = detectLGWebOSCountry();
+  if (lgResult) {
+    return lgResult;
+  }
+  
+  // Priority 3: Language-based fallback (always works)
+  return detectLanguageBasedCountry();
+}
+
+/**
+ * Async version of hybrid geolocation - tries Tizen SystemInfo LOCALE API first
+ * Use this for better Tizen TV detection
+ */
+export async function detectCountryAsync(): Promise<GeoLocationResult> {
+  console.log('[Geolocation] 🌍 Starting hybrid country detection (async with Tizen SystemInfo)...');
+  
+  // Priority 1: Tizen SystemInfo LOCALE API (official Tizen method - ASYNC)
+  const tizenSystemInfoResult = await detectTizenSystemInfoCountryAsync();
   if (tizenSystemInfoResult) {
     return tizenSystemInfoResult;
   }
