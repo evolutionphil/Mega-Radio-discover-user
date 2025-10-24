@@ -74,6 +74,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.24 (FIXED 1920x1080px RESOLUTION):
+**Enforced Exact 1920x1080px Screen Size** - TV app now uses exact fixed resolution on both Samsung & LG TVs
+   - Created production build with timestamp: `1761313379997`
+   - Bundle: `tv-app/assets/index-1761313379997.js` (427.55KB - full React app)
+   - **RESOLUTION FIX:**
+     - ✅ Viewport meta tag: `width=1920, height=1080, initial-scale=1.0, maximum-scale=1.0, user-scalable=no`
+     - ✅ html/body: Fixed to exactly 1920x1080px with `position: fixed`
+     - ✅ #root: Fixed to exactly 1920x1080px with `position: fixed` and `overflow: hidden`
+     - ✅ Ensures consistent rendering across all Samsung and LG TV models
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.23 (LONG STATION NAME TRUNCATION):
 **Fixed Long Station Names Overflow** - Station names now truncate with ellipsis (...) when too long
    - Created production build with timestamp: `1761313244770`
