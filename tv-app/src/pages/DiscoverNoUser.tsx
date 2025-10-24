@@ -339,20 +339,24 @@ export const DiscoverNoUser = (): JSX.Element => {
     switch(e.keyCode) {
       case key?.UP:
       case 38:
+        e.preventDefault();
         customHandleNavigation('UP');
-        break;
+        return true;
       case key?.DOWN:
       case 40:
+        e.preventDefault();
         customHandleNavigation('DOWN');
-        break;
+        return true;
       case key?.LEFT:
       case 37:
+        e.preventDefault();
         customHandleNavigation('LEFT');
-        break;
+        return true;
       case key?.RIGHT:
       case 39:
+        e.preventDefault();
         customHandleNavigation('RIGHT');
-        break;
+        return true;
       case key?.PAGE_UP:
       case 33:
       case key?.PAGE_DOWN:
