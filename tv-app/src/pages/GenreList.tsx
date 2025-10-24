@@ -261,7 +261,7 @@ export const GenreList = (): JSX.Element => {
   const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: stationsStart, // Start on first station (index 5)
+    initialIndex: 0, // Start on sidebar, will jump to first station when loaded
     onSelect: (index) => {
       // Sidebar (0-4)
       if (index >= 0 && index <= 4) {
@@ -279,6 +279,14 @@ export const GenreList = (): JSX.Element => {
     },
     onBack: () => setLocation('/genres')
   });
+
+  // Jump to first station when stations load
+  useEffect(() => {
+    if (displayedStations.length > 0 && focusIndex < stationsStart) {
+      console.log('[GenreList] 🎯 Stations loaded, jumping to first station (index 5)');
+      setFocusIndex(stationsStart);
+    }
+  }, [displayedStations.length]);
 
   // Auto-scroll when focus changes to station items
   useEffect(() => {

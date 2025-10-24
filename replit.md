@@ -67,6 +67,16 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.9 (GENRE LIST FOCUS FIX):
+**Fixed lost focus on GenreList page** - Focus now automatically goes to first station on load
+   - Created production build with timestamp: `1761293062426`
+   - Bundle: `tv-app/assets/index-1761293062426.js` (425KB - full React app)
+   - **GENRE LIST FIX:**
+     - ✅ **GenreList.tsx**: Added useEffect to set focus to first station when data loads
+     - When entering genre list, focus automatically jumps to first station (index 5)
+     - Fixed issue where focus was lost and user had to press LEFT to get focus
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.8 (FIXED SIDEBAR):
 **Fixed sidebar scrolling issue** - Sidebar now stays fixed while content scrolls
    - Created production build with timestamp: `1761292877356`
