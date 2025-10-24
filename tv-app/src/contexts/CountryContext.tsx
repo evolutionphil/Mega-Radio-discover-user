@@ -17,35 +17,13 @@ export const CountryProvider = ({ children }: { children: ReactNode }) => {
   
   const globeIcon = assetPath('images/globe-icon.png');
   
-  // Initialize from localStorage, then detected country, then default to "Global"
+  // Initialize from localStorage or temporary default
   const [selectedCountry, setSelectedCountry] = useState<string>(() => {
-    const saved = localStorage.getItem('selectedCountry');
-    if (saved) {
-      return saved;
-    }
-    // Use detected country if available
-    if (detectedCountry && detectedCountry !== 'Unknown') {
-      console.log('[CountryContext] No saved country - using detected country:', detectedCountry);
-      return detectedCountry;
-    }
-    // Only use Global if no country detected
-    console.log('[CountryContext] No saved country and no detection - defaulting to Global');
-    return 'Global';
+    return localStorage.getItem('selectedCountry') || 'Global';
   });
   
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>(() => {
-    const saved = localStorage.getItem('selectedCountryCode');
-    if (saved) {
-      return saved;
-    }
-    // Use detected country code if available
-    if (detectedCountryCode && detectedCountryCode !== 'XX') {
-      console.log('[CountryContext] No saved country code - using detected code:', detectedCountryCode);
-      return detectedCountryCode;
-    }
-    // Only use GLOBAL if no country code detected
-    console.log('[CountryContext] No saved country code and no detection - defaulting to GLOBAL');
-    return 'GLOBAL';
+    return localStorage.getItem('selectedCountryCode') || 'GLOBAL';
   });
   
   const [selectedCountryFlag, setSelectedCountryFlag] = useState<string>(() => {
@@ -56,20 +34,37 @@ export const CountryProvider = ({ children }: { children: ReactNode }) => {
       localStorage.removeItem('selectedCountryFlag');
       return globeIcon;
     }
-    if (saved) {
-      return saved;
-    }
-    // Use detected country flag if available
-    if (detectedCountryCode && detectedCountryCode !== 'XX' && detectedCountryCode.length === 2) {
-      console.log('[CountryContext] No saved flag - using detected country flag:', detectedCountryCode);
-      return `https://flagcdn.com/w40/${detectedCountryCode.toLowerCase()}.png`;
-    }
-    // Only use globe icon if no country detected
-    return globeIcon;
+    return saved || globeIcon;
   });
 
   // Auto-detect country from localization on first visit
-  // Global is only the fallback when no country/language is detected
+  // This runs after LocalizationContext has detected the language/country
+  useEffect(() => {
+    const hasStoredCountry = localStorage.getItem('selectedCountry');
+    
+    console.log('[CountryContext] Auto-detection check:', {
+      hasStoredCountry,
+      detectedCountry,
+      detectedCountryCode,
+      currentCountry: selectedCountry
+    });
+    
+    // Only auto-detect if user hasn't manually selected a country before
+    if (!hasStoredCountry && detectedCountry && detectedCountryCode) {
+      // Use detected country if it's valid (not default fallback values)
+      if (detectedCountry !== 'Unknown' && detectedCountryCode !== 'XX') {
+        console.log('[CountryContext] 🌍 Auto-setting detected country:', detectedCountry, detectedCountryCode);
+        setSelectedCountry(detectedCountry);
+        setSelectedCountryCode(detectedCountryCode);
+        setSelectedCountryFlag(`https://flagcdn.com/w40/${detectedCountryCode.toLowerCase()}.png`);
+      } else {
+        console.log('[CountryContext] ⚠️ No valid country detected, keeping Global');
+        // Keep Global as fallback (already set in initial state)
+      }
+    } else if (hasStoredCountry) {
+      console.log('[CountryContext] ℹ️ Using stored country from localStorage:', hasStoredCountry);
+    }
+  }, [detectedCountry, detectedCountryCode]);
 
   const setCountry = (country: string, code: string, flag: string) => {
     console.log('[CountryContext] Country changed globally:', country, code);

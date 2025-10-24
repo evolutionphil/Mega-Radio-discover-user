@@ -70,6 +70,22 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.35 (COUNTRY AUTO-DETECTION FIX):
+**Fixed Country Auto-Detection** - Properly detects country from TV/browser language on first visit
+   - Created production build with timestamp: `1761320413291`
+   - Bundle: `tv-app/assets/index-1761320413291.js` (430.33KB - full React app)
+   - **CRITICAL FIX:**
+     - ✅ **Country Auto-Detection**: Now properly detects country from browser/TV language on first visit
+     - ✅ **Timing Issue Resolved**: Fixed race condition where detection values weren't available during initial state setup
+     - ✅ **Respects User Choice**: Once user manually selects a country, it persists and doesn't get overridden
+     - ✅ **Global as Fallback**: Only uses Global when no language/country can be detected
+   - **HOW IT WORKS:**
+     - First visit (no localStorage): Auto-detects from browser/TV language → e.g., German → Germany
+     - Subsequent visits (has localStorage): Uses saved country → Respects user's manual selection
+     - Detection order: localStorage > Detected Country > Global (fallback)
+   - **TESTING:** To test auto-detection, clear localStorage: `localStorage.clear()` in browser console
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.34 (GENRE NAME TRUNCATION):
 **Genre Name Truncation Fix** - Long genre names now truncate with ellipsis to prevent text overflow
    - Created production build with timestamp: `1761320216788`
