@@ -66,6 +66,18 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.19 (SCREENSAVER DISABLED):
+**Disabled Samsung TV screensaver for uninterrupted radio playback**
+   - Created production build with timestamp: `1761297973777`
+   - Bundle: `tv-app/assets/index-1761297973777.js` (436.50 KB - production-ready)
+   - **SCREENSAVER MANAGEMENT:**
+     - ✅ **Screensaver Disabled**: Uses `webapis.appcommon.setScreenSaver` to disable screensaver on app startup
+     - ✅ **Automatic Detection**: Only runs on Samsung Tizen platform (detected via user agent)
+     - ✅ **Error Handling**: Graceful fallback if API not available
+     - ✅ **Radio-Optimized**: Prevents screen from going dark during continuous playback
+   - **IMPLEMENTATION**: Added to `tv-app/js/platform-detect.js` for early initialization
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS
+
 ### Samsung TV Build v3.18 (ENHANCED LOCALE DETECTION - AUSTRIA FIX):
 **Improved country detection to parse browser locale region codes**
    - Created production build with timestamp: `1761297470278`
