@@ -352,27 +352,20 @@ export const DiscoverNoUser = (): JSX.Element => {
         break;
       case key?.PAGE_DOWN:
       case 34:
-        // Jump down to country stations section
-        e.preventDefault();
-        setFocusIndex(countryStationsStart);
-        console.log('[DiscoverNoUser] PageDown - jumped to country stations');
-        break;
       case key?.PAGE_UP:
       case 33:
-        // Jump back up to genres section
-        e.preventDefault();
-        setFocusIndex(genresStart);
-        console.log('[DiscoverNoUser] PageUp - jumped to genres');
-        break;
       case 427: // CH_UP - Samsung TV remote
       case 428: // CH_DOWN - Samsung TV remote
         // Jump to global player controls if visible
         e.preventDefault();
-        const globalPlayerButton = document.querySelector('[data-testid="button-global-play-pause"]') as HTMLElement;
-        if (globalPlayerButton) {
-          globalPlayerButton.focus();
-          globalPlayerButton.click(); // Trigger focus visual state
-          console.log('[DiscoverNoUser] CH_UP/CH_DOWN - jumped to global player');
+        {
+          const globalPlayerButton = document.querySelector('[data-testid="button-global-play-pause"]') as HTMLElement;
+          if (globalPlayerButton) {
+            globalPlayerButton.focus();
+            console.log('[DiscoverNoUser] PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN - jumped to global player');
+          } else {
+            console.log('[DiscoverNoUser] PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN - global player not visible');
+          }
         }
         break;
       case key?.RETURN:
