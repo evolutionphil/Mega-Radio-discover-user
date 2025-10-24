@@ -369,15 +369,15 @@ export const Genres = (): JSX.Element => {
         return (
           <Link key={genre.slug || index} href={`/genre-list/${encodeURIComponent(genre.slug)}`}>
             <div 
-              className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[309px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+              className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center justify-between h-[139px] px-[40px] py-[28px] rounded-[20px] top-[309px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
               data-testid={`card-genre-${genre.slug}`}
               style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
               onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white w-full truncate">
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[24px] text-left text-white truncate flex-1">
                 {genre.name}
               </p>
-              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
+              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-right text-white whitespace-nowrap ml-4">
                 {genre.stationCount} Stations
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
@@ -398,15 +398,15 @@ export const Genres = (): JSX.Element => {
         return (
           <Link key={genre.slug || index} href={`/genre-list/${encodeURIComponent(genre.slug)}`}>
             <div 
-              className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[40px] py-[28px] rounded-[20px] top-[467px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+              className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center justify-between h-[139px] px-[40px] py-[28px] rounded-[20px] top-[467px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
               data-testid={`card-genre-${genre.slug}`}
               style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
               onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white w-full truncate">
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[24px] text-left text-white truncate flex-1">
                 {genre.name}
               </p>
-              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
+              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-right text-white whitespace-nowrap ml-4">
                 {genre.stationCount} Stations
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
@@ -438,7 +438,7 @@ export const Genres = (): JSX.Element => {
         return (
           <Link key={genre.slug || index} href={`/genre-list/${encodeURIComponent(genre.slug)}`}>
             <div 
-              className={`absolute bg-[rgba(255,255,255,0.14)] box-border content-stretch flex flex-col gap-[10px] h-[139px] items-start justify-center px-[30px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+              className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center justify-between h-[139px] px-[30px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
               data-testid={`card-genre-all-${genre.slug}`}
               style={{ 
                 left: `${positions[col].left}px`, 
@@ -447,10 +447,10 @@ export const Genres = (): JSX.Element => {
               }}
               onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[20px] text-center text-white w-full truncate">
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[20px] text-left text-white truncate flex-1">
                 {genre.name}
               </p>
-              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[18px] text-center text-white">
+              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[18px] text-right text-white whitespace-nowrap ml-3">
                 {genre.stationCount} Stations
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
