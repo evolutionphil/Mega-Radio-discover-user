@@ -74,6 +74,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.25 (GLOBAL GENRES FIX):
+**Fixed Genres Page Global Country Support** - Genres page now correctly shows all genres when Global country is selected
+   - Created production build with timestamp: `1761313522828`
+   - Bundle: `tv-app/assets/index-1761313522828.js` (427.76KB - full React app)
+   - **BUG FIX:**
+     - ✅ Genres page now fetches global genres when "GLOBAL" country is selected
+     - ✅ Calls `megaRadioApi.getAllGenres()` without country parameter for Global
+     - ✅ Shows all worldwide genres on /#/genres when Global is selected
+     - ✅ Consistent with DiscoverNoUser page behavior
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.24 (FIXED 1920x1080px RESOLUTION):
 **Enforced Exact 1920x1080px Screen Size** - TV app now uses exact fixed resolution on both Samsung & LG TVs
    - Created production build with timestamp: `1761313379997`
