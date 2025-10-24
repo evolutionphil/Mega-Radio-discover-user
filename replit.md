@@ -74,6 +74,20 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.17 (CH_UP/CH_DOWN GLOBAL PLAYER):
+**Added CH_UP/CH_DOWN Keys to Jump to Global Player** - Samsung TV remote channel keys now jump to global player controls
+   - Created production build with timestamp: `1761309508602`
+   - Bundle: `tv-app/assets/index-1761309508602.js` (425.88KB - full React app)
+   - **NEW FEATURE:**
+     - ✅ CH_UP (keycode 427) and CH_DOWN (keycode 428) now jump to global player
+     - ✅ Implemented on DiscoverNoUser page (additional pages coming soon)
+     - ✅ Focuses the play/pause button of the global player bar
+     - ✅ Only works when global player is visible (station is playing)
+   - **Technical Details:**
+     - Detects Samsung TV-specific channel keycodes
+     - Uses DOM querySelector to find and focus global player button
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.16 (GENRES SMOOTH SCROLL):
 **Improved Popular Genres Horizontal Scrolling** - Genres now scroll smoothly like similar stations
    - Created production build with timestamp: `1761309229112`
