@@ -203,6 +203,57 @@ export const RadioPlaying = (): JSX.Element => {
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
   // Custom navigation logic for multi-section layout
+
+  // Focus management with custom navigation
+  const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
+    totalItems,
+    cols: 1,
+    initialIndex: 8, // Start on play/pause button
+    onSelect: (index) => {
+      // Sidebar navigation (0-4)
+      if (index >= 0 && index <= 4) {
+        const route = sidebarRoutes[index];
+        if (route !== '#') {
+          setLocation(route);
+        }
+      }
+      // Country selector (5)
+      else if (index === 5) {
+        setIsCountrySelectorOpen(true);
+      }
+      // Previous button (6)
+      else if (index === 6) {
+        handlePrevious();
+      }
+      // Play/Pause button (7)
+      else if (index === 7) {
+        handlePlayPause();
+      }
+      // Next button (8)
+      else if (index === 8) {
+        handleNext();
+      }
+      // Favorite button (9)
+      else if (index === 9) {
+        if (station) {
+          toggleFavorite(station);
+        }
+      }
+      // Similar stations (10+)
+      else if (index >= 10) {
+        const stationIndex = index - 10;
+        const targetStation = similarStations[stationIndex];
+        if (targetStation) {
+          navigateToStation(targetStation);
+        }
+      }
+    },
+    onBack: () => {
+      // Always go back to discover for Samsung TV compatibility
+      console.log('[RadioPlaying] 🔙 Back button - navigating to Discover');
+      setLocation('/discover-no-user');
+    }
+  });
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
@@ -276,16 +327,8 @@ export const RadioPlaying = (): JSX.Element => {
     setFocusIndex(newIndex);
   };
 
-  // Register RETURN key handler at the TOP - works even on loading screen
+  // Register page-specific key handler
   usePageKeyHandler('/radio-playing', (e) => {
-    // Ignore all key events when country selector modal is open
-    if (isCountrySelectorOpen) {
-      console.log('[RadioPlaying] Key event ignored - country selector modal is open');
-      return;
-    }
-
-    const key = (window as any).tvKey;
-    
     // RETURN key handler ALWAYS works, even when loading
     if (e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009) {
       console.log('[RadioPlaying] 🔙 RETURN key pressed - navigating to Discover');
@@ -333,58 +376,6 @@ export const RadioPlaying = (): JSX.Element => {
         break;
     }
   });
-
-  // Focus management with custom navigation
-  const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
-    totalItems,
-    cols: 1,
-    initialIndex: 8, // Start on play/pause button
-    onSelect: (index) => {
-      // Sidebar navigation (0-4)
-      if (index >= 0 && index <= 4) {
-        const route = sidebarRoutes[index];
-        if (route !== '#') {
-          setLocation(route);
-        }
-      }
-      // Country selector (5)
-      else if (index === 5) {
-        setIsCountrySelectorOpen(true);
-      }
-      // Previous button (6)
-      else if (index === 6) {
-        handlePrevious();
-      }
-      // Play/Pause button (7)
-      else if (index === 7) {
-        handlePlayPause();
-      }
-      // Next button (8)
-      else if (index === 8) {
-        handleNext();
-      }
-      // Favorite button (9)
-      else if (index === 9) {
-        if (station) {
-          toggleFavorite(station);
-        }
-      }
-      // Similar stations (10+)
-      else if (index >= 10) {
-        const stationIndex = index - 10;
-        const targetStation = similarStations[stationIndex];
-        if (targetStation) {
-          navigateToStation(targetStation);
-        }
-      }
-    },
-    onBack: () => {
-      // Always go back to discover for Samsung TV compatibility
-      console.log('[RadioPlaying] 🔙 Back button - navigating to Discover');
-      setLocation('/discover-no-user');
-    }
-  });
-
   // Auto-focus sync: When user focuses on RadioPlaying controls (6-9), jump to GlobalPlayer
   useEffect(() => {
     // Only redirect if focus is on player controls (indices 6-9)
