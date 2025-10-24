@@ -71,6 +71,21 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.23 (TIZEN LOCALE DEBUG - COMPREHENSIVE LOGGING):
+**Production build with extensive Tizen SystemInfo LOCALE API debugging**
+   - Created production build with timestamp: `1761301799184`
+   - Bundle: `tv-app/assets/index-1761301799184.js` (438.88 KB - production-ready)
+   - **DEBUGGING ENHANCEMENTS:**
+     - ✅ **Comprehensive LOCALE API Logging**: Full object dump, all properties, JSON output
+     - ✅ **Step-by-Step Parsing**: Shows every parsing step from "en_US" → "US" with detailed logs
+     - ✅ **Property Inspector**: Logs all locale properties (language, region, timezone, etc.)
+     - ✅ **TV Settings Guidance**: Console displays which TV settings to check for country/region
+     - ✅ **Visual Debug Separators**: Clear section markers for easy log reading
+   - **PURPOSE:** Diagnose why TV returns "en_US" instead of "de_AT" for Austria
+   - **EXPECTED LOGS:** Will show full Tizen LOCALE object with all properties and parsing steps
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS
+   - **TESTING:** Run on TV, check console for detailed LOCALE API debug output
+
 ### Samsung TV Build v3.22 (FINAL FIX - INFINITE LOOP RESOLVED):
 **Production build with complete infinite loop fix and all features**
    - Created production build with timestamp: `1761301568228`
