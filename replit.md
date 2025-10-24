@@ -70,11 +70,13 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
-### Samsung TV Build v3.35 (COUNTRY AUTO-DETECTION FIX):
-**Fixed Country Auto-Detection** - Properly detects country from TV/browser language on first visit
-   - Created production build with timestamp: `1761320413291`
-   - Bundle: `tv-app/assets/index-1761320413291.js` (430.33KB - full React app)
-   - **CRITICAL FIX:**
+### Samsung TV Build v3.35 (GOOGLE ANALYTICS FIX + COUNTRY AUTO-DETECTION):
+**Fixed Google Analytics + Country Auto-Detection** - GA now properly tracks events, country detection working
+   - Created production build with timestamp: `1761320575707`
+   - Bundle: `tv-app/assets/index-1761320575707.js` (430.33KB - full React app)
+   - **CRITICAL FIXES:**
+     - ✅ **Google Analytics Working**: Fixed build script to include GA Measurement ID in bundle (previously missing)
+     - ✅ **GA Tracking Active**: Now properly tracks page views, station plays, favorites, country changes, and errors
      - ✅ **Country Auto-Detection**: Now properly detects country from browser/TV language on first visit
      - ✅ **Timing Issue Resolved**: Fixed race condition where detection values weren't available during initial state setup
      - ✅ **Respects User Choice**: Once user manually selects a country, it persists and doesn't get overridden
