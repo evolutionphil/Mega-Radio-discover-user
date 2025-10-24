@@ -27,6 +27,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   const { t } = useLocalization();
 
   // Fetch countries from API (fetch upfront, cache for instant modal opening)
+  // CACHE: 30 days
   const { data: countriesData, isLoading: countriesLoading } = useQuery({
     queryKey: ['/api/countries'],
     queryFn: async () => {
@@ -35,7 +36,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       console.log('[CountrySelector] Countries received:', result.countries?.length || 0);
       return result;
     },
-    staleTime: 300000, // Cache for 5 minutes
+    staleTime: 30 * 24 * 60 * 60 * 1000, // 30 days
+    cacheTime: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 
   // Map API countries to component format with flag URLs
