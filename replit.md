@@ -67,6 +67,18 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.12 (GLOBAL PLAYER METADATA):
+**Enhanced Global Player Bar** - Added "Now Playing" metadata display with better information layout
+   - Created production build with timestamp: `1761306877080`
+   - Bundle: `tv-app/assets/index-1761306877080.js` (424KB - full React app)
+   - **GLOBAL PLAYER ENHANCEMENTS:**
+     - ✅ Global player bar now hidden on RadioPlaying page (already playing full-screen)
+     - ✅ Added "Now Playing" metadata display in global player bar
+     - ✅ New layout: Country name • Now Playing metadata (in pink #ff4199)
+     - ✅ Metadata appears between country and controls for better visibility
+     - ✅ Separator dot (•) only shows when metadata is available
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.11 (GUIDE PAGES BACKGROUND UPDATE):
 **Updated all guide pages with CSS gradient background** - Cleaner, more efficient background rendering
    - Created production build with timestamp: `1761306684470`

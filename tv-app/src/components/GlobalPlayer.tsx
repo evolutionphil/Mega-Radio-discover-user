@@ -34,9 +34,6 @@ export const GlobalPlayer = (): JSX.Element | null => {
     return FALLBACK_IMAGE;
   };
 
-  // Display metadata if available, otherwise fall back to country name
-  const displayText = nowPlayingMetadata || currentStation.country || 'Radio';
-
   return (
     <>
       {/* Backdrop Blur Background - Exact from Figma */}
@@ -62,10 +59,25 @@ export const GlobalPlayer = (): JSX.Element | null => {
         {currentStation.name}
       </p>
 
-      {/* Now Playing / Country */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[357px] not-italic text-[20px] text-white top-[1007.2px] z-50 max-w-[800px] truncate">
-        {displayText}
-      </p>
+      {/* Bottom Row: Country name - Metadata - separated */}
+      <div className="absolute left-[357px] top-[1007.2px] z-50 flex items-center gap-[12px] max-w-[800px]">
+        {/* Country Name */}
+        <p className="font-['Ubuntu',Helvetica] font-light leading-normal not-italic text-[20px] text-white">
+          {currentStation.country || 'Radio'}
+        </p>
+        
+        {/* Separator dot if metadata exists */}
+        {nowPlayingMetadata && (
+          <span className="text-white/50 text-[20px]">•</span>
+        )}
+        
+        {/* Now Playing Metadata */}
+        {nowPlayingMetadata && (
+          <p className="font-['Ubuntu',Helvetica] font-light leading-normal not-italic text-[20px] text-[#ff4199] truncate flex-1">
+            {nowPlayingMetadata}
+          </p>
+        )}
+      </div>
 
       {/* Previous Button */}
       <div 
