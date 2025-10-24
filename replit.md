@@ -74,10 +74,10 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
-### Samsung TV Build v3.20 (GLOBAL PLAYER FOCUS MANAGER):
-**Implemented Global Player Focus Manager with Full Navigation** - Complete focus management system for global player bar
-   - Created production build with timestamp: `1761311438379`
-   - Bundle: `tv-app/assets/index-1761311438379.js` (427.72KB - full React app)
+### Samsung TV Build v3.21 (GLOBAL PLAYER FOCUS MANAGER - FIXED):
+**Implemented Global Player Focus Manager with Full Navigation** - Complete focus management system with functional state updates
+   - Created production build with timestamp: `1761311747168`
+   - Bundle: `tv-app/assets/index-1761311747168.js` (427.76KB - full React app)
    - **GLOBAL PLAYER FOCUS SYSTEM:**
      - ✅ Created dedicated focus manager for global player bar
      - ✅ PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN activate global player focus mode
@@ -103,6 +103,7 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
      - Global player listens for key events only when focused
      - Uses event capture phase to prevent propagation to page handlers
      - Manual style application for Samsung TV Chromium 76 compatibility
+     - **CRITICAL FIX:** Uses functional state updates `setGlobalPlayerFocusIndex(prev => ...)` to prevent stale closure issues during Samsung remote key-repeat
    - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
 
 ### Samsung TV Build v3.18 (GLOBAL PLAYER GLOW EFFECTS - DEPRECATED):
