@@ -86,9 +86,19 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Previous Button */}
       <div 
-        className="absolute bg-black border-[#ff4199] border-[5px] border-solid left-[1210px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+        className="absolute bg-black border-[#ff4199] border-[5px] border-solid left-[1210px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center focus:outline-none"
+        style={{
+          boxShadow: 'none',
+          transition: 'all 0.3s ease'
+        }}
         data-tv-focusable="true"
         data-testid="button-global-previous"
+        onFocus={(e) => {
+          e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 65, 153, 0.8), 0 0 60px rgba(255, 65, 153, 0.5)';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.boxShadow = 'none';
+        }}
       >
         <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M34.375 16.9792L23.6042 27.75L34.375 38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -98,10 +108,20 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Play/Pause Button */}
       <div 
-        className="absolute bg-black left-[1336.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+        className="absolute bg-black left-[1336.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center focus:outline-none focus:border-[4px] focus:border-[#ff4199]"
+        style={{
+          boxShadow: 'none',
+          transition: 'all 0.3s ease'
+        }}
         onClick={togglePlayPause}
         data-tv-focusable="true"
         data-testid="button-global-play-pause"
+        onFocus={(e) => {
+          e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 65, 153, 0.8), 0 0 60px rgba(255, 65, 153, 0.5)';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.boxShadow = 'none';
+        }}
       >
         {isPlaying ? (
           <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -117,9 +137,19 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Next Button */}
       <div 
-        className="absolute bg-black left-[1462.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+        className="absolute bg-black left-[1462.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center focus:outline-none focus:border-[4px] focus:border-[#ff4199]"
+        style={{
+          boxShadow: 'none',
+          transition: 'all 0.3s ease'
+        }}
         data-tv-focusable="true"
         data-testid="button-global-next"
+        onFocus={(e) => {
+          e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 65, 153, 0.8), 0 0 60px rgba(255, 65, 153, 0.5)';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.boxShadow = 'none';
+        }}
       >
         <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M20.625 16.9792L31.3958 27.75L20.625 38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -129,14 +159,30 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Favorite Button */}
       <div 
-        className={`absolute border-[3.608px] border-solid left-[1588.81px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center ${
+        className={`absolute border-[3.608px] border-solid left-[1588.81px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-all flex items-center justify-center focus:outline-none ${
           isFavorite(currentStation._id) 
             ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
             : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
         }`}
+        style={{
+          boxShadow: 'none',
+          transition: 'all 0.3s ease'
+        }}
         onClick={() => toggleFavorite(currentStation)}
         data-tv-focusable="true"
         data-testid="button-global-favorite"
+        onFocus={(e) => {
+          e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 65, 153, 0.8), 0 0 60px rgba(255, 65, 153, 0.5)';
+          if (!isFavorite(currentStation._id)) {
+            e.currentTarget.style.borderColor = '#ff4199';
+          }
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.boxShadow = 'none';
+          if (!isFavorite(currentStation._id)) {
+            e.currentTarget.style.borderColor = 'black';
+          }
+        }}
       >
         <svg className="size-[50.508px]" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M25.5 44.625C24.7396 44.625 23.9792 44.3958 23.3604 43.9375C18.9375 40.6042 14.9479 37.6771 11.9792 34.7917C7.44792 30.3479 4.25 26.2646 4.25 20.625C4.25 12.6667 10.5 6.375 18.0625 6.375C21.6042 6.375 24.9167 8.14583 27.125 11.1354C29.3333 8.14583 32.6458 6.375 36.1875 6.375C43.75 6.375 50 12.6667 50 20.625C50 26.2646 46.8021 30.3479 42.2708 34.8125C39.3021 37.6979 35.3125 40.625 30.8896 43.9583C30.2708 44.3958 29.5104 44.625 28.75 44.625H25.5Z" fill="white"/>
@@ -145,8 +191,24 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Equalizer Button (Now Playing visualization) */}
       <div 
-        className={`absolute border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center ${isPlaying ? 'bg-[#ff4199] border-[#ff4199]' : 'border-black hover:bg-[rgba(255,255,255,0.1)]'}`}
+        className={`absolute border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-all flex items-center justify-center focus:outline-none ${isPlaying ? 'bg-[#ff4199] border-[#ff4199]' : 'border-black hover:bg-[rgba(255,255,255,0.1)]'}`}
+        style={{
+          boxShadow: 'none',
+          transition: 'all 0.3s ease'
+        }}
         data-tv-focusable="true"
+        onFocus={(e) => {
+          e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 65, 153, 0.8), 0 0 60px rgba(255, 65, 153, 0.5)';
+          if (!isPlaying) {
+            e.currentTarget.style.borderColor = '#ff4199';
+          }
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.boxShadow = 'none';
+          if (!isPlaying) {
+            e.currentTarget.style.borderColor = 'black';
+          }
+        }}
         data-testid="button-global-equalizer"
       >
         <div className="relative h-[35.526px] w-[33.75px]">

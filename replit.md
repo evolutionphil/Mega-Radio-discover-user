@@ -74,6 +74,25 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.18 (GLOBAL PLAYER GLOW EFFECTS):
+**Enhanced Global Player Focus States with Pink Glow** - All global player buttons now have beautiful glow effects when focused
+   - Created production build with timestamp: `1761309653486`
+   - Bundle: `tv-app/assets/index-1761309653486.js` (427.33KB - full React app)
+   - **FOCUS ENHANCEMENTS:**
+     - ✅ Added pink glow effect to ALL global player buttons when focused
+     - ✅ Dual box-shadow: `0 0 30px rgba(255,65,153,0.8)` + `0 0 60px rgba(255,65,153,0.5)`
+     - ✅ Play/Pause button: 4px pink border when focused
+     - ✅ Next button: 4px pink border when focused
+     - ✅ Previous button: Already has pink border, gains glow
+     - ✅ Favorite button: Pink border + glow when focused (if not favorited)
+     - ✅ Equalizer button: Pink border + glow when focused (if not playing)
+     - ✅ Smooth 0.3s transitions for all focus states
+   - **Technical Details:**
+     - Uses onFocus/onBlur event handlers for dynamic style updates
+     - Maintains pulse animation while adding glow effect
+     - Compatible with TV spatial navigation system
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.17 (CH_UP/CH_DOWN GLOBAL PLAYER):
 **Added CH_UP/CH_DOWN Keys to Jump to Global Player** - Samsung TV remote channel keys now jump to global player controls
    - Created production build with timestamp: `1761309508602`
