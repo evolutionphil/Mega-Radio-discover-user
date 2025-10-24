@@ -33,28 +33,40 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
   const STATIONS_PER_LOAD = 100; // Fetch 100 stations per batch
 
-  // Fetch ALL genres from API filtered by country
+  // Fetch ALL genres from API filtered by country (or global if GLOBAL selected)
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres/all', selectedCountryCode],
     queryFn: () => {
+      if (selectedCountryCode === 'GLOBAL') {
+        console.log('[DiscoverNoUser] Fetching GLOBAL genres (no country filter)');
+        return megaRadioApi.getAllGenres();
+      }
       console.log('[DiscoverNoUser] Fetching genres for country code:', selectedCountryCode);
       return megaRadioApi.getAllGenres(selectedCountryCode);
     },
   });
 
-  // Fetch popular stations filtered by selected country
+  // Fetch popular stations filtered by selected country (or global if GLOBAL selected)
   const { data: popularStationsData } = useQuery({
     queryKey: ['/api/stations/popular', { limit: 24, country: selectedCountryCode }],
     queryFn: () => {
+      if (selectedCountryCode === 'GLOBAL') {
+        console.log('[DiscoverNoUser] Fetching GLOBAL popular stations (no country filter)');
+        return megaRadioApi.getPopularStations({ limit: 24 });
+      }
       console.log('[DiscoverNoUser] Fetching popular stations for country:', selectedCountryCode);
       return megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode });
     },
   });
 
-  // Fetch initial 100 stations with offset=0 for TRUE infinite scroll
+  // Fetch initial 100 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
   const { data: initialStationsData, isLoading: isInitialLoading } = useQuery({
     queryKey: ['/api/stations/country/initial', selectedCountryCode],
     queryFn: () => {
+      if (selectedCountryCode === 'GLOBAL') {
+        console.log('[DiscoverNoUser] Fetching INITIAL 100 GLOBAL stations (no country filter), offset=0');
+        return megaRadioApi.getWorkingStations({ limit: 100, offset: 0 });
+      }
       console.log('[DiscoverNoUser] Fetching INITIAL 100 stations for country code:', selectedCountryCode, 'offset=0');
       return megaRadioApi.getWorkingStations({ limit: 100, country: selectedCountryCode, offset: 0 });
     },
@@ -440,11 +452,16 @@ export const DiscoverNoUser = (): JSX.Element => {
     console.log(`[DiscoverNoUser] 🚀 Fetching next batch - offset=${currentOffset}, limit=100, country=${selectedCountryCode}`);
     
     try {
-      const result = await megaRadioApi.getWorkingStations({ 
-        limit: 100, 
-        country: selectedCountryCode, 
-        offset: currentOffset 
-      });
+      const result = selectedCountryCode === 'GLOBAL'
+        ? await megaRadioApi.getWorkingStations({ 
+            limit: 100, 
+            offset: currentOffset 
+          })
+        : await megaRadioApi.getWorkingStations({ 
+            limit: 100, 
+            country: selectedCountryCode, 
+            offset: currentOffset 
+          });
       
       const newStations = result.stations || [];
       console.log(`[DiscoverNoUser] ✅ Fetched ${newStations.length} stations from API`);
@@ -642,7 +659,9 @@ export const DiscoverNoUser = (): JSX.Element => {
         >
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
-          {t('popular_genres')}
+          {selectedCountryCode === 'GLOBAL' 
+            ? `${t('popular_genres')} (Global)` 
+            : t('popular_genres')}
         </p>
 
         {/* Genre Pills - Horizontal Scrollable */}
@@ -679,7 +698,9 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Popular Radios Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[223px]">
-          {t('homepage_popular_stations')}
+          {selectedCountryCode === 'GLOBAL' 
+            ? `${t('homepage_popular_stations')} (Global)` 
+            : t('homepage_popular_stations')}
         </p>
 
         {/* Popular Radio Station Cards - Row 1 */}
