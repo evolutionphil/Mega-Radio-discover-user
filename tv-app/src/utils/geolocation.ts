@@ -286,15 +286,45 @@ function detectLGWebOSCountry(): GeoLocationResult | null {
 
 /**
  * Detect browser language and map to country (fallback)
+ * Enhanced to parse region code from locale (e.g., de-AT, de-DE, en-GB)
  */
 function detectLanguageBasedCountry(): GeoLocationResult {
   try {
     const browserLang = navigator.language || navigator.languages?.[0] || 'en';
-    const langCode = browserLang.toLowerCase().substring(0, 2);
+    console.log('[Geolocation] 📍 Browser locale detected:', browserLang);
     
+    // Try to extract region code from locale (e.g., "de-AT" -> "AT", "en-GB" -> "GB")
+    if (browserLang.includes('-')) {
+      const parts = browserLang.split('-');
+      const regionCode = parts[1]?.toUpperCase();
+      
+      // Check if region code is a valid country code
+      if (regionCode && regionCode.length === 2 && COUNTRY_CODE_TO_NAME[regionCode]) {
+        const countryName = COUNTRY_CODE_TO_NAME[regionCode];
+        console.log('[Geolocation] ✅ Region code detected from locale:', countryName, regionCode);
+        return {
+          countryName,
+          countryCode: regionCode,
+          detectionMethod: 'language-fallback',
+          success: true,
+        };
+      } else if (regionCode && regionCode.length === 2) {
+        // Valid 2-letter code but not in our mapping - use it anyway
+        console.warn('[Geolocation] ⚠️ Unmapped region code from locale:', regionCode, '(using as country code)');
+        return {
+          countryName: regionCode,
+          countryCode: regionCode,
+          detectionMethod: 'language-fallback',
+          success: true,
+        };
+      }
+    }
+    
+    // Fallback to language-only mapping if no valid region code
+    const langCode = browserLang.toLowerCase().substring(0, 2);
     const countryInfo = LANGUAGE_TO_COUNTRY[langCode] || LANGUAGE_TO_COUNTRY['en'];
     
-    console.log('[Geolocation] 🔄 Language-based fallback:', countryInfo.name, countryInfo.code);
+    console.log('[Geolocation] 🔄 Language-only fallback:', countryInfo.name, countryInfo.code);
     return {
       countryName: countryInfo.name,
       countryCode: countryInfo.code,
