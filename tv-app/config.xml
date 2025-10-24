@@ -7,7 +7,7 @@
     <icon src="icon.png"/>
     <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="true"/>
     <tizen:metadata key="http://tizen.org/metadata/app_ui_type/base_screen_resolution" value="extensive"/>
-    <tizen:content-security-policy>default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://themegaradio.com http://themegaradio.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: http: data:; media-src 'self' https: http:;</tizen:content-security-policy>
+    <tizen:content-security-policy>default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; connect-src 'self' https://themegaradio.com http://themegaradio.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: http: data:; media-src 'self' https: http:;</tizen:content-security-policy>
 
     <name>MegaRadioTVAPP</name>
     <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
