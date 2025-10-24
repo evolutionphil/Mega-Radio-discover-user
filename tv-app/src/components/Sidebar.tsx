@@ -9,7 +9,7 @@ interface SidebarProps {
 
 export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps): JSX.Element => {
   return (
-    <div className="absolute h-[638px] left-[64px] top-[242px] w-[98px] z-50 pointer-events-auto">
+    <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-50 pointer-events-auto">
       {/* Discover */}
       <Link href="/discover-no-user">
         <div className={`absolute left-0 overflow-hidden rounded-[10px] size-[98px] top-0 ${getFocusClasses(isFocused(0))}`} data-testid="button-discover">

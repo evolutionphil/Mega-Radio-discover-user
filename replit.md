@@ -67,6 +67,16 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.8 (FIXED SIDEBAR):
+**Fixed sidebar scrolling issue** - Sidebar now stays fixed while content scrolls
+   - Created production build with timestamp: `1761292877356`
+   - Bundle: `tv-app/assets/index-1761292877356.js` (425KB - full React app)
+   - **SIDEBAR FIX:**
+     - ✅ **Sidebar.tsx**: Changed from `absolute` to `fixed` positioning
+     - Sidebar now stays in place when scrolling through genres or station lists
+     - Only content area scrolls, sidebar remains fixed on screen
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.7 (TWO-STEP RETURN BUTTON):
 **Fixed RETURN button behavior** - Two-step back button: first closes keyboard, second closes modal
    - Created production build with timestamp: `1761292418170`
