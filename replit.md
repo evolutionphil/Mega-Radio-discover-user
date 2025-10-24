@@ -66,6 +66,19 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.18 (ENHANCED LOCALE DETECTION - AUSTRIA FIX):
+**Improved country detection to parse browser locale region codes**
+   - Created production build with timestamp: `1761297470278`
+   - Bundle: `tv-app/assets/index-1761297470278.js` (436.50 KB - production-ready)
+   - **LOCALE PARSING ENHANCEMENT:**
+     - ✅ **Region Code Detection**: Now extracts country from browser locale (e.g., `de-AT` → Austria, `de-DE` → Germany)
+     - ✅ **Locale Examples**: `en-GB` → UK, `en-US` → USA, `fr-CA` → Canada, `de-CH` → Switzerland
+     - ✅ **Graceful Fallback**: Falls back to language-only mapping if no region code present
+     - ✅ **Edge Case Handling**: Handles multi-part locales (e.g., `zh-Hans-CN`) without regression
+   - **USER ACTION REQUIRED**: If in Austria, configure TV browser locale to `de-AT` (German-Austria) instead of `de-DE` (German-Germany)
+   - **ARCHITECT APPROVED**: Locale parsing correct, fallback chain sound, no edge cases missed
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS
+
 ### Samsung TV Build v3.17 (HORIZONTAL GENRE NAVIGATION FIX):
 **Fixed horizontal swiping for genre rows on Discover page**
    - Created production build with timestamp: `1761297195453`
