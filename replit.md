@@ -67,6 +67,21 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.13 (TRANSLATION KEYS COMPLETE):
+**All Hardcoded Texts Replaced with Translation Keys** - Full internationalization support across all pages
+   - Created production build with timestamp: `1761307475191`
+   - Bundle: `tv-app/assets/index-1761307475191.js` (425KB - full React app)
+   - **TRANSLATION SYSTEM IMPLEMENTATION:**
+     - ✅ Replaced ALL 21 hardcoded texts with proper translation keys
+     - ✅ **Sidebar.tsx** (5 keys): nav_discover, nav_genres, nav_search, nav_favorites, nav_settings
+     - ✅ **RadioPlaying.tsx** (10 keys): now_playing, station_info, similar_radios, failed_to_load_station, please_select_station, loading_station, please_wait, press_return_to_go_back, back_to_discover, no_station_selected
+     - ✅ **DiscoverNoUser.tsx** (2 keys): see_more, loading_more_stations
+     - ✅ **Search.tsx** (3 keys): search_placeholder, no_results_found, recently_played
+     - ✅ **GlobalPlayer.tsx** (1 key): radio
+     - ✅ All texts now support 48 languages via API translation system
+     - ✅ Fallback English text provided for each key in case API translation fails
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.12 (GLOBAL PLAYER METADATA):
 **Enhanced Global Player Bar** - Added "Now Playing" metadata display with better information layout
    - Created production build with timestamp: `1761306877080`

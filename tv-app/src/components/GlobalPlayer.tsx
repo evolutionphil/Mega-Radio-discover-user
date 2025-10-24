@@ -1,5 +1,6 @@
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
+import { useLocalization } from "@/contexts/LocalizationContext";
 import { Station } from "@/services/megaRadioApi";
 import { useLocation } from "wouter";
 import { assetPath } from "@/lib/assetPath";
@@ -8,6 +9,7 @@ import { assetPath } from "@/lib/assetPath";
 export const GlobalPlayer = (): JSX.Element | null => {
   const { currentStation, isPlaying, togglePlayPause, nowPlayingMetadata } = useGlobalPlayer();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { t } = useLocalization();
   const [location] = useLocation();
 
   // Don't render if no station is playing
@@ -63,7 +65,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
       <div className="absolute left-[357px] top-[1007.2px] z-50 flex items-center gap-[12px] max-w-[800px]">
         {/* Country Name */}
         <p className="font-['Ubuntu',Helvetica] font-light leading-normal not-italic text-[20px] text-white">
-          {currentStation.country || 'Radio'}
+          {currentStation.country || t('radio') || 'Radio'}
         </p>
         
         {/* Separator dot if metadata exists */}

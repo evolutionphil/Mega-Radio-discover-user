@@ -466,13 +466,13 @@ export const RadioPlaying = (): JSX.Element => {
     console.error('[RadioPlaying] Error loading station:', stationError);
     return (
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
-        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">Failed to load station</p>
+        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">{t('failed_to_load_station') || 'Failed to load station'}</p>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-gray-400">
           {stationError instanceof Error ? stationError.message : 'Unknown error'}
         </p>
         <Link href="/discover-no-user">
           <button className="bg-[#ff4199] hover:bg-[#ff1a85] px-12 py-4 rounded-[30px] font-['Ubuntu',Helvetica] font-bold text-[24px] text-white transition-colors">
-            Back to Discover
+            {t('back_to_discover') || 'Back to Discover'}
           </button>
         </Link>
       </div>
@@ -484,13 +484,13 @@ export const RadioPlaying = (): JSX.Element => {
     console.error('[RadioPlaying] ❌ No station ID - cannot load station');
     return (
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
-        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">No Station Selected</p>
+        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">{t('no_station_selected') || 'No Station Selected'}</p>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-gray-400">
-          Please select a station to play
+          {t('please_select_station') || 'Please select a station to play'}
         </p>
         <Link href="/discover-no-user">
           <button className="bg-[#ff4199] hover:bg-[#ff1a85] px-12 py-4 rounded-[30px] font-['Ubuntu',Helvetica] font-bold text-[24px] text-white transition-colors">
-            Back to Discover
+            {t('back_to_discover') || 'Back to Discover'}
           </button>
         </Link>
       </div>
@@ -508,10 +508,10 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#ff4199]"></div>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white animate-pulse">
-          {stationData?.station?.name || 'Loading station...'}
+          {stationData?.station?.name || t('loading_station') || 'Loading station...'}
         </p>
-        <p className="font-['Ubuntu',Helvetica] font-normal text-[20px] text-gray-500">Please wait</p>
-        <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-gray-600 mt-4">Press RETURN to go back</p>
+        <p className="font-['Ubuntu',Helvetica] font-normal text-[20px] text-gray-500">{t('please_wait') || 'Please wait'}</p>
+        <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-gray-600 mt-4">{t('press_return_to_go_back') || 'Press RETURN to go back'}</p>
       </div>
     );
   }
@@ -585,12 +585,12 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Now Playing */}
       <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[32px] text-white top-[356.71px]">
-        {metadata?.title || 'Now Playing'}
+        {metadata?.title || t('now_playing') || 'Now Playing'}
       </p>
 
       {/* Station Info Label */}
       <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[24px] text-white top-[425px]">
-        Station Info
+        {t('station_info') || 'Station Info'}
       </p>
 
       {/* Station Info Tags */}
@@ -692,7 +692,7 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Similar Radios Section */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[559px]">
-        Similar Radios
+        {t('similar_radios') || 'Similar Radios'}
       </p>
 
       {/* Similar Radios Horizontal Scroll - INCREASED TO 20 stations */}
