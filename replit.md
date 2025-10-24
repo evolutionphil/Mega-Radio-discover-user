@@ -71,14 +71,20 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 
 ## Recent Changes (October 24, 2025 - Latest)
 
-### Development - Critical Bug Fixes (React Error #310 + Genre Scrolling):
-**Fixed infinite render loop and genre navigation issues**
-   - ✅ **React Error #310 Fixed**: Removed `updateTrigger` useState causing infinite loop in RadioPlaying.tsx
-   - ✅ **Navigation Fixed**: Changed from `window.history.pushState()` to `setLocation()` for proper routing
-   - ✅ **Genre Scrolling Fixed**: Added useEffect to auto-scroll genre pills horizontally when focused
-   - ✅ **Black Screen Resolved**: RadioPlaying page now renders correctly without crashes
-   - **IMPACT:** Users can now navigate to station detail pages without black screen crashes
-   - **TESTING:** Works in development environment, ready for production build
+### Samsung TV Build v3.20 (CRITICAL BUG FIXES + TIZEN SYSTEMINFO):
+**Production build with infinite loop fix, genre scrolling, and official Tizen geolocation**
+   - Created production build with timestamp: `1761300799320`
+   - Bundle: `tv-app/assets/index-1761300799320.js` (436.26 KB - production-ready)
+   - **CRITICAL FIXES:**
+     - ✅ **React Error #310 Fixed**: Removed `updateTrigger` useState causing infinite loop in RadioPlaying.tsx
+     - ✅ **Black Screen Resolved**: Station detail pages now load without crashes
+     - ✅ **Navigation Fixed**: Changed from `window.history.pushState()` to `setLocation()` for proper routing
+     - ✅ **Genre Scrolling Fixed**: Added useEffect to auto-scroll genre pills horizontally when focused
+   - **NEW FEATURES:**
+     - ✅ **Tizen SystemInfo LOCALE API**: Official country detection via `tizen.systeminfo.getPropertyValue("LOCALE")`
+     - ✅ **Hybrid Geolocation**: Tizen LOCALE → Samsung productinfo → LG webOS → Browser locale parsing
+     - ✅ **Translation System**: All 67 keys available in 48 languages via backend API
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS
 
 ### Development - Tizen SystemInfo LOCALE API Activated:
 **Added official Tizen geolocation API as primary detection method**
