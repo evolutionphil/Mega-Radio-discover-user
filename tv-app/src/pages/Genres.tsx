@@ -20,10 +20,16 @@ export const Genres = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
-  // FETCH COUNTRY-FILTERED GENRES using getAllGenres with selected country
+  // FETCH COUNTRY-FILTERED GENRES using getAllGenres with selected country (or global if GLOBAL selected)
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres', selectedCountryCode],
     queryFn: async () => {
+      if (selectedCountryCode === 'GLOBAL') {
+        console.log('[Genres] 🌍 Fetching GLOBAL genres (no country filter)');
+        const result = await megaRadioApi.getAllGenres();
+        console.log('[Genres] ✅ Fetched', result.genres?.length, 'genres globally');
+        return result;
+      }
       console.log('[Genres] 🎵 Fetching genres for country:', selectedCountryCode, selectedCountry);
       const result = await megaRadioApi.getAllGenres(selectedCountryCode);
       console.log('[Genres] ✅ Fetched', result.genres?.length, 'genres for', selectedCountry);
