@@ -70,6 +70,16 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.34 (GENRE NAME TRUNCATION):
+**Genre Name Truncation Fix** - Long genre names now truncate with ellipsis to prevent text overflow
+   - Created production build with timestamp: `1761320216788`
+   - Bundle: `tv-app/assets/index-1761320216788.js` (430.38KB - full React app)
+   - **UI FIX:**
+     - ✅ **Genre Name Truncation**: All genre cards now truncate long names with ellipsis (e.g., "Club dance electronic house...")
+     - ✅ **Prevents Text Wrapping**: Genre names no longer break card layout by wrapping to multiple lines
+     - ✅ **Consistent Design**: All three genre sections (Popular Row 1, Popular Row 2, All Genres grid) now truncate uniformly
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.33 (CRITICAL FIXES):
 **Fixed Genre Stations, Flag Icon, Auto-Detection, and Station Counts** - Resolved five major issues
    - Created production build with timestamp: `1761320082821`
