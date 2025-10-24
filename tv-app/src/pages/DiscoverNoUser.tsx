@@ -252,24 +252,19 @@ export const DiscoverNoUser = (): JSX.Element => {
     setFocusIndex(newIndex);
   };
 
-  // Scroll genre container to show focused genre (using same approach as RadioPlaying similar stations)
+  // Scroll genre into view when focused - EXACT SAME AS SIMILAR STATIONS
   useEffect(() => {
     if (focusIndex >= genresStart && focusIndex <= genresEnd && genreScrollRef.current) {
       const genreIndex = focusIndex - genresStart;
-      // Calculate scroll position based on genre pill width + gap
-      // Genre pills have varying widths, but we can estimate average width
-      const pillWidth = 250; // Approximate width of genre pill
-      const gap = 20; // Gap between pills
-      const scrollPosition = genreIndex * (pillWidth + gap);
-      
-      console.log('[DiscoverNoUser] 🎯 Scrolling genre container to position:', scrollPosition, 'for genre index:', genreIndex);
+      const genreWidth = 250 + 20; // estimated pill width + gap
+      const scrollPosition = genreIndex * genreWidth;
       
       genreScrollRef.current.scrollTo({
         left: scrollPosition,
         behavior: 'smooth'
       });
     }
-  }, [focusIndex, genresStart, genresEnd]);
+  }, [focusIndex]);
 
   // Listen for 'focusSidebar' event from GlobalPlayer to jump back to sidebar
   useEffect(() => {
@@ -658,35 +653,32 @@ export const DiscoverNoUser = (): JSX.Element => {
           {t('popular_genres')}
         </p>
 
-        {/* Genre Pills - Horizontal Scrollable */}
+        {/* Genre Pills - Horizontal Scrollable - EXACT SAME AS SIMILAR STATIONS */}
         <div 
           ref={genreScrollRef}
-          className="absolute left-[64px] top-[59px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
+          className="absolute left-[64px] top-[59px] flex gap-[20px] overflow-x-auto scrollbar-hide w-[1620px] scroll-smooth"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          <div className="flex py-[15px] px-[10px]" style={{ gap: '20px' }}>
-            {genres.map((genre, index) => {
-              const focusIdx = genresStart + index;
-              return (
-                <Link 
-                  key={genre.slug || index} 
-                  href={`/genre-list/${genre.slug}`}
-                  style={{ marginRight: '20px', display: 'inline-block', flexShrink: 0 }}
+          {genres.map((genre, index) => {
+            const focusIdx = genresStart + index;
+            return (
+              <Link 
+                key={genre.slug || index} 
+                href={`/genre-list/${genre.slug}`}
+              >
+                <div 
+                  className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                  data-testid={genre.slug}
+                  data-genre-pill
                 >
-                  <div 
-                    className={`relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
-                    data-testid={genre.slug}
-                    data-genre-pill
-                    style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}
-                  >
-                    <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-center text-white whitespace-nowrap">
-                      {genre.name}
-                    </p>
-                    <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+                  <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-center text-white whitespace-nowrap">
+                    {genre.name}
+                  </p>
+                  <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Popular Radios Section */}
