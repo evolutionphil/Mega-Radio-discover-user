@@ -167,16 +167,49 @@ function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> 
         window.tizen.systeminfo.getPropertyValue(
           "LOCALE",
           (locale: any) => {
-            console.log('[Geolocation] Tizen LOCALE received:', locale);
+            console.log('═══════════════════════════════════════════════════════════════');
+            console.log('[Geolocation] 🔍 TIZEN SYSTEMINFO LOCALE API - DETAILED DEBUG');
+            console.log('═══════════════════════════════════════════════════════════════');
+            console.log('[Geolocation] 📦 Raw Tizen LOCALE object:', locale);
+            console.log('[Geolocation] 📦 Locale object type:', typeof locale);
+            console.log('[Geolocation] 📦 Locale object keys:', Object.keys(locale));
+            console.log('[Geolocation] 📦 Full object JSON:', JSON.stringify(locale, null, 2));
+            
+            // Log all properties
+            console.log('--- ALL LOCALE PROPERTIES ---');
+            for (const key in locale) {
+              console.log(`[Geolocation]   ${key}:`, locale[key], `(type: ${typeof locale[key]})`);
+            }
+            console.log('--- END PROPERTIES ---');
             
             // Extract country code from locale
             // Tizen may return "en_US", "de_DE", etc. - extract the part after underscore
+            console.log('[Geolocation] 🔎 Extracting country code from locale.country:', locale.country);
             let countryCode = locale.country;
             
             if (countryCode && countryCode.includes('_')) {
               // Extract region code after underscore: "en_US" → "US"
-              countryCode = countryCode.split('_')[1];
-              console.log('[Geolocation] Extracted country code from locale:', locale.country, '→', countryCode);
+              const parts = countryCode.split('_');
+              const originalCode = countryCode;
+              countryCode = parts[1];
+              console.log('[Geolocation] 🔧 Parsing locale string:', originalCode);
+              console.log('[Geolocation] 🔧 Split parts:', parts);
+              console.log('[Geolocation] 🔧 Language part (parts[0]):', parts[0]);
+              console.log('[Geolocation] 🔧 Country part (parts[1]):', parts[1]);
+              console.log('[Geolocation] ✂️ Extracted country code:', originalCode, '→', countryCode);
+            } else {
+              console.log('[Geolocation] ℹ️ No underscore found in country code, using as-is:', countryCode);
+            }
+            
+            // Check other possible properties that might have country info
+            if (locale.language) {
+              console.log('[Geolocation] 🌐 locale.language:', locale.language);
+            }
+            if (locale.region) {
+              console.log('[Geolocation] 🌍 locale.region:', locale.region);
+            }
+            if (locale.timezone) {
+              console.log('[Geolocation] 🕐 locale.timezone:', locale.timezone);
             }
             
             if (countryCode && countryCode.length === 2) {
@@ -187,7 +220,9 @@ function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> 
                 console.warn('[Geolocation] ⚠️ Tizen SystemInfo returned unmapped country code:', upperCode, '(using code as name)');
               }
               
-              console.log('[Geolocation] ✅ Tizen SystemInfo LOCALE country detected:', countryName || upperCode, upperCode);
+              console.log('[Geolocation] ✅ FINAL RESULT - Country detected:', countryName || upperCode, upperCode);
+              console.log('[Geolocation] ✅ Detection method: tizen-systeminfo (official Tizen API)');
+              console.log('═══════════════════════════════════════════════════════════════');
               resolve({
                 countryName: countryName || upperCode,
                 countryCode: upperCode,
@@ -195,12 +230,19 @@ function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> 
                 success: true,
               });
             } else {
-              console.warn('[Geolocation] ⚠️ Tizen SystemInfo LOCALE returned invalid country:', locale.country);
+              console.warn('[Geolocation] ⚠️ INVALID COUNTRY CODE:', locale.country);
+              console.warn('[Geolocation] ⚠️ Expected 2-letter code, got:', countryCode, `(length: ${countryCode?.length || 0})`);
+              console.log('═══════════════════════════════════════════════════════════════');
               resolve(null);
             }
           },
           (error: Error) => {
-            console.error('[Geolocation] ❌ Tizen SystemInfo LOCALE error:', error);
+            console.error('═══════════════════════════════════════════════════════════════');
+            console.error('[Geolocation] ❌ TIZEN SYSTEMINFO LOCALE API ERROR');
+            console.error('[Geolocation] ❌ Error:', error);
+            console.error('[Geolocation] ❌ Error message:', error.message);
+            console.error('[Geolocation] ❌ Error stack:', error.stack);
+            console.error('═══════════════════════════════════════════════════════════════');
             resolve(null);
           }
         );
