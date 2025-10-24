@@ -66,6 +66,18 @@ The application is designed for a fixed 1920x1080px resolution with large, focus
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.17 (HORIZONTAL GENRE NAVIGATION FIX):
+**Fixed horizontal swiping for genre rows on Discover page**
+   - Created production build with timestamp: `1761297195453`
+   - Bundle: `tv-app/assets/index-1761297195453.js` (435.96 KB - production-ready)
+   - **CRITICAL NAVIGATION FIX:**
+     - ✅ **Horizontal Swipe Fixed**: RIGHT/LEFT keys now properly navigate through genre pills horizontally
+     - ✅ **preventDefault() Added**: Prevents default vertical navigation from overriding custom logic
+     - ✅ **Auto-Scroll**: Genre container automatically scrolls to keep focused item visible
+     - ✅ **Consistent UX**: Matches horizontal navigation pattern from RadioPlaying similar stations
+   - **ARCHITECT APPROVED**: Navigation fix works correctly, no side effects on other pages
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS
+
 ### Samsung TV Build v3.16 (FLOWING WAVE SPLASH ANIMATION):
 **Beautiful animated splash screen with fluid wave motion**
    - Created production build with timestamp: `1761296865275`
