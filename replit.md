@@ -74,6 +74,20 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.16 (GENRES SMOOTH SCROLL):
+**Improved Popular Genres Horizontal Scrolling** - Genres now scroll smoothly like similar stations
+   - Created production build with timestamp: `1761309229112`
+   - Bundle: `tv-app/assets/index-1761309229112.js` (425.66KB - full React app)
+   - **SCROLL IMPROVEMENTS:**
+     - ✅ Added genreScrollRef for direct scroll control
+     - ✅ Replaced scrollIntoView with scrollTo for smoother scrolling
+     - ✅ Matches similar stations scroll behavior
+     - ✅ Calculates scroll position based on genre width + gap
+   - **Technical Details:**
+     - Uses scrollTo({ left: position, behavior: 'smooth' }) instead of scrollIntoView
+     - More responsive to LEFT/RIGHT remote control inputs
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.15 (GLOBAL PLAYER HIDE FIX):
 **Fixed Global Player Bar Hiding on RadioPlaying Page** - GlobalPlayer now correctly hides on station detail page
    - Created production build with timestamp: `1761309003382`

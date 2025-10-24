@@ -23,6 +23,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [exitModalFocusIndex, setExitModalFocusIndex] = useState(0);
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const genreScrollRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   
   // Infinite scroll state for country stations - TRUE INFINITE SCROLL with API
@@ -75,15 +76,20 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Define sidebar routes (NO PROFILE - 5 items: Discover, Genres, Search, Favorites, Settings)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
-  // Scroll genre container to show focused genre
+  // Scroll genre container to show focused genre - SMOOTH SCROLL like similar stations
   const scrollGenreIntoView = (genreIndex: number) => {
-    const genreContainer = document.querySelector('[data-genre-container]');
-    if (!genreContainer) return;
+    if (!genreScrollRef.current) return;
     
-    const genrePills = genreContainer.querySelectorAll('[data-genre-pill]');
-    if (genrePills[genreIndex]) {
-      genrePills[genreIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
+    // Calculate scroll position based on genre width + gap + padding
+    // Each genre pill has variable width, but we can estimate spacing
+    const genreWidth = 200; // approximate width
+    const gap = 20; // gap between genres
+    const scrollPosition = genreIndex * (genreWidth + gap);
+    
+    genreScrollRef.current.scrollTo({
+      left: scrollPosition,
+      behavior: 'smooth'
+    });
   };
 
   // Custom navigation logic for complex multi-section layout
@@ -637,6 +643,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
         {/* Genre Pills - Horizontal Scrollable */}
         <div 
+          ref={genreScrollRef}
           className="absolute left-[64px] top-[59px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
           data-genre-container
         >
