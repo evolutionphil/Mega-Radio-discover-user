@@ -71,3 +71,20 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+
+## Recent Changes (October 24, 2025 - Latest)
+
+### Samsung TV Build v3.15 (GLOBAL PLAYER HIDE FIX):
+**Fixed Global Player Bar Hiding on RadioPlaying Page** - GlobalPlayer now correctly hides on station detail page
+   - Created production build with timestamp: `1761309003382`
+   - Bundle: `tv-app/assets/index-1761309003382.js` (425.75KB - full React app)
+   - **CRITICAL BUG FIX:**
+     - ✅ GlobalPlayer component moved inside Router (was outside, couldn't detect routes)
+     - ✅ GlobalPlayer now correctly uses wouter's useLocation hook
+     - ✅ Properly hides on `/radio-playing` page to avoid duplication
+     - ✅ Shows on all other pages (Discover, Genres, Search, Favorites, Settings)
+   - **Technical Details:**
+     - Issue: GlobalPlayer was rendered outside WouterRouter in App.tsx
+     - Fix: Moved <GlobalPlayer /> inside WouterRouter after <Switch>
+     - Result: location hook now returns "/radio-playing" instead of "/"
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
