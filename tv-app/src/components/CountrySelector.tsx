@@ -37,7 +37,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       return result;
     },
     staleTime: 30 * 24 * 60 * 60 * 1000, // 30 days
-    cacheTime: 30 * 24 * 60 * 60 * 1000, // 30 days
+    gcTime: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 
   // Map API countries to component format with flag URLs
