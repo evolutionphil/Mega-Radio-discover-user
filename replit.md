@@ -70,6 +70,20 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.36 (HORIZONTAL GENRE CARDS):
+**Genre Cards Now Horizontal Layout** - Genre name left-aligned with station count on same line
+   - Created production build with timestamp: `1761320699878`
+   - Bundle: `tv-app/assets/index-1761320699878.js` (430.18KB - full React app)
+   - **UI IMPROVEMENT:**
+     - ✅ **Horizontal Genre Layout**: Genre name now left-aligned with station count on the same line
+     - ✅ **Cleaner Design**: More compact and professional card layout
+     - ✅ **Better Space Utilization**: Genre name uses flex-1 to take available space, station count right-aligned
+   - **APPLIES TO:**
+     - Popular Genres Row 1 (4 cards)
+     - Popular Genres Row 2 (4 cards)
+     - All Genres Grid (6 columns, scrollable)
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.35 (GOOGLE ANALYTICS FIX + COUNTRY AUTO-DETECTION):
 **Fixed Google Analytics + Country Auto-Detection** - GA now properly tracks events, country detection working
    - Created production build with timestamp: `1761320575707`
