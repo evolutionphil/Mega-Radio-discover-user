@@ -77,12 +77,20 @@ export const DiscoverNoUser = (): JSX.Element => {
 
   // Scroll genre container to show focused genre
   const scrollGenreIntoView = (genreIndex: number) => {
+    console.log('[DiscoverNoUser] 🔄 scrollGenreIntoView called for index:', genreIndex);
     const genreContainer = document.querySelector('[data-genre-container]');
-    if (!genreContainer) return;
+    if (!genreContainer) {
+      console.log('[DiscoverNoUser] ❌ Genre container not found!');
+      return;
+    }
     
     const genrePills = genreContainer.querySelectorAll('[data-genre-pill]');
+    console.log('[DiscoverNoUser] Found', genrePills.length, 'genre pills');
     if (genrePills[genreIndex]) {
+      console.log('[DiscoverNoUser] ✅ Scrolling genre', genreIndex, 'into view');
       genrePills[genreIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    } else {
+      console.log('[DiscoverNoUser] ❌ Genre pill at index', genreIndex, 'not found');
     }
   };
 
@@ -155,24 +163,32 @@ export const DiscoverNoUser = (): JSX.Element => {
     // Genres section - dynamic boundaries (horizontal scrolling)
     else if (current >= genresStart && current <= genresEnd) {
       const col = current - genresStart;
+      console.log('[DiscoverNoUser] 🎮 Genres navigation:', { direction, current, genresStart, genresEnd, col, totalGenres: genres.length });
 
       if (direction === 'LEFT') {
         if (col > 0) {
           newIndex = current - 1;
+          console.log('[DiscoverNoUser] ⬅️  Moving LEFT in genres, new index:', newIndex);
           scrollGenreIntoView(col - 1);
         } else {
           newIndex = 0; // Jump to sidebar
+          console.log('[DiscoverNoUser] ⬅️  At first genre, jumping to sidebar');
         }
       } else if (direction === 'RIGHT') {
         if (col < genres.length - 1) {
           newIndex = current + 1;
+          console.log('[DiscoverNoUser] ➡️  Moving RIGHT in genres, new index:', newIndex);
           scrollGenreIntoView(col + 1);
+        } else {
+          console.log('[DiscoverNoUser] ➡️  At last genre, staying in place');
         }
       } else if (direction === 'UP') {
         newIndex = 5; // Jump to country selector
+        console.log('[DiscoverNoUser] ⬆️  Moving UP from genres to country selector');
       } else if (direction === 'DOWN') {
         // Jump to popular stations below
         newIndex = popularStationsStart + Math.min(col, Math.min(6, popularStations.length - 1));
+        console.log('[DiscoverNoUser] ⬇️  Moving DOWN from genres to popular stations, new index:', newIndex);
       }
     }
     // Country stations section - dynamic boundary
