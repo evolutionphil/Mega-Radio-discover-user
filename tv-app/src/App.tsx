@@ -11,6 +11,7 @@ import { GlobalPlayerProvider } from "@/contexts/GlobalPlayerContext";
 import { FocusRouterProvider } from "@/contexts/FocusRouterContext";
 import { GlobalPlayer } from "@/components/GlobalPlayer";
 import NotFound from "@/pages/not-found";
+import { useAnalytics } from "@/hooks/use-analytics";
 
 import { Splash } from "@/pages/Splash";
 import { Login } from "@/pages/Login";
@@ -27,6 +28,8 @@ import { Favorites } from "@/pages/Favorites";
 import { Settings } from "@/pages/Settings";
 
 function Router() {
+  useAnalytics();
+  
   return (
     <WouterRouter hook={useHashLocation}>
       <Switch>
