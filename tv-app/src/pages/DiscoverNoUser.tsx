@@ -34,6 +34,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const STATIONS_PER_LOAD = 100; // Fetch 100 stations per batch
 
   // Fetch ALL genres from API filtered by country (or global if GLOBAL selected)
+  // CACHE: 7 days
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres/all', selectedCountryCode],
     queryFn: () => {
@@ -44,9 +45,12 @@ export const DiscoverNoUser = (): JSX.Element => {
       console.log('[DiscoverNoUser] Fetching genres for country code:', selectedCountryCode);
       return megaRadioApi.getAllGenres(selectedCountryCode);
     },
+    staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    cacheTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
   // Fetch popular stations filtered by selected country (or global if GLOBAL selected)
+  // CACHE: 24 hours
   const { data: popularStationsData } = useQuery({
     queryKey: ['/api/stations/popular', { limit: 24, country: selectedCountryCode }],
     queryFn: () => {
@@ -57,9 +61,12 @@ export const DiscoverNoUser = (): JSX.Element => {
       console.log('[DiscoverNoUser] Fetching popular stations for country:', selectedCountryCode);
       return megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode });
     },
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+    cacheTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
   // Fetch initial 100 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
+  // CACHE: 7 days
   const { data: initialStationsData, isLoading: isInitialLoading } = useQuery({
     queryKey: ['/api/stations/country/initial', selectedCountryCode],
     queryFn: () => {
@@ -70,6 +77,8 @@ export const DiscoverNoUser = (): JSX.Element => {
       console.log('[DiscoverNoUser] Fetching INITIAL 100 stations for country code:', selectedCountryCode, 'offset=0');
       return megaRadioApi.getWorkingStations({ limit: 100, country: selectedCountryCode, offset: 0 });
     },
+    staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    cacheTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
   const genres = genresData?.genres || []; // Show ALL genres, not just 8
