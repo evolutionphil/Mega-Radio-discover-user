@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useLocalization } from './LocalizationContext';
 import { assetPath } from '@/lib/assetPath';
+import { trackCountryChange } from '@/lib/analytics';
 
 interface CountryContextType {
   selectedCountry: string;
@@ -59,6 +60,9 @@ export const CountryProvider = ({ children }: { children: ReactNode }) => {
     setSelectedCountry(country);
     setSelectedCountryCode(code);
     setSelectedCountryFlag(flag);
+    
+    // Track country change in Google Analytics
+    trackCountryChange(country);
     
     // Persist to localStorage
     localStorage.setItem('selectedCountry', country);
