@@ -68,6 +68,20 @@ The application is optimized for TV with a fixed 1920x1080px resolution, utilizi
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.39 (VERTICAL GENRE CARDS):
+**Changed Genre Cards to Vertical Layout** - Genre name on top, station count below
+   - Created production build with timestamp: `1761321485160`
+   - Bundle: `tv-app/assets/index-1761321485160.js` (432.10KB - full React app)
+   - **UI CHANGE:**
+     - ✅ **Vertical Layout**: Genre cards now show genre name on top, station count below it
+     - ✅ **Left-Aligned**: Both genre name and station count aligned to the left
+     - ✅ **Cleaner Look**: Stacked layout provides better visual hierarchy
+   - **APPLIES TO:**
+     - Popular Genres Row 1 (4 cards)
+     - Popular Genres Row 2 (4 cards)
+     - All Genres Grid (6 columns, scrollable)
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.38 (SCROLLABLE SIMILAR & POPULAR SECTIONS):
 **Made Similar & Popular Radios Scrollable** - Both sections now in a single scrollable container
    - Created production build with timestamp: `1761321263994`
