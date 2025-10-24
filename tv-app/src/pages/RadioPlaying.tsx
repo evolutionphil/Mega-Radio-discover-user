@@ -584,7 +584,7 @@ export const RadioPlaying = (): JSX.Element => {
       </p>
 
       {/* Now Playing */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[32px] text-white top-[356.71px]">
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[32px] text-white top-[356.71px] max-w-[700px] truncate">
         {metadata?.title || t('now_playing') || 'Now Playing'}
       </p>
 

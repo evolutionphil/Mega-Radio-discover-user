@@ -65,9 +65,9 @@ export const GlobalPlayer = (): JSX.Element | null => {
       </p>
 
       {/* Bottom Row: Country name - Metadata - separated */}
-      <div className="absolute left-[357px] top-[1007.2px] z-50 flex items-center gap-[12px] max-w-[800px]">
+      <div className="absolute left-[357px] top-[1007.2px] z-50 flex items-center gap-[12px] max-w-[750px]">
         {/* Country Name */}
-        <p className="font-['Ubuntu',Helvetica] font-light leading-normal not-italic text-[20px] text-white">
+        <p className="font-['Ubuntu',Helvetica] font-light leading-normal not-italic text-[20px] text-white whitespace-nowrap">
           {currentStation.country || t('radio') || 'Radio'}
         </p>
         
@@ -78,7 +78,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
         
         {/* Now Playing Metadata */}
         {nowPlayingMetadata && (
-          <p className="font-['Ubuntu',Helvetica] font-light leading-normal not-italic text-[20px] text-[#ff4199] truncate flex-1">
+          <p className="font-['Ubuntu',Helvetica] font-light leading-normal not-italic text-[20px] text-[#ff4199] truncate flex-1 max-w-[500px]">
             {nowPlayingMetadata}
           </p>
         )}
