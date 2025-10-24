@@ -374,7 +374,7 @@ export const Genres = (): JSX.Element => {
               style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
               onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white w-full truncate">
                 {genre.name}
               </p>
               <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
@@ -403,7 +403,7 @@ export const Genres = (): JSX.Element => {
               style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
               onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white">
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[24px] text-center text-white w-full truncate">
                 {genre.name}
               </p>
               <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
@@ -447,7 +447,7 @@ export const Genres = (): JSX.Element => {
               }}
               onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[20px] text-center text-white">
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic relative shrink-0 text-[20px] text-center text-white w-full truncate">
                 {genre.name}
               </p>
               <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[18px] text-center text-white">
