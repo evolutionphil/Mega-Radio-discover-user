@@ -68,16 +68,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, utilizi
 
 ## Recent Changes (October 24, 2025 - Latest)
 
-### Samsung TV Build v3.42 (SEE MORE POPULAR RADIOS):
+### Samsung TV Build v3.42 (SEE MORE POPULAR RADIOS + AUTO-SCROLL):
 **Added "See More" Button for Popular Radios** - Load 50 more stations on demand
-   - Created production build with timestamp: `1761322143992`
-   - Bundle: `tv-app/assets/index-1761322143992.js` (433.38KB - full React app)
-   - **NEW FEATURE:**
+   - Created production build with timestamp: `1761322260793`
+   - Bundle: `tv-app/assets/index-1761322260793.js` (433.50KB - full React app)
+   - **NEW FEATURES:**
      - ✅ **See More Button**: A special "See More" card appears at the end of Popular Radios section
      - ✅ **Load More Stations**: Clicking "See More" loads 50 additional random global popular stations
      - ✅ **Infinite Loading**: Keep clicking to load more stations (up to API limits)
      - ✅ **Remote Navigation**: Navigate to "See More" card with LEFT/RIGHT buttons
-     - ✅ **Auto-Scroll**: Focused cards automatically scroll into view
+     - ✅ **Auto-Scroll Horizontal**: Focused cards automatically scroll into view horizontally
+     - ✅ **Auto-Scroll Vertical**: Container automatically scrolls down when navigating from Similar to Popular sections
    - **HOW IT WORKS:**
      - Initially shows 20 random popular stations
      - "See More" card appears as the last item
