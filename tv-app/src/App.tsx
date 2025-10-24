@@ -52,6 +52,8 @@ function Router() {
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
+    {/* GlobalPlayer must be INSIDE Router to detect route changes */}
+    <GlobalPlayer />
     </WouterRouter>
   );
 }
@@ -67,7 +69,6 @@ function App() {
                 <TooltipProvider>
                   <Toaster />
                   <Router />
-                  <GlobalPlayer />
                 </TooltipProvider>
               </FocusRouterProvider>
             </GlobalPlayerProvider>

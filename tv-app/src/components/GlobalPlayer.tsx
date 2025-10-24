@@ -18,13 +18,11 @@ export const GlobalPlayer = (): JSX.Element | null => {
   }
 
   // Hide global player on RadioPlaying page (has its own player)
-  // Check multiple conditions to ensure it's hidden on radio-playing page
   const isRadioPlayingPage = location === '/radio-playing' || 
                              location.startsWith('/radio-playing') || 
                              location.includes('radio-playing');
   
   if (isRadioPlayingPage) {
-    console.log('[GlobalPlayer] Hidden on RadioPlaying page, location:', location);
     return null;
   }
 
