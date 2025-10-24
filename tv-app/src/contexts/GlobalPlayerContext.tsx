@@ -59,6 +59,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       audioPlayerRef.current.onError = (error: any) => {
         console.log('[GlobalPlayer] Audio error (non-critical):', error);
         setIsBuffering(false);
+        trackError(`Audio playback error: ${error?.message || 'Unknown error'}`, 'GlobalPlayer');
       };
 
       audioPlayerRef.current.onMetadata = (metadata: string) => {

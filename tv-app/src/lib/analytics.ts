@@ -24,6 +24,18 @@ export const initGA = () => {
   const script1 = document.createElement('script');
   script1.async = true;
   script1.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+  
+  // Handle script load success
+  script1.onload = () => {
+    console.log('[Analytics] Google Analytics script loaded successfully');
+  };
+  
+  // Handle script load failure
+  script1.onerror = (error) => {
+    console.error('[Analytics] Failed to load Google Analytics script:', error);
+    console.warn('[Analytics] Analytics will not be available - script load failed');
+  };
+  
   document.head.appendChild(script1);
 
   // Initialize gtag
