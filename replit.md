@@ -70,6 +70,21 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.32 (GOOGLE ANALYTICS INTEGRATION):
+**Google Analytics 4 Integration** - Real-time analytics tracking for users, stations, and errors
+   - Created production build with timestamp: `1761318088638`
+   - Bundle: `tv-app/assets/index-1761318088638.js` (432.65KB - full React app)
+   - **ANALYTICS FEATURES:**
+     - ✅ Automatic page view tracking on all route changes (including initial page load)
+     - ✅ Station play events tracked with country and genre metadata
+     - ✅ Favorite add/remove events tracked with station names
+     - ✅ Country selection changes tracked
+     - ✅ Error tracking for audio playback failures and system errors
+     - ✅ Script load error handling for Samsung TV compatibility
+     - ✅ Privacy-compliant: no user IDs or sensitive data tracked
+   - **SETUP:** Google Analytics Measurement ID configured via `VITE_GA_MEASUREMENT_ID` secret
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.31 (TRUNCATE METADATA):
 **Truncated Now Playing Metadata** - Song names and metadata now truncate to prevent overflow
    - Created production build with timestamp: `1761314580114`
