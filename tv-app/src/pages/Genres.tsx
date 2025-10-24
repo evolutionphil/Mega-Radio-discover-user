@@ -447,10 +447,10 @@ export const Genres = (): JSX.Element => {
               }}
               onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
             >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[20px] text-left text-white truncate w-full">
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[24px] text-left text-white truncate w-full">
                 {genre.name}
               </p>
-              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[18px] text-left text-white mt-1">
+              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
                 {genre.stationCount} Stations
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
