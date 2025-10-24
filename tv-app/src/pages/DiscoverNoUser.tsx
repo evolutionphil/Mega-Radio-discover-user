@@ -364,6 +364,17 @@ export const DiscoverNoUser = (): JSX.Element => {
         setFocusIndex(genresStart);
         console.log('[DiscoverNoUser] PageUp - jumped to genres');
         break;
+      case 427: // CH_UP - Samsung TV remote
+      case 428: // CH_DOWN - Samsung TV remote
+        // Jump to global player controls if visible
+        e.preventDefault();
+        const globalPlayerButton = document.querySelector('[data-testid="button-global-play-pause"]') as HTMLElement;
+        if (globalPlayerButton) {
+          globalPlayerButton.focus();
+          globalPlayerButton.click(); // Trigger focus visual state
+          console.log('[DiscoverNoUser] CH_UP/CH_DOWN - jumped to global player');
+        }
+        break;
       case key?.RETURN:
       case 461:
       case 10009:
