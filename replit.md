@@ -70,6 +70,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.31 (TRUNCATE METADATA):
+**Truncated Now Playing Metadata** - Song names and metadata now truncate to prevent overflow
+   - Created production build with timestamp: `1761314580114`
+   - Bundle: `tv-app/assets/index-1761314580114.js` (430.26KB - full React app)
+   - **UI FIX:**
+     - ✅ RadioPlaying page: Metadata max-width set to 700px with truncate
+     - ✅ GlobalPlayer bar: Metadata max-width set to 500px with truncate
+     - ✅ Long song titles now show with ellipsis: "Artist Name - Very Long Song Title That Would..."
+     - ✅ Country name in global player uses whitespace-nowrap to prevent wrapping
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.30 (REAL STATION COUNTS):
 **Fixed Station Counts Display** - All countries now show real station counts from API, Global shows actual total
    - Created production build with timestamp: `1761314382921`
