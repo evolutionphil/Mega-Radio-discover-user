@@ -67,6 +67,24 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.14 (GLOBAL PLAYER PAGE_UP/PAGE_DOWN + FULL TRANSLATIONS):
+**Complete translation system integration + Global Player quick access navigation**
+   - Created production build with timestamp: `1761295664354`
+   - Bundle: `tv-app/assets/index-1761295664354.js` (434.83 KB - production-ready)
+   - **TRANSLATION SYSTEM ENHANCEMENTS:**
+     - ✅ **Sidebar.tsx**: All navigation items use translation keys (nav_discover, nav_genres, nav_search, nav_favorites, nav_settings)
+     - ✅ **RadioPlaying.tsx**: All 11 UI strings now use translations (now_playing, station_info, similar_radios, failed_to_load_station, back_to_discover, no_station_selected, please_select_station, loading_station, please_wait, press_return_to_go_back, playback_failed)
+     - ✅ **All Pages Verified**: No remaining hardcoded strings in user-facing UI
+     - Graceful fallback pattern: `t('key') || t('alt_key') || 'English Default'`
+   - **PAGE_UP/PAGE_DOWN GLOBAL PLAYER NAVIGATION:**
+     - ✅ **All 6 Pages Enhanced**: DiscoverNoUser, Genres, GenreList, Search, Favorites, Settings
+     - ✅ **PAGE_UP (keyCode 33)** or **PAGE_DOWN (keyCode 34)** → Instantly jump to Global Player play button
+     - ✅ **From Global Player**: BACK/PAGE_UP/PAGE_DOWN → Return to sidebar "Discover" item (index 0)
+     - Consistent focus management across entire app using custom events
+   - **ARCHITECT APPROVED**: Production-ready, all user-facing text translatable, consistent navigation
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV / LG webOS
+   - **REQUIRED BACKEND ACTION**: Add missing translation keys (see list below in build notes)
+
 ### Samsung TV Build v3.12 (PRODUCTION-READY HYBRID GEOLOCATION):
 **BULLETPROOF native TV country detection** - Fixed all LG webOS edge cases, never discards valid detections
    - Created production build with timestamp: `1761294439957`
