@@ -473,19 +473,41 @@ export const RadioPlaying = (): JSX.Element => {
     }
   });
 
-  // Scroll stations into view when focused
-  useEffect(() => {
-    const cardWidth = 200 + 24; // card width + gap (marginRight)
+  // Scroll stations into view when focused - SMOOTH SCROLL like Discover page
+  const scrollSimilarIntoView = (stationIndex: number) => {
+    if (!similarScrollRef.current) return;
     
+    // Calculate scroll position based on card width + gap
+    const cardWidth = 200; // card width
+    const gap = 24; // gap between cards (marginRight)
+    const scrollPosition = stationIndex * (cardWidth + gap);
+    
+    similarScrollRef.current.scrollTo({
+      left: scrollPosition,
+      behavior: 'smooth'
+    });
+  };
+
+  const scrollPopularIntoView = (stationIndex: number) => {
+    if (!popularScrollRef.current) return;
+    
+    // Calculate scroll position based on card width + gap
+    const cardWidth = 200; // card width
+    const gap = 24; // gap between cards (marginRight)
+    const scrollPosition = stationIndex * (cardWidth + gap);
+    
+    popularScrollRef.current.scrollTo({
+      left: scrollPosition,
+      behavior: 'smooth'
+    });
+  };
+
+  // Auto-scroll when focus changes
+  useEffect(() => {
     // Similar stations (10-29)
-    if (focusIndex >= 10 && focusIndex <= 29 && similarScrollRef.current) {
+    if (focusIndex >= 10 && focusIndex <= 29) {
       const stationIndex = focusIndex - 10;
-      const scrollPosition = stationIndex * cardWidth;
-      
-      similarScrollRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: 'smooth'
-      });
+      scrollSimilarIntoView(stationIndex);
       
       // Scroll container to top when in Similar section
       if (containerScrollRef.current) {
@@ -497,14 +519,9 @@ export const RadioPlaying = (): JSX.Element => {
     }
     
     // Popular stations (30+) including See More button
-    if (focusIndex >= 30 && popularScrollRef.current) {
+    if (focusIndex >= 30) {
       const stationIndex = focusIndex - 30;
-      const scrollPosition = stationIndex * cardWidth;
-      
-      popularScrollRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: 'smooth'
-      });
+      scrollPopularIntoView(stationIndex);
       
       // Scroll container down to show Popular section
       if (containerScrollRef.current) {
