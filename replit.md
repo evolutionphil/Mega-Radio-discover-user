@@ -74,31 +74,35 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
-### Samsung TV Build v3.19 (PAGE_UP/DOWN + GLOW FIX):
-**Fixed Global Player Navigation & Focus Glow** - PAGE_UP/DOWN keys jump to player, CSS-based glow effects
-   - Created production build with timestamp: `1761309977335`
-   - Bundle: `tv-app/assets/index-1761309977335.js` (426.43KB - full React app)
-   - **KEY NAVIGATION FIXES:**
-     - ✅ PAGE_UP (33) and PAGE_DOWN (34) now jump to global player
-     - ✅ CH_UP (427) and CH_DOWN (428) also jump to global player
-     - ✅ All keys focus the play/pause button of global player bar
-     - ✅ Works on DiscoverNoUser page (more pages to follow)
-   - **FOCUS GLOW IMPROVEMENTS:**
-     - ✅ Switched to CSS focus pseudo-classes (`:focus`) for better TV compatibility
-     - ✅ Added `tabIndex={0}` to all global player buttons for proper DOM focus
-     - ✅ Pink glow: `shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)]`
-     - ✅ Play/Pause: 4px pink border + glow when focused
-     - ✅ Next: 4px pink border + glow when focused
-     - ✅ Previous: Pink glow (already has pink border)
-     - ✅ Favorite: Pink border + glow when focused (if not favorited)
-     - ✅ Equalizer: Pink border + glow when focused (if not playing)
+### Samsung TV Build v3.20 (GLOBAL PLAYER FOCUS MANAGER):
+**Implemented Global Player Focus Manager with Full Navigation** - Complete focus management system for global player bar
+   - Created production build with timestamp: `1761311438379`
+   - Bundle: `tv-app/assets/index-1761311438379.js` (427.72KB - full React app)
+   - **GLOBAL PLAYER FOCUS SYSTEM:**
+     - ✅ Created dedicated focus manager for global player bar
+     - ✅ PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN activate global player focus mode
+     - ✅ LEFT/RIGHT navigate between 5 buttons (Previous, Play/Pause, Next, Favorite, Equalizer)
+     - ✅ ENTER selects the focused button
+     - ✅ BACK returns focus to page (deactivates global player focus)
+     - ✅ Focus state tracked in GlobalPlayerContext (isGlobalPlayerFocused, globalPlayerFocusIndex)
+   - **GLOW EFFECTS (SAMSUNG TV COMPATIBLE):**
+     - ✅ Manual glow styling using JavaScript instead of CSS :focus pseudo-class
+     - ✅ Pink glow: `boxShadow: '0 0 30px rgba(255,65,153,0.8), 0 0 60px rgba(255,65,153,0.5)'`
+     - ✅ Dynamic border color changes based on focus state
+     - ✅ Works correctly on Samsung TV Chromium 76
+   - **FOCUS INTEGRATION:**
+     - ✅ Global player intercepts key events when focused (using capture phase)
+     - ✅ Page focus managers don't interfere when global player is active
+     - ✅ Smooth transition between page and global player focus
+     - ✅ Context exposed to window object for cross-component communication
    - **PLAYBACK CONTINUITY:**
-     - ✅ Verified back button on RadioPlaying page does NOT stop playback
-     - ✅ GlobalPlayerContext continues playing when navigating between pages
+     - ✅ Back button on RadioPlaying page does NOT stop playback
+     - ✅ GlobalPlayerContext maintains playback across all page navigations
    - **Technical Details:**
-     - Uses Tailwind `focus:` pseudo-classes instead of JavaScript event handlers
-     - More compatible with TV spatial navigation system
-     - Maintains smooth transitions and pulse animations
+     - Added `isGlobalPlayerFocused` and `globalPlayerFocusIndex` to GlobalPlayerContext
+     - Global player listens for key events only when focused
+     - Uses event capture phase to prevent propagation to page handlers
+     - Manual style application for Samsung TV Chromium 76 compatibility
    - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
 
 ### Samsung TV Build v3.18 (GLOBAL PLAYER GLOW EFFECTS - DEPRECATED):
