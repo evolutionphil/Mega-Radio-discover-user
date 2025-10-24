@@ -195,7 +195,9 @@ export const RadioPlaying = (): JSX.Element => {
   }, [similarStations]);
 
   // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (increased to 20)
-  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20);
+  const totalItems = useMemo(() => {
+    return 5 + 1 + 4 + Math.min(similarStations.length, 20);
+  }, [similarStations.length]);
 
   // Define sidebar routes (NO PROFILE - 5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -436,7 +438,7 @@ export const RadioPlaying = (): JSX.Element => {
     } else {
       console.log('[RadioPlaying] ⏳ Waiting for station data to auto-play');
     }
-  }, [station]);
+  }, [station, playStation]);
 
   const handlePlayPause = () => {
     togglePlayPause();
