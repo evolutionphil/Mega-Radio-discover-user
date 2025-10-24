@@ -1,0 +1,102 @@
+[FocusRouter] Registering handler for route: /guide-3
+index-1761302259424.js:131 [Guide3] ✅ Image loaded successfully: arrow.svg
+index-1761302259424.js:131 [Guide3] ✅ Image loaded successfully: search-icon.svg
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761302259424.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/guide-3", currentRoute: "/guide-3", routeWithoutQuery: "/guide-3", matchedRoute: "/guide-3", …}
+index-1761302259424.js:93 [FocusRouter] ✅ Dispatching to: /guide-3
+index-1761302259424.js:131 [Guide3] ⌨️  Key pressed: 13
+index-1761302259424.js:131 [Guide3] ✅ OK/Enter - navigating to Guide 4
+index-1761302259424.js:131 [Guide3] 👋 Component unmounting
+index-1761302259424.js:93 [FocusRouter] Unregistering handler for route: /guide-3
+index-1761302259424.js:131 [Guide4] 🎬 Component mounted
+index-1761302259424.js:93 [FocusRouter] Registering handler for route: /guide-4
+index-1761302259424.js:131 [Guide4] ✅ Image loaded successfully: arrow.svg
+index-1761302259424.js:131 [Guide4] ✅ Image loaded successfully: heart-icon.svg
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761302259424.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/guide-4", currentRoute: "/guide-4", routeWithoutQuery: "/guide-4", matchedRoute: "/guide-4", …}
+index-1761302259424.js:93 [FocusRouter] ✅ Dispatching to: /guide-4
+index-1761302259424.js:131 [Guide4] ⌨️  Key pressed: 13
+index-1761302259424.js:131 [Guide4] ✅ OK/Enter - completing onboarding and navigating to Discover
+index-1761302259424.js:131 [Guide4] 💾 Onboarding completion saved to localStorage
+index-1761302259424.js:40 ReferenceError: ce is not defined
+    at Q2 (index-1761302259424.js:131)
+    at uc (index-1761302259424.js:38)
+    at ch (index-1761302259424.js:40)
+    at sh (index-1761302259424.js:40)
+    at P0 (index-1761302259424.js:40)
+    at el (index-1761302259424.js:40)
+    at Mc (index-1761302259424.js:40)
+    at nh (index-1761302259424.js:40)
+    at Un (index-1761302259424.js:38)
+    at index-1761302259424.js:40
+yc @ index-1761302259424.js:40
+Np.n.callback @ index-1761302259424.js:40
+Jf @ index-1761302259424.js:38
+Zp @ index-1761302259424.js:40
+Xp @ index-1761302259424.js:40
+E0 @ index-1761302259424.js:40
+j0 @ index-1761302259424.js:40
+Co @ index-1761302259424.js:40
+nh @ index-1761302259424.js:40
+Un @ index-1761302259424.js:38
+(anonymous) @ index-1761302259424.js:40
+Promise.then (async)
+n0 @ index-1761302259424.js:38
+ft @ index-1761302259424.js:40
+Bt @ index-1761302259424.js:40
+lp @ index-1761302259424.js:38
+(anonymous) @ index-1761302259424.js:38
+Fh.Ts.v.forEach.e @ index-1761302259424.js:48
+Fh @ index-1761302259424.js:48
+hashchange (async)
+gy @ index-1761302259424.js:48
+Sh @ index-1761302259424.js:48
+Sh.x.useRef.n @ index-1761302259424.js:48
+K2.s @ index-1761302259424.js:131
+i @ index-1761302259424.js:93
+r @ index-1761302259424.js:93
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+index-1761302259424.js:93 [GlobalPlayer] Audio stopped
+index-1761302259424.js:131 [Guide4] 👋 Component unmounting
+index-1761302259424.js:93 [FocusRouter] Unregistering handler for route: /guide-4
+index-1761302259424.js:131 Uncaught ReferenceError: ce is not defined
+    at Q2 (index-1761302259424.js:131)
+    at uc (index-1761302259424.js:38)
+    at ch (index-1761302259424.js:40)
+    at sh (index-1761302259424.js:40)
+    at P0 (index-1761302259424.js:40)
+    at el (index-1761302259424.js:40)
+    at Mc (index-1761302259424.js:40)
+    at nh (index-1761302259424.js:40)
+    at Un (index-1761302259424.js:38)
+    at index-1761302259424.js:40
+Q2 @ index-1761302259424.js:131
+uc @ index-1761302259424.js:38
+ch @ index-1761302259424.js:40
+sh @ index-1761302259424.js:40
+P0 @ index-1761302259424.js:40
+el @ index-1761302259424.js:40
+Mc @ index-1761302259424.js:40
+nh @ index-1761302259424.js:40
+Un @ index-1761302259424.js:38
+(anonymous) @ index-1761302259424.js:40
+setTimeout (async)
+o0 @ index-1761302259424.js:38
+Promise.catch (async)
+n0 @ index-1761302259424.js:38
+ft @ index-1761302259424.js:40
+Bt @ index-1761302259424.js:40
+lp @ index-1761302259424.js:38
+(anonymous) @ index-1761302259424.js:38
+Fh.Ts.v.forEach.e @ index-1761302259424.js:48
+Fh @ index-1761302259424.js:48
+hashchange (async)
+gy @ index-1761302259424.js:48
+Sh @ index-1761302259424.js:48
+Sh.x.useRef.n @ index-1761302259424.js:48
+K2.s @ index-1761302259424.js:131
+i @ index-1761302259424.js:93
+r @ index-1761302259424.js:93
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
