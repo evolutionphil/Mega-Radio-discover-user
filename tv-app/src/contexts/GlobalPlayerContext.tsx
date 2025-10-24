@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode } from "react";
-import { Station } from "@/services/megaRadioApi";
+import { Station, megaRadioApi } from "@/services/megaRadioApi";
 import { recentlyPlayedService } from "@/services/recentlyPlayedService";
 
 interface GlobalPlayerContextType {
@@ -22,6 +22,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const [isBuffering, setIsBuffering] = useState(false);
   const [nowPlayingMetadata, setNowPlayingMetadata] = useState<string | null>(null);
   const audioPlayerRef = useRef<any>(null);
+  const metadataIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize TV audio player once
   useEffect(() => {
@@ -75,6 +76,43 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       }
     };
   }, []);
+
+  // Fetch metadata for current station
+  useEffect(() => {
+    const fetchMetadata = async () => {
+      if (!currentStation?._id || !isPlaying) return;
+
+      try {
+        const result = await megaRadioApi.getStationMetadata(currentStation._id);
+        if (result?.metadata?.title) {
+          console.log('[GlobalPlayer] Metadata fetched:', result.metadata.title);
+          setNowPlayingMetadata(result.metadata.title);
+        }
+      } catch (error) {
+        console.log('[GlobalPlayer] Metadata fetch failed (non-critical):', error);
+      }
+    };
+
+    // Clear previous interval
+    if (metadataIntervalRef.current) {
+      clearInterval(metadataIntervalRef.current);
+    }
+
+    // Fetch immediately and then every 30 seconds
+    if (currentStation && isPlaying) {
+      fetchMetadata();
+      metadataIntervalRef.current = setInterval(fetchMetadata, 30000);
+    } else {
+      setNowPlayingMetadata(null);
+    }
+
+    // Cleanup on unmount or station change
+    return () => {
+      if (metadataIntervalRef.current) {
+        clearInterval(metadataIntervalRef.current);
+      }
+    };
+  }, [currentStation, isPlaying]);
 
   const playStation = (station: Station) => {
     if (!audioPlayerRef.current) {
