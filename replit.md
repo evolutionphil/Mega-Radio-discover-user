@@ -67,6 +67,18 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.11 (GUIDE PAGES BACKGROUND UPDATE):
+**Updated all guide pages with CSS gradient background** - Cleaner, more efficient background rendering
+   - Created production build with timestamp: `1761306684470`
+   - Bundle: `tv-app/assets/index-1761306684470.js` (424KB - full React app)
+   - **GUIDE PAGES UPDATE:**
+     - ✅ Applied CSS gradient background to all 4 guide pages (Guide1, Guide2, Guide3, Guide4)
+     - ✅ Used: `linear-gradient(0deg, rgba(0, 0, 0, 0.70) 0%, rgba(0, 0, 0, 0.70) 100%), url() lightgray 50% / cover no-repeat`
+     - ✅ Replaced img + overlay div structure with single div inline styles
+     - ✅ Reduced code complexity and improved maintainability
+     - ✅ Fixed height from 1897px to 1080px for proper screen fit
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.10 (ENHANCED SIMILAR STATIONS):
 **Enhanced Similar Stations on Radio Playing page** - Now shows 20 swipeable stations instead of 8
    - Created production build with timestamp: `1761304288874`
