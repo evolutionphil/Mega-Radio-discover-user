@@ -67,6 +67,16 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.10 (ENHANCED SIMILAR STATIONS):
+**Enhanced Similar Stations on Radio Playing page** - Now shows 20 swipeable stations instead of 8
+   - **SIMILAR STATIONS ENHANCEMENTS:**
+     - ✅ Increased API fetch from 50 to 100 stations for more variety
+     - ✅ Display increased from 8 to 20 similar stations
+     - ✅ Smooth horizontal scrolling with LEFT/RIGHT remote keys
+     - ✅ Auto-scroll brings focused station into view
+     - ✅ Stations are shuffled each time for variety
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.9 (GENRE LIST FOCUS FIX):
 **Fixed lost focus on GenreList page** - Focus now automatically goes to first station on load
    - Created production build with timestamp: `1761293062426`

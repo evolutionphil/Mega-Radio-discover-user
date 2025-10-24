@@ -152,7 +152,7 @@ export const RadioPlaying = (): JSX.Element => {
 
   const metadata = metadataData?.metadata;
 
-  // Fetch similar stations
+  // Fetch similar stations - INCREASED TO 100 for more variety
   const { data: similarData } = useQuery({
     queryKey: ['similar-stations', stationId, station?.countrycode || station?.country],
     queryFn: async () => {
@@ -160,7 +160,7 @@ export const RadioPlaying = (): JSX.Element => {
       const countryCode = station.countrycode || station.country;
       if (countryCode) {
         const data = await megaRadioApi.getWorkingStations({ 
-          limit: 50, 
+          limit: 100, 
           country: countryCode 
         });
         // Filter out current station and shuffle for variety
@@ -172,7 +172,7 @@ export const RadioPlaying = (): JSX.Element => {
         }
         return { stations: filtered };
       }
-      const data = await megaRadioApi.getSimilarStations(stationId!, 50);
+      const data = await megaRadioApi.getSimilarStations(stationId!, 100);
       // Also filter and shuffle similar stations
       const filtered = data.stations.filter(s => s._id !== stationId);
       for (let i = filtered.length - 1; i > 0; i--) {
@@ -197,8 +197,8 @@ export const RadioPlaying = (): JSX.Element => {
     }
   }, [similarStations]);
 
-  // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations
-  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 8);
+  // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (increased to 20)
+  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20);
 
   // Define sidebar routes (NO PROFILE - 5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -695,13 +695,13 @@ export const RadioPlaying = (): JSX.Element => {
         Similar Radios
       </p>
 
-      {/* Similar Radios Horizontal Scroll */}
+      {/* Similar Radios Horizontal Scroll - INCREASED TO 20 stations */}
       <div 
         ref={similarScrollRef}
-        className="absolute left-[236px] top-[633px] flex gap-[24px] overflow-x-auto scrollbar-hide w-[1610px]"
+        className="absolute left-[236px] top-[633px] flex gap-[24px] overflow-x-auto scrollbar-hide w-[1610px] scroll-smooth"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {similarStations.slice(0, 8).map((similarStation, index) => {
+        {similarStations.slice(0, 20).map((similarStation, index) => {
           const focusIdx = 10 + index;
           return (
           <div
