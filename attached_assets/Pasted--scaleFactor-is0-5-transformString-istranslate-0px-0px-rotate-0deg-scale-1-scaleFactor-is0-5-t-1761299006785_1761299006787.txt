@@ -1,0 +1,151 @@
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scalePopupwindow called
+chrome-extension://oakokfcahinkpjpigcnpagkpjkkbffpl/ripple.html:1 Error in event handler: TypeError: Cannot read properties of undefined (reading '0')
+    at NWWindow.<anonymous> (extensions::nw.Window:208:47)
+    at dispatchEventIfExists (extensions::nw.Window:851:15)
+    at onDocumentStartEnd (extensions::nw.Window:876:5)
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scaleFactor is0.5
+ transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ scalePopupwindow called
+ Platform detected: Samsung Tizen
+ [Samsung TV] Initializing Samsung-specific features...
+ [Samsung TV] ✅ Screensaver disabled successfully: undefined
+ [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+ 🔥 megaRadioApi.ts VERSION 3.0 LOADED - Country-filtered genres enabled
+ [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+ [MegaRadio API] BASE_URL: https://themegaradio.com
+ 🔥 MAIN.TSX LOADED - VERSION 2.1 - ALL GENRES FIX
+ [Splash] 🎬 Component mounted
+ [FocusRouter] Dispatch function registered to window
+ [FavoritesContext] Loaded 0 favorites from localStorage
+ [Localization] 🌍 Starting hybrid geolocation...
+ [Geolocation] 🌍 Starting hybrid country detection...
+ [Geolocation] ❌ Samsung Tizen detection failed: 
+p2 @ index-1761297973777.js:93
+ [Geolocation] ⚠️ LG webOS systemInfo available but no valid country code found
+g2 @ index-1761297973777.js:93
+ [Geolocation] 📍 Browser locale detected: de-DE
+ [Geolocation] ✅ Region code detected from locale: Germany DE
+ [Localization] Country detected via: language-fallback
+ [Localization] Detected country: Germany DE
+ [Localization] Browser language detected: de-DE
+ [Localization] Using language: de
+ [Localization] Fetching translations for: de
+ [TV Spatial Nav] DOM ready, waiting for React...
+ [TV Remote Keys] DOM ready, initializing...
+ [TV Remote Keys] Key handler attached, waiting for React...
+chrome-extension://oakokfcahinkpjpigcnpagkpjkkbffpl/ripple.html:1 Error in event handler: TypeError: Cannot read properties of undefined (reading '0')
+    at NWWindow.<anonymous> (extensions::nw.Window:217:47)
+    at dispatchEventIfExists (extensions::nw.Window:851:15)
+    at onDocumentStartEnd (extensions::nw.Window:879:5)
+ [useTVNavigation] Initializing TV navigation...
+ [TV Nav] Found 0 focusable elements
+ [useTVNavigation] Initialization complete
+ 🔍 CSS CHECK: Starting verification...
+ 📄 CSS Links found: Object
+ 🎨 Tailwind Test Results: Object
+ ✅ TAILWIND CSS: Working correctly!
+ 🎯 #root element styles: Object
+ [TV Nav] Found 0 focusable elements
+index-1761297973777.js:93 [Splash] ⏱️  Timer completed, checking onboarding status
+index-1761297973777.js:93 [Splash] ✅ Onboarding already completed, navigating to Discover
+index-1761297973777.js:93 [Localization] API response received
+index-1761297973777.js:93 [Localization] Loaded 623 translations
+index-1761297973777.js:131 [CountrySelector] Mapping countries, API returned: 0
+index-1761297973777.js:131 [CountrySelector] Mapped countries: 0
+index-1761297973777.js:131 [CountrySelector] Filtering countries - searchQuery: 
+index-1761297973777.js:131 [CountrySelector] Filtered count: 0
+index-1761297973777.js:93 [Splash] 👋 Component unmounting
+index-1761297973777.js:131 [CountrySelector] Fetching countries...
+index-1761297973777.js:93 [API] getAllCountries: https://themegaradio.com/api/countries?tv=1
+index-1761297973777.js:131 [DiscoverNoUser] Fetching genres for country code: AT
+index-1761297973777.js:93 [API] getAllGenres: Filtering by country AT -> Austria
+index-1761297973777.js:93 [API] getAllGenres URL: https://themegaradio.com/api/genres?filters=%7B%22countrycode%22%3A%22Austria%22%2C%22searchQuery%22%3A%22%22%7D&limit=500&tv=1
+index-1761297973777.js:131 [DiscoverNoUser] Fetching popular stations for country: AT
+index-1761297973777.js:93 [API] getPopularStations: Converting AT -> Austria
+index-1761297973777.js:93 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&country=Austria&sort=votes&tv=1
+index-1761297973777.js:131 [DiscoverNoUser] Fetching INITIAL 100 stations for country code: AT offset=0
+index-1761297973777.js:93 [API] getWorkingStations: Converting AT -> Austria
+index-1761297973777.js:93 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=100&country=Austria&tv=1
+index-1761297973777.js:93 [useFocusManager] 🎯 Initialized with: Object
+index-1761297973777.js:93 [useFocusManager] 👁️  Focus changed: Object
+index-1761297973777.js:93 [FocusRouter] Registering handler for route: /discover-no-user
+index-1761297973777.js:93 [API] getAllCountries response: 200
+index-1761297973777.js:93 [API] getAllCountries raw data type: array
+index-1761297973777.js:93 [API] getAllCountries fetched: 238
+index-1761297973777.js:131 [CountrySelector] Countries received: 238
+index-1761297973777.js:131 [CountrySelector] Mapping countries, API returned: 238
+index-1761297973777.js:131 [CountrySelector] Mapped countries: 238
+index-1761297973777.js:131 [CountrySelector] Filtering countries - searchQuery: 
+index-1761297973777.js:131 [CountrySelector] Filtered count: 238
+index-1761297973777.js:93 [API] getPopularStations fetched: 24 stations
+index-1761297973777.js:93 [useFocusManager] 👁️  Focus changed: Object
+16c84635847ddad3.png:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 ()
+index-1761297973777.js:131 [AutoPlay] Play at start mode: last-played
+index-1761297973777.js:131 [AutoPlay] Getting station for mode: last-played
+index-1761297973777.js:131 [AutoPlay] Auto-playing station: KroneHit Radio
+index-1761297973777.js:93 [GlobalPlayer] Playing station: KroneHit Radio URL: http://onair-ha1.krone.at/kronehit64.aac
+tv-audio-player.js?v=1761229987899:35 [Samsung Player] Current state: NONE
+tv-audio-player.js?v=1761229987899:54 [Samsung Player] Opening URL: http://onair-ha1.krone.at/kronehit64.aac
+ripple.js:1 webapis.avplay.open called,url= http://onair-ha1.krone.at/kronehit64.aac
+ripple.js:1 webapis.avplay.setListener called
+ripple.js:1 Note: if the callback you set hasn't been called ever, maybe html5 <vido> tag doesn't support relevant event.
+ripple.js:1 webapis.avplay.setListener Key:onbufferingstart
+ripple.js:1 webapis.avplay.setListener Key:onbufferingcomplete
+ripple.js:1 webapis.avplay.setListener Key:onstreamcompleted
+ripple.js:1 webapis.avplay.setListener Key:oncurrentplaytime
+ripple.js:1 webapis.avplay.setListener Key:onerror
+ripple.js:1 webapis.avplay.prepareAsync called
+index-1761297973777.js:93 [GlobalPlayer] Saved last played station to localStorage
+index-1761297973777.js:93 [RecentlyPlayed] Station added: KroneHit Radio
+index-1761297973777.js:40 Error: Minified React error #310; visit https://reactjs.org/docs/error-decoder.html?invariant=310 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at Tt (index-1761297973777.js:38:17602)
+    at Object.cp [as useRef] (index-1761297973777.js:38:20406)
+    at le.useRef (index-1761297973777.js:9:6344)
+    at At (index-1761297973777.js:93:86775)
+    at P2 (index-1761297973777.js:93:88958)
+    at uc (index-1761297973777.js:38:17007)
+    at wc (index-1761297973777.js:40:3153)
+    at ch (index-1761297973777.js:40:44763)
+    at sh (index-1761297973777.js:40:39750)
+    at P0 (index-1761297973777.js:40:39678)
+yc @ index-1761297973777.js:40
+index-1761297973777.js:40 Uncaught Error: Minified React error #310; visit https://reactjs.org/docs/error-decoder.html?invariant=310 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at Tt (index-1761297973777.js:38:17602)
+    at Object.cp [as useRef] (index-1761297973777.js:38:20406)
+    at le.useRef (index-1761297973777.js:9:6344)
+    at At (index-1761297973777.js:93:86775)
+    at P2 (index-1761297973777.js:93:88958)
+    at uc (index-1761297973777.js:38:17007)
+    at wc (index-1761297973777.js:40:3153)
+    at ch (index-1761297973777.js:40:44763)
+    at sh (index-1761297973777.js:40:39750)
+    at P0 (index-1761297973777.js:40:39678)
+ripple.js:1 webapis.avplay.stop called
+ripple.js:1 webapis.avplay.close called
+index-1761297973777.js:93 [GlobalPlayer] Audio stopped
+index-1761297973777.js:93 [FocusRouter] Unregistering handler for route: /discover-no-user
+index-1761297973777.js:93 [API] Response status: 200
+index-1761297973777.js:93 [API] Working stations fetched: 100 (offset: 0)
+index-1761297973777.js:93 [API] getAllGenres response: 200
+index-1761297973777.js:93 [API] getAllGenres fetched: 184 genres (total: 184 )
