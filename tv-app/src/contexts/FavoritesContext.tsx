@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Station } from "@/services/megaRadioApi";
+import { trackFavoriteToggle } from "@/lib/analytics";
 
 interface FavoritesContextType {
   favorites: Station[];
@@ -48,15 +49,20 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       const newFavorites = [...prev, station];
       saveFavorites(newFavorites);
       console.log('[FavoritesContext] Added to favorites:', station.name);
+      trackFavoriteToggle(station.name, true);
       return newFavorites;
     });
   };
 
   const removeFavorite = (stationId: string) => {
     setFavorites((prev) => {
+      const station = prev.find((s) => s._id === stationId);
       const newFavorites = prev.filter((s) => s._id !== stationId);
       saveFavorites(newFavorites);
       console.log('[FavoritesContext] Removed from favorites:', stationId);
+      if (station) {
+        trackFavoriteToggle(station.name, false);
+      }
       return newFavorites;
     });
   };

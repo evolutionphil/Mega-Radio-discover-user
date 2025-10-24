@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode } from "react";
 import { Station, megaRadioApi } from "@/services/megaRadioApi";
 import { recentlyPlayedService } from "@/services/recentlyPlayedService";
+import { trackStationPlay, trackError } from "@/lib/analytics";
 
 interface GlobalPlayerContextType {
   currentStation: Station | null;
@@ -117,6 +118,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const playStation = (station: Station) => {
     if (!audioPlayerRef.current) {
       console.warn('[GlobalPlayer] Audio player not initialized');
+      trackError('Audio player not initialized', 'playStation');
       return;
     }
 
@@ -126,12 +128,16 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     setCurrentStation(station);
     audioPlayerRef.current.play(playUrl);
 
+    // Track station play event in Google Analytics
+    trackStationPlay(station.name, station.country, station.tags?.[0]);
+
     // Save last played station to localStorage
     try {
       localStorage.setItem("lastPlayedStation", JSON.stringify(station));
       console.log('[GlobalPlayer] Saved last played station to localStorage');
     } catch (err) {
       console.warn('[GlobalPlayer] Failed to save station to localStorage:', err);
+      trackError('Failed to save station to localStorage', 'playStation');
     }
 
     // Add to recently played list
