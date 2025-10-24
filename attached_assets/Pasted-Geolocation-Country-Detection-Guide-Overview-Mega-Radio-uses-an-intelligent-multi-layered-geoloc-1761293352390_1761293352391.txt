@@ -1,0 +1,492 @@
+Geolocation & Country Detection Guide
+Overview
+Mega Radio uses an intelligent multi-layered geolocation system to automatically detect and set the user's country for a personalized radio station experience. The system combines IP-based detection, URL routing, manual selection, and GPS coordinates to provide accurate location-aware features.
+
+🌍 How Geolocation Works
+1. IP-Based Country Detection
+The application uses ip-api.com, a free IP geolocation service, to automatically detect a user's country based on their IP address.
+
+Backend Implementation
+File: server/services/geolocation.ts
+
+export class GeolocationService {
+  async getLocationFromIP(ip: string): Promise<LocationData | null> {
+    // Use ip-api.com (free tier, no API key required)
+    const response = await fetch(
+      `https://ip-api.com/json/${ip}?fields=status,message,country,countryCode,region,city,lat,lon,timezone,isp`
+    );
+    const data = await response.json();
+    
+    if (data.status === 'success') {
+      return {
+        country: data.country,          // e.g., "United States"
+        countryCode: data.countryCode,  // e.g., "US"
+        region: data.region,            // e.g., "California"
+        city: data.city,                // e.g., "San Francisco"
+        lat: data.lat,                  // Latitude
+        lon: data.lon,                  // Longitude
+        timezone: data.timezone,        // e.g., "America/Los_Angeles"
+        isp: data.isp                   // Internet Service Provider
+      };
+    }
+    
+    return null;
+  }
+  // Extract client IP from request headers
+  getClientIP(req: any): string {
+    return req.headers['x-forwarded-for']?.split(',')[0] ||
+           req.headers['x-real-ip'] ||
+           req.connection?.remoteAddress ||
+           req.socket?.remoteAddress ||
+           '127.0.0.1';
+  }
+}
+Location Detection API
+Endpoint: GET /api/location
+
+File: server/routes.ts (lines 4136-4227)
+
+app.get("/api/location", async (req, res) => {
+  // 1. Extract client IP address from request headers
+  let rawIP = req.headers['x-forwarded-for'] || 
+              req.headers['x-real-ip'] || 
+              req.connection.remoteAddress || 
+              req.ip;
+  // 2. Parse IP address (handle comma-separated proxy chains)
+  let clientIP = rawIP;
+  if (typeof rawIP === 'string' && rawIP.includes(',')) {
+    const ips = rawIP.split(',').map(ip => ip.trim());
+    
+    // Find the first public IP (not private/local)
+    const publicIP = ips.find(ip => {
+      const isNotLocalhost = !ip.includes('127.0.0.1') && !ip.includes('::1');
+      const isNotPrivate = !ip.includes('192.168.') && !ip.includes('10.0.');
+      const hasValidFormat = /^\d+\.\d+\.\d+\.\d+$/.test(ip);
+      
+      return isNotLocalhost && isNotPrivate && hasValidFormat;
+    });
+    
+    clientIP = publicIP || ips[0];
+  }
+  // 3. Call ip-api.com for geolocation data
+  let locationData = {
+    country: 'all',
+    countryCode: 'all',
+    city: null,
+    region: null,
+    lat: null,
+    lng: null,
+    detected: false
+  };
+  // Only lookup for valid public IPs (skip localhost)
+  if (clientIP && 
+      clientIP !== '127.0.0.1' && 
+      clientIP !== '::1' && 
+      !clientIP.includes('192.168.') && 
+      !clientIP.includes('10.0.')) {
+    
+    const response = await fetch(
+      `https://ip-api.com/json/${clientIP}?fields=status,message,country,countryCode,region,city,lat,lon`
+    );
+    const data = await response.json();
+    
+    if (data.status === 'success') {
+      locationData = {
+        country: data.country,
+        countryCode: data.countryCode,
+        city: data.city,
+        region: data.region,
+        lat: data.lat,
+        lng: data.lon,
+        detected: true
+      };
+    }
+  }
+  // 4. Return location data to frontend
+  res.json({
+    location: locationData,
+    ip: rawIP
+  });
+});
+2. Country Detection Flow
+The system uses a priority-based detection system to determine the user's country:
+
+Priority Order (Highest to Lowest):
+Manual Selection - User explicitly selects a country from the dropdown
+URL Country Code - Country detected from URL path (e.g., /tr/ = Turkey, /de/ = Germany)
+LocalStorage - Previously saved country preference
+IP-Based Detection - Automatic detection via ip-api.com
+Default Fallback - "all" (show all countries)
+Frontend Implementation
+File: client/src/App.tsx
+
+// Initialize country from URL or localStorage
+const [selectedCountry, setSelectedCountry] = useState(() => {
+  // 1. Check URL for country code first
+  if (typeof window !== 'undefined') {
+    const currentPath = window.location.pathname;
+    const match = currentPath.match(/^\/([a-z]{2})(?:\/|$)/);
+    
+    if (match) {
+      const languageCode = match[1];
+      const countryName = codeToCountry[languageCode];
+      
+      if (countryName) {
+        return countryName; // Return country from URL
+      }
+    }
+  }
+  
+  // 2. Check localStorage for saved preference
+  const stored = localStorage.getItem('selectedCountry');
+  return stored || "all";
+});
+// Update country when URL changes
+useEffect(() => {
+  const currentPath = window.location.pathname;
+  const match = currentPath.match(/^\/([a-z]{2})(?:\/|$)/);
+  
+  if (match && !dropdownOverride) {
+    const languageCode = match[1];
+    const countryName = codeToCountry[languageCode];
+    
+    if (countryName && countryName !== selectedCountry) {
+      setSelectedCountry(countryName);
+    }
+  }
+}, [window.location.pathname]);
+3. Automatic Language Detection
+The system also uses geolocation to automatically set the user's preferred language.
+
+File: client/src/hooks/useTranslation.ts
+
+// Fetch user location for automatic language detection
+const { data: locationData } = useQuery<{
+  location: {
+    country: string;
+    countryCode: string;
+    detected: boolean;
+  };
+}>({
+  queryKey: ["/api/location"],
+  staleTime: 60 * 60 * 1000, // Cache for 1 hour
+});
+// Auto-detect language from location
+useEffect(() => {
+  if (locationData?.location?.detected && !localStorage.getItem('manualLanguageChange')) {
+    const detectedCountry = locationData.location.country;
+    const detectedLanguage = COUNTRY_TO_LANGUAGE[detectedCountry];
+    
+    if (detectedLanguage && detectedLanguage !== language) {
+      localStorage.setItem('preferredLanguage', detectedLanguage);
+      setLanguageState(detectedLanguage);
+    }
+  }
+}, [locationData]);
+Country to Language Mapping:
+
+const COUNTRY_TO_LANGUAGE = {
+  'Türkiye': 'tr',
+  'France': 'fr',
+  'Germany': 'de',
+  'Spain': 'es',
+  'Deutschland': 'de',
+  'España': 'es',
+  'United States': 'en',
+  'United Kingdom': 'en',
+  'Canada': 'en',
+  'Australia': 'en',
+  'all': 'en'
+};
+4. GPS-Based Nearby Stations
+For truly nearby stations, the app requests the user's precise GPS coordinates via the browser's Geolocation API.
+
+File: client/src/pages/radio-frontend.tsx
+
+// Request GPS coordinates for nearby stations
+useEffect(() => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserCoordinates({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+      },
+      (error) => {
+        console.log('GPS location denied or unavailable');
+      }
+    );
+  }
+}, []);
+// Fetch nearby stations using GPS coordinates
+const { data: nearbyStations } = useQuery({
+  queryKey: ['/api/stations/nearby', userCoordinates?.lat, userCoordinates?.lng],
+  enabled: !!userCoordinates,
+});
+🔄 Complete Detection Flow Diagram
+┌─────────────────────────────────────────────────────────────────┐
+│                        User Visits Website                       │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  Step 1: Check URL for Country Code                             │
+│  Example: /tr/genres/pop → Turkey                               │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼ (No URL code found)
+┌─────────────────────────────────────────────────────────────────┐
+│  Step 2: Check LocalStorage for Saved Preference                │
+│  localStorage.getItem('selectedCountry')                         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼ (No saved preference)
+┌─────────────────────────────────────────────────────────────────┐
+│  Step 3: Backend IP Detection                                   │
+│  1. Extract client IP from request headers                      │
+│  2. Filter out localhost/private IPs                            │
+│  3. Call https://ip-api.com/json/{IP}                           │
+│  4. Return country, countryCode, city, region, lat, lng         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  Step 4: Frontend Uses Detected Country                         │
+│  - Set selectedCountry state                                    │
+│  - Auto-select language from country mapping                    │
+│  - Filter stations by country                                   │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  Step 5: Optional GPS for Nearby Stations                       │
+│  navigator.geolocation.getCurrentPosition()                     │
+│  → Use precise coordinates for "Nearby Stations" feature        │
+└─────────────────────────────────────────────────────────────────┘
+📍 What Data is Collected?
+From IP-API.com:
+Field	Example	Purpose
+country	"United States"	Filter stations by country
+countryCode	"US"	URL routing (/us/)
+region	"California"	Regional preferences
+city	"San Francisco"	Nearby stations
+lat / lon	37.7749, -122.4194	Distance calculations
+timezone	"America/Los_Angeles"	Time-based features
+isp	"Comcast Cable"	Analytics only
+From Browser GPS (Optional):
+Field	Example	Purpose
+latitude	37.7749	Precise nearby stations
+longitude	-122.4194	Distance from user
+Note: GPS coordinates are only requested when users access the "Nearby Stations" feature and must be explicitly approved by the user.
+
+🔒 Privacy & Security
+IP Detection:
+✅ No API key required - Free tier of ip-api.com
+✅ HTTPS only - Secure connection to ip-api.com
+✅ No data storage - IP addresses are not stored in the database
+✅ Proxy-aware - Correctly handles X-Forwarded-For headers
+✅ Private IP filtering - Skips localhost and private networks
+GPS Coordinates:
+✅ User consent required - Browser prompts for permission
+✅ Optional feature - Only used for "Nearby Stations"
+✅ Not stored - Coordinates are session-only
+✅ Client-side only - Never sent to external APIs
+🛠️ Technical Implementation Details
+IP Address Extraction Logic
+The backend uses a fallback chain to extract the client's real IP address:
+
+const clientIP = 
+  req.headers['x-forwarded-for']?.split(',')[0] ||  // Proxy IP (first in chain)
+  req.headers['x-real-ip'] ||                       // Nginx real IP
+  req.connection.remoteAddress ||                   // Direct connection IP
+  req.socket.remoteAddress ||                       // Socket IP
+  req.ip;                                          // Express fallback
+Multi-IP Parsing (Proxy Chains)
+When requests pass through multiple proxies, the X-Forwarded-For header contains a comma-separated list:
+
+X-Forwarded-For: 203.0.113.195, 70.41.3.18, 150.172.238.178
+                 ↑ Client IP    ↑ Proxy 1  ↑ Proxy 2
+The system extracts the first public IP in the chain:
+
+const ips = rawIP.split(',').map(ip => ip.trim());
+const publicIP = ips.find(ip => {
+  const isNotLocalhost = !ip.includes('127.0.0.1') && !ip.includes('::1');
+  const isNotPrivate = !ip.includes('192.168.') && !ip.includes('10.0.');
+  const hasValidFormat = /^\d+\.\d+\.\d+\.\d+$/.test(ip);
+  
+  return isNotLocalhost && isNotPrivate && hasValidFormat;
+});
+Localhost Detection & Fallback
+For development environments (localhost), the system skips IP lookup and returns default values:
+
+if (clientIP === '127.0.0.1' || 
+    clientIP === '::1' || 
+    clientIP.includes('192.168.') || 
+    clientIP.includes('10.0.')) {
+  
+  return {
+    country: 'all',
+    countryCode: 'all',
+    detected: false
+  };
+}
+🌐 SEO & URL Routing Integration
+Country-Specific URLs
+The application generates SEO-friendly URLs based on detected countries:
+
+https://themegaradio.com/          → All countries (default)
+https://themegaradio.com/tr/       → Turkey (Türkiye)
+https://themegaradio.com/de/       → Germany (Deutschland)
+https://themegaradio.com/fr/       → France
+https://themegaradio.com/es/       → Spain (España)
+Country Code Mapping
+File: client/src/App.tsx
+
+const countryToCode = {
+  'United States': 'us',
+  'United Kingdom': 'gb',
+  'Germany': 'de',
+  'France': 'fr',
+  'Spain': 'es',
+  'Türkiye': 'tr',
+  'Turkey': 'tr',
+  'Deutschland': 'de',
+  'España': 'es',
+  'Allemagne': 'de',
+  'Espagne': 'es',
+  // ... 100+ country mappings
+};
+Automatic Redirects
+When a user's country is detected, the application does NOT automatically redirect to avoid disrupting navigation. Instead:
+
+URL-based country takes priority (explicit user intent)
+Manual selection persists in localStorage
+IP detection only applies on first visit without saved preferences
+📊 Distance Calculations
+For nearby stations, the system uses the Haversine formula to calculate distance between coordinates:
+
+File: server/services/geolocation.ts
+
+calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = this.toRadians(lat2 - lat1);
+  const dLon = this.toRadians(lon2 - lon1);
+  
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.toRadians(lat1)) * Math.cos(this.toRadians(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+  
+  return distance; // Distance in kilometers
+}
+Usage Example:
+
+// User in San Francisco (37.7749, -122.4194)
+// Station in Los Angeles (34.0522, -118.2437)
+const distance = calculateDistance(37.7749, -122.4194, 34.0522, -118.2437);
+// Returns: ~559 km
+🧪 Testing Geolocation
+Localhost Testing
+During development on localhost, IP detection returns default values:
+
+{
+  "location": {
+    "country": "all",
+    "countryCode": "all",
+    "detected": false
+  },
+  "ip": "127.0.0.1"
+}
+Production Testing
+To test IP detection in production:
+
+Visit: https://themegaradio.com/api/location
+Response will show your detected location:
+{
+  "location": {
+    "country": "United States",
+    "countryCode": "US",
+    "city": "San Francisco",
+    "region": "California",
+    "lat": 37.7749,
+    "lng": -122.4194,
+    "detected": true
+  },
+  "ip": "203.0.113.195"
+}
+Manual Country Override
+To test specific countries:
+
+Via URL: https://themegaradio.com/tr/ (Turkey)
+Via Dropdown: Select country from header dropdown
+Via DevTools: localStorage.setItem('selectedCountry', 'Germany')
+🔧 Configuration
+IP-API Service Limits
+Free Tier:
+
+45 requests/minute per IP address
+HTTPS support (secure)
+No API key required
+Fields available: country, countryCode, region, city, lat, lon, timezone, isp
+Production URLs:
+
+https://ip-api.com/json/{IP} - Single IP lookup
+https://ip-api.com/batch - Batch lookups (not used)
+Caching Strategy
+Location data is cached on the frontend to minimize API calls:
+
+const { data: locationData } = useQuery({
+  queryKey: ["/api/location"],
+  staleTime: 60 * 60 * 1000, // 1 hour cache
+});
+This means:
+
+✅ Location is detected once per hour
+✅ Reduces API calls to ip-api.com
+✅ Improves page load performance
+✅ Persists across page navigations
+🚀 Integration with Other Features
+1. Station Filtering
+Detected country is used to filter stations on the homepage:
+
+const { data: stations } = useQuery({
+  queryKey: ['/api/stations/popular', selectedCountry],
+  // Returns stations from selected country
+});
+2. Language Selection
+Country detection automatically sets the interface language:
+
+// Turkey → Turkish (tr)
+// Germany → German (de)
+// France → French (fr)
+// USA → English (en)
+3. Genre Pages
+Country-specific genre pages:
+
+/tr/genres/pop     → Turkish pop stations
+/de/genres/rock    → German rock stations
+/fr/genres/jazz    → French jazz stations
+4. Recommendations
+Machine learning recommendations consider user's country for personalized suggestions.
+
+📝 Summary
+What Happens When You Visit Mega Radio:
+Frontend loads → Checks URL for country code
+No URL code? → Checks localStorage for saved preference
+No saved preference? → Calls /api/location endpoint
+Backend detects IP → Calls ip-api.com with client IP
+ip-api.com responds → Country, city, region, coordinates
+Frontend receives data → Sets country and language
+Stations filtered → Shows country-specific stations
+User can override → Manual country selection anytime
+🔗 Related Documentation
+API Documentation - Complete API reference
+Smart TV Integration - TV app geolocation
+SEO Configuration - Country-specific SEO
+📞 External Services
+Service	Purpose	API Endpoint	Rate Limit
+ip-api.com	IP geolocation	https://ip-api.com/json/{IP}	45 req/min (free)
+Browser Geolocation API	GPS coordinates	navigator.geolocation	User consent required
