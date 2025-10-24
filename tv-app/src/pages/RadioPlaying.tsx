@@ -119,6 +119,7 @@ export const RadioPlaying = (): JSX.Element => {
   };
 
   // Fetch station details
+  // CACHE: 24 hours
   const { data: stationData, isLoading: isLoadingStation, error: stationError } = useQuery({
     queryKey: ['station', stationId],
     queryFn: async () => {
@@ -132,7 +133,8 @@ export const RadioPlaying = (): JSX.Element => {
     },
     enabled: !!stationId,
     retry: 2,
-    staleTime: 30000,
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+    cacheTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
   const station = stationData?.station;
@@ -159,6 +161,7 @@ export const RadioPlaying = (): JSX.Element => {
   const metadata = metadataData?.metadata;
 
   // Fetch similar stations - INCREASED TO 100 for more variety
+  // CACHE: 7 days
   const { data: similarData } = useQuery({
     queryKey: ['similar-stations', stationId, station?.countrycode || station?.country],
     queryFn: async () => {
@@ -188,9 +191,8 @@ export const RadioPlaying = (): JSX.Element => {
       return { stations: filtered };
     },
     enabled: !!stationId && !!station,
-    // Don't use cache for similar stations - always fetch fresh
-    staleTime: 0,
-    gcTime: 0,
+    staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
   const similarStations = similarData?.stations || [];
@@ -204,6 +206,7 @@ export const RadioPlaying = (): JSX.Element => {
   }, [similarStations]);
 
   // Fetch popular stations from GLOBAL (random selection)
+  // CACHE: 24 hours
   const { data: popularData } = useQuery({
     queryKey: ['popular-global-stations', stationId, popularStationsToShow],
     queryFn: async () => {
@@ -222,8 +225,8 @@ export const RadioPlaying = (): JSX.Element => {
       return { stations: filtered };
     },
     enabled: !!stationId,
-    staleTime: 0, // Always fetch fresh for randomness
-    gcTime: 0,
+    staleTime: 24 * 60 * 60 * 1000, // 24 hours
+    gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
   // Update all popular stations when data changes
