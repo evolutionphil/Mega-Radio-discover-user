@@ -60,7 +60,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
       </div>
 
       {/* Station Name */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[357px] not-italic text-[24px] text-white top-[976px] z-50 max-w-[800px] truncate">
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[357px] not-italic text-[24px] text-white top-[976px] z-50 max-w-[450px] truncate">
         {currentStation.name}
       </p>
 

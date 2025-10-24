@@ -67,3 +67,16 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family.
 -   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+
+## Recent Changes (October 24, 2025 - Latest)
+
+### Samsung TV Build v3.27 (SHORTER STATION NAMES):
+**Shortened Station Name Display** - Station names now truncate earlier to prevent overflow
+   - Created production build with timestamp: `1761313868353`
+   - Bundle: `tv-app/assets/index-1761313868353.js` (428.52KB - full React app)
+   - **UI FIX:**
+     - ✅ RadioPlaying page: Station name max-width reduced from 1200px to 600px
+     - ✅ GlobalPlayer bar: Station name max-width reduced from 800px to 450px
+     - ✅ Long station names now show as: "WORLD CLUB DOME Radio - Das offizielle Radio ..."
+     - ✅ Better readability on TV screens with ellipsis truncation
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
