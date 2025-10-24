@@ -68,6 +68,18 @@ The application is optimized for TV with a fixed 1920x1080px resolution, utilizi
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.41 (UNIFIED GENRE CARD SIZES):
+**All Genre Cards Now Same Size** - Consistent text sizing across Popular and All sections
+   - Created production build with timestamp: `1761321826279`
+   - Bundle: `tv-app/assets/index-1761321826279.js` (432.50KB - full React app)
+   - **FIX:**
+     - ✅ **Consistent Text Sizes**: All genre cards now use 24px genre name + 22px station count
+     - ✅ **Visual Consistency**: Popular Genres and All Genres sections now look identical
+   - **TEXT SIZES:**
+     - Genre name: 24px (was 20px in All Genres section)
+     - Station count: 22px (was 18px in All Genres section)
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.40 (FIXED NAVIGATION & SCROLL):
 **Fixed Similar/Popular Navigation & Card Spacing** - Proper horizontal scroll and remote control navigation
    - Created production build with timestamp: `1761321725329`
