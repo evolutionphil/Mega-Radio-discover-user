@@ -486,6 +486,14 @@ export const RadioPlaying = (): JSX.Element => {
         left: scrollPosition,
         behavior: 'smooth'
       });
+      
+      // Scroll container to top when in Similar section
+      if (containerScrollRef.current) {
+        containerScrollRef.current.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
     }
     
     // Popular stations (30+) including See More button
@@ -497,6 +505,14 @@ export const RadioPlaying = (): JSX.Element => {
         left: scrollPosition,
         behavior: 'smooth'
       });
+      
+      // Scroll container down to show Popular section
+      if (containerScrollRef.current) {
+        containerScrollRef.current.scrollTo({
+          top: 350, // Scroll down to reveal Popular Radios section
+          behavior: 'smooth'
+        });
+      }
     }
   }, [focusIndex]);
 
