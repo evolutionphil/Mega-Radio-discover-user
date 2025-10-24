@@ -74,6 +74,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.20 (SIMILAR STATIONS SPACING FIX):
+**Fixed Similar Stations Padding on Samsung TV** - Replaced gap with margin-right for better compatibility
+   - Created production build with timestamp: `1761312151071`
+   - Bundle: `tv-app/assets/index-1761312151071.js` (426.43KB - full React app)
+   - **SAMSUNG TV COMPATIBILITY FIX:**
+     - ✅ Replaced `gap-[24px]` with `mr-[24px]` on similar station cards
+     - ✅ Chromium 76 on Samsung TV doesn't fully support CSS gap property
+     - ✅ Each station card now has explicit 24px margin-right spacing
+     - ✅ Ensures consistent spacing between similar stations on all platforms
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.19 (PAGE_UP/DOWN + GLOW FIX):
 **Fixed Global Player Navigation & Focus Glow** - PAGE_UP/DOWN keys jump to player, CSS-based glow effects
    - Created production build with timestamp: `1761309977335`
