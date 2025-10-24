@@ -68,6 +68,20 @@ The application is optimized for TV with a fixed 1920x1080px resolution, utilizi
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.45 (DISCOVER PAGE SWIPE LOGIC):
+**Applied Discover Page Swipe Logic to Similar & Popular Radios** - Smooth horizontal scrolling
+   - Created production build with timestamp: `1761322957721`
+   - Bundle: `tv-app/assets/index-1761322957721.js` (433.87KB - full React app)
+   - **IMPROVEMENT:**
+     - ✅ **Smooth Scrolling**: Similar and Popular radios now use the exact same swipe logic as Discover page popular genres
+     - ✅ **Better Navigation**: Horizontal scrolling is smoother and more responsive
+     - ✅ **Consistent UX**: Same scroll behavior across all horizontal sections in the app
+   - **TECHNICAL:**
+     - Implemented `scrollSimilarIntoView()` and `scrollPopularIntoView()` functions
+     - Calculates scroll position: `stationIndex * (cardWidth + gap)`
+     - Uses `scrollTo({ left: position, behavior: 'smooth' })`
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.44 (4 GENRE CARDS PER ROW):
 **Changed All Genres Section to 4 Cards Per Row** - Consistent layout with Popular Genres
    - Created production build with timestamp: `1761322752520`
