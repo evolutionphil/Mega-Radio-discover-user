@@ -77,6 +77,135 @@ export const DiscoverNoUser = (): JSX.Element => {
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
   // Focus management with custom navigation
+  const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
+    totalItems,
+    cols: 1,
+    initialIndex: 0,
+    onSelect: (index) => {
+    let newIndex = current;
+
+    // Sidebar section (0-4) - 5 items
+    if (current >= 0 && current <= 4) {
+      if (direction === 'DOWN') {
+        newIndex = current < 4 ? current + 1 : current;
+      } else if (direction === 'UP') {
+        newIndex = current > 0 ? current - 1 : current;
+      } else if (direction === 'RIGHT') {
+        if (current === 0 || current === 1) {
+          // From Discover or Genres, jump to first Popular Genre
+          newIndex = genresStart;
+        } else {
+          // From Search, Favorites, or Settings, jump to first Popular Station
+          newIndex = popularStationsStart;
+        }
+      }
+    }
+    // Country selector (5)
+    else if (current === 5) {
+      if (direction === 'DOWN') {
+        newIndex = genresStart; // Jump to first genre
+      } else if (direction === 'LEFT') {
+        newIndex = 0; // Jump to first sidebar item
+      }
+    }
+    // Popular stations section - dynamic boundaries
+    else if (current >= popularStationsStart && current <= popularStationsEnd) {
+      const relIndex = current - popularStationsStart;
+      const row = Math.floor(relIndex / 7);
+      const col = relIndex % 7;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 2; // Jump to Search sidebar item
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < 6 && current < popularStationsEnd) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        if (row > 0) {
+          newIndex = current - 7;
+        } else {
+          // Jump to genres above
+          newIndex = genresStart + Math.min(col, genres.length - 1);
+        }
+      } else if (direction === 'DOWN') {
+        const nextRow = current + 7;
+        if (nextRow <= popularStationsEnd) {
+          newIndex = nextRow;
+        } else {
+          // Jump to country stations
+          newIndex = countryStationsStart + col;
+          if (newIndex >= totalItems) {
+            newIndex = totalItems - 1;
+          }
+        }
+      }
+    }
+    // Genres section - dynamic boundaries (horizontal scrolling)
+    else if (current >= genresStart && current <= genresEnd) {
+      const col = current - genresStart;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < genres.length - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        newIndex = 5; // Jump to country selector
+      } else if (direction === 'DOWN') {
+        // Jump to popular stations below
+        newIndex = popularStationsStart + Math.min(col, Math.min(6, popularStations.length - 1));
+      }
+    }
+    // Country stations section - dynamic boundary
+    else if (current >= countryStationsStart) {
+      const relIndex = current - countryStationsStart;
+      const row = Math.floor(relIndex / 7);
+      const col = relIndex % 7;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < 6 && current < totalItems - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        if (row > 0) {
+          newIndex = current - 7;
+        } else {
+          // Jump to popular stations above (last row)
+          const targetCol = Math.min(col, 6);
+          const lastRowStart = popularStationsEnd - (popularStations.length % 7 === 0 ? 6 : (popularStations.length % 7) - 1);
+          newIndex = lastRowStart + targetCol;
+          if (newIndex > popularStationsEnd) {
+            newIndex = popularStationsEnd;
+          }
+        }
+      } else if (direction === 'DOWN') {
+        const nextIndex = current + 7;
+        if (nextIndex < totalItems) {
+          newIndex = nextIndex;
+        }
+      }
+    }
+
+    // Clamp to valid range
+    newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
+    setFocusIndex(newIndex);
+  };
+
   // Focus management with custom navigation
   const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
     totalItems,
