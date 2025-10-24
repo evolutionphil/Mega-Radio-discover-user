@@ -26,12 +26,6 @@ export const GlobalPlayer = (): JSX.Element | null => {
     return null;
   }
 
-  // Hide global player on RadioPlaying page (has its own player)
-  // Check if location starts with /radio-playing (includes query params)
-  if (location.startsWith('/radio-playing')) {
-    return null;
-  }
-
   // Fallback image - music note on pink gradient background
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
@@ -125,8 +119,8 @@ export const GlobalPlayer = (): JSX.Element | null => {
         {currentStation.name}
       </p>
 
-      {/* Now Playing / Country */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[357px] not-italic text-[20px] text-white top-[1007.2px] z-50 max-w-[800px] truncate">
+      {/* Now Playing / Country - Enhanced metadata display */}
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[357px] not-italic text-[22px] text-white top-[1007.2px] z-50 max-w-[800px] text-ellipsis overflow-hidden whitespace-nowrap">
         {displayText}
       </p>
 

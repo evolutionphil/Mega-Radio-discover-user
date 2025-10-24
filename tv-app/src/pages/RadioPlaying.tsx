@@ -20,7 +20,7 @@ export const RadioPlaying = (): JSX.Element => {
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { playStation, togglePlayPause, isPlaying, isBuffering } = useGlobalPlayer();
+  const { playStation, togglePlayPause, isPlaying, isBuffering, setGlobalPlayerFocusIndex, setIsGlobalPlayerFocused } = useGlobalPlayer();
   console.log('[RadioPlaying] 🎮 Global player state:', { isPlaying, isBuffering });
   
   // Station history for Previous button (stores station IDs)
@@ -385,6 +385,27 @@ export const RadioPlaying = (): JSX.Element => {
       setLocation('/discover-no-user');
     }
   });
+
+  // Auto-focus sync: When user focuses on RadioPlaying controls (6-9), jump to GlobalPlayer
+  useEffect(() => {
+    // Only redirect if focus is on player controls (indices 6-9)
+    if (focusIndex >= 6 && focusIndex <= 9) {
+      // Map RadioPlaying indices to GlobalPlayer indices
+      // 6 (Previous) -> 0, 7 (Play/Pause) -> 1, 8 (Next) -> 2, 9 (Favorite) -> 3
+      const globalPlayerIndex = focusIndex - 6;
+      
+      console.log('[RadioPlaying] 🎯 Auto-focus sync triggered - jumping to GlobalPlayer');
+      console.log('[RadioPlaying] RadioPlaying index:', focusIndex, '-> GlobalPlayer index:', globalPlayerIndex);
+      
+      // Focus the GlobalPlayer with the corresponding button index
+      setGlobalPlayerFocusIndex(globalPlayerIndex);
+      setIsGlobalPlayerFocused(true);
+    } else {
+      // When focus leaves player controls, reset GlobalPlayer focus to prevent key-handler conflicts
+      console.log('[RadioPlaying] 🔄 Focus left player controls - resetting GlobalPlayer focus');
+      setIsGlobalPlayerFocused(false);
+    }
+  }, [focusIndex, setGlobalPlayerFocusIndex, setIsGlobalPlayerFocused]);
 
   // Scroll similar station into view when focused
   useEffect(() => {

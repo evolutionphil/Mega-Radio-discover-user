@@ -16,6 +16,7 @@ interface GlobalPlayerContextType {
   setGlobalPlayerFocusIndex: (index: number) => void;
   focusGlobalPlayer: () => void;
   isGlobalPlayerFocused: boolean;
+  setIsGlobalPlayerFocused: (focused: boolean) => void;
 }
 
 const GlobalPlayerContext = createContext<GlobalPlayerContextType | undefined>(undefined);
@@ -175,6 +176,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         setGlobalPlayerFocusIndex,
         focusGlobalPlayer,
         isGlobalPlayerFocused,
+        setIsGlobalPlayerFocused,
       }}
     >
       {/* Hidden audio container */}
