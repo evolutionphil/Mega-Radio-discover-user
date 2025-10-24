@@ -33,8 +33,10 @@ export const RadioPlaying = (): JSX.Element => {
   // Country selector state
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   
-  // Similar stations scroll ref
+  // Scroll refs for auto-scrolling focused cards
+  const containerScrollRef = useRef<HTMLDivElement>(null);
   const similarScrollRef = useRef<HTMLDivElement>(null);
+  const popularScrollRef = useRef<HTMLDivElement>(null);
   
   // Parse station ID from URL query params (supports both hash and pre-hash params)
   const stationId = useMemo(() => {
@@ -275,8 +277,8 @@ export const RadioPlaying = (): JSX.Element => {
         }
       }
     }
-    // Similar stations (10+) - horizontal list
-    else if (current >= 10) {
+    // Similar stations (10-29) - horizontal list
+    else if (current >= 10 && current <= 29) {
       const relIndex = current - 10;
 
       if (direction === 'LEFT') {
@@ -286,13 +288,41 @@ export const RadioPlaying = (): JSX.Element => {
           newIndex = 0; // Jump to sidebar
         }
       } else if (direction === 'RIGHT') {
-        if (current < totalItems - 1) {
+        if (relIndex < Math.min(similarStations.length, 20) - 1) {
           newIndex = current + 1;
         }
       } else if (direction === 'UP') {
         newIndex = 7; // Jump to play/pause button
       } else if (direction === 'DOWN') {
-        // Stay on similar stations
+        // Move to Popular stations if available
+        if (popularStations.length > 0) {
+          newIndex = 30; // First popular station
+        }
+      }
+    }
+    // Popular stations (30-49) - horizontal list
+    else if (current >= 30 && current <= 49) {
+      const relIndex = current - 30;
+
+      if (direction === 'LEFT') {
+        if (relIndex > 0) {
+          newIndex = current - 1;
+        } else {
+          newIndex = 0; // Jump to sidebar
+        }
+      } else if (direction === 'RIGHT') {
+        if (relIndex < Math.min(popularStations.length, 20) - 1) {
+          newIndex = current + 1;
+        }
+      } else if (direction === 'UP') {
+        // Move back to Similar stations
+        if (similarStations.length > 0) {
+          newIndex = 10; // First similar station
+        } else {
+          newIndex = 7; // Jump to play/pause button
+        }
+      } else if (direction === 'DOWN') {
+        // Stay on popular stations
       }
     }
 
@@ -394,10 +424,18 @@ export const RadioPlaying = (): JSX.Element => {
           toggleFavorite(station);
         }
       }
-      // Similar stations (10+)
-      else if (index >= 10) {
+      // Similar stations (10-29)
+      else if (index >= 10 && index <= 29) {
         const stationIndex = index - 10;
         const targetStation = similarStations[stationIndex];
+        if (targetStation) {
+          navigateToStation(targetStation);
+        }
+      }
+      // Popular stations (30-49)
+      else if (index >= 30 && index <= 49) {
+        const stationIndex = index - 30;
+        const targetStation = popularStations[stationIndex];
         if (targetStation) {
           navigateToStation(targetStation);
         }
@@ -410,14 +448,27 @@ export const RadioPlaying = (): JSX.Element => {
     }
   });
 
-  // Scroll similar station into view when focused
+  // Scroll stations into view when focused
   useEffect(() => {
-    if (focusIndex >= 10 && similarScrollRef.current) {
+    const cardWidth = 200 + 24; // card width + gap (marginRight)
+    
+    // Similar stations (10-29)
+    if (focusIndex >= 10 && focusIndex <= 29 && similarScrollRef.current) {
       const stationIndex = focusIndex - 10;
-      const stationWidth = 200 + 24; // card width + gap
-      const scrollPosition = stationIndex * stationWidth;
+      const scrollPosition = stationIndex * cardWidth;
       
       similarScrollRef.current.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+    }
+    
+    // Popular stations (30-49)
+    if (focusIndex >= 30 && focusIndex <= 49 && popularScrollRef.current) {
+      const stationIndex = focusIndex - 30;
+      const scrollPosition = stationIndex * cardWidth;
+      
+      popularScrollRef.current.scrollTo({
         left: scrollPosition,
         behavior: 'smooth'
       });
@@ -716,7 +767,7 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Scrollable Content Area for Similar & Popular Radios */}
       <div 
-        ref={similarScrollRef}
+        ref={containerScrollRef}
         className="absolute left-[236px] top-[559px] w-[1610px] h-[521px] overflow-y-auto overflow-x-hidden scrollbar-hide"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
@@ -727,18 +778,21 @@ export const RadioPlaying = (): JSX.Element => {
           </p>
 
           {/* Similar Radios Horizontal Scroll */}
-          <div className="flex overflow-x-auto scrollbar-hide scroll-smooth mb-[60px]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div ref={similarScrollRef} className="flex overflow-x-auto scrollbar-hide scroll-smooth mb-[60px]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {similarStations.slice(0, 20).map((similarStation, index) => {
               const focusIdx = 10 + index;
               return (
               <div
                 key={similarStation._id || index}
-                className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] mr-[24px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
+                className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
                   isFocused(focusIdx) 
                     ? 'border-[4px] border-[#ff4199] shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
                     : 'border-[4px] border-transparent'
                 }`}
-                style={{ boxShadow: isFocused(focusIdx) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
+                style={{ 
+                  marginRight: '24px',
+                  boxShadow: isFocused(focusIdx) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' 
+                }}
                 data-testid={`card-similar-${similarStation._id}`}
                 onClick={() => navigateToStation(similarStation)}
               >
@@ -769,18 +823,21 @@ export const RadioPlaying = (): JSX.Element => {
           </p>
 
           {/* Popular Radios Horizontal Scroll */}
-          <div className="flex overflow-x-auto scrollbar-hide scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div ref={popularScrollRef} className="flex overflow-x-auto scrollbar-hide scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {popularStations.slice(0, 20).map((popularStation, index) => {
               const focusIdx = 30 + index; // Start after similar stations (10-29)
               return (
               <div
                 key={popularStation._id || index}
-                className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] mr-[24px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
+                className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative ${
                   isFocused(focusIdx) 
                     ? 'border-[4px] border-[#ff4199] shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
                     : 'border-[4px] border-transparent'
                 }`}
-                style={{ boxShadow: isFocused(focusIdx) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' }}
+                style={{ 
+                  marginRight: '24px',
+                  boxShadow: isFocused(focusIdx) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' 
+                }}
                 data-testid={`card-popular-${popularStation._id}`}
                 onClick={() => navigateToStation(popularStation)}
               >
