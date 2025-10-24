@@ -68,6 +68,22 @@ The application is optimized for TV with a fixed 1920x1080px resolution, utilizi
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.40 (FIXED NAVIGATION & SCROLL):
+**Fixed Similar/Popular Navigation & Card Spacing** - Proper horizontal scroll and remote control navigation
+   - Created production build with timestamp: `1761321725329`
+   - Bundle: `tv-app/assets/index-1761321725329.js` (432.50KB - full React app)
+   - **FIXES:**
+     - ✅ **DOWN Navigation Works**: Remote DOWN button now moves from Similar to Popular stations
+     - ✅ **UP Navigation Works**: Remote UP button moves from Popular back to Similar stations
+     - ✅ **Card Spacing Fixed**: 24px gap between all station cards (using inline marginRight for Chromium 76 compatibility)
+     - ✅ **Horizontal Scroll Works**: Both sections scroll horizontally as you navigate with LEFT/RIGHT
+     - ✅ **Auto-Scroll**: Focused cards automatically scroll into view
+     - ✅ **Click Selection**: Both Similar and Popular stations are clickable
+   - **NAVIGATION:**
+     - Similar Radios: Focus index 10-29 (LEFT/RIGHT to navigate, DOWN to go to Popular)
+     - Popular Radios: Focus index 30-49 (LEFT/RIGHT to navigate, UP to go back to Similar)
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.39 (VERTICAL GENRE CARDS):
 **Changed Genre Cards to Vertical Layout** - Genre name on top, station count below
    - Created production build with timestamp: `1761321485160`
