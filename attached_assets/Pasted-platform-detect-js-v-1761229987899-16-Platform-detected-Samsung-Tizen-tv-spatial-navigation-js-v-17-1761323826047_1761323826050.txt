@@ -1,0 +1,638 @@
+platform-detect.js?v=1761229987899:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js?v=1761229987899:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+index-1761323068810.js:93 🔥 megaRadioApi.ts VERSION 3.0 LOADED - Country-filtered genres enabled
+index-1761323068810.js:93 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-1761323068810.js:93 [MegaRadio API] BASE_URL: https://themegaradio.com
+index-1761323068810.js:120 🔥 MAIN.TSX LOADED - VERSION 2.2 - GOOGLE ANALYTICS ENABLED
+index-1761323068810.js:93 [Analytics] Initializing Google Analytics with ID: G-DF0C084RHN
+index-1761323068810.js:105 [Analytics] Google Analytics initialized successfully
+index-1761323068810.js:120 [Analytics] Google Analytics enabled
+tv-spatial-navigation.js?v=1761229987899:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1761229987899:216 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1761229987899:220 [TV Remote Keys] Key handler attached, waiting for React...
+index-1761323068810.js:105 [Splash] 🎬 Component mounted
+index-1761323068810.js:105 [Analytics] Tracking initial page view: /index.html
+index-1761323068810.js:105 [Analytics] Page view: /index.html
+index-1761323068810.js:105 [FocusRouter] Dispatch function registered to window
+index-1761323068810.js:105 [CountryContext] Auto-detection check: Object
+index-1761323068810.js:105 [CountryContext] 🌍 Auto-setting detected country: United States US
+index-1761323068810.js:93 [Localization] Browser language detected: de-DE
+index-1761323068810.js:93 [Localization] Using language: de
+index-1761323068810.js:93 [Localization] Detected country: Germany DE
+index-1761323068810.js:93 [Localization] Fetching translations for: de
+index.html:20 🔍 CSS CHECK: Starting verification...
+index.html:25 📄 CSS Links found: Object
+index.html:41 🎨 Tailwind Test Results: Object
+index.html:49 ✅ TAILWIND CSS: Working correctly!
+index.html:63 🎯 #root element styles: Object
+index-1761323068810.js:105 [CountryContext] Auto-detection check: Object
+index-1761323068810.js:105 [CountryContext] 🌍 Auto-setting detected country: Germany DE
+index-1761323068810.js:105 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js?v=1761229987899:52 [TV Nav] Found 0 focusable elements
+index-1761323068810.js:105 [useTVNavigation] Initialization complete
+index-1761323068810.js:93 [Analytics] Google Analytics script loaded successfully
+tv-spatial-navigation.js?v=1761229987899:52 [TV Nav] Found 0 focusable elements
+index-1761323068810.js:93 [Localization] API response received
+index-1761323068810.js:93 [Localization] Loaded 655 translations
+index-1761323068810.js:105 [Splash] ⏱️  Timer completed, checking onboarding status
+index-1761323068810.js:105 [Splash] 🎓 First launch, navigating to Guide 1
+index-1761323068810.js:105 [Splash] 👋 Component unmounting
+index-1761323068810.js:120 [Guide1] 🎬 Component mounted
+index-1761323068810.js:120 [Guide1] 📂 Image paths to load: {background: "./images/discover-background.png", arrow: "./images/arrow.svg", icon: "./images/radio-icon.svg"}
+index-1761323068810.js:105 [FocusRouter] Registering handler for route: /guide-1
+index-1761323068810.js:120 [Guide1] ✅ Image loaded successfully: radio-icon.svg
+index-1761323068810.js:120 [Guide1] ✅ Image loaded successfully: arrow.svg
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/guide-1", currentRoute: "/guide-1", routeWithoutQuery: "/guide-1", matchedRoute: "/guide-1", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /guide-1
+index-1761323068810.js:120 [Guide1] ⌨️  Key pressed: 13 ENTER
+index-1761323068810.js:120 [Guide1] ✅ OK/Enter - navigating to Guide 2
+index-1761323068810.js:120 [Guide1] 👋 Component unmounting
+index-1761323068810.js:105 [FocusRouter] Unregistering handler for route: /guide-1
+index-1761323068810.js:120 [Guide2] 🎬 Component mounted
+index-1761323068810.js:120 [Guide2] 📂 Image paths to load: {background: "./images/discover-background.png", arrow: "./images/arrow.svg", icon: "./images/music-icon.svg"}
+index-1761323068810.js:105 [FocusRouter] Registering handler for route: /guide-2
+index-1761323068810.js:120 [Guide2] ✅ Image loaded successfully: arrow.svg
+index-1761323068810.js:120 [Guide2] ✅ Image loaded successfully: music-icon.svg
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/guide-2", currentRoute: "/guide-2", routeWithoutQuery: "/guide-2", matchedRoute: "/guide-2", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /guide-2
+index-1761323068810.js:120 [Guide2] ⌨️  Key pressed: 13
+index-1761323068810.js:120 [Guide2] ✅ OK/Enter - navigating to Guide 3
+index-1761323068810.js:120 [Guide2] 👋 Component unmounting
+index-1761323068810.js:105 [FocusRouter] Unregistering handler for route: /guide-2
+index-1761323068810.js:120 [Guide3] 🎬 Component mounted
+index-1761323068810.js:120 [Guide3] 📂 Image paths to load: {background: "./images/discover-background.png", arrow: "./images/arrow.svg", icon: "./images/search-icon.svg"}
+index-1761323068810.js:105 [FocusRouter] Registering handler for route: /guide-3
+index-1761323068810.js:120 [Guide3] ✅ Image loaded successfully: arrow.svg
+index-1761323068810.js:120 [Guide3] ✅ Image loaded successfully: search-icon.svg
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/guide-3", currentRoute: "/guide-3", routeWithoutQuery: "/guide-3", matchedRoute: "/guide-3", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /guide-3
+index-1761323068810.js:120 [Guide3] ⌨️  Key pressed: 13
+index-1761323068810.js:120 [Guide3] ✅ OK/Enter - navigating to Guide 4
+index-1761323068810.js:120 [Guide3] 👋 Component unmounting
+index-1761323068810.js:105 [FocusRouter] Unregistering handler for route: /guide-3
+index-1761323068810.js:120 [Guide4] 🎬 Component mounted
+index-1761323068810.js:120 [Guide4] 📂 Image paths to load: {background: "./images/discover-background.png", arrow: "./images/arrow.svg", icon: "./images/heart-icon.svg"}
+index-1761323068810.js:105 [FocusRouter] Registering handler for route: /guide-4
+index-1761323068810.js:120 [Guide4] ✅ Image loaded successfully: arrow.svg
+index-1761323068810.js:120 [Guide4] ✅ Image loaded successfully: heart-icon.svg
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/guide-4", currentRoute: "/guide-4", routeWithoutQuery: "/guide-4", matchedRoute: "/guide-4", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /guide-4
+index-1761323068810.js:120 [Guide4] ⌨️  Key pressed: 13
+index-1761323068810.js:120 [Guide4] ✅ OK/Enter - completing onboarding and navigating to Discover
+index-1761323068810.js:120 [Guide4] 💾 Onboarding completion saved to localStorage
+index-1761323068810.js:120 [CountrySelector] Mapping countries, API returned: 0
+index-1761323068810.js:120 [CountrySelector] Mapped countries: 0
+index-1761323068810.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1761323068810.js:120 [CountrySelector] Filtered count: 1
+index-1761323068810.js:120 [Guide4] 👋 Component unmounting
+index-1761323068810.js:105 [FocusRouter] Unregistering handler for route: /guide-4
+index-1761323068810.js:120 [CountrySelector] Fetching countries...
+index-1761323068810.js:93 [API] getAllCountries: https://themegaradio.com/api/countries?tv=1
+index-1761323068810.js:120 [DiscoverNoUser] Fetching genres for country code: DE
+index-1761323068810.js:93 [API] getAllGenres: Filtering by country DE -> Germany
+index-1761323068810.js:93 [API] getAllGenres URL: https://themegaradio.com/api/genres?filters=%7B%22countrycode%22%3A%22Germany%22%2C%22searchQuery%22%3A%22%22%7D&limit=500&tv=1
+index-1761323068810.js:120 [DiscoverNoUser] Fetching popular stations for country: DE
+index-1761323068810.js:93 [API] getPopularStations: Converting DE -> Germany
+index-1761323068810.js:93 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&country=Germany&sort=votes&tv=1
+index-1761323068810.js:120 [DiscoverNoUser] Fetching INITIAL 100 stations for country code: DE offset=0
+index-1761323068810.js:93 [API] getWorkingStations: Converting DE -> Germany
+index-1761323068810.js:93 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=100&country=Germany&tv=1
+index-1761323068810.js:120 [useFocusManager] 🎯 Initialized with: {totalItems: 6, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 6, cols: 1, row: 0, col: 0}
+index-1761323068810.js:105 [FocusRouter] Registering handler for route: /discover-no-user
+index-1761323068810.js:93 [API] getAllCountries response: 200
+index-1761323068810.js:93 [API] getAllCountries raw data type: array
+index-1761323068810.js:93 [API] getAllCountries fetched: 238
+index-1761323068810.js:120 [CountrySelector] Countries received: 238
+index-1761323068810.js:120 [CountrySelector] Mapping countries, API returned: 238
+index-1761323068810.js:120 [CountrySelector] Mapped countries: 238
+index-1761323068810.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1761323068810.js:120 [CountrySelector] Filtered count: 239
+index-1761323068810.js:120 [AutoPlay] Play at start mode: none
+index-1761323068810.js:120 [AutoPlay] Play at start is disabled
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 1, totalItems: 6, cols: 1, row: 1, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 2, totalItems: 6, cols: 1, row: 2, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 3, totalItems: 6, cols: 1, row: 3, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 2, totalItems: 6, cols: 1, row: 2, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 1, totalItems: 6, cols: 1, row: 1, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: "RIGHT", key: "ArrowRight", code: "ArrowRight", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 5, totalItems: 6, cols: 1, row: 5, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] ENTER key pressed - calling handleSelect()
+index-1761323068810.js:120 [useFocusManager] ✅ Select pressed: {focusIndex: 5, totalItems: 6, hasHandler: true}
+index-1761323068810.js:120 [CountrySelector] Modal opened - search input focused
+index-1761323068810.js:120 [CountrySelector] Current country: Germany at index: 74
+index-1761323068810.js:120 [CountrySelector] Activating search mode - focusing input
+index-1761323068810.js:120 [CountrySelector] Input focused - TV keyboard should appear
+index-1761323068810.js:120 [CountrySelector] DOWN from input - moving to list
+index-1761323068810.js:120 [CountrySelector] Input blurred
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] Key event ignored - country selector modal is open
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] Key event ignored - country selector modal is open
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] Key event ignored - country selector modal is open
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761323068810.js:120 [CountrySelector] Selecting country: Albania
+index-1761323068810.js:120 [DiscoverNoUser] Country selected: Albania Code: AL
+index-1761323068810.js:105 [CountryContext] Country changed globally: Albania AL
+index-1761323068810.js:105 [Analytics] Event: {action: "change_country", category: "navigation", label: "Albania", value: 1}
+index-1761323068810.js:120 [DiscoverNoUser] Fetching genres for country code: AL
+index-1761323068810.js:93 [API] getAllGenres: Filtering by country AL -> Albania
+index-1761323068810.js:93 [API] getAllGenres URL: https://themegaradio.com/api/genres?filters=%7B%22countrycode%22%3A%22Albania%22%2C%22searchQuery%22%3A%22%22%7D&limit=500&tv=1
+index-1761323068810.js:120 [DiscoverNoUser] Fetching popular stations for country: AL
+index-1761323068810.js:93 [API] getPopularStations: Converting AL -> Albania
+index-1761323068810.js:93 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&country=Albania&sort=votes&tv=1
+index-1761323068810.js:120 [DiscoverNoUser] Fetching INITIAL 100 stations for country code: AL offset=0
+index-1761323068810.js:93 [API] getWorkingStations: Converting AL -> Albania
+index-1761323068810.js:93 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=100&country=Albania&tv=1
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 6, cols: 1, row: 0, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] ENTER key pressed - calling handleSelect()
+index-1761323068810.js:120 [useFocusManager] ✅ Select pressed: {focusIndex: 0, totalItems: 6, hasHandler: true}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: "RIGHT", key: "ArrowRight", code: "ArrowRight", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 5, totalItems: 6, cols: 1, row: 5, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] ENTER key pressed - calling handleSelect()
+index-1761323068810.js:120 [useFocusManager] ✅ Select pressed: {focusIndex: 5, totalItems: 6, hasHandler: true}
+index-1761323068810.js:120 [CountrySelector] Modal opened - search input focused
+index-1761323068810.js:120 [CountrySelector] Current country: Albania at index: 3
+index-1761323068810.js:120 [CountrySelector] Activating search mode - focusing input
+index-1761323068810.js:120 [CountrySelector] Input focused - TV keyboard should appear
+index-1761323068810.js:120 [CountrySelector] DOWN from input - moving to list
+index-1761323068810.js:120 [CountrySelector] Input blurred
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] Key event ignored - country selector modal is open
+index-1761323068810.js:120 [CountrySelector] Selecting country: Global
+index-1761323068810.js:120 [DiscoverNoUser] Country selected: Global Code: GLOBAL
+index-1761323068810.js:105 [CountryContext] Country changed globally: Global GLOBAL
+index-1761323068810.js:105 [Analytics] Event: {action: "change_country", category: "navigation", label: "Global", value: 1}
+index-1761323068810.js:120 [DiscoverNoUser] Fetching GLOBAL genres (no country filter)
+index-1761323068810.js:93 [API] getAllGenres URL: https://themegaradio.com/api/genres?limit=500&tv=1
+index-1761323068810.js:120 [DiscoverNoUser] Fetching GLOBAL popular stations (no country filter)
+index-1761323068810.js:93 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&sort=votes&tv=1
+index-1761323068810.js:120 [DiscoverNoUser] Fetching INITIAL 100 GLOBAL stations (no country filter), offset=0
+index-1761323068810.js:93 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=100&tv=1
+index-1761323068810.js:93 [API] getPopularStations fetched: 24 stations
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 5, totalItems: 20, cols: 1, row: 5, col: 0}
+index-1761323068810.js:93 [API] Response status: 200
+index-1761323068810.js:93 [API] Working stations fetched: 100 (offset: 0)
+index-1761323068810.js:120 [DiscoverNoUser] Country changed: Global, initial fetch: 100 stations
+index-1761323068810.js:120 [DiscoverNoUser] Initial load: 100 stations, hasMore=true, nextOffset=100
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 5, totalItems: 120, cols: 1, row: 5, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 20, totalItems: 120, cols: 1, row: 20, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: "RIGHT", key: "ArrowRight", code: "ArrowRight", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 21, totalItems: 120, cols: 1, row: 21, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 14, totalItems: 120, cols: 1, row: 14, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] ENTER key pressed - calling handleSelect()
+index-1761323068810.js:120 [useFocusManager] ✅ Select pressed: {focusIndex: 14, totalItems: 120, hasHandler: true}
+index-1761323068810.js:105 [GlobalPlayer] Playing station: WALM HD URL: https://icecast.walmradio.com:8443/walm
+tv-audio-player.js?v=1761229987899:35 [Samsung Player] Current state: NONE
+tv-audio-player.js?v=1761229987899:54 [Samsung Player] Opening URL: https://icecast.walmradio.com:8443/walm
+VM94:1 adding listener
+VM94:1 Entered AVPlayManager.prepareAsync()
+index-1761323068810.js:105 [Analytics] Event: {action: "play_station", category: "engagement", label: "WALM HD (The United States Of America)", value: 1}
+index-1761323068810.js:105 [Analytics] Event: {action: "play_genre", category: "engagement", label: "c", value: 1}
+index-1761323068810.js:105 [GlobalPlayer] Saved last played station to localStorage
+index-1761323068810.js:105 [RecentlyPlayed] Station added: WALM HD
+favicon.png:1 GET https://www.fengmin.com.tw/favicon.png 404
+Image (async)
+oh @ index-1761323068810.js:40
+nh @ index-1761323068810.js:40
+R0 @ index-1761323068810.js:40
+A0 @ index-1761323068810.js:40
+Po @ index-1761323068810.js:40
+ih @ index-1761323068810.js:40
+k @ index-1761323068810.js:25
+G @ index-1761323068810.js:25
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: false, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🔍 Parsing station ID from URL
+index-1761323068810.js:120 [RadioPlaying] 📍 Wouter location: /radio-playing
+index-1761323068810.js:120 [RadioPlaying] 📍 window.location.search: ?station=68a8c4a1bd66579311ab7ca2
+index-1761323068810.js:120 [RadioPlaying] 📍 window.location.hash: #/radio-playing
+index-1761323068810.js:120 [RadioPlaying] 📍 window.location.href: file:///index.html?station=68a8c4a1bd66579311ab7ca2#/radio-playing
+index-1761323068810.js:120 [RadioPlaying] 📍 Full URL breakdown: {protocol: "file:", host: "", pathname: "/index.html", search: "?station=68a8c4a1bd66579311ab7ca2", hash: "#/radio-playing"}
+index-1761323068810.js:120 [RadioPlaying] 🔎 Trying window.location.search: ?station=68a8c4a1bd66579311ab7ca2
+index-1761323068810.js:120 [RadioPlaying] ✅ Found station ID in pre-hash params: 68a8c4a1bd66579311ab7ca2
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: true, hasStationData: false, hasStation: false, …}
+index-1761323068810.js:120 [RadioPlaying] 🔄 LOADING STATE - Showing loading screen
+index-1761323068810.js:120 [RadioPlaying] 🔄 isLoadingStation: true
+index-1761323068810.js:120 [RadioPlaying] 🔄 hasStation: false
+index-1761323068810.js:120 [RadioPlaying] 🔄 stationId: 68a8c4a1bd66579311ab7ca2
+index-1761323068810.js:120 [RadioPlaying] 🔄 stationData: undefined
+index-1761323068810.js:120 [RadioPlaying] 🔄 Station is: NULL
+index-1761323068810.js:105 [FocusRouter] Unregistering handler for route: /discover-no-user
+index-1761323068810.js:120 [RadioPlaying] Station history updated: ["68a8c4a1bd66579311ab7ca2"]
+index-1761323068810.js:120 [RadioPlaying] 📡 Fetching station details for stationId: 68a8c4a1bd66579311ab7ca2
+index-1761323068810.js:93 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=100&sort=votes&tv=1
+index-1761323068810.js:105 [FocusRouter] Registering handler for route: /radio-playing
+index-1761323068810.js:120 [useFocusManager] 🎯 Initialized with: {totalItems: 10, cols: 1, rows: undefined, initialIndex: 8, enableWrapping: false}
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 8, totalItems: 10, cols: 1, row: 8, col: 0}
+index-1761323068810.js:120 [RadioPlaying] 🎵 Auto-play effect triggered
+index-1761323068810.js:120 [RadioPlaying] 🎵 Has station: false
+index-1761323068810.js:120 [RadioPlaying] ⏳ Waiting for station data to auto-play
+index-1761323068810.js:120 [RadioPlaying] ✅ Station details fetched successfully
+index-1761323068810.js:120 [RadioPlaying] 📻 Station name: WALM HD
+index-1761323068810.js:120 [RadioPlaying] 📻 Station URL: https://icecast.walmradio.com:8443/walm
+index-1761323068810.js:120 [RadioPlaying] 📻 Station data: {_id: "68a8c4a1bd66579311ab7ca2", stationuuid: "348dfc58-ce8c-413b-b264-0384f816344b", name: "WALM HD", url: "https://icecast.walmradio.com:8443/walm", urlResolved: "https://icecast.walmradio.com:8443/walm", …}
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: false, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761323068810.js:93 [API] getWorkingStations: Converting The United States Of America -> The United States Of America
+index-1761323068810.js:93 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=100&country=The+United+States+Of+America&tv=1
+index-1761323068810.js:120 [RadioPlaying] 🎵 Auto-play effect triggered
+index-1761323068810.js:120 [RadioPlaying] 🎵 Has station: true
+index-1761323068810.js:120 [RadioPlaying] 🎵 Station data available: {name: "WALM HD", id: "68a8c4a1bd66579311ab7ca2", url: "https://icecast.walmradio.com:8443/walm", codec: "MP3", bitrate: 320}
+index-1761323068810.js:120 [RadioPlaying] ▶️ Starting auto-play via global player
+index-1761323068810.js:105 [GlobalPlayer] Playing station: WALM HD URL: https://icecast.walmradio.com:8443/walm
+tv-audio-player.js?v=1761229987899:35 [Samsung Player] Current state: IDLE
+tv-audio-player.js?v=1761229987899:54 [Samsung Player] Opening URL: https://icecast.walmradio.com:8443/walm
+VM94:1 open failed InvalidStateError: PLAYER_ERROR_INVALID_STATE
+tv-audio-player.js?v=1761229987899:93 Samsung player error: WebAPIException {code: 11, name: "InvalidStateError", message: "PLAYER_ERROR_INVALID_STATE", stack: "InvalidStateError: PLAYER_ERROR_INVALID_STATE↵    … (file:///assets/index-1761323068810.js:40:36848)"}
+play @ tv-audio-player.js?v=1761229987899:93
+d @ index-1761323068810.js:105
+Jb.x.useEffect @ index-1761323068810.js:120
+Zi @ index-1761323068810.js:40
+xr @ index-1761323068810.js:40
+A0 @ index-1761323068810.js:40
+Po @ index-1761323068810.js:40
+lh @ index-1761323068810.js:40
+Gn @ index-1761323068810.js:38
+(anonymous) @ index-1761323068810.js:40
+Promise.then (async)
+a0 @ index-1761323068810.js:38
+dt @ index-1761323068810.js:40
+Bt @ index-1761323068810.js:40
+fp @ index-1761323068810.js:38
+(anonymous) @ index-1761323068810.js:38
+s @ index-1761323068810.js:48
+n @ index-1761323068810.js:48
+l.forEach.c @ index-1761323068810.js:48
+o @ index-1761323068810.js:48
+o @ index-1761323068810.js:48
+l.length.r @ index-1761323068810.js:48
+setTimeout (async)
+r @ index-1761323068810.js:48
+i @ index-1761323068810.js:48
+batch @ index-1761323068810.js:48
+Tn @ index-1761323068810.js:48
+setData @ index-1761323068810.js:48
+onSuccess @ index-1761323068810.js:48
+d @ index-1761323068810.js:48
+Promise.then (async)
+w @ index-1761323068810.js:48
+start @ index-1761323068810.js:48
+fetch @ index-1761323068810.js:48
+ei @ index-1761323068810.js:48
+onSubscribe @ index-1761323068810.js:48
+subscribe @ index-1761323068810.js:48
+x.useSyncExternalStore.x.useCallback.y @ index-1761323068810.js:48
+up @ index-1761323068810.js:38
+Zi @ index-1761323068810.js:40
+xr @ index-1761323068810.js:40
+A0 @ index-1761323068810.js:40
+Po @ index-1761323068810.js:40
+lh @ index-1761323068810.js:40
+Gn @ index-1761323068810.js:38
+(anonymous) @ index-1761323068810.js:40
+Promise.then (async)
+a0 @ index-1761323068810.js:38
+dt @ index-1761323068810.js:40
+Bt @ index-1761323068810.js:40
+fp @ index-1761323068810.js:38
+(anonymous) @ index-1761323068810.js:38
+Gh.Os.v.forEach.e @ index-1761323068810.js:48
+Gh @ index-1761323068810.js:48
+hashchange (async)
+by @ index-1761323068810.js:48
+jh @ index-1761323068810.js:48
+x.useRef.n @ index-1761323068810.js:48
+onSelect @ index-1761323068810.js:120
+x.useCallback @ index-1761323068810.js:120
+Zb.F @ index-1761323068810.js:120
+i @ index-1761323068810.js:105
+r @ index-1761323068810.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+index-1761323068810.js:105 [GlobalPlayer] Audio error (non-critical): WebAPIException {code: 11, name: "InvalidStateError", message: "PLAYER_ERROR_INVALID_STATE", stack: "InvalidStateError: PLAYER_ERROR_INVALID_STATE↵    … (file:///assets/index-1761323068810.js:40:36848)"}
+index-1761323068810.js:105 [Analytics] Event: {action: "error", category: "technical", label: "GlobalPlayer: Audio playback error: PLAYER_ERROR_INVALID_STATE", value: 1}
+index-1761323068810.js:105 [Analytics] Event: {action: "play_station", category: "engagement", label: "WALM HD (The United States Of America)", value: 1}
+index-1761323068810.js:105 [Analytics] Event: {action: "play_genre", category: "engagement", label: "c", value: 1}
+index-1761323068810.js:105 [GlobalPlayer] Saved last played station to localStorage
+index-1761323068810.js:105 [RecentlyPlayed] Station added: WALM HD
+index-1761323068810.js:120 [RadioPlaying] ✅ Auto-play initiated
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: false, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: false, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+tv-audio-player.js?v=1761229987899:60 Buffering started
+index-1761323068810.js:105 [GlobalPlayer] Audio buffering
+index-1761323068810.js:105 [GlobalPlayer] Audio playing
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+tv-audio-player.js?v=1761229987899:64 Buffering complete
+index-1761323068810.js:105 [GlobalPlayer] Audio ready
+index-1761323068810.js:105 [GlobalPlayer] Metadata fetched: walmradio.com
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/radio-playing", currentRoute: "/radio-playing", routeWithoutQuery: "/radio-playing", matchedRoute: "/radio-playing", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /radio-playing
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/radio-playing", currentRoute: "/radio-playing", routeWithoutQuery: "/radio-playing", matchedRoute: "/radio-playing", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /radio-playing
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 7, totalItems: 10, cols: 1, row: 7, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/radio-playing", currentRoute: "/radio-playing", routeWithoutQuery: "/radio-playing", matchedRoute: "/radio-playing", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /radio-playing
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 6, totalItems: 10, cols: 1, row: 6, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/radio-playing", currentRoute: "/radio-playing", routeWithoutQuery: "/radio-playing", matchedRoute: "/radio-playing", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /radio-playing
+index-1761323068810.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761323068810.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761323068810.js:120 [RadioPlaying] 🎯 Query state: {stationId: "68a8c4a1bd66579311ab7ca2", enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 10009, keyName: "RETURN", key: "XF86Back", code: "Escape", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 10009, hash: "#/radio-playing", currentRoute: "/radio-playing", routeWithoutQuery: "/radio-playing", matchedRoute: "/radio-playing", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /radio-playing
+index-1761323068810.js:120 [RadioPlaying] 🔙 RETURN key pressed - navigating to Discover
+index-1761323068810.js:120 [CountrySelector] Mapping countries, API returned: 238
+index-1761323068810.js:120 [CountrySelector] Mapped countries: 238
+index-1761323068810.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1761323068810.js:120 [CountrySelector] Filtered count: 239
+index-1761323068810.js:105 [FocusRouter] Unregistering handler for route: /radio-playing
+index-1761323068810.js:120 [useFocusManager] 🎯 Initialized with: {totalItems: 20, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 20, cols: 1, row: 0, col: 0}
+index-1761323068810.js:105 [FocusRouter] Registering handler for route: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] Country changed: Global, initial fetch: 100 stations
+index-1761323068810.js:120 [DiscoverNoUser] Initial load: 100 stations, hasMore=true, nextOffset=100
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 120, cols: 1, row: 0, col: 0}
+favicon.png:1 GET https://www.fengmin.com.tw/favicon.png 404
+Image (async)
+oh @ index-1761323068810.js:40
+nh @ index-1761323068810.js:40
+R0 @ index-1761323068810.js:40
+A0 @ index-1761323068810.js:40
+Po @ index-1761323068810.js:40
+ih @ index-1761323068810.js:40
+k @ index-1761323068810.js:25
+G @ index-1761323068810.js:25
+index-1761323068810.js:120 [AutoPlay] Skipping auto-play (already played this session)
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 1, totalItems: 120, cols: 1, row: 1, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: "DOWN", key: "ArrowDown", code: "ArrowDown", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 2, totalItems: 120, cols: 1, row: 2, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 1, totalItems: 120, cols: 1, row: 1, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 120, cols: 1, row: 0, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: "RIGHT", key: "ArrowRight", code: "ArrowRight", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 20, totalItems: 120, cols: 1, row: 20, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 13, totalItems: 120, cols: 1, row: 13, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 6, totalItems: 120, cols: 1, row: 6, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: "RIGHT", key: "ArrowRight", code: "ArrowRight", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 7, totalItems: 120, cols: 1, row: 7, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 19, totalItems: 120, cols: 1, row: 19, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 12, totalItems: 120, cols: 1, row: 12, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 19, totalItems: 120, cols: 1, row: 19, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 12, totalItems: 120, cols: 1, row: 12, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 11, totalItems: 120, cols: 1, row: 11, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 10, totalItems: 120, cols: 1, row: 10, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 19, totalItems: 120, cols: 1, row: 19, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 12, totalItems: 120, cols: 1, row: 12, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 11, totalItems: 120, cols: 1, row: 11, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 10, totalItems: 120, cols: 1, row: 10, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 9, totalItems: 120, cols: 1, row: 9, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 8, totalItems: 120, cols: 1, row: 8, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 19, totalItems: 120, cols: 1, row: 19, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 18, totalItems: 120, cols: 1, row: 18, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 17, totalItems: 120, cols: 1, row: 17, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 10, totalItems: 120, cols: 1, row: 10, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 9, totalItems: 120, cols: 1, row: 9, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 8, totalItems: 120, cols: 1, row: 8, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 7, totalItems: 120, cols: 1, row: 7, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 6, totalItems: 120, cols: 1, row: 6, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: "LEFT", key: "ArrowLeft", code: "ArrowLeft", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 37, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 2, totalItems: 120, cols: 1, row: 2, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 1, totalItems: 120, cols: 1, row: 1, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: "UP", key: "ArrowUp", code: "ArrowUp", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 38, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 120, cols: 1, row: 0, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: "ENTER", key: "Enter", code: "Enter", platform: "samsung", …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761323068810.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: "#/discover-no-user", currentRoute: "/discover-no-user", routeWithoutQuery: "/discover-no-user", matchedRoute: "/discover-no-user", …}
+index-1761323068810.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761323068810.js:120 [DiscoverNoUser] ENTER key pressed - calling handleSelect()
+index-1761323068810.js:120 [useFocusManager] ✅ Select pressed: {focusIndex: 0, totalItems: 120, hasHandler: true}
+index-1761323068810.js:105 [GlobalPlayer] Metadata fetched: walmradio.com
