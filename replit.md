@@ -74,6 +74,17 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.23 (LONG STATION NAME TRUNCATION):
+**Fixed Long Station Names Overflow** - Station names now truncate with ellipsis (...) when too long
+   - Created production build with timestamp: `1761313244770`
+   - Bundle: `tv-app/assets/index-1761313244770.js` (427.55KB - full React app)
+   - **BUG FIX:**
+     - ✅ RadioPlaying page: Station name truncates at 1200px width with ellipsis
+     - ✅ GlobalPlayer bar: Station name truncates at 800px width with ellipsis
+     - ✅ Prevents text overflow for very long station names
+     - ✅ Added `truncate` and `max-w-[...]` CSS classes
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.22 (GUIDE BACKGROUND FIX):
 **Fixed Guide Pages Background Positioning** - Background image now aligns correctly from the top
    - Created production build with timestamp: `1761313110283`

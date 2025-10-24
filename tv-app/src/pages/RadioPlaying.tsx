@@ -579,7 +579,7 @@ export const RadioPlaying = (): JSX.Element => {
       </div>
 
       {/* Station Name */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[48px] text-white top-[293px]">
+      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[48px] text-white top-[293px] max-w-[1200px] truncate">
         {station.name}
       </p>
 
