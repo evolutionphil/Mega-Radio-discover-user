@@ -14,6 +14,9 @@ rm -f assets/index-*.js
 
 # Step 2: Build React app with Vite (TV-specific IIFE format)
 echo "📦 Building React bundle with latest code..."
+# Pass Google Analytics ID to Vite build
+export VITE_GA_MEASUREMENT_ID="${VITE_GA_MEASUREMENT_ID:-G-DF0C084RHN}"
+echo "🔑 Google Analytics ID: $VITE_GA_MEASUREMENT_ID"
 vite build --config vite.config.tv.ts | tee /tmp/vite-build.log
 
 # Step 3: Extract the hashed bundle filename from Vite output
