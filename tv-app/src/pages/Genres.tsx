@@ -280,7 +280,7 @@ export const Genres = (): JSX.Element => {
     } else if (focusIndex >= 15) {
       // All genres section - scroll more to show the grid
       const genreIndex = focusIndex - 15;
-      const row = Math.floor(genreIndex / 6);
+      const row = Math.floor(genreIndex / 4);
       // Base offset (400px for popular genres) + row height (170px per row)
       scrollTarget = 400 + (row * 170);
     }
@@ -420,18 +420,16 @@ export const Genres = (): JSX.Element => {
         All
       </p>
 
-      {/* All Genres - Dynamic Grid (6 cols) */}
+      {/* All Genres - Dynamic Grid (4 cols) */}
       {allGenres.map((genre, index) => {
         const positions = [
-          { left: 237, width: 248 },
-          { left: 504, width: 248 },
-          { left: 771, width: 248 },
-          { left: 1038, width: 248 },
-          { left: 1305, width: 248 },
-          { left: 1572, width: 248 },
+          { left: 237, width: 386 },
+          { left: 644, width: 387 },
+          { left: 1052, width: 386 },
+          { left: 1459, width: 382 },
         ];
-        const row = Math.floor(index / 6);
-        const col = index % 6;
+        const row = Math.floor(index / 4);
+        const col = index % 4;
         const topPosition = 737 + (row * 158);
         const focusIdx = 15 + index;
         
@@ -460,7 +458,7 @@ export const Genres = (): JSX.Element => {
       })}
 
       {/* Spacer for scrolling */}
-      <div style={{ height: `${Math.max(1080, 737 + Math.ceil(allGenres.length / 6) * 158 + 200)}px` }} />
+      <div style={{ height: `${Math.max(1080, 737 + Math.ceil(allGenres.length / 4) * 158 + 200)}px` }} />
     </div>
   );
 };

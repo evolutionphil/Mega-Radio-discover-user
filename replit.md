@@ -68,6 +68,19 @@ The application is optimized for TV with a fixed 1920x1080px resolution, utilizi
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.44 (4 GENRE CARDS PER ROW):
+**Changed All Genres Section to 4 Cards Per Row** - Consistent layout with Popular Genres
+   - Created production build with timestamp: `1761322752520`
+   - Bundle: `tv-app/assets/index-1761322752520.js` (433.77KB - full React app)
+   - **CHANGE:**
+     - ✅ **4 Cards Per Row**: All Genres section now displays 4 genre cards per row (was 6)
+     - ✅ **Wider Cards**: Genre cards are now 386-387px wide (was 248px)
+     - ✅ **Consistent Layout**: Matches the Popular Genres section layout
+     - ✅ **Better Readability**: Larger cards make genre names and station counts easier to read
+   - **APPLIES TO:**
+     - All Genres grid section (below Popular Genres)
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.43 (CONTROL BUTTONS PINK GLOW):
 **Added Pink Glow Effect to Control Buttons** - Enhanced focus visibility
    - Created production build with timestamp: `1761322632651`
