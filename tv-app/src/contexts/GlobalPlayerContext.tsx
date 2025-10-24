@@ -12,6 +12,10 @@ interface GlobalPlayerContextType {
   resumeStation: () => void;
   stopStation: () => void;
   togglePlayPause: () => void;
+  globalPlayerFocusIndex: number;
+  setGlobalPlayerFocusIndex: (index: number) => void;
+  focusGlobalPlayer: () => void;
+  isGlobalPlayerFocused: boolean;
 }
 
 const GlobalPlayerContext = createContext<GlobalPlayerContextType | undefined>(undefined);
@@ -22,6 +26,10 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const [isBuffering, setIsBuffering] = useState(false);
   const [nowPlayingMetadata, setNowPlayingMetadata] = useState<string | null>(null);
   const audioPlayerRef = useRef<any>(null);
+  
+  // Focus management for GlobalPlayer
+  const [globalPlayerFocusIndex, setGlobalPlayerFocusIndex] = useState(-1); // -1 means not focused
+  const [isGlobalPlayerFocused, setIsGlobalPlayerFocused] = useState(false);
 
   // Initialize TV audio player once
   useEffect(() => {
@@ -132,6 +140,13 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Focus the GlobalPlayer (jump to play/pause button - index 1)
+  const focusGlobalPlayer = () => {
+    console.log('[GlobalPlayerContext] Focusing GlobalPlayer at play button (index 1)');
+    setGlobalPlayerFocusIndex(1); // Index 1 is the play/pause button
+    setIsGlobalPlayerFocused(true);
+  };
+
   // Expose player controls to window for TV remote media buttons
   useEffect(() => {
     (window as any).globalPlayer = {
@@ -156,6 +171,10 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         resumeStation,
         stopStation,
         togglePlayPause,
+        globalPlayerFocusIndex,
+        setGlobalPlayerFocusIndex,
+        focusGlobalPlayer,
+        isGlobalPlayerFocused,
       }}
     >
       {/* Hidden audio container */}

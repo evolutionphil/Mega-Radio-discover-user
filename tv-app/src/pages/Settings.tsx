@@ -5,6 +5,7 @@ import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
+import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 
 type PlayAtStartMode = "last-played" | "random" | "favorite" | "none";
 
@@ -12,6 +13,7 @@ export const Settings = (): JSX.Element => {
   const { t } = useLocalization();
   const [, setLocation] = useLocation();
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("last-played");
+  const { focusGlobalPlayer, currentStation } = useGlobalPlayer();
 
   // Define focusable items: 5 sidebar + 4 settings = 9 total (NO PROFILE)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -37,6 +39,20 @@ export const Settings = (): JSX.Element => {
     onBack: () => setLocation('/discover-no-user')
   });
 
+  // Listen for 'focusSidebar' event from GlobalPlayer to jump back to sidebar
+  useEffect(() => {
+    const handleFocusSidebar = (event: CustomEvent) => {
+      const { index } = event.detail;
+      console.log('[Settings] focusSidebar event received, jumping to index:', index);
+      setFocusIndex(index);
+    };
+    
+    window.addEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    return () => {
+      window.removeEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    };
+  }, [setFocusIndex]);
+
   // Register page-specific key handler
   usePageKeyHandler('/settings', (e) => {
     const key = (window as any).tvKey;
@@ -57,6 +73,17 @@ export const Settings = (): JSX.Element => {
       case key?.RIGHT:
       case 39:
         handleNavigation('RIGHT');
+        break;
+      case key?.PAGE_UP:
+      case 33:
+      case key?.PAGE_DOWN:
+      case 34:
+        // PAGE_UP or PAGE_DOWN - jump to GlobalPlayer if it's visible
+        if (currentStation) {
+          console.log('[Settings] PAGE_UP/PAGE_DOWN pressed - focusing GlobalPlayer');
+          e.preventDefault();
+          focusGlobalPlayer();
+        }
         break;
       case key?.ENTER:
       case 13:

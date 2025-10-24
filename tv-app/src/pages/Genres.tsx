@@ -14,7 +14,7 @@ import { assetPath } from "@/lib/assetPath";
 
 export const Genres = (): JSX.Element => {
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
-  const { isPlaying } = useGlobalPlayer();
+  const { isPlaying, focusGlobalPlayer, currentStation } = useGlobalPlayer();
   const { t } = useLocalization();
   const [, setLocation] = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -220,6 +220,20 @@ export const Genres = (): JSX.Element => {
     }
   });
 
+  // Listen for 'focusSidebar' event from GlobalPlayer to jump back to sidebar
+  useEffect(() => {
+    const handleFocusSidebar = (event: CustomEvent) => {
+      const { index } = event.detail;
+      console.log('[Genres] focusSidebar event received, jumping to index:', index);
+      setFocusIndex(index);
+    };
+    
+    window.addEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    return () => {
+      window.removeEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    };
+  }, [setFocusIndex]);
+
   // Register page-specific key handler with custom navigation
   usePageKeyHandler('/genres', (e) => {
     // Ignore all key events when country selector modal is open
@@ -246,6 +260,17 @@ export const Genres = (): JSX.Element => {
       case key?.RIGHT:
       case 39:
         customHandleNavigation('RIGHT');
+        break;
+      case key?.PAGE_UP:
+      case 33:
+      case key?.PAGE_DOWN:
+      case 34:
+        // PAGE_UP or PAGE_DOWN - jump to GlobalPlayer if it's visible
+        if (currentStation) {
+          console.log('[Genres] PAGE_UP/PAGE_DOWN pressed - focusing GlobalPlayer');
+          e.preventDefault();
+          focusGlobalPlayer();
+        }
         break;
       case key?.ENTER:
       case 13:
@@ -371,7 +396,7 @@ export const Genres = (): JSX.Element => {
                 {genre.name}
               </p>
               <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
-                {genre.stationCount} Stations
+                {genre.stationCount} {t('stations') || 'Stations'}
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
             </div>
@@ -400,7 +425,7 @@ export const Genres = (): JSX.Element => {
                 {genre.name}
               </p>
               <p className="font-['Ubuntu',Helvetica] leading-normal not-italic relative shrink-0 text-[22px] text-center text-white">
-                {genre.stationCount} Stations
+                {genre.stationCount} {t('stations') || 'Stations'}
               </p>
               <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
             </div>
@@ -410,7 +435,7 @@ export const Genres = (): JSX.Element => {
 
       {/* All Section Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-[670px]">
-        All
+        {t('all') || 'All'}
       </p>
 
       {/* All Genres - Dynamic Grid (6 cols) */}

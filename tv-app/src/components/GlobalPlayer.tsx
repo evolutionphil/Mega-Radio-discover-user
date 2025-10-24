@@ -3,12 +3,23 @@ import { useFavorites } from "@/contexts/FavoritesContext";
 import { Station } from "@/services/megaRadioApi";
 import { useLocation } from "wouter";
 import { assetPath } from "@/lib/assetPath";
+import { getFocusClasses } from "@/hooks/useFocusManager";
+import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
+import { useEffect } from "react";
 
 
 export const GlobalPlayer = (): JSX.Element | null => {
-  const { currentStation, isPlaying, togglePlayPause, nowPlayingMetadata } = useGlobalPlayer();
+  const { 
+    currentStation, 
+    isPlaying, 
+    togglePlayPause, 
+    nowPlayingMetadata,
+    globalPlayerFocusIndex,
+    setGlobalPlayerFocusIndex,
+    isGlobalPlayerFocused 
+  } = useGlobalPlayer();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
 
   // Don't render if no station is playing
   if (!currentStation) {
@@ -36,6 +47,58 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
   // Display metadata if available, otherwise fall back to country name
   const displayText = nowPlayingMetadata || currentStation.country || 'Radio';
+
+  // Keyboard navigation for GlobalPlayer - only when focused
+  usePageKeyHandler((keyCode: number) => {
+    if (!isGlobalPlayerFocused) return false; // Don't handle if not focused
+    
+    console.log('[GlobalPlayer] Key pressed:', keyCode, 'Current focus:', globalPlayerFocusIndex);
+    
+    // Handle LEFT/RIGHT navigation between buttons (0-4: Previous, Play/Pause, Next, Favorite, Equalizer)
+    if (keyCode === 37) { // LEFT
+      const newIndex = Math.max(0, globalPlayerFocusIndex - 1);
+      setGlobalPlayerFocusIndex(newIndex);
+      return true;
+    } else if (keyCode === 39) { // RIGHT
+      const newIndex = Math.min(4, globalPlayerFocusIndex + 1);
+      setGlobalPlayerFocusIndex(newIndex);
+      return true;
+    }
+    // Handle SELECT (ENTER key)
+    else if (keyCode === 13) {
+      console.log('[GlobalPlayer] SELECT pressed on button', globalPlayerFocusIndex);
+      if (globalPlayerFocusIndex === 0) {
+        // Previous button - do nothing for now
+        console.log('[GlobalPlayer] Previous button pressed');
+      } else if (globalPlayerFocusIndex === 1) {
+        // Play/Pause button
+        togglePlayPause();
+      } else if (globalPlayerFocusIndex === 2) {
+        // Next button - do nothing for now
+        console.log('[GlobalPlayer] Next button pressed');
+      } else if (globalPlayerFocusIndex === 3) {
+        // Favorite button
+        toggleFavorite(currentStation);
+      } else if (globalPlayerFocusIndex === 4) {
+        // Equalizer button - do nothing for now
+        console.log('[GlobalPlayer] Equalizer button pressed');
+      }
+      return true;
+    }
+    // Handle PAGE_UP, PAGE_DOWN, or BACK - jump to sidebar "Discover" (index 0)
+    else if (keyCode === 33 || keyCode === 34 || keyCode === 10009) {
+      console.log('[GlobalPlayer] PAGE_UP/PAGE_DOWN/BACK pressed - jumping to sidebar Discover');
+      setGlobalPlayerFocusIndex(-1); // Unfocus GlobalPlayer
+      // Signal to parent page to focus sidebar index 0
+      // We'll use a window event for this
+      window.dispatchEvent(new CustomEvent('focusSidebar', { detail: { index: 0 } }));
+      return true;
+    }
+    
+    return false;
+  });
+
+  const isFocused = (index: number) => isGlobalPlayerFocused && globalPlayerFocusIndex === index;
 
   return (
     <>
@@ -69,7 +132,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Previous Button */}
       <div 
-        className="absolute bg-black border-[#ff4199] border-[5px] border-solid left-[1210px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+        className={`absolute bg-black border-[#ff4199] border-[5px] border-solid left-[1210px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(0))}`}
         data-tv-focusable="true"
         data-testid="button-global-previous"
       >
@@ -81,7 +144,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Play/Pause Button */}
       <div 
-        className="absolute bg-black left-[1336.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+        className={`absolute bg-black left-[1336.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(1))}`}
         onClick={togglePlayPause}
         data-tv-focusable="true"
         data-testid="button-global-play-pause"
@@ -100,7 +163,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Next Button */}
       <div 
-        className="absolute bg-black left-[1462.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center"
+        className={`absolute bg-black left-[1462.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(2))}`}
         data-tv-focusable="true"
         data-testid="button-global-next"
       >
@@ -116,7 +179,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
           isFavorite(currentStation._id) 
             ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
             : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
-        }`}
+        } ${getFocusClasses(isFocused(3))}`}
         onClick={() => toggleFavorite(currentStation)}
         data-tv-focusable="true"
         data-testid="button-global-favorite"
@@ -128,7 +191,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Equalizer Button (Now Playing visualization) */}
       <div 
-        className={`absolute border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center ${isPlaying ? 'bg-[#ff4199] border-[#ff4199]' : 'border-black hover:bg-[rgba(255,255,255,0.1)]'}`}
+        className={`absolute border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-colors flex items-center justify-center ${isPlaying ? 'bg-[#ff4199] border-[#ff4199]' : 'border-black hover:bg-[rgba(255,255,255,0.1)]'} ${getFocusClasses(isFocused(4))}`}
         data-tv-focusable="true"
         data-testid="button-global-equalizer"
       >
