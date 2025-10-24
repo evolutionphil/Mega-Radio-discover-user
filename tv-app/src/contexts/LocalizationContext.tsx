@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { megaRadioApi } from '@/services/megaRadioApi';
-import { detectCountry, type GeoLocationResult } from '@/utils/geolocation';
 
 interface LocalizationContextType {
   language: string;
@@ -10,7 +9,6 @@ interface LocalizationContextType {
   isLoading: boolean;
   detectedCountry: string;
   detectedCountryCode: string;
-  geoLocationResult: GeoLocationResult | null;
 }
 
 const LocalizationContext = createContext<LocalizationContextType | undefined>(undefined);
@@ -104,21 +102,11 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [detectedCountry, setDetectedCountry] = useState('United States');
   const [detectedCountryCode, setDetectedCountryCode] = useState('US');
-  const [geoLocationResult, setGeoLocationResult] = useState<GeoLocationResult | null>(null);
 
   // Initialize: Detect language and load translations
   useEffect(() => {
     const initializeLocalization = async () => {
       try {
-        // HYBRID GEOLOCATION: Try Samsung/LG TV APIs first, then fallback to language
-        console.log('[Localization] 🌍 Starting hybrid geolocation...');
-        const geoResult = detectCountry();
-        setGeoLocationResult(geoResult);
-        setDetectedCountry(geoResult.countryName);
-        setDetectedCountryCode(geoResult.countryCode);
-        console.log('[Localization] Country detected via:', geoResult.detectionMethod);
-        console.log('[Localization] Detected country:', geoResult.countryName, geoResult.countryCode);
-        
         // Check localStorage for saved language
         const savedLang = localStorage.getItem('app_language');
         let langToUse = savedLang || detectDeviceLanguage();
@@ -132,6 +120,12 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
 
         console.log('[Localization] Using language:', langToUse);
         setLanguageState(langToUse);
+
+        // Set country based on language
+        const countryInfo = LANGUAGE_TO_COUNTRY[langToUse] || LANGUAGE_TO_COUNTRY['en'];
+        setDetectedCountry(countryInfo.name);
+        setDetectedCountryCode(countryInfo.code);
+        console.log('[Localization] Detected country:', countryInfo.name, countryInfo.code);
 
         // Fetch translations from API
         console.log('[Localization] Fetching translations for:', langToUse);
@@ -218,8 +212,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
         t, 
         isLoading,
         detectedCountry,
-        detectedCountryCode,
-        geoLocationResult
+        detectedCountryCode
       }}
     >
       {children}

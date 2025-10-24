@@ -20,7 +20,7 @@ export const RadioPlaying = (): JSX.Element => {
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { playStation, togglePlayPause, isPlaying, isBuffering, setGlobalPlayerFocusIndex, setIsGlobalPlayerFocused } = useGlobalPlayer();
+  const { playStation, togglePlayPause, isPlaying, isBuffering } = useGlobalPlayer();
   console.log('[RadioPlaying] 🎮 Global player state:', { isPlaying, isBuffering });
   
   // Station history for Previous button (stores station IDs)
@@ -386,27 +386,6 @@ export const RadioPlaying = (): JSX.Element => {
     }
   });
 
-  // Auto-focus sync: When user focuses on RadioPlaying controls (6-9), jump to GlobalPlayer
-  useEffect(() => {
-    // Only redirect if focus is on player controls (indices 6-9)
-    if (focusIndex >= 6 && focusIndex <= 9) {
-      // Map RadioPlaying indices to GlobalPlayer indices
-      // 6 (Previous) -> 0, 7 (Play/Pause) -> 1, 8 (Next) -> 2, 9 (Favorite) -> 3
-      const globalPlayerIndex = focusIndex - 6;
-      
-      console.log('[RadioPlaying] 🎯 Auto-focus sync triggered - jumping to GlobalPlayer');
-      console.log('[RadioPlaying] RadioPlaying index:', focusIndex, '-> GlobalPlayer index:', globalPlayerIndex);
-      
-      // Focus the GlobalPlayer with the corresponding button index
-      setGlobalPlayerFocusIndex(globalPlayerIndex);
-      setIsGlobalPlayerFocused(true);
-    } else {
-      // When focus leaves player controls, reset GlobalPlayer focus to prevent key-handler conflicts
-      console.log('[RadioPlaying] 🔄 Focus left player controls - resetting GlobalPlayer focus');
-      setIsGlobalPlayerFocused(false);
-    }
-  }, [focusIndex, setGlobalPlayerFocusIndex, setIsGlobalPlayerFocused]);
-
   // Scroll similar station into view when focused
   useEffect(() => {
     if (focusIndex >= 10 && similarScrollRef.current) {
@@ -487,13 +466,13 @@ export const RadioPlaying = (): JSX.Element => {
     console.error('[RadioPlaying] Error loading station:', stationError);
     return (
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
-        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">{t('failed_to_load_station') || 'Failed to load station'}</p>
+        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">Failed to load station</p>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-gray-400">
           {stationError instanceof Error ? stationError.message : 'Unknown error'}
         </p>
         <Link href="/discover-no-user">
           <button className="bg-[#ff4199] hover:bg-[#ff1a85] px-12 py-4 rounded-[30px] font-['Ubuntu',Helvetica] font-bold text-[24px] text-white transition-colors">
-            {t('back_to_discover') || 'Back to Discover'}
+            Back to Discover
           </button>
         </Link>
       </div>
@@ -505,13 +484,13 @@ export const RadioPlaying = (): JSX.Element => {
     console.error('[RadioPlaying] ❌ No station ID - cannot load station');
     return (
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
-        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">{t('no_station_selected') || 'No Station Selected'}</p>
+        <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">No Station Selected</p>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-gray-400">
-          {t('please_select_station') || 'Please select a station to play'}
+          Please select a station to play
         </p>
         <Link href="/discover-no-user">
           <button className="bg-[#ff4199] hover:bg-[#ff1a85] px-12 py-4 rounded-[30px] font-['Ubuntu',Helvetica] font-bold text-[24px] text-white transition-colors">
-            {t('back_to_discover') || 'Back to Discover'}
+            Back to Discover
           </button>
         </Link>
       </div>
@@ -529,10 +508,10 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#ff4199]"></div>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white animate-pulse">
-          {stationData?.station?.name || t('loading_station') || 'Loading station...'}
+          {stationData?.station?.name || 'Loading station...'}
         </p>
-        <p className="font-['Ubuntu',Helvetica] font-normal text-[20px] text-gray-500">{t('please_wait') || 'Please wait'}</p>
-        <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-gray-600 mt-4">{t('press_return_to_go_back') || 'Press RETURN to go back'}</p>
+        <p className="font-['Ubuntu',Helvetica] font-normal text-[20px] text-gray-500">Please wait</p>
+        <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-gray-600 mt-4">Press RETURN to go back</p>
       </div>
     );
   }
@@ -606,12 +585,12 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Now Playing */}
       <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[32px] text-white top-[356.71px]">
-        {metadata?.title || t('now_playing') || 'Now Playing'}
+        {metadata?.title || 'Now Playing'}
       </p>
 
       {/* Station Info Label */}
       <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[24px] text-white top-[425px]">
-        {t('station_info') || 'Station Info'}
+        Station Info
       </p>
 
       {/* Station Info Tags */}
@@ -713,7 +692,7 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Similar Radios Section */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[559px]">
-        {t('similar_radios') || t('similar_stations') || 'Similar Radios'}
+        Similar Radios
       </p>
 
       {/* Similar Radios Horizontal Scroll - INCREASED TO 20 stations */}

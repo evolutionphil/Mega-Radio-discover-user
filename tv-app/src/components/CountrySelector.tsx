@@ -326,7 +326,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         >
           {countriesLoading ? (
             <div className="text-center text-white font-['Ubuntu',Helvetica] text-[24px] mt-20">
-              {t('loading_countries') || t('loading') || 'Loading countries...'}
+              {t('loading') || 'Loading countries...'}
             </div>
           ) : filteredCountries.length === 0 ? (
             <div className="text-center text-white/50 font-['Ubuntu',Helvetica] text-[20px] mt-10">
@@ -376,8 +376,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         <div className="absolute bottom-[10px] left-[40px] right-[40px] flex justify-between text-white/50 font-['Ubuntu',Helvetica] text-[14px]">
           <div>
             {isSearchFocused 
-              ? (t('type_to_search_hint') || t('type_to_search') || 'Type to search • Press ↓ for list') 
-              : (t('press_up_to_search_hint') || t('press_up_to_search') || 'Press ↑ to search • Type to filter')}
+              ? (t('type_to_search') || 'Type to search • Press ↓ for list') 
+              : (t('press_up_to_search') || 'Press ↑ to search • Type to filter')}
           </div>
           <div>
             {t('press_back_to_close') || 'Press BACK to close'}
