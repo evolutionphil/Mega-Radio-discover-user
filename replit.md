@@ -67,6 +67,24 @@ The application is optimized for TV with a fixed 1920x1080px resolution, featuri
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.11 (HYBRID GEOLOCATION):
+**Implemented hybrid geolocation using native Samsung/LG TV APIs** - Instant country detection without network calls
+   - Created production build with timestamp: `1761293844150`
+   - Bundle: `tv-app/assets/index-1761293844150.js` (428KB - includes geolocation utility)
+   - **HYBRID GEOLOCATION SYSTEM:**
+     - ✅ **Priority 1: Samsung Tizen API** - `webapis.productinfo.getCountryCode()` (instant)
+     - ✅ **Priority 2: LG webOS API** - `webOS.systemInfo.country` / `smartServiceCountryCode2` (instant)
+     - ✅ **Priority 3: Language-based fallback** - Browser language → country mapping (always works)
+     - ✅ **New utility:** `tv-app/src/utils/geolocation.ts` with 80+ country mappings
+     - ✅ **LocalizationContext updated** - Uses hybrid detection on app startup
+     - ✅ **Detection logged** - Console shows detection method used (samsung-tv/lg-webos/language-fallback)
+   - **BENEFITS:**
+     - ⚡ Instant country detection (no network call needed on TVs)
+     - 🎯 More accurate than language-based detection
+     - 🌍 Works across all platforms (Samsung, LG, web browsers)
+     - 📊 Graceful fallback ensures it always works
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.10 (ENHANCED SIMILAR STATIONS):
 **Enhanced Similar Stations on Radio Playing page** - Now shows 20 swipeable stations instead of 8
    - **SIMILAR STATIONS ENHANCEMENTS:**

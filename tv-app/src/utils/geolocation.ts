@@ -9,7 +9,7 @@
  * Note: IP-based detection not available in TV app (static build, no backend)
  */
 
-// ISO country code to country name mapping (most common countries)
+// ISO country code to country name mapping (comprehensive)
 const COUNTRY_CODE_TO_NAME: Record<string, string> = {
   // North America
   'US': 'United States',
@@ -48,6 +48,15 @@ const COUNTRY_CODE_TO_NAME: Record<string, string> = {
   'UA': 'Ukraine',
   'IS': 'Iceland',
   'LU': 'Luxembourg',
+  'RU': 'Russia', // CRITICAL: Russia was missing
+  'BY': 'Belarus',
+  'MD': 'Moldova',
+  'AL': 'Albania',
+  'MK': 'North Macedonia',
+  'ME': 'Montenegro',
+  'BA': 'Bosnia and Herzegovina',
+  'MT': 'Malta',
+  'CY': 'Cyprus',
   
   // Middle East & Africa
   'TR': 'Turkey',
@@ -60,6 +69,12 @@ const COUNTRY_CODE_TO_NAME: Record<string, string> = {
   'NG': 'Nigeria',
   'KE': 'Kenya',
   'ET': 'Ethiopia',
+  'DZ': 'Algeria',
+  'TN': 'Tunisia',
+  'LY': 'Libya',
+  'GH': 'Ghana',
+  'CI': 'Ivory Coast',
+  'SN': 'Senegal',
   
   // Asia
   'CN': 'China',
@@ -78,10 +93,22 @@ const COUNTRY_CODE_TO_NAME: Record<string, string> = {
   'IQ': 'Iraq',
   'TW': 'Taiwan',
   'HK': 'Hong Kong',
+  'KZ': 'Kazakhstan',
+  'UZ': 'Uzbekistan',
+  'AZ': 'Azerbaijan',
+  'GE': 'Georgia',
+  'AM': 'Armenia',
+  'LK': 'Sri Lanka',
+  'MM': 'Myanmar',
+  'KH': 'Cambodia',
+  'LA': 'Laos',
+  'NP': 'Nepal',
+  'MN': 'Mongolia',
   
   // Oceania
   'AU': 'Australia',
   'NZ': 'New Zealand',
+  'FJ': 'Fiji',
   
   // South America
   'BR': 'Brazil',
@@ -92,6 +119,8 @@ const COUNTRY_CODE_TO_NAME: Record<string, string> = {
   'VE': 'Venezuela',
   'EC': 'Ecuador',
   'UY': 'Uruguay',
+  'PY': 'Paraguay',
+  'BO': 'Bolivia',
 };
 
 // Language to country mapping (for fallback)
@@ -133,19 +162,21 @@ function detectSamsungTizenCountry(): GeoLocationResult | null {
       const countryCode = window.webapis.productinfo.getCountryCode();
       
       if (countryCode && countryCode.length === 2) {
-        const countryName = COUNTRY_CODE_TO_NAME[countryCode.toUpperCase()];
+        const upperCode = countryCode.toUpperCase();
+        const countryName = COUNTRY_CODE_TO_NAME[upperCode];
         
-        if (countryName) {
-          console.log('[Geolocation] ✅ Samsung Tizen country detected:', countryName, countryCode);
-          return {
-            countryName,
-            countryCode: countryCode.toUpperCase(),
-            detectionMethod: 'samsung-tv',
-            success: true,
-          };
-        } else {
-          console.warn('[Geolocation] ⚠️ Samsung Tizen returned unknown country code:', countryCode);
+        // CRITICAL FIX: Accept ANY valid 2-letter code even if we don't have a friendly name
+        if (!countryName) {
+          console.warn('[Geolocation] ⚠️ Samsung Tizen returned unmapped country code:', upperCode, '(using code as name)');
         }
+        
+        console.log('[Geolocation] ✅ Samsung Tizen country detected:', countryName || upperCode, upperCode);
+        return {
+          countryName: countryName || upperCode, // Use code as fallback name
+          countryCode: upperCode,
+          detectionMethod: 'samsung-tv',
+          success: true,
+        };
       }
     }
   } catch (error) {
@@ -155,43 +186,95 @@ function detectSamsungTizenCountry(): GeoLocationResult | null {
   return null;
 }
 
+// Extended 3-letter to 2-letter ISO country code mapping for LG webOS (comprehensive)
+const ISO3_TO_ISO2: Record<string, string> = {
+  // Americas
+  'USA': 'US', 'CAN': 'CA', 'MEX': 'MX', 'BRA': 'BR', 'ARG': 'AR', 'CHL': 'CL',
+  'COL': 'CO', 'PER': 'PE', 'VEN': 'VE', 'ECU': 'EC', 'URY': 'UY', 'PRY': 'PY', 'BOL': 'BO',
+  // Europe
+  'GBR': 'GB', 'DEU': 'DE', 'FRA': 'FR', 'ESP': 'ES', 'ITA': 'IT', 'PRT': 'PT',
+  'NLD': 'NL', 'BEL': 'BE', 'AUT': 'AT', 'CHE': 'CH', 'SWE': 'SE', 'NOR': 'NO',
+  'DNK': 'DK', 'FIN': 'FI', 'POL': 'PL', 'CZE': 'CZ', 'HUN': 'HU', 'ROU': 'RO',
+  'GRC': 'GR', 'IRL': 'IE', 'SVK': 'SK', 'SVN': 'SI', 'HRV': 'HR', 'BGR': 'BG',
+  'LTU': 'LT', 'LVA': 'LV', 'EST': 'EE', 'SRB': 'RS', 'UKR': 'UA', 'ISL': 'IS',
+  'LUX': 'LU', 'RUS': 'RU', 'BLR': 'BY', 'MDA': 'MD', 'ALB': 'AL', 'MKD': 'MK', // CRITICAL: Russia and others
+  'MNE': 'ME', 'BIH': 'BA', 'MLT': 'MT', 'CYP': 'CY',
+  // Middle East & Africa
+  'TUR': 'TR', 'ISR': 'IL', 'SAU': 'SA', 'ARE': 'AE', 'ZAF': 'ZA', 'EGY': 'EG',
+  'MAR': 'MA', 'NGA': 'NG', 'KEN': 'KE', 'ETH': 'ET', 'DZA': 'DZ', 'TUN': 'TN',
+  'LBY': 'LY', 'GHA': 'GH', 'CIV': 'CI', 'SEN': 'SN',
+  // Asia
+  'CHN': 'CN', 'JPN': 'JP', 'KOR': 'KR', 'IND': 'IN', 'THA': 'TH', 'VNM': 'VN',
+  'IDN': 'ID', 'MYS': 'MY', 'SGP': 'SG', 'PHL': 'PH', 'PAK': 'PK', 'BGD': 'BD',
+  'IRN': 'IR', 'IRQ': 'IQ', 'TWN': 'TW', 'HKG': 'HK', 'KAZ': 'KZ', 'UZB': 'UZ',
+  'AZE': 'AZ', 'GEO': 'GE', 'ARM': 'AM', 'LKA': 'LK', 'MMR': 'MM', 'KHM': 'KH',
+  'LAO': 'LA', 'NPL': 'NP', 'MNG': 'MN',
+  // Oceania
+  'AUS': 'AU', 'NZL': 'NZ', 'FJI': 'FJ',
+};
+
 /**
  * Detect country using LG webOS systemInfo API
+ * Note: webOS.systemInfo provides synchronous access to country codes
  */
 function detectLGWebOSCountry(): GeoLocationResult | null {
   try {
-    // Check if LG webOS is available
+    // Check if LG webOS systemInfo is available
     if (typeof window.webOS !== 'undefined' && window.webOS.systemInfo) {
-      // Try smartServiceCountryCode2 first (2-letter ISO code)
-      let countryCode = window.webOS.systemInfo.smartServiceCountryCode2;
+      let countryCode: string | null = null;
       
-      // Fallback to country property (might be 3-letter code)
-      if (!countryCode && window.webOS.systemInfo.country) {
-        const rawCountry = window.webOS.systemInfo.country;
-        // Convert 3-letter codes to 2-letter if needed
-        if (rawCountry === 'USA') countryCode = 'US';
-        else if (rawCountry === 'GBR') countryCode = 'GB';
-        else if (rawCountry === 'DEU') countryCode = 'DE';
-        else if (rawCountry === 'FRA') countryCode = 'FR';
-        else if (rawCountry === 'ESP') countryCode = 'ES';
-        else if (rawCountry === 'ITA') countryCode = 'IT';
-        else if (rawCountry.length === 2) countryCode = rawCountry;
+      // Priority 1: smartServiceCountry (2-letter code, e.g., 'GB', 'US')
+      if (window.webOS.systemInfo.smartServiceCountry) {
+        countryCode = window.webOS.systemInfo.smartServiceCountry;
+        console.log('[Geolocation] LG webOS smartServiceCountry:', countryCode);
       }
       
-      if (countryCode && countryCode.length === 2) {
-        const countryName = COUNTRY_CODE_TO_NAME[countryCode.toUpperCase()];
+      // Priority 2: smartServiceCountryCode2 (2-letter code - CRITICAL: was missing)
+      if (!countryCode && window.webOS.systemInfo.smartServiceCountryCode2) {
+        countryCode = window.webOS.systemInfo.smartServiceCountryCode2;
+        console.log('[Geolocation] LG webOS smartServiceCountryCode2:', countryCode);
+      }
+      
+      // Priority 3: country (3-letter code, convert to 2-letter, e.g., 'KOR' -> 'KR')
+      if (!countryCode && window.webOS.systemInfo.country) {
+        const rawCountry = window.webOS.systemInfo.country;
+        console.log('[Geolocation] LG webOS country (3-letter):', rawCountry);
         
-        if (countryName) {
-          console.log('[Geolocation] ✅ LG webOS country detected:', countryName, countryCode);
-          return {
-            countryName,
-            countryCode: countryCode.toUpperCase(),
-            detectionMethod: 'lg-webos',
-            success: true,
-          };
-        } else {
-          console.warn('[Geolocation] ⚠️ LG webOS returned unknown country code:', countryCode);
+        // Try mapping first
+        countryCode = ISO3_TO_ISO2[rawCountry];
+        
+        // If already 2-letter, use as-is
+        if (!countryCode && rawCountry.length === 2) {
+          countryCode = rawCountry;
+          console.log('[Geolocation] LG webOS country already 2-letter:', countryCode);
         }
+        
+        // CRITICAL FIX: If 3-letter code not in mapping, use first 2 chars as fallback
+        // This ensures we NEVER discard a valid native detection
+        if (!countryCode && rawCountry.length === 3) {
+          countryCode = rawCountry.substring(0, 2);
+          console.warn('[Geolocation] ⚠️ LG webOS 3-letter code not in mapping:', rawCountry, '→ using first 2 chars:', countryCode);
+        }
+      }
+      
+      // CRITICAL FIX: Accept ANY valid 2-letter code even if we don't have a friendly name
+      if (countryCode && countryCode.length === 2) {
+        const upperCode = countryCode.toUpperCase();
+        const countryName = COUNTRY_CODE_TO_NAME[upperCode];
+        
+        if (!countryName) {
+          console.warn('[Geolocation] ⚠️ LG webOS returned unmapped country code:', upperCode, '(using code as name)');
+        }
+        
+        console.log('[Geolocation] ✅ LG webOS country detected:', countryName || upperCode, upperCode);
+        return {
+          countryName: countryName || upperCode, // Use code as fallback name
+          countryCode: upperCode,
+          detectionMethod: 'lg-webos',
+          success: true,
+        };
+      } else {
+        console.warn('[Geolocation] ⚠️ LG webOS systemInfo available but no valid country code found');
       }
     }
   } catch (error) {
@@ -230,7 +313,7 @@ function detectLanguageBasedCountry(): GeoLocationResult {
 }
 
 /**
- * Main hybrid geolocation function
+ * Main hybrid geolocation function (synchronous)
  * Tries multiple detection methods in priority order
  */
 export function detectCountry(): GeoLocationResult {
@@ -278,8 +361,9 @@ declare global {
     };
     webOS?: {
       systemInfo?: {
-        country?: string;
-        smartServiceCountryCode2?: string;
+        country?: string; // 3-letter ISO code (e.g., 'KOR', 'FRA')
+        smartServiceCountry?: string; // 2-letter ISO code (e.g., 'GB', 'US')
+        smartServiceCountryCode2?: string; // Alternative 2-letter code
         locale?: string;
         language?: string;
       };
