@@ -68,6 +68,22 @@ The application is optimized for TV with a fixed 1920x1080px resolution, utilizi
 
 ## Recent Changes (October 24, 2025 - Latest)
 
+### Samsung TV Build v3.43 (CONTROL BUTTONS PINK GLOW):
+**Added Pink Glow Effect to Control Buttons** - Enhanced focus visibility
+   - Created production build with timestamp: `1761322632651`
+   - Bundle: `tv-app/assets/index-1761322632651.js` (433.82KB - full React app)
+   - **NEW FEATURE:**
+     - ✅ **Pink Glow on Focus**: Previous, Play/Pause, Next, and Heart buttons now show pink glow when focused
+     - ✅ **Pink Border**: 4px pink (#ff4199) border appears when button is focused
+     - ✅ **Box Shadow**: 30px pink glow (rgba(255, 65, 153, 0.8)) for better visibility
+     - ✅ **Remote Navigation**: Use LEFT/RIGHT arrows to move between control buttons
+   - **APPLIES TO:**
+     - Previous Button (focus index 6)
+     - Play/Pause Button (focus index 7)
+     - Next Button (focus index 8)
+     - Heart/Favorite Button (focus index 9)
+   - **DEPLOY:** Entire `tv-app/` folder to Samsung TV
+
 ### Samsung TV Build v3.42 (SEE MORE POPULAR RADIOS + AUTO-SCROLL):
 **Added "See More" Button for Popular Radios** - Load 50 more stations on demand
    - Created production build with timestamp: `1761322260793`

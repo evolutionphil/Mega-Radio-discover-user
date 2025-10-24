@@ -750,7 +750,12 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute h-[90.192px] left-[1372px] top-[356px] w-[469px]">
         {/* Previous Button */}
         <div 
-          className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${getFocusClasses(isFocused(6))} ${isFocused(6) ? 'animate-pulse-soft' : ''}`}
+          className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
+            isFocused(6) ? 'border-[4px] border-[#ff4199]' : 'border-[4px] border-transparent'
+          }`}
+          style={{
+            boxShadow: isFocused(6) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'none'
+          }}
           onClick={handlePrevious}
           data-testid="button-previous"
         >
@@ -762,7 +767,12 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Play/Pause Button */}
         <div 
-          className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-colors flex items-center justify-center ${getFocusClasses(isFocused(7))} ${isPlaying ? 'animate-pulse-soft' : ''}`}
+          className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
+            isFocused(7) ? 'border-[4px] border-[#ff4199]' : 'border-[4px] border-transparent'
+          }`}
+          style={{
+            boxShadow: isFocused(7) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'none'
+          }}
           onClick={handlePlayPause}
           data-testid="button-play-pause"
         >
@@ -780,7 +790,12 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Next Button */}
         <div 
-          className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${getFocusClasses(isFocused(8))} ${isFocused(8) ? 'animate-pulse-soft' : ''}`}
+          className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
+            isFocused(8) ? 'border-[4px] border-[#ff4199]' : 'border-[4px] border-transparent'
+          }`}
+          style={{
+            boxShadow: isFocused(8) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'none'
+          }}
           onClick={handleNext}
           data-testid="button-next"
         >
@@ -794,9 +809,12 @@ export const RadioPlaying = (): JSX.Element => {
         <div 
           className={`absolute border-[3.608px] border-solid left-[378.81px] rounded-[72.655px] size-[90.192px] top-0 cursor-pointer transition-all flex items-center justify-center ${
             isFavorite(station._id) 
-              ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a] animate-pulse-soft' 
+              ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
               : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
-          } ${getFocusClasses(isFocused(9))} ${isFocused(9) ? 'animate-pulse-soft' : ''}`}
+          } ${isFocused(9) ? 'border-[#ff4199]' : ''}`}
+          style={{
+            boxShadow: isFocused(9) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'none'
+          }}
           onClick={() => toggleFavorite(station)}
           data-testid="button-favorite"
         >
