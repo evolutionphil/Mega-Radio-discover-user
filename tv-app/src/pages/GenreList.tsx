@@ -8,12 +8,14 @@ import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { assetPath } from "@/lib/assetPath";
+import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 
 export const GenreList = (): JSX.Element => {
   const [location, setLocation] = useLocation();
   const { selectedCountryCode } = useCountry();
   const { t } = useLocalization();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { focusGlobalPlayer, currentStation } = useGlobalPlayer();
   
   // Extract genre slug from URL path - wouter with hash routing
   // Example: location = "/genre-list/rock" (from #/genre-list/rock)
@@ -280,6 +282,20 @@ export const GenreList = (): JSX.Element => {
     onBack: () => setLocation('/genres')
   });
 
+  // Listen for 'focusSidebar' event from GlobalPlayer to jump back to sidebar
+  useEffect(() => {
+    const handleFocusSidebar = (event: CustomEvent) => {
+      const { index } = event.detail;
+      console.log('[GenreList] focusSidebar event received, jumping to index:', index);
+      setFocusIndex(index);
+    };
+    
+    window.addEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    return () => {
+      window.removeEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    };
+  }, [setFocusIndex]);
+
   // Jump to first station when stations load
   useEffect(() => {
     if (displayedStations.length > 0 && focusIndex < stationsStart) {
@@ -361,6 +377,17 @@ export const GenreList = (): JSX.Element => {
       case key?.RIGHT:
       case 39:
         customHandleNavigation('RIGHT');
+        break;
+      case key?.PAGE_UP:
+      case 33:
+      case key?.PAGE_DOWN:
+      case 34:
+        // PAGE_UP or PAGE_DOWN - jump to GlobalPlayer if it's visible
+        if (currentStation) {
+          console.log('[GenreList] PAGE_UP/PAGE_DOWN pressed - focusing GlobalPlayer');
+          e.preventDefault();
+          focusGlobalPlayer();
+        }
         break;
       case key?.ENTER:
       case 13:

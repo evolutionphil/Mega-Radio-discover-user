@@ -2,17 +2,19 @@ import { Link, useLocation } from "wouter";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { Station } from "@/services/megaRadioApi";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
+import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 
 export const Favorites = (): JSX.Element => {
   const { favorites } = useFavorites();
   const { t } = useLocalization();
   const [, setLocation] = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { focusGlobalPlayer, currentStation } = useGlobalPlayer();
   
   // Define sidebar routes (5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -48,6 +50,20 @@ export const Favorites = (): JSX.Element => {
     },
     onBack: () => setLocation('/discover-no-user')
   });
+
+  // Listen for 'focusSidebar' event from GlobalPlayer to jump back to sidebar
+  useEffect(() => {
+    const handleFocusSidebar = (event: CustomEvent) => {
+      const { index } = event.detail;
+      console.log('[Favorites] focusSidebar event received, jumping to index:', index);
+      setFocusIndex(index);
+    };
+    
+    window.addEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    return () => {
+      window.removeEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    };
+  }, [setFocusIndex]);
 
   // Custom navigation logic
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
@@ -115,6 +131,17 @@ export const Favorites = (): JSX.Element => {
       case key?.RIGHT:
       case 39:
         customHandleNavigation('RIGHT');
+        break;
+      case key?.PAGE_UP:
+      case 33:
+      case key?.PAGE_DOWN:
+      case 34:
+        // PAGE_UP or PAGE_DOWN - jump to GlobalPlayer if it's visible
+        if (currentStation) {
+          console.log('[Favorites] PAGE_UP/PAGE_DOWN pressed - focusing GlobalPlayer');
+          e.preventDefault();
+          focusGlobalPlayer();
+        }
         break;
       case key?.ENTER:
       case 13:

@@ -16,7 +16,7 @@ import { assetPath } from "@/lib/assetPath";
 export const DiscoverNoUser = (): JSX.Element => {
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
-  const { playStation, isPlaying } = useGlobalPlayer();
+  const { playStation, isPlaying, focusGlobalPlayer, currentStation } = useGlobalPlayer();
   const [, setLocation] = useLocation();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
@@ -265,6 +265,20 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   });
 
+  // Listen for 'focusSidebar' event from GlobalPlayer to jump back to sidebar
+  useEffect(() => {
+    const handleFocusSidebar = (event: CustomEvent) => {
+      const { index } = event.detail;
+      console.log('[DiscoverNoUser] focusSidebar event received, jumping to index:', index);
+      setFocusIndex(index);
+    };
+    
+    window.addEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    return () => {
+      window.removeEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    };
+  }, [setFocusIndex]);
+
   // Register page-specific key handler with custom navigation
   usePageKeyHandler('/discover-no-user', (e) => {
     // Exit modal key handler (highest priority)
@@ -339,24 +353,21 @@ export const DiscoverNoUser = (): JSX.Element => {
       case 39:
         customHandleNavigation('RIGHT');
         break;
+      case key?.PAGE_UP:
+      case 33:
+      case key?.PAGE_DOWN:
+      case 34:
+        // PAGE_UP or PAGE_DOWN - jump to GlobalPlayer if it's visible
+        if (currentStation) {
+          console.log('[DiscoverNoUser] PAGE_UP/PAGE_DOWN pressed - focusing GlobalPlayer');
+          e.preventDefault();
+          focusGlobalPlayer();
+        }
+        break;
       case key?.ENTER:
       case 13:
         console.log('[DiscoverNoUser] ENTER key pressed - calling handleSelect()');
         handleSelect();
-        break;
-      case key?.PAGE_DOWN:
-      case 34:
-        // Jump down to country stations section
-        e.preventDefault();
-        setFocusIndex(countryStationsStart);
-        console.log('[DiscoverNoUser] PageDown - jumped to country stations');
-        break;
-      case key?.PAGE_UP:
-      case 33:
-        // Jump back up to genres section
-        e.preventDefault();
-        setFocusIndex(genresStart);
-        console.log('[DiscoverNoUser] PageUp - jumped to genres');
         break;
       case key?.RETURN:
       case 461:

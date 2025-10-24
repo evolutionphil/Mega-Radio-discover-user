@@ -16,7 +16,7 @@ export const Search = (): JSX.Element => {
   console.log('[Search] 🎬 Component mounting/rendering');
   const [, setLocation] = useLocation();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
-  const { playStation, isPlaying } = useGlobalPlayer();
+  const { playStation, isPlaying, focusGlobalPlayer, currentStation } = useGlobalPlayer();
   const { t } = useLocalization();
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
@@ -260,6 +260,20 @@ export const Search = (): JSX.Element => {
       setLocation('/discover-no-user');
     }
   });
+
+  // Listen for 'focusSidebar' event from GlobalPlayer to jump back to sidebar
+  useEffect(() => {
+    const handleFocusSidebar = (event: CustomEvent) => {
+      const { index } = event.detail;
+      console.log('[Search] focusSidebar event received, jumping to index:', index);
+      setFocusIndex(index);
+    };
+    
+    window.addEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    return () => {
+      window.removeEventListener('focusSidebar', handleFocusSidebar as EventListener);
+    };
+  }, [setFocusIndex]);
   
   // Fix: Blur input when focusIndex moves away from search input (index 5)
   useEffect(() => {
@@ -301,6 +315,17 @@ export const Search = (): JSX.Element => {
       case 39:
         console.log('[Search] ➡️ RIGHT key');
         customHandleNavigation('RIGHT');
+        break;
+      case key?.PAGE_UP:
+      case 33:
+      case key?.PAGE_DOWN:
+      case 34:
+        // PAGE_UP or PAGE_DOWN - jump to GlobalPlayer if it's visible
+        if (currentStation) {
+          console.log('[Search] PAGE_UP/PAGE_DOWN pressed - focusing GlobalPlayer');
+          e.preventDefault();
+          focusGlobalPlayer();
+        }
         break;
       case key?.ENTER:
       case 13:
@@ -452,7 +477,7 @@ export const Search = (): JSX.Element => {
       {/* No results message */}
       {searchQuery.length > 0 && visibleSearchResults.length === 0 && (
         <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[246px] not-italic text-[22px] text-[rgba(255,255,255,0.5)] top-[259px]">
-          No stations found for "{searchQuery}"
+          {t('no_stations_found_for') || 'No stations found for'} "{searchQuery}"
         </p>
       )}
 
