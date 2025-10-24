@@ -33,6 +33,10 @@ export const RadioPlaying = (): JSX.Element => {
   // Country selector state
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   
+  // Popular stations display count
+  const [popularStationsToShow, setPopularStationsToShow] = useState(20);
+  const [allPopularStations, setAllPopularStations] = useState<Station[]>([]);
+  
   // Scroll refs for auto-scrolling focused cards
   const containerScrollRef = useRef<HTMLDivElement>(null);
   const similarScrollRef = useRef<HTMLDivElement>(null);
@@ -201,10 +205,11 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Fetch popular stations from GLOBAL (random selection)
   const { data: popularData } = useQuery({
-    queryKey: ['popular-global-stations', stationId],
+    queryKey: ['popular-global-stations', stationId, popularStationsToShow],
     queryFn: async () => {
+      const limit = Math.max(100, popularStationsToShow + 50);
       const data = await megaRadioApi.getPopularStations({ 
-        limit: 100, 
+        limit,
         // No country filter - get global popular stations
       });
       // Filter out current station and shuffle for random variety
@@ -221,10 +226,24 @@ export const RadioPlaying = (): JSX.Element => {
     gcTime: 0,
   });
 
-  const popularStations = popularData?.stations || [];
+  // Update all popular stations when data changes
+  useEffect(() => {
+    if (popularData?.stations) {
+      setAllPopularStations(popularData.stations);
+    }
+  }, [popularData]);
 
-  // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (20) + popular stations (20)
-  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20) + Math.min(popularStations.length, 20);
+  const popularStations = allPopularStations.slice(0, popularStationsToShow);
+  const hasMorePopular = allPopularStations.length > popularStationsToShow;
+  
+  // Function to load more popular stations
+  const loadMorePopular = () => {
+    setPopularStationsToShow(prev => prev + 50);
+  };
+
+  // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (20) + popular stations + See More button
+  const popularCount = popularStations.length;
+  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20) + popularCount + (hasMorePopular ? 1 : 0);
 
   // Define sidebar routes (NO PROFILE - 5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -300,9 +319,10 @@ export const RadioPlaying = (): JSX.Element => {
         }
       }
     }
-    // Popular stations (30-49) - horizontal list
-    else if (current >= 30 && current <= 49) {
+    // Popular stations (30+) - horizontal list with See More button
+    else if (current >= 30) {
       const relIndex = current - 30;
+      const maxPopularIndex = popularCount + (hasMorePopular ? 1 : 0) - 1;
 
       if (direction === 'LEFT') {
         if (relIndex > 0) {
@@ -311,7 +331,7 @@ export const RadioPlaying = (): JSX.Element => {
           newIndex = 0; // Jump to sidebar
         }
       } else if (direction === 'RIGHT') {
-        if (relIndex < Math.min(popularStations.length, 20) - 1) {
+        if (relIndex < maxPopularIndex) {
           newIndex = current + 1;
         }
       } else if (direction === 'UP') {
@@ -432,12 +452,17 @@ export const RadioPlaying = (): JSX.Element => {
           navigateToStation(targetStation);
         }
       }
-      // Popular stations (30-49)
-      else if (index >= 30 && index <= 49) {
-        const stationIndex = index - 30;
-        const targetStation = popularStations[stationIndex];
-        if (targetStation) {
-          navigateToStation(targetStation);
+      // Popular stations (30+) and See More button
+      else if (index >= 30) {
+        const relIndex = index - 30;
+        // Check if this is the "See More" button (last item)
+        if (hasMorePopular && relIndex === popularStations.length) {
+          loadMorePopular();
+        } else {
+          const targetStation = popularStations[relIndex];
+          if (targetStation) {
+            navigateToStation(targetStation);
+          }
         }
       }
     },
@@ -463,8 +488,8 @@ export const RadioPlaying = (): JSX.Element => {
       });
     }
     
-    // Popular stations (30-49)
-    if (focusIndex >= 30 && focusIndex <= 49 && popularScrollRef.current) {
+    // Popular stations (30+) including See More button
+    if (focusIndex >= 30 && popularScrollRef.current) {
       const stationIndex = focusIndex - 30;
       const scrollPosition = stationIndex * cardWidth;
       
@@ -824,7 +849,7 @@ export const RadioPlaying = (): JSX.Element => {
 
           {/* Popular Radios Horizontal Scroll */}
           <div ref={popularScrollRef} className="flex overflow-x-auto scrollbar-hide scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {popularStations.slice(0, 20).map((popularStation, index) => {
+            {popularStations.map((popularStation, index) => {
               const focusIdx = 30 + index; // Start after similar stations (10-29)
               return (
               <div
@@ -860,6 +885,27 @@ export const RadioPlaying = (): JSX.Element => {
               </div>
               )
             })}
+            
+            {/* See More Card */}
+            {hasMorePopular && (
+              <div
+                className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative flex items-center justify-center ${
+                  isFocused(30 + popularStations.length) 
+                    ? 'border-[4px] border-[#ff4199] shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
+                    : 'border-[4px] border-transparent'
+                }`}
+                style={{ 
+                  marginRight: '24px',
+                  boxShadow: isFocused(30 + popularStations.length) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' 
+                }}
+                data-testid="button-see-more-popular"
+                onClick={loadMorePopular}
+              >
+                <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-center text-white">
+                  See More
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
