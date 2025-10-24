@@ -160,9 +160,16 @@ function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> 
   return new Promise((resolve) => {
     try {
       // Check if Tizen SystemInfo API is available
-      if (typeof window.tizen !== 'undefined' && window.tizen.systeminfo) {
-        console.log('[Geolocation] ✅ Tizen SystemInfo API detected - getting LOCALE property...');
-        
+      if (typeof window.tizen === 'undefined' || !window.tizen.systeminfo) {
+        console.log('[Geolocation] ℹ️ Tizen SystemInfo API not available (likely emulator or non-Samsung device)');
+        resolve(null);
+        return;
+      }
+
+      console.log('[Geolocation] ✅ Tizen SystemInfo API detected - getting LOCALE property...');
+      
+      // Wrap the API call in try-catch for safety
+      try {
         // Get LOCALE property (official Tizen method)
         window.tizen.systeminfo.getPropertyValue(
           "LOCALE",
@@ -240,23 +247,28 @@ function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> 
             console.error('═══════════════════════════════════════════════════════════════');
             console.error('[Geolocation] ❌ TIZEN SYSTEMINFO LOCALE API ERROR');
             console.error('[Geolocation] ❌ Error:', error);
-            console.error('[Geolocation] ❌ Error message:', error.message);
-            console.error('[Geolocation] ❌ Error stack:', error.stack);
+            console.error('[Geolocation] ❌ Error message:', error?.message || 'Unknown error');
+            console.error('[Geolocation] ❌ Error stack:', error?.stack || 'No stack trace');
             console.error('═══════════════════════════════════════════════════════════════');
+            console.log('[Geolocation] 🔄 Falling back to next detection method...');
             resolve(null);
           }
         );
         
         // Set timeout to prevent hanging (2 seconds max)
         setTimeout(() => {
-          console.warn('[Geolocation] ⏱️ Tizen SystemInfo LOCALE timeout - falling back');
+          console.warn('[Geolocation] ⏱️ Tizen SystemInfo LOCALE timeout (2s) - falling back to next method');
           resolve(null);
         }, 2000);
-      } else {
+        
+      } catch (apiError) {
+        console.error('[Geolocation] ❌ Tizen SystemInfo API call failed:', apiError);
+        console.log('[Geolocation] 🔄 Falling back to next detection method...');
         resolve(null);
       }
     } catch (error) {
-      console.error('[Geolocation] ❌ Tizen SystemInfo check failed:', error);
+      console.error('[Geolocation] ❌ Tizen SystemInfo check failed (outer catch):', error);
+      console.log('[Geolocation] 🔄 Falling back to next detection method...');
       resolve(null);
     }
   });
@@ -268,7 +280,12 @@ function detectTizenSystemInfoCountryAsync(): Promise<GeoLocationResult | null> 
 function detectSamsungTizenCountry(): GeoLocationResult | null {
   try {
     // Check if Samsung webapis is available
-    if (typeof window.webapis !== 'undefined' && window.webapis.productinfo) {
+    if (typeof window.webapis === 'undefined' || !window.webapis.productinfo) {
+      console.log('[Geolocation] ℹ️ Samsung productinfo API not available (likely emulator or non-Samsung device)');
+      return null;
+    }
+    
+    try {
       const countryCode = window.webapis.productinfo.getCountryCode();
       
       if (countryCode && countryCode.length === 2) {
@@ -288,9 +305,14 @@ function detectSamsungTizenCountry(): GeoLocationResult | null {
           success: true,
         };
       }
+    } catch (apiError) {
+      console.error('[Geolocation] ❌ Samsung productinfo API call failed:', apiError);
+      console.log('[Geolocation] 🔄 Falling back to next detection method...');
+      return null;
     }
   } catch (error) {
-    console.error('[Geolocation] ❌ Samsung Tizen detection failed:', error);
+    console.error('[Geolocation] ❌ Samsung Tizen detection failed (outer catch):', error);
+    console.log('[Geolocation] 🔄 Falling back to next detection method...');
   }
   
   return null;
@@ -330,7 +352,12 @@ const ISO3_TO_ISO2: Record<string, string> = {
 function detectLGWebOSCountry(): GeoLocationResult | null {
   try {
     // Check if LG webOS systemInfo is available
-    if (typeof window.webOS !== 'undefined' && window.webOS.systemInfo) {
+    if (typeof window.webOS === 'undefined' || !window.webOS.systemInfo) {
+      console.log('[Geolocation] ℹ️ LG webOS systemInfo not available (likely emulator or non-LG device)');
+      return null;
+    }
+    
+    try {
       let countryCode: string | null = null;
       
       // Priority 1: smartServiceCountry (2-letter code, e.g., 'GB', 'US')
@@ -386,9 +413,14 @@ function detectLGWebOSCountry(): GeoLocationResult | null {
       } else {
         console.warn('[Geolocation] ⚠️ LG webOS systemInfo available but no valid country code found');
       }
+    } catch (apiError) {
+      console.error('[Geolocation] ❌ LG webOS API call failed:', apiError);
+      console.log('[Geolocation] 🔄 Falling back to next detection method...');
+      return null;
     }
   } catch (error) {
-    console.error('[Geolocation] ❌ LG webOS detection failed:', error);
+    console.error('[Geolocation] ❌ LG webOS detection failed (outer catch):', error);
+    console.log('[Geolocation] 🔄 Falling back to next detection method...');
   }
   
   return null;
