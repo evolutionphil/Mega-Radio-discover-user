@@ -44,6 +44,7 @@ export const GenreList = (): JSX.Element => {
   const STATIONS_PER_LOAD = 100; // Fetch 100 stations per batch
 
   // Fetch initial 100 stations with offset=0 for TRUE infinite scroll
+  // CACHE: 7 days
   console.log('🔍 [GENRE LIST DEBUG] Creating query with:', {
     queryKey: ['genre-stations/initial', genreSlug, selectedCountryCode],
     genreSlug,
@@ -67,8 +68,8 @@ export const GenreList = (): JSX.Element => {
       console.log('✅ [GENRE LIST DEBUG] First 3 stations:', result?.stations?.slice(0, 3).map((s: any) => s.name));
       return result;
     },
-    staleTime: 0, // Always fetch fresh data for genre changes
-    gcTime: 60000, // 1 minute (renamed from cacheTime in v5)
+    staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days (renamed from cacheTime in v5)
   });
   
   // Force refetch when genre changes
