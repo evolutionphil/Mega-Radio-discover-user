@@ -32,6 +32,7 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 -   **Platform Detection:** Automatic detection via user agent.
 -   **Remote Control Navigation:** Implements an LGTV focus pattern using `useFocusManager`, `usePageKeyHandler`, and `getFocusClasses` for dynamic adaptation, including specific fixes for sidebar, country selector, and two-step return button behavior. PAGE_UP/DOWN and CH_UP/CH_DOWN keys jump to the global player.
 -   **Audio Playback:** A unified interface manages `webapis.avplay` for Tizen and HTML5 Audio/Video for webOS/browsers.
+-   **Network Monitoring:** `NetworkStatusContext` monitors network connectivity using Samsung's `webapis.network` API for Tizen and browser `online`/`offline` events for webOS/browsers. Automatically pauses audio playback when network disconnects (Samsung TV certification requirement) and displays a localized pink-themed modal matching the exit modal design.
 -   **TV-Specific Styling:** Custom CSS handles focus states, hidden cursors, scrollbar hiding, and platform-specific visibility.
 
 **Application Flow:**
