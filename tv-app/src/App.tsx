@@ -9,6 +9,7 @@ import { CountryProvider } from "@/contexts/CountryContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import { GlobalPlayerProvider } from "@/contexts/GlobalPlayerContext";
 import { NetworkStatusProvider, useNetworkStatus } from "@/contexts/NetworkStatusContext";
+import { AppLifecycleProvider } from "@/contexts/AppLifecycleContext";
 import { FocusRouterProvider } from "@/contexts/FocusRouterContext";
 import { GlobalPlayer } from "@/components/GlobalPlayer";
 import { useLocalization } from "@/contexts/LocalizationContext";
@@ -128,12 +129,14 @@ function App() {
           <CountryProvider>
             <FavoritesProvider>
               <GlobalPlayerProvider>
-                <FocusRouterProvider>
-                  <TooltipProvider>
-                    <Toaster />
-                    <Router />
-                  </TooltipProvider>
-                </FocusRouterProvider>
+                <AppLifecycleProvider>
+                  <FocusRouterProvider>
+                    <TooltipProvider>
+                      <Toaster />
+                      <Router />
+                    </TooltipProvider>
+                  </FocusRouterProvider>
+                </AppLifecycleProvider>
               </GlobalPlayerProvider>
             </FavoritesProvider>
           </CountryProvider>
