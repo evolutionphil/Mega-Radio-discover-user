@@ -171,6 +171,13 @@ export const Settings = (): JSX.Element => {
   // Get current language display name
   const currentLanguageName = SUPPORTED_LANGUAGES.find(l => l.code === language)?.name || 'English';
 
+  // Debug logging
+  useEffect(() => {
+    console.log('[Settings] Component mounted, showLanguageList:', showLanguageList);
+    console.log('[Settings] Language selector should be visible:', !showLanguageList);
+    console.log('[Settings] Current language:', currentLanguageName);
+  }, [showLanguageList, currentLanguageName]);
+
   return (
     <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-settings">
       {/* Background Image */}

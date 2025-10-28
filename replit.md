@@ -37,6 +37,7 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
     -   **Screensaver Prevention:** `GlobalPlayerContext` uses `tizen.power.request/release` API to prevent screensaver during audio playback on Samsung TVs, with Web Wake Lock API fallback for other platforms.
     -   **Multitasking Support:** `AppLifecycleContext` handles Samsung app lifecycle events (`AppSuspend`, `AppResume`, `AppHide`, `AppShow`) via `webapis.appcommon.addAppEventListener`, pausing audio when app goes to background, with `document.visibilitychange` fallback for cross-platform compatibility.
     -   **Exit Modal:** Implements Samsung-compliant exit modal using `tizen.application.getCurrentApplication().exit()` on home page.
+    -   **Idle Screensaver:** Custom idle detection system (`useIdleDetection` hook) monitors user inactivity and displays an animated screensaver after 3 minutes. The screensaver features smooth fade-in/fade-out animations, dynamically animated gradients, and responds to any user interaction (mouse, keyboard, touch) to immediately dismiss.
     -   **Required Privileges:** config.xml includes `http://tizen.org/privilege/power` for screensaver prevention and `http://developer.samsung.com/privilege/network.public` for network monitoring.
 -   **TV-Specific Styling:** Custom CSS handles focus states, hidden cursors, scrollbar hiding, and platform-specific visibility.
 

@@ -99,9 +99,9 @@ function Router() {
   
   console.log('[Router] 🔍 About to call useIdleDetection');
   
-  // Idle detection - show screensaver after 10 seconds of inactivity
+  // Idle detection - show screensaver after 3 minutes of inactivity
   const { isIdle, resetIdleTimer } = useIdleDetection({
-    idleTime: 10 * 1000, // 10 seconds (temporary for testing - change to 3 * 60 * 1000 for production)
+    idleTime: 3 * 60 * 1000, // 3 minutes = 180 seconds = 180,000ms
     onIdle: () => console.log('[IdleScreensaver] Screensaver activated'),
     onActive: () => console.log('[IdleScreensaver] Screensaver deactivated')
   });
