@@ -32,8 +32,15 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
     }
   }, [isVisible]);
 
-  // Don't render if not visible or no station playing
-  if (!isVisible || !currentStation) {
+  // Handle key events - prevent propagation so first press only wakes screen
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onInteraction?.();
+  };
+
+  // Don't render if not visible
+  if (!isVisible) {
     return null;
   }
 
@@ -56,10 +63,12 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
 
   return (
     <div 
-      className={`fixed inset-0 w-[1920px] h-[1080px] bg-black z-[9999] flex flex-col items-center justify-center transition-opacity duration-1000 ${
+      className={`fixed inset-0 w-[1920px] h-[1080px] bg-black z-[150] flex flex-col items-center justify-center transition-opacity duration-1000 ${
         fadeIn ? 'opacity-100' : 'opacity-0'
       }`}
       onClick={onInteraction}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
       data-testid="idle-screensaver"
     >
       {/* Gradient Background */}
@@ -74,76 +83,88 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
             {/* Bar 1 */}
             <div 
               className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying ? 'animate-screensaver-equalizer-1' : 'h-[300px]'
+                isPlaying && currentStation ? 'animate-screensaver-equalizer-1' : 'h-[300px]'
               }`}
-              style={{ height: isPlaying ? undefined : '300px' }}
+              style={{ height: isPlaying && currentStation ? undefined : '300px' }}
             />
             {/* Bar 2 */}
             <div 
               className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying ? 'animate-screensaver-equalizer-2' : 'h-[200px]'
+                isPlaying && currentStation ? 'animate-screensaver-equalizer-2' : 'h-[200px]'
               }`}
-              style={{ height: isPlaying ? undefined : '200px' }}
+              style={{ height: isPlaying && currentStation ? undefined : '200px' }}
             />
             {/* Bar 3 */}
             <div 
               className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying ? 'animate-screensaver-equalizer-3' : 'h-[250px]'
+                isPlaying && currentStation ? 'animate-screensaver-equalizer-3' : 'h-[250px]'
               }`}
-              style={{ height: isPlaying ? undefined : '250px' }}
+              style={{ height: isPlaying && currentStation ? undefined : '250px' }}
             />
             {/* Bar 4 */}
             <div 
               className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying ? 'animate-screensaver-equalizer-2' : 'h-[180px]'
+                isPlaying && currentStation ? 'animate-screensaver-equalizer-2' : 'h-[180px]'
               }`}
-              style={{ height: isPlaying ? undefined : '180px' }}
+              style={{ height: isPlaying && currentStation ? undefined : '180px' }}
             />
             {/* Bar 5 */}
             <div 
               className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying ? 'animate-screensaver-equalizer-1' : 'h-[280px]'
+                isPlaying && currentStation ? 'animate-screensaver-equalizer-1' : 'h-[280px]'
               }`}
-              style={{ height: isPlaying ? undefined : '280px' }}
+              style={{ height: isPlaying && currentStation ? undefined : '280px' }}
             />
           </div>
         </div>
 
-        {/* Station Info */}
-        <div className="flex flex-col items-center gap-8">
-          {/* Station Logo */}
-          <div className="bg-white rounded-[12px] size-[200px] overflow-clip shadow-2xl">
-            <img 
-              src={getStationImage(currentStation)}
-              alt={currentStation.name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-              }}
-            />
-          </div>
-
-          {/* Station Name */}
-          <h1 className="font-['Ubuntu',Helvetica] font-bold text-[56px] text-white text-center max-w-[1200px] truncate">
-            {currentStation.name}
-          </h1>
-
-          {/* Now Playing */}
-          {nowPlayingMetadata && (
-            <div className="flex items-center gap-4">
-              <div className="w-[60px] h-[3px] bg-[#ff4199]" />
-              <p className="font-['Ubuntu',Helvetica] font-light text-[36px] text-[#ff4199] text-center max-w-[1000px] truncate">
-                {nowPlayingMetadata}
-              </p>
-              <div className="w-[60px] h-[3px] bg-[#ff4199]" />
+        {/* Station Info or Branding Fallback */}
+        {currentStation ? (
+          <div className="flex flex-col items-center gap-8">
+            {/* Station Logo */}
+            <div className="bg-white rounded-[12px] size-[200px] overflow-clip shadow-2xl">
+              <img 
+                src={getStationImage(currentStation)}
+                alt={currentStation.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                }}
+              />
             </div>
-          )}
 
-          {/* Country */}
-          <p className="font-['Ubuntu',Helvetica] font-light text-[28px] text-white/70">
-            {currentStation.country}
-          </p>
-        </div>
+            {/* Station Name */}
+            <h1 className="font-['Ubuntu',Helvetica] font-bold text-[56px] text-white text-center max-w-[1200px] truncate">
+              {currentStation.name}
+            </h1>
+
+            {/* Now Playing */}
+            {nowPlayingMetadata && (
+              <div className="flex items-center gap-4">
+                <div className="w-[60px] h-[3px] bg-[#ff4199]" />
+                <p className="font-['Ubuntu',Helvetica] font-light text-[36px] text-[#ff4199] text-center max-w-[1000px] truncate">
+                  {nowPlayingMetadata}
+                </p>
+                <div className="w-[60px] h-[3px] bg-[#ff4199]" />
+              </div>
+            )}
+
+            {/* Country */}
+            <p className="font-['Ubuntu',Helvetica] font-light text-[28px] text-white/70">
+              {currentStation.country}
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-8">
+            {/* App Logo/Branding Fallback */}
+            <h1 className="font-['Ubuntu',Helvetica] font-bold text-[80px] text-white text-center">
+              Radio Mega
+            </h1>
+            <p className="font-['Ubuntu',Helvetica] font-light text-[32px] text-[#ff4199] text-center">
+              Your Global Radio Experience
+            </p>
+          </div>
+        )}
 
         {/* Large Clock */}
         <div className="absolute bottom-[100px] left-1/2 -translate-x-1/2">

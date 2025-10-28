@@ -45,9 +45,9 @@ export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
       'keypress'
     ];
 
-    // Add event listeners
+    // Add event listeners (no passive option to allow preventDefault)
     events.forEach(event => {
-      window.addEventListener(event, resetIdleTimer, { passive: true });
+      window.addEventListener(event, resetIdleTimer);
     });
 
     // Check idle status every second
