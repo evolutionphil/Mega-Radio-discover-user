@@ -4,7 +4,7 @@ import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { assetPath } from "@/lib/assetPath";
 
 export const Splash = (): JSX.Element => {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   
   // Initialize TV navigation
   useTVNavigation();
@@ -17,6 +17,12 @@ export const Splash = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    // Don't redirect if we're not actually on the Splash page
+    if (location !== '/') {
+      console.log('[Splash] Not on root path, skipping auto-redirect. Current:', location);
+      return;
+    }
+    
     const timer = setTimeout(() => {
       console.log('[Splash] ⏱️  Timer completed, checking onboarding status');
       
@@ -35,7 +41,7 @@ export const Splash = (): JSX.Element => {
       }
     }, 3000);
     return () => clearTimeout(timer);
-  }, [setLocation]);
+  }, [location, setLocation]);
 
   return (
     <div className="bg-[#0e0e0e] absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-splash">
