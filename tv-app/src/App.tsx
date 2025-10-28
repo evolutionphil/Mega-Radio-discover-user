@@ -13,19 +13,19 @@ import { NetworkStatusProvider, useNetworkStatus } from "@/contexts/NetworkStatu
 import { AppLifecycleProvider } from "@/contexts/AppLifecycleContext";
 import { FocusRouterProvider } from "@/contexts/FocusRouterContext";
 import { GlobalPlayer } from "@/components/GlobalPlayer";
-import { IdleScreensaver } from "@/components/IdleScreensaver";
+// import { IdleScreensaver } from "@/components/IdleScreensaver";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import NotFound from "@/pages/not-found";
 import { useAnalytics } from "@/hooks/use-analytics";
-import { useIdleDetection } from "@/hooks/useIdleDetection";
+// import { useIdleDetection } from "@/hooks/useIdleDetection";
 
 import { Splash } from "@/pages/Splash";
 import { Login } from "@/pages/Login";
 import { Guide1 } from "@/pages/Guide1";
 
 // MODULE-LEVEL LOG - This runs when file is imported
-console.log('[App.tsx] 🔥 MODULE LOADED - IdleScreensaver version 1.0');
-console.log('[App.tsx] useIdleDetection imported:', typeof useIdleDetection);
+// console.log('[App.tsx] 🔥 MODULE LOADED - IdleScreensaver version 1.0');
+// console.log('[App.tsx] useIdleDetection imported:', typeof useIdleDetection);
 import { Guide2 } from "@/pages/Guide2";
 import { Guide3 } from "@/pages/Guide3";
 import { Guide4 } from "@/pages/Guide4";
@@ -98,16 +98,16 @@ function Router() {
   
   useAnalytics();
   
-  console.log('[Router] 🔍 About to call useIdleDetection');
+  // console.log('[Router] 🔍 About to call useIdleDetection');
   
-  // Idle detection - show screensaver after 10 seconds of inactivity
-  const { isIdle, resetIdleTimer } = useIdleDetection({
-    idleTime: 10 * 1000, // 10 seconds (temporary for testing - change to 3 * 60 * 1000 for production)
-    onIdle: () => console.log('[IdleScreensaver] Screensaver activated'),
-    onActive: () => console.log('[IdleScreensaver] Screensaver deactivated')
-  });
+  // Idle detection - DISABLED FOR NOW
+  // const { isIdle, resetIdleTimer } = useIdleDetection({
+  //   idleTime: 10 * 1000, // 10 seconds (temporary for testing - change to 3 * 60 * 1000 for production)
+  //   onIdle: () => console.log('[IdleScreensaver] Screensaver activated'),
+  //   onActive: () => console.log('[IdleScreensaver] Screensaver deactivated')
+  // });
   
-  console.log('[Router] 📊 useIdleDetection returned - isIdle:', isIdle);
+  // console.log('[Router] 📊 useIdleDetection returned - isIdle:', isIdle);
   
   return (
     <WouterRouter hook={useHashLocation}>
@@ -139,8 +139,8 @@ function Router() {
     <GlobalPlayer />
     {/* Network Disconnect Modal - Global, highest z-index */}
     <NetworkDisconnectModal />
-    {/* Idle Screensaver - Appears after 3 minutes of inactivity */}
-    <IdleScreensaver isVisible={isIdle} onInteraction={resetIdleTimer} />
+    {/* Idle Screensaver - DISABLED FOR NOW */}
+    {/* <IdleScreensaver isVisible={isIdle} onInteraction={resetIdleTimer} /> */}
     </WouterRouter>
   );
 }
