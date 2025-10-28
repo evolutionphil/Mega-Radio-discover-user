@@ -1,5 +1,5 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
-import { useTVHashLocation } from "@/hooks/useTVHashLocation";
+import { useHashLocation } from "wouter/use-hash-location";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -93,15 +93,15 @@ function NetworkDisconnectModal() {
 }
 
 function Router() {
-  console.log('[Router] 🎬 Router component rendering - IDLE DETECTION SETUP');
+  console.log('[Router] 🎬 Router component rendering');
   
   useAnalytics();
   
   console.log('[Router] 🔍 About to call useIdleDetection');
   
-  // Idle detection - show screensaver after 3 minutes of inactivity
+  // Idle detection - show screensaver after 10 seconds of inactivity
   const { isIdle, resetIdleTimer } = useIdleDetection({
-    idleTime: 3 * 60 * 1000, // 3 minutes = 180 seconds = 180,000ms
+    idleTime: 10 * 1000, // 10 seconds (temporary for testing - change to 3 * 60 * 1000 for production)
     onIdle: () => console.log('[IdleScreensaver] Screensaver activated'),
     onActive: () => console.log('[IdleScreensaver] Screensaver deactivated')
   });
@@ -109,7 +109,7 @@ function Router() {
   console.log('[Router] 📊 useIdleDetection returned - isIdle:', isIdle);
   
   return (
-    <WouterRouter hook={useTVHashLocation}>
+    <WouterRouter hook={useHashLocation}>
       <Switch>
         {/* Splash & Onboarding */}
         <Route path="/" component={Splash} />
@@ -145,7 +145,6 @@ function Router() {
 }
 
 function App() {
-  console.log('[App] 🎬 App function rendering');
   return (
     <QueryClientProvider client={queryClient}>
       <LocalizationProvider>
