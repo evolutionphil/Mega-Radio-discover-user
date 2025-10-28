@@ -1,8 +1,8 @@
-# Mega Radio - Samsung TV App Description
+# Radio Mega - Samsung TV App Description
 
 ## App Overview
 
-**App Name:** Mega Radio  
+**App Name:** Radio Mega  
 **Tagline:** Listen freely  
 **Version:** 1.0.0  
 **Category:** Entertainment / Music & Radio  
@@ -18,7 +18,7 @@ Stream radio stations from 238 countries worldwide on your Samsung TV. Listen fr
 
 ## Long Description (4000 characters max)
 
-Mega Radio brings the world of radio to your Samsung Smart TV with access to thousands of radio stations from over 238 countries. Experience high-quality audio streaming optimized for your big screen with an intuitive interface designed specifically for TV remote control navigation.
+Radio Mega brings the world of radio to your Samsung Smart TV with access to thousands of radio stations from over 238 countries. Experience high-quality audio streaming optimized for your big screen with an intuitive interface designed specifically for TV remote control navigation.
 
 **KEY FEATURES:**
 
@@ -91,7 +91,7 @@ Mega Radio brings the world of radio to your Samsung Smart TV with access to tho
 - Language learners listening to international stations
 - News and talk radio enthusiasts
 
-Mega Radio is completely free to use with no subscription required. Simply install, browse, and start listening to your favorite radio stations from around the world!
+Radio Mega is completely free to use with no subscription required. Simply install, browse, and start listening to your favorite radio stations from around the world!
 
 ---
 
@@ -327,7 +327,7 @@ Mega Radio respects user privacy:
 ## Installation & Usage
 
 1. **Install** - Download from Samsung Apps TV Store
-2. **Launch** - Open Mega Radio from your Apps
+2. **Launch** - Open Radio Mega from your Apps
 3. **Browse** - Explore stations by country or genre
 4. **Play** - Select any station to start listening
 5. **Enjoy** - Listen to radio from around the world!
