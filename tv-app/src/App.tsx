@@ -12,9 +12,11 @@ import { NetworkStatusProvider, useNetworkStatus } from "@/contexts/NetworkStatu
 import { AppLifecycleProvider } from "@/contexts/AppLifecycleContext";
 import { FocusRouterProvider } from "@/contexts/FocusRouterContext";
 import { GlobalPlayer } from "@/components/GlobalPlayer";
+import { IdleScreensaver } from "@/components/IdleScreensaver";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import NotFound from "@/pages/not-found";
 import { useAnalytics } from "@/hooks/use-analytics";
+import { useIdleDetection } from "@/hooks/useIdleDetection";
 
 import { Splash } from "@/pages/Splash";
 import { Login } from "@/pages/Login";
@@ -88,6 +90,13 @@ function NetworkDisconnectModal() {
 function Router() {
   useAnalytics();
   
+  // Idle detection - show screensaver after 3 minutes of inactivity
+  const { isIdle, resetIdleTimer } = useIdleDetection({
+    idleTime: 3 * 60 * 1000, // 3 minutes
+    onIdle: () => console.log('[IdleScreensaver] Screensaver activated'),
+    onActive: () => console.log('[IdleScreensaver] Screensaver deactivated')
+  });
+  
   return (
     <WouterRouter hook={useHashLocation}>
       <Switch>
@@ -117,6 +126,8 @@ function Router() {
     <GlobalPlayer />
     {/* Network Disconnect Modal - Global, highest z-index */}
     <NetworkDisconnectModal />
+    {/* Idle Screensaver - Appears after 3 minutes of inactivity */}
+    <IdleScreensaver isVisible={isIdle} onInteraction={resetIdleTimer} />
     </WouterRouter>
   );
 }

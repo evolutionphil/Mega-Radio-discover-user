@@ -9,6 +9,7 @@
     "resolution": "1920x1080",
     "version": "1.0.0",
     "disableBackHistoryAPI": true,
+    "enablePigScreenSaver": false,
     "requiredPermissions": [
         "audio",
         "media.playback"
