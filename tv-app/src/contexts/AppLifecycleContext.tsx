@@ -1,7 +1,5 @@
 import { createContext, useContext, useEffect, ReactNode } from "react";
 
-console.log('[AppLifecycleContext] 🔥 MODULE LOADED');
-
 interface AppLifecycleContextType {
   // Context can be extended later if needed
 }
@@ -9,7 +7,6 @@ interface AppLifecycleContextType {
 const AppLifecycleContext = createContext<AppLifecycleContextType | undefined>(undefined);
 
 export function AppLifecycleProvider({ children }: { children: ReactNode }) {
-  console.log('[AppLifecycleProvider] 🎬 Provider rendering');
   
   // Handle app visibility changes - Samsung TV certification requirement
   useEffect(() => {

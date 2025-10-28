@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useGlobalPlayer } from '@/contexts/GlobalPlayerContext';
 import { assetPath } from '@/lib/assetPath';
 
-console.log('[IdleScreensaver.tsx] 🔥 MODULE LOADED');
-
 interface IdleScreensaverProps {
   isVisible: boolean;
   onInteraction?: () => void;
@@ -13,8 +11,6 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
   const { currentStation, isPlaying, nowPlayingMetadata } = useGlobalPlayer();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [fadeIn, setFadeIn] = useState(false);
-
-  console.log('[IdleScreensaver] Component render - isVisible:', isVisible);
 
   // Update time every second
   useEffect(() => {
@@ -28,12 +24,8 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
   // Fade in animation when becoming visible
   useEffect(() => {
     if (isVisible) {
-      console.log('[IdleScreensaver] 🌙 SHOWING SCREENSAVER - Starting fade in animation');
       // Small delay before fading in
-      const timeout = setTimeout(() => {
-        setFadeIn(true);
-        console.log('[IdleScreensaver] ✨ Fade in complete');
-      }, 100);
+      const timeout = setTimeout(() => setFadeIn(true), 100);
       return () => clearTimeout(timeout);
     } else {
       setFadeIn(false);
@@ -165,8 +157,8 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
         ) : (
           <div className="flex flex-col items-center gap-8">
             {/* App Logo/Branding Fallback */}
-            <h1 className="font-['Ubuntu',Helvetica] text-[80px] text-white text-center">
-              <span className="font-bold">mega</span>radio
+            <h1 className="font-['Ubuntu',Helvetica] font-bold text-[80px] text-white text-center">
+              Radio Mega
             </h1>
             <p className="font-['Ubuntu',Helvetica] font-light text-[32px] text-[#ff4199] text-center">
               Your Global Radio Experience
