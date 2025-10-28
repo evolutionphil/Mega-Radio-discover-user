@@ -150,7 +150,7 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
           <div className="flex flex-col items-center gap-8">
             {/* App Logo */}
             <img 
-              src={assetPath('images/music-icon.svg')}
+              src={assetPath('images/path-8.svg')}
               alt="MegaRadio Logo"
               className="w-[120px] h-[120px]"
             />
