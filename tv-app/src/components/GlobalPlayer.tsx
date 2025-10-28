@@ -84,22 +84,9 @@ export const GlobalPlayer = (): JSX.Element | null => {
         )}
       </div>
 
-      {/* Previous Button */}
-      <div 
-        className="absolute bg-black border-[#ff4199] border-[5px] border-solid left-[1210px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center focus:outline-none focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)]"
-        tabIndex={0}
-        data-tv-focusable="true"
-        data-testid="button-global-previous"
-      >
-        <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M34.375 16.9792L23.6042 27.75L34.375 38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M16.1458 16.9792V38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </div>
-
       {/* Play/Pause Button */}
       <div 
-        className="absolute bg-black left-[1336.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center focus:outline-none focus:border-[4px] focus:border-[#ff4199] focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)]"
+        className="absolute bg-black left-[1462.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center focus:outline-none focus:border-[4px] focus:border-[#ff4199] focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)]"
         tabIndex={0}
         onClick={togglePlayPause}
         data-tv-focusable="true"
@@ -115,19 +102,6 @@ export const GlobalPlayer = (): JSX.Element | null => {
             <path d="M20 14L38 27.5L20 41V14Z" fill="white"/>
           </svg>
         )}
-      </div>
-
-      {/* Next Button */}
-      <div 
-        className="absolute bg-black left-[1462.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center focus:outline-none focus:border-[4px] focus:border-[#ff4199] focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)]"
-        tabIndex={0}
-        data-tv-focusable="true"
-        data-testid="button-global-next"
-      >
-        <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20.625 16.9792L31.3958 27.75L20.625 38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M38.8542 16.9792V38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
       </div>
 
       {/* Favorite Button */}
