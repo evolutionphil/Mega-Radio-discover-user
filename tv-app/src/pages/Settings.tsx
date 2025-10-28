@@ -61,6 +61,8 @@ const SUPPORTED_LANGUAGES = [
 ];
 
 export const Settings = (): JSX.Element => {
+  console.log('[Settings] 🎬 Component rendering');
+  
   const { t, language, setLanguage } = useLocalization();
   const [, setLocation] = useLocation();
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("last-played");
@@ -189,8 +191,8 @@ export const Settings = (): JSX.Element => {
         />
       </div>
 
-      {/* Black Overlay */}
-      <div className="absolute bg-[#0e0e0e] h-[1080px] left-0 top-0 w-[1920px]" />
+      {/* Black Overlay - Semi-transparent to show background gradient */}
+      <div className="absolute bg-black/80 h-[1080px] left-0 top-0 w-[1920px] z-0" />
 
       {/* Logo */}
       <div className="absolute h-[57px] left-[31px] top-[64px] w-[164.421px] z-50">
@@ -210,14 +212,14 @@ export const Settings = (): JSX.Element => {
       <Sidebar activePage="settings" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
       {/* Settings Title */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px] z-10">
+      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-[#ff4199] top-[242px] z-50">
         {t('settings') || 'Settings'}
       </p>
 
       {!showLanguageList ? (
         <>
           {/* Settings Content Card - Play at Start (LEFT SIDE) */}
-          <div className="absolute bg-[#1f1f1f] h-[400px] left-[500px] overflow-clip rounded-[20px] top-[320px] w-[620px] z-10">
+          <div className="absolute bg-[#1f1f1f] h-[400px] left-[500px] overflow-clip rounded-[20px] top-[320px] w-[620px] z-20">
             {/* Play at Start Section */}
             <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[30px]">
               {t('settings_play_at_start') || 'Play at Start'}
@@ -309,7 +311,7 @@ export const Settings = (): JSX.Element => {
           </div>
 
           {/* Language Settings Card (RIGHT SIDE) */}
-          <div className="absolute bg-[#1f1f1f] h-[400px] left-[1140px] overflow-clip rounded-[20px] top-[320px] w-[620px] z-10">
+          <div className="absolute bg-[#1f1f1f] h-[400px] left-[1140px] overflow-clip rounded-[20px] top-[320px] w-[620px] z-20">
             <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[30px]">
               {t('settings_language') || 'Language'}
             </p>
@@ -332,7 +334,7 @@ export const Settings = (): JSX.Element => {
         </>
       ) : (
         /* Language Selection List */
-        <div className="absolute bg-[#1f1f1f] left-[50%] translate-x-[-50%] overflow-hidden rounded-[20px] top-[320px] w-[886px] h-[540px] z-10">
+        <div className="absolute bg-[#1f1f1f] left-[50%] translate-x-[-50%] overflow-hidden rounded-[20px] top-[320px] w-[886px] h-[540px] z-20">
           <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[20px]">
             {t('settings_select_language') || 'Select Language'}
           </p>
