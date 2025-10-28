@@ -90,9 +90,9 @@ function NetworkDisconnectModal() {
 function Router() {
   useAnalytics();
   
-  // Idle detection - show screensaver after 3 minutes of inactivity
+  // Idle detection - show screensaver after 10 seconds of inactivity
   const { isIdle, resetIdleTimer } = useIdleDetection({
-    idleTime: 3 * 60 * 1000, // 3 minutes
+    idleTime: 10 * 1000, // 10 seconds (temporary for testing - change to 3 * 60 * 1000 for production)
     onIdle: () => console.log('[IdleScreensaver] Screensaver activated'),
     onActive: () => console.log('[IdleScreensaver] Screensaver deactivated')
   });
