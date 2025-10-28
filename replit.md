@@ -1,8 +1,8 @@
-# Mega Radio - TV Application
+# Radio Mega - TV Application
 
 ## Overview
 
-Mega Radio is a full-stack web radio streaming application designed for TV and large screens. It offers access to global radio stations from over 238 countries, featuring intuitive onboarding, station discovery, favorites management, and continuous audio playback. The project aims to deliver a high-quality radio streaming experience on smart TVs.
+Radio Mega is a full-stack web radio streaming application designed for TV and large screens. It offers access to global radio stations from over 238 countries, featuring intuitive onboarding, station discovery, favorites management, and continuous audio playback. The project aims to deliver a high-quality radio streaming experience on smart TVs.
 
 ## User Preferences
 

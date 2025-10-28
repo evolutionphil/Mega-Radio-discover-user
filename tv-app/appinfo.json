@@ -1,10 +1,10 @@
 {
-    "vendor": "Mega Radio",
+    "vendor": "Radio Mega",
     "largeIcon": "images/logo.png",
     "icon": "images/logo.png",
     "main": "index.html",
-    "id": "com.megaradio.tv",
-    "title": "Mega Radio",
+    "id": "com.radiomega.tv",
+    "title": "Radio Mega",
     "type": "web",
     "resolution": "1920x1080",
     "version": "1.0.0",
