@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
+console.log('[useIdleDetection] 🔥 MODULE LOADED');
+
 interface UseIdleDetectionOptions {
   idleTime?: number; // milliseconds (default: 3 minutes)
   onIdle?: () => void;
