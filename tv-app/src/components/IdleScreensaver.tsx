@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useGlobalPlayer } from '@/contexts/GlobalPlayerContext';
 import { assetPath } from '@/lib/assetPath';
 
+console.log('[IdleScreensaver.tsx] 🔥 MODULE LOADED');
+
 interface IdleScreensaverProps {
   isVisible: boolean;
   onInteraction?: () => void;
@@ -11,6 +13,8 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
   const { currentStation, isPlaying, nowPlayingMetadata } = useGlobalPlayer();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [fadeIn, setFadeIn] = useState(false);
+
+  console.log('[IdleScreensaver] Component render - isVisible:', isVisible);
 
   // Update time every second
   useEffect(() => {
@@ -24,8 +28,12 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
   // Fade in animation when becoming visible
   useEffect(() => {
     if (isVisible) {
+      console.log('[IdleScreensaver] 🌙 SHOWING SCREENSAVER - Starting fade in animation');
       // Small delay before fading in
-      const timeout = setTimeout(() => setFadeIn(true), 100);
+      const timeout = setTimeout(() => {
+        setFadeIn(true);
+        console.log('[IdleScreensaver] ✨ Fade in complete');
+      }, 100);
       return () => clearTimeout(timeout);
     } else {
       setFadeIn(false);

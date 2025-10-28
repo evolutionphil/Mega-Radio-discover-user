@@ -93,7 +93,7 @@ function NetworkDisconnectModal() {
 }
 
 function Router() {
-  console.log('[Router] 🎬 Router component rendering');
+  console.log('[Router] 🎬 Router component rendering - IDLE DETECTION SETUP');
   
   useAnalytics();
   
@@ -145,6 +145,7 @@ function Router() {
 }
 
 function App() {
+  console.log('[App] 🎬 App function rendering');
   return (
     <QueryClientProvider client={queryClient}>
       <LocalizationProvider>

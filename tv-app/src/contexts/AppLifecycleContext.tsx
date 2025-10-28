@@ -1,4 +1,7 @@
-import { createContext, useContext, useEffect, ReactNode } from "react";
+import { createContext, useContext, useEffect, ReactNode, useState, useCallback } from "react";
+import { IdleScreensaver } from "@/components/IdleScreensaver";
+
+console.log('[AppLifecycleContext] 🔥 MODULE LOADED WITH IDLE DETECTION');
 
 interface AppLifecycleContextType {
   // Context can be extended later if needed
@@ -7,6 +10,53 @@ interface AppLifecycleContextType {
 const AppLifecycleContext = createContext<AppLifecycleContextType | undefined>(undefined);
 
 export function AppLifecycleProvider({ children }: { children: ReactNode }) {
+  console.log('[AppLifecycleProvider] 🎬 Provider rendering');
+  
+  // Inline idle detection (10 seconds for testing)
+  const [isIdle, setIsIdle] = useState(false);
+  const [lastActivity, setLastActivity] = useState(Date.now());
+  const idleTime = 10 * 1000; // 10 seconds
+
+  const resetIdleTimer = useCallback(() => {
+    const now = Date.now();
+    setLastActivity(now);
+    
+    if (isIdle) {
+      setIsIdle(false);
+      console.log('[AppLifecycle] ⏰ Screensaver deactivated - user active');
+    }
+  }, [isIdle]);
+
+  // Monitor for idle state
+  useEffect(() => {
+    console.log('[AppLifecycle] 🔧 Setting up idle detection - timeout:', idleTime / 1000, 'seconds');
+    
+    const events = ['mousedown', 'mousemove', 'keydown', 'touchstart', 'click', 'scroll', 'keypress'];
+    
+    events.forEach(event => {
+      window.addEventListener(event, resetIdleTimer);
+    });
+
+    const checkInterval = setInterval(() => {
+      const timeSinceLastActivity = Date.now() - lastActivity;
+      
+      if (Math.floor(timeSinceLastActivity / 1000) % 5 === 0) {
+        console.log('[AppLifecycle] ⏱️  Idle check - Time:', Math.floor(timeSinceLastActivity / 1000), 's /', idleTime / 1000, 's');
+      }
+      
+      if (timeSinceLastActivity >= idleTime && !isIdle) {
+        setIsIdle(true);
+        console.log('[AppLifecycle] 🌙 SCREENSAVER ACTIVATED - User idle for', idleTime / 1000, 'seconds');
+      }
+    }, 1000);
+
+    return () => {
+      events.forEach(event => {
+        window.removeEventListener(event, resetIdleTimer);
+      });
+      clearInterval(checkInterval);
+    };
+  }, [lastActivity, idleTime, isIdle, resetIdleTimer]);
   
   // Handle app visibility changes - Samsung TV certification requirement
   useEffect(() => {
@@ -138,6 +188,8 @@ export function AppLifecycleProvider({ children }: { children: ReactNode }) {
   return (
     <AppLifecycleContext.Provider value={{}}>
       {children}
+      {/* Idle Screensaver - Appears after 10 seconds of inactivity */}
+      <IdleScreensaver isVisible={isIdle} onInteraction={resetIdleTimer} />
     </AppLifecycleContext.Provider>
   );
 }
