@@ -288,6 +288,73 @@ html, body {
   animation: equalizer-global-3 0.7s ease-in-out infinite;
 }
 
+/* Screensaver Equalizer Animations - Larger bars with slower animation */
+@keyframes screensaver-equalizer-1 {
+  0% {
+    height: 300px;
+  }
+  25% {
+    height: 150px;
+  }
+  50% {
+    height: 280px;
+  }
+  75% {
+    height: 180px;
+  }
+  100% {
+    height: 300px;
+  }
+}
+
+@keyframes screensaver-equalizer-2 {
+  0% {
+    height: 200px;
+  }
+  25% {
+    height: 280px;
+  }
+  50% {
+    height: 160px;
+  }
+  75% {
+    height: 250px;
+  }
+  100% {
+    height: 200px;
+  }
+}
+
+@keyframes screensaver-equalizer-3 {
+  0% {
+    height: 250px;
+  }
+  25% {
+    height: 200px;
+  }
+  50% {
+    height: 300px;
+  }
+  75% {
+    height: 220px;
+  }
+  100% {
+    height: 250px;
+  }
+}
+
+.animate-screensaver-equalizer-1 {
+  animation: screensaver-equalizer-1 1.5s ease-in-out infinite;
+}
+
+.animate-screensaver-equalizer-2 {
+  animation: screensaver-equalizer-2 1.8s ease-in-out infinite;
+}
+
+.animate-screensaver-equalizer-3 {
+  animation: screensaver-equalizer-3 1.6s ease-in-out infinite;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
