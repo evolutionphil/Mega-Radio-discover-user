@@ -123,7 +123,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Equalizer Button (Now Playing visualization) */}
       <div 
-        className={`absolute border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-all flex items-center justify-center focus:outline-none focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)] ${
+        className={`absolute border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-all flex items-center justify-center overflow-hidden focus:outline-none focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)] ${
           isPlaying 
             ? 'bg-[#ff4199] border-[#ff4199]' 
             : 'border-black hover:bg-[rgba(255,255,255,0.1)] focus:border-[#ff4199]'
@@ -132,10 +132,10 @@ export const GlobalPlayer = (): JSX.Element | null => {
         data-tv-focusable="true"
         data-testid="button-global-equalizer"
       >
-        <div className="relative h-[35.526px] w-[33.75px]">
-          <div className={`bg-white left-0 rounded-[10px] absolute top-0 w-[8.882px] ${isPlaying ? 'animate-equalizer-global-1' : 'h-[35.526px]'}`} style={{ height: isPlaying ? undefined : '35.526px' }} />
-          <div className={`bg-white left-[12.43px] rounded-[10px] absolute w-[8.882px] ${isPlaying ? 'animate-equalizer-global-2' : 'h-[24.868px] top-[10.66px]'}`} style={{ height: isPlaying ? undefined : '24.868px', top: isPlaying ? undefined : '10.66px' }} />
-          <div className={`bg-white left-[24.87px] rounded-[10px] absolute w-[8.882px] ${isPlaying ? 'animate-equalizer-global-3' : 'h-[30.197px] top-[5.33px]'}`} style={{ height: isPlaying ? undefined : '30.197px', top: isPlaying ? undefined : '5.33px' }} />
+        <div className="relative h-[35.526px] w-[33.75px] flex items-end justify-between gap-[2px]">
+          <div className={`bg-white rounded-[10px] w-[8.882px] ${isPlaying ? 'animate-equalizer-global-1' : 'h-[35.526px]'}`} style={{ height: isPlaying ? undefined : '35.526px' }} />
+          <div className={`bg-white rounded-[10px] w-[8.882px] ${isPlaying ? 'animate-equalizer-global-2' : 'h-[24.868px]'}`} style={{ height: isPlaying ? undefined : '24.868px' }} />
+          <div className={`bg-white rounded-[10px] w-[8.882px] ${isPlaying ? 'animate-equalizer-global-3' : 'h-[30.197px]'}`} style={{ height: isPlaying ? undefined : '30.197px' }} />
         </div>
       </div>
     </>
