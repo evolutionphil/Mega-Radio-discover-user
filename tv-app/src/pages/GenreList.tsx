@@ -63,7 +63,7 @@ export const GenreList = (): JSX.Element => {
         country: selectedCountryCode,
         limit: 100,
         offset: 0,
-        sort: 'votes'
+        sort: 'clickcount'
       });
       
       console.log('✅ [GENRE LIST DEBUG] Fetched', result?.stations?.length || 0, 'stations');
@@ -125,7 +125,7 @@ export const GenreList = (): JSX.Element => {
         country: selectedCountryCode,
         limit: 100,
         offset: currentOffset,
-        sort: 'votes'
+        sort: 'clickcount'
       });
       
       const newStations = result.stations || [];
