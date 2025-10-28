@@ -165,8 +165,8 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
         ) : (
           <div className="flex flex-col items-center gap-8">
             {/* App Logo/Branding Fallback */}
-            <h1 className="font-['Ubuntu',Helvetica] font-bold text-[80px] text-white text-center">
-              Radio Mega
+            <h1 className="font-['Ubuntu',Helvetica] text-[80px] text-white text-center">
+              <span className="font-bold">mega</span>radio
             </h1>
             <p className="font-['Ubuntu',Helvetica] font-light text-[32px] text-[#ff4199] text-center">
               Your Global Radio Experience
