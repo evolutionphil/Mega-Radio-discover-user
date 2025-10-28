@@ -3,8 +3,8 @@ import App from "./App";
 import "./index.css";
 import { initGA } from "./lib/analytics";
 
-// Version 2.2 - Google Analytics Integration
-console.log('🔥 MAIN.TSX LOADED - VERSION 2.2 - GOOGLE ANALYTICS ENABLED');
+// Version 3.0 - Testing new build
+console.log('🔥🔥🔥 MAIN.TSX LOADED - VERSION 3.0 - BUILD TIMESTAMP:', Date.now(), '🔥🔥🔥');
 
 // Initialize Google Analytics
 if (import.meta.env.VITE_GA_MEASUREMENT_ID) {
@@ -15,3 +15,4 @@ if (import.meta.env.VITE_GA_MEASUREMENT_ID) {
 }
 
 createRoot(document.getElementById("root")!).render(<App />);
+// Version bump 1761657337
