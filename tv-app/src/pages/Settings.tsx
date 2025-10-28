@@ -209,8 +209,8 @@ export const Settings = (): JSX.Element => {
 
       {!showLanguageList ? (
         <>
-          {/* Settings Content Card - Play at Start */}
-          <div className="absolute bg-[#1f1f1f] h-[400px] left-[50%] translate-x-[-50%] overflow-clip rounded-[20px] top-[320px] w-[886px] z-10">
+          {/* Settings Content Card - Play at Start (LEFT SIDE) */}
+          <div className="absolute bg-[#1f1f1f] h-[400px] left-[500px] overflow-clip rounded-[20px] top-[320px] w-[620px] z-10">
             {/* Play at Start Section */}
             <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[30px]">
               {t('settings_play_at_start') || 'Play at Start'}
@@ -301,23 +301,23 @@ export const Settings = (): JSX.Element => {
             </div>
           </div>
 
-          {/* Language Settings Card */}
-          <div className="absolute bg-[#1f1f1f] h-[120px] left-[50%] translate-x-[-50%] overflow-clip rounded-[20px] top-[740px] w-[886px] z-10">
-            <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[20px]">
+          {/* Language Settings Card (RIGHT SIDE) */}
+          <div className="absolute bg-[#1f1f1f] h-[400px] left-[1140px] overflow-clip rounded-[20px] top-[320px] w-[620px] z-10">
+            <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[30px] not-italic text-[24px] text-white top-[30px]">
               {t('settings_language') || 'Language'}
             </p>
 
             {/* Language Selector Button */}
             <div 
-              className={`absolute left-[30px] top-[65px] right-[30px] h-[40px] bg-[#2a2a2a] rounded-[12px] flex items-center justify-between px-[20px] cursor-pointer ${getFocusClasses(isFocused(9))}`}
+              className={`absolute left-[30px] top-[95px] right-[30px] h-[50px] bg-[#2a2a2a] rounded-[12px] flex items-center justify-between px-[20px] cursor-pointer ${getFocusClasses(isFocused(9))}`}
               onClick={() => { setShowLanguageList(true); setFocusIndex(5); }}
               data-testid="button-language-selector"
               tabIndex={0}
             >
-              <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">
+              <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-white">
                 {currentLanguageName}
               </p>
-              <svg className="w-[20px] h-[20px] text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-[24px] h-[24px] text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
