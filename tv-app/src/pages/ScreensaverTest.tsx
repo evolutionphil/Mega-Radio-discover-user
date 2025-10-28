@@ -28,7 +28,7 @@ export function ScreensaverTest() {
         </p>
         <ul className="font-['Ubuntu',Helvetica] font-light text-[20px] text-white/60 text-left list-disc pl-8">
           <li>Animated pink equalizer bars</li>
-          <li>Station info (or "Radio Mega" branding if no station active)</li>
+          <li>Station info (or "MegaRadio" branding if no station active)</li>
           <li>Live clock</li>
           <li>Prevents OLED burn-in</li>
           <li>Press any key to dismiss</li>
