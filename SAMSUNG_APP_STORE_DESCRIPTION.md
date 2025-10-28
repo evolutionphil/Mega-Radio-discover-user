@@ -67,6 +67,88 @@ Effortless control using your Samsung Smart Remote or standard remote:
 - **Country Selection** - Filter content by 238 countries or browse globally
 - **Language Preferences** - Interface available in 48 languages
 
+### 🌐 MULTI-LANGUAGE SUPPORT (48 Languages)
+
+**How Multi-Language Works in Radio Mega:**
+
+Radio Mega automatically detects and displays the interface in your Samsung Smart TV's system language. The app supports 48 languages with full translation coverage for all menus, buttons, and on-screen text.
+
+**Supported Languages:**
+English, Spanish, French, German, Italian, Portuguese, Dutch, Russian, Polish, Turkish, Arabic, Hebrew, Chinese (Simplified), Chinese (Traditional), Japanese, Korean, Thai, Vietnamese, Indonesian, Malay, Hindi, Bengali, Tamil, Telugu, Urdu, Persian, Swedish, Norwegian, Danish, Finnish, Greek, Czech, Slovak, Hungarian, Romanian, Bulgarian, Croatian, Serbian, Ukrainian, Slovenian, Lithuanian, Latvian, Estonian, Icelandic, Maltese, Welsh, Irish, and Basque.
+
+**How to Test Multi-Language Support on Samsung Smart TV:**
+
+1. **Method 1: Change Samsung Smart Hub Language Settings**
+   - Press **HOME** button on Samsung remote
+   - Navigate to **Settings** (⚙️ icon)
+   - Select **General** → **System Manager**
+   - Choose **Language** → **Menu Language**
+   - Select your preferred language (e.g., Spanish, Korean, French)
+   - Press **OK** to confirm
+   - Return to Smart Hub and launch **Radio Mega**
+   - The app will automatically display in the selected language
+
+2. **Method 2: Via Samsung Settings App**
+   - Open **Samsung Settings** from Smart Hub
+   - Navigate to **General & Privacy** → **Language**
+   - Select **Menu Language**
+   - Choose your desired language
+   - Launch **Radio Mega** to see the interface in the new language
+
+3. **Method 3: In-App Language Change**
+   - Open **Radio Mega**
+   - Navigate to **Settings** page (⚙️ icon in sidebar)
+   - Scroll to **Language** section
+   - Select from 48 available languages
+   - Interface updates immediately without restart
+
+**Language Detection Priority:**
+
+Radio Mega follows this language detection hierarchy:
+1. **User's In-App Selection** (if previously set in Radio Mega Settings)
+2. **Samsung Smart Hub System Language** (automatically detected)
+3. **Browser/WebView Language** (fallback for web-based detection)
+4. **Default to English** (if selected language is not in the 48 supported languages)
+
+**Example Language Testing Workflow:**
+
+```
+Step 1: Samsung TV → Settings → Language → Menu Language → "한국어" (Korean)
+Step 2: Return to Smart Hub
+Step 3: Launch Radio Mega
+Result: App interface displays in Korean (메뉴, 버튼, 모든 텍스트)
+
+Step 4: Change to Spanish: Settings → Language → "Español"
+Step 5: Relaunch Radio Mega
+Result: App interface displays in Spanish (menús, botones, todo el texto)
+```
+
+**Language-Specific Features:**
+
+- **Right-to-Left (RTL) Support** - Full RTL layout for Arabic, Hebrew, Persian, and Urdu
+- **Character Set Support** - Native fonts for Asian languages (Chinese, Japanese, Korean, Thai)
+- **Dynamic Translations** - All station names, genres, and countries translated where applicable
+- **Localized Date/Time** - Clock and timestamps display in regional format
+- **Number Formatting** - Station counts and numbers formatted according to regional standards
+
+**Important Notes for Samsung Certification Testing:**
+
+✅ **Smart Hub English Priority**: When Samsung Smart Hub is set to English, Radio Mega will display in English by default  
+✅ **Automatic Detection**: No user action required - language changes automatically based on TV settings  
+✅ **Persistent Selection**: If user manually changes language in Radio Mega Settings, this preference persists across app restarts  
+✅ **Instant Updates**: Language changes apply immediately without requiring app restart  
+✅ **Full Coverage**: All 48 languages have 100% translation coverage for UI elements  
+
+**For Samsung QA Testers:**
+
+To verify multi-language support during certification testing:
+1. Set Samsung Smart Hub to English (default) - Launch app → Verify English UI
+2. Change Smart Hub to Korean → Relaunch app → Verify Korean UI
+3. Change Smart Hub to Spanish → Relaunch app → Verify Spanish UI
+4. Change Smart Hub to Arabic → Relaunch app → Verify RTL layout
+5. Use in-app Settings → Language selector → Verify all 48 languages available
+6. Verify translations for: menu items, buttons, error messages, confirmation dialogs
+
 **Now Playing Information:**
 - **Live Metadata** - Real-time song and artist information
 - **Animated Equalizer** - Visual feedback during playback
