@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LocalizationProvider } from "@/contexts/LocalizationContext";
 import { CountryProvider } from "@/contexts/CountryContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
+import { NavigationProvider } from "@/contexts/NavigationContext";
 import { GlobalPlayerProvider } from "@/contexts/GlobalPlayerContext";
 import { NetworkStatusProvider, useNetworkStatus } from "@/contexts/NetworkStatusContext";
 import { AppLifecycleProvider } from "@/contexts/AppLifecycleContext";
@@ -151,16 +152,18 @@ function App() {
         <NetworkStatusProvider>
           <CountryProvider>
             <FavoritesProvider>
-              <GlobalPlayerProvider>
-                <AppLifecycleProvider>
-                  <FocusRouterProvider>
-                    <TooltipProvider>
-                      <Toaster />
-                      <Router />
-                    </TooltipProvider>
-                  </FocusRouterProvider>
-                </AppLifecycleProvider>
-              </GlobalPlayerProvider>
+              <NavigationProvider>
+                <GlobalPlayerProvider>
+                  <AppLifecycleProvider>
+                    <FocusRouterProvider>
+                      <TooltipProvider>
+                        <Toaster />
+                        <Router />
+                      </TooltipProvider>
+                    </FocusRouterProvider>
+                  </AppLifecycleProvider>
+                </GlobalPlayerProvider>
+              </NavigationProvider>
             </FavoritesProvider>
           </CountryProvider>
         </NetworkStatusProvider>

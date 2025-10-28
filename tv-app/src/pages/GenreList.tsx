@@ -7,12 +7,14 @@ import { useRef, useEffect, useState } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
+import { useNavigation } from "@/contexts/NavigationContext";
 import { assetPath } from "@/lib/assetPath";
 
 export const GenreList = (): JSX.Element => {
   const [location, setLocation] = useLocation();
   const { selectedCountryCode } = useCountry();
   const { t } = useLocalization();
+  const { setNavigationState, popNavigationState } = useNavigation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   // Extract genre slug from URL path - wouter with hash routing
@@ -274,6 +276,9 @@ export const GenreList = (): JSX.Element => {
         const stationIndex = index - stationsStart;
         const station = displayedStations[stationIndex];
         if (station) {
+          // Save navigation state before navigating
+          console.log('[GenreList] Saving navigation state:', { currentPage: location, focusIndex: index });
+          setNavigationState(location, index);
           setLocation(`/radio-playing?station=${station._id}`);
         }
       }
@@ -281,9 +286,15 @@ export const GenreList = (): JSX.Element => {
     onBack: () => setLocation('/genres')
   });
 
-  // Jump to first station when stations load
+  // Jump to first station when stations load OR restore focus when returning
   useEffect(() => {
-    if (displayedStations.length > 0 && focusIndex < stationsStart) {
+    const navState = popNavigationState(); // Pop and clear in one atomic operation
+    if (navState && navState.returnFocusIndex !== null) {
+      // Restore focus when returning from RadioPlaying
+      console.log('[GenreList] 🎯 Restoring focus to index:', navState.returnFocusIndex);
+      setFocusIndex(navState.returnFocusIndex);
+    } else if (displayedStations.length > 0 && focusIndex < stationsStart) {
+      // Default: Jump to first station when stations load
       console.log('[GenreList] 🎯 Stations loaded, jumping to first station (index 5)');
       setFocusIndex(stationsStart);
     }

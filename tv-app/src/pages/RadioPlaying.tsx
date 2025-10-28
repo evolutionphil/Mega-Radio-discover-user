@@ -8,6 +8,7 @@ import { useLocalization } from "@/contexts/LocalizationContext";
 import { useCountry } from "@/contexts/CountryContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
+import { useNavigation } from "@/contexts/NavigationContext";
 import { CountrySelector } from "@/components/CountrySelector";
 import { CountryTrigger } from "@/components/CountryTrigger";
 import { Sidebar } from "@/components/Sidebar";
@@ -21,6 +22,7 @@ export const RadioPlaying = (): JSX.Element => {
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { playStation, togglePlayPause, isPlaying, isBuffering } = useGlobalPlayer();
+  const { getPreviousPage } = useNavigation();
   console.log('[RadioPlaying] 🎮 Global player state:', { isPlaying, isBuffering });
   
   // Station history for Previous button (stores station IDs)
@@ -366,8 +368,10 @@ export const RadioPlaying = (): JSX.Element => {
     
     // RETURN key handler ALWAYS works, even when loading
     if (e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009) {
-      console.log('[RadioPlaying] 🔙 RETURN key pressed - navigating to Discover');
-      setLocation('/discover-no-user');
+      const previousPage = getPreviousPage();
+      const backTo = previousPage || '/discover-no-user';
+      console.log('[RadioPlaying] 🔙 RETURN key pressed - navigating to:', backTo);
+      setLocation(backTo);
       return;
     }
     
@@ -470,9 +474,10 @@ export const RadioPlaying = (): JSX.Element => {
       }
     },
     onBack: () => {
-      // Always go back to discover for Samsung TV compatibility
-      console.log('[RadioPlaying] 🔙 Back button - navigating to Discover');
-      setLocation('/discover-no-user');
+      const previousPage = getPreviousPage();
+      const backTo = previousPage || '/discover-no-user';
+      console.log('[RadioPlaying] 🔙 Back button - navigating to:', backTo);
+      setLocation(backTo);
     }
   });
 
