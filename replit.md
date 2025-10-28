@@ -43,8 +43,8 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 **Application Flow:**
 -   **Onboarding:** Guided tour for new users.
 -   **Main Pages:** Discover, Genres, Search, Favorites, Settings, and a full-screen Radio Playing interface.
--   **Auto-Play:** Configurable startup modes (Last Played, Random, Favorite, None), with "None" as the default.
--   **Localization & Internationalization:** Supports 48 languages via API translations and automatic language detection.
+-   **Auto-Play:** Configurable startup modes (Last Played, Random, Favorite, None), with "Last Played" as the default.
+-   **Localization & Internationalization:** Supports 48 languages via API translations and automatic language detection. Settings page includes a language selector with scrollable list of all 48 languages, allowing users to change the interface language on-demand with immediate effect.
 -   **Global Country Support:** Defaults to "Global" country if no country is saved, allowing browsing of worldwide stations and genres, with a dedicated globe icon.
 
 ### System Design Choices
