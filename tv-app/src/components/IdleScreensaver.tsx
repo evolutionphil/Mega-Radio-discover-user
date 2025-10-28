@@ -82,40 +82,32 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
           <div className="flex items-end justify-center gap-8 h-[300px]">
             {/* Bar 1 */}
             <div 
-              className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying && currentStation ? 'animate-screensaver-equalizer-1' : 'h-[300px]'
-              }`}
-              style={{ height: isPlaying && currentStation ? undefined : '300px' }}
+              className="bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] animate-screensaver-equalizer-1"
             />
             {/* Bar 2 */}
             <div 
-              className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying && currentStation ? 'animate-screensaver-equalizer-2' : 'h-[200px]'
-              }`}
-              style={{ height: isPlaying && currentStation ? undefined : '200px' }}
+              className="bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] animate-screensaver-equalizer-2"
             />
             {/* Bar 3 */}
             <div 
-              className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying && currentStation ? 'animate-screensaver-equalizer-3' : 'h-[250px]'
-              }`}
-              style={{ height: isPlaying && currentStation ? undefined : '250px' }}
+              className="bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] animate-screensaver-equalizer-3"
             />
             {/* Bar 4 */}
             <div 
-              className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying && currentStation ? 'animate-screensaver-equalizer-2' : 'h-[180px]'
-              }`}
-              style={{ height: isPlaying && currentStation ? undefined : '180px' }}
+              className="bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] animate-screensaver-equalizer-2"
             />
             {/* Bar 5 */}
             <div 
-              className={`bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] ${
-                isPlaying && currentStation ? 'animate-screensaver-equalizer-1' : 'h-[280px]'
-              }`}
-              style={{ height: isPlaying && currentStation ? undefined : '280px' }}
+              className="bg-gradient-to-t from-[#ff4199] to-[#ff6bb3] w-[60px] rounded-[20px] animate-screensaver-equalizer-1"
             />
           </div>
+        </div>
+
+        {/* Clock - positioned between equalizer and text */}
+        <div className="mt-12">
+          <p className="font-['Ubuntu',Helvetica] font-light text-[72px] text-white/50 tracking-wider">
+            {formatTime(currentTime)}
+          </p>
         </div>
 
         {/* Station Info or Branding Fallback */}
@@ -156,7 +148,14 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
           </div>
         ) : (
           <div className="flex flex-col items-center gap-8">
-            {/* App Logo/Branding Fallback */}
+            {/* App Logo */}
+            <img 
+              src={assetPath('images/music-icon.svg')}
+              alt="MegaRadio Logo"
+              className="w-[120px] h-[120px]"
+            />
+            
+            {/* App Branding */}
             <h1 className="font-['Ubuntu',Helvetica] text-[80px] text-white text-center">
               <span className="font-bold">Mega</span>Radio
             </h1>
@@ -165,20 +164,13 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
             </p>
           </div>
         )}
+      </div>
 
-        {/* Large Clock */}
-        <div className="absolute bottom-[100px] left-1/2 -translate-x-1/2">
-          <p className="font-['Ubuntu',Helvetica] font-light text-[72px] text-white/50 tracking-wider">
-            {formatTime(currentTime)}
-          </p>
-        </div>
-
-        {/* Hint Text */}
-        <div className="absolute bottom-[30px] left-1/2 -translate-x-1/2">
-          <p className="font-['Ubuntu',Helvetica] font-light text-[20px] text-white/30 text-center animate-pulse">
-            Press any button to continue
-          </p>
-        </div>
+      {/* Press any button hint - positioned at bottom */}
+      <div className="absolute bottom-[40px] left-1/2 -translate-x-1/2 z-20">
+        <p className="font-['Ubuntu',Helvetica] font-light text-[24px] text-white/40 text-center animate-pulse">
+          Press any button to continue
+        </p>
       </div>
     </div>
   );
