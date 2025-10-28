@@ -21,6 +21,8 @@ export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
   const [isIdle, setIsIdle] = useState(false);
   const [lastActivity, setLastActivity] = useState(Date.now());
 
+  console.log('[IdleDetection] Hook initialized with idle time:', idleTime / 1000, 'seconds');
+
   const resetIdleTimer = useCallback(() => {
     const now = Date.now();
     setLastActivity(now);
@@ -54,10 +56,15 @@ export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
     const checkInterval = setInterval(() => {
       const timeSinceLastActivity = Date.now() - lastActivity;
       
+      // Debug log every 5 seconds
+      if (Math.floor(timeSinceLastActivity / 1000) % 5 === 0) {
+        console.log('[IdleDetection] Idle check - Time since last activity:', Math.floor(timeSinceLastActivity / 1000), 's / Target:', idleTime / 1000, 's');
+      }
+      
       if (timeSinceLastActivity >= idleTime && !isIdle) {
         setIsIdle(true);
         onIdle?.();
-        console.log('[IdleDetection] User became idle after', idleTime / 1000, 'seconds');
+        console.log('[IdleDetection] 🌙 SCREENSAVER ACTIVATED - User idle for', idleTime / 1000, 'seconds');
       }
     }, 1000);
 
