@@ -171,6 +171,20 @@ export const Favorites = (): JSX.Element => {
         {/* Gradient Overlay */}
         <div className="absolute bg-gradient-to-b from-[18.704%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[25.787%] top-0 w-[1920px]" />
 
+        {/* Logo - Top Left - Matching AppLayout */}
+        <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50 pointer-events-auto">
+          <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
+            <span className="font-bold">mega</span>radio
+          </p>
+          <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
+            <img
+              alt=""
+              className="block max-w-none size-full"
+              src={assetPath("images/path-8.svg")}
+            />
+          </div>
+        </div>
+
         {/* Page Title */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[32px] text-white top-[242px]">
           {t('your_favorites') || 'Your Favorites'}
