@@ -21,6 +21,10 @@ import { useIdleDetection } from "@/hooks/useIdleDetection";
 import { Splash } from "@/pages/Splash";
 import { Login } from "@/pages/Login";
 import { Guide1 } from "@/pages/Guide1";
+
+// MODULE-LEVEL LOG - This runs when file is imported
+console.log('[App.tsx] 🔥 MODULE LOADED - IdleScreensaver version 1.0');
+console.log('[App.tsx] useIdleDetection imported:', typeof useIdleDetection);
 import { Guide2 } from "@/pages/Guide2";
 import { Guide3 } from "@/pages/Guide3";
 import { Guide4 } from "@/pages/Guide4";
@@ -31,6 +35,7 @@ import { GenreList } from "@/pages/GenreList";
 import { Search } from "@/pages/Search";
 import { Favorites } from "@/pages/Favorites";
 import { Settings } from "@/pages/Settings";
+import { ScreensaverTest } from "@/pages/ScreensaverTest";
 
 function NetworkDisconnectModal() {
   const { isNetworkModalOpen, closeNetworkModal } = useNetworkStatus();
@@ -88,7 +93,11 @@ function NetworkDisconnectModal() {
 }
 
 function Router() {
+  console.log('[Router] 🎬 Router component rendering');
+  
   useAnalytics();
+  
+  console.log('[Router] 🔍 About to call useIdleDetection');
   
   // Idle detection - show screensaver after 10 seconds of inactivity
   const { isIdle, resetIdleTimer } = useIdleDetection({
@@ -96,6 +105,8 @@ function Router() {
     onIdle: () => console.log('[IdleScreensaver] Screensaver activated'),
     onActive: () => console.log('[IdleScreensaver] Screensaver deactivated')
   });
+  
+  console.log('[Router] 📊 useIdleDetection returned - isIdle:', isIdle);
   
   return (
     <WouterRouter hook={useHashLocation}>
@@ -118,6 +129,7 @@ function Router() {
       <Route path="/search" component={Search} />
       <Route path="/favorites" component={Favorites} />
       <Route path="/settings" component={Settings} />
+      <Route path="/screensaver-test" component={ScreensaverTest} />
       
       {/* Fallback to 404 */}
       <Route component={NotFound} />
