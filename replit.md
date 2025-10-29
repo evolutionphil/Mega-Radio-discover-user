@@ -46,7 +46,10 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 -   **Auto-Play:** Configurable startup modes (Last Played, Random, Favorite, None), with "None" as the default.
 -   **Localization & Internationalization:** Supports 48 languages via API translations and automatic language detection.
 -   **Global Country Support:** Defaults to "Global" country if no country is saved, allowing browsing of worldwide stations and genres, with a dedicated globe icon.
--   **Navigation History:** `NavigationContext` tracks page navigation and focus state for proper back button behavior. When navigating from GenreList to RadioPlaying, the context stores the previous page URL and focused station index. Back button returns to the originating page with focus restored to the last selected station, providing intuitive navigation (e.g., Genres → GenreList → RadioPlaying → Back → GenreList with focus → Back → Genres).
+-   **Navigation History:** `NavigationContext` tracks page navigation and focus state for proper back button behavior. Implemented across multiple pages:
+    -   **Discover Page:** When clicking on Popular Genres or More From Country stations, saves focus state before navigating to RadioPlaying. Back button restores focus to the exact station clicked.
+    -   **GenreList Page:** When clicking on stations, saves focus state before navigating to RadioPlaying. Back button restores focus to the exact station clicked.
+    -   Navigation flow example: Discover → RadioPlaying → Back → Discover (focus restored to clicked station).
 
 ### System Design Choices
 
