@@ -224,9 +224,15 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
 
   const resumeStation = () => {
     if (audioPlayerRef.current && currentStation) {
-      const playUrl = currentStation.url_resolved || currentStation.url;
       console.log('[GlobalPlayer] Resuming:', currentStation.name);
-      audioPlayerRef.current.play(playUrl);
+      // Use resume() function instead of play() to continue from pause
+      if (typeof audioPlayerRef.current.resume === 'function') {
+        audioPlayerRef.current.resume();
+      } else {
+        // Fallback for older implementations
+        const playUrl = currentStation.url_resolved || currentStation.url;
+        audioPlayerRef.current.play(playUrl);
+      }
     }
   };
 

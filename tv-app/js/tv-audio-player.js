@@ -97,11 +97,48 @@
             
             this.pause = function() {
                 try {
-                    webapis.avplay.pause();
-                    self.isPlaying = false;
-                    self.onPause && self.onPause();
+                    var state = webapis.avplay.getState();
+                    console.log('[Samsung Player] Pause requested, current state:', state);
+                    
+                    // Only pause if currently playing
+                    if (state === 'PLAYING') {
+                        webapis.avplay.pause();
+                        self.isPlaying = false;
+                        self.onPause && self.onPause();
+                        console.log('[Samsung Player] Paused successfully');
+                    } else {
+                        console.log('[Samsung Player] Cannot pause - not in PLAYING state, current state:', state);
+                        // Still update our internal state
+                        self.isPlaying = false;
+                        self.onPause && self.onPause();
+                    }
                 } catch (e) {
                     console.error('Pause error:', e);
+                    // Still update internal state even on error
+                    self.isPlaying = false;
+                    self.onPause && self.onPause();
+                }
+            };
+            
+            this.resume = function() {
+                try {
+                    var state = webapis.avplay.getState();
+                    console.log('[Samsung Player] Resume requested, current state:', state);
+                    
+                    // Only resume if paused
+                    if (state === 'PAUSED') {
+                        webapis.avplay.play();
+                        self.isPlaying = true;
+                        self.onPlay && self.onPlay();
+                        console.log('[Samsung Player] Resumed successfully');
+                    } else if (state === 'PLAYING') {
+                        console.log('[Samsung Player] Already playing, no need to resume');
+                        self.isPlaying = true;
+                    } else {
+                        console.log('[Samsung Player] Cannot resume - invalid state:', state);
+                    }
+                } catch (e) {
+                    console.error('Resume error:', e);
                 }
             };
             
@@ -190,6 +227,16 @@
                 self.audioElement.pause();
             };
             
+            this.resume = function() {
+                var playPromise = self.audioElement.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) {
+                        console.error('Resume error:', error);
+                        self.onError && self.onError(error);
+                    });
+                }
+            };
+            
             this.stop = function() {
                 self.audioElement.pause();
                 self.audioElement.currentTime = 0;
@@ -267,6 +314,16 @@
             
             this.pause = function() {
                 self.audioElement.pause();
+            };
+            
+            this.resume = function() {
+                var playPromise = self.audioElement.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) {
+                        console.error('Resume error:', error);
+                        self.onError && self.onError(error);
+                    });
+                }
             };
             
             this.stop = function() {
