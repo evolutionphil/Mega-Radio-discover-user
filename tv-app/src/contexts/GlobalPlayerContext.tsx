@@ -25,6 +25,12 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const audioPlayerRef = useRef<any>(null);
   const metadataIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const screenLockActiveRef = useRef(false);
+  
+  // Error recovery state
+  const retryCountRef = useRef(0);
+  const maxRetries = 3;
+  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const currentStationRef = useRef<Station | null>(null);
 
   // Initialize TV audio player once
   useEffect(() => {
@@ -35,6 +41,8 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         console.log('[GlobalPlayer] Audio playing');
         setIsPlaying(true);
         setIsBuffering(false);
+        // Reset retry count on successful play
+        retryCountRef.current = 0;
       };
       
       audioPlayerRef.current.onPause = () => {
@@ -58,9 +66,38 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       };
       
       audioPlayerRef.current.onError = (error: any) => {
-        console.log('[GlobalPlayer] Audio error (non-critical):', error);
+        console.log('[GlobalPlayer] ⚠️ Audio error:', error);
         setIsBuffering(false);
         trackError(`Audio playback error: ${error?.message || 'Unknown error'}`, 'GlobalPlayer');
+        
+        // Clear any pending retries
+        if (retryTimeoutRef.current) {
+          clearTimeout(retryTimeoutRef.current);
+          retryTimeoutRef.current = null;
+        }
+        
+        // Retry logic with exponential backoff
+        const currentStationToRetry = currentStationRef.current;
+        if (currentStationToRetry && retryCountRef.current < maxRetries) {
+          const delay = Math.min(1000 * Math.pow(2, retryCountRef.current), 10000); // Max 10s
+          console.log(`[GlobalPlayer] 🔄 Will retry in ${delay}ms (attempt ${retryCountRef.current + 1}/${maxRetries})`);
+          
+          retryTimeoutRef.current = setTimeout(() => {
+            console.log('[GlobalPlayer] 🔄 Retrying playback...');
+            retryCountRef.current++;
+            
+            // Retry by calling play again
+            if (audioPlayerRef.current && currentStationToRetry) {
+              const playUrl = currentStationToRetry.url_resolved || currentStationToRetry.url;
+              console.log('[GlobalPlayer] 🔄 Retry URL:', playUrl);
+              audioPlayerRef.current.play(playUrl);
+            }
+          }, delay);
+        } else if (retryCountRef.current >= maxRetries) {
+          console.error('[GlobalPlayer] ❌ Max retries reached, stopping playback');
+          setIsPlaying(false);
+          retryCountRef.current = 0;
+        }
       };
 
       audioPlayerRef.current.onMetadata = (metadata: string) => {
@@ -70,6 +107,12 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     }
 
     return () => {
+      // Clear retry timeout on unmount
+      if (retryTimeoutRef.current) {
+        clearTimeout(retryTimeoutRef.current);
+        retryTimeoutRef.current = null;
+      }
+      
       if (audioPlayerRef.current && typeof audioPlayerRef.current.stop === 'function') {
         try {
           audioPlayerRef.current.stop();
@@ -196,7 +239,17 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     const playUrl = station.url_resolved || station.url;
     console.log('[GlobalPlayer] Playing station:', station.name, 'URL:', playUrl);
     
+    // Update both state and ref for retry logic
     setCurrentStation(station);
+    currentStationRef.current = station;
+    
+    // Clear any pending retries when starting a new station
+    if (retryTimeoutRef.current) {
+      clearTimeout(retryTimeoutRef.current);
+      retryTimeoutRef.current = null;
+    }
+    retryCountRef.current = 0;
+    
     audioPlayerRef.current.play(playUrl);
 
     // Track station play event in Google Analytics

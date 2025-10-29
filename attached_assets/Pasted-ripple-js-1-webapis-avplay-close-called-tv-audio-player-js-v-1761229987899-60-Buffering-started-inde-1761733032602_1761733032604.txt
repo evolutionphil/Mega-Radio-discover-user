@@ -1,0 +1,248 @@
+ripple.js:1 webapis.avplay.close called
+tv-audio-player.js?v=1761229987899:60 Buffering started
+index-1761732574495.js:105 [GlobalPlayer] Audio buffering
+tv-audio-player.js?v=1761229987899:60 Buffering started
+index-1761732574495.js:105 [GlobalPlayer] Audio buffering
+tv-audio-player.js?v=1761229987899:75 AVPlay error: Event {isTrusted: true, type: 'error', target: video#samsung_tizen_web_videoplayer, currentTarget: video#samsung_tizen_web_videoplayer, eventPhase: 2, …}
+onerror @ tv-audio-player.js?v=1761229987899:75
+error (async)
+g @ ripple.js:1
+setListener @ ripple.js:1
+play @ tv-audio-player.js?v=1761229987899:80
+g @ index-1761732574495.js:105
+onSelect @ index-1761732574495.js:120
+(anonymous) @ index-1761732574495.js:120
+(anonymous) @ index-1761732574495.js:120
+(anonymous) @ index-1761732574495.js:105
+r @ index-1761732574495.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+index-1761732574495.js:105 [GlobalPlayer] Audio error (non-critical): Event {isTrusted: true, type: 'error', target: video#samsung_tizen_web_videoplayer, currentTarget: video#samsung_tizen_web_videoplayer, eventPhase: 2, …}
+index-1761732574495.js:105 [Analytics] Event: {action: 'error', category: 'technical', label: 'GlobalPlayer: Audio playback error: Unknown error', value: 1}
+tv-audio-player.js?v=1761229987899:75 AVPlay error: Event {isTrusted: true, type: 'error', target: video#samsung_tizen_web_videoplayer, currentTarget: video#samsung_tizen_web_videoplayer, eventPhase: 2, …}
+onerror @ tv-audio-player.js?v=1761229987899:75
+error (async)
+g @ ripple.js:1
+setListener @ ripple.js:1
+play @ tv-audio-player.js?v=1761229987899:80
+g @ index-1761732574495.js:105
+(anonymous) @ index-1761732574495.js:120
+el @ index-1761732574495.js:40
+vr @ index-1761732574495.js:40
+z0 @ index-1761732574495.js:40
+ko @ index-1761732574495.js:40
+uh @ index-1761732574495.js:40
+Gn @ index-1761732574495.js:38
+(anonymous) @ index-1761732574495.js:40
+setTimeout (async)
+r @ index-1761732574495.js:48
+i @ index-1761732574495.js:48
+batch @ index-1761732574495.js:48
+_n @ index-1761732574495.js:48
+setData @ index-1761732574495.js:48
+onSuccess @ index-1761732574495.js:48
+p @ index-1761732574495.js:48
+Promise.then (async)
+w @ index-1761732574495.js:48
+start @ index-1761732574495.js:48
+fetch @ index-1761732574495.js:48
+ni @ index-1761732574495.js:48
+onSubscribe @ index-1761732574495.js:48
+subscribe @ index-1761732574495.js:48
+(anonymous) @ index-1761732574495.js:48
+pp @ index-1761732574495.js:38
+el @ index-1761732574495.js:40
+vr @ index-1761732574495.js:40
+z0 @ index-1761732574495.js:40
+ko @ index-1761732574495.js:40
+uh @ index-1761732574495.js:40
+Gn @ index-1761732574495.js:38
+(anonymous) @ index-1761732574495.js:40
+hashchange (async)
+Py @ index-1761732574495.js:48
+(anonymous) @ index-1761732574495.js:48
+(anonymous) @ index-1761732574495.js:48
+onSelect @ index-1761732574495.js:120
+(anonymous) @ index-1761732574495.js:120
+(anonymous) @ index-1761732574495.js:120
+(anonymous) @ index-1761732574495.js:105
+r @ index-1761732574495.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+index-1761732574495.js:105 [GlobalPlayer] Audio error (non-critical): Event {isTrusted: true, type: 'error', target: video#samsung_tizen_web_videoplayer, currentTarget: video#samsung_tizen_web_videoplayer, eventPhase: 2, …}
+index-1761732574495.js:105 [Analytics] Event: {action: 'error', category: 'technical', label: 'GlobalPlayer: Audio playback error: Unknown error', value: 1}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 10009, keyName: 'RETURN', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761732574495.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 10009, hash: '#/radio-playing', currentRoute: '/radio-playing', routeWithoutQuery: '/radio-playing', matchedRoute: '/radio-playing', …}
+index-1761732574495.js:105 [FocusRouter] ✅ Dispatching to: /radio-playing
+index-1761732574495.js:120 [RadioPlaying] 🔙 RETURN key pressed - navigating to: /discover-no-user
+index-1761732574495.js:120 [CountrySelector] Mapping countries, API returned: 0
+index-1761732574495.js:120 [CountrySelector] Mapped countries: 0
+index-1761732574495.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1761732574495.js:120 [CountrySelector] Filtered count: 1
+index-1761732574495.js:105 [FocusRouter] Unregistering handler for route: /radio-playing
+index-1761732574495.js:120 [CountrySelector] Fetching countries...
+index-1761732574495.js:93 [API] getAllCountries: https://themegaradio.com/api/countries?tv=1
+index-1761732574495.js:120 [useFocusManager] 🎯 Initialized with: {totalItems: 234, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-1761732574495.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 234, cols: 1, row: 0, col: 0}
+index-1761732574495.js:105 [FocusRouter] Registering handler for route: /discover-no-user
+index-1761732574495.js:120 [DiscoverNoUser] Country changed: Türkiye, initial fetch: 100 stations
+index-1761732574495.js:120 [DiscoverNoUser] Initial load: 100 stations, hasMore=true, nextOffset=100
+index-1761732574495.js:105 [NavigationContext] Popping navigation state (returning and clearing): {previousPage: '/discover-no-user', returnFocusIndex: 14}
+index-1761732574495.js:120 [DiscoverNoUser] 🎯 Restoring focus to index: 14
+android-icon-192x192.png:1 
+        
+        
+       GET https://i.karnavalcdn.com/media/site_media/icons/android-icon-192x192.png Request throttled. Visit https://dev.chromium.org/throttling for more information.
+Image (async)
+ih @ index-1761732574495.js:40
+sh @ index-1761732574495.js:40
+I0 @ index-1761732574495.js:40
+z0 @ index-1761732574495.js:40
+ko @ index-1761732574495.js:40
+uh @ index-1761732574495.js:40
+Gn @ index-1761732574495.js:38
+(anonymous) @ index-1761732574495.js:40
+hashchange (async)
+Py @ index-1761732574495.js:48
+(anonymous) @ index-1761732574495.js:48
+(anonymous) @ index-1761732574495.js:48
+(anonymous) @ index-1761732574495.js:120
+(anonymous) @ index-1761732574495.js:105
+r @ index-1761732574495.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+l @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+android-icon-192x192.png:1 
+        
+        
+       GET https://i.karnavalcdn.com/media/site_media/icons/android-icon-192x192.png Request throttled. Visit https://dev.chromium.org/throttling for more information.
+Image (async)
+ih @ index-1761732574495.js:40
+sh @ index-1761732574495.js:40
+I0 @ index-1761732574495.js:40
+z0 @ index-1761732574495.js:40
+ko @ index-1761732574495.js:40
+ch @ index-1761732574495.js:40
+j @ index-1761732574495.js:25
+F @ index-1761732574495.js:25
+radyo-nida.jpg:1 
+        
+        
+       GET https://radyonida.com.tr/dist/img/radyo-nida.jpg?2 404 (Not Found)
+Image (async)
+ih @ index-1761732574495.js:40
+sh @ index-1761732574495.js:40
+I0 @ index-1761732574495.js:40
+z0 @ index-1761732574495.js:40
+ko @ index-1761732574495.js:40
+ch @ index-1761732574495.js:40
+j @ index-1761732574495.js:25
+F @ index-1761732574495.js:25
+index-1761732574495.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 14, totalItems: 334, cols: 1, row: 14, col: 0}
+1190220421012000.png:1 
+        
+        
+       GET https://www.turkuradyo.info/public/default/images/upload/1190220421012000.png 404 (Not Found)
+Image (async)
+ih @ index-1761732574495.js:40
+sh @ index-1761732574495.js:40
+I0 @ index-1761732574495.js:40
+z0 @ index-1761732574495.js:40
+ko @ index-1761732574495.js:40
+ch @ index-1761732574495.js:40
+j @ index-1761732574495.js:25
+F @ index-1761732574495.js:25
+image:1 
+        
+        
+       GET https://www.slowturk.com.tr/_next/image?url=https%3A%2F%2Fassets.blupoint.io%2Fimg%2F85%2F330x175%2F6410d8c4310c17000763c62b&w=256&q=75 404 (Not Found)
+Image (async)
+ih @ index-1761732574495.js:40
+sh @ index-1761732574495.js:40
+I0 @ index-1761732574495.js:40
+z0 @ index-1761732574495.js:40
+ko @ index-1761732574495.js:40
+ch @ index-1761732574495.js:40
+j @ index-1761732574495.js:25
+F @ index-1761732574495.js:25
+demo.radyoviva.com.tr/wp-content/uploads/2020/06/radyo-viva.png:1 
+        
+        
+       GET https://demo.radyoviva.com.tr/wp-content/uploads/2020/06/radyo-viva.png net::ERR_CERT_COMMON_NAME_INVALID
+Image (async)
+ih @ index-1761732574495.js:40
+sh @ index-1761732574495.js:40
+I0 @ index-1761732574495.js:40
+z0 @ index-1761732574495.js:40
+ko @ index-1761732574495.js:40
+ch @ index-1761732574495.js:40
+j @ index-1761732574495.js:25
+F @ index-1761732574495.js:25
+index-1761732574495.js:93 [API] getAllCountries response: 200
+index-1761732574495.js:93 [API] getAllCountries raw data type: array
+index-1761732574495.js:93 [API] getAllCountries fetched: 238
+index-1761732574495.js:120 [CountrySelector] Countries received: 238
+index-1761732574495.js:120 [CountrySelector] Mapping countries, API returned: 238
+index-1761732574495.js:120 [CountrySelector] Mapped countries: 238
+index-1761732574495.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1761732574495.js:120 [CountrySelector] Filtered count: 239
+favicon:1 
+        
+        
+       GET https://www.sezenradyo.com/favicon 404 (Not Found)
+Image (async)
+ih @ index-1761732574495.js:40
+sh @ index-1761732574495.js:40
+I0 @ index-1761732574495.js:40
+z0 @ index-1761732574495.js:40
+ko @ index-1761732574495.js:40
+ch @ index-1761732574495.js:40
+j @ index-1761732574495.js:25
+F @ index-1761732574495.js:25
+index-1761732574495.js:120 [AutoPlay] Skipping auto-play (already played this session)
