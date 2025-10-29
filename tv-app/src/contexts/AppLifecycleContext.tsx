@@ -17,8 +17,15 @@ export function AppLifecycleProvider({ children }: { children: ReactNode }) {
     
     let visibilityTimeout: NodeJS.Timeout | null = null;
     
-    // Handle visibility change (works on all platforms)
+    // Handle visibility change (Samsung TV only - browser has issues with SPA navigation)
     const handleVisibilityChange = () => {
+      // IMPORTANT: Only use visibility change on actual Samsung TV
+      // In browser/emulator, hash changes cause false visibility changes
+      if (!hasTizen) {
+        console.log('[AppLifecycle] Ignoring visibility change (not on Samsung TV)');
+        return;
+      }
+      
       const isHidden = document.hidden;
       
       console.log('[AppLifecycle] Visibility changed:', isHidden ? 'HIDDEN (background)' : 'VISIBLE (foreground)');
@@ -30,21 +37,11 @@ export function AppLifecycleProvider({ children }: { children: ReactNode }) {
       }
       
       if (isHidden) {
-        // Wait 300ms before pausing to avoid pausing during page navigation
-        // This filters out brief visibility changes during SPA routing
-        visibilityTimeout = setTimeout(() => {
-          // Check if still hidden after delay
-          if (document.hidden) {
-            // App genuinely went to background - pause audio (Samsung requirement)
-            if ((window as any).globalPlayer?.pause) {
-              console.log('[AppLifecycle] 🔇 Pausing audio (app in background)');
-              (window as any).globalPlayer.pause();
-            }
-          } else {
-            console.log('[AppLifecycle] ✅ Visibility change was brief (navigation) - not pausing');
-          }
-          visibilityTimeout = null;
-        }, 300);
+        // On real Samsung TV, pause immediately (no delay needed)
+        if ((window as any).globalPlayer?.pause) {
+          console.log('[AppLifecycle] 🔇 Pausing audio (app in background)');
+          (window as any).globalPlayer.pause();
+        }
       } else {
         // App came to foreground
         console.log('[AppLifecycle] 🔊 App returned to foreground (user can manually resume playback)');
