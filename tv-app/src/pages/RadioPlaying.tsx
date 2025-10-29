@@ -21,7 +21,7 @@ export const RadioPlaying = (): JSX.Element => {
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { playStation, togglePlayPause, isPlaying, isBuffering } = useGlobalPlayer();
+  const { playStation, togglePlayPause, isPlaying, isBuffering, currentStation } = useGlobalPlayer();
   const { getPreviousPage } = useNavigation();
   console.log('[RadioPlaying] 🎮 Global player state:', { isPlaying, isBuffering });
   
@@ -545,6 +545,9 @@ export const RadioPlaying = (): JSX.Element => {
   useEffect(() => {
     console.log('[RadioPlaying] 🎵 Auto-play effect triggered');
     console.log('[RadioPlaying] 🎵 Has station:', !!station);
+    console.log('[RadioPlaying] 🎵 Current playing station:', currentStation?._id, currentStation?.name);
+    console.log('[RadioPlaying] 🎵 Is currently playing:', isPlaying);
+    
     if (station) {
       console.log('[RadioPlaying] 🎵 Station data available:', {
         name: station.name,
@@ -553,13 +556,20 @@ export const RadioPlaying = (): JSX.Element => {
         codec: station.codec,
         bitrate: station.bitrate
       });
+      
+      // Check if this station is already playing - don't restart it!
+      if (currentStation?._id === station._id && isPlaying) {
+        console.log('[RadioPlaying] ✅ Station already playing - skipping auto-play to avoid restart');
+        return;
+      }
+      
       console.log('[RadioPlaying] ▶️ Starting auto-play via global player');
       playStation(station);
       console.log('[RadioPlaying] ✅ Auto-play initiated');
     } else {
       console.log('[RadioPlaying] ⏳ Waiting for station data to auto-play');
     }
-  }, [station]);
+  }, [station, currentStation, isPlaying]);
 
   const handlePlayPause = () => {
     togglePlayPause();
