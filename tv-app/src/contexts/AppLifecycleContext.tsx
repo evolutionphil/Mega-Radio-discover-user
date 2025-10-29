@@ -128,15 +128,10 @@ export function AppLifecycleProvider({ children }: { children: ReactNode }) {
     document.addEventListener('visibilitychange', handleVisibilityChange);
     console.log('[AppLifecycle] ✅ Visibility change listener registered');
     
-    // Handle page unload
-    const handleBeforeUnload = () => {
-      console.log('[AppLifecycle] App unloading - cleaning up');
-      if ((window as any).globalPlayer?.pause) {
-        (window as any).globalPlayer.pause();
-      }
-    };
-    
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    // Note: We don't use 'beforeunload' event because:
+    // 1. In SPAs, it can fire during route changes (causing unwanted pauses)
+    // 2. Samsung TV lifecycle events (AppSuspend, AppHide) handle app closing
+    // 3. Visibility change events catch background transitions
     
     // Cleanup
     return () => {
@@ -146,7 +141,6 @@ export function AppLifecycleProvider({ children }: { children: ReactNode }) {
       }
       
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
       
       // Samsung-specific cleanup
       if ((window as any).__appLifecycleCleanup) {
