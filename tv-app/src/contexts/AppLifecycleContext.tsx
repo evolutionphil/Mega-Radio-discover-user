@@ -15,18 +15,36 @@ export function AppLifecycleProvider({ children }: { children: ReactNode }) {
     console.log('[AppLifecycle] Initializing multitasking support');
     console.log('[AppLifecycle] Platform:', hasTizen ? 'Samsung Tizen' : 'Browser');
     
+    let visibilityTimeout: NodeJS.Timeout | null = null;
+    
     // Handle visibility change (works on all platforms)
     const handleVisibilityChange = () => {
       const isHidden = document.hidden;
       
       console.log('[AppLifecycle] Visibility changed:', isHidden ? 'HIDDEN (background)' : 'VISIBLE (foreground)');
       
+      // Clear any pending timeout
+      if (visibilityTimeout) {
+        clearTimeout(visibilityTimeout);
+        visibilityTimeout = null;
+      }
+      
       if (isHidden) {
-        // App went to background - pause audio (Samsung requirement)
-        if ((window as any).globalPlayer?.pause) {
-          console.log('[AppLifecycle] 🔇 Pausing audio (app in background)');
-          (window as any).globalPlayer.pause();
-        }
+        // Wait 300ms before pausing to avoid pausing during page navigation
+        // This filters out brief visibility changes during SPA routing
+        visibilityTimeout = setTimeout(() => {
+          // Check if still hidden after delay
+          if (document.hidden) {
+            // App genuinely went to background - pause audio (Samsung requirement)
+            if ((window as any).globalPlayer?.pause) {
+              console.log('[AppLifecycle] 🔇 Pausing audio (app in background)');
+              (window as any).globalPlayer.pause();
+            }
+          } else {
+            console.log('[AppLifecycle] ✅ Visibility change was brief (navigation) - not pausing');
+          }
+          visibilityTimeout = null;
+        }, 300);
       } else {
         // App came to foreground
         console.log('[AppLifecycle] 🔊 App returned to foreground (user can manually resume playback)');
@@ -122,6 +140,11 @@ export function AppLifecycleProvider({ children }: { children: ReactNode }) {
     
     // Cleanup
     return () => {
+      // Clear visibility timeout if pending
+      if (visibilityTimeout) {
+        clearTimeout(visibilityTimeout);
+      }
+      
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
       
