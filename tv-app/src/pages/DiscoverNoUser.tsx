@@ -9,6 +9,7 @@ import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useCountry } from "@/contexts/CountryContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
+import { useNavigation } from "@/contexts/NavigationContext";
 import { autoPlayService } from "@/services/autoPlayService";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
@@ -17,7 +18,8 @@ export const DiscoverNoUser = (): JSX.Element => {
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { playStation, isPlaying } = useGlobalPlayer();
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
+  const { setNavigationState, popNavigationState } = useNavigation();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
   const [exitModalFocusIndex, setExitModalFocusIndex] = useState(0);
@@ -263,6 +265,9 @@ export const DiscoverNoUser = (): JSX.Element => {
         const stationIndex = index - popularStationsStart;
         const station = popularStations[stationIndex];
         if (station) {
+          // Save navigation state before navigating
+          console.log('[DiscoverNoUser] Saving navigation state (Popular):', { currentPage: location, focusIndex: index });
+          setNavigationState(location, index);
           playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
         }
@@ -280,6 +285,9 @@ export const DiscoverNoUser = (): JSX.Element => {
         const stationIndex = index - countryStationsStart;
         const station = displayedStations[stationIndex];
         if (station) {
+          // Save navigation state before navigating
+          console.log('[DiscoverNoUser] Saving navigation state (Country):', { currentPage: location, focusIndex: index });
+          setNavigationState(location, index);
           playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
         }
@@ -415,6 +423,16 @@ export const DiscoverNoUser = (): JSX.Element => {
       console.log(`[DiscoverNoUser] Initial load: ${stations.length} stations, hasMore=${hasMore}, nextOffset=100`);
     }
   }, [initialStationsData, selectedCountryCode]);
+
+  // Restore focus when returning from RadioPlaying
+  useEffect(() => {
+    const navState = popNavigationState(); // Pop and clear in one atomic operation
+    if (navState && navState.returnFocusIndex !== null) {
+      // Restore focus when returning from RadioPlaying
+      console.log('[DiscoverNoUser] 🎯 Restoring focus to index:', navState.returnFocusIndex);
+      setFocusIndex(navState.returnFocusIndex);
+    }
+  }, []); // Only run once on mount
 
   // Auto-play on app startup based on settings
   useEffect(() => {
@@ -716,7 +734,15 @@ export const DiscoverNoUser = (): JSX.Element => {
         {popularStations.slice(0, 7).map((station, index) => {
           const focusIdx = popularStationsStart + index;
           return (
-            <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+            <Link 
+              key={station._id || index} 
+              href={`/radio-playing?station=${station._id}`}
+              onClick={() => {
+                console.log('[DiscoverNoUser] Link clicked (Popular Row 1):', { currentPage: location, focusIndex: focusIdx });
+                setNavigationState(location, focusIdx);
+                playStation(station);
+              }}
+            >
               <div 
                 className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[297px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ left: `${stationRow1Positions[index] - 162}px` }}
@@ -748,7 +774,15 @@ export const DiscoverNoUser = (): JSX.Element => {
         {popularStations.slice(7, 14).map((station, index) => {
           const focusIdx = popularStationsStart + 7 + index;
           return (
-            <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+            <Link 
+              key={station._id || index} 
+              href={`/radio-playing?station=${station._id}`}
+              onClick={() => {
+                console.log('[DiscoverNoUser] Link clicked (Popular Row 2):', { currentPage: location, focusIndex: focusIdx });
+                setNavigationState(location, focusIdx);
+                playStation(station);
+              }}
+            >
               <div 
                 className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[591px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ left: `${stationRow2Positions[index] - 162}px` }}
@@ -798,7 +832,15 @@ export const DiscoverNoUser = (): JSX.Element => {
           const focusIdx = countryStationsStart + index;
           
           return (
-            <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+            <Link 
+              key={station._id || index} 
+              href={`/radio-playing?station=${station._id}`}
+              onClick={() => {
+                console.log('[DiscoverNoUser] Link clicked (Country Station):', { currentPage: location, focusIndex: focusIdx });
+                setNavigationState(location, focusIdx);
+                playStation(station);
+              }}
+            >
               <div 
                 className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ 
