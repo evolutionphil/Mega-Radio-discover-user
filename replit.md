@@ -59,8 +59,9 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 -   The global player bar is automatically hidden on the RadioPlaying page to avoid duplication.
 -   Playback continues uninterrupted when navigating between pages.
 
-**Infinite Scrolling:**
--   Implemented true lazy loading with API pagination for station lists (Discover, GenreList), fetching 100 stations per batch with offset-based pagination.
+**Pagination:**
+-   **GenreList Page:** Implements paginated loading with 28 stations per batch (4 rows × 7 columns) for improved navigation performance. Automatically loads next batch when scrolling within 600px of bottom.
+-   **Discover Page:** Uses 100 stations per batch with offset-based pagination for infinite scrolling.
 
 **Caching Strategy:**
 -   A multi-tiered caching strategy is implemented using TanStack Query v5. Cache durations vary based on data volatility: Countries (30 days), Genres & Station Lists (7 days), Popular Stations & Station Details (24 hours), Search Results (24 hours), and Live Metadata (30 seconds refresh).

@@ -38,14 +38,14 @@ export const GenreList = (): JSX.Element => {
   
   console.log('[GenreList] URL genre slug:', genreSlug, '| Display name:', genreName);
 
-  // TRUE INFINITE SCROLL state - API-based pagination with offset
+  // PAGINATION state - Load stations in smaller batches for better navigation
   const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
   const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const STATIONS_PER_LOAD = 100; // Fetch 100 stations per batch
+  const STATIONS_PER_LOAD = 28; // Fetch 28 stations per batch (4 rows × 7 columns)
 
-  // Fetch initial 100 stations with offset=0 for TRUE infinite scroll
+  // Fetch initial batch (28 stations) with offset=0 for pagination
   // CACHE: 7 days
   console.log('🔍 [GENRE LIST DEBUG] Creating query with:', {
     queryKey: ['genre-stations/initial', genreSlug, selectedCountryCode],
@@ -57,11 +57,11 @@ export const GenreList = (): JSX.Element => {
     queryKey: ['genre-stations/initial', genreSlug, selectedCountryCode],
     queryFn: async () => {
       console.log('🎵 [GENRE LIST DEBUG] Query function executing...');
-      console.log('🎵 [GENRE LIST DEBUG] Fetching INITIAL 100 stations for genre:', genreSlug, 'country:', selectedCountryCode, 'offset=0');
+      console.log('🎵 [GENRE LIST DEBUG] Fetching INITIAL 28 stations for genre:', genreSlug, 'country:', selectedCountryCode, 'offset=0');
       
       const result = await megaRadioApi.getStationsByGenre(genreSlug, { 
         country: selectedCountryCode,
-        limit: 100,
+        limit: STATIONS_PER_LOAD,
         offset: 0,
         sort: 'votes'
       });
@@ -82,7 +82,7 @@ export const GenreList = (): JSX.Element => {
     refetch();
   }, [genreSlug, refetch]);
 
-  // Initialize when initial data loads - TRUE INFINITE SCROLL
+  // Initialize when initial data loads - PAGINATION
   useEffect(() => {
     console.log('📊 [GENRE LIST DEBUG] Data effect triggered');
     console.log('📊 [GENRE LIST DEBUG] Stations data:', stationsData?.stations?.length || 0);
@@ -95,12 +95,12 @@ export const GenreList = (): JSX.Element => {
       console.log('📊 [GENRE LIST DEBUG] First 3 stations:', stations.slice(0, 3).map((s: any) => s.name));
       
       setDisplayedStations(stations);
-      setCurrentOffset(100); // Next fetch will use offset=100
+      setCurrentOffset(STATIONS_PER_LOAD); // Next fetch will use offset=28
       
-      // If we got less than 100 stations, there's no more to load
-      const hasMoreStations = stations.length >= 100;
+      // If we got less than requested, there's no more to load
+      const hasMoreStations = stations.length >= STATIONS_PER_LOAD;
       setHasMore(hasMoreStations);
-      console.log(`[GenreList] Initial load: ${stations.length} stations, hasMore=${hasMoreStations}, nextOffset=100`);
+      console.log(`[GenreList] Initial load: ${stations.length} stations, hasMore=${hasMoreStations}, nextOffset=${STATIONS_PER_LOAD}`);
     } else if (stationsData?.stations && stationsData.stations.length === 0) {
       // No stations found for this genre/country combo
       console.log('⚠️ [GENRE LIST DEBUG] No stations found for this genre/country');
@@ -110,7 +110,7 @@ export const GenreList = (): JSX.Element => {
     }
   }, [stationsData?.stations, genreSlug, selectedCountryCode]);
 
-  // TRUE INFINITE SCROLL - Fetch next batch from API using offset
+  // PAGINATION - Fetch next batch from API using offset
   const loadMore = async () => {
     if (isLoadingMore || !hasMore) {
       console.log(`[GenreList] Skipping load - isLoadingMore=${isLoadingMore}, hasMore=${hasMore}`);
@@ -118,12 +118,12 @@ export const GenreList = (): JSX.Element => {
     }
 
     setIsLoadingMore(true);
-    console.log(`[GenreList] 🚀 Fetching next batch - offset=${currentOffset}, limit=100, genre=${genreSlug}, country=${selectedCountryCode}`);
+    console.log(`[GenreList] 🚀 Fetching next batch - offset=${currentOffset}, limit=${STATIONS_PER_LOAD}, genre=${genreSlug}, country=${selectedCountryCode}`);
     
     try {
       const result = await megaRadioApi.getStationsByGenre(genreSlug, { 
         country: selectedCountryCode,
-        limit: 100,
+        limit: STATIONS_PER_LOAD,
         offset: currentOffset,
         sort: 'votes'
       });
@@ -133,12 +133,12 @@ export const GenreList = (): JSX.Element => {
       
       if (newStations.length > 0) {
         setDisplayedStations(prev => [...prev, ...newStations]);
-        setCurrentOffset(prev => prev + 100); // Increment offset for next fetch
+        setCurrentOffset(prev => prev + STATIONS_PER_LOAD); // Increment offset for next fetch
         
-        // If we got less than 100 stations, we've reached the end
-        const hasMoreStations = newStations.length >= 100;
+        // If we got less than requested, we've reached the end
+        const hasMoreStations = newStations.length >= STATIONS_PER_LOAD;
         setHasMore(hasMoreStations);
-        console.log(`[GenreList] After load: total=${displayedStations.length + newStations.length}, hasMore=${hasMoreStations}, nextOffset=${currentOffset + 100}`);
+        console.log(`[GenreList] After load: total=${displayedStations.length + newStations.length}, hasMore=${hasMoreStations}, nextOffset=${currentOffset + STATIONS_PER_LOAD}`);
       } else {
         setHasMore(false);
         console.log('[GenreList] No more stations available');
@@ -151,7 +151,7 @@ export const GenreList = (): JSX.Element => {
     }
   };
 
-  // TRUE INFINITE SCROLL trigger - Scroll-based (when within 1000px of bottom)
+  // Scroll-based pagination trigger (when within 600px of bottom)
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
@@ -160,8 +160,8 @@ export const GenreList = (): JSX.Element => {
       const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
       const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
       
-      // Trigger load when within 1000px of bottom
-      if (distanceFromBottom < 1000 && hasMore && !isLoadingMore) {
+      // Trigger load when within 600px of bottom
+      if (distanceFromBottom < 600 && hasMore && !isLoadingMore) {
         console.log('[GenreList] 📜 Scroll trigger - loading more stations');
         loadMore();
       }
