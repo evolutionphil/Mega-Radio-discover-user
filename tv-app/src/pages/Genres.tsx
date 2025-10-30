@@ -124,30 +124,52 @@ export const Genres = (): JSX.Element => {
       const relIndex = current - 15;
       const row = Math.floor(relIndex / 6);
       const col = relIndex % 6;
+      const totalAllGenres = allGenres.length;
+
+      console.log(`[Genres Navigation] All Genres Grid - Current: ${current}, Row: ${row}, Col: ${col}, RelIndex: ${relIndex}, Total: ${totalAllGenres}`);
 
       if (direction === 'LEFT') {
+        // Only move left if not in first column
         if (col > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 0; // Jump to sidebar
+          // First column - jump to sidebar
+          newIndex = 0;
         }
       } else if (direction === 'RIGHT') {
-        if (col < 5 && current < totalItems - 1) {
+        // Only move right if not in last column AND next genre exists
+        if (col < 5 && (relIndex + 1) < totalAllGenres) {
           newIndex = current + 1;
+          console.log(`[Genres Navigation] Moving RIGHT to ${newIndex}`);
         }
+        // Otherwise stay at current position
       } else if (direction === 'UP') {
+        // Only move up if not in first row
         if (row > 0) {
-          newIndex = current - 6;
+          const targetIndex = current - 6;
+          // Make sure target genre exists
+          if (targetIndex >= 15) {
+            newIndex = targetIndex;
+            console.log(`[Genres Navigation] Moving UP to ${newIndex}`);
+          }
         } else {
-          // Jump to popular genres above (4-col grid)
+          // First row - jump to popular genres above (4-col grid)
           // Map to corresponding column in 4-col grid
           const targetCol = Math.min(col, 3);
           newIndex = 11 + targetCol; // Row 2 of popular genres
         }
       } else if (direction === 'DOWN') {
-        const nextIndex = current + 6;
-        if (nextIndex < totalItems) {
-          newIndex = nextIndex;
+        // Calculate the target position in the next row (same column)
+        const targetRelIndex = relIndex + 6;
+        const targetIndex = 15 + targetRelIndex;
+        
+        // Only move down if the target genre actually exists
+        if (targetRelIndex < totalAllGenres) {
+          newIndex = targetIndex;
+          console.log(`[Genres Navigation] Moving DOWN to ${newIndex}`);
+        } else {
+          // Target doesn't exist - stay at current position
+          console.log(`[Genres Navigation] Cannot move DOWN - no genre at target position`);
         }
       }
     }
