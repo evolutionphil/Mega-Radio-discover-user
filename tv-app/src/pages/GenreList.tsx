@@ -217,6 +217,8 @@ export const GenreList = (): JSX.Element => {
     const current = focusIndex;
     let newIndex = current;
 
+    console.log(`[GenreList Navigation] Current: ${current}, Direction: ${direction}, TotalItems: ${totalItems}`);
+
     // Sidebar (0-4)
     if (current >= 0 && current <= 4) {
       if (direction === 'DOWN') {
@@ -232,32 +234,55 @@ export const GenreList = (): JSX.Element => {
       const relIndex = current - stationsStart;
       const row = Math.floor(relIndex / 7);
       const col = relIndex % 7;
+      const totalStations = displayedStations.length;
+
+      console.log(`[GenreList Navigation] Station Grid - Row: ${row}, Col: ${col}, RelIndex: ${relIndex}, TotalStations: ${totalStations}`);
 
       if (direction === 'LEFT') {
+        // Only move left if not in first column
         if (col > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 1; // Jump to Genres in sidebar (index 1)
+          // First column - jump to Genres in sidebar (index 1)
+          newIndex = 1;
         }
       } else if (direction === 'RIGHT') {
-        if (col < 6 && current < totalItems - 1) {
+        // Only move right if not in last column AND next station exists
+        if (col < 6 && (relIndex + 1) < totalStations) {
           newIndex = current + 1;
         }
+        // Otherwise stay at current position
       } else if (direction === 'UP') {
+        // Only move up if not in first row
         if (row > 0) {
-          newIndex = current - 7;
+          const targetIndex = current - 7;
+          // Make sure target station exists
+          if (targetIndex >= stationsStart) {
+            newIndex = targetIndex;
+          }
         } else {
-          newIndex = 1; // Jump to Genres in sidebar (index 1)
+          // First row - jump to Genres in sidebar (index 1)
+          newIndex = 1;
         }
       } else if (direction === 'DOWN') {
-        const nextIndex = current + 7;
-        if (nextIndex < totalItems) {
-          newIndex = nextIndex;
+        // Calculate the target position in the next row (same column)
+        const targetRelIndex = relIndex + 7;
+        const targetIndex = stationsStart + targetRelIndex;
+        
+        // Only move down if the target station actually exists
+        if (targetRelIndex < totalStations) {
+          newIndex = targetIndex;
+          console.log(`[GenreList Navigation] Moving DOWN to ${newIndex}`);
+        } else {
+          // Target doesn't exist - stay at current position
+          console.log(`[GenreList Navigation] Cannot move DOWN - no station at target position`);
         }
       }
     }
 
+    // Ensure newIndex is within valid bounds
     newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
+    console.log(`[GenreList Navigation] Final index: ${newIndex}`);
     setFocusIndex(newIndex);
   };
 
