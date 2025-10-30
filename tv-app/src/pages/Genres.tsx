@@ -113,17 +113,17 @@ export const Genres = (): JSX.Element => {
         if (row < 1 && current + 4 <= 14) {
           newIndex = current + 4;
         } else {
-          // Jump to All genres section below (6-col grid)
-          // Map to corresponding column in 6-col grid
-          newIndex = 15 + Math.min(col, 5);
+          // Jump to All genres section below (same 4-col grid)
+          // Same column alignment
+          newIndex = 15 + col;
         }
       }
     }
-    // All genres section (15+) - 6 cols grid
+    // All genres section (15+) - 4 cols grid (SAME as popular genres)
     else if (current >= 15) {
       const relIndex = current - 15;
-      const row = Math.floor(relIndex / 6);
-      const col = relIndex % 6;
+      const row = Math.floor(relIndex / 4);
+      const col = relIndex % 4;
       const totalAllGenres = allGenres.length;
 
       console.log(`[Genres Navigation] All Genres Grid - Current: ${current}, Row: ${row}, Col: ${col}, RelIndex: ${relIndex}, Total: ${totalAllGenres}`);
@@ -132,13 +132,14 @@ export const Genres = (): JSX.Element => {
         // Only move left if not in first column
         if (col > 0) {
           newIndex = current - 1;
+          console.log(`[Genres Navigation] Moving LEFT to ${newIndex}`);
         } else {
           // First column - jump to sidebar
           newIndex = 0;
         }
       } else if (direction === 'RIGHT') {
         // Only move right if not in last column AND next genre exists
-        if (col < 5 && (relIndex + 1) < totalAllGenres) {
+        if (col < 3 && (relIndex + 1) < totalAllGenres) {
           newIndex = current + 1;
           console.log(`[Genres Navigation] Moving RIGHT to ${newIndex}`);
         }
@@ -146,21 +147,19 @@ export const Genres = (): JSX.Element => {
       } else if (direction === 'UP') {
         // Only move up if not in first row
         if (row > 0) {
-          const targetIndex = current - 6;
+          const targetIndex = current - 4;
           // Make sure target genre exists
           if (targetIndex >= 15) {
             newIndex = targetIndex;
             console.log(`[Genres Navigation] Moving UP to ${newIndex}`);
           }
         } else {
-          // First row - jump to popular genres above (4-col grid)
-          // Map to corresponding column in 4-col grid
-          const targetCol = Math.min(col, 3);
-          newIndex = 11 + targetCol; // Row 2 of popular genres
+          // First row - jump to popular genres above (same 4-col grid alignment)
+          newIndex = 11 + col; // Row 2 of popular genres, same column
         }
       } else if (direction === 'DOWN') {
         // Calculate the target position in the next row (same column)
-        const targetRelIndex = relIndex + 6;
+        const targetRelIndex = relIndex + 4;
         const targetIndex = 15 + targetRelIndex;
         
         // Only move down if the target genre actually exists
