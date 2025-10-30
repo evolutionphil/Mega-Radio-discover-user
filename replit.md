@@ -30,8 +30,8 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 **Platform Compatibility:**
 -   **Unified TV Build:** A single `tv-app/` folder supports both Samsung Tizen (targeting Chromium 76 with polyfills) and LG webOS (HTML5 Audio/Video and `webOSTVjs-1.2.0` SDK).
 -   **Platform Detection:** Automatic detection via user agent.
--   **Remote Control Navigation:** Implements an LGTV focus pattern using `useFocusManager`, `usePageKeyHandler`, and `getFocusClasses` for dynamic adaptation, including specific fixes for sidebar, country selector, and two-step return button behavior. PAGE_UP/DOWN and CH_UP/CH_DOWN keys jump to the global player.
--   **Audio Playback:** A unified interface manages `webapis.avplay` for Tizen and HTML5 Audio/Video for webOS/browsers.
+-   **Remote Control Navigation:** Implements an LGTV focus pattern using `useFocusManager`, `usePageKeyHandler`, and `getFocusClasses` for dynamic adaptation, including specific fixes for sidebar, country selector, and two-step return button behavior. PAGE_UP/DOWN and CH_UP/CH_DOWN keys jump to the global player. GenreList page uses a 7-column grid with custom navigation logic that properly handles incomplete rows and ensures DOWN/UP only moves vertically and LEFT/RIGHT only moves horizontally.
+-   **Audio Playback:** A unified interface manages `webapis.avplay` for Tizen and HTML5 Audio/Video for webOS/browsers. Includes automatic retry logic with exponential backoff (up to 3 retries with 1s → 2s → 4s delays) to recover from stream errors.
 -   **Samsung TV Certification Compliance:**
     -   **Network Monitoring:** `NetworkStatusContext` monitors network connectivity using Samsung's `webapis.network` API for Tizen and browser `online`/`offline` events for webOS/browsers. Automatically pauses audio playback when network disconnects and displays a localized pink-themed modal.
     -   **Screensaver Prevention:** `GlobalPlayerContext` uses `tizen.power.request/release` API to prevent screensaver during audio playback on Samsung TVs, with Web Wake Lock API fallback for other platforms.
