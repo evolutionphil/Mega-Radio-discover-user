@@ -93,8 +93,8 @@
     <!-- TV Audio Player -->
     <script type="text/javascript" src="./js/tv-audio-player.js?v=1761229987899"></script>
     
-    <!-- Polyfills for older Samsung TV browsers -->
-    <script>if(typeof globalThis==="undefined"){window.globalThis=window;}if(!Object.fromEntries){Object.fromEntries=function(e){var t={};for(var r of e){t[r[0]]=r[1]}return t}}</script>
+    <!-- Polyfills for older Samsung/LG TV browsers (MUST load before React) -->
+    <script type="text/javascript" src="./js/polyfills.js"></script>
   
     <!-- React App - Vite will replace this during build -->
     <script type="module" src="/src/main.tsx"></script>

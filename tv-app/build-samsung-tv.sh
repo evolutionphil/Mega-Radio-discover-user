@@ -72,6 +72,7 @@ sed -i "s|src=\"\\./js/platform-detect.js\"|src=\"./js/platform-detect.js?v=${TI
 sed -i "s|src=\"\\./js/tv-spatial-navigation.js\"|src=\"./js/tv-spatial-navigation.js?v=${TIMESTAMP}\"|g" index.html
 sed -i "s|src=\"\\./js/tv-remote-keys.js\"|src=\"./js/tv-remote-keys.js?v=${TIMESTAMP}\"|g" index.html
 sed -i "s|src=\"\\./js/tv-audio-player.js\"|src=\"./js/tv-audio-player.js?v=${TIMESTAMP}\"|g" index.html
+sed -i "s|src=\"\\./js/polyfills.js\"|src=\"./js/polyfills.js?v=${TIMESTAMP}\"|g" index.html
 sed -i "s|href=\"\\./assets/style.css\"|href=\"./assets/style.css?v=${TIMESTAMP}\"|g" index.html
 sed -i "s|href=\"\\./css/tv-styles.css\"|href=\"./css/tv-styles.css?v=${TIMESTAMP}\"|g" index.html
 
