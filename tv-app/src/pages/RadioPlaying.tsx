@@ -246,9 +246,9 @@ export const RadioPlaying = (): JSX.Element => {
     setPopularStationsToShow(prev => prev + 50);
   };
 
-  // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (20) + popular stations + See More button
+  // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (20) + popular stations
   const popularCount = popularStations.length;
-  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20) + popularCount + (hasMorePopular ? 1 : 0);
+  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20) + popularCount;
 
   // Define sidebar routes (NO PROFILE - 5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
@@ -324,10 +324,10 @@ export const RadioPlaying = (): JSX.Element => {
         }
       }
     }
-    // Popular stations (30+) - horizontal list with See More button
+    // Popular stations (30+) - horizontal list
     else if (current >= 30) {
       const relIndex = current - 30;
-      const maxPopularIndex = popularCount + (hasMorePopular ? 1 : 0) - 1;
+      const maxPopularIndex = popularCount - 1;
 
       if (direction === 'LEFT') {
         if (relIndex > 0) {
@@ -459,17 +459,12 @@ export const RadioPlaying = (): JSX.Element => {
           navigateToStation(targetStation);
         }
       }
-      // Popular stations (30+) and See More button
+      // Popular stations (30+)
       else if (index >= 30) {
         const relIndex = index - 30;
-        // Check if this is the "See More" button (last item)
-        if (hasMorePopular && relIndex === popularStations.length) {
-          loadMorePopular();
-        } else {
-          const targetStation = popularStations[relIndex];
-          if (targetStation) {
-            navigateToStation(targetStation);
-          }
+        const targetStation = popularStations[relIndex];
+        if (targetStation) {
+          navigateToStation(targetStation);
         }
       }
     },
@@ -526,7 +521,7 @@ export const RadioPlaying = (): JSX.Element => {
       }
     }
     
-    // Popular stations (30+) including See More button
+    // Popular stations (30+)
     if (focusIndex >= 30) {
       const stationIndex = focusIndex - 30;
       scrollPopularIntoView(stationIndex);
@@ -954,27 +949,6 @@ export const RadioPlaying = (): JSX.Element => {
               </div>
               )
             })}
-            
-            {/* See More Card */}
-            {hasMorePopular && (
-              <div
-                className={`flex-shrink-0 bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-all duration-200 relative flex items-center justify-center ${
-                  isFocused(30 + popularStations.length) 
-                    ? 'border-[4px] border-[#ff4199] shadow-[0_0_30px_rgba(255,65,153,0.8)]' 
-                    : 'border-[4px] border-transparent'
-                }`}
-                style={{ 
-                  marginRight: '24px',
-                  boxShadow: isFocused(30 + popularStations.length) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'inset 1.1px 1.1px 12.1px 0 rgba(255, 255, 255, 0.12)' 
-                }}
-                data-testid="button-see-more-popular"
-                onClick={loadMorePopular}
-              >
-                <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-center text-white">
-                  See More
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </div>
