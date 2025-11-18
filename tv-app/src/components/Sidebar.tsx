@@ -23,10 +23,9 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
       {/* Discover */}
       <Link href="/discover-no-user">
         <div className={`absolute left-0 rounded-[10px] size-[98px] top-0 ${getFocusClasses(isFocused(0))}`} data-testid="button-discover">
-          {/* Color indicator */}
+          {/* Color indicator - Pink */}
           <span 
-            className={`absolute top-2 right-2 size-[18px] rounded-full shadow-lg transition-transform ${isFocused(0) ? 'scale-110' : ''}`}
-            style={{ backgroundColor: '#ff4199' }}
+            className={`absolute top-2 right-2 size-[18px] rounded-full bg-[#ff4199] shadow-[0_0_8px_rgba(255,65,153,0.6)] transition-transform ${isFocused(0) ? 'scale-110' : ''}`}
             data-testid="indicator-discover"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center pt-[19px] pb-[18px] px-[5px] overflow-hidden rounded-[10px]">
@@ -47,10 +46,9 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
       {/* Genres */}
       <Link href="/genres">
         <div className={`absolute left-0 rounded-[10px] size-[98px] top-[108px] ${getFocusClasses(isFocused(1))}`} data-testid="button-genres">
-          {/* Color indicator */}
+          {/* Color indicator - Green */}
           <span 
-            className={`absolute top-2 right-2 size-[18px] rounded-full shadow-lg transition-transform ${isFocused(1) ? 'scale-110' : ''}`}
-            style={{ backgroundColor: '#10b981' }}
+            className={`absolute top-2 right-2 size-[18px] rounded-full bg-[#10b981] shadow-[0_0_8px_rgba(16,185,129,0.6)] transition-transform ${isFocused(1) ? 'scale-110' : ''}`}
             data-testid="indicator-genres"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center pt-[19px] pb-[18px] px-[5px] overflow-hidden rounded-[10px]">
@@ -71,10 +69,9 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
       {/* Search */}
       <Link href="/search">
         <div className={`absolute left-0 rounded-[10px] size-[98px] top-[216px] ${getFocusClasses(isFocused(2))}`} data-testid="button-search">
-          {/* Color indicator */}
+          {/* Color indicator - Blue */}
           <span 
-            className={`absolute top-2 right-2 size-[18px] rounded-full shadow-lg transition-transform ${isFocused(2) ? 'scale-110' : ''}`}
-            style={{ backgroundColor: '#3b82f6' }}
+            className={`absolute top-2 right-2 size-[18px] rounded-full bg-[#3b82f6] shadow-[0_0_8px_rgba(59,130,246,0.6)] transition-transform ${isFocused(2) ? 'scale-110' : ''}`}
             data-testid="indicator-search"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center pt-[19px] pb-[18px] px-[5px] overflow-hidden rounded-[10px]">
@@ -95,10 +92,9 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
       {/* Favorites */}
       <Link href="/favorites">
         <div className={`absolute left-0 rounded-[10px] size-[98px] top-[324px] ${getFocusClasses(isFocused(3))}`} data-testid="button-favorites">
-          {/* Color indicator */}
+          {/* Color indicator - Yellow */}
           <span 
-            className={`absolute top-2 right-2 size-[18px] rounded-full shadow-lg transition-transform ${isFocused(3) ? 'scale-110' : ''}`}
-            style={{ backgroundColor: '#fbbf24' }}
+            className={`absolute top-2 right-2 size-[18px] rounded-full bg-[#fbbf24] shadow-[0_0_8px_rgba(251,191,36,0.6)] transition-transform ${isFocused(3) ? 'scale-110' : ''}`}
             data-testid="indicator-favorites"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center pt-[19px] pb-[18px] px-[5px] overflow-hidden rounded-[10px]">
