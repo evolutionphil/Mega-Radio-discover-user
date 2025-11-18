@@ -611,8 +611,8 @@ export const DiscoverNoUser = (): JSX.Element => {
     return station.country || 'Radio';
   };
 
-  const stationRow1Positions = [236, 466, 696, 926, 1156, 1386, 1616];
-  const stationRow2Positions = [236, 466, 696, 926, 1156, 1386, 1616];
+  const stationRow1Positions = [276, 506, 736, 966, 1196, 1426, 1656];
+  const stationRow2Positions = [276, 506, 736, 966, 1196, 1426, 1656];
 
   return (
     <div className="absolute inset-0 w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-discover-no-user">
@@ -648,7 +648,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
       >
         {/* Equalizer - Matching Global Player Animation */}
-        <div className={`absolute left-[1522px] overflow-clip rounded-[30px] size-[51px] top-[67px] pointer-events-auto transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
+        <div className={`absolute right-[307px] overflow-clip rounded-[30px] size-[51px] top-[67px] pointer-events-auto transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
           <div className="absolute h-[35.526px] left-[8.625px] overflow-clip top-[7.737px] w-[33.75px]">
             <div className={`absolute bg-white left-0 rounded-[10px] top-0 w-[8.882px] ${isPlaying ? 'animate-equalizer-global-1' : 'h-[35.526px]'}`} style={{ height: isPlaying ? undefined : '35.526px' }} />
             <div className={`absolute bg-white left-[12.43px] rounded-[10px] w-[8.882px] ${isPlaying ? 'animate-equalizer-global-2' : 'h-[24.868px] top-[10.66px]'}`} style={{ height: isPlaying ? undefined : '24.868px', top: isPlaying ? undefined : '10.66px' }} />
@@ -662,7 +662,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           selectedCountryCode={selectedCountryCode}
           onClick={() => setIsCountrySelectorOpen(true)}
           focusClasses={getFocusClasses(isFocused(5))}
-          className="absolute left-[1593px] top-[67px] pointer-events-auto"
+          className="absolute right-[64px] top-[67px] pointer-events-auto"
         />
       </div>
 
@@ -819,7 +819,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         {displayedStations.map((station, index) => {
           const row = Math.floor(index / 7);
           const col = index % 7;
-          const positions = [236, 466, 696, 926, 1156, 1386, 1616];
+          const positions = [276, 506, 736, 966, 1196, 1426, 1656];
           const topPosition = 1013 + (row * 294);
           const focusIdx = countryStationsStart + index;
           
