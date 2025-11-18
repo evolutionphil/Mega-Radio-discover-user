@@ -25,7 +25,7 @@ export const CountryTrigger = ({
       onClick={onClick}
       data-testid="button-country-selector"
     >
-      <div className="flex items-center gap-[10.66px]">
+      <div className="flex items-center gap-[10.66px] w-full">
         <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
           <img 
             src={isGlobal ? globeIcon : `https://flagcdn.com/w40/${selectedCountryCode.toLowerCase()}.png`}
@@ -33,10 +33,10 @@ export const CountryTrigger = ({
             className="w-full h-full object-cover"
           />
         </div>
-        <p className="font-['Ubuntu',Helvetica] font-bold leading-normal text-[24px] text-white whitespace-nowrap">
+        <p className="font-['Ubuntu',Helvetica] font-bold leading-normal text-[24px] text-white truncate flex-1 min-w-0">
           {selectedCountry}
         </p>
-        <div className="flex items-center justify-center ml-auto">
+        <div className="flex items-center justify-center flex-shrink-0">
           <div className="rotate-[270deg]">
             <div className="relative size-[23.684px]">
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
