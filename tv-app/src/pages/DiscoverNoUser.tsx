@@ -694,7 +694,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         {/* Genre Pills - Horizontal Scrollable */}
         <div 
           ref={genreScrollRef}
-          className="absolute left-[64px] top-[59px] w-[1620px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
+          className="absolute left-[74px] top-[59px] w-[1580px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
           data-genre-container
         >
           <div className="flex py-[15px] px-[10px]" style={{ gap: '20px' }}>
