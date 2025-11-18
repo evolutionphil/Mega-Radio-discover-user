@@ -810,14 +810,6 @@ export const DiscoverNoUser = (): JSX.Element => {
           );
         })}
 
-        {/* See More Card */}
-        <div className="absolute bg-[rgba(255,255,255,0.14)] h-[264px] left-[1454px] overflow-clip rounded-[11px] top-[591px] w-[200px]">
-          <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100.5px] not-italic text-[22px] text-center text-white top-[120px] translate-x-[-50%]">
-            {t('see_more') || 'See More'}
-          </p>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
-        </div>
-
         {/* More From [Country] Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[939px]">
           {t('more_from')} {selectedCountry}
