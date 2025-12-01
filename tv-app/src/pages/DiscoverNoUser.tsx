@@ -793,23 +793,30 @@ export const DiscoverNoUser = (): JSX.Element => {
       <Sidebar activePage="discover" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
       {/* Scrollable Content Area - Moves to top when header hides */}
-      {/* CSS Optimizations for TV: will-change for GPU acceleration, overflow hidden to prevent partial rows */}
+      {/* STRUCTURE: Outer wrapper (overflow-hidden) clips view, inner div scrolls via JS */}
       <div 
-        ref={scrollContainerRef}
-        className="absolute left-[162px] w-[1758px] overflow-y-scroll overflow-x-hidden z-1 scrollbar-hide"
+        className="absolute left-[162px] w-[1758px] overflow-hidden z-1"
         style={{
           top: showHeader ? '242px' : '64px',
-          height: showHeader ? '840px' : '1016px', // Exactly 3 rows (280px * 3 = 840px)
-          willChange: 'scroll-position',
-          contain: 'layout style',
+          height: showHeader ? '888px' : '1016px', // Exactly 3 rows (296px * 3 = 888px)
         }}
       >
+        {/* Inner scrollable container - controlled only by JavaScript scrollTop */}
         <div 
-          className="relative pb-[100px]"
+          ref={scrollContainerRef}
+          className="w-full h-full overflow-y-scroll overflow-x-hidden scrollbar-hide"
           style={{
-            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 364}px`
+            willChange: 'scroll-position',
+            contain: 'layout style',
+            scrollBehavior: 'auto', // Instant scroll, no smooth
           }}
         >
+          <div 
+            className="relative pb-[100px]"
+            style={{
+              minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 364}px`
+            }}
+          >
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
           {selectedCountryCode === 'GLOBAL' 
@@ -1008,6 +1015,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             ✓ All {displayedStations.length} stations from {selectedCountry} loaded
           </div>
         )}
+          </div>
         </div>
       </div>
 
