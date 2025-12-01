@@ -1,0 +1,366 @@
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] SEGMENT CHANGED - scrolling [object Object]
+ [AppLifecycle] Visibility changed: HIDDEN (background)
+ [AppLifecycle] 🔇 Pausing audio (app in background)
+ [GlobalPlayer] Pausing
+ [Samsung Player] Pause requested, current state: NONE
+ [Samsung Player] Cannot pause - not in PLAYING state, current state: NONE
+ [GlobalPlayer] Audio paused
+ Platform detected: Samsung Tizen
+ [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+ [Polyfills] Loading polyfills for Samsung Tizen TV...
+ [Polyfills] All polyfills loaded successfully
+ 🔥 megaRadioApi.ts VERSION 3.0 LOADED - Country-filtered genres enabled
+ [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+ [MegaRadio API] BASE_URL: https://themegaradio.com
+ 🔥 MAIN.TSX LOADED - VERSION 2.2 - GOOGLE ANALYTICS ENABLED
+ [Analytics] Initializing Google Analytics with ID: G-DF0C084RHN
+ [Analytics] Google Analytics initialized successfully
+ [Analytics] Google Analytics enabled
+ [Router] 🎬 Router component rendering
+ [Splash] 🎬 Component mounted
+ [Analytics] Tracking initial page view: /C:/tizen-studio/tools/sec-tv-simulator/appLauncher/app/lJoKY533ah/index.html
+ [Analytics] Page view: /C:/tizen-studio/tools/sec-tv-simulator/appLauncher/app/lJoKY533ah/index.html
+ [FocusRouter] Dispatch function registered to window
+ [AppLifecycle] Initializing multitasking support
+ [AppLifecycle] Platform: Samsung Tizen
+ [AppLifecycle] ✅ Visibility change listener registered
+ [Screensaver] LG webOS detected - using hidden video trick
+ [CountryContext] Auto-detection check: [object Object]
+ [CountryContext] ℹ️ Using stored country from localStorage: Tunisia
+ [NetworkStatus] Samsung TV webapis.network detected - setting up listener
+ [NetworkStatus] Network state changed: 1
+ [NetworkStatus] ✅ Network listener added successfully
+ [NetworkStatus] Initial network status: Connected
+ [Localization] Browser language detected: de-DE
+ [Localization] Using language: de
+ [Localization] Detected country: Germany DE
+ [Localization] Fetching translations for: de
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scalePopupwindow called
+ 🔍 CSS CHECK: Starting verification...
+ 📄 CSS Links found: [object Object]
+ 🎨 Tailwind Test Results: [object Object]
+ ✅ TAILWIND CSS: Working correctly!
+ 🎯 #root element styles: [object Object]
+ [CountryContext] Auto-detection check: [object Object]
+ [CountryContext] ℹ️ Using stored country from localStorage: Tunisia
+ [TV Spatial Nav] DOM ready, waiting for React...
+ [TV Remote Keys] DOM ready, initializing...
+ [TV Remote Keys] Key handler attached, waiting for React...
+ [useTVNavigation] Initializing TV navigation...
+ [TV Nav] Found 0 focusable elements
+ [useTVNavigation] Initialization complete
+ [Analytics] Google Analytics script loaded successfully
+ [Localization] API response received
+ [Localization] Loaded 472 translations
+ [TV Nav] Found 0 focusable elements
+ [Splash] ⏱️  Timer completed, checking onboarding status
+ [Splash] ✅ Onboarding already completed, navigating to Discover
+ [CountrySelector] Mapping countries, API returned: 0
+ [CountrySelector] Mapped countries: 0
+ [CountrySelector] Filtering countries - searchQuery: 
+ [CountrySelector] Filtered count: 1
+ [Splash] 👋 Component unmounting
+ [CountrySelector] Fetching countries...
+ [API] getAllCountries: https://themegaradio.com/api/countries?tv=1
+ [DiscoverNoUser] Fetching genres for country code: TN
+ [API] getAllGenres: Filtering by country TN -> Tunisia
+ [API] getAllGenres URL: https://themegaradio.com/api/genres?filters=%7B%22countrycode%22%3A%22Tunisia%22%2C%22searchQuery%22%3A%22%22%7D&limit=500&tv=1
+ [DiscoverNoUser] Fetching popular stations for country: TN
+ [API] getPopularStations: Converting TN -> Tunisia
+ [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&country=Tunisia&sort=votes&tv=1
+ [API] getWorkingStations: Converting TN -> Tunisia
+ [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=60&country=Tunisia&tv=1
+ [useFocusManager] 🎯 Initialized with: [object Object]
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [FocusRouter] Registering handler for route: /discover-no-user
+ [AppLifecycle] Visibility changed: HIDDEN (background)
+ [AppLifecycle] 🔇 Pausing audio (app in background)
+ [GlobalPlayer] Pausing
+ [Samsung Player] Pause requested, current state: NONE
+ [Samsung Player] Cannot pause - not in PLAYING state, current state: NONE
+ [GlobalPlayer] Audio paused
+ [API] getAllGenres response: 200
+ [API] getAllGenres fetched: 28 genres (total: 28 )
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [API] getAllCountries response: 200
+ [API] getAllCountries raw data type: array
+ [API] getAllCountries fetched: 218
+ [CountrySelector] Countries received: 218
+ [CountrySelector] Mapping countries, API returned: 218
+ [CountrySelector] Mapped countries: 218
+ [CountrySelector] Filtering countries - searchQuery: 
+ [CountrySelector] Filtered count: 219
+ [AppLifecycle] Visibility changed: VISIBLE (foreground)
+ [AppLifecycle] 🔊 App returned to foreground (user can manually resume playback)
+ [AutoPlay] Skipping auto-play (already played this session)
+ [API] getPopularStations fetched: 24 stations
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [API] Response status: 200
+ [API] Working stations fetched: 60 (offset: 0)
+ [DiscoverNoUser] Country changed: Tunisia, initial fetch: 60 stations
+ [DiscoverNoUser] Initial load: 60 stations, hasMore=false, nextOffset=100
+ [useFocusManager] 👁️  Focus changed: [object Object]
+images%2FIMG_20240709_174018899.jpg:1 
+        
+        
+       Failed to load resource: the server responded with a status of 402 ()
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] Same segment - NO SCROLL [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] SEGMENT CHANGED - scrolling [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] Same segment - NO SCROLL [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] SEGMENT CHANGED - scrolling [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] Same segment - NO SCROLL [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] Same segment - NO SCROLL [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] SEGMENT CHANGED - scrolling [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] Same segment - NO SCROLL [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] SEGMENT CHANGED - scrolling [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [useFocusManager] 👁️  Focus changed: [object Object]
+ [Scroll] SEGMENT CHANGED - scrolling [object Object]
+ [TV Keys] 🎮 Key pressed: [object Object]
+ [TV Keys] 📤 Dispatching to FocusRouter
+ [FocusRouter] ⌨️  Key event: [object Object]
+ [FocusRouter] ✅ Dispatching to: /discover-no-user
+ [DiscoverNoUser] 🔙 BACK/RETURN key pressed - should show exit modal
+ [DiscoverNoUser] Current modal state - isExitModalOpen: false
+ [useFocusManager] ⬅️  Back pressed: [object Object]
+ [DiscoverNoUser] ✅ handleBack() called to trigger exit modal
+ [DiscoverNoUser] Exit app - calling tizen.application.getCurrentApplication().exit()
+ [AppLifecycle] Visibility changed: HIDDEN (background)
+ [AppLifecycle] 🔇 Pausing audio (app in background)
+ [GlobalPlayer] Pausing
+ [Samsung Player] Pause requested, current state: NONE
+ [Samsung Player] Cannot pause - not in PLAYING state, current state: NONE
+ [GlobalPlayer] Audio paused
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scalePopupwindow called
+chrome-extension://oakokfcahinkpjpigcnpagkpjkkbffpl/ripple.html:1 Error in event handler: TypeError: Cannot read properties of undefined (reading '0')
+    at NWWindow.<anonymous> (extensions::nw.Window:208:47)
+    at dispatchEventIfExists (extensions::nw.Window:851:15)
+    at onDocumentStartEnd (extensions::nw.Window:876:5)
+platform-detect.js?v=1761229987899:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js?v=1761229987899:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+polyfills.js?v=1764599785411:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js?v=1764599785411:108 [Polyfills] All polyfills loaded successfully
+index-1764599785411.js:93 🔥 megaRadioApi.ts VERSION 3.0 LOADED - Country-filtered genres enabled
+index-1764599785411.js:93 [MegaRadio API] Platform: Samsung TV (adding ?tv=1)
+index-1764599785411.js:93 [MegaRadio API] BASE_URL: https://themegaradio.com
+index-1764599785411.js:120 🔥 MAIN.TSX LOADED - VERSION 2.2 - GOOGLE ANALYTICS ENABLED
+index-1764599785411.js:93 [Analytics] Initializing Google Analytics with ID: G-DF0C084RHN
+index-1764599785411.js:105 [Analytics] Google Analytics initialized successfully
+index-1764599785411.js:120 [Analytics] Google Analytics enabled
+index-1764599785411.js:120 [Router] 🎬 Router component rendering
+index-1764599785411.js:105 [Splash] 🎬 Component mounted
+index-1764599785411.js:105 [Analytics] Tracking initial page view: /C:/tizen-studio/tools/sec-tv-simulator/appLauncher/app/lJoKY533ah/index.html
+index-1764599785411.js:105 [Analytics] Page view: /C:/tizen-studio/tools/sec-tv-simulator/appLauncher/app/lJoKY533ah/index.html
+index-1764599785411.js:105 [FocusRouter] Dispatch function registered to window
+index-1764599785411.js:105 [AppLifecycle] Initializing multitasking support
+index-1764599785411.js:105 [AppLifecycle] Platform: Samsung Tizen
+index-1764599785411.js:105 [AppLifecycle] ✅ Visibility change listener registered
+index-1764599785411.js:105 [Screensaver] LG webOS detected - using hidden video trick
+index-1764599785411.js:105 [CountryContext] Auto-detection check: Object
+index-1764599785411.js:105 [CountryContext] ℹ️ Using stored country from localStorage: Tunisia
+index-1764599785411.js:105 [NetworkStatus] Samsung TV webapis.network detected - setting up listener
+index-1764599785411.js:105 [NetworkStatus] Network state changed: 1
+index-1764599785411.js:105 [NetworkStatus] ✅ Network listener added successfully
+index-1764599785411.js:105 [NetworkStatus] Initial network status: Connected
+index-1764599785411.js:93 [Localization] Browser language detected: de-DE
+index-1764599785411.js:93 [Localization] Using language: de
+index-1764599785411.js:93 [Localization] Detected country: Germany DE
+index-1764599785411.js:93 [Localization] Fetching translations for: de
+index-1764599785411.js:105 [CountryContext] Auto-detection check: Object
+index-1764599785411.js:105 [CountryContext] ℹ️ Using stored country from localStorage: Tunisia
+tv-spatial-navigation.js?v=1761229987899:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1761229987899:216 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1761229987899:220 [TV Remote Keys] Key handler attached, waiting for React...
+chrome-extension://oakokfcahinkpjpigcnpagkpjkkbffpl/ripple.html:1 Error in event handler: TypeError: Cannot read properties of undefined (reading '0')
+    at NWWindow.<anonymous> (extensions::nw.Window:217:47)
+    at dispatchEventIfExists (extensions::nw.Window:851:15)
+    at onDocumentStartEnd (extensions::nw.Window:879:5)
+index-1764599785411.js:93 [Analytics] Google Analytics script loaded successfully
+index-1764599785411.js:93 [Localization] API response received
+index-1764599785411.js:93 [Localization] Loaded 472 translations
+index-1764599785411.js:105 [useTVNavigation] Initializing TV navigation...
+tv-spatial-navigation.js?v=1761229987899:52 [TV Nav] Found 0 focusable elements
+index-1764599785411.js:105 [useTVNavigation] Initialization complete
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scaleFactor is0.5
+ripple.js:1 transformString istranslate(0px,0px) rotate(0deg) scale(1)
+ripple.js:1 scalePopupwindow called
+index.html:20 🔍 CSS CHECK: Starting verification...
+index.html:25 📄 CSS Links found: Object
+index.html:41 🎨 Tailwind Test Results: Object
+index.html:49 ✅ TAILWIND CSS: Working correctly!
+index.html:63 🎯 #root element styles: Object
+tv-spatial-navigation.js?v=1761229987899:52 [TV Nav] Found 0 focusable elements
+index-1764599785411.js:105 [Splash] ⏱️  Timer completed, checking onboarding status
+index-1764599785411.js:105 [Splash] ✅ Onboarding already completed, navigating to Discover
+index-1764599785411.js:120 [CountrySelector] Mapping countries, API returned: 0
+index-1764599785411.js:120 [CountrySelector] Mapped countries: 0
+index-1764599785411.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1764599785411.js:120 [CountrySelector] Filtered count: 1
+index-1764599785411.js:105 [Splash] 👋 Component unmounting
+index-1764599785411.js:120 [CountrySelector] Fetching countries...
+index-1764599785411.js:93 [API] getAllCountries: https://themegaradio.com/api/countries?tv=1
+index-1764599785411.js:120 [DiscoverNoUser] Fetching genres for country code: TN
+index-1764599785411.js:93 [API] getAllGenres: Filtering by country TN -> Tunisia
+index-1764599785411.js:93 [API] getAllGenres URL: https://themegaradio.com/api/genres?filters=%7B%22countrycode%22%3A%22Tunisia%22%2C%22searchQuery%22%3A%22%22%7D&limit=500&tv=1
+index-1764599785411.js:120 [DiscoverNoUser] Fetching popular stations for country: TN
+index-1764599785411.js:93 [API] getPopularStations: Converting TN -> Tunisia
+index-1764599785411.js:93 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=24&country=Tunisia&sort=votes&tv=1
+index-1764599785411.js:93 [API] getWorkingStations: Converting TN -> Tunisia
+index-1764599785411.js:93 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=60&country=Tunisia&tv=1
+index-1764599785411.js:120 [useFocusManager] 🎯 Initialized with: {totalItems: 6, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-1764599785411.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 6, cols: 1, row: 0, col: 0}
+index-1764599785411.js:105 [FocusRouter] Registering handler for route: /discover-no-user
+index-1764599785411.js:93 [API] getAllGenres response: 200
+index-1764599785411.js:93 [API] getAllGenres fetched: 28 genres (total: 28 )
+index-1764599785411.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 34, cols: 1, row: 0, col: 0}
+index-1764599785411.js:93 [API] getAllCountries response: 200
+index-1764599785411.js:93 [API] getAllCountries raw data type: array
+index-1764599785411.js:93 [API] getAllCountries fetched: 218
+index-1764599785411.js:120 [CountrySelector] Countries received: 218
+index-1764599785411.js:120 [CountrySelector] Mapping countries, API returned: 218
+index-1764599785411.js:120 [CountrySelector] Mapped countries: 218
+index-1764599785411.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1764599785411.js:120 [CountrySelector] Filtered count: 219
+index-1764599785411.js:120 [AutoPlay] Skipping auto-play (already played this session)
+index-1764599785411.js:93 [API] Response status: 200
+index-1764599785411.js:93 [API] getPopularStations fetched: 24 stations
+index-1764599785411.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 48, cols: 1, row: 0, col: 0}
+index-1764599785411.js:93 [API] Working stations fetched: 60 (offset: 0)
+index-1764599785411.js:120 [DiscoverNoUser] Country changed: Tunisia, initial fetch: 60 stations
+index-1764599785411.js:120 [DiscoverNoUser] Initial load: 60 stations, hasMore=false, nextOffset=100
+index-1764599785411.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 108, cols: 1, row: 0, col: 0}
+images%2FIMG_20240709_174018899.jpg:1 
+        
+        
+       GET https://firebasestorage.googleapis.com/v0/b/radiogalaxy-580f4.appspot.com/o/images%2FIMG_20240709_174018899.jpg?alt=media&token=2d5af3d7-cdfa-4610-9e1a-ccf60b3b923f 402 (Payment Required)
+Image (async)
+fh @ index-1764599785411.js:40
+dh @ index-1764599785411.js:40
+U0 @ index-1764599785411.js:40
+W0 @ index-1764599785411.js:40
+jo @ index-1764599785411.js:40
+mh @ index-1764599785411.js:40
+Bn @ index-1764599785411.js:38
+(anonymous) @ index-1764599785411.js:40
+setTimeout (async)
+r @ index-1764599785411.js:48
+i @ index-1764599785411.js:48
+batch @ index-1764599785411.js:48
+Ln @ index-1764599785411.js:48
+setData @ index-1764599785411.js:48
+onSuccess @ index-1764599785411.js:48
+d @ index-1764599785411.js:48
+Promise.then (async)
+w @ index-1764599785411.js:48
+start @ index-1764599785411.js:48
+fetch @ index-1764599785411.js:48
+ri @ index-1764599785411.js:48
+onSubscribe @ index-1764599785411.js:48
+subscribe @ index-1764599785411.js:48
+(anonymous) @ index-1764599785411.js:48
+yp @ index-1764599785411.js:38
+nl @ index-1764599785411.js:40
+Sr @ index-1764599785411.js:40
+W0 @ index-1764599785411.js:40
+jo @ index-1764599785411.js:40
+mh @ index-1764599785411.js:40
+Bn @ index-1764599785411.js:38
+(anonymous) @ index-1764599785411.js:40
+hashchange (async)
+Ly @ index-1764599785411.js:48
+(anonymous) @ index-1764599785411.js:48
+(anonymous) @ index-1764599785411.js:48
+(anonymous) @ index-1764599785411.js:105
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1764599785411.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1764599785411.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1764599785411.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 20, totalItems: 108, cols: 1, row: 20, col: 0}
+index-1764599785411.js:120 [Scroll] Same segment - NO SCROLL {section: 'genres', row: 0, segment: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1764599785411.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1764599785411.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1764599785411.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 6, totalItems: 108, cols: 1, row: 6, col: 0}col: 0cols: 1focusIndex: 6row: 6totalItems: 108[[Prototype]]: Object
+index-1764599785411.js:120 [Scroll] SEGMENT CHANGED - scrolling {section: 'popular', row: 0, segment: 0, targetScroll: 242}
