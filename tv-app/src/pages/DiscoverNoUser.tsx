@@ -29,11 +29,12 @@ export const DiscoverNoUser = (): JSX.Element => {
   const lastScrollY = useRef(0);
   
   // Infinite scroll state for country stations - TRUE INFINITE SCROLL with API
+  // LG TV Performance: Use smaller batches (60) for better rendering performance
+  const COUNTRY_BATCH_SIZE = 60; // Optimized for TV performance
   const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
   const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
-  const STATIONS_PER_LOAD = 100; // Fetch 100 stations per batch
 
   // Fetch ALL genres from API filtered by country (or global if GLOBAL selected)
   // CACHE: 7 days
@@ -67,17 +68,16 @@ export const DiscoverNoUser = (): JSX.Element => {
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
-  // Fetch initial 100 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
+  // Fetch initial 60 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
+  // LG TV Performance: Use 60 stations per batch for smoother rendering
   // CACHE: 7 days
   const { data: initialStationsData, isLoading: isInitialLoading } = useQuery({
-    queryKey: ['/api/stations/country/initial', selectedCountryCode],
+    queryKey: ['/api/stations/country/initial', selectedCountryCode, COUNTRY_BATCH_SIZE],
     queryFn: () => {
       if (selectedCountryCode === 'GLOBAL') {
-        console.log('[DiscoverNoUser] Fetching INITIAL 100 GLOBAL stations (no country filter), offset=0');
-        return megaRadioApi.getWorkingStations({ limit: 100, offset: 0 });
+        return megaRadioApi.getWorkingStations({ limit: COUNTRY_BATCH_SIZE, offset: 0 });
       }
-      console.log('[DiscoverNoUser] Fetching INITIAL 100 stations for country code:', selectedCountryCode, 'offset=0');
-      return megaRadioApi.getWorkingStations({ limit: 100, country: selectedCountryCode, offset: 0 });
+      return megaRadioApi.getWorkingStations({ limit: COUNTRY_BATCH_SIZE, country: selectedCountryCode, offset: 0 });
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
     gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -173,10 +173,14 @@ export const DiscoverNoUser = (): JSX.Element => {
         if (nextRow <= popularStationsEnd) {
           newIndex = nextRow;
         } else {
-          // Jump to country stations
-          newIndex = countryStationsStart + col;
-          if (newIndex >= totalItems) {
-            newIndex = totalItems - 1;
+          // Jump to country stations - FIX: Check if stations are loaded
+          if (displayedStations.length > 0) {
+            // Calculate target column, clamped to available stations
+            const targetCol = Math.min(col, displayedStations.length - 1);
+            newIndex = countryStationsStart + targetCol;
+          } else {
+            // Stations not loaded yet - stay at first country station position
+            newIndex = countryStationsStart;
           }
         }
       }
@@ -469,41 +473,37 @@ export const DiscoverNoUser = (): JSX.Element => {
   }, []);
 
   // TRUE INFINITE SCROLL - Fetch next batch from API using offset
+  // LG TV Performance: Use COUNTRY_BATCH_SIZE (60) for smoother loading
   const loadMoreCountryStations = async () => {
     if (isLoadingMore || !hasMoreCountryStations) {
-      console.log(`[DiscoverNoUser] Skipping load - isLoadingMore=${isLoadingMore}, hasMore=${hasMoreCountryStations}`);
       return;
     }
 
     setIsLoadingMore(true);
-    console.log(`[DiscoverNoUser] 🚀 Fetching next batch - offset=${currentOffset}, limit=100, country=${selectedCountryCode}`);
     
     try {
       const result = selectedCountryCode === 'GLOBAL'
         ? await megaRadioApi.getWorkingStations({ 
-            limit: 100, 
+            limit: COUNTRY_BATCH_SIZE, 
             offset: currentOffset 
           })
         : await megaRadioApi.getWorkingStations({ 
-            limit: 100, 
+            limit: COUNTRY_BATCH_SIZE, 
             country: selectedCountryCode, 
             offset: currentOffset 
           });
       
       const newStations = result.stations || [];
-      console.log(`[DiscoverNoUser] ✅ Fetched ${newStations.length} stations from API`);
       
       if (newStations.length > 0) {
         setDisplayedStations(prev => [...prev, ...newStations]);
-        setCurrentOffset(prev => prev + 100); // Increment offset for next fetch
+        setCurrentOffset(prev => prev + COUNTRY_BATCH_SIZE);
         
-        // If we got less than 100 stations, we've reached the end
-        const hasMore = newStations.length >= 100;
+        // If we got less than batch size, we've reached the end
+        const hasMore = newStations.length >= COUNTRY_BATCH_SIZE;
         setHasMoreCountryStations(hasMore);
-        console.log(`[DiscoverNoUser] After load: total=${displayedStations.length + newStations.length}, hasMore=${hasMore}, nextOffset=${currentOffset + 100}`);
       } else {
         setHasMoreCountryStations(false);
-        console.log('[DiscoverNoUser] No more stations available');
       }
     } catch (error) {
       console.error('[DiscoverNoUser] Failed to fetch more stations:', error);
@@ -536,7 +536,6 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       // Trigger load when within 1000px of bottom
       if (scrollHeight - scrollTop - clientHeight < 1000 && hasMoreCountryStations && !isLoadingMore) {
-        console.log('[DiscoverNoUser] 📜 Scroll trigger - loading more stations');
         loadMoreCountryStations();
       }
     };
@@ -554,13 +553,13 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       // If user is within last 14 items (2 rows × 7 columns), load more
       if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
-        console.log(`[DiscoverNoUser] 🎯 Focus trigger - user at station ${stationIndex}/${displayedStations.length}, loading more`);
         loadMoreCountryStations();
       }
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
   // Auto-scroll focused element into view - ONLY when element is outside visible area
+  // LG TV Performance: Use INSTANT scroll (no smooth animation) for better performance
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     
@@ -593,18 +592,13 @@ export const DiscoverNoUser = (): JSX.Element => {
     const visibleBottom = currentScrollTop + containerHeight - 200; // Add padding from bottom
     
     // Only scroll if element is OUTSIDE visible area
+    // Use 'auto' behavior for INSTANT scroll (better LG TV performance)
     if (elementTop < visibleTop) {
-      // Element is above visible area - scroll up
-      scrollContainer.scrollTo({
-        top: Math.max(0, elementTop - 100),
-        behavior: 'smooth'
-      });
+      // Element is above visible area - scroll up INSTANTLY
+      scrollContainer.scrollTop = Math.max(0, elementTop - 100);
     } else if (elementTop > visibleBottom) {
-      // Element is below visible area - scroll down
-      scrollContainer.scrollTo({
-        top: elementTop - containerHeight + 300,
-        behavior: 'smooth'
-      });
+      // Element is below visible area - scroll down INSTANTLY
+      scrollContainer.scrollTop = elementTop - containerHeight + 300;
     }
     // If element is within visible area, don't scroll at all
   }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart]);
