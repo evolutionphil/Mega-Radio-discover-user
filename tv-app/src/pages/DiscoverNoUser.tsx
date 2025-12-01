@@ -602,8 +602,9 @@ export const DiscoverNoUser = (): JSX.Element => {
   // CRITICAL: These values MUST align perfectly to show exactly 3 rows with NO partial rows
   const SCROLL_CONFIG = useMemo(() => ({
     ROW_HEIGHT: 280,           // Card height (240) + gap (40)
-    HEADER_HEIGHT: 180,        // Top section with genres
-    POPULAR_HEIGHT: 620,       // Popular stations section total (adjusted for clean alignment)
+    HEADER_HEIGHT: 242,        // Top section: logo + genres + "Popular" header
+    POPULAR_HEIGHT: 560,       // Popular stations: 2 rows × 280 = 560
+    COUNTRY_HEADER: 80,        // "More From X" header height
     ROWS_PER_SEGMENT: 3,       // Scroll 3 rows at a time
     COLUMNS: 7,                // Items per row
     VISIBLE_AREA: 840,         // Exactly 3 rows visible (280 * 3 = 840px)
@@ -617,24 +618,38 @@ export const DiscoverNoUser = (): JSX.Element => {
   });
   
   // Memoized scroll position calculator
+  // Key insight: Each segment shows EXACTLY 3 rows, aligned to ROW_HEIGHT boundaries
   const getScrollTarget = useCallback((section: string, rowInSection: number) => {
-    const { ROW_HEIGHT, HEADER_HEIGHT, POPULAR_HEIGHT, ROWS_PER_SEGMENT } = SCROLL_CONFIG;
+    const { ROW_HEIGHT, HEADER_HEIGHT, POPULAR_HEIGHT, COUNTRY_HEADER, ROWS_PER_SEGMENT } = SCROLL_CONFIG;
     
     if (section === 'genres') {
       return 0;
     }
     
     if (section === 'popular') {
-      // Popular section: segment-based scrolling
+      // Popular section: segment-based scrolling from header
       const segment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
       return HEADER_HEIGHT + (segment * ROWS_PER_SEGMENT * ROW_HEIGHT);
     }
     
     if (section === 'country') {
-      // Country section: segment-based scrolling with header offset
+      // Country section base: after header + popular stations + country header
+      // This positions "More From X" header at top of view
+      const countryBase = HEADER_HEIGHT + POPULAR_HEIGHT + COUNTRY_HEADER;
+      
+      // Segment-based offset: each segment = 3 rows
       const segment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
-      const countryHeaderOffset = HEADER_HEIGHT + POPULAR_HEIGHT - 60; // Show "More From X" header
-      return countryHeaderOffset + (segment * ROWS_PER_SEGMENT * ROW_HEIGHT);
+      const segmentOffset = segment * ROWS_PER_SEGMENT * ROW_HEIGHT;
+      
+      // For segment 0, show country header + first 3 rows
+      // For segment N, scroll to show rows (N*3) to (N*3+2) perfectly aligned
+      if (segment === 0) {
+        // Show "More From X" header + first 3 rows
+        return countryBase - COUNTRY_HEADER;
+      } else {
+        // Align segment start to visible area top
+        return countryBase + segmentOffset - COUNTRY_HEADER;
+      }
     }
     
     return 0;
