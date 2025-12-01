@@ -679,35 +679,46 @@ export const DiscoverNoUser = (): JSX.Element => {
       section = 'country';
       rowInSection = Math.floor((focusIndex - countryStationsStart) / COLUMNS);
     } else {
-      return; // Sidebar or unknown section - no scroll
+      return; // Unknown section
     }
     
     // Calculate current segment (0, 1, 2, ... where each segment = 3 rows)
-    const newSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
+    const currentSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
     
-    // *** KEY LOGIC: Only scroll if section OR segment changed ***
+    // Check if we need to scroll (section changed or segment changed)
     const sectionChanged = section !== state.lastSection;
-    const segmentChanged = newSegment !== state.currentSegment;
+    const segmentChanged = currentSegment !== state.currentSegment;
     
     if (!sectionChanged && !segmentChanged) {
-      // Same segment - NO SCROLL needed, just move focus within visible rows
-      console.log('[Scroll] Same segment - NO SCROLL', { section, row: rowInSection, segment: newSegment });
+      // No scroll needed - focus is within visible 3-row segment
       return;
     }
     
-    // Update tracking state
+    // Update state
     state.lastSection = section;
-    state.currentSegment = newSegment;
+    state.currentSegment = currentSegment;
+    
+    // Cancel any pending animation frame
+    if (state.pendingFrame) {
+      cancelAnimationFrame(state.pendingFrame);
+    }
     
     // Calculate target scroll position
     const targetScroll = getScrollTarget(section, rowInSection);
     
-    console.log('[Scroll] SEGMENT CHANGED - scrolling', { section, row: rowInSection, segment: newSegment, targetScroll });
-    
-    // Apply scroll with requestAnimationFrame
-    requestAnimationFrame(() => {
+    // Use requestAnimationFrame for smooth, jank-free scroll update
+    state.pendingFrame = requestAnimationFrame(() => {
       scrollContainer.scrollTop = targetScroll;
+      state.pendingFrame = null;
     });
+    
+    // Cleanup
+    return () => {
+      if (state.pendingFrame) {
+        cancelAnimationFrame(state.pendingFrame);
+        state.pendingFrame = null;
+      }
+    };
   }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, SCROLL_CONFIG, getScrollTarget]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
@@ -795,28 +806,22 @@ export const DiscoverNoUser = (): JSX.Element => {
       {/* Scrollable Content Area - Moves to top when header hides */}
       {/* STRUCTURE: Outer wrapper (overflow-hidden) clips view, inner div scrolls via JS */}
       <div 
-        className="absolute left-[162px] w-[1758px] overflow-hidden z-1"
+        ref={scrollContainerRef}
+        className="absolute left-[162px] w-[1758px] overflow-y-scroll overflow-x-hidden z-1 scrollbar-hide"
         style={{
           top: showHeader ? '242px' : '64px',
           height: showHeader ? '888px' : '1016px', // Exactly 3 rows (296px * 3 = 888px)
+          willChange: 'scroll-position',
+          contain: 'layout style',
+          scrollBehavior: 'auto', // Instant scroll, no smooth
         }}
       >
-        {/* Inner scrollable container - controlled only by JavaScript scrollTop */}
         <div 
-          ref={scrollContainerRef}
-          className="w-full h-full overflow-y-scroll overflow-x-hidden scrollbar-hide"
+          className="relative pb-[100px]"
           style={{
-            willChange: 'scroll-position',
-            contain: 'layout style',
-            scrollBehavior: 'auto', // Instant scroll, no smooth
+            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 364}px`
           }}
         >
-          <div 
-            className="relative pb-[100px]"
-            style={{
-              minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 364}px`
-            }}
-          >
         {/* Popular Genres Section */}
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
           {selectedCountryCode === 'GLOBAL' 
@@ -1015,7 +1020,6 @@ export const DiscoverNoUser = (): JSX.Element => {
             ✓ All {displayedStations.length} stations from {selectedCountry} loaded
           </div>
         )}
-          </div>
         </div>
       </div>
 
