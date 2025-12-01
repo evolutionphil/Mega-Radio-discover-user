@@ -628,8 +628,12 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
     
     if (section === 'popular') {
-      // Popular section: segment-based scrolling from header
+      // Popular section: first segment (rows 0-2) is already visible in viewport
+      // Only scroll for segment 1+
       const segment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
+      if (segment === 0) {
+        return 0; // First 3 rows already visible, don't scroll
+      }
       return HEADER_HEIGHT + (segment * ROWS_PER_SEGMENT * ROW_HEIGHT);
     }
     
