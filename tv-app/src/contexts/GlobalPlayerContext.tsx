@@ -25,6 +25,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const audioPlayerRef = useRef<any>(null);
   const metadataIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const screenLockActiveRef = useRef(false);
+  const lgVideoRef = useRef<HTMLVideoElement | null>(null);
   
   // Error recovery state
   const retryCountRef = useRef(0);
@@ -160,73 +161,115 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     };
   }, [currentStation, isPlaying]);
 
-  // Screensaver prevention - Samsung TV certification requirement
+  // Screensaver prevention - Samsung TV & LG webOS certification requirement
   useEffect(() => {
     const hasTizen = typeof (window as any).tizen !== 'undefined';
+    const hasWebOS = typeof (window as any).webOS !== 'undefined';
     
-    if (!hasTizen) {
-      console.log('[Screensaver] Not on Samsung TV - using Wake Lock API if available');
+    // LG webOS implementation - use hidden video loop trick
+    // Wake Lock API is NOT supported on LG webOS, so we play a 1x1 video
+    if (hasWebOS || (!hasTizen && !('wakeLock' in navigator))) {
+      console.log('[Screensaver] LG webOS detected - using hidden video trick');
       
-      // Use Web Wake Lock API for non-Samsung platforms (if supported)
-      if ('wakeLock' in navigator && isPlaying) {
-        let wakeLock: any = null;
+      if (isPlaying) {
+        // Create hidden video element if not exists
+        if (!lgVideoRef.current) {
+          const video = document.createElement('video');
+          video.id = 'lg-screensaver-prevent';
+          video.src = './assets/screensaver-prevent.mp4';
+          video.loop = true;
+          video.muted = true;
+          video.playsInline = true;
+          video.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-9999;';
+          document.body.appendChild(video);
+          lgVideoRef.current = video;
+          console.log('[Screensaver] ✅ LG hidden video element created');
+        }
         
-        const requestWakeLock = async () => {
-          try {
-            wakeLock = await (navigator as any).wakeLock.request('screen');
-            console.log('[Screensaver] Wake Lock acquired (Web API)');
-            
-            wakeLock.addEventListener('release', () => {
-              console.log('[Screensaver] Wake Lock released (Web API)');
-            });
-          } catch (err) {
-            console.log('[Screensaver] Wake Lock request failed:', err);
-          }
-        };
-        
-        requestWakeLock();
-        
-        return () => {
-          if (wakeLock) {
-            wakeLock.release();
-          }
-        };
+        // Play the hidden video
+        lgVideoRef.current.play().then(() => {
+          console.log('[Screensaver] ✅ LG hidden video playing - screensaver prevented');
+        }).catch((err) => {
+          console.warn('[Screensaver] LG hidden video play failed:', err);
+        });
+      } else {
+        // Pause the hidden video when audio stops
+        if (lgVideoRef.current) {
+          lgVideoRef.current.pause();
+          console.log('[Screensaver] ✅ LG hidden video paused');
+        }
       }
-      return;
+      
+      return () => {
+        if (lgVideoRef.current) {
+          lgVideoRef.current.pause();
+          lgVideoRef.current.remove();
+          lgVideoRef.current = null;
+          console.log('[Screensaver] ✅ LG hidden video removed (cleanup)');
+        }
+      };
+    }
+    
+    // Non-TV browsers - use Wake Lock API if available
+    if (!hasTizen && 'wakeLock' in navigator && isPlaying) {
+      let wakeLock: any = null;
+      
+      const requestWakeLock = async () => {
+        try {
+          wakeLock = await (navigator as any).wakeLock.request('screen');
+          console.log('[Screensaver] Wake Lock acquired (Web API)');
+          
+          wakeLock.addEventListener('release', () => {
+            console.log('[Screensaver] Wake Lock released (Web API)');
+          });
+        } catch (err) {
+          console.log('[Screensaver] Wake Lock request failed:', err);
+        }
+      };
+      
+      requestWakeLock();
+      
+      return () => {
+        if (wakeLock) {
+          wakeLock.release();
+        }
+      };
     }
     
     // Samsung Tizen implementation
-    if (isPlaying && !screenLockActiveRef.current) {
-      try {
-        (window as any).tizen.power.request('SCREEN', 'SCREEN_NORMAL');
-        screenLockActiveRef.current = true;
-        console.log('[Screensaver] ✅ Screen lock requested (playing)');
-      } catch (err) {
-        console.warn('[Screensaver] Failed to request screen lock:', err);
-        trackError('Failed to request screen lock', 'screensaverPrevention');
-      }
-    } else if (!isPlaying && screenLockActiveRef.current) {
-      try {
-        (window as any).tizen.power.release('SCREEN');
-        screenLockActiveRef.current = false;
-        console.log('[Screensaver] ✅ Screen lock released (paused/stopped)');
-      } catch (err) {
-        console.warn('[Screensaver] Failed to release screen lock:', err);
-      }
-    }
-    
-    // Cleanup on unmount
-    return () => {
-      if (screenLockActiveRef.current && hasTizen) {
+    if (hasTizen) {
+      if (isPlaying && !screenLockActiveRef.current) {
+        try {
+          (window as any).tizen.power.request('SCREEN', 'SCREEN_NORMAL');
+          screenLockActiveRef.current = true;
+          console.log('[Screensaver] ✅ Screen lock requested (Samsung)');
+        } catch (err) {
+          console.warn('[Screensaver] Failed to request screen lock:', err);
+          trackError('Failed to request screen lock', 'screensaverPrevention');
+        }
+      } else if (!isPlaying && screenLockActiveRef.current) {
         try {
           (window as any).tizen.power.release('SCREEN');
           screenLockActiveRef.current = false;
-          console.log('[Screensaver] ✅ Screen lock released (cleanup)');
+          console.log('[Screensaver] ✅ Screen lock released (Samsung)');
         } catch (err) {
-          console.warn('[Screensaver] Cleanup failed:', err);
+          console.warn('[Screensaver] Failed to release screen lock:', err);
         }
       }
-    };
+      
+      // Cleanup on unmount
+      return () => {
+        if (screenLockActiveRef.current) {
+          try {
+            (window as any).tizen.power.release('SCREEN');
+            screenLockActiveRef.current = false;
+            console.log('[Screensaver] ✅ Screen lock released (cleanup)');
+          } catch (err) {
+            console.warn('[Screensaver] Cleanup failed:', err);
+          }
+        }
+      };
+    }
   }, [isPlaying]);
 
   const playStation = (station: Station) => {
