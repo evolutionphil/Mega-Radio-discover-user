@@ -600,14 +600,15 @@ export const DiscoverNoUser = (): JSX.Element => {
   
   // Fixed layout constants (pre-computed, no DOM queries needed)
   // CRITICAL: These values MUST align perfectly to show exactly 3 rows with NO partial rows
+  // Measured from actual rendered DOM: card=240px + padding/margin=40px + gap=16px = 296px per row
   const SCROLL_CONFIG = useMemo(() => ({
-    ROW_HEIGHT: 280,           // Card height (240) + gap (40)
-    HEADER_HEIGHT: 242,        // Top section: logo + genres + "Popular" header
-    POPULAR_HEIGHT: 560,       // Popular stations: 2 rows × 280 = 560
+    ROW_HEIGHT: 296,           // Actual card footprint: 240px card + 40px padding + 16px gap
+    HEADER_HEIGHT: 242,        // Top section: logo + genres + "Popular" header  
+    POPULAR_HEIGHT: 592,       // Popular stations: 2 rows × 296 = 592
     COUNTRY_HEADER: 80,        // "More From X" header height
     ROWS_PER_SEGMENT: 3,       // Scroll 3 rows at a time
     COLUMNS: 7,                // Items per row
-    VISIBLE_AREA: 840,         // Exactly 3 rows visible (280 * 3 = 840px)
+    VISIBLE_AREA: 888,         // Exactly 3 rows visible (296 * 3 = 888px)
   }), []);
   
   // Track current scroll segment to avoid unnecessary updates
@@ -655,11 +656,12 @@ export const DiscoverNoUser = (): JSX.Element => {
     return 0;
   }, [SCROLL_CONFIG]);
   
-  // Optimized scroll effect - only runs when segment changes
+  // SEGMENT-BASED SCROLL - Only scrolls when segment boundary is crossed
+  // Within a segment (3 rows), navigation moves focus but does NOT scroll
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     
-    const { COLUMNS, ROWS_PER_SEGMENT, HEADER_HEIGHT, POPULAR_HEIGHT } = SCROLL_CONFIG;
+    const { COLUMNS, ROWS_PER_SEGMENT } = SCROLL_CONFIG;
     const scrollContainer = scrollContainerRef.current;
     const state = scrollStateRef.current;
     
@@ -677,46 +679,35 @@ export const DiscoverNoUser = (): JSX.Element => {
       section = 'country';
       rowInSection = Math.floor((focusIndex - countryStationsStart) / COLUMNS);
     } else {
-      return; // Unknown section
+      return; // Sidebar or unknown section - no scroll
     }
     
     // Calculate current segment (0, 1, 2, ... where each segment = 3 rows)
-    const currentSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
+    const newSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
     
-    // Check if we need to scroll (section changed or segment changed)
+    // *** KEY LOGIC: Only scroll if section OR segment changed ***
     const sectionChanged = section !== state.lastSection;
-    const segmentChanged = currentSegment !== state.currentSegment;
+    const segmentChanged = newSegment !== state.currentSegment;
     
     if (!sectionChanged && !segmentChanged) {
-      // No scroll needed - focus is within visible 3-row segment
+      // Same segment - NO SCROLL needed, just move focus within visible rows
+      console.log('[Scroll] Same segment - NO SCROLL', { section, row: rowInSection, segment: newSegment });
       return;
     }
     
-    // Update state
+    // Update tracking state
     state.lastSection = section;
-    state.currentSegment = currentSegment;
-    
-    // Cancel any pending animation frame
-    if (state.pendingFrame) {
-      cancelAnimationFrame(state.pendingFrame);
-    }
+    state.currentSegment = newSegment;
     
     // Calculate target scroll position
     const targetScroll = getScrollTarget(section, rowInSection);
     
-    // Use requestAnimationFrame for smooth, jank-free scroll update
-    state.pendingFrame = requestAnimationFrame(() => {
-      scrollContainer.scrollTop = targetScroll;
-      state.pendingFrame = null;
-    });
+    console.log('[Scroll] SEGMENT CHANGED - scrolling', { section, row: rowInSection, segment: newSegment, targetScroll });
     
-    // Cleanup
-    return () => {
-      if (state.pendingFrame) {
-        cancelAnimationFrame(state.pendingFrame);
-        state.pendingFrame = null;
-      }
-    };
+    // Apply scroll with requestAnimationFrame
+    requestAnimationFrame(() => {
+      scrollContainer.scrollTop = targetScroll;
+    });
   }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, SCROLL_CONFIG, getScrollTarget]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
