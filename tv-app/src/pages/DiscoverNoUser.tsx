@@ -641,11 +641,11 @@ export const DiscoverNoUser = (): JSX.Element => {
       // For segment 0, show country header + first 3 rows
       // For segment N, scroll to show rows (N*3) to (N*3+2) perfectly aligned
       if (segment === 0) {
-        // Show "More From X" header perfectly, aligned to top of visible area
-        return HEADER_HEIGHT + POPULAR_HEIGHT;
+        // Show "More From X" header perfectly aligned at top, completely hiding Popular section
+        return HEADER_HEIGHT + POPULAR_HEIGHT + 16; // +16px to fully hide Popular section tail
       } else {
         // Country section starts after header + popular: scroll to segment position
-        const countryBase = HEADER_HEIGHT + POPULAR_HEIGHT;
+        const countryBase = HEADER_HEIGHT + POPULAR_HEIGHT + 16;
         return countryBase + segmentOffset;
       }
     }
