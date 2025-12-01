@@ -558,74 +558,117 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
-  // Auto-scroll focused element into view - ONLY when element is outside visible area
-  // LG TV Performance: Use INSTANT scroll (no smooth animation) for better performance
-  // When entering a NEW SECTION, show section header + 3 rows at once
-  const prevFocusRef = useRef(focusIndex);
+  // ============================================================================
+  // OPTIMIZED TV SCROLL CONTROLLER
+  // - Uses 3-row segments for chunk scrolling
+  // - requestAnimationFrame for jank-free updates
+  // - Pre-computed offsets (no DOM queries per keypress)
+  // - Section-aware transitions
+  // ============================================================================
   
+  // Fixed layout constants (pre-computed, no DOM queries needed)
+  const SCROLL_CONFIG = useMemo(() => ({
+    ROW_HEIGHT: 280,           // Card height (240) + gap (40)
+    HEADER_HEIGHT: 180,        // Top section with genres
+    POPULAR_HEIGHT: 600,       // Popular stations section total
+    ROWS_PER_SEGMENT: 3,       // Scroll 3 rows at a time
+    COLUMNS: 7,                // Items per row
+  }), []);
+  
+  // Track current scroll segment to avoid unnecessary updates
+  const scrollStateRef = useRef({
+    currentSegment: 0,
+    lastSection: 'genres' as 'genres' | 'popular' | 'country',
+    pendingFrame: null as number | null,
+  });
+  
+  // Memoized scroll position calculator
+  const getScrollTarget = useCallback((section: string, rowInSection: number) => {
+    const { ROW_HEIGHT, HEADER_HEIGHT, POPULAR_HEIGHT, ROWS_PER_SEGMENT } = SCROLL_CONFIG;
+    
+    if (section === 'genres') {
+      return 0;
+    }
+    
+    if (section === 'popular') {
+      // Popular section: segment-based scrolling
+      const segment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
+      return HEADER_HEIGHT + (segment * ROWS_PER_SEGMENT * ROW_HEIGHT);
+    }
+    
+    if (section === 'country') {
+      // Country section: segment-based scrolling with header offset
+      const segment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
+      const countryHeaderOffset = HEADER_HEIGHT + POPULAR_HEIGHT - 60; // Show "More From X" header
+      return countryHeaderOffset + (segment * ROWS_PER_SEGMENT * ROW_HEIGHT);
+    }
+    
+    return 0;
+  }, [SCROLL_CONFIG]);
+  
+  // Optimized scroll effect - only runs when segment changes
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     
+    const { COLUMNS, ROWS_PER_SEGMENT, HEADER_HEIGHT, POPULAR_HEIGHT } = SCROLL_CONFIG;
     const scrollContainer = scrollContainerRef.current;
-    const containerHeight = scrollContainer.clientHeight;
-    const currentScrollTop = scrollContainer.scrollTop;
-    const prevFocus = prevFocusRef.current;
+    const state = scrollStateRef.current;
     
-    // Calculate target element's position
-    const rowHeight = 294; // Station card row height including gap
-    const headerHeight = 180; // Header/genres section height
-    const popularSectionHeight = 600; // Popular stations section total height
-    
-    // Detect section transition: Popular → Country
-    const wasInPopular = prevFocus >= popularStationsStart && prevFocus <= popularStationsEnd;
-    const isInCountry = focusIndex >= countryStationsStart;
-    const enteredCountrySection = wasInPopular && isInCountry;
-    
-    // Update prev focus ref
-    prevFocusRef.current = focusIndex;
-    
-    // Determine element position based on focused section
-    let elementTop = 0;
-    let sectionTop = 0; // For section-based scrolling
+    // Determine current section and row
+    let section: 'genres' | 'popular' | 'country';
+    let rowInSection: number;
     
     if (focusIndex >= genresStart && focusIndex <= genresEnd) {
-      // Genres section - always at top
-      elementTop = 0;
-      sectionTop = 0;
+      section = 'genres';
+      rowInSection = 0;
     } else if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
-      // Popular stations section
-      const row = Math.floor((focusIndex - popularStationsStart) / 7);
-      elementTop = headerHeight + (row * rowHeight);
-      sectionTop = 0; // Show from top when entering popular
+      section = 'popular';
+      rowInSection = Math.floor((focusIndex - popularStationsStart) / COLUMNS);
     } else if (focusIndex >= countryStationsStart) {
-      // Country stations section
-      const row = Math.floor((focusIndex - countryStationsStart) / 7);
-      elementTop = headerHeight + popularSectionHeight + (row * rowHeight);
-      // Section top = where "More From Country" header starts
-      sectionTop = headerHeight + popularSectionHeight - 100; // Show header + 3 rows
+      section = 'country';
+      rowInSection = Math.floor((focusIndex - countryStationsStart) / COLUMNS);
+    } else {
+      return; // Unknown section
     }
     
-    // SECTION TRANSITION: When entering Country section, scroll to show header + 3 rows
-    if (enteredCountrySection) {
-      scrollContainer.scrollTop = sectionTop;
+    // Calculate current segment (0, 1, 2, ... where each segment = 3 rows)
+    const currentSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
+    
+    // Check if we need to scroll (section changed or segment changed)
+    const sectionChanged = section !== state.lastSection;
+    const segmentChanged = currentSegment !== state.currentSegment;
+    
+    if (!sectionChanged && !segmentChanged) {
+      // No scroll needed - focus is within visible 3-row segment
       return;
     }
     
-    // Calculate visible boundaries with padding
-    const visibleTop = currentScrollTop + 100; // Add padding from top
-    const visibleBottom = currentScrollTop + containerHeight - 200; // Add padding from bottom
+    // Update state
+    state.lastSection = section;
+    state.currentSegment = currentSegment;
     
-    // Only scroll if element is OUTSIDE visible area
-    // Use direct property assignment for INSTANT scroll (better LG TV performance)
-    if (elementTop < visibleTop) {
-      // Element is above visible area - scroll up INSTANTLY
-      scrollContainer.scrollTop = Math.max(0, elementTop - 100);
-    } else if (elementTop > visibleBottom) {
-      // Element is below visible area - scroll down INSTANTLY
-      scrollContainer.scrollTop = elementTop - containerHeight + 300;
+    // Cancel any pending animation frame
+    if (state.pendingFrame) {
+      cancelAnimationFrame(state.pendingFrame);
     }
-    // If element is within visible area, don't scroll at all
-  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart]);
+    
+    // Calculate target scroll position
+    const targetScroll = getScrollTarget(section, rowInSection);
+    
+    // Use requestAnimationFrame for smooth, jank-free scroll update
+    state.pendingFrame = requestAnimationFrame(() => {
+      scrollContainer.scrollTop = targetScroll;
+      state.pendingFrame = null;
+    });
+    
+    // Cleanup
+    return () => {
+      if (state.pendingFrame) {
+        cancelAnimationFrame(state.pendingFrame);
+        state.pendingFrame = null;
+      }
+    };
+  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, SCROLL_CONFIG, getScrollTarget]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
@@ -710,12 +753,15 @@ export const DiscoverNoUser = (): JSX.Element => {
       <Sidebar activePage="discover" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
       {/* Scrollable Content Area - Moves to top when header hides */}
+      {/* CSS Optimizations for TV: will-change for GPU acceleration, no transitions during scroll */}
       <div 
         ref={scrollContainerRef}
-        className="absolute left-[162px] w-[1758px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide transition-all duration-300 ease-in-out"
+        className="absolute left-[162px] w-[1758px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide"
         style={{
           top: showHeader ? '242px' : '64px',
-          height: showHeader ? '838px' : '1016px'
+          height: showHeader ? '838px' : '1016px',
+          willChange: 'scroll-position',
+          contain: 'layout style',
         }}
       >
         <div 
