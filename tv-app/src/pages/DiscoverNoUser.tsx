@@ -560,31 +560,55 @@ export const DiscoverNoUser = (): JSX.Element => {
 
   // Auto-scroll focused element into view - ONLY when element is outside visible area
   // LG TV Performance: Use INSTANT scroll (no smooth animation) for better performance
+  // When entering a NEW SECTION, show section header + 3 rows at once
+  const prevFocusRef = useRef(focusIndex);
+  
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     
     const scrollContainer = scrollContainerRef.current;
     const containerHeight = scrollContainer.clientHeight;
     const currentScrollTop = scrollContainer.scrollTop;
+    const prevFocus = prevFocusRef.current;
     
     // Calculate target element's position
-    let elementTop = 0;
     const rowHeight = 294; // Station card row height including gap
     const headerHeight = 180; // Header/genres section height
+    const popularSectionHeight = 600; // Popular stations section total height
+    
+    // Detect section transition: Popular → Country
+    const wasInPopular = prevFocus >= popularStationsStart && prevFocus <= popularStationsEnd;
+    const isInCountry = focusIndex >= countryStationsStart;
+    const enteredCountrySection = wasInPopular && isInCountry;
+    
+    // Update prev focus ref
+    prevFocusRef.current = focusIndex;
     
     // Determine element position based on focused section
+    let elementTop = 0;
+    let sectionTop = 0; // For section-based scrolling
+    
     if (focusIndex >= genresStart && focusIndex <= genresEnd) {
       // Genres section - always at top
       elementTop = 0;
+      sectionTop = 0;
     } else if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
       // Popular stations section
       const row = Math.floor((focusIndex - popularStationsStart) / 7);
       elementTop = headerHeight + (row * rowHeight);
+      sectionTop = 0; // Show from top when entering popular
     } else if (focusIndex >= countryStationsStart) {
       // Country stations section
       const row = Math.floor((focusIndex - countryStationsStart) / 7);
-      // Popular stations takes about 2 rows (400px) + genres header
-      elementTop = headerHeight + 400 + (row * rowHeight);
+      elementTop = headerHeight + popularSectionHeight + (row * rowHeight);
+      // Section top = where "More From Country" header starts
+      sectionTop = headerHeight + popularSectionHeight - 100; // Show header + 3 rows
+    }
+    
+    // SECTION TRANSITION: When entering Country section, scroll to show header + 3 rows
+    if (enteredCountrySection) {
+      scrollContainer.scrollTop = sectionTop;
+      return;
     }
     
     // Calculate visible boundaries with padding
@@ -592,7 +616,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     const visibleBottom = currentScrollTop + containerHeight - 200; // Add padding from bottom
     
     // Only scroll if element is OUTSIDE visible area
-    // Use 'auto' behavior for INSTANT scroll (better LG TV performance)
+    // Use direct property assignment for INSTANT scroll (better LG TV performance)
     if (elementTop < visibleTop) {
       // Element is above visible area - scroll up INSTANTLY
       scrollContainer.scrollTop = Math.max(0, elementTop - 100);
