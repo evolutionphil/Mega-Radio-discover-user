@@ -560,31 +560,53 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
-  // Auto-scroll focused element into view
+  // Auto-scroll focused element into view - ONLY when element is outside visible area
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     
     const scrollContainer = scrollContainerRef.current;
-    let scrollTarget = 0;
-
-    // Determine scroll position based on focused section
+    const containerHeight = scrollContainer.clientHeight;
+    const currentScrollTop = scrollContainer.scrollTop;
+    
+    // Calculate target element's position
+    let elementTop = 0;
+    const rowHeight = 294; // Station card row height including gap
+    const headerHeight = 180; // Header/genres section height
+    
+    // Determine element position based on focused section
     if (focusIndex >= genresStart && focusIndex <= genresEnd) {
-      // Genres section at top
-      scrollTarget = 0;
+      // Genres section - always at top
+      elementTop = 0;
     } else if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
       // Popular stations section
       const row = Math.floor((focusIndex - popularStationsStart) / 7);
-      scrollTarget = 180 + (row * 294); // Base offset + row height
+      elementTop = headerHeight + (row * rowHeight);
     } else if (focusIndex >= countryStationsStart) {
       // Country stations section
       const row = Math.floor((focusIndex - countryStationsStart) / 7);
-      scrollTarget = 600 + (row * 294); // Popular stations end + row height
+      // Popular stations takes about 2 rows (400px) + genres header
+      elementTop = headerHeight + 400 + (row * rowHeight);
     }
-
-    scrollContainer.scrollTo({
-      top: scrollTarget,
-      behavior: 'smooth'
-    });
+    
+    // Calculate visible boundaries with padding
+    const visibleTop = currentScrollTop + 100; // Add padding from top
+    const visibleBottom = currentScrollTop + containerHeight - 200; // Add padding from bottom
+    
+    // Only scroll if element is OUTSIDE visible area
+    if (elementTop < visibleTop) {
+      // Element is above visible area - scroll up
+      scrollContainer.scrollTo({
+        top: Math.max(0, elementTop - 100),
+        behavior: 'smooth'
+      });
+    } else if (elementTop > visibleBottom) {
+      // Element is below visible area - scroll down
+      scrollContainer.scrollTo({
+        top: elementTop - containerHeight + 300,
+        behavior: 'smooth'
+      });
+    }
+    // If element is within visible area, don't scroll at all
   }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
