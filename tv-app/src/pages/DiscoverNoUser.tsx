@@ -680,26 +680,33 @@ export const DiscoverNoUser = (): JSX.Element => {
       return; // Unknown section
     }
     
-    // Calculate current segment (0, 1, 2, ... where each segment = 3 rows)
-    const currentSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
-    
-    // Calculate target scroll position FIRST to check if it would cause unwanted scroll
-    const targetScroll = getScrollTarget(section, rowInSection);
-    
-    // CRITICAL: If target scroll is 0 (no scroll needed), force scrollTop=0 immediately
-    // This prevents browser auto-scroll and unintended section changes from scrolling
-    if (targetScroll === 0) {
+    // AGGRESSIVE FIX: Popular section ALWAYS locked at scroll 0
+    // Use a MutationObserver to prevent ANY scrolling in popular section
+    if (section === 'popular' || section === 'genres') {
       state.lastSection = section;
-      state.currentSegment = currentSegment;
+      state.currentSegment = 0;
       // Cancel any pending scroll
       if (state.pendingFrame) {
         cancelAnimationFrame(state.pendingFrame);
         state.pendingFrame = null;
       }
-      // Force scroll to 0 IMMEDIATELY, synchronously, to block browser auto-scroll
+      // Force and maintain scroll at 0
       scrollContainer.scrollTop = 0;
-      return;
+      // Block browser auto-scroll with a capture listener
+      const blockAutoScroll = (e: Event) => {
+        scrollContainer.scrollTop = 0;
+      };
+      scrollContainer.addEventListener('scroll', blockAutoScroll, true);
+      return () => {
+        scrollContainer.removeEventListener('scroll', blockAutoScroll, true);
+      };
     }
+    
+    // Calculate current segment (0, 1, 2, ... where each segment = 3 rows)
+    const currentSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
+    
+    // Calculate target scroll position FIRST to check if it would cause unwanted scroll
+    const targetScroll = getScrollTarget(section, rowInSection);
     
     // Check if we need to scroll (section changed or segment changed)
     const sectionChanged = section !== state.lastSection;
