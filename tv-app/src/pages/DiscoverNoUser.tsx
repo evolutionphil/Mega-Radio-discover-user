@@ -687,14 +687,6 @@ export const DiscoverNoUser = (): JSX.Element => {
     // Calculate current segment (0, 1, 2, ... where each segment = 3 rows)
     const currentSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
     
-    // CRITICAL: Popular section segment 0 (Popular Genres + Popular Stations) is always visible
-    // Don't scroll even if moving between genres and popular stations (section changes)
-    if (section === 'popular' && currentSegment === 0) {
-      state.lastSection = section;
-      state.currentSegment = currentSegment;
-      return; // Popular segment 0 already visible - no scroll needed
-    }
-    
     // Check if we need to scroll (section changed or segment changed)
     const sectionChanged = section !== state.lastSection;
     const segmentChanged = currentSegment !== state.currentSegment;
