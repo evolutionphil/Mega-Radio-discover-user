@@ -567,12 +567,14 @@ export const DiscoverNoUser = (): JSX.Element => {
   // ============================================================================
   
   // Fixed layout constants (pre-computed, no DOM queries needed)
+  // CRITICAL: These values MUST align perfectly to show exactly 3 rows with NO partial rows
   const SCROLL_CONFIG = useMemo(() => ({
     ROW_HEIGHT: 280,           // Card height (240) + gap (40)
     HEADER_HEIGHT: 180,        // Top section with genres
-    POPULAR_HEIGHT: 600,       // Popular stations section total
+    POPULAR_HEIGHT: 620,       // Popular stations section total (adjusted for clean alignment)
     ROWS_PER_SEGMENT: 3,       // Scroll 3 rows at a time
     COLUMNS: 7,                // Items per row
+    VISIBLE_AREA: 840,         // Exactly 3 rows visible (280 * 3 = 840px)
   }), []);
   
   // Track current scroll segment to avoid unnecessary updates
@@ -753,13 +755,13 @@ export const DiscoverNoUser = (): JSX.Element => {
       <Sidebar activePage="discover" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
       {/* Scrollable Content Area - Moves to top when header hides */}
-      {/* CSS Optimizations for TV: will-change for GPU acceleration, no transitions during scroll */}
+      {/* CSS Optimizations for TV: will-change for GPU acceleration, overflow hidden to prevent partial rows */}
       <div 
         ref={scrollContainerRef}
-        className="absolute left-[162px] w-[1758px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide"
+        className="absolute left-[162px] w-[1758px] overflow-y-scroll overflow-x-hidden z-1 scrollbar-hide"
         style={{
           top: showHeader ? '242px' : '64px',
-          height: showHeader ? '838px' : '1016px',
+          height: showHeader ? '840px' : '1016px', // Exactly 3 rows (280px * 3 = 840px)
           willChange: 'scroll-position',
           contain: 'layout style',
         }}
