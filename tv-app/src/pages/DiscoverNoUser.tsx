@@ -687,6 +687,22 @@ export const DiscoverNoUser = (): JSX.Element => {
     // Calculate current segment (0, 1, 2, ... where each segment = 3 rows)
     const currentSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
     
+    // Calculate target scroll position FIRST to check if it would cause unwanted scroll
+    const targetScroll = getScrollTarget(section, rowInSection);
+    
+    // CRITICAL: If target scroll is 0 (no scroll needed), always skip RAF and return immediately
+    // This prevents browser auto-scroll and unintended section changes from scrolling
+    if (targetScroll === 0) {
+      state.lastSection = section;
+      state.currentSegment = currentSegment;
+      // Cancel any pending scroll
+      if (state.pendingFrame) {
+        cancelAnimationFrame(state.pendingFrame);
+        state.pendingFrame = null;
+      }
+      return;
+    }
+    
     // Check if we need to scroll (section changed or segment changed)
     const sectionChanged = section !== state.lastSection;
     const segmentChanged = currentSegment !== state.currentSegment;
@@ -704,9 +720,6 @@ export const DiscoverNoUser = (): JSX.Element => {
     if (state.pendingFrame) {
       cancelAnimationFrame(state.pendingFrame);
     }
-    
-    // Calculate target scroll position
-    const targetScroll = getScrollTarget(section, rowInSection);
     
     // Use requestAnimationFrame for smooth, jank-free scroll update
     state.pendingFrame = requestAnimationFrame(() => {
