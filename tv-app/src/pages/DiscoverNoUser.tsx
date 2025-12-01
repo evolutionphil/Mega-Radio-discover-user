@@ -634,10 +634,6 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
     
     if (section === 'country') {
-      // Country section base: after header + popular stations + country header
-      // This positions "More From X" header at top of view
-      const countryBase = HEADER_HEIGHT + POPULAR_HEIGHT + COUNTRY_HEADER;
-      
       // Segment-based offset: each segment = 3 rows
       const segment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
       const segmentOffset = segment * ROWS_PER_SEGMENT * ROW_HEIGHT;
@@ -645,11 +641,12 @@ export const DiscoverNoUser = (): JSX.Element => {
       // For segment 0, show country header + first 3 rows
       // For segment N, scroll to show rows (N*3) to (N*3+2) perfectly aligned
       if (segment === 0) {
-        // Show "More From X" header + first 3 rows
-        return countryBase - COUNTRY_HEADER;
+        // Show "More From X" header perfectly, aligned to top of visible area
+        return HEADER_HEIGHT + POPULAR_HEIGHT;
       } else {
-        // Align segment start to visible area top
-        return countryBase + segmentOffset - COUNTRY_HEADER;
+        // Country section starts after header + popular: scroll to segment position
+        const countryBase = HEADER_HEIGHT + POPULAR_HEIGHT;
+        return countryBase + segmentOffset;
       }
     }
     
