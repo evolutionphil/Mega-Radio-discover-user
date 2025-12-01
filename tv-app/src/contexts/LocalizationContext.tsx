@@ -184,15 +184,72 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // English fallback dictionary for common UI strings
+  const ENGLISH_FALLBACKS: Record<string, string> = {
+    // Navigation
+    'nav_discover': 'Discover',
+    'nav_genres': 'Genres',
+    'nav_search': 'Search',
+    'nav_favorites': 'Favorites',
+    'nav_settings': 'Settings',
+    // Common UI
+    'popular_genres': 'Popular Genres',
+    'popular_stations': 'Popular Stations',
+    'homepage_popular_stations': 'Popular Stations',
+    'more_from': 'More From',
+    'loading': 'Loading...',
+    'loading_more_stations': 'Loading more stations...',
+    'no_results': 'No results found',
+    'search_placeholder': 'Search stations...',
+    'now_playing': 'Now Playing',
+    'station_info': 'Station Info',
+    'similar_stations': 'Similar Stations',
+    'add_to_favorites': 'Add to Favorites',
+    'remove_from_favorites': 'Remove from Favorites',
+    'play': 'Play',
+    'pause': 'Pause',
+    'stop': 'Stop',
+    'back': 'Back',
+    'next': 'Next',
+    'previous': 'Previous',
+    'settings': 'Settings',
+    'language': 'Language',
+    'country': 'Country',
+    'auto_play': 'Auto Play',
+    'about': 'About',
+    'version': 'Version',
+    'exit': 'Exit',
+    'exit_app': 'Exit App',
+    'exit_confirm': 'Are you sure you want to exit?',
+    'yes': 'Yes',
+    'no': 'No',
+    'cancel': 'Cancel',
+    'ok': 'OK',
+    'error': 'Error',
+    'retry': 'Retry',
+    'no_internet': 'No Internet Connection',
+    'check_connection': 'Please check your network connection',
+    'all': 'All',
+    'stations': 'Stations',
+    'genres': 'Genres',
+    'favorites': 'Favorites',
+    'no_favorites': 'No favorites yet',
+    'add_favorites_hint': 'Add stations to your favorites to see them here',
+  };
+
   // Translation function with fallback
   const t = (key: string): string => {
-    // Return translation if exists
+    // Return translation if exists from API
     if (translations[key]) {
       return translations[key];
     }
     
-    // Fallback to English-friendly version of the key
-    // Convert snake_case or key names to Title Case
+    // Check English fallback dictionary
+    if (ENGLISH_FALLBACKS[key]) {
+      return ENGLISH_FALLBACKS[key];
+    }
+    
+    // Last resort: Convert snake_case to Title Case
     const fallback = key
       .replace(/_/g, ' ')
       .replace(/\b\w/g, char => char.toUpperCase())
