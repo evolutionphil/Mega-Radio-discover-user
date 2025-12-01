@@ -686,7 +686,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     // Calculate target scroll position FIRST to check if it would cause unwanted scroll
     const targetScroll = getScrollTarget(section, rowInSection);
     
-    // CRITICAL: If target scroll is 0 (no scroll needed), always skip RAF and return immediately
+    // CRITICAL: If target scroll is 0 (no scroll needed), force scrollTop=0 immediately
     // This prevents browser auto-scroll and unintended section changes from scrolling
     if (targetScroll === 0) {
       state.lastSection = section;
@@ -696,6 +696,8 @@ export const DiscoverNoUser = (): JSX.Element => {
         cancelAnimationFrame(state.pendingFrame);
         state.pendingFrame = null;
       }
+      // Force scroll to 0 IMMEDIATELY, synchronously, to block browser auto-scroll
+      scrollContainer.scrollTop = 0;
       return;
     }
     
