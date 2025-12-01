@@ -208,11 +208,20 @@ export const DiscoverNoUser = (): JSX.Element => {
         newIndex = popularStationsStart + Math.min(col, Math.min(6, popularStations.length - 1));
       }
     }
-    // Country stations section - dynamic boundary
+    // Country stations section - SEGMENT-AWARE navigation (3 rows per segment)
+    // When crossing segment boundary, focus jumps to first row of new segment
     else if (current >= countryStationsStart) {
       const relIndex = current - countryStationsStart;
       const row = Math.floor(relIndex / 7);
       const col = relIndex % 7;
+      
+      // Segment constants (must match SCROLL_CONFIG)
+      const ROWS_PER_SEGMENT = 3;
+      const COLUMNS = 7;
+      
+      // Current segment info
+      const currentSegment = Math.floor(row / ROWS_PER_SEGMENT);
+      const rowInSegment = row % ROWS_PER_SEGMENT; // 0, 1, or 2
 
       if (direction === 'LEFT') {
         if (col > 0) {
@@ -225,10 +234,17 @@ export const DiscoverNoUser = (): JSX.Element => {
           newIndex = current + 1;
         }
       } else if (direction === 'UP') {
-        if (row > 0) {
-          newIndex = current - 7;
+        if (rowInSegment > 0) {
+          // Within segment - normal navigation
+          newIndex = current - COLUMNS;
+        } else if (currentSegment > 0) {
+          // At first row of segment - jump to first row of PREVIOUS segment (keep column)
+          const prevSegmentFirstRow = (currentSegment - 1) * ROWS_PER_SEGMENT;
+          const targetIndex = countryStationsStart + (prevSegmentFirstRow * COLUMNS) + col;
+          // Clamp to valid range
+          newIndex = Math.min(targetIndex, totalItems - 1);
         } else {
-          // Jump to popular stations above (last row)
+          // At first row of first segment - jump to popular stations above
           const targetCol = Math.min(col, 6);
           const lastRowStart = popularStationsEnd - (popularStations.length % 7 === 0 ? 6 : (popularStations.length % 7) - 1);
           newIndex = lastRowStart + targetCol;
@@ -237,9 +253,25 @@ export const DiscoverNoUser = (): JSX.Element => {
           }
         }
       } else if (direction === 'DOWN') {
-        const nextIndex = current + 7;
-        if (nextIndex < totalItems) {
-          newIndex = nextIndex;
+        if (rowInSegment < ROWS_PER_SEGMENT - 1) {
+          // Within segment - normal navigation (move down 1 row)
+          const nextIndex = current + COLUMNS;
+          if (nextIndex < totalItems) {
+            newIndex = nextIndex;
+          }
+        } else {
+          // At last row of segment (rowInSegment == 2) - jump to first row of NEXT segment
+          const nextSegmentFirstRow = (currentSegment + 1) * ROWS_PER_SEGMENT;
+          const targetIndex = countryStationsStart + (nextSegmentFirstRow * COLUMNS) + col;
+          // Check if target exists
+          if (targetIndex < totalItems) {
+            // Clamp column if row is not full
+            const stationsInNextSegment = displayedStations.length - (nextSegmentFirstRow * COLUMNS);
+            if (stationsInNextSegment > 0) {
+              const maxColInRow = Math.min(col, Math.min(COLUMNS - 1, stationsInNextSegment - 1));
+              newIndex = countryStationsStart + (nextSegmentFirstRow * COLUMNS) + maxColInRow;
+            }
+          }
         }
       }
     }
