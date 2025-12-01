@@ -608,7 +608,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     COUNTRY_HEADER: 80,        // "More From X" header height
     ROWS_PER_SEGMENT: 3,       // Scroll 3 rows at a time
     COLUMNS: 7,                // Items per row
-    VISIBLE_AREA: 888,         // Exactly 3 rows visible (296 * 3 = 888px)
+    VISIBLE_AREA: 904,         // 3 rows (888px) + 16px padding to prevent clipping
   }), []);
   
   // Track current scroll segment to avoid unnecessary updates
@@ -807,7 +807,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         className="absolute left-[162px] w-[1758px] overflow-y-scroll overflow-x-hidden z-1 scrollbar-hide"
         style={{
           top: showHeader ? '242px' : '64px',
-          height: showHeader ? '888px' : '1016px', // Exactly 3 rows (296px * 3 = 888px)
+          height: showHeader ? '904px' : '1032px', // 3 rows (888px) + 16px padding to prevent card clipping
           willChange: 'scroll-position',
           contain: 'layout style',
           scrollBehavior: 'auto', // Instant scroll, no smooth
