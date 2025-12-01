@@ -680,26 +680,18 @@ export const DiscoverNoUser = (): JSX.Element => {
       return; // Unknown section
     }
     
-    // AGGRESSIVE FIX: Popular section ALWAYS locked at scroll 0
-    // Use a MutationObserver to prevent ANY scrolling in popular section
+    // LOCK: Popular section ALWAYS stays at scroll 0 (no scrolling)
     if (section === 'popular' || section === 'genres') {
       state.lastSection = section;
       state.currentSegment = 0;
-      // Cancel any pending scroll
+      // Cancel any pending scroll RAF
       if (state.pendingFrame) {
         cancelAnimationFrame(state.pendingFrame);
         state.pendingFrame = null;
       }
-      // Force and maintain scroll at 0
+      // Force scroll to 0 - simple synchronous lock
       scrollContainer.scrollTop = 0;
-      // Block browser auto-scroll with a capture listener
-      const blockAutoScroll = (e: Event) => {
-        scrollContainer.scrollTop = 0;
-      };
-      scrollContainer.addEventListener('scroll', blockAutoScroll, true);
-      return () => {
-        scrollContainer.removeEventListener('scroll', blockAutoScroll, true);
-      };
+      return;
     }
     
     // Calculate current segment (0, 1, 2, ... where each segment = 3 rows)
