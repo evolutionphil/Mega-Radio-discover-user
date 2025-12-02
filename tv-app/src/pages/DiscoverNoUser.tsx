@@ -678,8 +678,8 @@ export const DiscoverNoUser = (): JSX.Element => {
       return; // Unknown section
     }
     
-    // LOCK: Popular section ALWAYS stays at scroll 0 (no scrolling)
-    if (section === 'popular' || section === 'genres') {
+    // LOCK: Genres section ALWAYS stays at scroll 0, Popular uses getScrollTarget
+    if (section === 'genres') {
       state.lastSection = section;
       state.currentSegment = 0;
       // Cancel any pending scroll RAF
