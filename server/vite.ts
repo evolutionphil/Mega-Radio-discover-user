@@ -50,6 +50,13 @@ export async function setupVite(app: Express, server: Server) {
     next();
   });
 
+  // Serve static files from tv-app BEFORE Vite middleware
+  const tvAppPath = path.resolve(import.meta.dirname, "..", "tv-app");
+  app.use("/js", express.static(path.join(tvAppPath, "js")));
+  app.use("/css", express.static(path.join(tvAppPath, "css")));
+  app.use("/webOSTVjs-1.2.0", express.static(path.join(tvAppPath, "webOSTVjs-1.2.0")));
+  app.use("/assets", express.static(path.join(tvAppPath, "assets")));
+
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
