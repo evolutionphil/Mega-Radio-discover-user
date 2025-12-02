@@ -842,9 +842,9 @@ export const DiscoverNoUser = (): JSX.Element => {
         }}
       >
         <div 
-          className="relative pb-[400px]"
+          className="relative pb-[600px]"
           style={{
-            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 500}px`
+            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 700}px`
           }}
         >
         {/* Popular Genres Section */}
