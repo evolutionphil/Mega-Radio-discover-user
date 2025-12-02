@@ -40,6 +40,16 @@ export async function setupVite(app: Express, server: Server) {
     appType: "custom",
   });
 
+  // Disable caching in development
+  app.use((_req, res, next) => {
+    res.set({
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0",
+    });
+    next();
+  });
+
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
