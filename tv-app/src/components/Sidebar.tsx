@@ -40,7 +40,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/radio-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
               {t('nav_discover') || 'Discover'}
             </p>
           </div>
@@ -67,7 +67,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/music-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
               {t('nav_genres') || 'Genres'}
             </p>
           </div>
@@ -94,7 +94,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/search-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
               {t('nav_search') || 'Search'}
             </p>
           </div>
@@ -121,7 +121,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/heart-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
               {t('nav_favorites') || 'Favorites'}
             </p>
           </div>
@@ -139,7 +139,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/settings-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
               {t('nav_settings') || 'Settings'}
             </p>
           </div>
