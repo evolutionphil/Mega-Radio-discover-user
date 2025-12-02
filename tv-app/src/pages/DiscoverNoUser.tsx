@@ -639,10 +639,11 @@ export const DiscoverNoUser = (): JSX.Element => {
       const segment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
       const segmentOffset = segment * ROWS_PER_SEGMENT * ROW_HEIGHT;
       
-      // Country section base: scroll to show country header at TOP of viewport
-      // CRITICAL: We scroll to HEADER_HEIGHT + POPULAR_HEIGHT (NOT adding COUNTRY_HEADER)
-      // This positions the country section header fully visible at the top
-      const countryBase = HEADER_HEIGHT + POPULAR_HEIGHT;
+      // Country section base: scroll WITHIN the scroll container (not including external header)
+      // Genres section is ~130px, Popular Stations are POPULAR_HEIGHT (592px)
+      // CRITICAL RULE: Popular Stations must be COMPLETELY hidden when in country section
+      // So scroll to: ~130 (genres) + 592 (popular) = ~722 minimum
+      const countryBase = 130 + POPULAR_HEIGHT;  // 722px total
       return countryBase + segmentOffset;
     }
     
