@@ -860,7 +860,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           className="absolute left-[74px] top-[89px] w-[1580px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
           data-genre-container
         >
-          <div className="flex py-[15px] px-[10px]" style={{ gap: '10px' }}>
+          <div className="flex py-[6px] px-[10px]" style={{ gap: '10px' }}>
             {genres.map((genre, index) => {
               const focusIdx = genresStart + index;
               return (
