@@ -640,10 +640,11 @@ export const DiscoverNoUser = (): JSX.Element => {
       const segmentOffset = segment * ROWS_PER_SEGMENT * ROW_HEIGHT;
       
       // Country section base: scroll WITHIN the scroll container (not including external header)
-      // Genres section is ~130px, Popular Stations are POPULAR_HEIGHT (592px)
+      // Genres section: ~130px, Popular header: ~50px, Popular Stations (2 rows): 592px
       // CRITICAL RULE: Popular Stations must be COMPLETELY hidden when in country section
-      // So scroll to: ~130 (genres) + 592 (popular) = ~722 minimum
-      const countryBase = 130 + POPULAR_HEIGHT;  // 722px total
+      // Add extra buffer to ensure no card edges show at top
+      // Total: ~130 (genres) + 50 (popular header) + 592 (popular cards) + 40 (buffer) = ~812px
+      const countryBase = 812;
       return countryBase + segmentOffset;
     }
     
