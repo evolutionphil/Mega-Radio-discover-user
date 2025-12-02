@@ -848,7 +848,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           }}
         >
         {/* Popular Genres Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[30px]">
           {selectedCountryCode === 'GLOBAL' 
             ? `${t('popular_genres')} (Global)` 
             : t('popular_genres')}
@@ -857,7 +857,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         {/* Genre Pills - Horizontal Scrollable */}
         <div 
           ref={genreScrollRef}
-          className="absolute left-[74px] top-[59px] w-[1580px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
+          className="absolute left-[74px] top-[89px] w-[1580px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
           data-genre-container
         >
           <div className="flex py-[15px] px-[10px]" style={{ gap: '10px' }}>
@@ -887,7 +887,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         </div>
 
         {/* Popular Radios Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[223px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[253px]">
           {selectedCountryCode === 'GLOBAL' 
             ? `${t('homepage_popular_stations')} (Global)` 
             : t('homepage_popular_stations')}
@@ -907,7 +907,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               }}
             >
               <div 
-                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[297px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[327px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ left: `${stationRow1Positions[index] - 162}px` }}
                 data-testid={`card-station-${station._id}`}
               >
@@ -947,7 +947,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               }}
             >
               <div 
-                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[591px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[621px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ left: `${stationRow2Positions[index] - 162}px` }}
                 data-testid={`card-station-${station._id}`}
               >
@@ -974,7 +974,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         })}
 
         {/* More From [Country] Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[885px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[915px]">
           {t('more_from')} {selectedCountry}
         </p>
 
@@ -983,7 +983,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           const row = Math.floor(index / 7);
           const col = index % 7;
           const positions = [236, 466, 696, 926, 1156, 1386, 1616];
-          const topPosition = 959 + (row * 294);
+          const topPosition = 989 + (row * 294);
           const focusIdx = countryStationsStart + index;
           
           return (
