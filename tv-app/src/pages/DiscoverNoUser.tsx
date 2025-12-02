@@ -717,7 +717,23 @@ export const DiscoverNoUser = (): JSX.Element => {
     
     // Use requestAnimationFrame for smooth, jank-free scroll update
     state.pendingFrame = requestAnimationFrame(() => {
-      scrollContainer.scrollTop = targetScroll;
+      let finalScroll = targetScroll;
+      
+      // CRITICAL: Ensure focused card is COMPLETELY visible (no clipping at edges)
+      // Add extra scroll if card would be cut off at bottom of viewport
+      // Each card is ROW_HEIGHT (296px), viewport is VISIBLE_AREA (920px)
+      // Bottom edge of focused card position + buffer to ensure full visibility
+      if (section === 'country') {
+        const cardBottomPos = targetScroll + ((rowInSection + 1) * SCROLL_CONFIG.ROW_HEIGHT);
+        const viewportBottom = scrollContainer.scrollTop + SCROLL_CONFIG.VISIBLE_AREA;
+        
+        // If card bottom would extend past viewport, scroll down to show it completely
+        if (cardBottomPos > viewportBottom + 40) {
+          finalScroll = cardBottomPos - SCROLL_CONFIG.VISIBLE_AREA + 40;
+        }
+      }
+      
+      scrollContainer.scrollTop = finalScroll;
       state.pendingFrame = null;
     });
     
