@@ -166,13 +166,14 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     const hasTizen = typeof (window as any).tizen !== 'undefined';
     const hasWebOS = typeof (window as any).webOS !== 'undefined';
     
-    // LG webOS implementation - use hidden video loop trick
-    // Wake Lock API is NOT supported on LG webOS, so we play a 1x1 video
+    // LG webOS implementation - use FULL-SCREEN hidden video loop trick
+    // LG webOS ONLY prevents screensaver when video is played in FULL SCREEN
+    // Reference: https://webostv.developer.lge.com/develop/guides/screensaver
     if (hasWebOS || (!hasTizen && !('wakeLock' in navigator))) {
-      console.log('[Screensaver] LG webOS detected - using hidden video trick');
+      console.log('[Screensaver] LG webOS detected - using full-screen hidden video trick');
       
       if (isPlaying) {
-        // Create hidden video element if not exists
+        // Create full-screen hidden video element if not exists
         if (!lgVideoRef.current) {
           const video = document.createElement('video');
           video.id = 'lg-screensaver-prevent';
@@ -180,15 +181,17 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
           video.loop = true;
           video.muted = true;
           video.playsInline = true;
-          video.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-9999;';
+          // CRITICAL: Video must be FULL SCREEN for LG webOS to prevent screensaver
+          // Using position:fixed with full viewport coverage but opacity:0.01 (nearly invisible)
+          video.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;opacity:0.01;pointer-events:none;z-index:-9999;object-fit:cover;';
           document.body.appendChild(video);
           lgVideoRef.current = video;
-          console.log('[Screensaver] ✅ LG hidden video element created');
+          console.log('[Screensaver] ✅ LG full-screen hidden video element created');
         }
         
         // Play the hidden video
         lgVideoRef.current.play().then(() => {
-          console.log('[Screensaver] ✅ LG hidden video playing - screensaver prevented');
+          console.log('[Screensaver] ✅ LG full-screen video playing - screensaver prevented');
         }).catch((err) => {
           console.warn('[Screensaver] LG hidden video play failed:', err);
         });
