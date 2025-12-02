@@ -629,10 +629,8 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
     
     if (section === 'popular') {
-      // When focusing on popular stations, scroll to show the "Popular Radios" header at top with padding
-      // Popular Radios header: top-[253px] relative to scroll container
-      // Scroll to position that shows header with proper padding from top
-      return 235; // Scroll to show Popular Radios header at top with padding
+      // Popular section stays at scroll 0 (same as genres)
+      return 0;
     }
     
     if (section === 'country') {
@@ -678,8 +676,8 @@ export const DiscoverNoUser = (): JSX.Element => {
       return; // Unknown section
     }
     
-    // LOCK: Genres section ALWAYS stays at scroll 0, Popular uses getScrollTarget
-    if (section === 'genres') {
+    // LOCK: Popular section ALWAYS stays at scroll 0 (no scrolling)
+    if (section === 'popular' || section === 'genres') {
       state.lastSection = section;
       state.currentSegment = 0;
       // Cancel any pending scroll RAF
@@ -843,9 +841,9 @@ export const DiscoverNoUser = (): JSX.Element => {
         }}
       >
         <div 
-          className="relative pb-[920px]"
+          className="relative pb-[600px]"
           style={{
-            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 920}px`
+            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 700}px`
           }}
         >
         {/* Popular Genres Section */}
