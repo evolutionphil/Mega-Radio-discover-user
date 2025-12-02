@@ -860,14 +860,14 @@ export const DiscoverNoUser = (): JSX.Element => {
           className="absolute left-[74px] top-[59px] w-[1580px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
           data-genre-container
         >
-          <div className="flex py-[15px] px-[10px]" style={{ gap: '20px' }}>
+          <div className="flex py-[15px] px-[10px]" style={{ gap: '10px' }}>
             {genres.map((genre, index) => {
               const focusIdx = genresStart + index;
               return (
                 <Link 
                   key={`${genre.slug}-${index}`} 
                   href={`/genre-list/${genre.slug}`}
-                  style={{ marginRight: '20px', display: 'inline-block', flexShrink: 0 }}
+                  style={{ display: 'inline-block', flexShrink: 0 }}
                 >
                   <div 
                     className={`relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
