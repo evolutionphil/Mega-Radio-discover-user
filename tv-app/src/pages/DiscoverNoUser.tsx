@@ -629,9 +629,10 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
     
     if (section === 'popular') {
-      // Popular section: first segment (rows 0-2) is already visible in viewport
-      // ALWAYS return 0 for popular - it's visible on initial load
-      return 0;
+      // When focusing on popular stations, scroll to show the "Popular Radios" header at top with padding
+      // Popular Radios header: top-[253px] relative to scroll container
+      // Scroll to position that shows header with ~20px padding from top
+      return 233; // Scroll to show Popular Radios header at top with padding
     }
     
     if (section === 'country') {
