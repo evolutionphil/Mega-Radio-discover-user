@@ -842,9 +842,9 @@ export const DiscoverNoUser = (): JSX.Element => {
         }}
       >
         <div 
-          className="relative pb-[100px]"
+          className="relative pb-[400px]"
           style={{
-            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 364}px`
+            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 500}px`
           }}
         >
         {/* Popular Genres Section */}
@@ -974,7 +974,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         })}
 
         {/* More From [Country] Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[939px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[885px]">
           {t('more_from')} {selectedCountry}
         </p>
 
@@ -983,7 +983,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           const row = Math.floor(index / 7);
           const col = index % 7;
           const positions = [236, 466, 696, 926, 1156, 1386, 1616];
-          const topPosition = 1013 + (row * 294);
+          const topPosition = 959 + (row * 294);
           const focusIdx = countryStationsStart + index;
           
           return (
