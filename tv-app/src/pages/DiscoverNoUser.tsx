@@ -641,10 +641,10 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       // Country section base: scroll WITHIN the scroll container (not including external header)
       // Genres section: ~130px, Popular header: ~50px, Popular Stations (2 rows): 592px
-      // CRITICAL RULE: Popular Stations must be COMPLETELY hidden when in country section
-      // Add extra buffer to ensure no card edges show at top
-      // Total: ~130 (genres) + 50 (popular header) + 592 (popular cards) + 40 (buffer) = ~812px
-      const countryBase = 812;
+      // CRITICAL RULE: Popular Stations must be COMPLETELY hidden, first country row FULLY visible
+      // No buffer - scroll just enough to hide popular cards completely
+      // Total: ~130 (genres) + 50 (popular header) + 592 (popular cards) = ~772px
+      const countryBase = 772;
       return countryBase + segmentOffset;
     }
     
