@@ -21,8 +21,8 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
   return (
     <div className="fixed h-[638px] left-[64px] top-[242px] w-[98px] z-50 pointer-events-auto">
       {/* Discover */}
-      <Link href="/discover-no-user" className="outline-none">
-        <div className={`absolute left-0 rounded-[10px] size-[98px] top-0 outline-none ${getFocusClasses(isFocused(0))}`} data-testid="button-discover">
+      <Link href="/discover-no-user">
+        <div className={`absolute left-0 rounded-[10px] size-[98px] top-0 ${getFocusClasses(isFocused(0))}`} data-testid="button-discover">
           {/* Color indicator - Pink */}
           <span 
             className={`absolute top-2 right-2 size-[18px] rounded-full transition-transform ${isFocused(0) ? 'scale-110' : ''}`}
@@ -40,7 +40,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/radio-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
               {t('nav_discover') || 'Discover'}
             </p>
           </div>
@@ -48,8 +48,8 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
       </Link>
 
       {/* Genres */}
-      <Link href="/genres" className="outline-none">
-        <div className={`absolute left-0 rounded-[10px] size-[98px] top-[108px] outline-none ${getFocusClasses(isFocused(1))}`} data-testid="button-genres">
+      <Link href="/genres">
+        <div className={`absolute left-0 rounded-[10px] size-[98px] top-[108px] ${getFocusClasses(isFocused(1))}`} data-testid="button-genres">
           {/* Color indicator - Green */}
           <span 
             className={`absolute top-2 right-2 size-[18px] rounded-full transition-transform ${isFocused(1) ? 'scale-110' : ''}`}
@@ -67,7 +67,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/music-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
               {t('nav_genres') || 'Genres'}
             </p>
           </div>
@@ -75,8 +75,8 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
       </Link>
 
       {/* Search */}
-      <Link href="/search" className="outline-none">
-        <div className={`absolute left-0 rounded-[10px] size-[98px] top-[216px] outline-none ${getFocusClasses(isFocused(2))}`} data-testid="button-search">
+      <Link href="/search">
+        <div className={`absolute left-0 rounded-[10px] size-[98px] top-[216px] ${getFocusClasses(isFocused(2))}`} data-testid="button-search">
           {/* Color indicator - Blue */}
           <span 
             className={`absolute top-2 right-2 size-[18px] rounded-full transition-transform ${isFocused(2) ? 'scale-110' : ''}`}
@@ -94,7 +94,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/search-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
               {t('nav_search') || 'Search'}
             </p>
           </div>
@@ -102,8 +102,8 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
       </Link>
 
       {/* Favorites */}
-      <Link href="/favorites" className="outline-none">
-        <div className={`absolute left-0 rounded-[10px] size-[98px] top-[324px] outline-none ${getFocusClasses(isFocused(3))}`} data-testid="button-favorites">
+      <Link href="/favorites">
+        <div className={`absolute left-0 rounded-[10px] size-[98px] top-[324px] ${getFocusClasses(isFocused(3))}`} data-testid="button-favorites">
           {/* Color indicator - Yellow */}
           <span 
             className={`absolute top-2 right-2 size-[18px] rounded-full transition-transform ${isFocused(3) ? 'scale-110' : ''}`}
@@ -121,7 +121,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/heart-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
               {t('nav_favorites') || 'Favorites'}
             </p>
           </div>
@@ -129,8 +129,8 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
       </Link>
 
       {/* Settings */}
-      <Link href="/settings" className="outline-none">
-        <div className={`absolute left-0 overflow-hidden rounded-[10px] size-[98px] top-[432px] outline-none ${getFocusClasses(isFocused(4))}`} data-testid="button-settings">
+      <Link href="/settings">
+        <div className={`absolute left-0 overflow-hidden rounded-[10px] size-[98px] top-[432px] ${getFocusClasses(isFocused(4))}`} data-testid="button-settings">
           <div className="absolute inset-0 flex flex-col items-center justify-center pt-[19px] pb-[18px] px-[5px]">
             <div className="size-[32px] mb-[8px] flex-shrink-0">
               <img
@@ -139,7 +139,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
                 src={assetPath("images/settings-icon.svg")}
               />
             </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight break-words w-full px-0.5">
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white leading-normal truncate w-full px-1">
               {t('nav_settings') || 'Settings'}
             </p>
           </div>

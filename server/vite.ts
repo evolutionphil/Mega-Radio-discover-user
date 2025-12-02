@@ -40,23 +40,6 @@ export async function setupVite(app: Express, server: Server) {
     appType: "custom",
   });
 
-  // Disable caching in development
-  app.use((_req, res, next) => {
-    res.set({
-      "Cache-Control": "no-cache, no-store, must-revalidate",
-      "Pragma": "no-cache",
-      "Expires": "0",
-    });
-    next();
-  });
-
-  // Serve static files from tv-app BEFORE Vite middleware
-  const tvAppPath = path.resolve(import.meta.dirname, "..", "tv-app");
-  app.use("/js", express.static(path.join(tvAppPath, "js")));
-  app.use("/css", express.static(path.join(tvAppPath, "css")));
-  app.use("/webOSTVjs-1.2.0", express.static(path.join(tvAppPath, "webOSTVjs-1.2.0")));
-  app.use("/assets", express.static(path.join(tvAppPath, "assets")));
-
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;

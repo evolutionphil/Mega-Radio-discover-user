@@ -193,6 +193,6 @@ export function useFocusManager({
  */
 export function getFocusClasses(isFocused: boolean): string {
   return isFocused
-    ? 'ring-[4px] ring-[#ff4199] scale-105 transition-all duration-200 shadow-[0_0_25px_rgba(255,65,153,0.8)]'
+    ? 'ring-[6px] ring-[#ff4199] ring-offset-2 ring-offset-black scale-105 transition-all duration-200 shadow-[0_0_30px_rgba(255,65,153,0.8)]'
     : 'transition-all duration-200';
 }

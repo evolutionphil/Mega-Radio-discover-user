@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
 import { CountrySelector } from "@/components/CountrySelector";
@@ -29,12 +29,11 @@ export const DiscoverNoUser = (): JSX.Element => {
   const lastScrollY = useRef(0);
   
   // Infinite scroll state for country stations - TRUE INFINITE SCROLL with API
-  // LG TV Performance: Use smaller batches (60) for better rendering performance
-  const COUNTRY_BATCH_SIZE = 60; // Optimized for TV performance
   const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
   const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
+  const STATIONS_PER_LOAD = 100; // Fetch 100 stations per batch
 
   // Fetch ALL genres from API filtered by country (or global if GLOBAL selected)
   // CACHE: 7 days
@@ -68,16 +67,17 @@ export const DiscoverNoUser = (): JSX.Element => {
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
-  // Fetch initial 60 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
-  // LG TV Performance: Use 60 stations per batch for smoother rendering
+  // Fetch initial 100 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
   // CACHE: 7 days
   const { data: initialStationsData, isLoading: isInitialLoading } = useQuery({
-    queryKey: ['/api/stations/country/initial', selectedCountryCode, COUNTRY_BATCH_SIZE],
+    queryKey: ['/api/stations/country/initial', selectedCountryCode],
     queryFn: () => {
       if (selectedCountryCode === 'GLOBAL') {
-        return megaRadioApi.getWorkingStations({ limit: COUNTRY_BATCH_SIZE, offset: 0 });
+        console.log('[DiscoverNoUser] Fetching INITIAL 100 GLOBAL stations (no country filter), offset=0');
+        return megaRadioApi.getWorkingStations({ limit: 100, offset: 0 });
       }
-      return megaRadioApi.getWorkingStations({ limit: COUNTRY_BATCH_SIZE, country: selectedCountryCode, offset: 0 });
+      console.log('[DiscoverNoUser] Fetching INITIAL 100 stations for country code:', selectedCountryCode, 'offset=0');
+      return megaRadioApi.getWorkingStations({ limit: 100, country: selectedCountryCode, offset: 0 });
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
     gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -173,14 +173,10 @@ export const DiscoverNoUser = (): JSX.Element => {
         if (nextRow <= popularStationsEnd) {
           newIndex = nextRow;
         } else {
-          // Jump to country stations - FIX: Check if stations are loaded
-          if (displayedStations.length > 0) {
-            // Calculate target column, clamped to available stations
-            const targetCol = Math.min(col, displayedStations.length - 1);
-            newIndex = countryStationsStart + targetCol;
-          } else {
-            // Stations not loaded yet - stay at first country station position
-            newIndex = countryStationsStart;
+          // Jump to country stations
+          newIndex = countryStationsStart + col;
+          if (newIndex >= totalItems) {
+            newIndex = totalItems - 1;
           }
         }
       }
@@ -208,20 +204,11 @@ export const DiscoverNoUser = (): JSX.Element => {
         newIndex = popularStationsStart + Math.min(col, Math.min(6, popularStations.length - 1));
       }
     }
-    // Country stations section - SEGMENT-AWARE navigation (3 rows per segment)
-    // When crossing segment boundary, focus jumps to first row of new segment
+    // Country stations section - dynamic boundary
     else if (current >= countryStationsStart) {
       const relIndex = current - countryStationsStart;
       const row = Math.floor(relIndex / 7);
       const col = relIndex % 7;
-      
-      // Segment constants (must match SCROLL_CONFIG)
-      const ROWS_PER_SEGMENT = 3;
-      const COLUMNS = 7;
-      
-      // Current segment info
-      const currentSegment = Math.floor(row / ROWS_PER_SEGMENT);
-      const rowInSegment = row % ROWS_PER_SEGMENT; // 0, 1, or 2
 
       if (direction === 'LEFT') {
         if (col > 0) {
@@ -234,17 +221,10 @@ export const DiscoverNoUser = (): JSX.Element => {
           newIndex = current + 1;
         }
       } else if (direction === 'UP') {
-        if (rowInSegment > 0) {
-          // Within segment - normal navigation
-          newIndex = current - COLUMNS;
-        } else if (currentSegment > 0) {
-          // At first row of segment - jump to first row of PREVIOUS segment (keep column)
-          const prevSegmentFirstRow = (currentSegment - 1) * ROWS_PER_SEGMENT;
-          const targetIndex = countryStationsStart + (prevSegmentFirstRow * COLUMNS) + col;
-          // Clamp to valid range
-          newIndex = Math.min(targetIndex, totalItems - 1);
+        if (row > 0) {
+          newIndex = current - 7;
         } else {
-          // At first row of first segment - jump to popular stations above
+          // Jump to popular stations above (last row)
           const targetCol = Math.min(col, 6);
           const lastRowStart = popularStationsEnd - (popularStations.length % 7 === 0 ? 6 : (popularStations.length % 7) - 1);
           newIndex = lastRowStart + targetCol;
@@ -253,25 +233,9 @@ export const DiscoverNoUser = (): JSX.Element => {
           }
         }
       } else if (direction === 'DOWN') {
-        if (rowInSegment < ROWS_PER_SEGMENT - 1) {
-          // Within segment - normal navigation (move down 1 row)
-          const nextIndex = current + COLUMNS;
-          if (nextIndex < totalItems) {
-            newIndex = nextIndex;
-          }
-        } else {
-          // At last row of segment (rowInSegment == 2) - jump to first row of NEXT segment
-          const nextSegmentFirstRow = (currentSegment + 1) * ROWS_PER_SEGMENT;
-          const targetIndex = countryStationsStart + (nextSegmentFirstRow * COLUMNS) + col;
-          // Check if target exists
-          if (targetIndex < totalItems) {
-            // Clamp column if row is not full
-            const stationsInNextSegment = displayedStations.length - (nextSegmentFirstRow * COLUMNS);
-            if (stationsInNextSegment > 0) {
-              const maxColInRow = Math.min(col, Math.min(COLUMNS - 1, stationsInNextSegment - 1));
-              newIndex = countryStationsStart + (nextSegmentFirstRow * COLUMNS) + maxColInRow;
-            }
-          }
+        const nextIndex = current + 7;
+        if (nextIndex < totalItems) {
+          newIndex = nextIndex;
         }
       }
     }
@@ -505,37 +469,41 @@ export const DiscoverNoUser = (): JSX.Element => {
   }, []);
 
   // TRUE INFINITE SCROLL - Fetch next batch from API using offset
-  // LG TV Performance: Use COUNTRY_BATCH_SIZE (60) for smoother loading
   const loadMoreCountryStations = async () => {
     if (isLoadingMore || !hasMoreCountryStations) {
+      console.log(`[DiscoverNoUser] Skipping load - isLoadingMore=${isLoadingMore}, hasMore=${hasMoreCountryStations}`);
       return;
     }
 
     setIsLoadingMore(true);
+    console.log(`[DiscoverNoUser] 🚀 Fetching next batch - offset=${currentOffset}, limit=100, country=${selectedCountryCode}`);
     
     try {
       const result = selectedCountryCode === 'GLOBAL'
         ? await megaRadioApi.getWorkingStations({ 
-            limit: COUNTRY_BATCH_SIZE, 
+            limit: 100, 
             offset: currentOffset 
           })
         : await megaRadioApi.getWorkingStations({ 
-            limit: COUNTRY_BATCH_SIZE, 
+            limit: 100, 
             country: selectedCountryCode, 
             offset: currentOffset 
           });
       
       const newStations = result.stations || [];
+      console.log(`[DiscoverNoUser] ✅ Fetched ${newStations.length} stations from API`);
       
       if (newStations.length > 0) {
         setDisplayedStations(prev => [...prev, ...newStations]);
-        setCurrentOffset(prev => prev + COUNTRY_BATCH_SIZE);
+        setCurrentOffset(prev => prev + 100); // Increment offset for next fetch
         
-        // If we got less than batch size, we've reached the end
-        const hasMore = newStations.length >= COUNTRY_BATCH_SIZE;
+        // If we got less than 100 stations, we've reached the end
+        const hasMore = newStations.length >= 100;
         setHasMoreCountryStations(hasMore);
+        console.log(`[DiscoverNoUser] After load: total=${displayedStations.length + newStations.length}, hasMore=${hasMore}, nextOffset=${currentOffset + 100}`);
       } else {
         setHasMoreCountryStations(false);
+        console.log('[DiscoverNoUser] No more stations available');
       }
     } catch (error) {
       console.error('[DiscoverNoUser] Failed to fetch more stations:', error);
@@ -568,6 +536,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       // Trigger load when within 1000px of bottom
       if (scrollHeight - scrollTop - clientHeight < 1000 && hasMoreCountryStations && !isLoadingMore) {
+        console.log('[DiscoverNoUser] 📜 Scroll trigger - loading more stations');
         loadMoreCountryStations();
       }
     };
@@ -585,165 +554,38 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       // If user is within last 14 items (2 rows × 7 columns), load more
       if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
+        console.log(`[DiscoverNoUser] 🎯 Focus trigger - user at station ${stationIndex}/${displayedStations.length}, loading more`);
         loadMoreCountryStations();
       }
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
-  // ============================================================================
-  // OPTIMIZED TV SCROLL CONTROLLER
-  // - Uses 3-row segments for chunk scrolling
-  // - requestAnimationFrame for jank-free updates
-  // - Pre-computed offsets (no DOM queries per keypress)
-  // - Section-aware transitions
-  // ============================================================================
-  
-  // Fixed layout constants (pre-computed, no DOM queries needed)
-  // CRITICAL: These values MUST align perfectly to show exactly 3 rows with NO partial rows
-  // Measured from actual rendered DOM: card=240px + padding/margin=40px + gap=16px = 296px per row
-  const SCROLL_CONFIG = useMemo(() => ({
-    ROW_HEIGHT: 296,           // Actual card footprint: 240px card + 40px padding + 16px gap
-    HEADER_HEIGHT: 242,        // Top section: logo + genres + "Popular" header  
-    POPULAR_HEIGHT: 592,       // Popular stations: 2 rows × 296 = 592
-    COUNTRY_HEADER: 80,        // "More From X" header height
-    ROWS_PER_SEGMENT: 3,       // Scroll 3 rows at a time
-    COLUMNS: 7,                // Items per row
-    VISIBLE_AREA: 920,         // 3 rows (888px) + 32px buffer for card shadow/border
-  }), []);
-  
-  // Track current scroll segment to avoid unnecessary updates
-  const scrollStateRef = useRef({
-    currentSegment: 0,
-    lastSection: 'genres' as 'genres' | 'popular' | 'country',
-    pendingFrame: null as number | null,
-  });
-  
-  // Memoized scroll position calculator
-  // Key insight: Each segment shows EXACTLY 3 rows, aligned to ROW_HEIGHT boundaries
-  // CRITICAL RULE: Headers must NEVER be clipped/cut off from top of screen
-  const getScrollTarget = useCallback((section: string, rowInSection: number) => {
-    const { ROW_HEIGHT, HEADER_HEIGHT, POPULAR_HEIGHT, ROWS_PER_SEGMENT } = SCROLL_CONFIG;
-    
-    if (section === 'genres') {
-      return 0;
-    }
-    
-    if (section === 'popular') {
-      // Popular section stays at scroll 0 (same as genres)
-      return 0;
-    }
-    
-    if (section === 'country') {
-      // Segment-based offset: each segment = 3 rows
-      const segment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
-      const segmentOffset = segment * ROWS_PER_SEGMENT * ROW_HEIGHT;
-      
-      // Country section base: scroll WITHIN the scroll container (not including external header)
-      // Genres section: ~130px, Popular header: ~50px, Popular Stations (2 rows): 592px
-      // CRITICAL RULE: Popular Stations must be COMPLETELY hidden, first country row FULLY visible
-      // No buffer - scroll just enough to hide popular cards completely
-      // Total: ~130 (genres) + 50 (popular header) + 592 (popular cards) = ~772px
-      const countryBase = 772;
-      return countryBase + segmentOffset;
-    }
-    
-    return 0;
-  }, [SCROLL_CONFIG]);
-  
-  // SEGMENT-BASED SCROLL - Only scrolls when segment boundary is crossed
-  // Within a segment (3 rows), navigation moves focus but does NOT scroll
+  // Auto-scroll focused element into view
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     
-    const { COLUMNS, ROWS_PER_SEGMENT } = SCROLL_CONFIG;
     const scrollContainer = scrollContainerRef.current;
-    const state = scrollStateRef.current;
-    
-    // Determine current section and row
-    let section: 'genres' | 'popular' | 'country';
-    let rowInSection: number;
-    
+    let scrollTarget = 0;
+
+    // Determine scroll position based on focused section
     if (focusIndex >= genresStart && focusIndex <= genresEnd) {
-      section = 'genres';
-      rowInSection = 0;
+      // Genres section at top
+      scrollTarget = 0;
     } else if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
-      section = 'popular';
-      rowInSection = Math.floor((focusIndex - popularStationsStart) / COLUMNS);
+      // Popular stations section
+      const row = Math.floor((focusIndex - popularStationsStart) / 7);
+      scrollTarget = 180 + (row * 294); // Base offset + row height
     } else if (focusIndex >= countryStationsStart) {
-      section = 'country';
-      rowInSection = Math.floor((focusIndex - countryStationsStart) / COLUMNS);
-    } else {
-      return; // Unknown section
+      // Country stations section
+      const row = Math.floor((focusIndex - countryStationsStart) / 7);
+      scrollTarget = 600 + (row * 294); // Popular stations end + row height
     }
-    
-    // LOCK: Popular section ALWAYS stays at scroll 0 (no scrolling)
-    if (section === 'popular' || section === 'genres') {
-      state.lastSection = section;
-      state.currentSegment = 0;
-      // Cancel any pending scroll RAF
-      if (state.pendingFrame) {
-        cancelAnimationFrame(state.pendingFrame);
-        state.pendingFrame = null;
-      }
-      // Force scroll to 0 - simple synchronous lock
-      scrollContainer.scrollTop = 0;
-      return;
-    }
-    
-    // Calculate current segment (0, 1, 2, ... where each segment = 3 rows)
-    const currentSegment = Math.floor(rowInSection / ROWS_PER_SEGMENT);
-    
-    // Calculate target scroll position FIRST to check if it would cause unwanted scroll
-    const targetScroll = getScrollTarget(section, rowInSection);
-    
-    // Check if we need to scroll (section changed or segment changed)
-    const sectionChanged = section !== state.lastSection;
-    const segmentChanged = currentSegment !== state.currentSegment;
-    
-    if (!sectionChanged && !segmentChanged) {
-      // No scroll needed - focus is within visible 3-row segment
-      return;
-    }
-    
-    // Update state
-    state.lastSection = section;
-    state.currentSegment = currentSegment;
-    
-    // Cancel any pending animation frame
-    if (state.pendingFrame) {
-      cancelAnimationFrame(state.pendingFrame);
-    }
-    
-    // Use requestAnimationFrame for smooth, jank-free scroll update
-    state.pendingFrame = requestAnimationFrame(() => {
-      let finalScroll = targetScroll;
-      
-      // CRITICAL: Ensure focused card is COMPLETELY visible (no clipping at edges)
-      // Add extra scroll if card would be cut off at bottom of viewport
-      // Each card is ROW_HEIGHT (296px), viewport is VISIBLE_AREA (920px)
-      // Bottom edge of focused card position + buffer to ensure full visibility
-      if (section === 'country') {
-        const cardBottomPos = targetScroll + ((rowInSection + 1) * SCROLL_CONFIG.ROW_HEIGHT);
-        const viewportBottom = scrollContainer.scrollTop + SCROLL_CONFIG.VISIBLE_AREA;
-        
-        // If card bottom would extend past viewport, scroll down to show it completely
-        if (cardBottomPos > viewportBottom + 40) {
-          finalScroll = cardBottomPos - SCROLL_CONFIG.VISIBLE_AREA + 40;
-        }
-      }
-      
-      scrollContainer.scrollTop = finalScroll;
-      state.pendingFrame = null;
+
+    scrollContainer.scrollTo({
+      top: scrollTarget,
+      behavior: 'smooth'
     });
-    
-    // Cleanup
-    return () => {
-      if (state.pendingFrame) {
-        cancelAnimationFrame(state.pendingFrame);
-        state.pendingFrame = null;
-      }
-    };
-  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, SCROLL_CONFIG, getScrollTarget]);
+  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
@@ -820,7 +662,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           selectedCountryCode={selectedCountryCode}
           onClick={() => setIsCountrySelectorOpen(true)}
           focusClasses={getFocusClasses(isFocused(5))}
-          className="absolute left-[1453px] top-[67px] pointer-events-auto"
+          className="absolute left-[1593px] top-[67px] pointer-events-auto"
         />
       </div>
 
@@ -828,26 +670,22 @@ export const DiscoverNoUser = (): JSX.Element => {
       <Sidebar activePage="discover" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
       {/* Scrollable Content Area - Moves to top when header hides */}
-      {/* STRUCTURE: Outer wrapper (overflow-hidden) clips view, inner div scrolls via JS */}
       <div 
         ref={scrollContainerRef}
-        className="absolute left-[162px] w-[1758px] overflow-y-scroll overflow-x-hidden z-1 scrollbar-hide"
+        className="absolute left-[162px] w-[1758px] overflow-y-auto overflow-x-hidden z-1 scrollbar-hide transition-all duration-300 ease-in-out"
         style={{
           top: showHeader ? '242px' : '64px',
-          height: showHeader ? '920px' : '1048px', // 3 rows (888px) + 32px buffer for card shadow/border
-          willChange: 'scroll-position',
-          contain: 'layout style',
-          scrollBehavior: 'auto', // Instant scroll, no smooth
+          height: showHeader ? '838px' : '1016px'
         }}
       >
         <div 
-          className="relative pb-[600px]"
+          className="relative pb-[100px]"
           style={{
-            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 700}px`
+            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 364}px`
           }}
         >
         {/* Popular Genres Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[30px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
           {selectedCountryCode === 'GLOBAL' 
             ? `${t('popular_genres')} (Global)` 
             : t('popular_genres')}
@@ -856,23 +694,23 @@ export const DiscoverNoUser = (): JSX.Element => {
         {/* Genre Pills - Horizontal Scrollable */}
         <div 
           ref={genreScrollRef}
-          className="absolute left-[74px] top-[89px] w-[1580px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
+          className="absolute left-[74px] top-[59px] w-[1580px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
           data-genre-container
         >
-          <div className="flex py-[6px] px-[10px]" style={{ gap: '10px' }}>
+          <div className="flex py-[15px] px-[10px]" style={{ gap: '20px' }}>
             {genres.map((genre, index) => {
               const focusIdx = genresStart + index;
               return (
                 <Link 
                   key={`${genre.slug}-${index}`} 
                   href={`/genre-list/${genre.slug}`}
-                  style={{ display: 'inline-block', flexShrink: 0 }}
+                  style={{ marginRight: '20px', display: 'inline-block', flexShrink: 0 }}
                 >
                   <div 
-                    className={`relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[6px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                    className={`relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                     data-testid={genre.slug}
                     data-genre-pill
-                    style={{ display: 'inline-flex', whiteSpace: 'nowrap', height: '37px' }}
+                    style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}
                   >
                     <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-center text-white whitespace-nowrap">
                       {genre.name}
@@ -886,7 +724,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         </div>
 
         {/* Popular Radios Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[253px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[223px]">
           {selectedCountryCode === 'GLOBAL' 
             ? `${t('homepage_popular_stations')} (Global)` 
             : t('homepage_popular_stations')}
@@ -906,7 +744,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               }}
             >
               <div 
-                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[327px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[297px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ left: `${stationRow1Positions[index] - 162}px` }}
                 data-testid={`card-station-${station._id}`}
               >
@@ -946,7 +784,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               }}
             >
               <div 
-                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[621px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[591px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ left: `${stationRow2Positions[index] - 162}px` }}
                 data-testid={`card-station-${station._id}`}
               >
@@ -973,7 +811,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         })}
 
         {/* More From [Country] Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[915px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[939px]">
           {t('more_from')} {selectedCountry}
         </p>
 
@@ -982,7 +820,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           const row = Math.floor(index / 7);
           const col = index % 7;
           const positions = [236, 466, 696, 926, 1156, 1386, 1616];
-          const topPosition = 989 + (row * 294);
+          const topPosition = 1013 + (row * 294);
           const focusIdx = countryStationsStart + index;
           
           return (

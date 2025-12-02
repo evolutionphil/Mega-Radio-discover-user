@@ -10,9 +10,6 @@
     "version": "1.0.0",
     "disableBackHistoryAPI": true,
     "enablePigScreenSaver": false,
-    "screenSaverProperties": {
-        "preferredType": 2
-    },
     "requiredPermissions": [
         "audio",
         "media.playback"
