@@ -821,7 +821,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           selectedCountryCode={selectedCountryCode}
           onClick={() => setIsCountrySelectorOpen(true)}
           focusClasses={getFocusClasses(isFocused(5))}
-          className="absolute left-[1593px] top-[67px] pointer-events-auto"
+          className="absolute left-[1453px] top-[67px] pointer-events-auto"
         />
       </div>
 
