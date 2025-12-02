@@ -870,10 +870,10 @@ export const DiscoverNoUser = (): JSX.Element => {
                   style={{ display: 'inline-block', flexShrink: 0 }}
                 >
                   <div 
-                    className={`relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                    className={`relative bg-[rgba(255,255,255,0.14)] flex gap-[10px] items-center px-[72px] py-[6px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                     data-testid={genre.slug}
                     data-genre-pill
-                    style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}
+                    style={{ display: 'inline-flex', whiteSpace: 'nowrap', height: '37px' }}
                   >
                     <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] text-center text-white whitespace-nowrap">
                       {genre.name}
