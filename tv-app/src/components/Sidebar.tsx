@@ -19,7 +19,7 @@ const MENU_COLORS = {
 export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps): JSX.Element => {
   const { t } = useLocalization();
   return (
-    <div className="fixed h-[640px] left-[52px] top-[220px] w-[120px] z-50 pointer-events-auto">
+    <div className="fixed h-[640px] left-[64px] top-[242px] w-[120px] z-50 pointer-events-auto">
       {/* Discover */}
       <Link href="/discover-no-user">
         <div className={`absolute left-0 rounded-[10px] w-[120px] h-[110px] top-0 ${getFocusClasses(isFocused(0))}`} data-testid="button-discover">
