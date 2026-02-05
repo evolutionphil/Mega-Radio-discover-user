@@ -33,7 +33,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
-  const STATIONS_PER_LOAD = 100; // Fetch 100 stations per batch
+  const STATIONS_PER_LOAD = 50; // Fetch 50 stations per batch for better performance
 
   // Fetch ALL genres from API filtered by country (or global if GLOBAL selected)
   // CACHE: 7 days
@@ -50,35 +50,35 @@ export const DiscoverNoUser = (): JSX.Element => {
   });
 
   // Fetch popular stations filtered by selected country (or global if GLOBAL selected)
-  // CACHE: 24 hours
+  // CACHE: 24 hours - Reduced to 12 for faster initial load
   const { data: popularStationsData } = useQuery({
-    queryKey: ['/api/stations/popular', { limit: 24, country: selectedCountryCode }],
+    queryKey: ['/api/stations/popular', { limit: 12, country: selectedCountryCode }],
     queryFn: () => {
       if (selectedCountryCode === 'GLOBAL') {
-        return megaRadioApi.getPopularStations({ limit: 24 });
+        return megaRadioApi.getPopularStations({ limit: 12 });
       }
-      return megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode });
+      return megaRadioApi.getPopularStations({ limit: 12, country: selectedCountryCode });
     },
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
-  // Fetch initial 100 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
-  // CACHE: 7 days
+  // Fetch initial 50 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
+  // CACHE: 7 days - Reduced to 50 for faster initial load
   const { data: initialStationsData, isLoading: isInitialLoading } = useQuery({
     queryKey: ['/api/stations/country/initial', selectedCountryCode],
     queryFn: () => {
       if (selectedCountryCode === 'GLOBAL') {
-        return megaRadioApi.getWorkingStations({ limit: 100, offset: 0 });
+        return megaRadioApi.getWorkingStations({ limit: 50, offset: 0 });
       }
-      return megaRadioApi.getWorkingStations({ limit: 100, country: selectedCountryCode, offset: 0 });
+      return megaRadioApi.getWorkingStations({ limit: 50, country: selectedCountryCode, offset: 0 });
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
     gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
   const genres = genresData?.genres || []; // Show ALL genres, not just 8
-  const popularStations = popularStationsData?.stations?.slice(0, 14) || [];
+  const popularStations = popularStationsData?.stations?.slice(0, 12) || [];
 
   // Calculate dynamic section boundaries (5 sidebar + 1 country selector = 6)
   const popularStationsStart = 6;

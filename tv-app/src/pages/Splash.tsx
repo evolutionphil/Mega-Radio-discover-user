@@ -17,23 +17,24 @@ export const Splash = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log('[Splash] ⏱️  Timer completed, checking onboarding status');
-      
-      try {
-        const onboardingCompleted = localStorage.getItem('onboardingCompleted');
-        if (onboardingCompleted) {
-          console.log('[Splash] ✅ Onboarding already completed, navigating to Discover');
-          setLocation("/discover-no-user");
-        } else {
-          console.log('[Splash] 🎓 First launch, navigating to Guide 1');
-          setLocation("/guide-1");
-        }
-      } catch (error) {
-        console.warn('[Splash] ⚠️  localStorage not available, showing guides:', error);
-        setLocation("/guide-1");
+    // Check onboarding status immediately
+    try {
+      const onboardingCompleted = localStorage.getItem('onboardingCompleted');
+      if (onboardingCompleted) {
+        // Skip splash entirely if onboarding completed
+        console.log('[Splash] ✅ Onboarding already completed, navigating immediately to Discover');
+        setLocation("/discover-no-user");
+        return;
       }
-    }, 3000);
+    } catch (error) {
+      // localStorage not available, continue with splash
+    }
+    
+    // Only show splash for first-time users
+    const timer = setTimeout(() => {
+      console.log('[Splash] ⏱️  Timer completed, navigating to Guide 1');
+      setLocation("/guide-1");
+    }, 1500);
     return () => clearTimeout(timer);
   }, [setLocation]);
 
