@@ -596,15 +596,17 @@ export const DiscoverNoUser = (): JSX.Element => {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [isLoadingMore, hasMoreCountryStations, currentOffset, displayedStations.length]);
 
-  // TRUE INFINITE SCROLL trigger - Focus-based (when within last 14 items / 2 rows)
+  // TRUE INFINITE SCROLL trigger - Focus-based (when within last 28 items / 4 rows)
+  // Load MORE stations BEFORE user reaches the end for seamless experience
   useEffect(() => {
     // Only trigger for country stations section
     if (focusIndex >= countryStationsStart) {
       const stationIndex = focusIndex - countryStationsStart;
       const distanceFromEnd = displayedStations.length - stationIndex;
       
-      // If user is within last 14 items (2 rows × 7 columns), load more
-      if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
+      // If user is within last 28 items (4 rows × 7 columns), load more
+      // This gives plenty of buffer before they reach the end
+      if (distanceFromEnd <= 28 && hasMoreCountryStations && !isLoadingMore) {
         loadMoreCountryStations();
       }
     }
