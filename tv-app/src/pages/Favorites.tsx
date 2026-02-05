@@ -2,7 +2,6 @@ import { Link, useLocation } from "wouter";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { Station } from "@/services/megaRadioApi";
-import { useRef } from "react";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { Sidebar } from "@/components/Sidebar";
@@ -12,7 +11,6 @@ export const Favorites = (): JSX.Element => {
   const { favorites } = useFavorites();
   const { t } = useLocalization();
   const [, setLocation] = useLocation();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   // Define sidebar routes (5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];

@@ -1,4 +1,4 @@
-import { Link, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { useState, useEffect } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";

@@ -1,4 +1,3 @@
-import { Link } from "wouter";
 import { useState, useEffect, useRef, RefObject } from "react";
 import { CountrySelector } from "@/components/CountrySelector";
 import { useCountry } from "@/contexts/CountryContext";

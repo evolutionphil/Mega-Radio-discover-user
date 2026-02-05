@@ -40,9 +40,6 @@ export function useFocusManager({
 }: UseFocusManagerOptions) {
   const [focusIndex, setFocusIndex] = useState(initialIndex);
 
-  // Calculate grid dimensions
-  const actualRows = rows || Math.ceil(totalItems / cols);
-
   // Grid-aware clamp index - handles incomplete last row
   const clampIndex = useCallback((index: number, currentIndex: number, direction?: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     if (enableWrapping) {

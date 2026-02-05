@@ -15,7 +15,7 @@ import { assetPath } from "@/lib/assetPath";
 export const Search = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
-  const { playStation, isPlaying } = useGlobalPlayer();
+  const { playStation } = useGlobalPlayer();
   const { t } = useLocalization();
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");

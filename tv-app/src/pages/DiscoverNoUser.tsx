@@ -1,7 +1,8 @@
 import { Link, useLocation } from "wouter";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
+import { cacheService } from "@/services/cacheService";
 import { CountrySelector } from "@/components/CountrySelector";
 import { CountryTrigger } from "@/components/CountryTrigger";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
@@ -37,8 +38,24 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
   const STATIONS_PER_LOAD = 50; // Fetch 50 stations per batch for better performance
 
+  // WARM-START CACHING: Get cached data immediately on mount for instant display
+  const cachedGenres = useMemo(() => {
+    const cached = cacheService.getGenres(selectedCountryCode);
+    return cached.data ? { genres: cached.data } : undefined;
+  }, [selectedCountryCode]);
+
+  const cachedPopularStations = useMemo(() => {
+    const cached = cacheService.getPopularStations(selectedCountryCode);
+    return cached.data ? { stations: cached.data } : undefined;
+  }, [selectedCountryCode]);
+
+  const cachedInitialStations = useMemo(() => {
+    const cached = cacheService.getInitialStations(selectedCountryCode);
+    return cached.data ? { stations: cached.data } : undefined;
+  }, [selectedCountryCode]);
+
   // Fetch ALL genres from API filtered by country (or global if GLOBAL selected)
-  // CACHE: 7 days
+  // CACHE: 7 days - Uses localStorage cache for instant display
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres/all', selectedCountryCode],
     queryFn: () => {
@@ -49,10 +66,11 @@ export const DiscoverNoUser = (): JSX.Element => {
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
     gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    initialData: cachedGenres,
   });
 
   // Fetch popular stations filtered by selected country (or global if GLOBAL selected)
-  // CACHE: 24 hours - Reduced to 12 for faster initial load
+  // CACHE: 24 hours - Uses localStorage cache for instant display
   const { data: popularStationsData } = useQuery({
     queryKey: ['/api/stations/popular', { limit: 12, country: selectedCountryCode }],
     queryFn: () => {
@@ -63,10 +81,11 @@ export const DiscoverNoUser = (): JSX.Element => {
     },
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
+    initialData: cachedPopularStations,
   });
 
   // Fetch initial 50 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
-  // CACHE: 7 days - Reduced to 50 for faster initial load
+  // CACHE: 7 days - Uses localStorage cache for instant display
   const { data: initialStationsData, isLoading: isInitialLoading } = useQuery({
     queryKey: ['/api/stations/country/initial', selectedCountryCode],
     queryFn: () => {
@@ -77,7 +96,52 @@ export const DiscoverNoUser = (): JSX.Element => {
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
     gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    initialData: cachedInitialStations,
   });
+
+  // Save fetched data to localStorage cache for future warm-starts
+  useEffect(() => {
+    if (genresData?.genres && genresData.genres.length > 0) {
+      cacheService.setGenres(selectedCountryCode, genresData.genres);
+    }
+  }, [genresData, selectedCountryCode]);
+
+  useEffect(() => {
+    if (popularStationsData?.stations && popularStationsData.stations.length > 0) {
+      cacheService.setPopularStations(selectedCountryCode, popularStationsData.stations);
+    }
+  }, [popularStationsData, selectedCountryCode]);
+
+  useEffect(() => {
+    if (initialStationsData?.stations && initialStationsData.stations.length > 0) {
+      cacheService.setInitialStations(selectedCountryCode, initialStationsData.stations);
+    }
+  }, [initialStationsData, selectedCountryCode]);
+
+  // Background prefetch when country changes - preload cache for next visit
+  useEffect(() => {
+    cacheService.prefetchCountryData(
+      selectedCountryCode,
+      async () => {
+        const result = selectedCountryCode === 'GLOBAL'
+          ? await megaRadioApi.getAllGenres()
+          : await megaRadioApi.getAllGenres(selectedCountryCode);
+        return result.genres || [];
+      },
+      async () => {
+        const result = selectedCountryCode === 'GLOBAL'
+          ? await megaRadioApi.getPopularStations({ limit: 12 })
+          : await megaRadioApi.getPopularStations({ limit: 12, country: selectedCountryCode });
+        return result.stations || [];
+      },
+      async () => {
+        const result = selectedCountryCode === 'GLOBAL'
+          ? await megaRadioApi.getWorkingStations({ limit: 50, offset: 0 })
+          : await megaRadioApi.getWorkingStations({ limit: 50, country: selectedCountryCode, offset: 0 });
+        return result.stations || [];
+      }
+    );
+  }, [selectedCountryCode]);
 
   const genres = genresData?.genres || []; // Show ALL genres, not just 8
   const popularStations = popularStationsData?.stations?.slice(0, 12) || [];
