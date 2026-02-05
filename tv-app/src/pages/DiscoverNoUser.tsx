@@ -36,7 +36,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
-  const STATIONS_PER_LOAD = 50; // Fetch 50 stations per batch for better performance
+  const STATIONS_PER_LOAD = 21; // Fetch 21 stations per batch (3 rows × 7 columns) for lazy loading
 
   // WARM-START CACHING: Get cached data immediately on mount for instant display
   const cachedGenres = useMemo(() => {
@@ -84,15 +84,16 @@ export const DiscoverNoUser = (): JSX.Element => {
     initialData: cachedPopularStations,
   });
 
-  // Fetch initial 50 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
+  // Fetch initial 21 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
+  // Only loads 3 rows initially, then lazy loads more as user scrolls
   // CACHE: 7 days - Uses localStorage cache for instant display
   const { data: initialStationsData, isLoading: isInitialLoading } = useQuery({
     queryKey: ['/api/stations/country/initial', selectedCountryCode],
     queryFn: () => {
       if (selectedCountryCode === 'GLOBAL') {
-        return megaRadioApi.getWorkingStations({ limit: 50, offset: 0 });
+        return megaRadioApi.getWorkingStations({ limit: 21, offset: 0 });
       }
-      return megaRadioApi.getWorkingStations({ limit: 50, country: selectedCountryCode, offset: 0 });
+      return megaRadioApi.getWorkingStations({ limit: 21, country: selectedCountryCode, offset: 0 });
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
     gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -136,8 +137,8 @@ export const DiscoverNoUser = (): JSX.Element => {
       },
       async () => {
         const result = selectedCountryCode === 'GLOBAL'
-          ? await megaRadioApi.getWorkingStations({ limit: 50, offset: 0 })
-          : await megaRadioApi.getWorkingStations({ limit: 50, country: selectedCountryCode, offset: 0 });
+          ? await megaRadioApi.getWorkingStations({ limit: 21, offset: 0 })
+          : await megaRadioApi.getWorkingStations({ limit: 21, country: selectedCountryCode, offset: 0 });
         return result.stations || [];
       }
     );
@@ -596,7 +597,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [isLoadingMore, hasMoreCountryStations, currentOffset, displayedStations.length]);
 
-  // TRUE INFINITE SCROLL trigger - Focus-based (when within last 28 items / 4 rows)
+  // TRUE INFINITE SCROLL trigger - Focus-based (when within last 14 items / 2 rows)
   // Load MORE stations BEFORE user reaches the end for seamless experience
   useEffect(() => {
     // Only trigger for country stations section
@@ -604,9 +605,9 @@ export const DiscoverNoUser = (): JSX.Element => {
       const stationIndex = focusIndex - countryStationsStart;
       const distanceFromEnd = displayedStations.length - stationIndex;
       
-      // If user is within last 28 items (4 rows × 7 columns), load more
-      // This gives plenty of buffer before they reach the end
-      if (distanceFromEnd <= 28 && hasMoreCountryStations && !isLoadingMore) {
+      // If user is within last 14 items (2 rows × 7 columns), load more
+      // This gives buffer before they reach the end while keeping initial load small
+      if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
         loadMoreCountryStations();
       }
     }
