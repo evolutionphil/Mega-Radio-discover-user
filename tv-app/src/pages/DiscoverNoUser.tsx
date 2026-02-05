@@ -546,32 +546,66 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
-  // Auto-scroll focused element into view
+  // Auto-scroll focused element into view - ONLY if element is off-screen
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     
     const scrollContainer = scrollContainerRef.current;
-    let scrollTarget = 0;
-
-    // Determine scroll position based on focused section
-    if (focusIndex >= genresStart && focusIndex <= genresEnd) {
-      // Genres section at top
-      scrollTarget = 0;
-    } else if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
-      // Popular stations section
-      const row = Math.floor((focusIndex - popularStationsStart) / 7);
-      scrollTarget = 180 + (row * 294); // Base offset + row height
+    
+    // Find the currently focused element by looking for focus-glow class or data-testid
+    const focusedElements = scrollContainer.querySelectorAll('[class*="ring-"]');
+    let focusedElement: HTMLElement | null = null;
+    
+    // Try to find focused station card or genre card
+    if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
+      const stationIndex = focusIndex - popularStationsStart;
+      const station = popularStations[stationIndex];
+      if (station) {
+        focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
+      }
     } else if (focusIndex >= countryStationsStart) {
-      // Country stations section
-      const row = Math.floor((focusIndex - countryStationsStart) / 7);
-      scrollTarget = 600 + (row * 294); // Popular stations end + row height
+      const stationIndex = focusIndex - countryStationsStart;
+      const station = displayedStations[stationIndex];
+      if (station) {
+        focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
+      }
+    } else if (focusIndex >= genresStart && focusIndex <= genresEnd) {
+      const genreIndex = focusIndex - genresStart;
+      const genre = genres[genreIndex];
+      if (genre) {
+        focusedElement = scrollContainer.querySelector(`[data-testid="card-genre-${genre.slug}"]`) as HTMLElement;
+      }
     }
-
-    scrollContainer.scrollTo({
-      top: scrollTarget,
-      behavior: 'smooth'
-    });
-  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart]);
+    
+    if (!focusedElement) return;
+    
+    // Get element and container bounds
+    const elementRect = focusedElement.getBoundingClientRect();
+    const containerRect = scrollContainer.getBoundingClientRect();
+    
+    // Calculate visible area (account for header when visible)
+    const headerOffset = showHeader ? 140 : 0;
+    const visibleTop = containerRect.top + headerOffset;
+    const visibleBottom = containerRect.bottom - 100; // Leave space for global player
+    
+    // Only scroll if element is outside visible viewport
+    if (elementRect.top < visibleTop) {
+      // Element is above visible area - scroll up
+      const scrollAmount = elementRect.top - visibleTop - 20; // 20px padding
+      scrollContainer.scrollBy({
+        top: scrollAmount,
+        behavior: 'smooth'
+      });
+    } else if (elementRect.bottom > visibleBottom) {
+      // Element is below visible area - scroll down
+      const scrollAmount = elementRect.bottom - visibleBottom + 20; // 20px padding
+      scrollContainer.scrollBy({
+        top: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+    // If element is already visible, do nothing - no scroll!
+  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, genres, popularStations, displayedStations, showHeader]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
