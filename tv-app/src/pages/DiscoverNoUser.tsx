@@ -610,17 +610,15 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
-  // Auto-scroll focused element into view - ONLY if element is off-screen
+  // Auto-scroll focused element into view - ONLY if element is truly off-screen
+  // Uses scrollTop/offsetTop based math for accurate visibility detection
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     
     const scrollContainer = scrollContainerRef.current;
-    
-    // Find the currently focused element by looking for focus-glow class or data-testid
-    const focusedElements = scrollContainer.querySelectorAll('[class*="ring-"]');
     let focusedElement: HTMLElement | null = null;
     
-    // Try to find focused station card or genre card
+    // Find focused element by data-testid (reliable method)
     if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
       const stationIndex = focusIndex - popularStationsStart;
       const station = popularStations[stationIndex];
@@ -634,42 +632,51 @@ export const DiscoverNoUser = (): JSX.Element => {
         focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
       }
     } else if (focusIndex >= genresStart && focusIndex <= genresEnd) {
-      const genreIndex = focusIndex - genresStart;
-      const genre = genres[genreIndex];
-      if (genre) {
-        focusedElement = scrollContainer.querySelector(`[data-testid="card-genre-${genre.slug}"]`) as HTMLElement;
-      }
+      // Genres are in horizontal scroll - don't trigger vertical scroll
+      return;
     }
     
     if (!focusedElement) return;
     
-    // Get element and container bounds
-    const elementRect = focusedElement.getBoundingClientRect();
-    const containerRect = scrollContainer.getBoundingClientRect();
+    // Use scrollTop/offsetTop based calculation (NOT getBoundingClientRect)
+    // This gives accurate visibility within the scroll container
+    const TOP_PADDING = 20;  // Padding from top edge
+    const BOTTOM_PADDING = 120;  // Leave space for global player bar
     
-    // Calculate visible area (account for header when visible)
-    const headerOffset = showHeader ? 140 : 0;
-    const visibleTop = containerRect.top + headerOffset;
-    const visibleBottom = containerRect.bottom - 100; // Leave space for global player
+    const viewTop = scrollContainer.scrollTop;
+    const viewBottom = viewTop + scrollContainer.clientHeight - BOTTOM_PADDING;
     
-    // Only scroll if element is outside visible viewport
-    if (elementRect.top < visibleTop) {
-      // Element is above visible area - scroll up
-      const scrollAmount = elementRect.top - visibleTop - 20; // 20px padding
-      scrollContainer.scrollBy({
-        top: scrollAmount,
+    // Get element position relative to scroll container
+    // offsetTop gives position relative to offsetParent, need to walk up to container
+    let elementTop = 0;
+    let el: HTMLElement | null = focusedElement;
+    while (el && el !== scrollContainer) {
+      elementTop += el.offsetTop;
+      el = el.offsetParent as HTMLElement;
+    }
+    const elementBottom = elementTop + focusedElement.offsetHeight;
+    
+    // Check if element is FULLY visible (not just partially)
+    const isAboveView = elementTop < viewTop + TOP_PADDING;
+    const isBelowView = elementBottom > viewBottom;
+    
+    // Only scroll if element is actually outside the visible viewport
+    if (isAboveView) {
+      // Element is above visible area - scroll up to show it
+      scrollContainer.scrollTo({
+        top: elementTop - TOP_PADDING,
         behavior: 'smooth'
       });
-    } else if (elementRect.bottom > visibleBottom) {
-      // Element is below visible area - scroll down
-      const scrollAmount = elementRect.bottom - visibleBottom + 20; // 20px padding
-      scrollContainer.scrollBy({
-        top: scrollAmount,
+    } else if (isBelowView) {
+      // Element is below visible area - scroll down to show it
+      const newScrollTop = elementBottom - scrollContainer.clientHeight + BOTTOM_PADDING;
+      scrollContainer.scrollTo({
+        top: newScrollTop,
         behavior: 'smooth'
       });
     }
-    // If element is already visible, do nothing - no scroll!
-  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, genres, popularStations, displayedStations, showHeader]);
+    // If element is FULLY visible, do NOTHING - no scroll!
+  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, genres, popularStations, displayedStations]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
