@@ -392,6 +392,7 @@ export const GenreList = (): JSX.Element => {
                     alt={station.name}
                     className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
                     src={getStationImage(station)}
+                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                     }}

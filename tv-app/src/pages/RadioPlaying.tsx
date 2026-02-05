@@ -627,6 +627,7 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute bg-white left-[236px] overflow-clip rounded-[16.692px] w-[296px] h-[296px] top-[242px]">
         <img 
           src={getStationImage(station)}
+                    loading="lazy"
           alt={station.name}
           className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
           onError={(e) => {

@@ -27,6 +27,8 @@ export const DiscoverNoUser = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const genreScrollRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
+  const lastScrollTime = useRef(0); // Throttle scroll events
+  const MAX_STATIONS = 200; // Prevent memory bloat on TV devices
   
   // Infinite scroll state for country stations - TRUE INFINITE SCROLL with API
   const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
@@ -443,6 +445,12 @@ export const DiscoverNoUser = (): JSX.Element => {
 
   // TRUE INFINITE SCROLL - Fetch next batch from API using offset
   const loadMoreCountryStations = async () => {
+    // Stop loading if we hit the max limit
+    if (displayedStations.length >= MAX_STATIONS) {
+      setHasMoreCountryStations(false);
+      return;
+    }
+    
     if (isLoadingMore || !hasMoreCountryStations) {
       return;
     }
@@ -452,11 +460,11 @@ export const DiscoverNoUser = (): JSX.Element => {
     try {
       const result = selectedCountryCode === 'GLOBAL'
         ? await megaRadioApi.getWorkingStations({ 
-            limit: 100, 
+            limit: STATIONS_PER_LOAD, 
             offset: currentOffset 
           })
         : await megaRadioApi.getWorkingStations({ 
-            limit: 100, 
+            limit: STATIONS_PER_LOAD, 
             country: selectedCountryCode, 
             offset: currentOffset 
           });
@@ -464,11 +472,16 @@ export const DiscoverNoUser = (): JSX.Element => {
       const newStations = result.stations || [];
       
       if (newStations.length > 0) {
-        setDisplayedStations(prev => [...prev, ...newStations]);
-        setCurrentOffset(prev => prev + 100); // Increment offset for next fetch
+        setDisplayedStations(prev => {
+          const combined = [...prev, ...newStations];
+          // Limit to MAX_STATIONS
+          return combined.slice(0, MAX_STATIONS);
+        });
+        setCurrentOffset(prev => prev + STATIONS_PER_LOAD);
         
-        // If we got less than 100 stations, we've reached the end
-        const hasMore = newStations.length >= 100;
+        // Stop if we hit the limit or got less stations
+        const hasMore = newStations.length >= STATIONS_PER_LOAD && 
+                       displayedStations.length + newStations.length < MAX_STATIONS;
         setHasMoreCountryStations(hasMore);
       } else {
         setHasMoreCountryStations(false);
@@ -481,11 +494,19 @@ export const DiscoverNoUser = (): JSX.Element => {
   };
 
   // Auto-hide header on scroll down + TRUE INFINITE SCROLL trigger (scroll-based)
+  // THROTTLED: Only process scroll events every 100ms for performance
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
 
     const handleScroll = () => {
+      const now = Date.now();
+      // Throttle: Skip if less than 100ms since last scroll
+      if (now - lastScrollTime.current < 100) {
+        return;
+      }
+      lastScrollTime.current = now;
+      
       const currentScrollY = scrollContainer.scrollTop;
       
       if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
@@ -501,15 +522,15 @@ export const DiscoverNoUser = (): JSX.Element => {
       const scrollTop = scrollContainer.scrollTop;
       const clientHeight = scrollContainer.clientHeight;
       
-      // Trigger load when within 1000px of bottom
-      if (scrollHeight - scrollTop - clientHeight < 1000 && hasMoreCountryStations && !isLoadingMore) {
+      // Trigger load when within 800px of bottom
+      if (scrollHeight - scrollTop - clientHeight < 800 && hasMoreCountryStations && !isLoadingMore) {
         loadMoreCountryStations();
       }
     };
 
-    scrollContainer.addEventListener('scroll', handleScroll);
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, [isLoadingMore, hasMoreCountryStations, currentOffset]);
+  }, [isLoadingMore, hasMoreCountryStations, currentOffset, displayedStations.length]);
 
   // TRUE INFINITE SCROLL trigger - Focus-based (when within last 14 items / 2 rows)
   useEffect(() => {
@@ -717,6 +738,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                     alt={station.name}
                     className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
                     src={getStationImage(station)}
+                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                     }}
@@ -756,6 +778,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                     alt={station.name}
                     className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
                     src={getStationImage(station)}
+                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                     }}
@@ -808,6 +831,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                     alt={station.name}
                     className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
                     src={getStationImage(station)}
+                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                     }}
