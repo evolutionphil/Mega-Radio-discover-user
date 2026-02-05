@@ -93,6 +93,36 @@ function safeRemoveItem(key: string): void {
   }
 }
 
+// Maximum number of countries to cache (to prevent localStorage bloat on TVs)
+const MAX_CACHED_COUNTRIES = 5;
+const COUNTRY_ACCESS_KEY = 'cache_country_access_order';
+
+// Track country access order for LRU eviction
+function trackCountryAccess(countryCode: string): void {
+  try {
+    const raw = localStorage.getItem(COUNTRY_ACCESS_KEY);
+    let order: string[] = raw ? JSON.parse(raw) : [];
+    
+    // Remove if exists, add to end (most recent)
+    order = order.filter(c => c !== countryCode);
+    order.push(countryCode);
+    
+    // If over limit, remove oldest country's cache
+    while (order.length > MAX_CACHED_COUNTRIES) {
+      const oldest = order.shift();
+      if (oldest) {
+        safeRemoveItem(KEYS.GENRES(oldest));
+        safeRemoveItem(KEYS.POPULAR_STATIONS(oldest));
+        safeRemoveItem(KEYS.INITIAL_STATIONS(oldest));
+      }
+    }
+    
+    localStorage.setItem(COUNTRY_ACCESS_KEY, JSON.stringify(order));
+  } catch {
+    // Ignore errors
+  }
+}
+
 // Clear oldest cache entries when storage is full
 function clearOldCache(): void {
   const keysToCheck: string[] = [];
@@ -210,6 +240,8 @@ export const cacheService = {
     const limited = stations.slice(0, 200);
     const minimal = limited.map(minimizeStation);
     setCacheEntry(KEYS.INITIAL_STATIONS(countryCode), minimal, TTL.STATIONS);
+    // Track country access for LRU eviction
+    trackCountryAccess(countryCode);
   },
   
   // Translations
