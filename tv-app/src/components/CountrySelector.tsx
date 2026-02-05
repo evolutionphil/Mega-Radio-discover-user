@@ -111,21 +111,50 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     }
   }, [filteredCountries.length, focusIndex]);
 
-  // Scroll to top when search query changes or filtered list updates
+  // Scroll to top when search query changes (user is typing/filtering)
   useEffect(() => {
-    if (scrollContainerRef.current) {
+    if (scrollContainerRef.current && searchQuery) {
       scrollContainerRef.current.scrollTop = 0;
     }
-  }, [searchQuery, filteredCountries.length]);
+  }, [searchQuery]);
 
-  // Scroll focused item into view
+  // Auto-scroll focused item into view - ONLY if element is truly off-screen
+  // Uses scrollTop/offsetTop based math for accurate visibility detection
   useEffect(() => {
-    if (scrollContainerRef.current && filteredCountries.length > 0) {
-      const focusedElement = scrollContainerRef.current.children[focusIndex] as HTMLElement;
-      if (focusedElement) {
-        focusedElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+    if (!scrollContainerRef.current || filteredCountries.length === 0) return;
+    
+    const container = scrollContainerRef.current;
+    const focusedElement = container.children[focusIndex] as HTMLElement | undefined;
+    if (!focusedElement) return;
+    
+    // Use scrollTop/offsetTop based calculation (NOT scrollIntoView)
+    const TOP_PADDING = 20;  // Padding from top edge
+    const BOTTOM_PADDING = 60;  // Leave space at bottom
+    
+    const viewTop = container.scrollTop;
+    const viewBottom = viewTop + container.clientHeight - BOTTOM_PADDING;
+    
+    // Get element position relative to scroll container
+    let elementTop = 0;
+    let el: HTMLElement | null = focusedElement;
+    while (el && el !== container) {
+      elementTop += el.offsetTop;
+      el = el.offsetParent as HTMLElement;
     }
+    const elementBottom = elementTop + focusedElement.offsetHeight;
+    
+    // Check if element is FULLY visible
+    const isAboveView = elementTop < viewTop + TOP_PADDING;
+    const isBelowView = elementBottom > viewBottom;
+    
+    // Only scroll if element is actually outside the visible viewport
+    if (isAboveView) {
+      container.scrollTo({ top: Math.max(0, elementTop - TOP_PADDING), behavior: 'smooth' });
+    } else if (isBelowView) {
+      const newScrollTop = elementBottom - container.clientHeight + BOTTOM_PADDING;
+      container.scrollTo({ top: newScrollTop, behavior: 'smooth' });
+    }
+    // If element is FULLY visible, do NOTHING - no scroll!
   }, [focusIndex, filteredCountries.length]);
 
   // Handle keyboard navigation
