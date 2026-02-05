@@ -13,13 +13,15 @@ export function NetworkStatusProvider({ children }: { children: ReactNode }) {
   const [isNetworkModalOpen, setIsNetworkModalOpen] = useState(false);
 
   useEffect(() => {
+    let networkListenerId: number | null = null;
+    
     // Check if Samsung TV webapis is available
     if (typeof window !== 'undefined' && (window as any).webapis?.network) {
       console.log('[NetworkStatus] Samsung TV webapis.network detected - setting up listener');
       
       // Add network state change listener
       try {
-        (window as any).webapis.network.addNetworkStateChangeListener((value: number) => {
+        const networkCallback = (value: number) => {
           console.log('[NetworkStatus] Network state changed:', value);
           
           const NetworkState = (window as any).webapis.network.NetworkState;
@@ -39,9 +41,11 @@ export function NetworkStatusProvider({ children }: { children: ReactNode }) {
             setIsConnected(true);
             setIsNetworkModalOpen(false);
           }
-        });
+        };
         
-        console.log('[NetworkStatus] ✅ Network listener added successfully');
+        networkListenerId = (window as any).webapis.network.addNetworkStateChangeListener(networkCallback);
+        
+        console.log('[NetworkStatus] ✅ Network listener added successfully, ID:', networkListenerId);
         
         // Check initial network status
         const isCurrentlyConnected = (window as any).webapis.network.isConnectedToGateway();
@@ -54,6 +58,18 @@ export function NetworkStatusProvider({ children }: { children: ReactNode }) {
       } catch (error) {
         console.error('[NetworkStatus] Failed to setup network listener:', error);
       }
+      
+      // Cleanup for Samsung TV
+      return () => {
+        if (networkListenerId !== null && (window as any).webapis?.network?.removeNetworkStateChangeListener) {
+          try {
+            (window as any).webapis.network.removeNetworkStateChangeListener(networkListenerId);
+            console.log('[NetworkStatus] ✅ Network listener removed successfully');
+          } catch (error) {
+            console.error('[NetworkStatus] Failed to remove network listener:', error);
+          }
+        }
+      };
     } else {
       console.log('[NetworkStatus] Not on Samsung TV - using browser online/offline events');
       

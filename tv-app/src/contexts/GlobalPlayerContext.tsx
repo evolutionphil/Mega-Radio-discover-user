@@ -34,59 +34,58 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
 
   // Initialize TV audio player once
   useEffect(() => {
+    let playerInstance: any = null;
+    
     if (typeof (window as any).TVAudioPlayer !== 'undefined' && !audioPlayerRef.current) {
-      audioPlayerRef.current = new (window as any).TVAudioPlayer('global-audio-container');
+      playerInstance = new (window as any).TVAudioPlayer('global-audio-container');
+      audioPlayerRef.current = playerInstance;
       
-      audioPlayerRef.current.onPlay = () => {
+      playerInstance.onPlay = () => {
         console.log('[GlobalPlayer] Audio playing');
         setIsPlaying(true);
         setIsBuffering(false);
-        // Reset retry count on successful play
         retryCountRef.current = 0;
       };
       
-      audioPlayerRef.current.onPause = () => {
+      playerInstance.onPause = () => {
         console.log('[GlobalPlayer] Audio paused');
         setIsPlaying(false);
       };
       
-      audioPlayerRef.current.onStop = () => {
+      playerInstance.onStop = () => {
         console.log('[GlobalPlayer] Audio stopped');
         setIsPlaying(false);
       };
       
-      audioPlayerRef.current.onBuffering = () => {
+      playerInstance.onBuffering = () => {
         console.log('[GlobalPlayer] Audio buffering');
         setIsBuffering(true);
       };
       
-      audioPlayerRef.current.onReady = () => {
+      playerInstance.onReady = () => {
         console.log('[GlobalPlayer] Audio ready');
         setIsBuffering(false);
       };
       
-      audioPlayerRef.current.onError = (error: any) => {
+      playerInstance.onError = (error: any) => {
         console.log('[GlobalPlayer] ⚠️ Audio error:', error);
         setIsBuffering(false);
         trackError(`Audio playback error: ${error?.message || 'Unknown error'}`, 'GlobalPlayer');
         
-        // Clear any pending retries
         if (retryTimeoutRef.current) {
           clearTimeout(retryTimeoutRef.current);
           retryTimeoutRef.current = null;
         }
         
-        // Retry logic with exponential backoff
         const currentStationToRetry = currentStationRef.current;
         if (currentStationToRetry && retryCountRef.current < maxRetries) {
-          const delay = Math.min(1000 * Math.pow(2, retryCountRef.current), 10000); // Max 10s
+          const delay = Math.min(1000 * Math.pow(2, retryCountRef.current), 10000);
           console.log(`[GlobalPlayer] 🔄 Will retry in ${delay}ms (attempt ${retryCountRef.current + 1}/${maxRetries})`);
           
           retryTimeoutRef.current = setTimeout(() => {
             console.log('[GlobalPlayer] 🔄 Retrying playback...');
             retryCountRef.current++;
             
-            // Retry by calling play again
             if (audioPlayerRef.current && currentStationToRetry) {
               const playUrl = currentStationToRetry.url_resolved || currentStationToRetry.url;
               console.log('[GlobalPlayer] 🔄 Retry URL:', playUrl);
@@ -100,7 +99,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         }
       };
 
-      audioPlayerRef.current.onMetadata = (metadata: string) => {
+      playerInstance.onMetadata = (metadata: string) => {
         console.log('[GlobalPlayer] Metadata received:', metadata);
         setNowPlayingMetadata(metadata);
       };
@@ -113,13 +112,26 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         retryTimeoutRef.current = null;
       }
       
-      if (audioPlayerRef.current && typeof audioPlayerRef.current.stop === 'function') {
-        try {
-          audioPlayerRef.current.stop();
-        } catch (err) {
-          // Silently ignore cleanup errors
+      // Clear event handlers to prevent memory leaks
+      if (playerInstance) {
+        playerInstance.onPlay = null;
+        playerInstance.onPause = null;
+        playerInstance.onStop = null;
+        playerInstance.onBuffering = null;
+        playerInstance.onReady = null;
+        playerInstance.onError = null;
+        playerInstance.onMetadata = null;
+        
+        if (typeof playerInstance.stop === 'function') {
+          try {
+            playerInstance.stop();
+          } catch (err) {
+            // Silently ignore cleanup errors
+          }
         }
       }
+      
+      audioPlayerRef.current = null;
     };
   }, []);
 
@@ -163,22 +175,23 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   // Screensaver prevention - Samsung TV certification requirement
   useEffect(() => {
     const hasTizen = typeof (window as any).tizen !== 'undefined';
+    let wakeLock: any = null;
+    let releaseHandler: (() => void) | null = null;
     
     if (!hasTizen) {
       console.log('[Screensaver] Not on Samsung TV - using Wake Lock API if available');
       
       // Use Web Wake Lock API for non-Samsung platforms (if supported)
       if ('wakeLock' in navigator && isPlaying) {
-        let wakeLock: any = null;
-        
         const requestWakeLock = async () => {
           try {
             wakeLock = await (navigator as any).wakeLock.request('screen');
             console.log('[Screensaver] Wake Lock acquired (Web API)');
             
-            wakeLock.addEventListener('release', () => {
+            releaseHandler = () => {
               console.log('[Screensaver] Wake Lock released (Web API)');
-            });
+            };
+            wakeLock.addEventListener('release', releaseHandler);
           } catch (err) {
             console.log('[Screensaver] Wake Lock request failed:', err);
           }
@@ -188,7 +201,11 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         
         return () => {
           if (wakeLock) {
-            wakeLock.release();
+            if (releaseHandler) {
+              wakeLock.removeEventListener('release', releaseHandler);
+            }
+            wakeLock.release().catch(() => {});
+            wakeLock = null;
           }
         };
       }
@@ -253,7 +270,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     audioPlayerRef.current.play(playUrl);
 
     // Track station play event in Google Analytics
-    trackStationPlay(station.name, station.country, station.tags?.[0]);
+    trackStationPlay(station.name, station.country || '', station.tags?.[0] || '');
 
     // Save last played station to localStorage
     try {
@@ -315,6 +332,13 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       stop: stopStation,
       isPlaying,
       currentStation,
+    };
+    
+    // Cleanup: remove globalPlayer from window on unmount
+    return () => {
+      if ((window as any).globalPlayer) {
+        delete (window as any).globalPlayer;
+      }
     };
   }, [isPlaying, currentStation]);
 

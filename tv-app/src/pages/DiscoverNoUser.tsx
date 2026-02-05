@@ -41,10 +41,8 @@ export const DiscoverNoUser = (): JSX.Element => {
     queryKey: ['/api/genres/all', selectedCountryCode],
     queryFn: () => {
       if (selectedCountryCode === 'GLOBAL') {
-        console.log('[DiscoverNoUser] Fetching GLOBAL genres (no country filter)');
         return megaRadioApi.getAllGenres();
       }
-      console.log('[DiscoverNoUser] Fetching genres for country code:', selectedCountryCode);
       return megaRadioApi.getAllGenres(selectedCountryCode);
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -57,10 +55,8 @@ export const DiscoverNoUser = (): JSX.Element => {
     queryKey: ['/api/stations/popular', { limit: 24, country: selectedCountryCode }],
     queryFn: () => {
       if (selectedCountryCode === 'GLOBAL') {
-        console.log('[DiscoverNoUser] Fetching GLOBAL popular stations (no country filter)');
         return megaRadioApi.getPopularStations({ limit: 24 });
       }
-      console.log('[DiscoverNoUser] Fetching popular stations for country:', selectedCountryCode);
       return megaRadioApi.getPopularStations({ limit: 24, country: selectedCountryCode });
     },
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
@@ -73,10 +69,8 @@ export const DiscoverNoUser = (): JSX.Element => {
     queryKey: ['/api/stations/country/initial', selectedCountryCode],
     queryFn: () => {
       if (selectedCountryCode === 'GLOBAL') {
-        console.log('[DiscoverNoUser] Fetching INITIAL 100 GLOBAL stations (no country filter), offset=0');
         return megaRadioApi.getWorkingStations({ limit: 100, offset: 0 });
       }
-      console.log('[DiscoverNoUser] Fetching INITIAL 100 stations for country code:', selectedCountryCode, 'offset=0');
       return megaRadioApi.getWorkingStations({ limit: 100, country: selectedCountryCode, offset: 0 });
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -266,7 +260,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         const station = popularStations[stationIndex];
         if (station) {
           // Save navigation state before navigating
-          console.log('[DiscoverNoUser] Saving navigation state (Popular):', { currentPage: location, focusIndex: index });
           setNavigationState(location, index);
           playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
@@ -286,7 +279,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         const station = displayedStations[stationIndex];
         if (station) {
           // Save navigation state before navigating
-          console.log('[DiscoverNoUser] Saving navigation state (Country):', { currentPage: location, focusIndex: index });
           setNavigationState(location, index);
           playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
@@ -325,7 +317,6 @@ export const DiscoverNoUser = (): JSX.Element => {
             setIsExitModalOpen(false);
           } else {
             // Exit - actually close the app
-            console.log('[DiscoverNoUser] Exit app via keyboard - calling tizen.application.getCurrentApplication().exit()');
             if (typeof window !== 'undefined' && (window as any).tizen) {
               try {
                 (window as any).tizen.application.getCurrentApplication().exit();
@@ -351,7 +342,6 @@ export const DiscoverNoUser = (): JSX.Element => {
 
     // Ignore all key events when country selector modal is open
     if (isCountrySelectorOpen) {
-      console.log('[DiscoverNoUser] Key event ignored - country selector modal is open');
       return;
     }
 
@@ -376,7 +366,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         break;
       case key?.ENTER:
       case 13:
-        console.log('[DiscoverNoUser] ENTER key pressed - calling handleSelect()');
         handleSelect();
         break;
       case key?.PAGE_DOWN:
@@ -391,20 +380,14 @@ export const DiscoverNoUser = (): JSX.Element => {
           const globalPlayerButton = document.querySelector('[data-testid="button-global-play-pause"]') as HTMLElement;
           if (globalPlayerButton) {
             globalPlayerButton.focus();
-            console.log('[DiscoverNoUser] PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN - jumped to global player');
-          } else {
-            console.log('[DiscoverNoUser] PAGE_UP/PAGE_DOWN/CH_UP/CH_DOWN - global player not visible');
           }
         }
         break;
       case key?.RETURN:
       case 461:
       case 10009:
-        console.log('[DiscoverNoUser] 🔙 BACK/RETURN key pressed - should show exit modal');
-        console.log('[DiscoverNoUser] Current modal state - isExitModalOpen:', isExitModalOpen);
         e.preventDefault();
         handleBack();
-        console.log('[DiscoverNoUser] ✅ handleBack() called to trigger exit modal');
         break;
     }
   });
@@ -413,14 +396,12 @@ export const DiscoverNoUser = (): JSX.Element => {
   useEffect(() => {
     if (initialStationsData?.stations) {
       const stations = initialStationsData.stations;
-      console.log(`[DiscoverNoUser] Country changed: ${selectedCountry}, initial fetch: ${stations.length} stations`);
       setDisplayedStations(stations);
       setCurrentOffset(100); // Next fetch will use offset=100
       
       // If we got less than 100 stations, there's no more to load
       const hasMore = stations.length >= 100;
       setHasMoreCountryStations(hasMore);
-      console.log(`[DiscoverNoUser] Initial load: ${stations.length} stations, hasMore=${hasMore}, nextOffset=100`);
     }
   }, [initialStationsData, selectedCountryCode]);
 
@@ -429,7 +410,6 @@ export const DiscoverNoUser = (): JSX.Element => {
     const navState = popNavigationState(); // Pop and clear in one atomic operation
     if (navState && navState.returnFocusIndex !== null) {
       // Restore focus when returning from RadioPlaying
-      console.log('[DiscoverNoUser] 🎯 Restoring focus to index:', navState.returnFocusIndex);
       setFocusIndex(navState.returnFocusIndex);
     }
   }, []); // Only run once on mount
@@ -438,26 +418,20 @@ export const DiscoverNoUser = (): JSX.Element => {
   useEffect(() => {
     const handleAutoPlay = async () => {
       if (!autoPlayService.shouldAutoPlay()) {
-        console.log('[AutoPlay] Skipping auto-play (already played this session)');
         return;
       }
 
       const playMode = autoPlayService.getPlayAtStartMode();
-      console.log(`[AutoPlay] Play at start mode: ${playMode}`);
 
       if (playMode === "none") {
-        console.log('[AutoPlay] Play at start is disabled');
         return;
       }
 
       const stationToPlay = await autoPlayService.getStationToPlay(playMode, selectedCountryCode);
       
       if (stationToPlay) {
-        console.log('[AutoPlay] Auto-playing station:', stationToPlay.name);
         playStation(stationToPlay);
         setLocation(`/radio-playing?station=${stationToPlay._id}`);
-      } else {
-        console.log('[AutoPlay] No station found to auto-play');
       }
     };
 
@@ -471,12 +445,10 @@ export const DiscoverNoUser = (): JSX.Element => {
   // TRUE INFINITE SCROLL - Fetch next batch from API using offset
   const loadMoreCountryStations = async () => {
     if (isLoadingMore || !hasMoreCountryStations) {
-      console.log(`[DiscoverNoUser] Skipping load - isLoadingMore=${isLoadingMore}, hasMore=${hasMoreCountryStations}`);
       return;
     }
 
     setIsLoadingMore(true);
-    console.log(`[DiscoverNoUser] 🚀 Fetching next batch - offset=${currentOffset}, limit=100, country=${selectedCountryCode}`);
     
     try {
       const result = selectedCountryCode === 'GLOBAL'
@@ -491,7 +463,6 @@ export const DiscoverNoUser = (): JSX.Element => {
           });
       
       const newStations = result.stations || [];
-      console.log(`[DiscoverNoUser] ✅ Fetched ${newStations.length} stations from API`);
       
       if (newStations.length > 0) {
         setDisplayedStations(prev => [...prev, ...newStations]);
@@ -500,10 +471,8 @@ export const DiscoverNoUser = (): JSX.Element => {
         // If we got less than 100 stations, we've reached the end
         const hasMore = newStations.length >= 100;
         setHasMoreCountryStations(hasMore);
-        console.log(`[DiscoverNoUser] After load: total=${displayedStations.length + newStations.length}, hasMore=${hasMore}, nextOffset=${currentOffset + 100}`);
       } else {
         setHasMoreCountryStations(false);
-        console.log('[DiscoverNoUser] No more stations available');
       }
     } catch (error) {
       console.error('[DiscoverNoUser] Failed to fetch more stations:', error);
@@ -536,7 +505,6 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       // Trigger load when within 1000px of bottom
       if (scrollHeight - scrollTop - clientHeight < 1000 && hasMoreCountryStations && !isLoadingMore) {
-        console.log('[DiscoverNoUser] 📜 Scroll trigger - loading more stations');
         loadMoreCountryStations();
       }
     };
@@ -554,7 +522,6 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       // If user is within last 14 items (2 rows × 7 columns), load more
       if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
-        console.log(`[DiscoverNoUser] 🎯 Focus trigger - user at station ${stationIndex}/${displayedStations.length}, loading more`);
         loadMoreCountryStations();
       }
     }
@@ -738,7 +705,6 @@ export const DiscoverNoUser = (): JSX.Element => {
               key={station._id || index} 
               href={`/radio-playing?station=${station._id}`}
               onClick={() => {
-                console.log('[DiscoverNoUser] Link clicked (Popular Row 1):', { currentPage: location, focusIndex: focusIdx });
                 setNavigationState(location, focusIdx);
                 playStation(station);
               }}
@@ -778,7 +744,6 @@ export const DiscoverNoUser = (): JSX.Element => {
               key={station._id || index} 
               href={`/radio-playing?station=${station._id}`}
               onClick={() => {
-                console.log('[DiscoverNoUser] Link clicked (Popular Row 2):', { currentPage: location, focusIndex: focusIdx });
                 setNavigationState(location, focusIdx);
                 playStation(station);
               }}
@@ -828,7 +793,6 @@ export const DiscoverNoUser = (): JSX.Element => {
               key={station._id || index} 
               href={`/radio-playing?station=${station._id}`}
               onClick={() => {
-                console.log('[DiscoverNoUser] Link clicked (Country Station):', { currentPage: location, focusIndex: focusIdx });
                 setNavigationState(location, focusIdx);
                 playStation(station);
               }}
@@ -891,7 +855,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         onClose={() => setIsCountrySelectorOpen(false)}
         selectedCountry={selectedCountry}
         onSelectCountry={(country) => {
-          console.log('[DiscoverNoUser] Country selected:', country.name, 'Code:', country.code);
           setCountry(country.name, country.code, country.flag);
         }}
       />
@@ -945,7 +908,6 @@ export const DiscoverNoUser = (): JSX.Element => {
                     : 'bg-[rgba(255,65,153,0.3)] text-white border-2 border-[rgba(255,65,153,0.5)]'
                 }`}
                 onClick={() => {
-                  console.log('[DiscoverNoUser] Exit app - calling tizen.application.getCurrentApplication().exit()');
                   if (typeof window !== 'undefined' && (window as any).tizen) {
                     try {
                       (window as any).tizen.application.getCurrentApplication().exit();

@@ -54,15 +54,64 @@ export function useFocusManager({
   // Calculate grid dimensions
   const actualRows = rows || Math.ceil(totalItems / cols);
 
-  // Clamp index to valid range
-  const clampIndex = useCallback((index: number) => {
+  // Grid-aware clamp index - handles incomplete last row
+  const clampIndex = useCallback((index: number, currentIndex: number, direction?: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     if (enableWrapping) {
       if (index < 0) return totalItems - 1;
       if (index >= totalItems) return 0;
       return index;
     }
+    
+    // Grid-aware clamping for incomplete rows
+    if (cols > 1 && direction) {
+      const currentRow = Math.floor(currentIndex / cols);
+      const currentCol = currentIndex % cols;
+      const targetRow = Math.floor(index / cols);
+      const lastRowStartIndex = Math.floor((totalItems - 1) / cols) * cols;
+      const itemsInLastRow = totalItems - lastRowStartIndex;
+      
+      if (direction === 'DOWN') {
+        // Moving down into an incomplete last row
+        if (index >= totalItems) {
+          // Check if we can move to the last row at same column
+          const lastRowIndex = lastRowStartIndex + currentCol;
+          if (lastRowIndex < totalItems) {
+            return lastRowIndex;
+          }
+          // Otherwise clamp to last item in grid
+          return totalItems - 1;
+        }
+      }
+      
+      if (direction === 'UP') {
+        // Moving up from first row - stay in place
+        if (index < 0) {
+          return currentIndex;
+        }
+      }
+      
+      if (direction === 'RIGHT') {
+        // Don't wrap to next row
+        const nextRow = Math.floor(index / cols);
+        if (nextRow !== currentRow) {
+          return currentIndex;
+        }
+      }
+      
+      if (direction === 'LEFT') {
+        // Don't wrap to previous row
+        if (index < 0) {
+          return currentIndex;
+        }
+        const prevRow = Math.floor(index / cols);
+        if (prevRow !== currentRow) {
+          return currentIndex;
+        }
+      }
+    }
+    
     return Math.max(0, Math.min(totalItems - 1, index));
-  }, [totalItems, enableWrapping]);
+  }, [totalItems, enableWrapping, cols]);
 
   // Log focus changes
   useEffect(() => {
@@ -75,51 +124,47 @@ export function useFocusManager({
     });
   }, [focusIndex, totalItems, cols]);
 
-  // Navigation handler
+  // Navigation handler - uses functional update to avoid stale closure
   const handleNavigation = useCallback((direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
-    console.log('[useFocusManager] ⌨️  Navigation:', {
-      direction,
-      currentIndex: focusIndex,
-      totalItems,
-      cols
-    });
-    
-    setFocusIndex(current => {
-      let newIndex = current;
+    setFocusIndex(prev => {
+      console.log('[useFocusManager] ⌨️  Navigation:', {
+        direction,
+        currentIndex: prev,
+        totalItems,
+        cols
+      });
+      
+      let newIndex = prev;
 
       switch (direction) {
         case 'UP':
           if (cols === 1) {
-            // Linear list
-            newIndex = current - 1;
+            newIndex = prev - 1;
           } else {
-            // Grid layout
-            newIndex = current - cols;
+            newIndex = prev - cols;
           }
           break;
 
         case 'DOWN':
           if (cols === 1) {
-            // Linear list
-            newIndex = current + 1;
+            newIndex = prev + 1;
           } else {
-            // Grid layout
-            newIndex = current + cols;
+            newIndex = prev + cols;
           }
           break;
 
         case 'LEFT':
-          newIndex = current - 1;
+          newIndex = prev - 1;
           break;
 
         case 'RIGHT':
-          newIndex = current + 1;
+          newIndex = prev + 1;
           break;
       }
 
-      const clampedIndex = clampIndex(newIndex);
+      const clampedIndex = clampIndex(newIndex, prev, direction);
       console.log('[useFocusManager] 🎯 Focus move:', {
-        from: current,
+        from: prev,
         to: clampedIndex,
         attempted: newIndex,
         clamped: newIndex !== clampedIndex
@@ -127,7 +172,7 @@ export function useFocusManager({
       
       return clampedIndex;
     });
-  }, [cols, clampIndex, focusIndex, totalItems]);
+  }, [cols, clampIndex, totalItems]);
 
   // Select handler
   const handleSelect = useCallback(() => {
@@ -151,21 +196,18 @@ export function useFocusManager({
     if (onBack) {
       onBack();
     } else {
-      // Default: go back in history
       window.history.back();
     }
   }, [onBack]);
 
   // Reset focus when totalItems changes
   useEffect(() => {
-    const oldIndex = focusIndex;
-    setFocusIndex(current => {
-      const newIndex = clampIndex(current);
-      if (newIndex !== current) {
+    setFocusIndex(prev => {
+      const newIndex = clampIndex(prev, prev);
+      if (newIndex !== prev) {
         console.log('[useFocusManager] 🔄 Focus reset due to totalItems change:', {
-          oldTotal: totalItems,
-          newTotal: totalItems,
-          oldIndex: current,
+          totalItems,
+          oldIndex: prev,
           newIndex
         });
       }
@@ -193,6 +235,6 @@ export function useFocusManager({
  */
 export function getFocusClasses(isFocused: boolean): string {
   return isFocused
-    ? 'ring-[6px] ring-[#ff4199] ring-offset-2 ring-offset-black scale-105 transition-all duration-200 shadow-[0_0_30px_rgba(255,65,153,0.8)]'
+    ? 'ring-[8px] ring-[#ff4199] ring-offset-2 ring-offset-black scale-105 transition-all duration-200 shadow-[0_0_30px_rgba(255,65,153,0.8)]'
     : 'transition-all duration-200';
 }

@@ -17,26 +17,15 @@ export const GenreList = (): JSX.Element => {
   const { setNavigationState, popNavigationState } = useNavigation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  // Extract genre slug from URL path - wouter with hash routing
-  // Example: location = "/genre-list/rock" (from #/genre-list/rock)
-  console.log('🔍 [GENRE LIST DEBUG] ===== COMPONENT RENDER =====');
-  console.log('🔍 [GENRE LIST DEBUG] Raw location from wouter:', location);
-  console.log('🔍 [GENRE LIST DEBUG] Window hash:', window.location.hash);
-  
   const pathParts = location.split('/');
-  console.log('🔍 [GENRE LIST DEBUG] Path parts:', pathParts);
   
   let genreSlug = pathParts[2] || 'pop'; // /genre-list/SLUG
-  console.log('🔍 [GENRE LIST DEBUG] Extracted genre slug:', genreSlug);
-  console.log('🔍 [GENRE LIST DEBUG] Selected country:', selectedCountryCode);
   
   // Convert slug back to display name (e.g., "rock" -> "Rock", "hip-hop" -> "Hip Hop")
   const genreName = genreSlug
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
-  
-  console.log('[GenreList] URL genre slug:', genreSlug, '| Display name:', genreName);
 
   // PAGINATION state - Load stations in smaller batches for better navigation
   const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
@@ -47,18 +36,9 @@ export const GenreList = (): JSX.Element => {
 
   // Fetch initial batch (28 stations) with offset=0 for pagination
   // CACHE: 7 days
-  console.log('🔍 [GENRE LIST DEBUG] Creating query with:', {
-    queryKey: ['genre-stations/initial', genreSlug, selectedCountryCode],
-    genreSlug,
-    selectedCountryCode
-  });
-  
   const { data: stationsData, isLoading, refetch } = useQuery({
     queryKey: ['genre-stations/initial', genreSlug, selectedCountryCode],
     queryFn: async () => {
-      console.log('🎵 [GENRE LIST DEBUG] Query function executing...');
-      console.log('🎵 [GENRE LIST DEBUG] Fetching INITIAL 28 stations for genre:', genreSlug, 'country:', selectedCountryCode, 'offset=0');
-      
       const result = await megaRadioApi.getStationsByGenre(genreSlug, { 
         country: selectedCountryCode,
         limit: STATIONS_PER_LOAD,
@@ -66,8 +46,6 @@ export const GenreList = (): JSX.Element => {
         sort: 'votes'
       });
       
-      console.log('✅ [GENRE LIST DEBUG] Fetched', result?.stations?.length || 0, 'stations');
-      console.log('✅ [GENRE LIST DEBUG] First 3 stations:', result?.stations?.slice(0, 3).map((s: any) => s.name));
       return result;
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -76,23 +54,13 @@ export const GenreList = (): JSX.Element => {
   
   // Force refetch when genre changes
   useEffect(() => {
-    console.log('🔄 [GENRE LIST DEBUG] Genre effect triggered');
-    console.log('🔄 [GENRE LIST DEBUG] Current genre slug:', genreSlug);
-    console.log('🔄 [GENRE LIST DEBUG] Calling refetch...');
     refetch();
   }, [genreSlug, refetch]);
 
   // Initialize when initial data loads - PAGINATION
   useEffect(() => {
-    console.log('📊 [GENRE LIST DEBUG] Data effect triggered');
-    console.log('📊 [GENRE LIST DEBUG] Stations data:', stationsData?.stations?.length || 0);
-    console.log('📊 [GENRE LIST DEBUG] Current genre:', genreSlug);
-    console.log('📊 [GENRE LIST DEBUG] Current country:', selectedCountryCode);
-    
     if (stationsData?.stations && stationsData.stations.length > 0) {
       const stations = stationsData.stations;
-      console.log('📊 [GENRE LIST DEBUG] Setting initial stations:', stations.length);
-      console.log('📊 [GENRE LIST DEBUG] First 3 stations:', stations.slice(0, 3).map((s: any) => s.name));
       
       setDisplayedStations(stations);
       setCurrentOffset(STATIONS_PER_LOAD); // Next fetch will use offset=28
@@ -100,10 +68,8 @@ export const GenreList = (): JSX.Element => {
       // If we got less than requested, there's no more to load
       const hasMoreStations = stations.length >= STATIONS_PER_LOAD;
       setHasMore(hasMoreStations);
-      console.log(`[GenreList] Initial load: ${stations.length} stations, hasMore=${hasMoreStations}, nextOffset=${STATIONS_PER_LOAD}`);
     } else if (stationsData?.stations && stationsData.stations.length === 0) {
       // No stations found for this genre/country combo
-      console.log('⚠️ [GENRE LIST DEBUG] No stations found for this genre/country');
       setDisplayedStations([]);
       setHasMore(false);
       setCurrentOffset(0);
@@ -113,12 +79,10 @@ export const GenreList = (): JSX.Element => {
   // PAGINATION - Fetch next batch from API using offset
   const loadMore = async () => {
     if (isLoadingMore || !hasMore) {
-      console.log(`[GenreList] Skipping load - isLoadingMore=${isLoadingMore}, hasMore=${hasMore}`);
       return;
     }
 
     setIsLoadingMore(true);
-    console.log(`[GenreList] 🚀 Fetching next batch - offset=${currentOffset}, limit=${STATIONS_PER_LOAD}, genre=${genreSlug}, country=${selectedCountryCode}`);
     
     try {
       const result = await megaRadioApi.getStationsByGenre(genreSlug, { 
@@ -129,7 +93,6 @@ export const GenreList = (): JSX.Element => {
       });
       
       const newStations = result.stations || [];
-      console.log(`[GenreList] ✅ Fetched ${newStations.length} stations from API`);
       
       if (newStations.length > 0) {
         setDisplayedStations(prev => [...prev, ...newStations]);
@@ -138,10 +101,8 @@ export const GenreList = (): JSX.Element => {
         // If we got less than requested, we've reached the end
         const hasMoreStations = newStations.length >= STATIONS_PER_LOAD;
         setHasMore(hasMoreStations);
-        console.log(`[GenreList] After load: total=${displayedStations.length + newStations.length}, hasMore=${hasMoreStations}, nextOffset=${currentOffset + STATIONS_PER_LOAD}`);
       } else {
         setHasMore(false);
-        console.log('[GenreList] No more stations available');
       }
     } catch (error) {
       console.error('[GenreList] Failed to fetch more stations:', error);
@@ -162,7 +123,6 @@ export const GenreList = (): JSX.Element => {
       
       // Trigger load when within 600px of bottom
       if (distanceFromBottom < 600 && hasMore && !isLoadingMore) {
-        console.log('[GenreList] 📜 Scroll trigger - loading more stations');
         loadMore();
       }
     };
@@ -204,20 +164,11 @@ export const GenreList = (): JSX.Element => {
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
   const stationsStart = 5;
   const totalItems = 5 + displayedStations.length;
-  
-  console.log('🎯 [GENRE LIST DEBUG] Focus setup:', {
-    totalItems,
-    displayedStations: displayedStations.length,
-    stationsStart,
-    willStartAt: stationsStart
-  });
 
   // Custom navigation for sidebar + content
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
-
-    console.log(`[GenreList Navigation] Current: ${current}, Direction: ${direction}, TotalItems: ${totalItems}`);
 
     // Sidebar (0-4)
     if (current >= 0 && current <= 4) {
@@ -235,8 +186,6 @@ export const GenreList = (): JSX.Element => {
       const row = Math.floor(relIndex / 7);
       const col = relIndex % 7;
       const totalStations = displayedStations.length;
-
-      console.log(`[GenreList Navigation] Station Grid - Row: ${row}, Col: ${col}, RelIndex: ${relIndex}, TotalStations: ${totalStations}`);
 
       if (direction === 'LEFT') {
         // Only move left if not in first column
@@ -272,17 +221,13 @@ export const GenreList = (): JSX.Element => {
         // Only move down if the target station actually exists
         if (targetRelIndex < totalStations) {
           newIndex = targetIndex;
-          console.log(`[GenreList Navigation] Moving DOWN to ${newIndex}`);
-        } else {
-          // Target doesn't exist - stay at current position
-          console.log(`[GenreList Navigation] Cannot move DOWN - no station at target position`);
         }
+        // Target doesn't exist - stay at current position
       }
     }
 
     // Ensure newIndex is within valid bounds
     newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
-    console.log(`[GenreList Navigation] Final index: ${newIndex}`);
     setFocusIndex(newIndex);
   };
 
@@ -302,7 +247,6 @@ export const GenreList = (): JSX.Element => {
         const station = displayedStations[stationIndex];
         if (station) {
           // Save navigation state before navigating
-          console.log('[GenreList] Saving navigation state:', { currentPage: location, focusIndex: index });
           setNavigationState(location, index);
           setLocation(`/radio-playing?station=${station._id}`);
         }
@@ -316,11 +260,9 @@ export const GenreList = (): JSX.Element => {
     const navState = popNavigationState(); // Pop and clear in one atomic operation
     if (navState && navState.returnFocusIndex !== null) {
       // Restore focus when returning from RadioPlaying
-      console.log('[GenreList] 🎯 Restoring focus to index:', navState.returnFocusIndex);
       setFocusIndex(navState.returnFocusIndex);
     } else if (displayedStations.length > 0 && focusIndex < stationsStart) {
       // Default: Jump to first station when stations load
-      console.log('[GenreList] 🎯 Stations loaded, jumping to first station (index 5)');
       setFocusIndex(stationsStart);
     }
   }, [displayedStations.length]);
@@ -372,7 +314,6 @@ export const GenreList = (): JSX.Element => {
       
       // If user is within last 14 items (2 rows × 7 columns), load more
       if (distanceFromEnd <= 14 && hasMore && !isLoadingMore) {
-        console.log(`[GenreList] 🎯 Focus trigger - user at station ${stationIndex}/${displayedStations.length}, loading more`);
         loadMore();
       }
     }

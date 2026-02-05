@@ -26,14 +26,10 @@ export const Genres = (): JSX.Element => {
     queryKey: ['/api/genres', selectedCountryCode],
     queryFn: async () => {
       if (selectedCountryCode === 'GLOBAL') {
-        console.log('[Genres] 🌍 Fetching GLOBAL genres (no country filter)');
         const result = await megaRadioApi.getAllGenres();
-        console.log('[Genres] ✅ Fetched', result.genres?.length, 'genres globally');
         return result;
       }
-      console.log('[Genres] 🎵 Fetching genres for country:', selectedCountryCode, selectedCountry);
       const result = await megaRadioApi.getAllGenres(selectedCountryCode);
-      console.log('[Genres] ✅ Fetched', result.genres?.length, 'genres for', selectedCountry);
       return result;
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -43,11 +39,8 @@ export const Genres = (): JSX.Element => {
   // Extract genres from API response (NEVER hardcoded!)
   const allGenres = useMemo(() => {
     if (!genresData?.genres) {
-      console.log('[Genres] No genres data from API');
       return [];
     }
-    
-    console.log('[Genres] Loaded genres from API:', genresData.genres.length);
     
     return genresData.genres.map(genre => ({
       name: genre.name,
@@ -126,13 +119,10 @@ export const Genres = (): JSX.Element => {
       const col = relIndex % 4;
       const totalAllGenres = allGenres.length;
 
-      console.log(`[Genres Navigation] All Genres Grid - Current: ${current}, Row: ${row}, Col: ${col}, RelIndex: ${relIndex}, Total: ${totalAllGenres}`);
-
       if (direction === 'LEFT') {
         // Only move left if not in first column
         if (col > 0) {
           newIndex = current - 1;
-          console.log(`[Genres Navigation] Moving LEFT to ${newIndex}`);
         } else {
           // First column - jump to sidebar
           newIndex = 0;
@@ -141,7 +131,6 @@ export const Genres = (): JSX.Element => {
         // Only move right if not in last column AND next genre exists
         if (col < 3 && (relIndex + 1) < totalAllGenres) {
           newIndex = current + 1;
-          console.log(`[Genres Navigation] Moving RIGHT to ${newIndex}`);
         }
         // Otherwise stay at current position
       } else if (direction === 'UP') {
@@ -151,7 +140,6 @@ export const Genres = (): JSX.Element => {
           // Make sure target genre exists
           if (targetIndex >= 15) {
             newIndex = targetIndex;
-            console.log(`[Genres Navigation] Moving UP to ${newIndex}`);
           }
         } else {
           // First row - jump to popular genres above (same 4-col grid alignment)
@@ -165,11 +153,8 @@ export const Genres = (): JSX.Element => {
         // Only move down if the target genre actually exists
         if (targetRelIndex < totalAllGenres) {
           newIndex = targetIndex;
-          console.log(`[Genres Navigation] Moving DOWN to ${newIndex}`);
-        } else {
-          // Target doesn't exist - stay at current position
-          console.log(`[Genres Navigation] Cannot move DOWN - no genre at target position`);
         }
+        // Target doesn't exist - stay at current position
       }
     }
 
@@ -184,7 +169,6 @@ export const Genres = (): JSX.Element => {
   useEffect(() => {
     // On first mount, jump to first popular genre
     if (!hasNavigatedToGenre && popularGenres.length > 0) {
-      console.log('[Genres] First mount - jumping to first popular genre at index 7');
       setFocusIndex(7); // First popular genre (index 7)
       setHasNavigatedToGenre(true);
     }
@@ -212,17 +196,8 @@ export const Genres = (): JSX.Element => {
         const genreIndex = index - 7;
         const genre = popularGenres[genreIndex];
         if (genre) {
-          console.log('🎯 [GENRE NAV DEBUG] Popular genre clicked:', {
-            index,
-            genreIndex,
-            genreName: genre.name,
-            genreSlug: genre.slug,
-            targetURL: `/genre-list/${encodeURIComponent(genre.slug)}`
-          });
           const newLocation = `/genre-list/${encodeURIComponent(genre.slug)}`;
-          console.log('🎯 [GENRE NAV DEBUG] Setting location to:', newLocation);
           setLocation(newLocation);
-          console.log('🎯 [GENRE NAV DEBUG] setLocation called successfully');
         }
       }
       // All genres (15+)
@@ -230,17 +205,8 @@ export const Genres = (): JSX.Element => {
         const genreIndex = index - 15;
         const genre = allGenres[genreIndex];
         if (genre) {
-          console.log('🎯 [GENRE NAV DEBUG] All genre clicked:', {
-            index,
-            genreIndex,
-            genreName: genre.name,
-            genreSlug: genre.slug,
-            targetURL: `/genre-list/${encodeURIComponent(genre.slug)}`
-          });
           const newLocation = `/genre-list/${encodeURIComponent(genre.slug)}`;
-          console.log('🎯 [GENRE NAV DEBUG] Setting location to:', newLocation);
           setLocation(newLocation);
-          console.log('🎯 [GENRE NAV DEBUG] setLocation called successfully');
         }
       }
     },
@@ -253,7 +219,6 @@ export const Genres = (): JSX.Element => {
   usePageKeyHandler('/genres', (e) => {
     // Ignore all key events when country selector modal is open
     if (isCountrySelectorOpen) {
-      console.log('[Genres] Key event ignored - country selector modal is open');
       return;
     }
 
@@ -366,7 +331,6 @@ export const Genres = (): JSX.Element => {
         onClose={() => setIsCountrySelectorOpen(false)}
         selectedCountry={selectedCountry}
         onSelectCountry={(country) => {
-          console.log('[Genres] Country selected:', country.name, country.code);
           setCountry(country.name, country.code, country.flag);
           setIsCountrySelectorOpen(false);
         }}
