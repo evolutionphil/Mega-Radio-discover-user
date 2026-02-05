@@ -212,11 +212,22 @@ export const megaRadioApi = {
     if (params?.genre) queryParams.append('genre', params.genre);
     queryParams.append('sort', 'votes');
 
-    const url = buildApiUrl('/stations', queryParams);
-    const response = await fetch(url);
-    const data = await response.json();
-    const stations = data.stations || (Array.isArray(data) ? data : []);
-    return { stations };
+    try {
+      const url = buildApiUrl('/stations', queryParams);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getPopularStations] HTTP ${response.status}: ${response.statusText}`);
+        return { stations: [] };
+      }
+      
+      const data = await response.json();
+      const stations = data.stations || (Array.isArray(data) ? data : []);
+      return { stations };
+    } catch (error) {
+      console.error('[getPopularStations] Error:', error instanceof Error ? error.message : String(error));
+      return { stations: [] };
+    }
   },
 
   getWorkingStations: async (params?: {
@@ -257,47 +268,82 @@ export const megaRadioApi = {
     radius?: number;
     limit?: number;
   }): Promise<{ stations: Station[]; totalStations: number }> => {
-    const queryParams = new URLSearchParams({
-      lat: params.lat.toString(),
-      lng: params.lng.toString(),
-    });
-    if (params?.radius) queryParams.append('radius', params.radius.toString());
-    if (params?.limit) queryParams.append('limit', params.limit.toString());
+    try {
+      const queryParams = new URLSearchParams({
+        lat: params.lat.toString(),
+        lng: params.lng.toString(),
+      });
+      if (params?.radius) queryParams.append('radius', params.radius.toString());
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
 
-    const url = buildApiUrl('/stations/nearby', queryParams);
-    const response = await fetch(url);
-    return response.json();
+      const url = buildApiUrl('/stations/nearby', queryParams);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getNearbyStations] HTTP ${response.status}: ${response.statusText}`);
+        return { stations: [], totalStations: 0 };
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('[getNearbyStations] Error:', error instanceof Error ? error.message : String(error));
+      return { stations: [], totalStations: 0 };
+    }
   },
 
-  getStationById: async (identifier: string): Promise<{ station: Station }> => {
-    const url = buildApiUrl(`/station/${identifier}`);
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch station: ${response.statusText}`);
+  getStationById: async (identifier: string): Promise<{ station: Station | null }> => {
+    try {
+      const url = buildApiUrl(`/station/${identifier}`);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getStationById] HTTP ${response.status}: ${response.statusText}`);
+        return { station: null };
+      }
+      
+      const data = await response.json();
+      return { station: data };
+    } catch (error) {
+      console.error('[getStationById] Error:', error instanceof Error ? error.message : String(error));
+      return { station: null };
     }
-    const data = await response.json();
-    return { station: data };
   },
 
   getSimilarStations: async (stationId: string, limit?: number): Promise<{ stations: Station[] }> => {
-    const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
-    const url = buildApiUrl(`/stations/similar/${stationId}`, params);
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch similar stations: ${response.statusText}`);
+    try {
+      const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
+      const url = buildApiUrl(`/stations/similar/${stationId}`, params);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getSimilarStations] HTTP ${response.status}: ${response.statusText}`);
+        return { stations: [] };
+      }
+      
+      const data = await response.json();
+      return { stations: Array.isArray(data) ? data : data.stations || [] };
+    } catch (error) {
+      console.error('[getSimilarStations] Error:', error instanceof Error ? error.message : String(error));
+      return { stations: [] };
     }
-    const data = await response.json();
-    return { stations: Array.isArray(data) ? data : data.stations || [] };
   },
 
   getStationMetadata: async (stationId: string): Promise<{ metadata: { title?: string; artist?: string; album?: string } }> => {
-    const url = buildApiUrl(`/stations/${stationId}/metadata`);
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch station metadata: ${response.statusText}`);
+    try {
+      const url = buildApiUrl(`/stations/${stationId}/metadata`);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getStationMetadata] HTTP ${response.status}: ${response.statusText}`);
+        return { metadata: {} };
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('[getStationMetadata] Error:', error instanceof Error ? error.message : String(error));
+      return { metadata: {} };
     }
-    const data = await response.json();
-    return data;
   },
 
   // Genres
@@ -330,11 +376,22 @@ export const megaRadioApi = {
     }
   },
 
-  getGenreBySlug: async (slug: string): Promise<{ genre: Genre }> => {
-    const url = buildApiUrl(`/genres/slug/${slug}`);
-    const response = await fetch(url);
-    const data = await response.json();
-    return { genre: data };
+  getGenreBySlug: async (slug: string): Promise<{ genre: Genre | null }> => {
+    try {
+      const url = buildApiUrl(`/genres/slug/${slug}`);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getGenreBySlug] HTTP ${response.status}: ${response.statusText}`);
+        return { genre: null };
+      }
+      
+      const data = await response.json();
+      return { genre: data };
+    } catch (error) {
+      console.error('[getGenreBySlug] Error:', error instanceof Error ? error.message : String(error));
+      return { genre: null };
+    }
   },
 
   getStationsByGenre: async (
@@ -359,10 +416,21 @@ export const megaRadioApi = {
     }
     if (params?.sort) queryParams.append('sort', params.sort);
 
-    const url = buildApiUrl(`/genres/${slug}/stations`, queryParams);
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    try {
+      const url = buildApiUrl(`/genres/${slug}/stations`, queryParams);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getStationsByGenre] HTTP ${response.status}: ${response.statusText}`);
+        return { stations: [], pagination: {}, genre: { slug, name: '' } };
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('[getStationsByGenre] Error:', error instanceof Error ? error.message : String(error));
+      return { stations: [], pagination: {}, genre: { slug, name: '' } };
+    }
   },
 
   getDiscoverableGenres: async (): Promise<{ genres: Genre[] }> => {
@@ -404,9 +472,20 @@ export const megaRadioApi = {
 
   // Languages
   getAllLanguages: async (): Promise<{ languages: Language[] }> => {
-    const url = buildApiUrl('/languages');
-    const response = await fetch(url);
-    return response.json();
+    try {
+      const url = buildApiUrl('/languages');
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getAllLanguages] HTTP ${response.status}: ${response.statusText}`);
+        return { languages: [] };
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('[getAllLanguages] Error:', error instanceof Error ? error.message : String(error));
+      return { languages: [] };
+    }
   },
 
   // Search
@@ -442,35 +521,74 @@ export const megaRadioApi = {
 
   // Discovery
   getTopClicked: async (limit?: number): Promise<{ stations: Station[] }> => {
-    const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
-    const url = buildApiUrl('/radio-browser/top-clicked', params);
-    const response = await fetch(url);
-    return response.json();
+    try {
+      const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
+      const url = buildApiUrl('/radio-browser/top-clicked', params);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getTopClicked] HTTP ${response.status}: ${response.statusText}`);
+        return { stations: [] };
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('[getTopClicked] Error:', error instanceof Error ? error.message : String(error));
+      return { stations: [] };
+    }
   },
 
   getTopVoted: async (limit?: number): Promise<{ stations: Station[] }> => {
-    const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
-    const url = buildApiUrl('/radio-browser/top-voted', params);
-    const response = await fetch(url);
-    return response.json();
+    try {
+      const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
+      const url = buildApiUrl('/radio-browser/top-voted', params);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getTopVoted] HTTP ${response.status}: ${response.statusText}`);
+        return { stations: [] };
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('[getTopVoted] Error:', error instanceof Error ? error.message : String(error));
+      return { stations: [] };
+    }
   },
 
   getRecentStations: async (limit?: number): Promise<{ stations: Station[] }> => {
-    const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
-    const url = buildApiUrl('/radio-browser/recent', params);
-    const response = await fetch(url);
-    return response.json();
+    try {
+      const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
+      const url = buildApiUrl('/radio-browser/recent', params);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getRecentStations] HTTP ${response.status}: ${response.statusText}`);
+        return { stations: [] };
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('[getRecentStations] Error:', error instanceof Error ? error.message : String(error));
+      return { stations: [] };
+    }
   },
 
   // Translations
   getTranslations: async (lang: string): Promise<any> => {
-    const url = buildApiUrl(`/translations/${lang}`);
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch translations: ${response.statusText}`);
+    try {
+      const url = buildApiUrl(`/translations/${lang}`);
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        console.error(`[getTranslations] HTTP ${response.status}: ${response.statusText}`);
+        return {};
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('[getTranslations] Error:', error instanceof Error ? error.message : String(error));
+      return {};
     }
-    
-    return response.json();
   },
 };

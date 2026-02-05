@@ -44,27 +44,35 @@ export const RadioPlaying = (): JSX.Element => {
   
   // Parse station ID from URL query params (supports both hash and pre-hash params)
   const stationId = useMemo(() => {
-    // Try to get from wouter location first (hash-based: /#/radio-playing?station=123)
-    const queryStart = location.indexOf('?');
-    if (queryStart !== -1) {
-      const queryString = location.substring(queryStart + 1);
-      const searchParams = new URLSearchParams(queryString);
-      const id = searchParams.get('station') || searchParams.get('stationId');
-      if (id) {
-        return id;
+    try {
+      // Try to get from wouter location first (hash-based: /#/radio-playing?station=123)
+      const queryStart = location.indexOf('?');
+      if (queryStart !== -1) {
+        const queryString = location.substring(queryStart + 1);
+        const searchParams = new URLSearchParams(queryString);
+        const id = searchParams.get('station') || searchParams.get('stationId');
+        // Validate station ID - must be non-empty string
+        if (id && typeof id === 'string' && id.trim().length > 0) {
+          return id.trim();
+        }
       }
-    }
 
-    // Fallback: Try window.location.search (pre-hash: /?stationId=123#/radio-playing)
-    if (window.location.search) {
-      const searchParams = new URLSearchParams(window.location.search);
-      const id = searchParams.get('station') || searchParams.get('stationId');
-      if (id) {
-        return id;
+      // Fallback: Try window.location.search (pre-hash: /?stationId=123#/radio-playing)
+      if (window.location.search) {
+        const searchParams = new URLSearchParams(window.location.search);
+        const id = searchParams.get('station') || searchParams.get('stationId');
+        // Validate station ID - must be non-empty string
+        if (id && typeof id === 'string' && id.trim().length > 0) {
+          return id.trim();
+        }
       }
-    }
 
-    return null;
+      return null;
+    } catch (error) {
+      // Log error but don't crash - return null and show error state
+      console.error('Error parsing station ID from URL:', error);
+      return null;
+    }
   }, [location, updateTrigger]);
   
   // Track station history when station ID changes
@@ -81,7 +89,12 @@ export const RadioPlaying = (): JSX.Element => {
   // Fallback image - music note on pink gradient background
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
-  const getStationImage = (station: Station) => {
+  const getStationImage = (station: Station | null | undefined): string => {
+    // Guard against null/undefined station
+    if (!station) {
+      return FALLBACK_IMAGE;
+    }
+    
     // Check for null, undefined, empty string, or the string "null"
     if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
       return station.favicon.startsWith('http') 
@@ -102,23 +115,44 @@ export const RadioPlaying = (): JSX.Element => {
   const { data: stationData, isLoading: isLoadingStation, error: stationError } = useQuery({
     queryKey: ['station', stationId],
     queryFn: async () => {
-      const result = await megaRadioApi.getStationById(stationId!);
-      return result;
+      if (!stationId || stationId.trim().length === 0) {
+        throw new Error('Invalid station ID');
+      }
+      try {
+        const result = await megaRadioApi.getStationById(stationId);
+        if (!result || !result.station) {
+          throw new Error('Station data not found');
+        }
+        return result;
+      } catch (error) {
+        console.error('Failed to fetch station details:', error);
+        throw error;
+      }
     },
-    enabled: !!stationId,
+    enabled: !!stationId && stationId.trim().length > 0,
     retry: 2,
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
-  const station = stationData?.station;
+  const station = stationData?.station || null;
 
 
   // Fetch station metadata
   const { data: metadataData } = useQuery({
     queryKey: ['metadata', stationId],
-    queryFn: () => megaRadioApi.getStationMetadata(stationId!),
-    enabled: !!stationId,
+    queryFn: async () => {
+      if (!stationId || stationId.trim().length === 0) {
+        throw new Error('Invalid station ID');
+      }
+      try {
+        return await megaRadioApi.getStationMetadata(stationId);
+      } catch (error) {
+        console.error('Failed to fetch station metadata:', error);
+        throw error;
+      }
+    },
+    enabled: !!stationId && stationId.trim().length > 0,
     refetchInterval: 30000,
   });
 
@@ -129,30 +163,40 @@ export const RadioPlaying = (): JSX.Element => {
   const { data: similarData } = useQuery({
     queryKey: ['similar-stations', stationId, station?.countrycode || station?.country],
     queryFn: async () => {
-      if (!station) return { stations: [] };
-      const countryCode = station.countrycode || station.country;
-      if (countryCode) {
-        const data = await megaRadioApi.getWorkingStations({ 
-          limit: 100, 
-          country: countryCode 
-        });
-        // Filter out current station and shuffle for variety
-        const filtered = data.stations.filter(s => s._id !== stationId);
-        // Shuffle array to get different stations each time
+      if (!station || !stationId) {
+        return { stations: [] };
+      }
+      
+      try {
+        const countryCode = station.countrycode || station.country;
+        if (countryCode && typeof countryCode === 'string' && countryCode.trim().length > 0) {
+          const data = await megaRadioApi.getWorkingStations({ 
+            limit: 100, 
+            country: countryCode 
+          });
+          // Filter out current station and shuffle for variety
+          const filtered = (data?.stations || []).filter(s => s && s._id && s._id !== stationId);
+          // Shuffle array to get different stations each time
+          for (let i = filtered.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+          }
+          return { stations: filtered };
+        }
+        
+        // Fallback: Get similar stations without country filter
+        const data = await megaRadioApi.getSimilarStations(stationId, 100);
+        // Also filter and shuffle similar stations
+        const filtered = (data?.stations || []).filter(s => s && s._id && s._id !== stationId);
         for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
         }
         return { stations: filtered };
+      } catch (error) {
+        console.error('Failed to fetch similar stations:', error);
+        return { stations: [] };
       }
-      const data = await megaRadioApi.getSimilarStations(stationId!, 100);
-      // Also filter and shuffle similar stations
-      const filtered = data.stations.filter(s => s._id !== stationId);
-      for (let i = filtered.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
-      }
-      return { stations: filtered };
     },
     enabled: !!stationId && !!station,
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -166,19 +210,24 @@ export const RadioPlaying = (): JSX.Element => {
   const { data: popularData } = useQuery({
     queryKey: ['popular-global-stations', stationId, popularStationsToShow],
     queryFn: async () => {
-      const limit = Math.max(100, popularStationsToShow + 50);
-      const data = await megaRadioApi.getPopularStations({ 
-        limit,
-        // No country filter - get global popular stations
-      });
-      // Filter out current station and shuffle for random variety
-      const filtered = data.stations.filter(s => s._id !== stationId);
-      // Shuffle array to get different stations each time
-      for (let i = filtered.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+      try {
+        const limit = Math.max(100, popularStationsToShow + 50);
+        const data = await megaRadioApi.getPopularStations({ 
+          limit,
+          // No country filter - get global popular stations
+        });
+        // Filter out current station and shuffle for random variety
+        const filtered = (data?.stations || []).filter(s => s && s._id && s._id !== stationId);
+        // Shuffle array to get different stations each time
+        for (let i = filtered.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+        }
+        return { stations: filtered };
+      } catch (error) {
+        console.error('Failed to fetch popular stations:', error);
+        return { stations: [] };
       }
-      return { stations: filtered };
     },
     enabled: !!stationId,
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
@@ -502,35 +551,79 @@ export const RadioPlaying = (): JSX.Element => {
   };
 
   const handlePrevious = () => {
-    if (stationHistoryRef.current.length <= 1) {
-      return;
+    try {
+      if (stationHistoryRef.current.length <= 1) {
+        return;
+      }
+      
+      stationHistoryRef.current.pop();
+      const previousStationId = stationHistoryRef.current[stationHistoryRef.current.length - 1];
+      
+      if (!previousStationId || previousStationId.trim().length === 0) {
+        console.warn('Invalid previous station ID');
+        return;
+      }
+      
+      isNavigatingBackRef.current = true;
+      
+      if (!window.location || !window.location.pathname) {
+        console.error('Window location not available');
+        return;
+      }
+      
+      const newUrl = `${window.location.pathname}?station=${previousStationId}${window.location.hash}`;
+      window.history.pushState({}, '', newUrl);
+      setUpdateTrigger(prev => prev + 1);
+    } catch (error) {
+      console.error('Failed to navigate to previous station:', error);
+      isNavigatingBackRef.current = false;
     }
-    
-    stationHistoryRef.current.pop();
-    const previousStationId = stationHistoryRef.current[stationHistoryRef.current.length - 1];
-    isNavigatingBackRef.current = true;
-    
-    const newUrl = `${window.location.pathname}?station=${previousStationId}${window.location.hash}`;
-    window.history.pushState({}, '', newUrl);
-    setUpdateTrigger(prev => prev + 1);
   };
 
   const handleNext = () => {
-    if (similarStations.length === 0) {
-      return;
+    try {
+      if (!similarStations || similarStations.length === 0) {
+        return;
+      }
+      
+      const nextStation = similarStations[0];
+      if (!nextStation || !nextStation._id || nextStation._id.trim().length === 0) {
+        console.warn('Invalid next station');
+        return;
+      }
+      
+      if (!window.location || !window.location.pathname) {
+        console.error('Window location not available');
+        return;
+      }
+      
+      const newUrl = `${window.location.pathname}?station=${nextStation._id}${window.location.hash}`;
+      window.history.pushState({}, '', newUrl);
+      setUpdateTrigger(prev => prev + 1);
+    } catch (error) {
+      console.error('Failed to navigate to next station:', error);
     }
-    
-    const nextStation = similarStations[0];
-    const newUrl = `${window.location.pathname}?station=${nextStation._id}${window.location.hash}`;
-    window.history.pushState({}, '', newUrl);
-    setUpdateTrigger(prev => prev + 1);
   };
 
-  const navigateToStation = (targetStation: Station) => {
-    playStation(targetStation);
-    const newUrl = `${window.location.pathname}?station=${targetStation._id}${window.location.hash}`;
-    window.history.pushState({}, '', newUrl);
-    setUpdateTrigger(prev => prev + 1);
+  const navigateToStation = (targetStation: Station | null | undefined) => {
+    try {
+      if (!targetStation || !targetStation._id || targetStation._id.trim().length === 0) {
+        console.warn('Invalid target station for navigation');
+        return;
+      }
+      
+      if (!window.location || !window.location.pathname) {
+        console.error('Window location not available');
+        return;
+      }
+      
+      playStation(targetStation);
+      const newUrl = `${window.location.pathname}?station=${targetStation._id}${window.location.hash}`;
+      window.history.pushState({}, '', newUrl);
+      setUpdateTrigger(prev => prev + 1);
+    } catch (error) {
+      console.error('Failed to navigate to station:', error);
+    }
   };
 
   // Show error state
@@ -580,10 +673,14 @@ export const RadioPlaying = (): JSX.Element => {
     );
   }
 
-  const stationTags = getStationTags(station);
-  const codec = station.codec || 'MP3';
-  const bitrate = station.bitrate ? `${station.bitrate}kb` : '128kb';
-  const countryCode = station.countrycode || station.countryCode || 'XX';
+  const stationTags = getStationTags(station || undefined);
+  const codec = (station?.codec && typeof station.codec === 'string') ? station.codec : 'MP3';
+  const bitrate = station && station.bitrate ? `${station.bitrate}kb` : '128kb';
+  const countryCode = (station?.countrycode && typeof station.countrycode === 'string') 
+    ? station.countrycode 
+    : (station?.countryCode && typeof station.countryCode === 'string')
+      ? station.countryCode
+      : 'XX';
 
   return (
     <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
@@ -628,7 +725,7 @@ export const RadioPlaying = (): JSX.Element => {
         <img 
           src={getStationImage(station)}
                     loading="lazy"
-          alt={station.name}
+          alt={station?.name || 'Radio Station'}
           className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
           onError={(e) => {
             (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
@@ -645,7 +742,7 @@ export const RadioPlaying = (): JSX.Element => {
 
       {/* Station Name */}
       <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[596px] not-italic text-[48px] text-white top-[293px] max-w-[600px] truncate">
-        {station.name}
+        {station?.name || 'Unknown Station'}
       </p>
 
       {/* Now Playing */}
@@ -663,8 +760,8 @@ export const RadioPlaying = (): JSX.Element => {
         {/* Country Flag */}
         <div className="w-[34.783px] h-[34.783px] rounded-full overflow-hidden">
           <img 
-            src={`https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`}
-            alt={station.country}
+            src={`https://flagcdn.com/w40/${countryCode && typeof countryCode === 'string' ? countryCode.toLowerCase() : 'xx'}.png`}
+            alt={station?.country || 'Unknown Country'}
             className="w-full h-full object-cover"
             onError={(e) => {
               (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
@@ -757,14 +854,18 @@ export const RadioPlaying = (): JSX.Element => {
         {/* Favorite Button */}
         <div 
           className={`absolute border-[3.608px] border-solid left-[378.81px] rounded-[72.655px] w-[90.192px] h-[90.192px] top-0 cursor-pointer transition-all flex items-center justify-center ${
-            isFavorite(station._id) 
+            (station && station._id && isFavorite(station._id))
               ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
               : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
           } ${isFocused(9) ? 'border-[#ff4199] animate-pulse-soft' : ''}`}
           style={{
             boxShadow: isFocused(9) ? '0 0 30px rgba(255, 65, 153, 0.8)' : 'none'
           }}
-          onClick={() => toggleFavorite(station)}
+          onClick={() => {
+            if (station && station._id) {
+              toggleFavorite(station);
+            }
+          }}
           data-testid="button-favorite"
         >
           <svg className="w-[50.508px] h-[50.508px]" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -815,10 +916,10 @@ export const RadioPlaying = (): JSX.Element => {
                   />
                 </div>
                 <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
-                  {similarStation.name}
+                  {similarStation?.name || 'Unknown Station'}
                 </p>
                 <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
-                  {getStationTags(similarStation)[0] || similarStation.country || 'Radio'}
+                  {getStationTags(similarStation || undefined)[0] || similarStation?.country || 'Radio'}
                 </p>
               </div>
               )
@@ -860,10 +961,10 @@ export const RadioPlaying = (): JSX.Element => {
                   />
                 </div>
                 <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-center text-white leading-normal mt-[21px] truncate px-2">
-                  {popularStation.name}
+                  {popularStation?.name || 'Unknown Station'}
                 </p>
                 <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-center text-white leading-normal mt-[6.2px] truncate px-2">
-                  {getStationTags(popularStation)[0] || popularStation.country || 'Radio'}
+                  {getStationTags(popularStation || undefined)[0] || popularStation?.country || 'Radio'}
                 </p>
               </div>
               )

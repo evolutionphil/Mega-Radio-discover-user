@@ -15,9 +15,12 @@ export const Favorites = (): JSX.Element => {
   // Define sidebar routes (5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
   
+  // Safely get favorites array with null checks
+  const favoritesArray = Array.isArray(favorites) ? favorites : [];
+  
   // Calculate totalItems: 5 sidebar + favorites (or 1 for empty state)
   const favoritesStart = 5;
-  const totalItems = 5 + (favorites.length || 1);
+  const totalItems = 5 + (favoritesArray.length || 1);
   
   // Focus management with custom navigation
   const { focusIndex, handleNavigation: baseHandleNavigation, handleSelect, handleBack, isFocused, setFocusIndex } = useFocusManager({
@@ -31,15 +34,17 @@ export const Favorites = (): JSX.Element => {
       }
       // Favorites section
       else if (index >= favoritesStart) {
-        if (favorites.length === 0) {
+        if (favoritesArray.length === 0) {
           // Empty state: go to discover
           setLocation('/discover-no-user');
         } else {
           // Navigate to radio playing page
           const stationIndex = index - favoritesStart;
-          const station = favorites[stationIndex];
-          if (station) {
-            setLocation(`/radio-playing?station=${station._id}`);
+          if (stationIndex >= 0 && stationIndex < favoritesArray.length) {
+            const station = favoritesArray[stationIndex];
+            if (station && station._id) {
+              setLocation(`/radio-playing?station=${station._id}`);
+            }
           }
         }
       }
@@ -67,6 +72,7 @@ export const Favorites = (): JSX.Element => {
       const relIndex = current - favoritesStart;
       const row = Math.floor(relIndex / 7);
       const col = relIndex % 7;
+      const favoritesLength = favoritesArray.length || 0;
 
       if (direction === 'LEFT') {
         if (col > 0) {
@@ -90,6 +96,8 @@ export const Favorites = (): JSX.Element => {
       }
     }
 
+    // Clamp to valid range
+    newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
     setFocusIndex(newIndex);
   };
 
@@ -189,7 +197,7 @@ export const Favorites = (): JSX.Element => {
         </p>
 
         {/* Empty State or Station Grid */}
-        {favorites.length === 0 ? (
+        {favoritesArray.length === 0 ? (
           <>
             {/* Heart Icon - Centered */}
             <div className="absolute left-[986px] w-[124px] h-[124px] top-[365px]">
@@ -222,14 +230,15 @@ export const Favorites = (): JSX.Element => {
         ) : (
           <>
             {/* Radio Station Cards - Dynamic Grid (7 columns like GenreList) */}
-            {favorites.map((station, index) => {
+            {Array.isArray(favoritesArray) && favoritesArray.length > 0 && favoritesArray.map((station, index) => {
+              if (!station || !station._id) return null;
               const row = Math.floor(index / 7);
               const col = index % 7;
               const leftPosition = 236 + (col * 230); // 236px start, 230px between columns
               const topPosition = 316 + (row * 294); // 316px start, 294px between rows
               
               return (
-                <Link key={station._id || index} href={`/radio-playing?station=${station._id}`}>
+                <Link key={station._id} href={`/radio-playing?station=${station._id}`}>
                   <div 
                     className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(favoritesStart + index))}`}
                     style={{ left: `${leftPosition}px`, top: `${topPosition}px` }}
@@ -238,7 +247,7 @@ export const Favorites = (): JSX.Element => {
                   >
                     <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px] top-[34px]">
                       <img
-                        alt={station.name}
+                        alt={station.name || 'Station'}
                         className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
                         src={getStationImage(station)}
                     loading="lazy"
@@ -248,7 +257,7 @@ export const Favorites = (): JSX.Element => {
                       />
                     </div>
                     <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-                      {station.name}
+                      {station.name || 'Unknown'}
                     </p>
                     <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
                       {getStationCategory(station)}

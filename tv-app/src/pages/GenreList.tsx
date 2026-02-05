@@ -55,17 +55,25 @@ export const GenreList = (): JSX.Element => {
   // Initialize when initial data loads - PAGINATION
   // Note: No need for refetch useEffect - queryKey changes trigger automatic refetch
   useEffect(() => {
-    if (stationsData?.stations && stationsData.stations.length > 0) {
-      const stations = stationsData.stations;
-      
-      setDisplayedStations(stations);
-      setCurrentOffset(STATIONS_PER_LOAD); // Next fetch will use offset=28
-      
-      // If we got less than requested, there's no more to load
-      const hasMoreStations = stations.length >= STATIONS_PER_LOAD;
-      setHasMore(hasMoreStations);
-    } else if (stationsData?.stations && stationsData.stations.length === 0) {
-      // No stations found for this genre/country combo
+    // Guard stationsData?.stations before rendering
+    if (stationsData && stationsData.stations && Array.isArray(stationsData.stations)) {
+      if (stationsData.stations.length > 0) {
+        const stations = stationsData.stations;
+        
+        setDisplayedStations(stations);
+        setCurrentOffset(STATIONS_PER_LOAD); // Next fetch will use offset=28
+        
+        // If we got less than requested, there's no more to load
+        const hasMoreStations = stations.length >= STATIONS_PER_LOAD;
+        setHasMore(hasMoreStations);
+      } else {
+        // No stations found for this genre/country combo
+        setDisplayedStations([]);
+        setHasMore(false);
+        setCurrentOffset(0);
+      }
+    } else {
+      // Null or undefined stations data
       setDisplayedStations([]);
       setHasMore(false);
       setCurrentOffset(0);
@@ -88,10 +96,22 @@ export const GenreList = (): JSX.Element => {
         sort: 'votes'
       });
       
+      // Validate result exists and has stations property
+      if (!result || !result.stations) {
+        setHasMore(false);
+        return;
+      }
+
       const newStations = result.stations || [];
       
-      if (newStations.length > 0) {
-        setDisplayedStations(prev => [...prev, ...newStations]);
+      if (Array.isArray(newStations) && newStations.length > 0) {
+        setDisplayedStations(prev => {
+          // Ensure prev is always an array
+          if (!Array.isArray(prev)) {
+            return newStations;
+          }
+          return [...prev, ...newStations];
+        });
         setCurrentOffset(prev => prev + STATIONS_PER_LOAD); // Increment offset for next fetch
         
         // If we got less than requested, we've reached the end
@@ -101,6 +121,7 @@ export const GenreList = (): JSX.Element => {
         setHasMore(false);
       }
     } catch (error) {
+      console.error('Error loading more stations:', error);
       setHasMore(false);
     } finally {
       setIsLoadingMore(false);
@@ -113,12 +134,25 @@ export const GenreList = (): JSX.Element => {
     if (!scrollContainer) return;
 
     const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
-      
-      // Trigger load when within 600px of bottom
-      if (distanceFromBottom < 600 && hasMore && !isLoadingMore) {
-        loadMore();
+      // Add null check for scrollContainerRef.current inside scroll handler
+      if (!scrollContainerRef.current) return;
+
+      try {
+        const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+        
+        // Validate all properties are valid numbers
+        if (typeof scrollTop !== 'number' || typeof scrollHeight !== 'number' || typeof clientHeight !== 'number') {
+          return;
+        }
+
+        const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+        
+        // Trigger load when within 600px of bottom
+        if (distanceFromBottom < 600 && hasMore && !isLoadingMore) {
+          loadMore();
+        }
+      } catch (error) {
+        console.error('Error in scroll handler:', error);
       }
     };
 
@@ -266,57 +300,94 @@ export const GenreList = (): JSX.Element => {
   // Uses scrollTop/offsetTop based math for accurate visibility detection
   useEffect(() => {
     if (focusIndex >= stationsStart && scrollContainerRef.current) {
-      const stationIndex = focusIndex - stationsStart;
-      const container = scrollContainerRef.current;
-      
-      // Find the focused station element using data attribute
-      const focusedElement = container.querySelector(`[data-station-index="${stationIndex}"]`) as HTMLElement;
-      
-      if (!focusedElement) return;
-      
-      // Use scrollTop/offsetTop based calculation (NOT getBoundingClientRect)
-      const TOP_PADDING = 20;  // Padding from top edge
-      const BOTTOM_PADDING = 120;  // Leave space for global player bar
-      
-      const viewTop = container.scrollTop;
-      const viewBottom = viewTop + container.clientHeight - BOTTOM_PADDING;
-      
-      // Get element position relative to scroll container
-      let elementTop = 0;
-      let el: HTMLElement | null = focusedElement;
-      while (el && el !== container) {
-        elementTop += el.offsetTop;
-        el = el.offsetParent as HTMLElement;
+      try {
+        const stationIndex = focusIndex - stationsStart;
+        const container = scrollContainerRef.current;
+        
+        // Validate container exists
+        if (!container) {
+          return;
+        }
+        
+        // Find the focused station element using data attribute
+        const focusedElement = container.querySelector(`[data-station-index="${stationIndex}"]`) as HTMLElement;
+        
+        // Validate focusedElement exists before computing offsetTop
+        if (!focusedElement) {
+          return;
+        }
+        
+        // Validate element has required properties
+        if (typeof focusedElement.offsetTop !== 'number' || typeof focusedElement.offsetHeight !== 'number') {
+          return;
+        }
+        
+        // Use scrollTop/offsetTop based calculation (NOT getBoundingClientRect)
+        const TOP_PADDING = 20;  // Padding from top edge
+        const BOTTOM_PADDING = 120;  // Leave space for global player bar
+        
+        const viewTop = container.scrollTop;
+        const viewBottom = viewTop + container.clientHeight - BOTTOM_PADDING;
+        
+        // Validate container properties
+        if (typeof viewTop !== 'number' || typeof container.clientHeight !== 'number') {
+          return;
+        }
+        
+        // Get element position relative to scroll container
+        let elementTop = 0;
+        let el: HTMLElement | null = focusedElement;
+        
+        // Calculate offset with safety checks
+        while (el && el !== container) {
+          if (typeof el.offsetTop === 'number') {
+            elementTop += el.offsetTop;
+          }
+          el = el.offsetParent as HTMLElement;
+          
+          // Safety check to prevent infinite loops
+          if (!el || (el && el.nodeType !== 1)) {
+            break;
+          }
+        }
+        
+        const elementBottom = elementTop + focusedElement.offsetHeight;
+        
+        // Check if element is FULLY visible
+        const isAboveView = elementTop < viewTop + TOP_PADDING;
+        const isBelowView = elementBottom > viewBottom;
+        
+        // Only scroll if element is actually outside the visible viewport
+        if (isAboveView) {
+          container.scrollTo({ top: elementTop - TOP_PADDING, behavior: 'smooth' });
+        } else if (isBelowView) {
+          const newScrollTop = elementBottom - container.clientHeight + BOTTOM_PADDING;
+          container.scrollTo({ top: newScrollTop, behavior: 'smooth' });
+        }
+        // If element is FULLY visible, do NOTHING - no scroll!
+      } catch (error) {
+        console.error('Error in auto-scroll calculation:', error);
+        // Don't crash - just skip the scroll
       }
-      const elementBottom = elementTop + focusedElement.offsetHeight;
-      
-      // Check if element is FULLY visible
-      const isAboveView = elementTop < viewTop + TOP_PADDING;
-      const isBelowView = elementBottom > viewBottom;
-      
-      // Only scroll if element is actually outside the visible viewport
-      if (isAboveView) {
-        container.scrollTo({ top: elementTop - TOP_PADDING, behavior: 'smooth' });
-      } else if (isBelowView) {
-        const newScrollTop = elementBottom - container.clientHeight + BOTTOM_PADDING;
-        container.scrollTo({ top: newScrollTop, behavior: 'smooth' });
-      }
-      // If element is FULLY visible, do NOTHING - no scroll!
     }
   }, [focusIndex, stationsStart]);
 
   // TRUE INFINITE SCROLL trigger - Focus-based (when within last 28 items / 4 rows)
   // Load MORE stations BEFORE user reaches the end for seamless experience
   useEffect(() => {
-    // Only trigger for station items section
-    if (focusIndex >= stationsStart) {
-      const stationIndex = focusIndex - stationsStart;
-      const distanceFromEnd = displayedStations.length - stationIndex;
-      
-      // If user is within last 28 items (4 rows × 7 columns), load more
-      if (distanceFromEnd <= 28 && hasMore && !isLoadingMore) {
-        loadMore();
+    try {
+      // Only trigger for station items section
+      if (focusIndex >= stationsStart) {
+        const stationIndex = focusIndex - stationsStart;
+        const distanceFromEnd = displayedStations.length - stationIndex;
+        
+        // If user is within last 28 items (4 rows × 7 columns), load more
+        if (distanceFromEnd <= 28 && hasMore && !isLoadingMore) {
+          loadMore();
+        }
       }
+    } catch (error) {
+      console.error('Error in infinite scroll trigger:', error);
     }
   }, [focusIndex, stationsStart, displayedStations.length, hasMore, isLoadingMore]);
 
@@ -374,7 +445,12 @@ export const GenreList = (): JSX.Element => {
         </p>
 
         {/* Radio Station Cards - Dynamic Grid */}
-        {displayedStations.map((station, index) => {
+        {Array.isArray(displayedStations) && displayedStations.map((station, index) => {
+          // Validate station object exists and has required properties
+          if (!station || !station._id || !station.name) {
+            return null;
+          }
+
           const row = Math.floor(index / 7);
           const col = index % 7;
           const leftPosition = 236 + (col * 230); // 236px start, 230px between columns
@@ -425,7 +501,7 @@ export const GenreList = (): JSX.Element => {
         )}
 
         {/* No Stations Found */}
-        {!isLoading && displayedStations.length === 0 && (
+        {!isLoading && (!Array.isArray(displayedStations) || displayedStations.length === 0) && (
           <div className="absolute left-[236px] top-[450px] w-[1580px] h-[200px] flex flex-col items-center justify-center">
             <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white mb-4">
               {t('no_stations_found') || 'No Stations Found'}

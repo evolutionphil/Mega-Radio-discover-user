@@ -463,10 +463,11 @@ export const DiscoverNoUser = (): JSX.Element => {
     if (initialStationsData?.stations) {
       const stations = initialStationsData.stations;
       setDisplayedStations(stations);
-      setCurrentOffset(100); // Next fetch will use offset=100
+      // Use actual stations length as offset for next fetch
+      setCurrentOffset(stations.length);
       
-      // If we got less than 100 stations, there's no more to load
-      const hasMore = stations.length >= 100;
+      // If we got a full batch, there's more to load
+      const hasMore = stations.length >= STATIONS_PER_LOAD;
       setHasMoreCountryStations(hasMore);
     }
   }, [initialStationsData, selectedCountryCode]);
@@ -538,7 +539,10 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       if (newStations.length > 0) {
         setDisplayedStations(prev => {
-          const combined = [...prev, ...newStations];
+          // Deduplicate by station ID to prevent duplicate keys
+          const existingIds = new Set(prev.map(s => s._id));
+          const uniqueNewStations = newStations.filter(s => !existingIds.has(s._id));
+          const combined = [...prev, ...uniqueNewStations];
           // Limit to MAX_STATIONS
           return combined.slice(0, MAX_STATIONS);
         });
@@ -601,7 +605,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Load MORE stations BEFORE user reaches the end for seamless experience
   useEffect(() => {
     // Only trigger for country stations section
-    if (focusIndex >= countryStationsStart) {
+    if (focusIndex >= countryStationsStart && displayedStations.length > 0) {
       const stationIndex = focusIndex - countryStationsStart;
       const distanceFromEnd = displayedStations.length - stationIndex;
       
@@ -610,6 +614,15 @@ export const DiscoverNoUser = (): JSX.Element => {
       if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
         loadMoreCountryStations();
       }
+    }
+  }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
+
+  // BACKUP: Also trigger on section enter - load more when user first enters country section
+  useEffect(() => {
+    // If user enters country section and we have fewer than 2 screens of data, load more
+    const inCountrySection = focusIndex >= countryStationsStart;
+    if (inCountrySection && displayedStations.length < 42 && hasMoreCountryStations && !isLoadingMore) {
+      loadMoreCountryStations();
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 

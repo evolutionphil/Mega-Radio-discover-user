@@ -66,8 +66,17 @@ export const Search = (): JSX.Element => {
   
   // Load recently played stations from localStorage
   useEffect(() => {
-    const recent = recentlyPlayedService.getStations();
-    setRecentlyPlayedStations(recent);
+    try {
+      const recent = recentlyPlayedService.getStations();
+      if (Array.isArray(recent)) {
+        setRecentlyPlayedStations(recent);
+      } else {
+        setRecentlyPlayedStations([]);
+      }
+    } catch (error) {
+      console.error('Failed to load recently played stations:', error);
+      setRecentlyPlayedStations([]);
+    }
   }, []);
 
   // Use recently played if available, otherwise fall back to popular stations
@@ -115,8 +124,9 @@ export const Search = (): JSX.Element => {
       }
     }
     // Search results section (6 to 6+visibleSearchResults.length-1)
-    else if (current >= 6 && current < 6 + visibleSearchResults.length) {
+    else if (current >= 6 && current < 6 + (visibleSearchResults?.length || 0)) {
       const relIndex = current - 6;
+      const searchResultsLength = visibleSearchResults?.length || 0;
 
       if (direction === 'UP') {
         if (relIndex > 0) {
@@ -125,12 +135,12 @@ export const Search = (): JSX.Element => {
           newIndex = 5; // Jump to search input
         }
       } else if (direction === 'DOWN') {
-        if (relIndex < visibleSearchResults.length - 1) {
+        if (relIndex < searchResultsLength - 1) {
           newIndex = current + 1;
         } else {
           // Jump to recently played if available
-          if (recentStations.length > 0) {
-            newIndex = 6 + visibleSearchResults.length; // First recent station
+          if (Array.isArray(recentStations) && recentStations.length > 0) {
+            newIndex = 6 + searchResultsLength; // First recent station
           }
         }
       } else if (direction === 'LEFT') {
@@ -138,11 +148,12 @@ export const Search = (): JSX.Element => {
       }
     }
     // Recently played section (2-column grid)
-    else if (current >= 6 + visibleSearchResults.length) {
-      const recentStartIndex = 6 + visibleSearchResults.length;
+    else if (current >= 6 + (visibleSearchResults?.length || 0)) {
+      const recentStartIndex = 6 + (visibleSearchResults?.length || 0);
       const relIndex = current - recentStartIndex;
       const row = Math.floor(relIndex / 2);
       const col = relIndex % 2;
+      const recentStationsLength = Array.isArray(recentStations) ? recentStations.length : 0;
 
       if (direction === 'LEFT') {
         if (col > 0) {
@@ -159,8 +170,9 @@ export const Search = (): JSX.Element => {
           newIndex = current - 2;
         } else {
           // Jump to search results or search input
-          if (visibleSearchResults.length > 0) {
-            newIndex = 6 + visibleSearchResults.length - 1; // Last search result
+          const searchResultsLength = visibleSearchResults?.length || 0;
+          if (searchResultsLength > 0) {
+            newIndex = 6 + searchResultsLength - 1; // Last search result
           } else {
             newIndex = 5; // Search input
           }
@@ -381,7 +393,8 @@ export const Search = (): JSX.Element => {
       </div>
 
       {/* Search Results */}
-      {searchQuery.length > 0 && visibleSearchResults.map((station, index) => {
+      {searchQuery.length > 0 && Array.isArray(visibleSearchResults) && visibleSearchResults.length > 0 && visibleSearchResults.map((station, index) => {
+        if (!station) return null;
         const topPositions = [259, 359, 459, 559];
         const focusIdx = 6 + index;
         
@@ -399,7 +412,7 @@ export const Search = (): JSX.Element => {
             }}
           >
             <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
-              {highlightText(station.name, searchQuery)}
+              {highlightText(station.name || 'Unknown Station', searchQuery)}
             </p>
             <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]" />
           </div>
@@ -419,7 +432,8 @@ export const Search = (): JSX.Element => {
       </p>
 
       {/* Recently Played Stations - 2 columns x 3 rows */}
-      {recentStations.map((station, index) => {
+      {Array.isArray(recentStations) && recentStations.length > 0 && recentStations.map((station, index) => {
+        if (!station) return null;
         const row = Math.floor(index / 2);
         const col = index % 2;
         const leftPositions = [1110, 1340];
@@ -431,8 +445,8 @@ export const Search = (): JSX.Element => {
             key={station._id || index}
             className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
             style={{ 
-              left: `${leftPositions[col]}px`,
-              top: `${topPositions[row]}px`
+              left: `${leftPositions[col] || 1110}px`,
+              top: `${topPositions[row] || 136}px`
             }}
             data-testid={`recent-station-${index}`}
             onMouseEnter={() => {
@@ -444,7 +458,7 @@ export const Search = (): JSX.Element => {
           >
             <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px] top-[34px]">
               <img
-                alt={station.name}
+                alt={station.name || 'Station'}
                 className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
                 src={getStationImage(station)}
                     loading="lazy"
@@ -454,7 +468,7 @@ export const Search = (): JSX.Element => {
               />
             </div>
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-              {station.name}
+              {station.name || 'Unknown'}
             </p>
             <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
               {getStationCategory(station)}
