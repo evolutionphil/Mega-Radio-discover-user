@@ -43,6 +43,10 @@ export default defineConfig({
     port: 5000,
     allowedHosts: true,
   },
+  esbuild: {
+    // Remove console.log in production builds for performance
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+  },
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
