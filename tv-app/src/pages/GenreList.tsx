@@ -36,7 +36,7 @@ export const GenreList = (): JSX.Element => {
 
   // Fetch initial batch (28 stations) with offset=0 for pagination
   // CACHE: 7 days
-  const { data: stationsData, isLoading, refetch } = useQuery({
+  const { data: stationsData, isLoading } = useQuery({
     queryKey: ['genre-stations/initial', genreSlug, selectedCountryCode],
     queryFn: async () => {
       const result = await megaRadioApi.getStationsByGenre(genreSlug, { 
@@ -52,12 +52,8 @@ export const GenreList = (): JSX.Element => {
     gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days (renamed from cacheTime in v5)
   });
   
-  // Force refetch when genre changes
-  useEffect(() => {
-    refetch();
-  }, [genreSlug, refetch]);
-
   // Initialize when initial data loads - PAGINATION
+  // Note: No need for refetch useEffect - queryKey changes trigger automatic refetch
   useEffect(() => {
     if (stationsData?.stations && stationsData.stations.length > 0) {
       const stations = stationsData.stations;

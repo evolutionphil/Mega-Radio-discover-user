@@ -1,7 +1,7 @@
 import { useLocation, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
-import { useMemo, useEffect, useRef, useState, useCallback } from "react";
+import { useMemo, useEffect, useRef, useState } from "react";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
