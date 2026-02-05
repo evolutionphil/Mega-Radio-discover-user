@@ -71,7 +71,7 @@ export const Guide3 = (): JSX.Element => {
             <div className="h-[31.65px] relative w-[130.979px]">
               <img 
                 alt="" 
-                className="block max-w-none size-full" 
+                className="block max-w-none w-full h-full" 
                 src={assetPath("images/arrow.svg")}
                 onLoad={() => handleImageLoad('arrow.svg')}
                 onError={() => handleImageError('arrow.svg', assetPath('images/arrow.svg'))}
@@ -86,19 +86,19 @@ export const Guide3 = (): JSX.Element => {
             <p className="mb-0">{t('guide_search_description') || 'You can find any radio station you want here.'}</p>
             <p>{t('guide_search_blue_button') || 'Press the blue on the remote!'}</p>
           </div>
-          <div className="absolute bg-[#2d41f4] left-[24px] rounded-[40px] size-[18.667px] top-[48px]" />
+          <div className="absolute bg-[#2d41f4] left-[24px] rounded-[40px] w-[18.667px] h-[18.667px] top-[48px]" />
         </div>
 
         {/* Highlighted Search Button */}
-        <div className="absolute bg-[rgba(255,255,255,0.2)] left-[63px] overflow-clip rounded-[10px] size-[98px] top-[457px] z-20" data-testid="button-search-highlighted">
+        <div className="absolute bg-[rgba(255,255,255,0.2)] left-[63px] overflow-clip rounded-[10px] w-[98px] h-[98px] top-[457px] z-20" data-testid="button-search-highlighted">
           <div className="absolute h-[61px] left-[21px] top-[19px] w-[56px]">
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[28px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
               {t('guide_search_title') || t('search') || 'Search'}
             </p>
-            <div className="absolute left-[12px] size-[32px] top-0">
+            <div className="absolute left-[12px] w-[32px] h-[32px] top-0">
               <img 
                 alt="" 
-                className="block max-w-none size-full" 
+                className="block max-w-none w-full h-full" 
                 src={assetPath("images/search-icon.svg")}
                 onLoad={() => handleImageLoad('search-icon.svg')}
                 onError={() => handleImageError('search-icon.svg', assetPath('images/search-icon.svg'))}

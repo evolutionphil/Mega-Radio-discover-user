@@ -163,7 +163,7 @@ export const Favorites = (): JSX.Element => {
         <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
           <img
             alt=""
-            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+            className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
             src={assetPath("images/hand-crowd-disco-1.png")}
           />
         </div>
@@ -179,7 +179,7 @@ export const Favorites = (): JSX.Element => {
           <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
             <img
               alt=""
-              className="block max-w-none size-full"
+              className="block max-w-none w-full h-full"
               src={assetPath("images/path-8.svg")}
             />
           </div>
@@ -194,7 +194,7 @@ export const Favorites = (): JSX.Element => {
         {favorites.length === 0 ? (
           <>
             {/* Heart Icon - Centered */}
-            <div className="absolute left-[986px] size-[124px] top-[365px]">
+            <div className="absolute left-[986px] w-[124px] h-[124px] top-[365px]">
               <svg viewBox="0 0 124 124" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                 <circle cx="62" cy="62" r="62" fill="rgba(255, 255, 255, 0.1)"/>
                 <path d="M62 85.25C61.2396 85.25 60.4792 85.0208 59.8604 84.5625C55.4375 81.2292 51.4479 78.3021 48.4792 75.4167C43.9479 70.9729 40.75 66.8896 40.75 61.25C40.75 53.2917 47 47 54.5625 47C58.1042 47 61.4167 48.7708 63.625 51.7604C65.8333 48.7708 69.1458 47 72.6875 47C80.25 47 86.5 53.2917 86.5 61.25C86.5 66.8896 83.3021 70.9729 78.7708 75.4375C75.8021 78.3229 71.8125 81.25 67.3896 84.5833C66.7708 85.0208 66.0104 85.25 65.25 85.25H62Z" fill="#FF4199"/>
@@ -213,7 +213,7 @@ export const Favorites = (): JSX.Element => {
                 <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[#ff4199] text-[24px] text-center">
                   {t('discover_stations_near_you') || 'Discover stations near to you!'}
                 </p>
-                <div className="absolute left-[calc(100%+10px)] top-[50%] translate-y-[-50%] size-[38px]">
+                <div className="absolute left-[calc(100%+10px)] top-[50%] translate-y-[-50%] w-[38px] h-[38px]">
                   <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                     <path d="M14.25 28.5L23.75 19L14.25 9.5" stroke="#FF4199" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -238,10 +238,10 @@ export const Favorites = (): JSX.Element => {
                     data-testid={`station-card-${index}`}
                     onClick={() => setLocation(`/radio-playing?station=${station._id}`)}
                   >
-                    <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+                    <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px] top-[34px]">
                       <img
                         alt={station.name}
-                        className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                        className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
                         src={getStationImage(station)}
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = FALLBACK_IMAGE;

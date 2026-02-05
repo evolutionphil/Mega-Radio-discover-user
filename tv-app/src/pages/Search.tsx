@@ -417,10 +417,10 @@ export const Search = (): JSX.Element => {
             placeholder={t('search_placeholder') || 'Search...'}
             className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[650px] placeholder:text-[rgba(255,255,255,0.5)]"
           />
-          <div className="absolute left-[32.43px] size-[31.134px] top-[29.84px] pointer-events-none">
+          <div className="absolute left-[32.43px] w-[31.134px] h-[31.134px] top-[29.84px] pointer-events-none">
             <img
               alt=""
-              className="block max-w-none size-full"
+              className="block max-w-none w-full h-full"
               src={assetPath("images/search-icon.svg")}
             />
           </div>
@@ -502,10 +502,10 @@ export const Search = (): JSX.Element => {
               handleSelect();
             }}
           >
-            <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+            <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px] top-[34px]">
               <img
                 alt={station.name}
-                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
                 src={getStationImage(station)}
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = FALLBACK_IMAGE;

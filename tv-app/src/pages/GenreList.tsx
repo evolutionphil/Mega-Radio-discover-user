@@ -359,7 +359,7 @@ export const GenreList = (): JSX.Element => {
         <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
           <img
             alt=""
-            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+            className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
             src={assetPath("images/hand-crowd-disco-1.png")}
           />
         </div>
@@ -388,10 +388,10 @@ export const GenreList = (): JSX.Element => {
                 data-station-index={index}
                 onClick={() => setLocation(`/radio-playing?station=${station._id}`)}
               >
-                <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] size-[132px] top-[34px]">
+                <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px] top-[34px]">
                   <img
                     alt={station.name}
-                    className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+                    className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
                     src={getStationImage(station)}
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = FALLBACK_IMAGE;

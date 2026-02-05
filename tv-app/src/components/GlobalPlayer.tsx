@@ -48,7 +48,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
       />
 
       {/* Station Logo */}
-      <div className="absolute bg-white left-[235px] overflow-clip rounded-[4.45px] size-[89px] top-[958px] z-50">
+      <div className="absolute bg-white left-[235px] overflow-clip rounded-[4.45px] w-[89px] h-[89px] top-[958px] z-50">
         <img 
           src={getStationImage(currentStation)}
           alt={currentStation.name}
@@ -86,19 +86,19 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Play/Pause Button */}
       <div 
-        className="absolute bg-black left-[1462.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center focus:outline-none focus:border-[4px] focus:border-[#ff4199] focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)]"
+        className="absolute bg-black left-[1462.54px] overflow-clip rounded-[45.096px] w-[90.192px] h-[90.192px] top-[958px] z-50 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center focus:outline-none focus:border-[4px] focus:border-[#ff4199] focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)]"
         tabIndex={0}
         onClick={togglePlayPause}
         data-tv-focusable="true"
         data-testid="button-global-play-pause"
       >
         {isPlaying ? (
-          <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="18" y="14" width="6" height="27" rx="2" fill="white"/>
             <rect x="31" y="14" width="6" height="27" rx="2" fill="white"/>
           </svg>
         ) : (
-          <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20 14L38 27.5L20 41V14Z" fill="white"/>
           </svg>
         )}
@@ -106,7 +106,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
 
       {/* Favorite Button */}
       <div 
-        className={`absolute border-[3.608px] border-solid left-[1588.81px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-all flex items-center justify-center focus:outline-none focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)] ${
+        className={`absolute border-[3.608px] border-solid left-[1588.81px] rounded-[72.655px] w-[90.192px] h-[90.192px] top-[958px] z-50 cursor-pointer transition-all flex items-center justify-center focus:outline-none focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)] ${
           isFavorite(currentStation._id) 
             ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
             : 'border-black hover:bg-[rgba(255,255,255,0.1)] focus:border-[#ff4199]'
@@ -116,14 +116,14 @@ export const GlobalPlayer = (): JSX.Element | null => {
         data-tv-focusable="true"
         data-testid="button-global-favorite"
       >
-        <svg className="size-[50.508px]" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className="w-[50.508px] h-[50.508px]" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M25.5 44.625C24.7396 44.625 23.9792 44.3958 23.3604 43.9375C18.9375 40.6042 14.9479 37.6771 11.9792 34.7917C7.44792 30.3479 4.25 26.2646 4.25 20.625C4.25 12.6667 10.5 6.375 18.0625 6.375C21.6042 6.375 24.9167 8.14583 27.125 11.1354C29.3333 8.14583 32.6458 6.375 36.1875 6.375C43.75 6.375 50 12.6667 50 20.625C50 26.2646 46.8021 30.3479 42.2708 34.8125C39.3021 37.6979 35.3125 40.625 30.8896 43.9583C30.2708 44.3958 29.5104 44.625 28.75 44.625H25.5Z" fill="white"/>
         </svg>
       </div>
 
       {/* Equalizer Button (Now Playing visualization) */}
       <div 
-        className={`absolute border-[3.608px] border-solid left-[1715px] rounded-[72.655px] size-[90.192px] top-[958px] z-50 cursor-pointer transition-all flex items-center justify-center overflow-hidden focus:outline-none focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)] ${
+        className={`absolute border-[3.608px] border-solid left-[1715px] rounded-[72.655px] w-[90.192px] h-[90.192px] top-[958px] z-50 cursor-pointer transition-all flex items-center justify-center overflow-hidden focus:outline-none focus:shadow-[0_0_30px_rgba(255,65,153,0.8),0_0_60px_rgba(255,65,153,0.5)] ${
           isPlaying 
             ? 'bg-[#ff4199] border-[#ff4199]' 
             : 'border-black hover:bg-[rgba(255,255,255,0.1)] focus:border-[#ff4199]'

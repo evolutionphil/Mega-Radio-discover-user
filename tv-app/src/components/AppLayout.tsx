@@ -54,7 +54,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
         <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
           <img
             alt=""
-            className="block max-w-none size-full"
+            className="block max-w-none w-full h-full"
             src={assetPath("images/path-8.svg")}
           />
         </div>
@@ -67,7 +67,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
           style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
         >
           {/* Equalizer Icon - Matching Global Player Animation */}
-          <div className={`absolute left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] pointer-events-auto transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
+          <div className={`absolute left-[1383px] overflow-clip rounded-[30px] w-[51px] h-[51px] top-[67px] pointer-events-auto transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
             <div className="absolute h-[35.526px] left-[8.625px] overflow-clip top-[7.737px] w-[33.75px]">
               <div className={`absolute bg-white left-0 rounded-[10px] top-0 w-[8.882px] ${isPlaying ? 'animate-equalizer-global-1' : 'h-[35.526px]'}`} style={{ height: isPlaying ? undefined : '35.526px' }} />
               <div className={`absolute bg-white left-[12.43px] rounded-[10px] w-[8.882px] ${isPlaying ? 'animate-equalizer-global-2' : 'h-[24.868px] top-[10.66px]'}`} style={{ height: isPlaying ? undefined : '24.868px', top: isPlaying ? undefined : '10.66px' }} />
@@ -84,7 +84,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
             data-tv-focusable="true"
           >
             <div className="flex items-center gap-[10.66px]">
-              <div className="size-[28.421px] rounded-full overflow-hidden flex-shrink-0">
+              <div className="w-[28.421px] h-[28.421px] rounded-full overflow-hidden flex-shrink-0">
                 <img
                   alt={selectedCountry}
                   className="w-full h-full object-cover"
@@ -99,10 +99,10 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
               </p>
               <div className="flex items-center justify-center ml-auto">
                 <div className="rotate-[270deg]">
-                  <div className="relative size-[23.684px]">
+                  <div className="relative w-[23.684px] h-[23.684px]">
                     <img
                       alt=""
-                      className="block max-w-none size-full"
+                      className="block max-w-none w-full h-full"
                       src={assetPath("images/arrow.svg")}
                     />
                   </div>

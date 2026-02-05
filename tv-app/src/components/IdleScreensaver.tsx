@@ -114,7 +114,7 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
         {currentStation ? (
           <div className="flex flex-col items-center gap-8">
             {/* Station Logo */}
-            <div className="bg-white rounded-[12px] size-[200px] overflow-clip shadow-2xl">
+            <div className="bg-white rounded-[12px] w-[200px] h-[200px] overflow-clip shadow-2xl">
               <img 
                 src={getStationImage(currentStation)}
                 alt={currentStation.name}

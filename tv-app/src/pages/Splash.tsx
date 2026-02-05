@@ -49,7 +49,7 @@ export const Splash = (): JSX.Element => {
       >
         <img 
           alt="" 
-          className="block max-w-none size-full opacity-40" 
+          className="block max-w-none w-full h-full opacity-40" 
           src={assetPath("images/waves.png")}
         />
       </div>
@@ -62,7 +62,7 @@ export const Splash = (): JSX.Element => {
         <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
           <img 
             alt="" 
-            className="block max-w-none size-full" 
+            className="block max-w-none w-full h-full" 
             src={assetPath("images/path-8.svg")}
           />
         </div>
@@ -70,7 +70,7 @@ export const Splash = (): JSX.Element => {
 
       {/* Pink Glow Circle - Left Side */}
       <div 
-        className="absolute left-[-377px] size-[781.011px] top-[510.99px] animate-pulse"
+        className="absolute left-[-377px] w-[781.011px] h-[781.011px] top-[510.99px] animate-pulse"
         style={{ 
           animationDuration: '4s',
           animationTimingFunction: 'ease-in-out'
@@ -79,7 +79,7 @@ export const Splash = (): JSX.Element => {
         <div className="absolute inset-[-82.95%]">
           <img 
             alt="" 
-            className="block max-w-none size-full opacity-30" 
+            className="block max-w-none w-full h-full opacity-30" 
             src={assetPath("images/ellipse2.png")}
           />
         </div>
@@ -101,7 +101,7 @@ export const Splash = (): JSX.Element => {
         <div className="absolute bottom-0 left-0 right-[29.66%] top-0">
           <img 
             alt="" 
-            className="block max-w-none size-full" 
+            className="block max-w-none w-full h-full" 
             src={assetPath("images/monitor.png")}
           />
         </div>
@@ -111,7 +111,7 @@ export const Splash = (): JSX.Element => {
           <div className="absolute inset-[-8.7%_-11.59%]">
             <img 
               alt="" 
-              className="block max-w-none size-full" 
+              className="block max-w-none w-full h-full" 
               src={assetPath("images/tablet.png")}
             />
           </div>
@@ -121,7 +121,7 @@ export const Splash = (): JSX.Element => {
         <div className="absolute bottom-[0.21%] left-[83.76%] right-0 top-[49.73%]">
           <img 
             alt="" 
-            className="block max-w-none size-full" 
+            className="block max-w-none w-full h-full" 
             src={assetPath("images/phone.png")}
           />
         </div>
@@ -133,7 +133,7 @@ export const Splash = (): JSX.Element => {
       >
         <img 
           alt="" 
-          className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full opacity-20" 
+          className="absolute inset-0 max-w-none object-center object-cover pointer-events-none w-full h-full opacity-20" 
           src={assetPath("images/frame445.png")}
         />
       </div>

@@ -87,7 +87,7 @@ export const Guide4 = (): JSX.Element => {
             <div className="h-[31.65px] relative w-[130.979px]">
               <img 
                 alt="" 
-                className="block max-w-none size-full" 
+                className="block max-w-none w-full h-full" 
                 src={assetPath("images/arrow.svg")}
                 onLoad={() => handleImageLoad('arrow.svg')}
                 onError={() => handleImageError('arrow.svg', assetPath('images/arrow.svg'))}
@@ -102,19 +102,19 @@ export const Guide4 = (): JSX.Element => {
             <p className="mb-0">{t('guide_favorites_description') || 'Your favorite radios will be here.'}</p>
             <p>{t('guide_favorites_yellow_button') || 'Press yellow on the remote.'}</p>
           </div>
-          <div className="absolute bg-[#f4ec2d] left-[24px] rounded-[40px] size-[18.667px] top-[48px]" />
+          <div className="absolute bg-[#f4ec2d] left-[24px] rounded-[40px] w-[18.667px] h-[18.667px] top-[48px]" />
         </div>
 
         {/* Highlighted Favorites Button */}
-        <div className="absolute bg-[rgba(255,255,255,0.2)] left-[62px] overflow-clip rounded-[10px] size-[98px] top-[565px] z-20" data-testid="button-favorites-highlighted">
+        <div className="absolute bg-[rgba(255,255,255,0.2)] left-[62px] overflow-clip rounded-[10px] w-[98px] h-[98px] top-[565px] z-20" data-testid="button-favorites-highlighted">
           <div className="absolute h-[61px] left-[11px] top-[19px] w-[77px]">
             <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[38.5px] not-italic text-[18px] text-center text-white top-[40px] translate-x-[-50%]">
               {t('guide_favorites_title') || t('nav_your_favorites') || 'Favorites'}
             </p>
-            <div className="absolute left-[23px] size-[32px] top-0">
+            <div className="absolute left-[23px] w-[32px] h-[32px] top-0">
               <img 
                 alt="" 
-                className="block max-w-none size-full" 
+                className="block max-w-none w-full h-full" 
                 src={assetPath("images/heart-icon.svg")}
                 onLoad={() => handleImageLoad('heart-icon.svg')}
                 onError={() => handleImageError('heart-icon.svg', assetPath('images/heart-icon.svg'))}

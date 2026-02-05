@@ -91,7 +91,7 @@ export const Settings = (): JSX.Element => {
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
         <img
           alt=""
-          className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full"
+          className="absolute inset-0 max-w-none object-center object-cover pointer-events-none w-full h-full"
           src={assetPath("images/hand-crowd-disco-1.png")}
         />
       </div>
@@ -107,7 +107,7 @@ export const Settings = (): JSX.Element => {
         <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
           <img
             alt=""
-            className="block max-w-none size-full"
+            className="block max-w-none w-full h-full"
             src={assetPath("images/path-8.svg")}
           />
         </div>
@@ -136,11 +136,11 @@ export const Settings = (): JSX.Element => {
           data-testid="option-last-played"
         >
           <div 
-            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative cursor-pointer"
+            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] w-[32px] h-[32px] relative cursor-pointer"
           >
-            <div className="overflow-clip relative rounded-[inherit] size-[32px]">
+            <div className="overflow-clip relative rounded-[inherit] w-[32px] h-[32px]">
               {playAtStart === "last-played" && (
-                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
+                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] w-[19.2px] h-[19.2px] top-[6.4px]" />
               )}
             </div>
           </div>
@@ -156,11 +156,11 @@ export const Settings = (): JSX.Element => {
           data-testid="option-random"
         >
           <div 
-            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative cursor-pointer"
+            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] w-[32px] h-[32px] relative cursor-pointer"
           >
-            <div className="overflow-clip rounded-[inherit] size-[32px]">
+            <div className="overflow-clip rounded-[inherit] w-[32px] h-[32px]">
               {playAtStart === "random" && (
-                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
+                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] w-[19.2px] h-[19.2px] top-[6.4px]" />
               )}
             </div>
           </div>
@@ -176,11 +176,11 @@ export const Settings = (): JSX.Element => {
           data-testid="option-favorite"
         >
           <div 
-            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative cursor-pointer"
+            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] w-[32px] h-[32px] relative cursor-pointer"
           >
-            <div className="overflow-clip rounded-[inherit] size-[32px]">
+            <div className="overflow-clip rounded-[inherit] w-[32px] h-[32px]">
               {playAtStart === "favorite" && (
-                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
+                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] w-[19.2px] h-[19.2px] top-[6.4px]" />
               )}
             </div>
           </div>
@@ -196,11 +196,11 @@ export const Settings = (): JSX.Element => {
           data-testid="option-none"
         >
           <div 
-            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] size-[32px] relative cursor-pointer"
+            className="border-[#ff4199] border-[3.84px] border-solid rounded-[20px] w-[32px] h-[32px] relative cursor-pointer"
           >
-            <div className="overflow-clip rounded-[inherit] size-[32px]">
+            <div className="overflow-clip rounded-[inherit] w-[32px] h-[32px]">
               {playAtStart === "none" && (
-                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] size-[19.2px] top-[6.4px]" />
+                <div className="absolute bg-[#ff4199] left-[6.4px] rounded-[28px] w-[19.2px] h-[19.2px] top-[6.4px]" />
               )}
             </div>
           </div>

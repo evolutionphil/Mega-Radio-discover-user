@@ -678,14 +678,14 @@ export const RadioPlaying = (): JSX.Element => {
         <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
           <img
             alt=""
-            className="block max-w-none size-full"
+            className="block max-w-none w-full h-full"
             src={assetPath("images/path-8.svg")}
           />
         </div>
       </div>
 
       {/* Equalizer Icon */}
-      <div className={`absolute left-[1383px] overflow-clip rounded-[30px] size-[51px] top-[67px] z-50 transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
+      <div className={`absolute left-[1383px] overflow-clip rounded-[30px] w-[51px] h-[51px] top-[67px] z-50 transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
         <div className="absolute h-[25px] left-[13.75px] overflow-clip top-[13px] w-[23.75px]">
           <div className={`absolute bg-white left-0 rounded-[10px] top-0 w-[6.25px] ${isPlaying ? 'animate-equalizer-global-1' : 'h-[25px]'}`} style={{ height: isPlaying ? undefined : '25px' }} />
           <div className={`absolute bg-white left-[8.75px] rounded-[10px] top-[7.5px] w-[6.25px] ${isPlaying ? 'animate-equalizer-global-2' : 'h-[17.5px]'}`} style={{ height: isPlaying ? undefined : '17.5px' }} />
@@ -706,11 +706,11 @@ export const RadioPlaying = (): JSX.Element => {
       <Sidebar activePage="discover" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
       {/* Station Logo */}
-      <div className="absolute bg-white left-[236px] overflow-clip rounded-[16.692px] size-[296px] top-[242px]">
+      <div className="absolute bg-white left-[236px] overflow-clip rounded-[16.692px] w-[296px] h-[296px] top-[242px]">
         <img 
           src={getStationImage(station)}
           alt={station.name}
-          className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+          className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
           onError={(e) => {
             (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
           }}
@@ -742,7 +742,7 @@ export const RadioPlaying = (): JSX.Element => {
       {/* Station Info Tags */}
       <div className="absolute left-[596px] top-[476px] flex gap-[11.3px] items-center">
         {/* Country Flag */}
-        <div className="size-[34.783px] rounded-full overflow-hidden">
+        <div className="w-[34.783px] h-[34.783px] rounded-full overflow-hidden">
           <img 
             src={`https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`}
             alt={station.country}
@@ -780,7 +780,7 @@ export const RadioPlaying = (): JSX.Element => {
       <div className="absolute h-[90.192px] left-[1372px] top-[356px] w-[469px]">
         {/* Previous Button */}
         <div 
-          className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
+          className={`absolute bg-black left-0 overflow-clip rounded-[45.096px] w-[90.192px] h-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
             isFocused(6) ? 'border-[4px] border-[#ff4199] animate-pulse-soft' : 'border-[4px] border-transparent'
           }`}
           style={{
@@ -789,7 +789,7 @@ export const RadioPlaying = (): JSX.Element => {
           onClick={handlePrevious}
           data-testid="button-previous"
         >
-          <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M34.375 16.9792L23.6042 27.75L34.375 38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M16.1458 16.9792V38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
@@ -797,7 +797,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Play/Pause Button */}
         <div 
-          className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
+          className={`absolute bg-black left-[126.27px] overflow-clip rounded-[45.096px] w-[90.192px] h-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
             isFocused(7) ? 'border-[4px] border-[#ff4199] animate-pulse-soft' : 'border-[4px] border-transparent'
           }`}
           style={{
@@ -807,12 +807,12 @@ export const RadioPlaying = (): JSX.Element => {
           data-testid="button-play-pause"
         >
           {isPlaying ? (
-            <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="18" y="14" width="6" height="27" rx="2" fill="white"/>
               <rect x="31" y="14" width="6" height="27" rx="2" fill="white"/>
             </svg>
           ) : (
-            <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M20 14L38 27.5L20 41V14Z" fill="white"/>
             </svg>
           )}
@@ -820,7 +820,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Next Button */}
         <div 
-          className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] size-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
+          className={`absolute bg-black left-[252.54px] overflow-clip rounded-[45.096px] w-[90.192px] h-[90.192px] top-0 cursor-pointer hover:bg-gray-900 transition-all flex items-center justify-center ${
             isFocused(8) ? 'border-[4px] border-[#ff4199] animate-pulse-soft' : 'border-[4px] border-transparent'
           }`}
           style={{
@@ -829,7 +829,7 @@ export const RadioPlaying = (): JSX.Element => {
           onClick={handleNext}
           data-testid="button-next"
         >
-          <svg className="size-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="w-[54.115px] h-[54.115px]" viewBox="0 0 55 55" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20.625 16.9792L31.3958 27.75L20.625 38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M38.8542 16.9792V38.5208" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
@@ -837,7 +837,7 @@ export const RadioPlaying = (): JSX.Element => {
 
         {/* Favorite Button */}
         <div 
-          className={`absolute border-[3.608px] border-solid left-[378.81px] rounded-[72.655px] size-[90.192px] top-0 cursor-pointer transition-all flex items-center justify-center ${
+          className={`absolute border-[3.608px] border-solid left-[378.81px] rounded-[72.655px] w-[90.192px] h-[90.192px] top-0 cursor-pointer transition-all flex items-center justify-center ${
             isFavorite(station._id) 
               ? 'bg-[#ff4199] border-[#ff4199] hover:bg-[#e0368a]' 
               : 'border-black hover:bg-[rgba(255,255,255,0.1)]'
@@ -848,7 +848,7 @@ export const RadioPlaying = (): JSX.Element => {
           onClick={() => toggleFavorite(station)}
           data-testid="button-favorite"
         >
-          <svg className="size-[50.508px]" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="w-[50.508px] h-[50.508px]" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M25.5 44.625C24.7396 44.625 23.9792 44.3958 23.3604 43.9375C18.9375 40.6042 14.9479 37.6771 11.9792 34.7917C7.44792 30.3479 4.25 26.2646 4.25 20.625C4.25 12.6667 10.5 6.375 18.0625 6.375C21.6042 6.375 24.9167 8.14583 27.125 11.1354C29.3333 8.14583 32.6458 6.375 36.1875 6.375C43.75 6.375 50 12.6667 50 20.625C50 26.2646 46.8021 30.3479 42.2708 34.8125C39.3021 37.6979 35.3125 40.625 30.8896 43.9583C30.2708 44.3958 29.5104 44.625 28.75 44.625H25.5Z" fill="white"/>
           </svg>
         </div>
@@ -885,7 +885,7 @@ export const RadioPlaying = (): JSX.Element => {
                 data-testid={`card-similar-${similarStation._id}`}
                 onClick={() => navigateToStation(similarStation)}
               >
-                <div className="bg-white mx-auto mt-[34px] overflow-clip rounded-[6.6px] size-[132px]">
+                <div className="bg-white mx-auto mt-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px]">
                   <img
                     className="w-full h-full object-cover"
                     alt={similarStation.name}
@@ -930,7 +930,7 @@ export const RadioPlaying = (): JSX.Element => {
                 data-testid={`card-popular-${popularStation._id}`}
                 onClick={() => navigateToStation(popularStation)}
               >
-                <div className="bg-white mx-auto mt-[34px] overflow-clip rounded-[6.6px] size-[132px]">
+                <div className="bg-white mx-auto mt-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px]">
                   <img
                     className="w-full h-full object-cover"
                     alt={popularStation.name}
