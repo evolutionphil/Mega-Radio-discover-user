@@ -266,53 +266,59 @@ export const GenreList = (): JSX.Element => {
     }
   }, [displayedStations.length]);
 
-  // Auto-scroll when focus changes to station items
+  // Auto-scroll focused station into view - ONLY if element is truly off-screen
+  // Uses scrollTop/offsetTop based math for accurate visibility detection
   useEffect(() => {
     if (focusIndex >= stationsStart && scrollContainerRef.current) {
       const stationIndex = focusIndex - stationsStart;
       const container = scrollContainerRef.current;
       
       // Find the focused station element using data attribute
-      const focusedElement = container.querySelector(`[data-station-index="${stationIndex}"]`);
+      const focusedElement = container.querySelector(`[data-station-index="${stationIndex}"]`) as HTMLElement;
       
-      if (focusedElement) {
-        const containerRect = container.getBoundingClientRect();
-        const elementRect = focusedElement.getBoundingClientRect();
-        
-        // Calculate relative position within scroll container
-        const relativeTop = elementRect.top - containerRect.top + container.scrollTop;
-        const relativeBottom = relativeTop + elementRect.height;
-        
-        const currentScroll = container.scrollTop;
-        const containerHeight = container.clientHeight;
-        const visibleTop = currentScroll;
-        const visibleBottom = currentScroll + containerHeight;
-        
-        // Add padding to keep element away from edges
-        const topPadding = 200;
-        const bottomPadding = 100;
-        
-        // Scroll if item is not fully visible
-        if (relativeTop < visibleTop + topPadding) {
-          // Scroll up
-          container.scrollTo({ top: Math.max(0, relativeTop - topPadding), behavior: 'smooth' });
-        } else if (relativeBottom > visibleBottom - bottomPadding) {
-          // Scroll down
-          container.scrollTo({ top: relativeBottom - containerHeight + bottomPadding, behavior: 'smooth' });
-        }
+      if (!focusedElement) return;
+      
+      // Use scrollTop/offsetTop based calculation (NOT getBoundingClientRect)
+      const TOP_PADDING = 20;  // Padding from top edge
+      const BOTTOM_PADDING = 120;  // Leave space for global player bar
+      
+      const viewTop = container.scrollTop;
+      const viewBottom = viewTop + container.clientHeight - BOTTOM_PADDING;
+      
+      // Get element position relative to scroll container
+      let elementTop = 0;
+      let el: HTMLElement | null = focusedElement;
+      while (el && el !== container) {
+        elementTop += el.offsetTop;
+        el = el.offsetParent as HTMLElement;
       }
+      const elementBottom = elementTop + focusedElement.offsetHeight;
+      
+      // Check if element is FULLY visible
+      const isAboveView = elementTop < viewTop + TOP_PADDING;
+      const isBelowView = elementBottom > viewBottom;
+      
+      // Only scroll if element is actually outside the visible viewport
+      if (isAboveView) {
+        container.scrollTo({ top: elementTop - TOP_PADDING, behavior: 'smooth' });
+      } else if (isBelowView) {
+        const newScrollTop = elementBottom - container.clientHeight + BOTTOM_PADDING;
+        container.scrollTo({ top: newScrollTop, behavior: 'smooth' });
+      }
+      // If element is FULLY visible, do NOTHING - no scroll!
     }
-  }, [focusIndex]);
+  }, [focusIndex, stationsStart]);
 
-  // TRUE INFINITE SCROLL trigger - Focus-based (when within last 14 items / 2 rows)
+  // TRUE INFINITE SCROLL trigger - Focus-based (when within last 28 items / 4 rows)
+  // Load MORE stations BEFORE user reaches the end for seamless experience
   useEffect(() => {
     // Only trigger for station items section
     if (focusIndex >= stationsStart) {
       const stationIndex = focusIndex - stationsStart;
       const distanceFromEnd = displayedStations.length - stationIndex;
       
-      // If user is within last 14 items (2 rows × 7 columns), load more
-      if (distanceFromEnd <= 14 && hasMore && !isLoadingMore) {
+      // If user is within last 28 items (4 rows × 7 columns), load more
+      if (distanceFromEnd <= 28 && hasMore && !isLoadingMore) {
         loadMore();
       }
     }

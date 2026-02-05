@@ -18,7 +18,7 @@ import { assetPath } from "@/lib/assetPath";
 export const RadioPlaying = (): JSX.Element => {
   const [location, setLocation] = useLocation();
   const { t } = useLocalization();
-  const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
+  const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { playStation, togglePlayPause, isPlaying, isBuffering, currentStation } = useGlobalPlayer();
   const { getPreviousPage } = useNavigation();
