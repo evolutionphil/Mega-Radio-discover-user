@@ -1,5 +1,4 @@
 import { useLocation } from "wouter";
-import { useEffect } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { assetPath } from "@/lib/assetPath";
@@ -8,34 +7,18 @@ export const Guide4 = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const { t } = useLocalization();
 
-  // Component lifecycle logging
-  useEffect(() => {
-    console.log('[Guide4] 🎬 Component mounted');
-    console.log('[Guide4] 📂 Image paths to load:', {
-      background: '/images/discover-background.png',
-      arrow: '/images/arrow.svg',
-      icon: '/images/heart-icon.svg'
-    });
-    return () => {
-      console.log('[Guide4] 👋 Component unmounting');
-    };
-  }, []);
-
   // Register with FocusRouter (LGTV pattern)
   usePageKeyHandler('/guide-4', (e) => {
     const key = (window as any).tvKey;
-    console.log('[Guide4] ⌨️  Key pressed:', e.keyCode);
     
     // OK/Enter key (13) on Samsung TV
     if (e.keyCode === 13 || e.keyCode === key?.ENTER) {
-      console.log('[Guide4] ✅ OK/Enter - completing onboarding and navigating to Discover');
       e.preventDefault();
       
       try {
         localStorage.setItem('onboardingCompleted', 'true');
-        console.log('[Guide4] 💾 Onboarding completion saved to localStorage');
       } catch (error) {
-        console.warn('[Guide4] ⚠️  Could not save to localStorage:', error);
+        // Could not save to localStorage
       }
       
       setLocation('/discover-no-user');
@@ -43,28 +26,13 @@ export const Guide4 = (): JSX.Element => {
   });
 
   const handleClick = () => {
-    console.log('[Guide4] 🖱️  Clicked - completing onboarding and navigating to Discover');
-    
     try {
       localStorage.setItem('onboardingCompleted', 'true');
-      console.log('[Guide4] 💾 Onboarding completion saved to localStorage');
     } catch (error) {
-      console.warn('[Guide4] ⚠️  Could not save to localStorage:', error);
+      // Could not save to localStorage
     }
     
     setLocation('/discover-no-user');
-  };
-
-  // Image loading handlers
-  const handleImageLoad = (imageName: string) => {
-    console.log(`[Guide4] ✅ Image loaded successfully: ${imageName}`);
-  };
-
-  const handleImageError = (imageName: string, src: string) => {
-    console.error(`[Guide4] ❌ Image failed to load: ${imageName}`, {
-      src,
-      fullPath: window.location.origin + src
-    });
   };
 
   return (
@@ -89,8 +57,6 @@ export const Guide4 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none w-full h-full" 
                 src={assetPath("images/arrow.svg")}
-                onLoad={() => handleImageLoad('arrow.svg')}
-                onError={() => handleImageError('arrow.svg', assetPath('images/arrow.svg'))}
               />
             </div>
           </div>
@@ -116,8 +82,6 @@ export const Guide4 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none w-full h-full" 
                 src={assetPath("images/heart-icon.svg")}
-                onLoad={() => handleImageLoad('heart-icon.svg')}
-                onError={() => handleImageError('heart-icon.svg', assetPath('images/heart-icon.svg'))}
               />
             </div>
           </div>

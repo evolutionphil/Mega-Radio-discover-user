@@ -18,9 +18,8 @@ export const recentlyPlayedService = {
       const updated = [station, ...filtered].slice(0, MAX_RECENT_STATIONS);
       
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      console.log("[RecentlyPlayed] Station added:", station.name);
     } catch (err) {
-      console.warn("[RecentlyPlayed] Failed to save station:", err);
+      // Failed to save station
     }
   },
 
@@ -34,7 +33,7 @@ export const recentlyPlayedService = {
         return JSON.parse(data) as Station[];
       }
     } catch (err) {
-      console.warn("[RecentlyPlayed] Failed to load stations:", err);
+      // Failed to load stations
     }
     return [];
   },
@@ -45,9 +44,8 @@ export const recentlyPlayedService = {
   clear(): void {
     try {
       localStorage.removeItem(STORAGE_KEY);
-      console.log("[RecentlyPlayed] Cleared all stations");
     } catch (err) {
-      console.warn("[RecentlyPlayed] Failed to clear stations:", err);
+      // Failed to clear stations
     }
   }
 };

@@ -31,9 +31,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   const { data: countriesData, isLoading: countriesLoading } = useQuery({
     queryKey: ['/api/countries'],
     queryFn: async () => {
-      console.log('[CountrySelector] Fetching countries...');
       const result = await megaRadioApi.getAllCountries();
-      console.log('[CountrySelector] Countries received:', result.countries?.length || 0);
       return result;
     },
     staleTime: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -43,7 +41,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   // Map API countries to component format with flag URLs
   const countries: Country[] = useMemo(() => {
     const apiCountries = countriesData?.countries || [];
-    console.log('[CountrySelector] Mapping countries, API returned:', apiCountries.length);
     
     const mapped = apiCountries
       .filter(country => country.name && country.iso_3166_1)
@@ -60,14 +57,11 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       })
       .sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically since no station counts
     
-    console.log('[CountrySelector] Mapped countries:', mapped.length);
     return mapped;
   }, [countriesData]);
 
   // Filter and sort countries based on search query
   const filteredCountries = useMemo(() => {
-    console.log('[CountrySelector] Filtering countries - searchQuery:', searchQuery);
-    
     // Create Global option with globe icon (no station count available from API)
     const globalOption: Country = {
       name: 'Global',
@@ -107,7 +101,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     // This ensures users can always select Global even when filtering for other countries
     filtered.unshift(globalOption);
     
-    console.log('[CountrySelector] Filtered count:', filtered.length);
     return filtered;
   }, [countries, searchQuery]);
 
@@ -122,7 +115,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = 0;
-      console.log('[CountrySelector] Scrolled to top - filtered count:', filteredCountries.length);
     }
   }, [searchQuery, filteredCountries.length]);
 
@@ -153,7 +145,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           case 40:
             // Move focus from search to country list
             e.preventDefault();
-            console.log('[CountrySelector] DOWN key pressed - moving to country list');
             if (searchInputRef.current) {
               searchInputRef.current.blur(); // Remove focus from input
             }
@@ -166,7 +157,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           case 10009:
             // TWO-STEP BEHAVIOR: First press closes keyboard, second press closes modal
             e.preventDefault();
-            console.log('[CountrySelector] RETURN key - closing keyboard (first press)');
             if (searchInputRef.current) {
               searchInputRef.current.blur(); // Close keyboard
             }
@@ -186,7 +176,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
             if (focusIndex === 0) {
               // Move back to search mode (virtual keyboard focus)
               setIsSearchFocused(true);
-              console.log('[CountrySelector] Search mode activated - type to search');
             } else {
               setFocusIndex(prev => Math.max(0, prev - 1));
             }
@@ -202,7 +191,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           case 13:
             e.preventDefault();
             if (filteredCountries[focusIndex]) {
-              console.log('[CountrySelector] Selecting country:', filteredCountries[focusIndex].name);
               onSelectCountry(filteredCountries[focusIndex]);
               onClose();
             }
@@ -212,7 +200,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           case 461:
           case 10009:
             e.preventDefault();
-            console.log('[CountrySelector] RETURN key - closing modal');
             onClose();
             break;
         }
@@ -237,9 +224,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       );
       const initialIndex = currentIndex >= 0 ? currentIndex : 0;
       setFocusIndex(initialIndex);
-      
-      console.log('[CountrySelector] Modal opened - search input focused');
-      console.log('[CountrySelector] Current country:', selectedCountry, 'at index:', initialIndex);
     } else {
       setIsSearchFocused(false);
     }
@@ -248,10 +232,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   // Auto-focus search input when search mode is activated
   useEffect(() => {
     if (isSearchFocused && searchInputRef.current) {
-      console.log('[CountrySelector] Activating search mode - focusing input');
       searchInputRef.current.focus();
     } else if (!isSearchFocused && searchInputRef.current && document.activeElement === searchInputRef.current) {
-      console.log('[CountrySelector] Deactivating search mode - blurring input');
       searchInputRef.current.blur();
     }
   }, [isSearchFocused]);
@@ -294,7 +276,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
             value={searchQuery}
             onChange={(e) => {
               const newValue = e.target.value;
-              console.log('[CountrySelector] Search changed:', newValue);
               setSearchQuery(newValue);
               setFocusIndex(0);
               // Force scroll to top immediately
@@ -307,7 +288,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
               const key = (window as any).tvKey;
               if (e.keyCode === 40 || e.keyCode === key?.DOWN) {
                 e.preventDefault();
-                console.log('[CountrySelector] DOWN from input - moving to list');
                 setIsSearchFocused(false);
                 setFocusIndex(0);
                 if (searchInputRef.current) {
@@ -316,11 +296,9 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
               }
             }}
             onFocus={() => {
-              console.log('[CountrySelector] Input focused - TV keyboard should appear');
               setIsSearchFocused(true);
             }}
             onBlur={() => {
-              console.log('[CountrySelector] Input blurred');
               // Don't set isSearchFocused to false here - let arrow keys control it
             }}
             className={`w-full px-6 py-4 rounded-[15px] bg-[rgba(255,255,255,0.1)] border-2 text-white text-[20px] font-['Ubuntu',Helvetica] placeholder-white/50 focus:outline-none transition-colors ${

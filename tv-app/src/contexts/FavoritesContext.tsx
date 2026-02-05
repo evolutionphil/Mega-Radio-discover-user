@@ -23,19 +23,17 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       if (stored) {
         const parsed = JSON.parse(stored);
         setFavorites(Array.isArray(parsed) ? parsed : []);
-        console.log('[FavoritesContext] Loaded', parsed.length, 'favorites from localStorage');
       }
     } catch (error) {
-      console.error('[FavoritesContext] Failed to load favorites:', error);
+      // Failed to load favorites
     }
   }, []);
 
   const saveFavorites = (newFavorites: Station[]) => {
     try {
       localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(newFavorites));
-      console.log('[FavoritesContext] Saved', newFavorites.length, 'favorites to localStorage');
     } catch (error) {
-      console.error('[FavoritesContext] Failed to save favorites:', error);
+      // Failed to save favorites
     }
   };
 
@@ -43,12 +41,10 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     setFavorites((prev) => {
       const exists = prev.some((s) => s._id === station._id);
       if (exists) {
-        console.log('[FavoritesContext] Station already in favorites:', station.name);
         return prev;
       }
       const newFavorites = [...prev, station];
       saveFavorites(newFavorites);
-      console.log('[FavoritesContext] Added to favorites:', station.name);
       trackFavoriteToggle(station.name, true);
       return newFavorites;
     });
@@ -59,7 +55,6 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       const station = prev.find((s) => s._id === stationId);
       const newFavorites = prev.filter((s) => s._id !== stationId);
       saveFavorites(newFavorites);
-      console.log('[FavoritesContext] Removed from favorites:', stationId);
       if (station) {
         trackFavoriteToggle(station.name, false);
       }

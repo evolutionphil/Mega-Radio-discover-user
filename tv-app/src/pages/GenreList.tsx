@@ -105,7 +105,6 @@ export const GenreList = (): JSX.Element => {
         setHasMore(false);
       }
     } catch (error) {
-      console.error('[GenreList] Failed to fetch more stations:', error);
       setHasMore(false);
     } finally {
       setIsLoadingMore(false);

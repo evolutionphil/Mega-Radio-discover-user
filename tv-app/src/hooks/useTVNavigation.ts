@@ -8,17 +8,8 @@ export function useTVNavigation() {
     const initNavigation = () => {
       // Check if TV scripts are loaded
       if (!window.tvSpatialNav || !window.platformInfo) {
-        console.log('[useTVNavigation] TV scripts not loaded yet, retrying...');
         return false;
       }
-      
-      // Allow TV navigation on all platforms for testing
-      // if (!window.platformInfo.isTV()) {
-      //   console.log('[useTVNavigation] Not a TV platform, skipping TV navigation');
-      //   return true;
-      // }
-      
-      console.log('[useTVNavigation] Initializing TV navigation...');
       
       // Update focusable elements
       window.tvSpatialNav.updateFocusableElements();
@@ -29,7 +20,6 @@ export function useTVNavigation() {
       
       // Focus first element if nothing is focused OR focused element is gone
       if ((!focusedStillExists || !window.tvSpatialNav.focusedElement) && window.tvSpatialNav.focusableElements.length > 0) {
-        console.log('[useTVNavigation] Initializing focus (focused element exists in DOM:', focusedStillExists, ')');
         window.tvSpatialNav.init(); // Use init which has smart focus logic
         initialized = true;
       }
@@ -50,7 +40,6 @@ export function useTVNavigation() {
     const retryInterval = setInterval(() => {
       if (initNavigation() || retryCount >= maxRetries) {
         clearInterval(retryInterval);
-        console.log('[useTVNavigation] Initialization complete');
       }
       retryCount++;
     }, 100);
@@ -64,17 +53,12 @@ export function useTVNavigation() {
           window.tvSpatialNav.updateFocusableElements();
           const newCount = window.tvSpatialNav.focusableElements.length;
           
-          if (newCount !== previousCount) {
-            console.log('[useTVNavigation] Element count changed:', previousCount, '->', newCount);
-          }
-          
           // Check if focused element still exists in DOM
           const focusedStillExists = window.tvSpatialNav.focusedElement && 
                                      document.body.contains(window.tvSpatialNav.focusedElement);
           
           // Re-focus if focus was lost or focused element is no longer in DOM
           if ((!focusedStillExists || !window.tvSpatialNav.focusedElement) && window.tvSpatialNav.focusableElements.length > 0) {
-            console.log('[useTVNavigation] Re-initializing focus (focused element in DOM:', focusedStillExists, ')');
             window.tvSpatialNav.init();
             initialized = true;
           }

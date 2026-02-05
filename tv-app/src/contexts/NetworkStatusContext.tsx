@@ -17,27 +17,20 @@ export function NetworkStatusProvider({ children }: { children: ReactNode }) {
     
     // Check if Samsung TV webapis is available
     if (typeof window !== 'undefined' && (window as any).webapis?.network) {
-      console.log('[NetworkStatus] Samsung TV webapis.network detected - setting up listener');
-      
       // Add network state change listener
       try {
         const networkCallback = (value: number) => {
-          console.log('[NetworkStatus] Network state changed:', value);
-          
           const NetworkState = (window as any).webapis.network.NetworkState;
           
           if (value === NetworkState.GATEWAY_DISCONNECTED) {
-            console.log('[NetworkStatus] 🔴 Network DISCONNECTED');
             setIsConnected(false);
             setIsNetworkModalOpen(true);
             
             // Pause audio playback (Samsung requirement)
             if ((window as any).globalPlayer?.pause) {
-              console.log('[NetworkStatus] Pausing audio due to network disconnection');
               (window as any).globalPlayer.pause();
             }
           } else if (value === NetworkState.GATEWAY_CONNECTED) {
-            console.log('[NetworkStatus] 🟢 Network RECONNECTED');
             setIsConnected(true);
             setIsNetworkModalOpen(false);
           }
@@ -45,18 +38,15 @@ export function NetworkStatusProvider({ children }: { children: ReactNode }) {
         
         networkListenerId = (window as any).webapis.network.addNetworkStateChangeListener(networkCallback);
         
-        console.log('[NetworkStatus] ✅ Network listener added successfully, ID:', networkListenerId);
-        
         // Check initial network status
         const isCurrentlyConnected = (window as any).webapis.network.isConnectedToGateway();
-        console.log('[NetworkStatus] Initial network status:', isCurrentlyConnected ? 'Connected' : 'Disconnected');
         
         if (!isCurrentlyConnected) {
           setIsConnected(false);
           setIsNetworkModalOpen(true);
         }
       } catch (error) {
-        console.error('[NetworkStatus] Failed to setup network listener:', error);
+        // Failed to setup network listener
       }
       
       // Cleanup for Samsung TV
@@ -64,30 +54,24 @@ export function NetworkStatusProvider({ children }: { children: ReactNode }) {
         if (networkListenerId !== null && (window as any).webapis?.network?.removeNetworkStateChangeListener) {
           try {
             (window as any).webapis.network.removeNetworkStateChangeListener(networkListenerId);
-            console.log('[NetworkStatus] ✅ Network listener removed successfully');
           } catch (error) {
-            console.error('[NetworkStatus] Failed to remove network listener:', error);
+            // Failed to remove network listener
           }
         }
       };
     } else {
-      console.log('[NetworkStatus] Not on Samsung TV - using browser online/offline events');
-      
       // Fallback for non-Samsung platforms (web, LG webOS)
       const handleOnline = () => {
-        console.log('[NetworkStatus] Browser online event');
         setIsConnected(true);
         setIsNetworkModalOpen(false);
       };
       
       const handleOffline = () => {
-        console.log('[NetworkStatus] Browser offline event');
         setIsConnected(false);
         setIsNetworkModalOpen(true);
         
         // Pause audio playback (Samsung requirement)
         if ((window as any).globalPlayer?.pause) {
-          console.log('[NetworkStatus] Pausing audio due to network disconnection');
           (window as any).globalPlayer.pause();
         }
       };

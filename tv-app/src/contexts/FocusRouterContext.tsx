@@ -26,13 +26,11 @@ export function FocusRouterProvider({ children }: { children: ReactNode }) {
 
   // Register a handler for a specific route
   const registerHandler = (route: string, handler: KeyHandler) => {
-    console.log('[FocusRouter] Registering handler for route:', route);
     handlersRef.current.set(route, handler);
   };
 
   // Unregister a handler for a specific route
   const unregisterHandler = (route: string) => {
-    console.log('[FocusRouter] Unregistering handler for route:', route);
     handlersRef.current.delete(route);
   };
 
@@ -68,28 +66,14 @@ export function FocusRouterProvider({ children }: { children: ReactNode }) {
       }
     }
     
-    console.log('[FocusRouter] ⌨️  Key event:', {
-      keyCode: e.keyCode,
-      hash: hash,
-      currentRoute: currentRoute,
-      routeWithoutQuery: routeWithoutQuery,
-      matchedRoute: matchedRoute,
-      hasHandler: !!handler,
-      registered: Array.from(handlersRef.current.keys())
-    });
-    
     if (handler) {
-      console.log('[FocusRouter] ✅ Dispatching to:', matchedRoute);
       handler(e);
-    } else {
-      console.log('[FocusRouter] ⚠️  No handler for:', routeWithoutQuery);
     }
   };
 
   // Expose dispatch to window for tv-remote-keys.js integration
   useEffect(() => {
     (window as any).focusRouterDispatch = dispatch;
-    console.log('[FocusRouter] Dispatch function registered to window');
     return () => {
       (window as any).focusRouterDispatch = null;
     };

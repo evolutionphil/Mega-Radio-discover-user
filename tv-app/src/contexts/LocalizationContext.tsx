@@ -72,7 +72,6 @@ function detectDeviceLanguage(): string {
     if (window.webapis && window.webapis.tv) {
       const tizenLang = window.webapis.tv.info?.getLanguage?.();
       if (tizenLang) {
-        console.log('[Localization] Tizen language detected:', tizenLang);
         return tizenLang.toLowerCase().substring(0, 2);
       }
     }
@@ -81,17 +80,14 @@ function detectDeviceLanguage(): string {
     if (window.webOS && window.webOS.systemInfo) {
       const webOSLang = window.webOS.systemInfo.locale || window.webOS.systemInfo.language;
       if (webOSLang) {
-        console.log('[Localization] webOS language detected:', webOSLang);
         return webOSLang.toLowerCase().substring(0, 2);
       }
     }
 
     // Fallback to browser navigator
     const browserLang = navigator.language || navigator.languages?.[0] || 'en';
-    console.log('[Localization] Browser language detected:', browserLang);
     return browserLang.toLowerCase().substring(0, 2);
   } catch (error) {
-    console.error('[Localization] Error detecting language:', error);
     return 'en';
   }
 }
@@ -114,36 +110,28 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
         // Ensure we support this language
         const supportedLanguages = Object.keys(LANGUAGE_TO_COUNTRY);
         if (!supportedLanguages.includes(langToUse)) {
-          console.warn(`[Localization] Unsupported language "${langToUse}", falling back to "en"`);
           langToUse = 'en';
         }
 
-        console.log('[Localization] Using language:', langToUse);
         setLanguageState(langToUse);
 
         // Set country based on language
         const countryInfo = LANGUAGE_TO_COUNTRY[langToUse] || LANGUAGE_TO_COUNTRY['en'];
         setDetectedCountry(countryInfo.name);
         setDetectedCountryCode(countryInfo.code);
-        console.log('[Localization] Detected country:', countryInfo.name, countryInfo.code);
 
         // Fetch translations from API
-        console.log('[Localization] Fetching translations for:', langToUse);
         const translationsData = await megaRadioApi.getTranslations(langToUse);
-        console.log('[Localization] API response received');
         
         // API returns translations directly OR in a "translations" property
         const translations = translationsData.translations || translationsData;
         
         if (translations && typeof translations === 'object') {
           setTranslations(translations);
-          console.log('[Localization] Loaded', Object.keys(translations).length, 'translations');
         } else {
-          console.warn('[Localization] No translations in response, using fallback');
           setTranslations({});
         }
       } catch (error) {
-        console.error('[Localization] Failed to load translations:', error);
         // Set default English translations as fallback
         setTranslations({});
       } finally {
@@ -158,7 +146,6 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
   const setLanguage = async (lang: string) => {
     try {
       setIsLoading(true);
-      console.log('[Localization] Changing language to:', lang);
       
       // Update country based on new language
       const countryInfo = LANGUAGE_TO_COUNTRY[lang] || LANGUAGE_TO_COUNTRY['en'];
@@ -175,10 +162,8 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
       
       // Save to localStorage
       localStorage.setItem('app_language', lang);
-      
-      console.log('[Localization] Language changed successfully');
     } catch (error) {
-      console.error('[Localization] Failed to change language:', error);
+      // Failed to change language
     } finally {
       setIsLoading(false);
     }

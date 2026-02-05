@@ -321,7 +321,6 @@ export const DiscoverNoUser = (): JSX.Element => {
               try {
                 (window as any).tizen.application.getCurrentApplication().exit();
               } catch (err) {
-                console.error('[DiscoverNoUser] Failed to exit via Tizen API:', err);
                 window.close();
               }
             } else {
@@ -475,7 +474,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         setHasMoreCountryStations(false);
       }
     } catch (error) {
-      console.error('[DiscoverNoUser] Failed to fetch more stations:', error);
       setHasMoreCountryStations(false);
     } finally {
       setIsLoadingMore(false);
@@ -912,7 +910,6 @@ export const DiscoverNoUser = (): JSX.Element => {
                     try {
                       (window as any).tizen.application.getCurrentApplication().exit();
                     } catch (e) {
-                      console.error('[DiscoverNoUser] Failed to exit via Tizen API:', e);
                       window.close();
                     }
                   } else {

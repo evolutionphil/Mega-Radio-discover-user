@@ -1,5 +1,4 @@
 import { useLocation } from "wouter";
-import { useEffect } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { assetPath } from "@/lib/assetPath";
@@ -8,56 +7,19 @@ export const Guide1 = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const { t } = useLocalization();
 
-  // Component lifecycle logging
-  useEffect(() => {
-    console.log('[Guide1] 🎬 Component mounted');
-    console.log('[Guide1] 📂 Image paths to load:', {
-      background: '/images/discover-background.png',
-      arrow: '/images/arrow.svg',
-      icon: '/images/radio-icon.svg'
-    });
-    return () => {
-      console.log('[Guide1] 👋 Component unmounting');
-    };
-  }, []);
-
   // Register with FocusRouter (LGTV pattern)
   usePageKeyHandler('/guide-1', (e) => {
     const key = (window as any).tvKey;
-    console.log('[Guide1] ⌨️  Key pressed:', e.keyCode, getKeyName(e.keyCode, key));
     
     // OK/Enter key (13) on Samsung TV
     if (e.keyCode === 13 || e.keyCode === key?.ENTER) {
-      console.log('[Guide1] ✅ OK/Enter - navigating to Guide 2');
       e.preventDefault();
       setLocation('/guide-2');
     }
   });
 
-  // Helper function to get key name
-  const getKeyName = (keyCode: number, tvKey: any) => {
-    if (!tvKey) return String(keyCode);
-    for (const name in tvKey) {
-      if (tvKey[name] === keyCode) return name;
-    }
-    return String(keyCode);
-  };
-
   const handleClick = () => {
-    console.log('[Guide1] 🖱️  Clicked - navigating to Guide 2');
     setLocation('/guide-2');
-  };
-
-  // Image loading handlers
-  const handleImageLoad = (imageName: string) => {
-    console.log(`[Guide1] ✅ Image loaded successfully: ${imageName}`);
-  };
-
-  const handleImageError = (imageName: string, src: string) => {
-    console.error(`[Guide1] ❌ Image failed to load: ${imageName}`, {
-      src,
-      fullPath: window.location.origin + src
-    });
   };
 
   return (
@@ -85,8 +47,6 @@ export const Guide1 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none w-full h-full" 
                 src={assetPath("images/radio-icon.svg")}
-                onLoad={() => handleImageLoad('radio-icon.svg')}
-                onError={() => handleImageError('radio-icon.svg', assetPath('images/radio-icon.svg'))}
               />
             </div>
           </div>
@@ -100,8 +60,6 @@ export const Guide1 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none w-full h-full" 
                 src={assetPath("images/arrow.svg")}
-                onLoad={() => handleImageLoad('arrow.svg')}
-                onError={() => handleImageError('arrow.svg', assetPath('images/arrow.svg'))}
               />
             </div>
           </div>

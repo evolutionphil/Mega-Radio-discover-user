@@ -24,7 +24,7 @@ export const autoPlayService = {
         return JSON.parse(stationJson) as Station;
       }
     } catch (err) {
-      console.warn("[AutoPlay] Failed to parse last played station:", err);
+      // Failed to parse last played station
     }
     return null;
   },
@@ -39,7 +39,7 @@ export const autoPlayService = {
         return JSON.parse(favoritesJson) as Station[];
       }
     } catch (err) {
-      console.warn("[AutoPlay] Failed to parse favorites:", err);
+      // Failed to parse favorites
     }
     return [];
   },
@@ -56,7 +56,7 @@ export const autoPlayService = {
         return stations[randomIndex];
       }
     } catch (err) {
-      console.warn("[AutoPlay] Failed to fetch random station:", err);
+      // Failed to fetch random station
     }
     return null;
   },
@@ -65,8 +65,6 @@ export const autoPlayService = {
    * Get the station to play based on the play at start mode
    */
   async getStationToPlay(mode: PlayAtStartMode, countryCode: string = "US"): Promise<Station | null> {
-    console.log(`[AutoPlay] Getting station for mode: ${mode}`);
-    
     switch (mode) {
       case "last-played":
         return this.getLastPlayedStation();
@@ -80,7 +78,6 @@ export const autoPlayService = {
           const randomIndex = Math.floor(Math.random() * favorites.length);
           return favorites[randomIndex];
         }
-        console.warn("[AutoPlay] No favorite stations found");
         return null;
       
       case "none":

@@ -1,5 +1,4 @@
 // Mega Radio API Service - VERSION 3.0 - COUNTRY FILTERED GENRES
-console.log('🔥 megaRadioApi.ts VERSION 3.0 LOADED - Country-filtered genres enabled');
 const BASE_URL = 'https://themegaradio.com';
 const API_PREFIX = '/api';
 
@@ -10,9 +9,6 @@ const isSamsungTV = typeof window !== 'undefined' && (
 
 // Add ?tv=1 query parameter for Samsung TV to signal backend to skip compression
 const TV_PARAM = isSamsungTV ? '?tv=1' : '';
-
-console.log('[MegaRadio API] Platform:', isSamsungTV ? 'Samsung TV (adding ?tv=1)' : 'Web Browser');
-console.log('[MegaRadio API] BASE_URL:', BASE_URL);
 
 export interface Station {
   _id: string;
@@ -173,23 +169,17 @@ export const megaRadioApi = {
       // Convert country code to name for API
       const countryName = getCountryNameFromCode(params.country);
       queryParams.append('country', countryName);
-      console.log(`[API] getAllStations: Converting ${params.country} -> ${countryName}`);
     }
     if (params?.language) queryParams.append('language', params.language);
     if (params?.genre) {
-      console.log(`[API] getAllStations: Genre parameter BEFORE adding to URL: "${params.genre}"`);
       queryParams.append('genre', params.genre);
-      console.log(`[API] getAllStations: Genre added to queryParams, current params:`, queryParams.toString());
     }
     if (params?.sort) queryParams.append('sort', params.sort);
 
     try {
       const url = buildApiUrl('/stations', queryParams);
-      console.log('[API] getAllStations FULL URL:', url);
-      console.log('[API] getAllStations Query string:', queryParams.toString());
       
       const response = await fetch(url);
-      console.log('[API] getAllStations response status:', response.status);
       
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -198,21 +188,9 @@ export const megaRadioApi = {
       const data = await response.json();
       // API returns { stations: [...] } or just [...]
       const stations = data.stations || (Array.isArray(data) ? data : []);
-      console.log('[API] getAllStations fetched:', stations.length, 'stations');
-      
-      // If genre was requested, check if results match
-      if (params?.genre && stations.length > 0) {
-        console.log('[API] getAllStations: Genre filter was requested:', params.genre);
-        console.log('[API] getAllStations: Sample station tags from results:');
-        stations.slice(0, 3).forEach((s: Station, i: number) => {
-          console.log(`  Station ${i + 1}: ${s.name}`);
-          console.log(`    Tags: ${Array.isArray(s.tags) ? s.tags.join(', ') : s.tags || 'none'}`);
-        });
-      }
       
       return { stations, pagination: {} };
     } catch (error) {
-      console.error('[API] getAllStations failed:', error);
       return { stations: [], pagination: {} };
     }
   },
@@ -229,18 +207,15 @@ export const megaRadioApi = {
     if (params?.country) {
       const countryName = getCountryNameFromCode(params.country);
       queryParams.append('country', countryName);
-      console.log(`[API] getPopularStations: Converting ${params.country} -> ${countryName}`);
     }
     if (params?.language) queryParams.append('language', params.language);
     if (params?.genre) queryParams.append('genre', params.genre);
     queryParams.append('sort', 'votes');
 
     const url = buildApiUrl('/stations', queryParams);
-    console.log('[API] getPopularStations URL:', url);
     const response = await fetch(url);
     const data = await response.json();
     const stations = data.stations || (Array.isArray(data) ? data : []);
-    console.log('[API] getPopularStations fetched:', stations.length, 'stations');
     return { stations };
   },
 
@@ -256,27 +231,22 @@ export const megaRadioApi = {
     if (params?.country) {
       const countryName = getCountryNameFromCode(params.country);
       queryParams.append('country', countryName);
-      console.log(`[API] getWorkingStations: Converting ${params.country} -> ${countryName}`);
     }
 
     try {
       const url = buildApiUrl('/stations', queryParams);
-      console.log('[API] getWorkingStations URL:', url);
       const response = await fetch(url, {
         headers: {
           'Accept': 'application/json',
         },
       });
-      console.log('[API] Response status:', response.status);
       if (!response.ok) {
         throw new Error(`API error: ${response.status} ${response.statusText}`);
       }
       const data = await response.json();
       const stations = data.stations || [];
-      console.log('[API] Working stations fetched:', stations.length, `(offset: ${params?.offset || 0})`);
       return { stations };
     } catch (error) {
-      console.error('[API] Failed to fetch working stations:', error);
       return { stations: [] };
     }
   },
@@ -343,24 +313,19 @@ export const megaRadioApi = {
           searchQuery: ''
         });
         params.append('filters', filters);
-        console.log(`[API] getAllGenres: Filtering by country ${country} -> ${countryName}`);
       }
       
       // Add limit to fetch all genres (default API limit is only 9 per page)
       params.append('limit', '500');
       
       const url = buildApiUrl('/genres', params);
-      console.log('[API] getAllGenres URL:', url);
       const response = await fetch(url);
-      console.log('[API] getAllGenres response:', response.status);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
       const result = await response.json();
-      console.log('[API] getAllGenres fetched:', result.data?.length || 0, 'genres (total:', result.count || 0, ')');
       return { genres: result.data || [] };
     } catch (error) {
-      console.error('[API] getAllGenres failed:', error);
       return { genres: [] };
     }
   },
@@ -391,34 +356,25 @@ export const megaRadioApi = {
       // Only add country filter for specific countries
       const countryName = getCountryNameFromCode(params.country);
       queryParams.append('country', countryName);
-      console.log(`[API] getStationsByGenre: Converting ${params.country} -> ${countryName}`);
-    } else if (params?.country === 'GLOBAL') {
-      console.log(`[API] getStationsByGenre: GLOBAL country - fetching all stations worldwide (no country filter)`);
     }
     if (params?.sort) queryParams.append('sort', params.sort);
 
     const url = buildApiUrl(`/genres/${slug}/stations`, queryParams);
-    console.log('[API] getStationsByGenre URL:', url);
     const response = await fetch(url);
     const data = await response.json();
-    console.log('[API] getStationsByGenre fetched:', data.stations?.length || 0, `stations (offset: ${params?.offset || 0})`);
     return data;
   },
 
   getDiscoverableGenres: async (): Promise<{ genres: Genre[] }> => {
     try {
       const url = buildApiUrl('/genres/discoverable');
-      console.log('[API] getDiscoverableGenres:', url);
       const response = await fetch(url);
-      console.log('[API] getDiscoverableGenres response:', response.status);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
       const data = await response.json();
-      console.log('[API] getDiscoverableGenres fetched:', Array.isArray(data) ? data.length : 0);
       return { genres: Array.isArray(data) ? data : [] };
     } catch (error) {
-      console.error('[API] getDiscoverableGenres failed:', error);
       return { genres: [] };
     }
   },
@@ -427,14 +383,11 @@ export const megaRadioApi = {
   getAllCountries: async (): Promise<{ countries: Country[] }> => {
     try {
       const url = buildApiUrl('/countries');
-      console.log('[API] getAllCountries:', url);
       const response = await fetch(url);
-      console.log('[API] getAllCountries response:', response.status);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
       const data = await response.json();
-      console.log('[API] getAllCountries raw data type:', Array.isArray(data) ? 'array' : typeof data);
       
       // API returns array of strings, convert to Country objects
       const countries: Country[] = Array.isArray(data) ? data.map((name: string) => ({
@@ -443,10 +396,8 @@ export const megaRadioApi = {
         stationcount: 0
       })) : [];
       
-      console.log('[API] getAllCountries fetched:', countries.length);
       return { countries };
     } catch (error) {
-      console.error('[API] getAllCountries failed:', error);
       return { countries: [] };
     }
   },
@@ -478,17 +429,13 @@ export const megaRadioApi = {
 
     try {
       const url = buildApiUrl('/stations', queryParams);
-      console.log('[API] searchStations:', url);
       const response = await fetch(url);
-      console.log('[API] searchStations response:', response.status);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
       const data = await response.json();
-      console.log('[API] searchStations fetched:', data.stations?.length || 0);
       return { results: data.stations || [], total: data.totalCount || 0 };
     } catch (error) {
-      console.error('[API] searchStations failed:', error);
       return { results: [], total: 0 };
     }
   },
@@ -521,7 +468,6 @@ export const megaRadioApi = {
     const response = await fetch(url);
     
     if (!response.ok) {
-      console.error('[API] Failed to fetch translations:', response.status, response.statusText);
       throw new Error(`Failed to fetch translations: ${response.statusText}`);
     }
     

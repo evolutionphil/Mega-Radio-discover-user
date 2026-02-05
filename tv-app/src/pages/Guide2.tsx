@@ -1,5 +1,4 @@
 import { useLocation } from "wouter";
-import { useEffect } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { assetPath } from "@/lib/assetPath";
@@ -8,47 +7,19 @@ export const Guide2 = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const { t } = useLocalization();
 
-  // Component lifecycle logging
-  useEffect(() => {
-    console.log('[Guide2] 🎬 Component mounted');
-    console.log('[Guide2] 📂 Image paths to load:', {
-      background: '/images/discover-background.png',
-      arrow: '/images/arrow.svg',
-      icon: '/images/music-icon.svg'
-    });
-    return () => {
-      console.log('[Guide2] 👋 Component unmounting');
-    };
-  }, []);
-
   // Register with FocusRouter (LGTV pattern)
   usePageKeyHandler('/guide-2', (e) => {
     const key = (window as any).tvKey;
-    console.log('[Guide2] ⌨️  Key pressed:', e.keyCode);
     
     // OK/Enter key (13) on Samsung TV
     if (e.keyCode === 13 || e.keyCode === key?.ENTER) {
-      console.log('[Guide2] ✅ OK/Enter - navigating to Guide 3');
       e.preventDefault();
       setLocation('/guide-3');
     }
   });
 
   const handleClick = () => {
-    console.log('[Guide2] 🖱️  Clicked - navigating to Guide 3');
     setLocation('/guide-3');
-  };
-
-  // Image loading handlers
-  const handleImageLoad = (imageName: string) => {
-    console.log(`[Guide2] ✅ Image loaded successfully: ${imageName}`);
-  };
-
-  const handleImageError = (imageName: string, src: string) => {
-    console.error(`[Guide2] ❌ Image failed to load: ${imageName}`, {
-      src,
-      fullPath: window.location.origin + src
-    });
   };
 
   return (
@@ -73,8 +44,6 @@ export const Guide2 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none w-full h-full" 
                 src={assetPath("images/arrow.svg")}
-                onLoad={() => handleImageLoad('arrow.svg')}
-                onError={() => handleImageError('arrow.svg', assetPath('images/arrow.svg'))}
               />
             </div>
           </div>
@@ -91,8 +60,6 @@ export const Guide2 = (): JSX.Element => {
                 alt="" 
                 className="block max-w-none w-full h-full" 
                 src={assetPath("images/music-icon.svg")}
-                onLoad={() => handleImageLoad('music-icon.svg')}
-                onError={() => handleImageError('music-icon.svg', assetPath('images/music-icon.svg'))}
               />
             </div>
           </div>

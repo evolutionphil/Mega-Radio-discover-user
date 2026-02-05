@@ -10,7 +10,6 @@ export const useAnalytics = () => {
   useEffect(() => {
     // Track initial page view on mount
     if (prevLocationRef.current === null) {
-      console.log('[Analytics] Tracking initial page view:', location);
       trackPageView(location);
       prevLocationRef.current = location;
       return;
@@ -18,7 +17,6 @@ export const useAnalytics = () => {
     
     // Track page view on route change
     if (location !== prevLocationRef.current) {
-      console.log('[Analytics] Tracking page view change:', location);
       trackPageView(location);
       prevLocationRef.current = location;
     }

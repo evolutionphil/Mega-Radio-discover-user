@@ -16,14 +16,12 @@ import { assetPath } from "@/lib/assetPath";
 
 
 export const RadioPlaying = (): JSX.Element => {
-  console.log('[RadioPlaying] 🎬 Component mounting/rendering');
   const [location, setLocation] = useLocation();
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { playStation, togglePlayPause, isPlaying, isBuffering, currentStation } = useGlobalPlayer();
   const { getPreviousPage } = useNavigation();
-  console.log('[RadioPlaying] 🎮 Global player state:', { isPlaying, isBuffering });
   
   // Station history for Previous button (stores station IDs)
   const stationHistoryRef = useRef<string[]>([]);
@@ -46,46 +44,26 @@ export const RadioPlaying = (): JSX.Element => {
   
   // Parse station ID from URL query params (supports both hash and pre-hash params)
   const stationId = useMemo(() => {
-    console.log('[RadioPlaying] 🔍 Parsing station ID from URL');
-    console.log('[RadioPlaying] 📍 Wouter location:', location);
-    console.log('[RadioPlaying] 📍 window.location.search:', window.location.search);
-    console.log('[RadioPlaying] 📍 window.location.hash:', window.location.hash);
-    console.log('[RadioPlaying] 📍 window.location.href:', window.location.href);
-    console.log('[RadioPlaying] 📍 Full URL breakdown:', {
-      protocol: window.location.protocol,
-      host: window.location.host,
-      pathname: window.location.pathname,
-      search: window.location.search,
-      hash: window.location.hash
-    });
-
     // Try to get from wouter location first (hash-based: /#/radio-playing?station=123)
     const queryStart = location.indexOf('?');
     if (queryStart !== -1) {
       const queryString = location.substring(queryStart + 1);
-      console.log('[RadioPlaying] 🔎 Found query string in wouter location:', queryString);
       const searchParams = new URLSearchParams(queryString);
       const id = searchParams.get('station') || searchParams.get('stationId');
       if (id) {
-        console.log('[RadioPlaying] ✅ Found station ID in hash params:', id);
         return id;
       }
-      console.log('[RadioPlaying] ⚠️ Query string found but no station/stationId param');
     }
 
     // Fallback: Try window.location.search (pre-hash: /?stationId=123#/radio-playing)
     if (window.location.search) {
-      console.log('[RadioPlaying] 🔎 Trying window.location.search:', window.location.search);
       const searchParams = new URLSearchParams(window.location.search);
       const id = searchParams.get('station') || searchParams.get('stationId');
       if (id) {
-        console.log('[RadioPlaying] ✅ Found station ID in pre-hash params:', id);
         return id;
       }
-      console.log('[RadioPlaying] ⚠️ window.location.search found but no station/stationId param');
     }
 
-    console.log('[RadioPlaying] ❌ No station ID found in URL - returning null');
     return null;
   }, [location, updateTrigger]);
   
@@ -95,7 +73,6 @@ export const RadioPlaying = (): JSX.Element => {
       const lastStation = stationHistoryRef.current[stationHistoryRef.current.length - 1];
       if (lastStation !== stationId) {
         stationHistoryRef.current.push(stationId);
-        console.log('[RadioPlaying] Station history updated:', stationHistoryRef.current);
       }
     }
     isNavigatingBackRef.current = false;
@@ -125,12 +102,7 @@ export const RadioPlaying = (): JSX.Element => {
   const { data: stationData, isLoading: isLoadingStation, error: stationError } = useQuery({
     queryKey: ['station', stationId],
     queryFn: async () => {
-      console.log('[RadioPlaying] 📡 Fetching station details for stationId:', stationId);
       const result = await megaRadioApi.getStationById(stationId!);
-      console.log('[RadioPlaying] ✅ Station details fetched successfully');
-      console.log('[RadioPlaying] 📻 Station name:', result?.station?.name);
-      console.log('[RadioPlaying] 📻 Station URL:', result?.station?.url);
-      console.log('[RadioPlaying] 📻 Station data:', result?.station);
       return result;
     },
     enabled: !!stationId,
@@ -140,16 +112,6 @@ export const RadioPlaying = (): JSX.Element => {
   });
 
   const station = stationData?.station;
-  
-  console.log('[RadioPlaying] 🎯 Query state:', {
-    stationId,
-    enabled: !!stationId,
-    isLoadingStation,
-    hasStationData: !!stationData,
-    hasStation: !!station,
-    stationName: station?.name,
-    error: stationError
-  });
 
 
   // Fetch station metadata
@@ -198,14 +160,6 @@ export const RadioPlaying = (): JSX.Element => {
   });
 
   const similarStations = similarData?.stations || [];
-  
-  // Log when similar stations change
-  useEffect(() => {
-    if (similarStations.length > 0) {
-      console.log('[RadioPlaying] Similar stations updated:', similarStations.length, 'stations');
-      console.log('[RadioPlaying] First 3 similar:', similarStations.slice(0, 3).map(s => s.name));
-    }
-  }, [similarStations]);
 
   // Fetch popular stations from GLOBAL (random selection)
   // CACHE: 24 hours
@@ -360,7 +314,6 @@ export const RadioPlaying = (): JSX.Element => {
   usePageKeyHandler('/radio-playing', (e) => {
     // Ignore all key events when country selector modal is open
     if (isCountrySelectorOpen) {
-      console.log('[RadioPlaying] Key event ignored - country selector modal is open');
       return;
     }
 
@@ -370,7 +323,6 @@ export const RadioPlaying = (): JSX.Element => {
     if (e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009) {
       const previousPage = getPreviousPage();
       const backTo = previousPage || '/discover-no-user';
-      console.log('[RadioPlaying] 🔙 RETURN key pressed - navigating to:', backTo);
       setLocation(backTo);
       return;
     }
@@ -403,7 +355,6 @@ export const RadioPlaying = (): JSX.Element => {
         e.preventDefault();
         if (similarStations.length > 0) {
           setFocusIndex(10); // First similar station
-          console.log('[RadioPlaying] PageDown - jumped to similar stations');
         }
         break;
       case key?.PAGE_UP:
@@ -411,7 +362,6 @@ export const RadioPlaying = (): JSX.Element => {
         // Jump back to playback controls
         e.preventDefault();
         setFocusIndex(7); // Play/pause button
-        console.log('[RadioPlaying] PageUp - jumped to playback controls');
         break;
     }
   });
@@ -471,7 +421,6 @@ export const RadioPlaying = (): JSX.Element => {
     onBack: () => {
       const previousPage = getPreviousPage();
       const backTo = previousPage || '/discover-no-user';
-      console.log('[RadioPlaying] 🔙 Back button - navigating to:', backTo);
       setLocation(backTo);
     }
   });
@@ -538,31 +487,13 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Auto-play when station loads using global player
   useEffect(() => {
-    console.log('[RadioPlaying] 🎵 Auto-play effect triggered');
-    console.log('[RadioPlaying] 🎵 Has station:', !!station);
-    console.log('[RadioPlaying] 🎵 Current playing station:', currentStation?._id, currentStation?.name);
-    console.log('[RadioPlaying] 🎵 Is currently playing:', isPlaying);
-    
     if (station) {
-      console.log('[RadioPlaying] 🎵 Station data available:', {
-        name: station.name,
-        id: station._id,
-        url: station.url,
-        codec: station.codec,
-        bitrate: station.bitrate
-      });
-      
       // Check if this station is already playing - don't restart it!
       if (currentStation?._id === station._id && isPlaying) {
-        console.log('[RadioPlaying] ✅ Station already playing - skipping auto-play to avoid restart');
         return;
       }
       
-      console.log('[RadioPlaying] ▶️ Starting auto-play via global player');
       playStation(station);
-      console.log('[RadioPlaying] ✅ Auto-play initiated');
-    } else {
-      console.log('[RadioPlaying] ⏳ Waiting for station data to auto-play');
     }
   }, [station, currentStation, isPlaying]);
 
@@ -572,7 +503,6 @@ export const RadioPlaying = (): JSX.Element => {
 
   const handlePrevious = () => {
     if (stationHistoryRef.current.length <= 1) {
-      console.log('[RadioPlaying] No previous station in history');
       return;
     }
     
@@ -580,7 +510,6 @@ export const RadioPlaying = (): JSX.Element => {
     const previousStationId = stationHistoryRef.current[stationHistoryRef.current.length - 1];
     isNavigatingBackRef.current = true;
     
-    console.log('[RadioPlaying] Going to previous station:', previousStationId);
     const newUrl = `${window.location.pathname}?station=${previousStationId}${window.location.hash}`;
     window.history.pushState({}, '', newUrl);
     setUpdateTrigger(prev => prev + 1);
@@ -588,19 +517,16 @@ export const RadioPlaying = (): JSX.Element => {
 
   const handleNext = () => {
     if (similarStations.length === 0) {
-      console.log('[RadioPlaying] No similar stations available');
       return;
     }
     
     const nextStation = similarStations[0];
-    console.log('[RadioPlaying] Going to next station:', nextStation.name, nextStation._id);
     const newUrl = `${window.location.pathname}?station=${nextStation._id}${window.location.hash}`;
     window.history.pushState({}, '', newUrl);
     setUpdateTrigger(prev => prev + 1);
   };
 
   const navigateToStation = (targetStation: Station) => {
-    console.log('[RadioPlaying] Navigating to station:', targetStation.name, targetStation._id);
     playStation(targetStation);
     const newUrl = `${window.location.pathname}?station=${targetStation._id}${window.location.hash}`;
     window.history.pushState({}, '', newUrl);
@@ -609,7 +535,6 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Show error state
   if (stationError) {
-    console.error('[RadioPlaying] Error loading station:', stationError);
     return (
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">{t('failed_to_load_station') || 'Failed to load station'}</p>
@@ -627,7 +552,6 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Show loading state with better debugging
   if (!stationId) {
-    console.error('[RadioPlaying] ❌ No station ID - cannot load station');
     return (
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <p className="font-['Ubuntu',Helvetica] font-bold text-[40px] text-white">{t('no_station_selected') || 'No Station Selected'}</p>
@@ -644,12 +568,6 @@ export const RadioPlaying = (): JSX.Element => {
   }
 
   if (isLoadingStation || !station) {
-    console.log('[RadioPlaying] 🔄 LOADING STATE - Showing loading screen');
-    console.log('[RadioPlaying] 🔄 isLoadingStation:', isLoadingStation);
-    console.log('[RadioPlaying] 🔄 hasStation:', !!station);
-    console.log('[RadioPlaying] 🔄 stationId:', stationId);
-    console.log('[RadioPlaying] 🔄 stationData:', stationData);
-    console.log('[RadioPlaying] 🔄 Station is:', station ? 'AVAILABLE' : 'NULL');
     return (
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#ff4199]"></div>
@@ -960,7 +878,6 @@ export const RadioPlaying = (): JSX.Element => {
           onClose={() => setIsCountrySelectorOpen(false)}
           selectedCountry={selectedCountry}
           onSelectCountry={(country) => {
-            console.log('[RadioPlaying] Country selected:', country);
             setCountry(country.name, country.code, country.flag);
             setIsCountrySelectorOpen(false);
           }}

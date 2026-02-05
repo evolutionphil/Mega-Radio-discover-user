@@ -13,7 +13,6 @@ import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
 
 export const Search = (): JSX.Element => {
-  console.log('[Search] 🎬 Component mounting/rendering');
   const [, setLocation] = useLocation();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
   const { playStation, isPlaying } = useGlobalPlayer();
@@ -32,7 +31,6 @@ export const Search = (): JSX.Element => {
     }
 
     searchTimeoutRef.current = setTimeout(() => {
-      console.log('[Search] 🔍 keywordChange - debounced query:', searchQuery);
       setDebouncedSearchQuery(searchQuery);
     }, 400); // LGTV uses 400ms debounce
 
@@ -52,13 +50,6 @@ export const Search = (): JSX.Element => {
     staleTime: 24 * 60 * 60 * 1000, // 24 hours
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
-  
-  console.log('🔍 [SEARCH DATA DEBUG]:', {
-    searchData,
-    searchDataType: typeof searchData,
-    searchDataResults: searchData?.results,
-    resultsLength: searchData?.results?.length
-  });
 
   // Fetch popular stations as fallback
   // CACHE: 24 hours
@@ -73,18 +64,10 @@ export const Search = (): JSX.Element => {
   // This prevents counting cached results when input is empty
   const visibleSearchResults = debouncedSearchQuery.length > 0 ? (searchData?.results || []) : [];
   
-  console.log('🔍 [SEARCH DEBUG] Current state:', {
-    searchQuery,
-    debouncedSearchQuery,
-    visibleSearchResultsLength: visibleSearchResults.length,
-    recentlyPlayedLength: recentlyPlayedStations.length
-  });
-  
   // Load recently played stations from localStorage
   useEffect(() => {
     const recent = recentlyPlayedService.getStations();
     setRecentlyPlayedStations(recent);
-    console.log('[Search] Loaded recently played stations:', recent.length);
   }, []);
 
   // Use recently played if available, otherwise fall back to popular stations
@@ -100,7 +83,6 @@ export const Search = (): JSX.Element => {
 
   // Custom navigation logic for multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
-    console.log('[Search] 🎮 Navigation:', direction, 'from focusIndex:', focusIndex);
     const current = focusIndex;
     let newIndex = current;
 
@@ -127,7 +109,6 @@ export const Search = (): JSX.Element => {
         // Jump directly to recently played section
         if (recentStations.length > 0) {
           newIndex = 6 + visibleSearchResults.length; // First recent station
-          console.log('[Search] RIGHT from search input - jumping to recently played');
         }
       } else if (direction === 'LEFT') {
         newIndex = 0; // Jump to sidebar
@@ -194,7 +175,6 @@ export const Search = (): JSX.Element => {
 
     // Clamp to valid range
     newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
-    console.log('[Search] 🎯 New focusIndex:', newIndex);
     setFocusIndex(newIndex);
   };
 
@@ -204,7 +184,6 @@ export const Search = (): JSX.Element => {
       if (inputRef.current) {
         const length = inputRef.current.value.length;
         inputRef.current.setSelectionRange(length, length);
-        console.log('[Search] 📍 Cursor set to end of input, position:', length);
       }
     }, 200);
   };
@@ -215,36 +194,25 @@ export const Search = (): JSX.Element => {
     cols: 1,
     initialIndex: 5, // Start on search input
     onSelect: (index) => {
-      console.log('[Search] 🎯 onSelect triggered - index:', index);
-      
       // Sidebar navigation (0-4)
       if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
-        console.log('[Search] 📍 Sidebar item selected:', index, 'route:', route);
         if (route !== '#') {
-          console.log('[Search] 🚀 Navigating to sidebar route:', route);
           setLocation(route);
         }
       }
       // Search input (5) - LGTV pattern: focus input and set cursor to end
       else if (index === 5) {
-        console.log('[Search] ⌨️  Search input selected');
-        console.log('[Search] 📝 Focusing input field and setting cursor to end');
         if (inputRef.current) {
           inputRef.current.focus();
-          console.log('[Search] ✅ Input focused');
           setInputCursorToEnd();
-        } else {
-          console.log('[Search] ❌ Input ref is null');
         }
       }
       // Search results (6 to 6+visibleSearchResults.length-1)
       else if (index >= 6 && index < 6 + visibleSearchResults.length) {
         const resultIndex = index - 6;
         const station = visibleSearchResults[resultIndex];
-        console.log('[Search] 🎵 Search result selected:', resultIndex);
         if (station) {
-          console.log('[Search] ▶️  Playing search result:', station.name, 'id:', station._id);
           playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
         }
@@ -253,25 +221,20 @@ export const Search = (): JSX.Element => {
       else if (index >= 6 + visibleSearchResults.length) {
         const recentIndex = index - 6 - visibleSearchResults.length;
         const station = recentStations[recentIndex];
-        console.log('[Search] 🕒 Recently played selected:', recentIndex);
         if (station) {
-          console.log('[Search] ▶️  Playing recently played:', station.name, 'id:', station._id);
           playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
         }
       }
     },
     onBack: () => {
-      console.log('[Search] 🔙 Back button pressed - navigating to Discover');
       setLocation('/discover-no-user');
     }
   });
   
   // Fix: Blur input when focusIndex moves away from search input (index 5)
   useEffect(() => {
-    console.log('[Search] 👁️ focusIndex changed to:', focusIndex);
     if (focusIndex !== 5 && inputRef.current) {
-      console.log('[Search] 🚫 Focus moved away from search input - blurring to prevent keyboard');
       inputRef.current.blur();
     }
   }, [focusIndex]);
@@ -280,37 +243,30 @@ export const Search = (): JSX.Element => {
   usePageKeyHandler('/search', (e) => {
     // Ignore all key events when country selector modal is open
     if (isCountrySelectorOpen) {
-      console.log('[Search] Key event ignored - country selector modal is open');
       return;
     }
 
     const key = (window as any).tvKey;
-    console.log('[Search] ⌨️ Key pressed:', e.keyCode, 'key:', e.key);
     
     switch(e.keyCode) {
       case key?.UP:
       case 38:
-        console.log('[Search] ⬆️ UP key');
         customHandleNavigation('UP');
         break;
       case key?.DOWN:
       case 40:
-        console.log('[Search] ⬇️ DOWN key');
         customHandleNavigation('DOWN');
         break;
       case key?.LEFT:
       case 37:
-        console.log('[Search] ⬅️ LEFT key');
         customHandleNavigation('LEFT');
         break;
       case key?.RIGHT:
       case 39:
-        console.log('[Search] ➡️ RIGHT key');
         customHandleNavigation('RIGHT');
         break;
       case key?.ENTER:
       case 13:
-        console.log('[Search] ✅ ENTER key');
         handleSelect();
         break;
     }
@@ -405,14 +361,11 @@ export const Search = (): JSX.Element => {
             type="text"
             value={searchQuery}
             onChange={(e) => {
-              console.log('[Search] 📝 Search query changed to:', e.target.value);
               setSearchQuery(e.target.value);
             }}
             onFocus={() => {
-              console.log('[Search] 🎯 Input focused - keyboard should appear');
             }}
             onBlur={() => {
-              console.log('[Search] 👋 Input blurred - keyboard should hide');
             }}
             placeholder={t('search_placeholder') || 'Search...'}
             className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[650px] placeholder:text-[rgba(255,255,255,0.5)]"
@@ -439,11 +392,9 @@ export const Search = (): JSX.Element => {
             style={{ top: `${topPositions[index]}px` }}
             data-testid={`search-result-${index}`}
             onMouseEnter={() => {
-              console.log('[Search] 🖱️ hoverMovie - search result index:', index);
               setFocusIndex(focusIdx);
             }}
             onClick={() => {
-              console.log('[Search] 🎯 onClick - handleMenuClick for search result:', station.name);
               handleSelect();
             }}
           >
@@ -475,15 +426,6 @@ export const Search = (): JSX.Element => {
         const topPositions = [136, 430, 724]; // Added 30px gap between rows (card height 264px + 30px gap)
         const focusIdx = 6 + visibleSearchResults.length + index;
         
-        console.log(`🎨 [RECENTLY PLAYED] Rendering station ${index}:`, {
-          name: station.name,
-          focusIdx,
-          visibleSearchResultsLength: visibleSearchResults.length,
-          currentFocusIndex: focusIndex,
-          isFocused: isFocused(focusIdx),
-          calculation: `6 + ${visibleSearchResults.length} + ${index} = ${focusIdx}`
-        });
-        
         return (
           <div 
             key={station._id || index}
@@ -494,11 +436,9 @@ export const Search = (): JSX.Element => {
             }}
             data-testid={`recent-station-${index}`}
             onMouseEnter={() => {
-              console.log('[Search] 🖱️ hoverMovie - recent station index:', index);
               setFocusIndex(focusIdx);
             }}
             onClick={() => {
-              console.log('[Search] 🎯 onClick - handleMenuClick for recent station:', station.name);
               handleSelect();
             }}
           >

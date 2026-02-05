@@ -10,19 +10,11 @@ export const Splash = (): JSX.Element => {
   useTVNavigation();
 
   useEffect(() => {
-    console.log('[Splash] 🎬 Component mounted');
-    return () => {
-      console.log('[Splash] 👋 Component unmounting');
-    };
-  }, []);
-
-  useEffect(() => {
     // Check onboarding status immediately
     try {
       const onboardingCompleted = localStorage.getItem('onboardingCompleted');
       if (onboardingCompleted) {
         // Skip splash entirely if onboarding completed
-        console.log('[Splash] ✅ Onboarding already completed, navigating immediately to Discover');
         setLocation("/discover-no-user");
         return;
       }
@@ -32,7 +24,6 @@ export const Splash = (): JSX.Element => {
     
     // Only show splash for first-time users
     const timer = setTimeout(() => {
-      console.log('[Splash] ⏱️  Timer completed, navigating to Guide 1');
       setLocation("/guide-1");
     }, 1500);
     return () => clearTimeout(timer);

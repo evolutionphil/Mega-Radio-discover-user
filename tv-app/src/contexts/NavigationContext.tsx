@@ -20,12 +20,10 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
   const [navigationState, setNavigationStateInternal] = useState<NavigationState | null>(null);
 
   const setNavigationState = (page: string, focusIndex: number) => {
-    console.log('[NavigationContext] Setting navigation state:', { page, focusIndex });
     setNavigationStateInternal({ previousPage: page, returnFocusIndex: focusIndex });
   };
 
   const clearNavigationState = () => {
-    console.log('[NavigationContext] Clearing navigation state');
     setNavigationStateInternal(null);
   };
 
@@ -40,7 +38,6 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
   const popNavigationState = () => {
     const state = navigationState;
     if (state) {
-      console.log('[NavigationContext] Popping navigation state (returning and clearing):', state);
       setNavigationStateInternal(null);
     }
     return state;

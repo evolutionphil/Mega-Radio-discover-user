@@ -40,17 +40,6 @@ export function useFocusManager({
 }: UseFocusManagerOptions) {
   const [focusIndex, setFocusIndex] = useState(initialIndex);
 
-  // Log initial state
-  useEffect(() => {
-    console.log('[useFocusManager] 🎯 Initialized with:', {
-      totalItems,
-      cols,
-      rows,
-      initialIndex,
-      enableWrapping
-    });
-  }, []);
-
   // Calculate grid dimensions
   const actualRows = rows || Math.ceil(totalItems / cols);
 
@@ -113,27 +102,9 @@ export function useFocusManager({
     return Math.max(0, Math.min(totalItems - 1, index));
   }, [totalItems, enableWrapping, cols]);
 
-  // Log focus changes
-  useEffect(() => {
-    console.log('[useFocusManager] 👁️  Focus changed:', {
-      focusIndex,
-      totalItems,
-      cols,
-      row: Math.floor(focusIndex / cols),
-      col: focusIndex % cols
-    });
-  }, [focusIndex, totalItems, cols]);
-
   // Navigation handler - uses functional update to avoid stale closure
   const handleNavigation = useCallback((direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     setFocusIndex(prev => {
-      console.log('[useFocusManager] ⌨️  Navigation:', {
-        direction,
-        currentIndex: prev,
-        totalItems,
-        cols
-      });
-      
       let newIndex = prev;
 
       switch (direction) {
@@ -163,12 +134,6 @@ export function useFocusManager({
       }
 
       const clampedIndex = clampIndex(newIndex, prev, direction);
-      console.log('[useFocusManager] 🎯 Focus move:', {
-        from: prev,
-        to: clampedIndex,
-        attempted: newIndex,
-        clamped: newIndex !== clampedIndex
-      });
       
       return clampedIndex;
     });
@@ -176,12 +141,6 @@ export function useFocusManager({
 
   // Select handler
   const handleSelect = useCallback(() => {
-    console.log('[useFocusManager] ✅ Select pressed:', {
-      focusIndex,
-      totalItems,
-      hasHandler: !!onSelect
-    });
-    
     if (onSelect && focusIndex >= 0 && focusIndex < totalItems) {
       onSelect(focusIndex);
     }
@@ -189,10 +148,6 @@ export function useFocusManager({
 
   // Back handler
   const handleBack = useCallback(() => {
-    console.log('[useFocusManager] ⬅️  Back pressed:', {
-      hasHandler: !!onBack
-    });
-    
     if (onBack) {
       onBack();
     } else {
@@ -204,13 +159,6 @@ export function useFocusManager({
   useEffect(() => {
     setFocusIndex(prev => {
       const newIndex = clampIndex(prev, prev);
-      if (newIndex !== prev) {
-        console.log('[useFocusManager] 🔄 Focus reset due to totalItems change:', {
-          totalItems,
-          oldIndex: prev,
-          newIndex
-        });
-      }
       return newIndex;
     });
   }, [totalItems, clampIndex]);

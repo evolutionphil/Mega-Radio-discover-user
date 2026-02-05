@@ -14,11 +14,8 @@ export const initGA = () => {
   const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
 
   if (!measurementId) {
-    console.warn('[Analytics] Missing VITE_GA_MEASUREMENT_ID - Analytics disabled');
     return;
   }
-
-  console.log('[Analytics] Initializing Google Analytics with ID:', measurementId);
 
   // Add Google Analytics script to the head
   const script1 = document.createElement('script');
@@ -27,13 +24,10 @@ export const initGA = () => {
   
   // Handle script load success
   script1.onload = () => {
-    console.log('[Analytics] Google Analytics script loaded successfully');
   };
   
   // Handle script load failure
   script1.onerror = (error) => {
-    console.error('[Analytics] Failed to load Google Analytics script:', error);
-    console.warn('[Analytics] Analytics will not be available - script load failed');
   };
   
   document.head.appendChild(script1);
@@ -54,21 +48,16 @@ export const initGA = () => {
     });
   `;
   document.head.appendChild(script2);
-
-  console.log('[Analytics] Google Analytics initialized successfully');
 };
 
 // Track page views - useful for single-page applications
 export const trackPageView = (url: string) => {
   if (typeof window === 'undefined' || !window.gtag) {
-    console.warn('[Analytics] gtag not available for page view tracking');
     return;
   }
   
   const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
   if (!measurementId) return;
-  
-  console.log('[Analytics] Page view:', url);
   
   window.gtag('config', measurementId, {
     page_path: url
@@ -83,11 +72,8 @@ export const trackEvent = (
   value?: number
 ) => {
   if (typeof window === 'undefined' || !window.gtag) {
-    console.warn('[Analytics] gtag not available for event tracking');
     return;
   }
-  
-  console.log('[Analytics] Event:', { action, category, label, value });
   
   window.gtag('event', action, {
     event_category: category,

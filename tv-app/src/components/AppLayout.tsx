@@ -130,7 +130,6 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
         onClose={() => setIsCountrySelectorOpen(false)}
         selectedCountry={selectedCountry}
         onSelectCountry={(country) => {
-          console.log('[AppLayout] Country selected globally:', country.name, 'Code:', country.code);
           setCountry(country.name, country.code, country.flag);
         }}
       />

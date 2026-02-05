@@ -30,7 +30,6 @@ export const CountryProvider = ({ children }: { children: ReactNode }) => {
     const saved = localStorage.getItem('selectedCountryFlag');
     // Fix: Clear old absolute paths that cause ERR_ACCESS_DENIED on Samsung TV
     if (saved && saved.startsWith('/images/')) {
-      console.log('[CountryContext] Clearing old absolute path from localStorage:', saved);
       localStorage.removeItem('selectedCountryFlag');
       return globeIcon;
     }
@@ -42,32 +41,18 @@ export const CountryProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const hasStoredCountry = localStorage.getItem('selectedCountry');
     
-    console.log('[CountryContext] Auto-detection check:', {
-      hasStoredCountry,
-      detectedCountry,
-      detectedCountryCode,
-      currentCountry: selectedCountry
-    });
-    
     // Only auto-detect if user hasn't manually selected a country before
     if (!hasStoredCountry && detectedCountry && detectedCountryCode) {
       // Use detected country if it's valid (not default fallback values)
       if (detectedCountry !== 'Unknown' && detectedCountryCode !== 'XX') {
-        console.log('[CountryContext] 🌍 Auto-setting detected country:', detectedCountry, detectedCountryCode);
         setSelectedCountry(detectedCountry);
         setSelectedCountryCode(detectedCountryCode);
         setSelectedCountryFlag(`https://flagcdn.com/w40/${detectedCountryCode.toLowerCase()}.png`);
-      } else {
-        console.log('[CountryContext] ⚠️ No valid country detected, keeping Global');
-        // Keep Global as fallback (already set in initial state)
       }
-    } else if (hasStoredCountry) {
-      console.log('[CountryContext] ℹ️ Using stored country from localStorage:', hasStoredCountry);
     }
   }, [detectedCountry, detectedCountryCode]);
 
   const setCountry = (country: string, code: string, flag: string) => {
-    console.log('[CountryContext] Country changed globally:', country, code);
     setSelectedCountry(country);
     setSelectedCountryCode(code);
     setSelectedCountryFlag(flag);

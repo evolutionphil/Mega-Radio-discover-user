@@ -82,7 +82,6 @@ export const Settings = (): JSX.Element => {
   const handlePlayAtStartChange = (mode: PlayAtStartMode) => {
     setPlayAtStart(mode);
     localStorage.setItem("playAtStart", mode);
-    console.log("[Settings] Play at start mode changed to:", mode);
   };
 
   return (
