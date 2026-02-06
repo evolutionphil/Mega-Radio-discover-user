@@ -1,0 +1,38 @@
+lockdown-install.js:1 SES Removing unpermitted intrinsics
+platform-detect.js:18 Platform detected: Web Browser
+tv-spatial-navigation.js:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+polyfills.js:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js:290 [Polyfills] All polyfills loaded successfully
+fetch-polyfill-samsung.js:5 [Fetch Polyfill] Loading Samsung TV fetch handler...
+fetch-polyfill-samsung.js:135 [Fetch Polyfill] Samsung TV fetch handler loaded
+chunk-HHM7JWV7.js?v=39bef510:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+tv-spatial-navigation.js:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js:216 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js:220 [TV Remote Keys] Key handler attached, waiting for React...
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/translations/de
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/countries
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres?filters=%7B%22countrycode%22%3A%22Austria%22%2C%22searchQuery%22%3A%22%22%7D&limit=500
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=12&country=Austria&sort=votes
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=100&country=Austria
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/genres?filters=%7B%22countrycode%22%3A%22Austria%22%2C%22searchQuery%22%3A%22%22%7D&limit=500
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=12&country=Austria&sort=votes
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=100&country=Austria
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://region1.google-analytics.com/g/collect?v=2&tid=G-DF0C084RHN&gtm=45je6241h1v9233296050za200zd9233296050&_p=1770380743820&gcd=13l3l3l2l1l1&npa=1&dma_cps=syphamo&dma=1&cid=249941634.1770322757&ul=de-de&sr=1920x1080&uaa=x86&uab=64&uafvl=Not(A%253ABrand%3B8.0.0.0%7CChromium%3B144.0.7559.133%7CGoogle%2520Chrome%3B144.0.7559.133&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAAQ&_s=1&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115938466~115938469~116185181~116185182~116988315&sid=1770380744&sct=2&seg=0&dl=https%3A%2F%2F0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev%2F%3Fstation%3D68a8c461bd66579311aadbd6%23%2Fradio-playing&dt=Radio%20Mega%20-%20TV&en=page_view&_ss=1&_ee=1&tfd=3493
+/favicon.ico:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://region1.google-analytics.com/g/collect?v=2&tid=G-DF0C084RHN&gtm=45je6241h1v9233296050za200zd9233296050&_p=1770380743820&gcd=13l3l3l2l1l1&npa=1&dma_cps=syphamo&dma=1&cid=249941634.1770322757&ul=de-de&sr=1920x1080&uaa=x86&uab=64&uafvl=Not(A%253ABrand%3B8.0.0.0%7CChromium%3B144.0.7559.133%7CGoogle%2520Chrome%3B144.0.7559.133&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AEAAAAQ&_s=2&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115938466~115938469~116185181~116185182~116988315&sid=1770380744&sct=2&seg=0&dl=https%3A%2F%2F0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev%2F%3Fstation%3D68a8c461bd66579311aadbd6%23%2Fradio-playing&dt=Radio%20Mega%20-%20TV&en=scroll&epn.percent_scrolled=90&_et=4&tfd=5494
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/68a8c483bd66579311ab300e/metadata
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/station/68a8c483bd66579311ab300e
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations/68a8c483bd66579311ab300e/metadata
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=100&sort=votes
+/%3Fstation=68a8c461bd66579311aadbd6%23/radio-playing?station=68a8c483bd66579311ab300e#/radio-playing:1 Mixed Content: The page at 'https://0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev/%3Fstation=68a8c461bd66579311aadbd6%23/radio-playing?station=68a8c483bd66579311ab300e#/radio-playing' was loaded over HTTPS, but requested an insecure audio file 'http://orf-live.ors-shoutcast.at/wie-q1a'. This content should also be served over HTTPS.
+/favicon.ico:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://themegaradio.com/api/stations?search=&limit=100&country=Austria
+fetch-polyfill-samsung.js:15 [Fetch] Request: https://region1.google-analytics.com/g/collect?v=2&tid=G-DF0C084RHN&gtm=45je6241h1v9233296050za200zd9233296050&_p=1770380743820&gcd=13l3l3l2l1l1&npa=1&dma_cps=syphamo&dma=1&cid=249941634.1770322757&ul=de-de&sr=1920x1080&uaa=x86&uab=64&uafvl=Not(A%253ABrand%3B8.0.0.0%7CChromium%3B144.0.7559.133%7CGoogle%2520Chrome%3B144.0.7559.133&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAAQ&tag_exp=103116026~103200004~104527907~104528501~104684208~104684211~115938466~115938469~116185181~116185182~116988315&sid=1770380744&sct=2&seg=0&dl=https%3A%2F%2F0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev%2F%3Fstation%3D68a8c461bd66579311aadbd6%23%2Fradio-playing&dt=Radio%20Mega%20-%20TV&_s=3&tfd=10496

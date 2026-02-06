@@ -17,6 +17,19 @@ interface GlobalPlayerContextType {
 
 const GlobalPlayerContext = createContext<GlobalPlayerContextType | undefined>(undefined);
 
+function getProxiedUrl(url: string): string {
+  if (!url) return url;
+  const isHttpStream = url.startsWith('http://');
+  const isPageHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
+  const isTizen = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('tizen');
+  const isWebOS = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('webos');
+
+  if (isHttpStream && isPageHttps && !isTizen && !isWebOS) {
+    return `/api/stream-proxy?url=${encodeURIComponent(url)}`;
+  }
+  return url;
+}
+
 export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const [currentStation, setCurrentStation] = useState<Station | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -79,7 +92,8 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
             retryCountRef.current++;
             
             if (audioPlayerRef.current && currentStationToRetry) {
-              const playUrl = currentStationToRetry.url_resolved || currentStationToRetry.url;
+              const rawUrl = currentStationToRetry.url_resolved || currentStationToRetry.url;
+              const playUrl = getProxiedUrl(rawUrl);
               audioPlayerRef.current.play(playUrl);
             }
           }, delay);
@@ -229,13 +243,12 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const playUrl = station.url_resolved || station.url;
+    const rawUrl = station.url_resolved || station.url;
+    const playUrl = getProxiedUrl(rawUrl);
     
-    // Update both state and ref for retry logic
     setCurrentStation(station);
     currentStationRef.current = station;
     
-    // Clear any pending retries when starting a new station
     if (retryTimeoutRef.current) {
       clearTimeout(retryTimeoutRef.current);
       retryTimeoutRef.current = null;
@@ -270,8 +283,8 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       if (typeof audioPlayerRef.current.resume === 'function') {
         audioPlayerRef.current.resume();
       } else {
-        // Fallback for older implementations
-        const playUrl = currentStation.url_resolved || currentStation.url;
+        const rawUrl = currentStation.url_resolved || currentStation.url;
+        const playUrl = getProxiedUrl(rawUrl);
         audioPlayerRef.current.play(playUrl);
       }
     }

@@ -286,7 +286,8 @@
             });
             
             this.audioElement.addEventListener('error', function(e) {
-                console.error('Web audio error:', e);
+                var mediaErr = self.audioElement.error;
+                console.error('Web audio error:', mediaErr ? 'code=' + mediaErr.code + ' msg=' + mediaErr.message : 'unknown', 'src=' + (self.currentUrl || '').substring(0, 80));
                 self.onError && self.onError(e);
             });
             
@@ -299,6 +300,7 @@
             });
             
             this.play = function(url) {
+                console.log('[TVAudioPlayer-Web] play:', url ? url.substring(0, 100) : 'null');
                 self.currentUrl = url;
                 self.audioElement.src = url;
                 self.audioElement.load();
@@ -306,7 +308,7 @@
                 var playPromise = self.audioElement.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(function(error) {
-                        console.error('Play error:', error);
+                        console.error('Play error:', error.name, error.message);
                         self.onError && self.onError(error);
                     });
                 }
