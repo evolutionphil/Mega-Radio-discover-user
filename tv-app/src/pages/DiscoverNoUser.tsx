@@ -36,7 +36,8 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
-  const STATIONS_PER_LOAD = 21; // Fetch 21 stations per batch (3 rows × 7 columns) for lazy loading
+  const isLoadingRef = useRef(false);
+  const STATIONS_PER_LOAD = 21;
 
   // WARM-START CACHING: Get cached data immediately on mount for instant display
   const cachedGenres = useMemo(() => {
@@ -511,16 +512,15 @@ export const DiscoverNoUser = (): JSX.Element => {
 
   // TRUE INFINITE SCROLL - Fetch next batch from API using offset
   const loadMoreCountryStations = async () => {
-    // Stop loading if we hit the max limit
+    // Synchronous ref guard prevents concurrent calls (React state is async)
+    if (isLoadingRef.current) return;
+    if (!hasMoreCountryStations) return;
     if (displayedStations.length >= MAX_STATIONS) {
       setHasMoreCountryStations(false);
       return;
     }
-    
-    if (isLoadingMore || !hasMoreCountryStations) {
-      return;
-    }
 
+    isLoadingRef.current = true;
     setIsLoadingMore(true);
     
     try {
@@ -539,25 +539,23 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       if (newStations.length > 0) {
         setDisplayedStations(prev => {
-          // Deduplicate by station ID to prevent duplicate keys
           const existingIds = new Set(prev.map(s => s._id));
           const uniqueNewStations = newStations.filter(s => !existingIds.has(s._id));
-          const combined = [...prev, ...uniqueNewStations];
-          // Limit to MAX_STATIONS
-          return combined.slice(0, MAX_STATIONS);
+          return [...prev, ...uniqueNewStations].slice(0, MAX_STATIONS);
         });
         setCurrentOffset(prev => prev + STATIONS_PER_LOAD);
         
-        // Stop if we hit the limit or got less stations
-        const hasMore = newStations.length >= STATIONS_PER_LOAD && 
-                       displayedStations.length + newStations.length < MAX_STATIONS;
-        setHasMoreCountryStations(hasMore);
+        if (newStations.length < STATIONS_PER_LOAD || 
+            displayedStations.length + newStations.length >= MAX_STATIONS) {
+          setHasMoreCountryStations(false);
+        }
       } else {
         setHasMoreCountryStations(false);
       }
     } catch (error) {
       setHasMoreCountryStations(false);
     } finally {
+      isLoadingRef.current = false;
       setIsLoadingMore(false);
     }
   };
@@ -614,15 +612,6 @@ export const DiscoverNoUser = (): JSX.Element => {
       if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
         loadMoreCountryStations();
       }
-    }
-  }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
-
-  // BACKUP: Also trigger on section enter - load more when user first enters country section
-  useEffect(() => {
-    // If user enters country section and we have fewer than 2 screens of data, load more
-    const inCountrySection = focusIndex >= countryStationsStart;
-    if (inCountrySection && displayedStations.length < 42 && hasMoreCountryStations && !isLoadingMore) {
-      loadMoreCountryStations();
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
