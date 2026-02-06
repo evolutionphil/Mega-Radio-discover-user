@@ -324,8 +324,8 @@ export const Genres = (): JSX.Element => {
       {/* Scrollable Content Area - Only this part scrolls */}
       <div
         ref={scrollContainerRef}
-        className="absolute left-[162px] w-[1758px] top-[200px] overflow-y-auto overflow-x-hidden scrollbar-hide"
-        style={{ height: '880px' }}
+        className="absolute left-[162px] w-[1758px] top-[200px] overflow-y-auto overflow-x-hidden scrollbar-hide outline-none border-none"
+        style={{ height: '880px', boxShadow: 'none' }}
       >
         <div className="relative pb-[100px]" style={{ minHeight: `${100 + (2 * ROW_HEIGHT) + 80 + (Math.ceil(allGenres.length / 4) * ROW_HEIGHT) + 200}px` }}>
           {/* Popular Genres Title */}
