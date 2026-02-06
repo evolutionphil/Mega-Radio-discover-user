@@ -300,7 +300,6 @@
             });
             
             this.play = function(url) {
-                console.log('[TVAudioPlayer-Web] play:', url ? url.substring(0, 100) : 'null');
                 self.currentUrl = url;
                 self.audioElement.src = url;
                 self.audioElement.load();

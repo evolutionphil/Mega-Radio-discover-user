@@ -44,27 +44,33 @@ export const Settings = (): JSX.Element => {
     switch(e.keyCode) {
       case key?.UP:
       case 38:
+        e.preventDefault();
         handleNavigation('UP');
         break;
       case key?.DOWN:
       case 40:
+        e.preventDefault();
         handleNavigation('DOWN');
         break;
       case key?.LEFT:
       case 37:
+        e.preventDefault();
         handleNavigation('LEFT');
         break;
       case key?.RIGHT:
       case 39:
+        e.preventDefault();
         handleNavigation('RIGHT');
         break;
       case key?.ENTER:
       case 13:
+        e.preventDefault();
         handleSelect();
         break;
       case key?.RETURN:
       case 461:
       case 10009:
+        e.preventDefault();
         handleBack();
         break;
     }

@@ -108,27 +108,33 @@ export const Favorites = (): JSX.Element => {
     switch(e.keyCode) {
       case key?.UP:
       case 38:
+        e.preventDefault();
         customHandleNavigation('UP');
         break;
       case key?.DOWN:
       case 40:
+        e.preventDefault();
         customHandleNavigation('DOWN');
         break;
       case key?.LEFT:
       case 37:
+        e.preventDefault();
         customHandleNavigation('LEFT');
         break;
       case key?.RIGHT:
       case 39:
+        e.preventDefault();
         customHandleNavigation('RIGHT');
         break;
       case key?.ENTER:
       case 13:
+        e.preventDefault();
         handleSelect();
         break;
       case key?.RETURN:
       case 461:
       case 10009:
+        e.preventDefault();
         handleBack();
         break;
     }

@@ -380,22 +380,27 @@ export const RadioPlaying = (): JSX.Element => {
     switch(e.keyCode) {
       case key?.UP:
       case 38:
+        e.preventDefault();
         customHandleNavigation('UP');
         break;
       case key?.DOWN:
       case 40:
+        e.preventDefault();
         customHandleNavigation('DOWN');
         break;
       case key?.LEFT:
       case 37:
+        e.preventDefault();
         customHandleNavigation('LEFT');
         break;
       case key?.RIGHT:
       case 39:
+        e.preventDefault();
         customHandleNavigation('RIGHT');
         break;
       case key?.ENTER:
       case 13:
+        e.preventDefault();
         handleSelect();
         break;
       case key?.PAGE_DOWN:
@@ -537,14 +542,12 @@ export const RadioPlaying = (): JSX.Element => {
   // Auto-play when station loads using global player
   useEffect(() => {
     if (station) {
-      // Check if this station is already playing - don't restart it!
-      if (currentStation?._id === station._id && isPlaying) {
+      if (currentStation?._id === station._id) {
         return;
       }
-      
       playStation(station);
     }
-  }, [station, currentStation, isPlaying]);
+  }, [station]);
 
   const handlePlayPause = () => {
     togglePlayPause();

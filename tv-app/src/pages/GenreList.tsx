@@ -8,6 +8,7 @@ import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { useNavigation } from "@/contexts/NavigationContext";
+import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { assetPath } from "@/lib/assetPath";
 
 export const GenreList = (): JSX.Element => {
@@ -15,6 +16,7 @@ export const GenreList = (): JSX.Element => {
   const { selectedCountryCode } = useCountry();
   const { t } = useLocalization();
   const { setNavigationState, popNavigationState } = useNavigation();
+  const { playStation } = useGlobalPlayer();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const pathParts = location.split('/');
@@ -275,8 +277,8 @@ export const GenreList = (): JSX.Element => {
         const stationIndex = index - stationsStart;
         const station = displayedStations[stationIndex];
         if (station) {
-          // Save navigation state before navigating
           setNavigationState(location, index);
+          playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
         }
       }
@@ -398,27 +400,33 @@ export const GenreList = (): JSX.Element => {
     switch(e.keyCode) {
       case key?.UP:
       case 38:
+        e.preventDefault();
         customHandleNavigation('UP');
         break;
       case key?.DOWN:
       case 40:
+        e.preventDefault();
         customHandleNavigation('DOWN');
         break;
       case key?.LEFT:
       case 37:
+        e.preventDefault();
         customHandleNavigation('LEFT');
         break;
       case key?.RIGHT:
       case 39:
+        e.preventDefault();
         customHandleNavigation('RIGHT');
         break;
       case key?.ENTER:
       case 13:
+        e.preventDefault();
         handleSelect();
         break;
       case key?.RETURN:
       case 461:
       case 10009:
+        e.preventDefault();
         handleBack();
         break;
     }
