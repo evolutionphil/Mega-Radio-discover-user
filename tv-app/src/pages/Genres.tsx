@@ -321,20 +321,20 @@ export const Genres = (): JSX.Element => {
       {/* Left Sidebar Menu - FIXED */}
       <Sidebar activePage="genres" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
-      {/* Scrollable Content Area - Only this part scrolls */}
+      {/* Scrollable Content Area - Only this part scrolls, edges hidden behind sidebar/header */}
       <div
         ref={scrollContainerRef}
-        className="absolute left-[162px] w-[1758px] top-[200px] overflow-y-auto overflow-x-hidden scrollbar-hide outline-none border-none"
-        style={{ height: '880px', boxShadow: 'none' }}
+        className="absolute left-0 w-[1920px] top-[140px] overflow-y-auto overflow-x-hidden scrollbar-hide outline-none border-none z-10"
+        style={{ height: '940px' }}
       >
-        <div className="relative pb-[100px]" style={{ minHeight: `${100 + (2 * ROW_HEIGHT) + 80 + (Math.ceil(allGenres.length / 4) * ROW_HEIGHT) + 200}px` }}>
+        <div className="relative pb-[100px] pt-[60px] pl-[237px] pr-[79px]" style={{ minHeight: `${60 + 100 + (2 * ROW_HEIGHT) + 80 + (Math.ceil(allGenres.length / 4) * ROW_HEIGHT) + 200}px` }}>
           {/* Popular Genres Title */}
-          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal not-italic text-[32px] text-white mb-[24px] ml-[75px]">
+          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal not-italic text-[32px] text-white mb-[24px] ml-[6px]">
             {t('popular_genres') || 'Popular Genres'}
           </p>
 
           {/* Popular Genres - Row 1 (4 cols) */}
-          <div className="flex gap-[19px] ml-[75px] mr-[75px] mb-[19px]">
+          <div className="flex gap-[21px] mb-[19px]">
             {popularGenres.slice(0, 4).map((genre, index) => {
               const focusIdx = 7 + index;
               return (
@@ -360,7 +360,7 @@ export const Genres = (): JSX.Element => {
           </div>
 
           {/* Popular Genres - Row 2 (4 cols) */}
-          <div className="flex gap-[19px] ml-[75px] mr-[75px] mb-[40px]">
+          <div className="flex gap-[21px] mb-[40px]">
             {popularGenres.slice(4, 8).map((genre, index) => {
               const focusIdx = 11 + index;
               return (
@@ -386,13 +386,13 @@ export const Genres = (): JSX.Element => {
           </div>
 
           {/* All Section Title */}
-          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal not-italic text-[32px] text-white mb-[24px] ml-[75px]">
+          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal not-italic text-[32px] text-white mb-[24px] ml-[6px]">
             All
           </p>
 
           {/* All Genres - Dynamic Grid (4 cols) using flexbox rows */}
           {Array.from({ length: Math.ceil(allGenres.length / 4) }).map((_, rowIdx) => (
-            <div key={rowIdx} className="flex gap-[19px] ml-[75px] mr-[75px] mb-[19px]">
+            <div key={rowIdx} className="flex gap-[21px] mb-[19px]">
               {allGenres.slice(rowIdx * 4, rowIdx * 4 + 4).map((genre, colIdx) => {
                 const focusIdx = 15 + (rowIdx * 4) + colIdx;
                 return (
