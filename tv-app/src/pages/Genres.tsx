@@ -20,8 +20,6 @@ export const Genres = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
-  // FETCH COUNTRY-FILTERED GENRES using getAllGenres with selected country (or global if GLOBAL selected)
-  // CACHE: 7 days
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres', selectedCountryCode],
     queryFn: async () => {
@@ -32,11 +30,10 @@ export const Genres = (): JSX.Element => {
       const result = await megaRadioApi.getAllGenres(selectedCountryCode);
       return result;
     },
-    staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
-    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    staleTime: 7 * 24 * 60 * 60 * 1000,
+    gcTime: 7 * 24 * 60 * 60 * 1000,
   });
 
-  // Extract genres from API response (NEVER hardcoded!)
   const allGenres = useMemo(() => {
     if (!genresData?.genres) {
       return [];
@@ -51,36 +48,30 @@ export const Genres = (): JSX.Element => {
 
   const popularGenres = allGenres.slice(0, 8);
 
-  // Calculate totalItems: 5 (sidebar) + 1 (equalizer) + 1 (country selector) + 8 (popular genres) + allGenres.length
   const totalItems = 5 + 1 + 1 + popularGenres.length + allGenres.length;
 
-  // Define sidebar routes (NO PROFILE - 5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
 
-  // Custom navigation logic for complex multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-4) - 5 items
     if (current >= 0 && current <= 4) {
       if (direction === 'DOWN') {
         newIndex = current < 4 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 6; // Jump to country selector
+        newIndex = 6;
       }
     }
-    // Country selector (6)
     else if (current === 6) {
       if (direction === 'DOWN') {
-        newIndex = 7; // Jump to first popular genre
+        newIndex = 7;
       } else if (direction === 'LEFT') {
-        newIndex = 0; // Jump to first sidebar item
+        newIndex = 0;
       }
     }
-    // Popular genres section (7-14) - 4 cols × 2 rows
     else if (current >= 7 && current <= 14) {
       const relIndex = current - 7;
       const row = Math.floor(relIndex / 4);
@@ -90,7 +81,7 @@ export const Genres = (): JSX.Element => {
         if (col > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 0; // Jump to sidebar
+          newIndex = 0;
         }
       } else if (direction === 'RIGHT') {
         if (col < 3 && current < 14) {
@@ -100,19 +91,16 @@ export const Genres = (): JSX.Element => {
         if (row > 0) {
           newIndex = current - 4;
         } else {
-          newIndex = 6; // Jump to country selector
+          newIndex = 6;
         }
       } else if (direction === 'DOWN') {
         if (row < 1 && current + 4 <= 14) {
           newIndex = current + 4;
         } else {
-          // Jump to All genres section below (same 4-col grid)
-          // Same column alignment
           newIndex = 15 + col;
         }
       }
     }
-    // All genres section (15+) - 4 cols grid (SAME as popular genres)
     else if (current >= 15) {
       const relIndex = current - 15;
       const row = Math.floor(relIndex / 4);
@@ -120,78 +108,61 @@ export const Genres = (): JSX.Element => {
       const totalAllGenres = allGenres.length;
 
       if (direction === 'LEFT') {
-        // Only move left if not in first column
         if (col > 0) {
           newIndex = current - 1;
         } else {
-          // First column - jump to sidebar
           newIndex = 0;
         }
       } else if (direction === 'RIGHT') {
-        // Only move right if not in last column AND next genre exists
         if (col < 3 && (relIndex + 1) < totalAllGenres) {
           newIndex = current + 1;
         }
-        // Otherwise stay at current position
       } else if (direction === 'UP') {
-        // Only move up if not in first row
         if (row > 0) {
           const targetIndex = current - 4;
-          // Make sure target genre exists
           if (targetIndex >= 15) {
             newIndex = targetIndex;
           }
         } else {
-          // First row - jump to popular genres above (same 4-col grid alignment)
-          newIndex = 11 + col; // Row 2 of popular genres, same column
+          newIndex = 11 + col;
         }
       } else if (direction === 'DOWN') {
-        // Calculate the target position in the next row (same column)
         const targetRelIndex = relIndex + 4;
         const targetIndex = 15 + targetRelIndex;
         
-        // Only move down if the target genre actually exists
         if (targetRelIndex < totalAllGenres) {
           newIndex = targetIndex;
         }
-        // Target doesn't exist - stay at current position
       }
     }
 
-    // Clamp to valid range
     newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
     setFocusIndex(newIndex);
   };
 
-  // When navigating from another page, jump to first genre instead of sidebar
   const [hasNavigatedToGenre, setHasNavigatedToGenre] = useState(false);
   
   useEffect(() => {
-    // On first mount, jump to first popular genre
     if (!hasNavigatedToGenre && popularGenres.length > 0) {
-      setFocusIndex(7); // First popular genre (index 7)
+      setFocusIndex(7);
       setHasNavigatedToGenre(true);
     }
   }, [popularGenres.length, hasNavigatedToGenre]);
 
-  // Focus management with custom navigation
   const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 7, // Start on first popular genre
+    initialIndex: 7,
     onSelect: (index) => {
-      // Sidebar navigation (0-4) - 5 items
       if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
         if (route !== '#') {
           setLocation(route);
         }
       }
-      // Country selector (6)
       else if (index === 6) {
         setIsCountrySelectorOpen(true);
       }
-      // Popular genres (7-14)
       else if (index >= 7 && index <= 14) {
         const genreIndex = index - 7;
         const genre = popularGenres[genreIndex];
@@ -200,7 +171,6 @@ export const Genres = (): JSX.Element => {
           setLocation(newLocation);
         }
       }
-      // All genres (15+)
       else if (index >= 15) {
         const genreIndex = index - 15;
         const genre = allGenres[genreIndex];
@@ -215,9 +185,7 @@ export const Genres = (): JSX.Element => {
     }
   });
 
-  // Register page-specific key handler with custom navigation
   usePageKeyHandler('/genres', (e) => {
-    // Ignore all key events when country selector modal is open
     if (isCountrySelectorOpen) {
       return;
     }
@@ -248,40 +216,54 @@ export const Genres = (): JSX.Element => {
     }
   });
 
-  // Auto-scroll to show focused genre
   useEffect(() => {
     if (!scrollContainerRef.current) return;
     
     const scrollContainer = scrollContainerRef.current;
-    let scrollTarget = 0;
+    
+    if (focusIndex < 7) return;
 
-    // Determine scroll position based on focused section
-    if (focusIndex >= 0 && focusIndex <= 6) {
-      // Sidebar or country selector - stay at top
-      scrollTarget = 0;
-    } else if (focusIndex >= 7 && focusIndex <= 10) {
-      // Popular genres row 1 - stay at top to see title
-      scrollTarget = 0;
-    } else if (focusIndex >= 11 && focusIndex <= 14) {
-      // Popular genres row 2 - scroll slightly to show both rows
-      scrollTarget = 150;
-    } else if (focusIndex >= 15) {
-      // All genres section - scroll more to show the grid
-      const genreIndex = focusIndex - 15;
-      const row = Math.floor(genreIndex / 4);
-      // Base offset (400px for popular genres) + row height (170px per row)
-      scrollTarget = 400 + (row * 170);
+    const focusedEl = scrollContainer.querySelector(`[data-focus-idx="${focusIndex}"]`) as HTMLElement;
+    if (!focusedEl) return;
+
+    const TOP_PADDING = 20;
+    const BOTTOM_PADDING = 120;
+
+    const viewTop = scrollContainer.scrollTop;
+    const viewBottom = viewTop + scrollContainer.clientHeight - BOTTOM_PADDING;
+
+    let elementTop = 0;
+    let el: HTMLElement | null = focusedEl;
+    while (el && el !== scrollContainer) {
+      elementTop += el.offsetTop;
+      el = el.offsetParent as HTMLElement;
     }
+    const elementBottom = elementTop + focusedEl.offsetHeight;
 
-    scrollContainer.scrollTo({
-      top: scrollTarget,
-      behavior: 'smooth'
-    });
+    const isAboveView = elementTop < viewTop + TOP_PADDING;
+    const isBelowView = elementBottom > viewBottom;
+
+    if (isAboveView) {
+      scrollContainer.scrollTo({
+        top: elementTop - TOP_PADDING,
+        behavior: 'smooth'
+      });
+    } else if (isBelowView) {
+      const newScrollTop = elementBottom - scrollContainer.clientHeight + BOTTOM_PADDING;
+      scrollContainer.scrollTo({
+        top: newScrollTop,
+        behavior: 'smooth'
+      });
+    }
   }, [focusIndex]);
 
+  const CARD_HEIGHT = 139;
+  const CARD_GAP = 19;
+  const ROW_HEIGHT = CARD_HEIGHT + CARD_GAP;
+
   return (
-    <div ref={scrollContainerRef} className="absolute inset-0 w-[1920px] h-[1080px] overflow-y-auto overflow-x-hidden" data-testid="page-genres">
-      {/* Background Image */}
+    <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-genres">
+      {/* Background Image - FIXED */}
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
         <img
           alt=""
@@ -290,10 +272,10 @@ export const Genres = (): JSX.Element => {
         />
       </div>
 
-      {/* Gradient Overlay */}
+      {/* Gradient Overlay - FIXED */}
       <div className="absolute bg-gradient-to-b from-[18.704%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[25.787%] top-0 w-[1920px]" />
 
-      {/* Logo */}
+      {/* Logo - FIXED */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
         <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
@@ -307,7 +289,7 @@ export const Genres = (): JSX.Element => {
         </div>
       </div>
 
-      {/* Equalizer Icon - Matching Global Player Animation */}
+      {/* Equalizer Icon - FIXED */}
       <div className={`absolute left-[1547px] overflow-clip rounded-[30px] w-[51px] h-[51px] top-[67px] z-50 transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
         <div className="absolute h-[35.526px] left-[8.625px] overflow-clip top-[7.737px] w-[33.75px]">
           <div className={`absolute bg-white left-0 rounded-[10px] top-0 w-[8.882px] ${isPlaying ? 'animate-equalizer-global-1' : 'h-[35.526px]'}`} style={{ height: isPlaying ? undefined : '35.526px' }} />
@@ -316,7 +298,7 @@ export const Genres = (): JSX.Element => {
         </div>
       </div>
 
-      {/* Country Selector */}
+      {/* Country Selector Trigger - FIXED */}
       <CountryTrigger
         selectedCountry={selectedCountry}
         selectedCountryCode={selectedCountryCode}
@@ -336,116 +318,113 @@ export const Genres = (): JSX.Element => {
         }}
       />
 
-      {/* Left Sidebar Menu */}
+      {/* Left Sidebar Menu - FIXED */}
       <Sidebar activePage="genres" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
-      {/* Popular Genres Title */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-[242px]">
-        {t('popular_genres') || 'Popular Genres'}
-      </p>
+      {/* Scrollable Content Area - Only this part scrolls */}
+      <div
+        ref={scrollContainerRef}
+        className="absolute left-[162px] w-[1758px] top-[200px] overflow-y-auto overflow-x-hidden scrollbar-hide"
+        style={{ height: '880px' }}
+      >
+        <div className="relative pb-[100px]" style={{ minHeight: `${100 + (2 * ROW_HEIGHT) + 80 + (Math.ceil(allGenres.length / 4) * ROW_HEIGHT) + 200}px` }}>
+          {/* Popular Genres Title */}
+          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal not-italic text-[32px] text-white mb-[24px] ml-[75px]">
+            {t('popular_genres') || 'Popular Genres'}
+          </p>
 
-      {/* Popular Genres - Row 1 (4 cols) */}
-      {popularGenres.slice(0, 4).map((genre, index) => {
-        const positions = [
-          { left: 237, width: 386 },
-          { left: 644, width: 387 },
-          { left: 1052, width: 386 },
-          { left: 1459, width: 382 },
-        ];
-        const focusIdx = 7 + index;
-        return (
-          <Link key={genre.slug || index} href={`/genre-list/${encodeURIComponent(genre.slug)}`}>
-            <div 
-              className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex flex-col items-start justify-center h-[139px] px-[40px] py-[28px] rounded-[20px] top-[309px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
-              data-testid={`card-genre-${genre.slug}`}
-              style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
-              onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
-            >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[24px] text-left text-white truncate w-full">
-                {genre.name}
-              </p>
-              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
-                {genre.stationCount} Stations
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
+          {/* Popular Genres - Row 1 (4 cols) */}
+          <div className="flex gap-[19px] ml-[75px] mr-[75px] mb-[19px]">
+            {popularGenres.slice(0, 4).map((genre, index) => {
+              const focusIdx = 7 + index;
+              return (
+                <Link key={`pop1-${genre.slug || index}`} href={`/genre-list/${encodeURIComponent(genre.slug)}`} className="flex-1">
+                  <div
+                    data-focus-idx={focusIdx}
+                    className={`bg-[rgba(255,255,255,0.14)] box-border flex flex-col items-start justify-center h-[${CARD_HEIGHT}px] px-[40px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                    data-testid={`card-genre-${genre.slug}`}
+                    style={{ height: `${CARD_HEIGHT}px` }}
+                    onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
+                  >
+                    <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[24px] text-left text-white truncate w-full">
+                      {genre.name}
+                    </p>
+                    <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
+                      {genre.stationCount} Stations
+                    </p>
+                    <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Popular Genres - Row 2 (4 cols) */}
+          <div className="flex gap-[19px] ml-[75px] mr-[75px] mb-[40px]">
+            {popularGenres.slice(4, 8).map((genre, index) => {
+              const focusIdx = 11 + index;
+              return (
+                <Link key={`pop2-${genre.slug || index}`} href={`/genre-list/${encodeURIComponent(genre.slug)}`} className="flex-1">
+                  <div
+                    data-focus-idx={focusIdx}
+                    className={`bg-[rgba(255,255,255,0.14)] box-border flex flex-col items-start justify-center px-[40px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                    data-testid={`card-genre-${genre.slug}`}
+                    style={{ height: `${CARD_HEIGHT}px` }}
+                    onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
+                  >
+                    <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[24px] text-left text-white truncate w-full">
+                      {genre.name}
+                    </p>
+                    <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
+                      {genre.stationCount} Stations
+                    </p>
+                    <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* All Section Title */}
+          <p className="font-['Ubuntu',Helvetica] font-bold leading-normal not-italic text-[32px] text-white mb-[24px] ml-[75px]">
+            All
+          </p>
+
+          {/* All Genres - Dynamic Grid (4 cols) using flexbox rows */}
+          {Array.from({ length: Math.ceil(allGenres.length / 4) }).map((_, rowIdx) => (
+            <div key={rowIdx} className="flex gap-[19px] ml-[75px] mr-[75px] mb-[19px]">
+              {allGenres.slice(rowIdx * 4, rowIdx * 4 + 4).map((genre, colIdx) => {
+                const focusIdx = 15 + (rowIdx * 4) + colIdx;
+                return (
+                  <Link key={`all-${rowIdx}-${genre.slug || colIdx}`} href={`/genre-list/${encodeURIComponent(genre.slug)}`} className="flex-1">
+                    <div
+                      data-focus-idx={focusIdx}
+                      className={`bg-[rgba(255,255,255,0.14)] box-border flex flex-col items-start justify-center px-[30px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors relative ${getFocusClasses(isFocused(focusIdx))}`}
+                      data-testid={`card-genre-all-${genre.slug}`}
+                      style={{ height: `${CARD_HEIGHT}px` }}
+                      onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
+                    >
+                      <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[24px] text-left text-white truncate w-full">
+                        {genre.name}
+                      </p>
+                      <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
+                        {genre.stationCount} Stations
+                      </p>
+                      <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
+                    </div>
+                  </Link>
+                );
+              })}
+              {/* Fill empty cells in last row to maintain consistent widths */}
+              {rowIdx === Math.ceil(allGenres.length / 4) - 1 && allGenres.length % 4 !== 0 &&
+                Array.from({ length: 4 - (allGenres.length % 4) }).map((_, i) => (
+                  <div key={`empty-${i}`} className="flex-1" />
+                ))
+              }
             </div>
-          </Link>
-        );
-      })}
-
-      {/* Popular Genres - Row 2 (4 cols) */}
-      {popularGenres.slice(4, 8).map((genre, index) => {
-        const positions = [
-          { left: 237, width: 386 },
-          { left: 644, width: 387 },
-          { left: 1052, width: 386 },
-          { left: 1459, width: 382 },
-        ];
-        const focusIdx = 11 + index;
-        return (
-          <Link key={genre.slug || index} href={`/genre-list/${encodeURIComponent(genre.slug)}`}>
-            <div 
-              className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex flex-col items-start justify-center h-[139px] px-[40px] py-[28px] rounded-[20px] top-[467px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
-              data-testid={`card-genre-${genre.slug}`}
-              style={{ left: `${positions[index].left}px`, width: `${positions[index].width}px` }}
-              onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
-            >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[24px] text-left text-white truncate w-full">
-                {genre.name}
-              </p>
-              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
-                {genre.stationCount} Stations
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
-            </div>
-          </Link>
-        );
-      })}
-
-      {/* All Section Title */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[243px] not-italic text-[32px] text-white top-[670px]">
-        All
-      </p>
-
-      {/* All Genres - Dynamic Grid (4 cols) */}
-      {allGenres.map((genre, index) => {
-        const positions = [
-          { left: 237, width: 386 },
-          { left: 644, width: 387 },
-          { left: 1052, width: 386 },
-          { left: 1459, width: 382 },
-        ];
-        const row = Math.floor(index / 4);
-        const col = index % 4;
-        const topPosition = 737 + (row * 158);
-        const focusIdx = 15 + index;
-        
-        return (
-          <Link key={genre.slug || index} href={`/genre-list/${encodeURIComponent(genre.slug)}`}>
-            <div 
-              className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex flex-col items-start justify-center h-[139px] px-[30px] py-[28px] rounded-[20px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
-              data-testid={`card-genre-all-${genre.slug}`}
-              style={{ 
-                left: `${positions[col].left}px`, 
-                width: `${positions[col].width}px`,
-                top: `${topPosition}px`
-              }}
-              onClick={() => setLocation(`/genre-list/${encodeURIComponent(genre.slug)}`)}
-            >
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[24px] text-left text-white truncate w-full">
-                {genre.name}
-              </p>
-              <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
-                {genre.stationCount} Stations
-              </p>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
-            </div>
-          </Link>
-        );
-      })}
-
-      {/* Spacer for scrolling */}
-      <div style={{ height: `${Math.max(1080, 737 + Math.ceil(allGenres.length / 4) * 158 + 200)}px` }} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
