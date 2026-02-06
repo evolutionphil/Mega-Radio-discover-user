@@ -37,7 +37,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
   const isLoadingRef = useRef(false);
-  const STATIONS_PER_LOAD = 21;
+  const STATIONS_PER_LOAD = 100;
 
   // WARM-START CACHING: Get cached data immediately on mount for instant display
   const cachedGenres = useMemo(() => {
@@ -52,7 +52,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
   const cachedInitialStations = useMemo(() => {
     const cached = cacheService.getInitialStations(selectedCountryCode);
-    return cached.data ? { stations: cached.data } : undefined;
+    return cached.data && cached.data.length >= STATIONS_PER_LOAD ? { stations: cached.data } : undefined;
   }, [selectedCountryCode]);
 
   // Fetch ALL genres from API filtered by country (or global if GLOBAL selected)
@@ -85,16 +85,16 @@ export const DiscoverNoUser = (): JSX.Element => {
     initialData: cachedPopularStations,
   });
 
-  // Fetch initial 21 stations with offset=0 for TRUE infinite scroll (or global if GLOBAL selected)
-  // Only loads 3 rows initially, then lazy loads more as user scrolls
+  // Fetch initial 100 stations for TRUE infinite scroll (or global if GLOBAL selected)
+  // Loads enough stations to fill the viewport, then lazy loads more as user scrolls
   // CACHE: 7 days - Uses localStorage cache for instant display
   const { data: initialStationsData, isLoading: isInitialLoading } = useQuery({
-    queryKey: ['/api/stations/country/initial', selectedCountryCode],
+    queryKey: ['/api/stations/country/initial', selectedCountryCode, STATIONS_PER_LOAD],
     queryFn: () => {
       if (selectedCountryCode === 'GLOBAL') {
-        return megaRadioApi.getWorkingStations({ limit: 21, offset: 0 });
+        return megaRadioApi.getWorkingStations({ limit: STATIONS_PER_LOAD });
       }
-      return megaRadioApi.getWorkingStations({ limit: 21, country: selectedCountryCode, offset: 0 });
+      return megaRadioApi.getWorkingStations({ limit: STATIONS_PER_LOAD, country: selectedCountryCode });
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
     gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -138,8 +138,8 @@ export const DiscoverNoUser = (): JSX.Element => {
       },
       async () => {
         const result = selectedCountryCode === 'GLOBAL'
-          ? await megaRadioApi.getWorkingStations({ limit: 21, offset: 0 })
-          : await megaRadioApi.getWorkingStations({ limit: 21, country: selectedCountryCode, offset: 0 });
+          ? await megaRadioApi.getWorkingStations({ limit: STATIONS_PER_LOAD, offset: 0 })
+          : await megaRadioApi.getWorkingStations({ limit: STATIONS_PER_LOAD, country: selectedCountryCode, offset: 0 });
         return result.stations || [];
       }
     );
@@ -459,19 +459,24 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   });
 
-  // Initialize country stations when initial data is loaded or country changes
+  // Reset loading state when country changes to prevent stale state
+  useEffect(() => {
+    isLoadingRef.current = false;
+    setIsLoadingMore(false);
+    setHasMoreCountryStations(true);
+    setCurrentOffset(0);
+    setDisplayedStations([]);
+  }, [selectedCountryCode]);
+
+  // Initialize country stations when initial data is loaded
   useEffect(() => {
     if (initialStationsData?.stations) {
       const stations = initialStationsData.stations;
       setDisplayedStations(stations);
-      // Use actual stations length as offset for next fetch
       setCurrentOffset(stations.length);
-      
-      // If we got a full batch, there's more to load
-      const hasMore = stations.length >= STATIONS_PER_LOAD;
-      setHasMoreCountryStations(hasMore);
+      setHasMoreCountryStations(stations.length > 0);
     }
-  }, [initialStationsData, selectedCountryCode]);
+  }, [initialStationsData]);
 
   // Restore focus when returning from RadioPlaying
   useEffect(() => {
@@ -599,16 +604,28 @@ export const DiscoverNoUser = (): JSX.Element => {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [isLoadingMore, hasMoreCountryStations, currentOffset, displayedStations.length]);
 
-  // TRUE INFINITE SCROLL trigger - Focus-based (when within last 14 items / 2 rows)
-  // Load MORE stations BEFORE user reaches the end for seamless experience
+  // VIEWPORT FILL: After each batch loads, check if viewport still needs more content
+  // This ensures continuous loading until there's enough to scroll, preventing dead zones
   useEffect(() => {
-    // Only trigger for country stations section
+    if (!hasMoreCountryStations || isLoadingMore || displayedStations.length === 0) return;
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const timer = setTimeout(() => {
+      const { scrollHeight, clientHeight, scrollTop } = scrollContainer;
+      if (scrollHeight - scrollTop - clientHeight < 800) {
+        loadMoreCountryStations();
+      }
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [displayedStations.length, hasMoreCountryStations, isLoadingMore]);
+
+  // Focus-based trigger: load more when navigating near end of station list
+  useEffect(() => {
     if (focusIndex >= countryStationsStart && displayedStations.length > 0) {
       const stationIndex = focusIndex - countryStationsStart;
       const distanceFromEnd = displayedStations.length - stationIndex;
       
-      // If user is within last 14 items (2 rows × 7 columns), load more
-      // This gives buffer before they reach the end while keeping initial load small
       if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
         loadMoreCountryStations();
       }
