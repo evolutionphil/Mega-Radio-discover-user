@@ -33,6 +33,9 @@ export function NetworkStatusProvider({ children }: { children: ReactNode }) {
           } else if (value === NetworkState.GATEWAY_CONNECTED) {
             setIsConnected(true);
             setIsNetworkModalOpen(false);
+            if ((window as any).globalPlayer?.resume) {
+              (window as any).globalPlayer.resume();
+            }
           }
         };
         
@@ -64,6 +67,9 @@ export function NetworkStatusProvider({ children }: { children: ReactNode }) {
       const handleOnline = () => {
         setIsConnected(true);
         setIsNetworkModalOpen(false);
+        if ((window as any).globalPlayer?.resume) {
+          (window as any).globalPlayer.resume();
+        }
       };
       
       const handleOffline = () => {

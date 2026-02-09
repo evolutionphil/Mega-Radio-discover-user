@@ -501,6 +501,10 @@ export const DiscoverNoUser = (): JSX.Element => {
         return;
       }
 
+      if (isPlaying) {
+        return;
+      }
+
       const playMode = autoPlayService.getPlayAtStartMode();
 
       if (playMode === "none") {

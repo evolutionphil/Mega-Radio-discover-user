@@ -18,7 +18,8 @@ export function AppLifecycleProvider({ children }: { children: ReactNode }) {
     const handleVisibilityChange = () => {
       // IMPORTANT: Only use visibility change on actual Samsung TV
       // In browser/emulator, hash changes cause false visibility changes
-      if (!hasTizen) {
+      const isWebOS = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('webos');
+      if (!hasTizen && !isWebOS) {
         return;
       }
       

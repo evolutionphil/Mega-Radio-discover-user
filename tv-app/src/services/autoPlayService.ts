@@ -34,7 +34,7 @@ export const autoPlayService = {
    */
   getFavoriteStations(): Station[] {
     try {
-      const favoritesJson = localStorage.getItem("favorites");
+      const favoritesJson = localStorage.getItem("mega_radio_favorites");
       if (favoritesJson) {
         return JSON.parse(favoritesJson) as Station[];
       }

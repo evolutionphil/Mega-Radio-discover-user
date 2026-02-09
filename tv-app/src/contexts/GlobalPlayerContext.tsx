@@ -246,6 +246,13 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     const rawUrl = station.url_resolved || station.url;
     const playUrl = getProxiedUrl(rawUrl);
     
+    try {
+      if (audioPlayerRef.current && typeof audioPlayerRef.current.stop === 'function') {
+        audioPlayerRef.current.stop();
+      }
+    } catch (err) {
+    }
+    
     setCurrentStation(station);
     currentStationRef.current = station;
     
@@ -255,7 +262,11 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     }
     retryCountRef.current = 0;
     
-    audioPlayerRef.current.play(playUrl);
+    setTimeout(() => {
+      if (audioPlayerRef.current && currentStationRef.current?._id === station._id) {
+        audioPlayerRef.current.play(playUrl);
+      }
+    }, 50);
 
     // Track station play event in Google Analytics
     trackStationPlay(station.name, station.country || '', station.tags?.[0] || '');
