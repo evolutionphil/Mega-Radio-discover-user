@@ -37,6 +37,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
   const isLoadingRef = useRef(false);
+  const loadMoreRef = useRef<(silent?: boolean) => void>(() => {});
   const STATIONS_PER_LOAD = 100;
 
   // WARM-START CACHING: Get cached data immediately on mount for instant display
@@ -461,6 +462,9 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Reset loading state when country changes to prevent stale state
   useEffect(() => {
     isLoadingRef.current = false;
+    currentOffsetRef.current = 0;
+    hasMoreRef.current = true;
+    displayedCountRef.current = 0;
     setIsLoadingMore(false);
     setHasMoreCountryStations(true);
     setCurrentOffset(0);
@@ -516,11 +520,20 @@ export const DiscoverNoUser = (): JSX.Element => {
     return () => clearTimeout(timer);
   }, []);
 
-  // TRUE INFINITE SCROLL - Fetch next batch from API using offset
+  const currentOffsetRef = useRef(0);
+  const hasMoreRef = useRef(true);
+  const displayedCountRef = useRef(0);
+  const countryCodeRef = useRef(selectedCountryCode);
+
+  useEffect(() => { currentOffsetRef.current = currentOffset; }, [currentOffset]);
+  useEffect(() => { hasMoreRef.current = hasMoreCountryStations; }, [hasMoreCountryStations]);
+  useEffect(() => { displayedCountRef.current = displayedStations.length; }, [displayedStations.length]);
+  useEffect(() => { countryCodeRef.current = selectedCountryCode; }, [selectedCountryCode]);
+
   const loadMoreCountryStations = async (silent = false) => {
     if (isLoadingRef.current) return;
-    if (!hasMoreCountryStations) return;
-    if (displayedStations.length >= MAX_STATIONS) {
+    if (!hasMoreRef.current) return;
+    if (displayedCountRef.current >= MAX_STATIONS) {
       setHasMoreCountryStations(false);
       return;
     }
@@ -529,15 +542,17 @@ export const DiscoverNoUser = (): JSX.Element => {
     if (!silent) setIsLoadingMore(true);
     
     try {
-      const result = selectedCountryCode === 'GLOBAL'
+      const offsetToUse = currentOffsetRef.current;
+      const countryToUse = countryCodeRef.current;
+      const result = countryToUse === 'GLOBAL'
         ? await megaRadioApi.getWorkingStations({ 
             limit: STATIONS_PER_LOAD, 
-            offset: currentOffset 
+            offset: offsetToUse 
           })
         : await megaRadioApi.getWorkingStations({ 
             limit: STATIONS_PER_LOAD, 
-            country: selectedCountryCode, 
-            offset: currentOffset 
+            country: countryToUse, 
+            offset: offsetToUse 
           });
       
       const newStations = result.stations || [];
@@ -546,12 +561,18 @@ export const DiscoverNoUser = (): JSX.Element => {
         setDisplayedStations(prev => {
           const existingIds = new Set(prev.map(s => s._id));
           const uniqueNewStations = newStations.filter(s => !existingIds.has(s._id));
-          return [...prev, ...uniqueNewStations].slice(0, MAX_STATIONS);
+          const combined = [...prev, ...uniqueNewStations].slice(0, MAX_STATIONS);
+          displayedCountRef.current = combined.length;
+          return combined;
         });
-        setCurrentOffset(prev => prev + STATIONS_PER_LOAD);
+        setCurrentOffset(prev => {
+          const next = prev + STATIONS_PER_LOAD;
+          currentOffsetRef.current = next;
+          return next;
+        });
         
         if (newStations.length < STATIONS_PER_LOAD || 
-            displayedStations.length + newStations.length >= MAX_STATIONS) {
+            displayedCountRef.current + newStations.length >= MAX_STATIONS) {
           setHasMoreCountryStations(false);
         }
       } else {
@@ -564,6 +585,8 @@ export const DiscoverNoUser = (): JSX.Element => {
       setIsLoadingMore(false);
     }
   };
+
+  loadMoreRef.current = loadMoreCountryStations;
 
   // Auto-hide header on scroll down + TRUE INFINITE SCROLL trigger (scroll-based)
   // THROTTLED: Only process scroll events every 100ms for performance
@@ -594,14 +617,14 @@ export const DiscoverNoUser = (): JSX.Element => {
       const scrollTop = scrollContainer.scrollTop;
       const clientHeight = scrollContainer.clientHeight;
       
-      if (scrollHeight - scrollTop - clientHeight < 800 && hasMoreCountryStations && !isLoadingRef.current) {
-        loadMoreCountryStations(true);
+      if (scrollHeight - scrollTop - clientHeight < 800 && !isLoadingRef.current) {
+        loadMoreRef.current(true);
       }
     };
 
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, [hasMoreCountryStations]);
+  }, []);
 
   // VIEWPORT FILL: After each batch loads, check if viewport still needs more content
   // This ensures continuous loading until there's enough to scroll, preventing dead zones
@@ -613,7 +636,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     const timer = setTimeout(() => {
       const { scrollHeight, clientHeight, scrollTop } = scrollContainer;
       if (scrollHeight - scrollTop - clientHeight < 800 && !isLoadingRef.current) {
-        loadMoreCountryStations(true);
+        loadMoreRef.current(true);
       }
     }, 200);
     return () => clearTimeout(timer);
@@ -625,11 +648,11 @@ export const DiscoverNoUser = (): JSX.Element => {
       const stationIndex = focusIndex - countryStationsStart;
       const distanceFromEnd = displayedStations.length - stationIndex;
       
-      if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingRef.current) {
-        loadMoreCountryStations(true);
+      if (distanceFromEnd <= 14 && !isLoadingRef.current) {
+        loadMoreRef.current(true);
       }
     }
-  }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
+  }, [focusIndex, countryStationsStart, displayedStations.length]);
 
   // Auto-scroll focused element into view - uses instant scroll for TV remote reliability
   const pendingScrollRef = useRef<number | null>(null);
