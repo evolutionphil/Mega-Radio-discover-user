@@ -163,7 +163,7 @@ export const Genres = (): JSX.Element => {
       if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
         if (route !== '#') {
-          setLocation(route);
+          window.location.hash = '#' + route;
         }
       }
       else if (index === 6) {

@@ -316,7 +316,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       // Sidebar navigation (0-4) - 5 items
       if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
-        setLocation(route);
+        window.location.hash = '#' + route;
       }
       // Country selector (5)
       else if (index === 5) {

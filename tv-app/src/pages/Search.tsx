@@ -210,7 +210,7 @@ export const Search = (): JSX.Element => {
       if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
         if (route !== '#') {
-          setLocation(route);
+          window.location.hash = '#' + route;
         }
       }
       // Search input (5) - LGTV pattern: focus input and set cursor to end

@@ -30,7 +30,7 @@ export const Favorites = (): JSX.Element => {
     onSelect: (index) => {
       // Sidebar navigation (0-4)
       if (index >= 0 && index <= 4) {
-        setLocation(sidebarRoutes[index]);
+        window.location.hash = '#' + sidebarRoutes[index];
       }
       // Favorites section
       else if (index >= favoritesStart) {

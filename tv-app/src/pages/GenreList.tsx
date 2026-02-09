@@ -270,7 +270,7 @@ export const GenreList = (): JSX.Element => {
       // Sidebar (0-4)
       if (index >= 0 && index <= 4) {
         const route = sidebarRoutes[index];
-        setLocation(route);
+        window.location.hash = '#' + route;
       }
       // Stations (5+)
       else if (index >= stationsStart) {

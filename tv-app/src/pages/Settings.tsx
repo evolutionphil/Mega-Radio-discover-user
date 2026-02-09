@@ -27,7 +27,7 @@ export const Settings = (): JSX.Element => {
       if (index < 5) {
         // Sidebar navigation (0-4)
         const route = sidebarRoutes[index];
-        setLocation(route);
+        window.location.hash = '#' + route;
       } else {
         // Settings option
         const optionIndex = index - 5;
