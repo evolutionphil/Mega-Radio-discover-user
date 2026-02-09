@@ -469,12 +469,14 @@ export const DiscoverNoUser = (): JSX.Element => {
   }, [selectedCountryCode]);
 
   // Initialize country stations when initial data is loaded
+  const initialLoadDone = useRef(false);
   useEffect(() => {
     if (initialStationsData?.stations) {
       const stations = initialStationsData.stations;
       setDisplayedStations(stations);
       setCurrentOffset(stations.length);
       setHasMoreCountryStations(stations.length > 0);
+      initialLoadDone.current = true;
     }
   }, [initialStationsData]);
 
@@ -516,8 +518,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   }, []);
 
   // TRUE INFINITE SCROLL - Fetch next batch from API using offset
-  const loadMoreCountryStations = async () => {
-    // Synchronous ref guard prevents concurrent calls (React state is async)
+  const loadMoreCountryStations = async (silent = false) => {
     if (isLoadingRef.current) return;
     if (!hasMoreCountryStations) return;
     if (displayedStations.length >= MAX_STATIONS) {
@@ -526,7 +527,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
 
     isLoadingRef.current = true;
-    setIsLoadingMore(true);
+    if (!silent) setIsLoadingMore(true);
     
     try {
       const result = selectedCountryCode === 'GLOBAL'
@@ -594,9 +595,8 @@ export const DiscoverNoUser = (): JSX.Element => {
       const scrollTop = scrollContainer.scrollTop;
       const clientHeight = scrollContainer.clientHeight;
       
-      // Trigger load when within 800px of bottom
-      if (scrollHeight - scrollTop - clientHeight < 800 && hasMoreCountryStations && !isLoadingMore) {
-        loadMoreCountryStations();
+      if (scrollHeight - scrollTop - clientHeight < 800 && hasMoreCountryStations && !isLoadingRef.current) {
+        loadMoreCountryStations(true);
       }
     };
 
@@ -614,7 +614,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     const timer = setTimeout(() => {
       const { scrollHeight, clientHeight, scrollTop } = scrollContainer;
       if (scrollHeight - scrollTop - clientHeight < 800) {
-        loadMoreCountryStations();
+        loadMoreCountryStations(true);
       }
     }, 200);
     return () => clearTimeout(timer);
@@ -626,58 +626,59 @@ export const DiscoverNoUser = (): JSX.Element => {
       const stationIndex = focusIndex - countryStationsStart;
       const distanceFromEnd = displayedStations.length - stationIndex;
       
-      if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingMore) {
-        loadMoreCountryStations();
+      if (distanceFromEnd <= 14 && hasMoreCountryStations && !isLoadingRef.current) {
+        loadMoreCountryStations(true);
       }
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
-  // Auto-scroll focused element into view - ONLY if element is truly off-screen
-  // Uses scrollTop/offsetTop based math for accurate visibility detection
+  // Auto-scroll focused element into view
   useEffect(() => {
-    if (!scrollContainerRef.current) return;
-    
-    const scrollContainer = scrollContainerRef.current;
-    let focusedElement: HTMLElement | null = null;
-    
-    // Find focused element by data-testid (reliable method)
-    if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
-      const stationIndex = focusIndex - popularStationsStart;
-      const station = popularStations[stationIndex];
-      if (station) {
-        focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
+    const doScroll = () => {
+      if (!scrollContainerRef.current) return;
+      
+      const scrollContainer = scrollContainerRef.current;
+      let focusedElement: HTMLElement | null = null;
+      
+      if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
+        const stationIndex = focusIndex - popularStationsStart;
+        const station = popularStations[stationIndex];
+        if (station) {
+          focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
+        }
+      } else if (focusIndex >= countryStationsStart) {
+        const stationIndex = focusIndex - countryStationsStart;
+        const station = displayedStations[stationIndex];
+        if (station) {
+          focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
+        }
+      } else if (focusIndex >= genresStart && focusIndex <= genresEnd) {
+        focusedElement = scrollContainer.querySelector('[data-testid="section-genres"]') as HTMLElement;
       }
-    } else if (focusIndex >= countryStationsStart) {
-      const stationIndex = focusIndex - countryStationsStart;
-      const station = displayedStations[stationIndex];
-      if (station) {
-        focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
+      
+      if (!focusedElement) return;
+      
+      const PADDING = 60;
+      
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const elementRect = focusedElement.getBoundingClientRect();
+      
+      if (elementRect.top < containerRect.top + PADDING) {
+        const diff = containerRect.top + PADDING - elementRect.top;
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollTop - diff,
+          behavior: 'smooth'
+        });
+      } else if (elementRect.bottom > containerRect.bottom - PADDING) {
+        const diff = elementRect.bottom - (containerRect.bottom - PADDING);
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollTop + diff,
+          behavior: 'smooth'
+        });
       }
-    } else if (focusIndex >= genresStart && focusIndex <= genresEnd) {
-      // Genres section - find the genre scroll container for vertical scrolling
-      focusedElement = scrollContainer.querySelector('[data-testid="section-genres"]') as HTMLElement;
-    }
+    };
     
-    if (!focusedElement) return;
-    
-    const PADDING = 40;
-    
-    const containerRect = scrollContainer.getBoundingClientRect();
-    const elementRect = focusedElement.getBoundingClientRect();
-    
-    if (elementRect.top < containerRect.top + PADDING) {
-      const diff = containerRect.top + PADDING - elementRect.top;
-      scrollContainer.scrollTo({
-        top: scrollContainer.scrollTop - diff,
-        behavior: 'smooth'
-      });
-    } else if (elementRect.bottom > containerRect.bottom - PADDING) {
-      const diff = elementRect.bottom - (containerRect.bottom - PADDING);
-      scrollContainer.scrollTo({
-        top: scrollContainer.scrollTop + diff,
-        behavior: 'smooth'
-      });
-    }
+    requestAnimationFrame(doScroll);
   }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, genres, popularStations, displayedStations]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
@@ -958,25 +959,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           );
         })}
 
-        {/* Loading Indicator */}
-        {isLoadingMore && (
-          <div 
-            className="absolute left-[860px] text-white font-['Ubuntu',Helvetica] text-[20px]"
-            style={{ top: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 20}px` }}
-          >
-            {t('loading_more_stations') || 'Loading more stations...'}
-          </div>
-        )}
-
-        {/* No More Stations Message */}
-        {!hasMoreCountryStations && displayedStations.length > 0 && (
-          <div 
-            className="absolute left-[780px] text-white/50 font-['Ubuntu',Helvetica] text-[18px]"
-            style={{ top: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 20}px` }}
-          >
-            ✓ All {displayedStations.length} stations from {selectedCountry} loaded
-          </div>
-        )}
+        
         </div>
       </div>
 
