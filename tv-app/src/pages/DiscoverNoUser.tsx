@@ -654,8 +654,8 @@ export const DiscoverNoUser = (): JSX.Element => {
         focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
       }
     } else if (focusIndex >= genresStart && focusIndex <= genresEnd) {
-      // Genres are in horizontal scroll - don't trigger vertical scroll
-      return;
+      // Genres section - find the genre scroll container for vertical scrolling
+      focusedElement = scrollContainer.querySelector('[data-testid="section-genres"]') as HTMLElement;
     }
     
     if (!focusedElement) return;
@@ -798,6 +798,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           }}
         >
         {/* Popular Genres Section */}
+        <div data-testid="section-genres">
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
           {selectedCountryCode === 'GLOBAL' 
             ? `${t('popular_genres')} (Global)` 
@@ -834,6 +835,7 @@ export const DiscoverNoUser = (): JSX.Element => {
               );
             })}
           </div>
+        </div>
         </div>
 
         {/* Popular Radios Section */}
