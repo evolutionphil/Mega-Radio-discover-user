@@ -660,33 +660,21 @@ export const DiscoverNoUser = (): JSX.Element => {
     
     if (!focusedElement) return;
     
-    const TOP_PADDING = 40;
-    const BOTTOM_PADDING = 60;
-    const FOCUS_EXTRA = 20;
+    const PADDING = 40;
     
-    let elementTop = 0;
-    let el: HTMLElement | null = focusedElement;
-    while (el && el !== scrollContainer) {
-      elementTop += el.offsetTop;
-      el = el.offsetParent as HTMLElement;
-    }
-    const elementBottom = elementTop + focusedElement.offsetHeight + FOCUS_EXTRA;
-    const adjustedTop = elementTop - FOCUS_EXTRA;
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const elementRect = focusedElement.getBoundingClientRect();
     
-    const viewTop = scrollContainer.scrollTop;
-    const viewBottom = viewTop + scrollContainer.clientHeight;
-    
-    const isAboveView = adjustedTop < viewTop + TOP_PADDING;
-    const isBelowView = elementBottom > viewBottom - BOTTOM_PADDING;
-    
-    if (isAboveView) {
+    if (elementRect.top < containerRect.top + PADDING) {
+      const diff = containerRect.top + PADDING - elementRect.top;
       scrollContainer.scrollTo({
-        top: Math.max(0, adjustedTop - TOP_PADDING),
+        top: scrollContainer.scrollTop - diff,
         behavior: 'smooth'
       });
-    } else if (isBelowView) {
+    } else if (elementRect.bottom > containerRect.bottom - PADDING) {
+      const diff = elementRect.bottom - (containerRect.bottom - PADDING);
       scrollContainer.scrollTo({
-        top: elementBottom - scrollContainer.clientHeight + BOTTOM_PADDING,
+        top: scrollContainer.scrollTop + diff,
         behavior: 'smooth'
       });
     }
