@@ -11,12 +11,11 @@ type PlayAtStartMode = "last-played" | "random" | "favorite" | "none";
 export const Settings = (): JSX.Element => {
   const { t } = useLocalization();
   const [, setLocation] = useLocation();
-  const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("last-played");
+  const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("none");
 
-  // Define focusable items: 5 sidebar + 4 settings = 9 total (NO PROFILE)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
   const settingsOptions: PlayAtStartMode[] = ["last-played", "random", "favorite", "none"];
-  const totalItems = 5 + 4; // 5 sidebar items + 4 settings options
+  const totalItems = 5 + 4;
 
   // Focus management
   const { focusIndex, handleNavigation, handleSelect, handleBack, isFocused } = useFocusManager({
