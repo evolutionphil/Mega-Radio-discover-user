@@ -141,6 +141,12 @@ export const Genres = (): JSX.Element => {
   };
 
   const [hasNavigatedToGenre, setHasNavigatedToGenre] = useState(false);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, []);
   
   useEffect(() => {
     if (!hasNavigatedToGenre && popularGenres.length > 0) {
@@ -232,14 +238,21 @@ export const Genres = (): JSX.Element => {
     
     const scrollContainer = scrollContainerRef.current;
     
-    if (focusIndex < 7) return;
+    if (focusIndex < 7) {
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (focusIndex === 7) {
+      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
 
     const focusedEl = scrollContainer.querySelector(`[data-focus-idx="${focusIndex}"]`) as HTMLElement;
     if (!focusedEl) return;
 
     const BOTTOM_PADDING = 140;
     const TOP_PADDING = 20;
-    const ROW_SCROLL = 158;
 
     const viewTop = scrollContainer.scrollTop;
     const viewBottom = viewTop + scrollContainer.clientHeight - BOTTOM_PADDING;
@@ -256,15 +269,13 @@ export const Genres = (): JSX.Element => {
     const isBelowView = elementBottom > viewBottom;
 
     if (isAboveView) {
-      const newTop = Math.max(0, scrollContainer.scrollTop - ROW_SCROLL);
       scrollContainer.scrollTo({
-        top: newTop,
+        top: Math.max(0, elementTop - TOP_PADDING),
         behavior: 'smooth'
       });
     } else if (isBelowView) {
-      const newTop = scrollContainer.scrollTop + ROW_SCROLL;
       scrollContainer.scrollTo({
-        top: newTop,
+        top: elementTop - scrollContainer.clientHeight + focusedEl.offsetHeight + BOTTOM_PADDING,
         behavior: 'smooth'
       });
     }
