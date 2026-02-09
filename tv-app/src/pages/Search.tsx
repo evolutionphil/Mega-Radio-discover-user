@@ -24,15 +24,19 @@ export const Search = (): JSX.Element => {
   const [recentlyPlayedStations, setRecentlyPlayedStations] = useState<Station[]>([]);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
 
-  // LGTV Reference Pattern: Debounce search with 400ms timeout
   useEffect(() => {
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
 
+    if (searchQuery.length === 0) {
+      setDebouncedSearchQuery("");
+      return;
+    }
+
     searchTimeoutRef.current = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
-    }, 400); // LGTV uses 400ms debounce
+    }, 150);
 
     return () => {
       if (searchTimeoutRef.current) {
@@ -41,14 +45,13 @@ export const Search = (): JSX.Element => {
     };
   }, [searchQuery]);
 
-  // Search for stations based on debounced query
-  // CACHE: 24 hours
-  const { data: searchData } = useQuery({
+  const { data: searchData, isFetching: isSearching } = useQuery({
     queryKey: ['/api/stations/search', debouncedSearchQuery],
-    queryFn: () => megaRadioApi.searchStations({ q: debouncedSearchQuery, limit: 4 }),
+    queryFn: () => megaRadioApi.searchStations({ q: debouncedSearchQuery, limit: 10 }),
     enabled: debouncedSearchQuery.length > 0,
-    staleTime: 24 * 60 * 60 * 1000, // 24 hours
-    gcTime: 24 * 60 * 60 * 1000, // 24 hours
+    staleTime: 24 * 60 * 60 * 1000,
+    gcTime: 24 * 60 * 60 * 1000,
+    placeholderData: (prev) => prev,
   });
 
   // Fetch popular stations as fallback
@@ -60,9 +63,8 @@ export const Search = (): JSX.Element => {
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
   });
 
-  // Only show search results when there's an active search query
-  // This prevents counting cached results when input is empty
-  const visibleSearchResults = debouncedSearchQuery.length > 0 ? (searchData?.results || []) : [];
+  const allSearchResults = debouncedSearchQuery.length > 0 ? (searchData?.results || []) : [];
+  const visibleSearchResults = allSearchResults.slice(0, 8);
   
   // Load recently played stations from localStorage
   useEffect(() => {
@@ -406,14 +408,15 @@ export const Search = (): JSX.Element => {
       {/* Search Results */}
       {searchQuery.length > 0 && Array.isArray(visibleSearchResults) && visibleSearchResults.length > 0 && visibleSearchResults.map((station, index) => {
         if (!station) return null;
-        const topPositions = [259, 359, 459, 559];
+        const topOffset = 259;
+        const rowHeight = 80;
         const focusIdx = 6 + index;
         
         return (
           <div
             key={station._id || index}
-            className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[348px] h-[65px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
-            style={{ top: `${topPositions[index]}px` }}
+            className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[774px] h-[65px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+            style={{ top: `${topOffset + index * rowHeight}px` }}
             data-testid={`search-result-${index}`}
             onMouseEnter={() => {
               setFocusIndex(focusIdx);
@@ -422,16 +425,27 @@ export const Search = (): JSX.Element => {
               handleSelect();
             }}
           >
-            <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate w-full">
-              {highlightText(station.name || 'Unknown Station', searchQuery)}
-            </p>
+            <img
+              src={getStationImage(station)}
+              alt=""
+              className="w-[40px] h-[40px] rounded-[6px] object-cover mr-[16px] flex-shrink-0"
+              onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
+            />
+            <div className="flex flex-col min-w-0 flex-1">
+              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate">
+                {highlightText(station.name || 'Unknown Station', searchQuery)}
+              </p>
+              <p className="font-['Ubuntu',Helvetica] font-light text-[16px] text-[rgba(255,255,255,0.5)] truncate">
+                {getStationCategory(station)}
+              </p>
+            </div>
             <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]" />
           </div>
         );
       })}
 
-      {/* No results message */}
-      {searchQuery.length > 0 && visibleSearchResults.length === 0 && (
+      {/* No results message - only show after search completes, not while typing */}
+      {searchQuery.length > 0 && debouncedSearchQuery.length > 0 && !isSearching && visibleSearchResults.length === 0 && (
         <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[246px] not-italic text-[22px] text-[rgba(255,255,255,0.5)] top-[259px]">
           {t('no_results_found') || `No stations found for "${searchQuery}"`}
         </p>
