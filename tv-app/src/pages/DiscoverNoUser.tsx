@@ -660,44 +660,36 @@ export const DiscoverNoUser = (): JSX.Element => {
     
     if (!focusedElement) return;
     
-    // Use scrollTop/offsetTop based calculation (NOT getBoundingClientRect)
-    // This gives accurate visibility within the scroll container
-    const TOP_PADDING = 20;  // Padding from top edge
-    const BOTTOM_PADDING = 120;  // Leave space for global player bar
+    const TOP_PADDING = 40;
+    const BOTTOM_PADDING = 60;
+    const FOCUS_EXTRA = 20;
     
-    const viewTop = scrollContainer.scrollTop;
-    const viewBottom = viewTop + scrollContainer.clientHeight - BOTTOM_PADDING;
-    
-    // Get element position relative to scroll container
-    // offsetTop gives position relative to offsetParent, need to walk up to container
     let elementTop = 0;
     let el: HTMLElement | null = focusedElement;
     while (el && el !== scrollContainer) {
       elementTop += el.offsetTop;
       el = el.offsetParent as HTMLElement;
     }
-    const elementBottom = elementTop + focusedElement.offsetHeight;
+    const elementBottom = elementTop + focusedElement.offsetHeight + FOCUS_EXTRA;
+    const adjustedTop = elementTop - FOCUS_EXTRA;
     
-    // Check if element is FULLY visible (not just partially)
-    const isAboveView = elementTop < viewTop + TOP_PADDING;
-    const isBelowView = elementBottom > viewBottom;
+    const viewTop = scrollContainer.scrollTop;
+    const viewBottom = viewTop + scrollContainer.clientHeight;
     
-    // Only scroll if element is actually outside the visible viewport
+    const isAboveView = adjustedTop < viewTop + TOP_PADDING;
+    const isBelowView = elementBottom > viewBottom - BOTTOM_PADDING;
+    
     if (isAboveView) {
-      // Element is above visible area - scroll up to show it
       scrollContainer.scrollTo({
-        top: elementTop - TOP_PADDING,
+        top: Math.max(0, adjustedTop - TOP_PADDING),
         behavior: 'smooth'
       });
     } else if (isBelowView) {
-      // Element is below visible area - scroll down to show it
-      const newScrollTop = elementBottom - scrollContainer.clientHeight + BOTTOM_PADDING;
       scrollContainer.scrollTo({
-        top: newScrollTop,
+        top: elementBottom - scrollContainer.clientHeight + BOTTOM_PADDING,
         behavior: 'smooth'
       });
     }
-    // If element is FULLY visible, do NOTHING - no scroll!
   }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, genres, popularStations, displayedStations]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
