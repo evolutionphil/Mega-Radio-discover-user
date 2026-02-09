@@ -220,7 +220,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           newIndex = 2; // Jump to Search sidebar item
         }
       } else if (direction === 'RIGHT') {
-        if (col < 6 && current < popularStationsEnd) {
+        if (col < 6 && current + 1 <= popularStationsEnd) {
           newIndex = current + 1;
         }
       } else if (direction === 'UP') {
@@ -234,8 +234,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         const nextRow = current + 7;
         if (nextRow <= popularStationsEnd) {
           newIndex = nextRow;
-        } else {
-          // Jump to country stations
+        } else if (displayedStations.length > 0) {
           newIndex = countryStationsStart + col;
           if (newIndex >= totalItems) {
             newIndex = totalItems - 1;
@@ -607,18 +606,18 @@ export const DiscoverNoUser = (): JSX.Element => {
   // VIEWPORT FILL: After each batch loads, check if viewport still needs more content
   // This ensures continuous loading until there's enough to scroll, preventing dead zones
   useEffect(() => {
-    if (!hasMoreCountryStations || isLoadingMore || displayedStations.length === 0) return;
+    if (!hasMoreCountryStations || isLoadingRef.current || displayedStations.length === 0) return;
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
 
     const timer = setTimeout(() => {
       const { scrollHeight, clientHeight, scrollTop } = scrollContainer;
-      if (scrollHeight - scrollTop - clientHeight < 800) {
+      if (scrollHeight - scrollTop - clientHeight < 800 && !isLoadingRef.current) {
         loadMoreCountryStations(true);
       }
     }, 200);
     return () => clearTimeout(timer);
-  }, [displayedStations.length, hasMoreCountryStations, isLoadingMore]);
+  }, [displayedStations.length, hasMoreCountryStations]);
 
   // Focus-based trigger: load more when navigating near end of station list
   useEffect(() => {
@@ -664,7 +663,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         scrollContainer.scrollTop = scrollContainer.scrollTop + diff;
       }
     });
-  }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, genres, popularStations, displayedStations]);
+  }, [focusIndex]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
