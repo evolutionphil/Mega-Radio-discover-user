@@ -296,8 +296,7 @@ export const Genres = (): JSX.Element => {
         />
       </div>
 
-      {/* Gradient Overlay - FIXED */}
-      <div className="absolute bg-gradient-to-b from-[18.704%] from-[rgba(14,14,14,0)] h-[1080px] left-0 to-[#0e0e0e] to-[25.787%] top-0 w-[1920px]" />
+      <div className="absolute inset-0 w-[1920px] h-[1080px] bg-gradient-to-b from-[#0e0e0e] via-[#0e0e0e] to-[#0e0e0e]" style={{ background: 'linear-gradient(to bottom, rgba(14,14,14,0) 0%, #0e0e0e 20%), linear-gradient(to right, #0e0e0e 0%, rgba(14,14,14,0) 15%, rgba(14,14,14,0) 100%)' }} />
 
       {/* Logo - FIXED */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
