@@ -643,25 +643,15 @@ export const DiscoverNoUser = (): JSX.Element => {
       const scrollContainer = scrollContainerRef.current;
       let focusedElement: HTMLElement | null = null;
       
-      if (focusIndex >= popularStationsStart && focusIndex <= popularStationsEnd) {
-        const stationIndex = focusIndex - popularStationsStart;
-        const station = popularStations[stationIndex];
-        if (station) {
-          focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
-        }
-      } else if (focusIndex >= countryStationsStart) {
-        const stationIndex = focusIndex - countryStationsStart;
-        const station = displayedStations[stationIndex];
-        if (station) {
-          focusedElement = scrollContainer.querySelector(`[data-testid="card-station-${station._id}"]`) as HTMLElement;
-        }
-      } else if (focusIndex >= genresStart && focusIndex <= genresEnd) {
+      if (focusIndex >= genresStart && focusIndex <= genresEnd) {
         focusedElement = scrollContainer.querySelector('[data-testid="section-genres"]') as HTMLElement;
+      } else {
+        focusedElement = scrollContainer.querySelector(`[data-focus-idx="${focusIndex}"]`) as HTMLElement;
       }
       
       if (!focusedElement) return;
       
-      const PADDING = 80;
+      const PADDING = 100;
       
       const containerRect = scrollContainer.getBoundingClientRect();
       const elementRect = focusedElement.getBoundingClientRect();
@@ -837,6 +827,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                 className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[297px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ left: `${stationRow1Positions[index] - 162}px` }}
                 data-testid={`card-station-${station._id}`}
+                data-focus-idx={focusIdx}
               >
                 <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px] top-[34px]">
                   <img
@@ -877,6 +868,7 @@ export const DiscoverNoUser = (): JSX.Element => {
                 className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[591px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
                 style={{ left: `${stationRow2Positions[index] - 162}px` }}
                 data-testid={`card-station-${station._id}`}
+                data-focus-idx={focusIdx}
               >
                 <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px] top-[34px]">
                   <img
@@ -929,7 +921,8 @@ export const DiscoverNoUser = (): JSX.Element => {
                   left: `${positions[col] - 162}px`,
                   top: `${topPosition}px`
                 }}
-                data-testid={`card-station-${station._id}`}
+                data-testid={`card-country-station-${station._id}`}
+                data-focus-idx={focusIdx}
               >
                 <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px] top-[34px]">
                   <img
