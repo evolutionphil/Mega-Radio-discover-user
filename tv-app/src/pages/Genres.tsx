@@ -296,7 +296,8 @@ export const Genres = (): JSX.Element => {
         />
       </div>
 
-      <div className="absolute inset-0 w-[1920px] h-[1080px] bg-gradient-to-b from-[#0e0e0e] via-[#0e0e0e] to-[#0e0e0e]" style={{ background: 'linear-gradient(to bottom, rgba(14,14,14,0) 0%, #0e0e0e 20%), linear-gradient(to right, #0e0e0e 0%, rgba(14,14,14,0) 15%, rgba(14,14,14,0) 100%)' }} />
+      <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'linear-gradient(180deg, #0e0e0e 0%, rgba(14,14,14,0.85) 10%, rgba(14,14,14,0.6) 18%, #0e0e0e 30%)' }} />
+      <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'linear-gradient(90deg, #0e0e0e 0%, #0e0e0e 8%, rgba(14,14,14,0) 20%)' }} />
 
       {/* Logo - FIXED */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
@@ -375,7 +376,7 @@ export const Genres = (): JSX.Element => {
                     <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
                       {genre.stationCount} Stations
                     </p>
-                    <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
+                    
                   </div>
                 </Link>
               );
@@ -401,7 +402,7 @@ export const Genres = (): JSX.Element => {
                     <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
                       {genre.stationCount} Stations
                     </p>
-                    <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
+                    
                   </div>
                 </Link>
               );
@@ -433,7 +434,7 @@ export const Genres = (): JSX.Element => {
                       <p className="font-['Ubuntu',Helvetica] leading-normal not-italic text-[22px] text-left text-white mt-1">
                         {genre.stationCount} Stations
                       </p>
-                      <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[20px]" />
+                      
                     </div>
                   </Link>
                 );
