@@ -98,9 +98,7 @@ export const GenreList = (): JSX.Element => {
         sort: 'votes'
       });
       
-      // Validate result exists and has stations property
       if (!result || !result.stations) {
-        setHasMore(false);
         return;
       }
 
@@ -108,15 +106,15 @@ export const GenreList = (): JSX.Element => {
       
       if (Array.isArray(newStations) && newStations.length > 0) {
         setDisplayedStations(prev => {
-          // Ensure prev is always an array
           if (!Array.isArray(prev)) {
             return newStations;
           }
-          return [...prev, ...newStations];
+          const existingIds = new Set(prev.map(s => s._id));
+          const uniqueNewStations = newStations.filter(s => !existingIds.has(s._id));
+          return [...prev, ...uniqueNewStations];
         });
-        setCurrentOffset(prev => prev + STATIONS_PER_LOAD); // Increment offset for next fetch
+        setCurrentOffset(prev => prev + STATIONS_PER_LOAD);
         
-        // If we got less than requested, we've reached the end
         const hasMoreStations = newStations.length >= STATIONS_PER_LOAD;
         setHasMore(hasMoreStations);
       } else {
@@ -124,7 +122,6 @@ export const GenreList = (): JSX.Element => {
       }
     } catch (error) {
       console.error('Error loading more stations:', error);
-      setHasMore(false);
     } finally {
       setIsLoadingMore(false);
     }

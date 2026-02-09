@@ -99,6 +99,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     },
     staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
     gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    retry: 2,
     initialData: cachedInitialStations,
   });
 
@@ -465,11 +466,11 @@ export const DiscoverNoUser = (): JSX.Element => {
     currentOffsetRef.current = 0;
     hasMoreRef.current = true;
     displayedCountRef.current = 0;
-    retryCountRef.current = 0;
     setIsLoadingMore(false);
     setHasMoreCountryStations(true);
     setCurrentOffset(0);
     setDisplayedStations([]);
+    setFocusIndex(0);
   }, [selectedCountryCode]);
 
   // Initialize country stations when initial data is loaded
@@ -531,9 +532,6 @@ export const DiscoverNoUser = (): JSX.Element => {
   useEffect(() => { displayedCountRef.current = displayedStations.length; }, [displayedStations.length]);
   useEffect(() => { countryCodeRef.current = selectedCountryCode; }, [selectedCountryCode]);
 
-  const retryCountRef = useRef(0);
-  const MAX_RETRIES = 3;
-
   const loadMoreCountryStations = async (silent = false) => {
     if (isLoadingRef.current) return;
     if (!hasMoreRef.current) return;
@@ -559,10 +557,13 @@ export const DiscoverNoUser = (): JSX.Element => {
             offset: offsetToUse 
           });
       
+      if (countryToUse !== countryCodeRef.current) return;
+
       const newStations = result.stations || [];
       
-      if (newStations.length > 0) {
-        retryCountRef.current = 0;
+      if (newStations.length === 0) {
+        setHasMoreCountryStations(false);
+      } else {
         setDisplayedStations(prev => {
           const existingIds = new Set(prev.map(s => s._id));
           const uniqueNewStations = newStations.filter(s => !existingIds.has(s._id));
@@ -577,20 +578,11 @@ export const DiscoverNoUser = (): JSX.Element => {
         });
         
         if (newStations.length < STATIONS_PER_LOAD || 
-            displayedCountRef.current + newStations.length >= MAX_STATIONS) {
-          setHasMoreCountryStations(false);
-        }
-      } else {
-        retryCountRef.current++;
-        if (retryCountRef.current >= MAX_RETRIES) {
+            displayedCountRef.current >= MAX_STATIONS) {
           setHasMoreCountryStations(false);
         }
       }
     } catch (error) {
-      retryCountRef.current++;
-      if (retryCountRef.current >= MAX_RETRIES) {
-        setHasMoreCountryStations(false);
-      }
     } finally {
       isLoadingRef.current = false;
       setIsLoadingMore(false);
@@ -694,6 +686,13 @@ export const DiscoverNoUser = (): JSX.Element => {
         scrollContainer.scrollTop = scrollContainer.scrollTop + diff;
       }
     });
+
+    return () => {
+      if (pendingScrollRef.current) {
+        cancelAnimationFrame(pendingScrollRef.current);
+        pendingScrollRef.current = null;
+      }
+    };
   }, [focusIndex]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
