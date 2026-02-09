@@ -1,0 +1,23 @@
+SES Removing unpermitted intrinsics
+platform-detect.js:18 Platform detected: Web Browser
+tv-spatial-navigation.js:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+polyfills.js:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js:290 [Polyfills] All polyfills loaded successfully
+VM26 discover-no-user:6 🔍 CSS CHECK: Starting verification...
+VM26 discover-no-user:11 📄 CSS Links found: Object
+VM26 discover-no-user:27 🎨 Tailwind Test Results: Object
+VM26 discover-no-user:35 ✅ TAILWIND CSS: Working correctly!
+VM26 discover-no-user:49 🎯 #root element styles: Object
+27Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>Understand this warning
+tv-spatial-navigation.js:262 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js:216 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js:220 [TV Remote Keys] Key handler attached, waiting for React...
+apple-touch-icon.f5c3420c154b.png:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVEDUnderstand this error
+santa.png:1  Failed to load resource: net::ERR_CONNECTION_CLOSEDUnderstand this error
+2tv-audio-player.js:309 Play error: NotAllowedError: play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD
+(anonymous) @ tv-audio-player.js:309Understand this error
+santa.png:1  Failed to load resource: net::ERR_CONNECTION_CLOSEDUnderstand this error
+apple-touch-icon.f5c3420c154b.png:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVEDUnderstand this error
+favicon.ico:1  Failed to load resource: net::ERR_CERT_AUTHORITY_INVALIDUnderstand this error
+favicon.ico:1  GET https://0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev/favicon.ico 404 (Not Found)Understand this error
+favicon.ico:1  GET https://0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev/favicon.ico 404 (Not Found)

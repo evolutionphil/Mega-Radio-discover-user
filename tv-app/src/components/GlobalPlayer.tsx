@@ -33,7 +33,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
     // Check for null, undefined, empty string, or the string "null"
     if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
       return station.favicon.startsWith('http') 
-        ? station.favicon 
+        ? station.favicon.replace(/^http:\/\//, 'https://') 
         : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
     }
     return FALLBACK_IMAGE;
