@@ -465,6 +465,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     currentOffsetRef.current = 0;
     hasMoreRef.current = true;
     displayedCountRef.current = 0;
+    retryCountRef.current = 0;
     setIsLoadingMore(false);
     setHasMoreCountryStations(true);
     setCurrentOffset(0);
@@ -530,6 +531,9 @@ export const DiscoverNoUser = (): JSX.Element => {
   useEffect(() => { displayedCountRef.current = displayedStations.length; }, [displayedStations.length]);
   useEffect(() => { countryCodeRef.current = selectedCountryCode; }, [selectedCountryCode]);
 
+  const retryCountRef = useRef(0);
+  const MAX_RETRIES = 3;
+
   const loadMoreCountryStations = async (silent = false) => {
     if (isLoadingRef.current) return;
     if (!hasMoreRef.current) return;
@@ -558,6 +562,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       const newStations = result.stations || [];
       
       if (newStations.length > 0) {
+        retryCountRef.current = 0;
         setDisplayedStations(prev => {
           const existingIds = new Set(prev.map(s => s._id));
           const uniqueNewStations = newStations.filter(s => !existingIds.has(s._id));
@@ -576,10 +581,16 @@ export const DiscoverNoUser = (): JSX.Element => {
           setHasMoreCountryStations(false);
         }
       } else {
-        setHasMoreCountryStations(false);
+        retryCountRef.current++;
+        if (retryCountRef.current >= MAX_RETRIES) {
+          setHasMoreCountryStations(false);
+        }
       }
     } catch (error) {
-      setHasMoreCountryStations(false);
+      retryCountRef.current++;
+      if (retryCountRef.current >= MAX_RETRIES) {
+        setHasMoreCountryStations(false);
+      }
     } finally {
       isLoadingRef.current = false;
       setIsLoadingMore(false);
@@ -617,7 +628,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       const scrollTop = scrollContainer.scrollTop;
       const clientHeight = scrollContainer.clientHeight;
       
-      if (scrollHeight - scrollTop - clientHeight < 800 && !isLoadingRef.current) {
+      if (scrollHeight - scrollTop - clientHeight < 1200 && !isLoadingRef.current) {
         loadMoreRef.current(true);
       }
     };
@@ -626,8 +637,6 @@ export const DiscoverNoUser = (): JSX.Element => {
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // VIEWPORT FILL: After each batch loads, check if viewport still needs more content
-  // This ensures continuous loading until there's enough to scroll, preventing dead zones
   useEffect(() => {
     if (!hasMoreCountryStations || isLoadingRef.current || displayedStations.length === 0) return;
     const scrollContainer = scrollContainerRef.current;
@@ -635,20 +644,19 @@ export const DiscoverNoUser = (): JSX.Element => {
 
     const timer = setTimeout(() => {
       const { scrollHeight, clientHeight, scrollTop } = scrollContainer;
-      if (scrollHeight - scrollTop - clientHeight < 800 && !isLoadingRef.current) {
+      if (scrollHeight - scrollTop - clientHeight < 1200 && !isLoadingRef.current) {
         loadMoreRef.current(true);
       }
-    }, 200);
+    }, 300);
     return () => clearTimeout(timer);
   }, [displayedStations.length, hasMoreCountryStations]);
 
-  // Focus-based trigger: load more when navigating near end of station list
   useEffect(() => {
     if (focusIndex >= countryStationsStart && displayedStations.length > 0) {
       const stationIndex = focusIndex - countryStationsStart;
       const distanceFromEnd = displayedStations.length - stationIndex;
       
-      if (distanceFromEnd <= 14 && !isLoadingRef.current) {
+      if (distanceFromEnd <= 21 && !isLoadingRef.current) {
         loadMoreRef.current(true);
       }
     }

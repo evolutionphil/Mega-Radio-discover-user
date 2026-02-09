@@ -238,28 +238,24 @@ export const megaRadioApi = {
     const queryParams = new URLSearchParams();
     queryParams.append('search', '');
     if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.offset) queryParams.append('offset', params.offset.toString());
+    if (params?.offset != null) queryParams.append('offset', params.offset.toString());
     if (params?.country) {
       const countryName = getCountryNameFromCode(params.country);
       queryParams.append('country', countryName);
     }
 
-    try {
-      const url = buildApiUrl('/stations', queryParams);
-      const response = await fetch(url, {
-        headers: {
-          'Accept': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
-      const stations = data.stations || [];
-      return { stations };
-    } catch (error) {
-      return { stations: [] };
+    const url = buildApiUrl('/stations', queryParams);
+    const response = await fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
     }
+    const data = await response.json();
+    const stations = data.stations || [];
+    return { stations };
   },
 
   getNearbyStations: async (params: {
