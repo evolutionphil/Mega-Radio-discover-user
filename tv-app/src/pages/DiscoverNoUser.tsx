@@ -38,7 +38,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [hasMoreCountryStations, setHasMoreCountryStations] = useState(true);
   const isLoadingRef = useRef(false);
   const loadMoreRef = useRef<(silent?: boolean) => void>(() => {});
-  const STATIONS_PER_LOAD = 100;
+  const STATIONS_PER_LOAD = 21;
 
   // WARM-START CACHING: Get cached data immediately on mount for instant display
   const cachedGenres = useMemo(() => {
