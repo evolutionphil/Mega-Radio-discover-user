@@ -601,7 +601,7 @@ export const DiscoverNoUser = (): JSX.Element => {
 
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, [isLoadingMore, hasMoreCountryStations, currentOffset, displayedStations.length]);
+  }, [hasMoreCountryStations]);
 
   // VIEWPORT FILL: After each batch loads, check if viewport still needs more content
   // This ensures continuous loading until there's enough to scroll, preventing dead zones
