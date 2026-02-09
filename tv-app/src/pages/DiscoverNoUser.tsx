@@ -471,14 +471,14 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Initialize country stations when initial data is loaded
   const initialLoadDone = useRef(false);
   useEffect(() => {
-    if (initialStationsData?.stations) {
+    if (initialStationsData?.stations && initialStationsData.stations.length > 0) {
       const stations = initialStationsData.stations;
       setDisplayedStations(stations);
       setCurrentOffset(stations.length);
-      setHasMoreCountryStations(stations.length > 0);
+      setHasMoreCountryStations(true);
       initialLoadDone.current = true;
     }
-  }, [initialStationsData]);
+  }, [initialStationsData, selectedCountryCode]);
 
   // Restore focus when returning from RadioPlaying
   useEffect(() => {
@@ -632,9 +632,12 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   }, [focusIndex, countryStationsStart, displayedStations.length, hasMoreCountryStations, isLoadingMore]);
 
-  // Auto-scroll focused element into view
+  // Auto-scroll focused element into view - uses instant scroll for TV remote reliability
+  const pendingScrollRef = useRef<number | null>(null);
   useEffect(() => {
-    const doScroll = () => {
+    if (pendingScrollRef.current) cancelAnimationFrame(pendingScrollRef.current);
+    
+    pendingScrollRef.current = requestAnimationFrame(() => {
       if (!scrollContainerRef.current) return;
       
       const scrollContainer = scrollContainerRef.current;
@@ -658,27 +661,19 @@ export const DiscoverNoUser = (): JSX.Element => {
       
       if (!focusedElement) return;
       
-      const PADDING = 60;
+      const PADDING = 80;
       
       const containerRect = scrollContainer.getBoundingClientRect();
       const elementRect = focusedElement.getBoundingClientRect();
       
       if (elementRect.top < containerRect.top + PADDING) {
         const diff = containerRect.top + PADDING - elementRect.top;
-        scrollContainer.scrollTo({
-          top: scrollContainer.scrollTop - diff,
-          behavior: 'smooth'
-        });
+        scrollContainer.scrollTop = scrollContainer.scrollTop - diff;
       } else if (elementRect.bottom > containerRect.bottom - PADDING) {
         const diff = elementRect.bottom - (containerRect.bottom - PADDING);
-        scrollContainer.scrollTo({
-          top: scrollContainer.scrollTop + diff,
-          behavior: 'smooth'
-        });
+        scrollContainer.scrollTop = scrollContainer.scrollTop + diff;
       }
-    };
-    
-    requestAnimationFrame(doScroll);
+    });
   }, [focusIndex, genresStart, genresEnd, popularStationsStart, popularStationsEnd, countryStationsStart, genres, popularStations, displayedStations]);
 
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
