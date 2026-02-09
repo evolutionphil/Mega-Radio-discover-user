@@ -158,35 +158,14 @@ export const RadioPlaying = (): JSX.Element => {
 
   const metadata = metadataData?.metadata;
 
-  // Fetch similar stations - INCREASED TO 100 for more variety
+  // Fetch similar stations
   // CACHE: 7 days
   const { data: similarData } = useQuery({
-    queryKey: ['similar-stations', stationId, station?.countrycode || station?.country],
+    queryKey: ['similar-stations', stationId],
     queryFn: async () => {
-      if (!station || !stationId) {
-        return { stations: [] };
-      }
-      
+      if (!stationId) return { stations: [] };
       try {
-        const countryCode = station.countrycode || station.country;
-        if (countryCode && typeof countryCode === 'string' && countryCode.trim().length > 0) {
-          const data = await megaRadioApi.getWorkingStations({ 
-            limit: 100, 
-            country: countryCode 
-          });
-          // Filter out current station and shuffle for variety
-          const filtered = (data?.stations || []).filter(s => s && s._id && s._id !== stationId);
-          // Shuffle array to get different stations each time
-          for (let i = filtered.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
-          }
-          return { stations: filtered };
-        }
-        
-        // Fallback: Get similar stations without country filter
-        const data = await megaRadioApi.getSimilarStations(stationId, 100);
-        // Also filter and shuffle similar stations
+        const data = await megaRadioApi.getSimilarStations(stationId, 30);
         const filtered = (data?.stations || []).filter(s => s && s._id && s._id !== stationId);
         for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -198,9 +177,9 @@ export const RadioPlaying = (): JSX.Element => {
         return { stations: [] };
       }
     },
-    enabled: !!stationId && !!station,
-    staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
-    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+    enabled: !!stationId,
+    staleTime: 7 * 24 * 60 * 60 * 1000,
+    gcTime: 7 * 24 * 60 * 60 * 1000,
   });
 
   const similarStations = similarData?.stations || [];
@@ -208,17 +187,11 @@ export const RadioPlaying = (): JSX.Element => {
   // Fetch popular stations from GLOBAL (random selection)
   // CACHE: 24 hours
   const { data: popularData } = useQuery({
-    queryKey: ['popular-global-stations', stationId, popularStationsToShow],
+    queryKey: ['popular-global-stations', stationId],
     queryFn: async () => {
       try {
-        const limit = Math.max(100, popularStationsToShow + 50);
-        const data = await megaRadioApi.getPopularStations({ 
-          limit,
-          // No country filter - get global popular stations
-        });
-        // Filter out current station and shuffle for random variety
+        const data = await megaRadioApi.getPopularStations({ limit: 50 });
         const filtered = (data?.stations || []).filter(s => s && s._id && s._id !== stationId);
-        // Shuffle array to get different stations each time
         for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
@@ -230,8 +203,8 @@ export const RadioPlaying = (): JSX.Element => {
       }
     },
     enabled: !!stationId,
-    staleTime: 24 * 60 * 60 * 1000, // 24 hours
-    gcTime: 24 * 60 * 60 * 1000, // 24 hours
+    staleTime: 24 * 60 * 60 * 1000,
+    gcTime: 24 * 60 * 60 * 1000,
   });
 
   // Update all popular stations when data changes
