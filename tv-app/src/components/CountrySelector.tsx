@@ -21,24 +21,190 @@ interface CountrySelectorProps {
   keyboardDisabled?: boolean;
 }
 
-const KEYBOARD_ROWS = [
-  ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
-  ['H', 'I', 'J', 'K', 'L', 'M', 'N'],
-  ['O', 'P', 'Q', 'R', 'S', 'T', 'U'],
-  ['V', 'W', 'X', 'Y', 'Z', '-', "'"],
-  ['SPACE', 'DELETE', 'CLEAR'],
+interface KeyboardLayout {
+  id: string;
+  label: string;
+  flag: string;
+  rows: string[][];
+}
+
+const KEYBOARD_LAYOUTS: KeyboardLayout[] = [
+  {
+    id: 'en',
+    label: 'EN',
+    flag: '🇬🇧',
+    rows: [
+      ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+      ['H', 'I', 'J', 'K', 'L', 'M', 'N'],
+      ['O', 'P', 'Q', 'R', 'S', 'T', 'U'],
+      ['V', 'W', 'X', 'Y', 'Z', '-', "'"],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'tr',
+    label: 'TR',
+    flag: '🇹🇷',
+    rows: [
+      ['A', 'B', 'C', 'Ç', 'D', 'E', 'F'],
+      ['G', 'Ğ', 'H', 'I', 'İ', 'J', 'K'],
+      ['L', 'M', 'N', 'O', 'Ö', 'P', 'R'],
+      ['S', 'Ş', 'T', 'U', 'Ü', 'V', 'Y'],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'ar',
+    label: 'ع',
+    flag: '🇸🇦',
+    rows: [
+      ['ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ'],
+      ['د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص'],
+      ['ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق'],
+      ['ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'ru',
+    label: 'RU',
+    flag: '🇷🇺',
+    rows: [
+      ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж'],
+      ['З', 'И', 'К', 'Л', 'М', 'Н', 'О'],
+      ['П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х'],
+      ['Ц', 'Ч', 'Ш', 'Щ', 'Э', 'Ю', 'Я'],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'de',
+    label: 'DE',
+    flag: '🇩🇪',
+    rows: [
+      ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+      ['H', 'I', 'J', 'K', 'L', 'M', 'N'],
+      ['O', 'P', 'Q', 'R', 'S', 'T', 'U'],
+      ['V', 'W', 'X', 'Y', 'Z', 'Ä', 'Ö'],
+      ['Ü', 'ß', 'SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'fr',
+    label: 'FR',
+    flag: '🇫🇷',
+    rows: [
+      ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+      ['H', 'I', 'J', 'K', 'L', 'M', 'N'],
+      ['O', 'P', 'Q', 'R', 'S', 'T', 'U'],
+      ['V', 'W', 'X', 'Y', 'Z', 'É', 'È'],
+      ['Ê', 'Ç', 'SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'es',
+    label: 'ES',
+    flag: '🇪🇸',
+    rows: [
+      ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+      ['H', 'I', 'J', 'K', 'L', 'M', 'N'],
+      ['Ñ', 'O', 'P', 'Q', 'R', 'S', 'T'],
+      ['U', 'V', 'W', 'X', 'Y', 'Z', '-'],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'ja',
+    label: 'あ',
+    flag: '🇯🇵',
+    rows: [
+      ['あ', 'い', 'う', 'え', 'お', 'か', 'き'],
+      ['く', 'け', 'こ', 'さ', 'し', 'す', 'せ'],
+      ['そ', 'た', 'ち', 'つ', 'て', 'と', 'な'],
+      ['に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ'],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'zh',
+    label: '中',
+    flag: '🇨🇳',
+    rows: [
+      ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+      ['H', 'I', 'J', 'K', 'L', 'M', 'N'],
+      ['O', 'P', 'Q', 'R', 'S', 'T', 'U'],
+      ['V', 'W', 'X', 'Y', 'Z', '-', "'"],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'ko',
+    label: '한',
+    flag: '🇰🇷',
+    rows: [
+      ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ'],
+      ['ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'],
+      ['ㅏ', 'ㅑ', 'ㅓ', 'ㅕ', 'ㅗ', 'ㅛ', 'ㅜ'],
+      ['ㅠ', 'ㅡ', 'ㅣ', 'ㄲ', 'ㄸ', 'ㅃ', 'ㅆ'],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'el',
+    label: 'ΕΛ',
+    flag: '🇬🇷',
+    rows: [
+      ['Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η'],
+      ['Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ'],
+      ['Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ'],
+      ['Χ', 'Ψ', 'Ω', '-', "'", ' ', ' '],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'hi',
+    label: 'हि',
+    flag: '🇮🇳',
+    rows: [
+      ['अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ए'],
+      ['क', 'ख', 'ग', 'घ', 'च', 'छ', 'ज'],
+      ['ट', 'ठ', 'ड', 'ढ', 'त', 'थ', 'द'],
+      ['प', 'फ', 'ब', 'म', 'र', 'ल', 'स'],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
+  {
+    id: 'th',
+    label: 'ไท',
+    flag: '🇹🇭',
+    rows: [
+      ['ก', 'ข', 'ค', 'ง', 'จ', 'ช', 'ซ'],
+      ['ด', 'ต', 'ถ', 'ท', 'น', 'บ', 'ป'],
+      ['พ', 'ม', 'ย', 'ร', 'ล', 'ว', 'ส'],
+      ['ห', 'อ', 'ะ', 'า', 'ิ', 'ี', 'ุ'],
+      ['SPACE', 'DELETE', 'CLEAR'],
+    ],
+  },
 ];
 
 export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry, mode = 'modal', onNavigateToSidebar, keyboardDisabled = false }: CountrySelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [focusZone, setFocusZone] = useState<'keyboard' | 'list'>('keyboard');
+  const [focusZone, setFocusZone] = useState<'keyboard' | 'list' | 'layoutSelector'>('keyboard');
   const [keyboardRow, setKeyboardRow] = useState(0);
   const [keyboardCol, setKeyboardCol] = useState(0);
   const [listFocusIndex, setListFocusIndex] = useState(0);
+  const [activeLayoutIndex, setActiveLayoutIndex] = useState(0);
+  const [layoutSelectorIndex, setLayoutSelectorIndex] = useState(0);
+  const [layoutSelectorScroll, setLayoutSelectorScroll] = useState(0);
   const lastKeyboardPos = useRef({ row: 0, col: 0 });
   const lastListPos = useRef(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const layoutScrollRef = useRef<HTMLDivElement>(null);
   const { t } = useLocalization();
+
+  const VISIBLE_LAYOUTS = 6;
+  const activeLayout = KEYBOARD_LAYOUTS[activeLayoutIndex];
+  const KEYBOARD_ROWS = activeLayout.rows;
 
   const { data: countriesData, isLoading: countriesLoading } = useQuery({
     queryKey: ['/api/countries'],
@@ -129,6 +295,15 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     }
   }, [listFocusIndex, filteredCountries.length, focusZone]);
 
+  useEffect(() => {
+    if (focusZone === 'layoutSelector' && layoutScrollRef.current) {
+      const container = layoutScrollRef.current;
+      const itemWidth = 100;
+      const scrollLeft = Math.max(0, layoutSelectorIndex * itemWidth - container.clientWidth / 2 + itemWidth / 2);
+      container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+    }
+  }, [layoutSelectorIndex, focusZone]);
+
   const handleKeyPress = useCallback((key: string) => {
     if (key === 'SPACE') {
       setSearchQuery(prev => prev + ' ');
@@ -136,6 +311,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       setSearchQuery(prev => prev.slice(0, -1));
     } else if (key === 'CLEAR') {
       setSearchQuery('');
+    } else if (key.trim() === '') {
+      return;
     } else {
       setSearchQuery(prev => prev + key.toLowerCase());
     }
@@ -163,6 +340,34 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
         return;
       }
 
+      if (focusZone === 'layoutSelector') {
+        if (isLeft) {
+          e.preventDefault();
+          if (layoutSelectorIndex > 0) {
+            setLayoutSelectorIndex(prev => prev - 1);
+          } else if (mode === 'page' && onNavigateToSidebar) {
+            onNavigateToSidebar();
+          }
+        } else if (isRight) {
+          e.preventDefault();
+          if (layoutSelectorIndex < KEYBOARD_LAYOUTS.length - 1) {
+            setLayoutSelectorIndex(prev => prev + 1);
+          }
+        } else if (isDown) {
+          e.preventDefault();
+          setFocusZone('keyboard');
+          setKeyboardRow(0);
+          setKeyboardCol(0);
+        } else if (isEnter) {
+          e.preventDefault();
+          setActiveLayoutIndex(layoutSelectorIndex);
+          setKeyboardRow(0);
+          setKeyboardCol(0);
+          setFocusZone('keyboard');
+        }
+        return;
+      }
+
       if (focusZone === 'keyboard') {
         const currentRow = KEYBOARD_ROWS[keyboardRow];
 
@@ -173,6 +378,9 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
             const newRowLen = KEYBOARD_ROWS[newRow].length;
             setKeyboardRow(newRow);
             setKeyboardCol(prev => Math.min(prev, newRowLen - 1));
+          } else {
+            setFocusZone('layoutSelector');
+            setLayoutSelectorIndex(activeLayoutIndex);
           }
         } else if (isDown) {
           e.preventDefault();
@@ -228,7 +436,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, focusZone, keyboardRow, keyboardCol, listFocusIndex, filteredCountries, onSelectCountry, onClose, handleKeyPress, keyboardDisabled, mode, onNavigateToSidebar]);
+  }, [isOpen, focusZone, keyboardRow, keyboardCol, listFocusIndex, filteredCountries, onSelectCountry, onClose, handleKeyPress, keyboardDisabled, mode, onNavigateToSidebar, activeLayoutIndex, layoutSelectorIndex, KEYBOARD_ROWS]);
 
   useEffect(() => {
     if (isOpen) {
@@ -293,7 +501,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           style={{
             background: 'rgba(255,255,255,0.14)',
             backdropFilter: 'blur(13.621px)',
-            border: focusZone === 'keyboard' ? '2.594px solid #ff4199' : '2.594px solid #717171',
+            border: (focusZone === 'keyboard' || focusZone === 'layoutSelector') ? '2.594px solid #ff4199' : '2.594px solid #717171',
             boxShadow: 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
           }}
         >
@@ -313,11 +521,51 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           </div>
         </div>
 
-        <div className="absolute left-[246px] top-[220px] z-10" style={{ width: '660px' }}>
+        <div className="absolute left-[246px] top-[205px] z-10" style={{ width: '660px' }}>
+          <div
+            ref={layoutScrollRef}
+            className="flex gap-[6px] mb-[12px] overflow-x-hidden"
+            style={{ scrollBehavior: 'smooth' }}
+            data-testid="keyboard-layout-selector"
+          >
+            {KEYBOARD_LAYOUTS.map((layout, index) => {
+              const isActive = activeLayoutIndex === index;
+              const isFocused = focusZone === 'layoutSelector' && layoutSelectorIndex === index;
+              return (
+                <button
+                  key={layout.id}
+                  className={`flex-shrink-0 h-[48px] px-[14px] rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] flex items-center justify-center gap-[6px] transition-all duration-150 select-none ${
+                    isFocused
+                      ? 'bg-[#ff4199] text-white scale-105'
+                      : isActive
+                        ? 'bg-[rgba(255,65,153,0.25)] text-white border border-[#ff4199]'
+                        : 'bg-[rgba(255,255,255,0.08)] text-white/60'
+                  }`}
+                  style={{
+                    boxShadow: isFocused
+                      ? '0 0 20px rgba(255,65,153,0.5)'
+                      : 'none',
+                    minWidth: '90px',
+                  }}
+                  tabIndex={-1}
+                  data-testid={`layout-${layout.id}`}
+                  onClick={() => {
+                    setActiveLayoutIndex(index);
+                    setKeyboardRow(0);
+                    setKeyboardCol(0);
+                  }}
+                >
+                  <span className="text-[16px]">{layout.flag}</span>
+                  <span>{layout.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
           {KEYBOARD_ROWS.map((row, rowIndex) => {
             const isActionRow = rowIndex === KEYBOARD_ROWS.length - 1;
             return (
-              <div key={rowIndex} className={`flex ${isActionRow ? 'gap-[10px] mt-[14px]' : 'gap-[6px] mb-[6px]'}`}>
+              <div key={`${activeLayout.id}-${rowIndex}`} className={`flex ${isActionRow ? 'gap-[10px] mt-[14px]' : 'gap-[6px] mb-[6px]'}`}>
                 {row.map((keyChar, colIndex) => {
                   const isKeyFocused = focusZone === 'keyboard' && keyboardRow === rowIndex && keyboardCol === colIndex;
                   const isAction = keyChar === 'SPACE' || keyChar === 'DELETE' || keyChar === 'CLEAR';
@@ -328,7 +576,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
                   return (
                     <button
-                      key={keyChar}
+                      key={`${activeLayout.id}-${keyChar}-${colIndex}`}
                       className={`h-[68px] ${widthClass} rounded-[12px] font-['Ubuntu',Helvetica] font-medium text-white flex items-center justify-center transition-all duration-150 select-none ${
                         isKeyFocused
                           ? 'bg-[#ff4199] scale-105 text-[24px]'
@@ -352,8 +600,14 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
             );
           })}
 
-          <div className="flex items-center justify-between mt-[20px] px-[4px]">
+          <div className="flex items-center justify-between mt-[16px] px-[4px]">
             <div className="flex items-center gap-[20px]">
+              <div className="flex items-center gap-[6px]">
+                <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
+                  <span className="text-white/60 text-[14px]">▲</span>
+                </div>
+                <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30">{t('keyboard') || 'Keyboard'}</span>
+              </div>
               <div className="flex items-center gap-[6px]">
                 <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
                   <span className="text-white/60 text-[14px]">OK</span>
