@@ -1,43 +1,122 @@
-import { Link, useLocation } from "wouter";
-import { useState, useEffect, useRef } from "react";
+import { useLocation } from "wouter";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
-import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
-import { CountrySelector } from "@/components/CountrySelector";
-import { useCountry } from "@/contexts/CountryContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { recentlyPlayedService } from "@/services/recentlyPlayedService";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
 
+interface KeyboardLayout {
+  id: string;
+  label: string;
+  flag: string;
+  rows: string[][];
+}
+
+const KEYBOARD_LAYOUTS: KeyboardLayout[] = [
+  {
+    id: 'en', label: 'English', flag: '🇬🇧',
+    rows: [['A','B','C','D','E','F','G'],['H','I','J','K','L','M','N'],['O','P','Q','R','S','T','U'],['V','W','X','Y','Z','-',"'"],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'tr', label: 'Türkçe', flag: '🇹🇷',
+    rows: [['A','B','C','Ç','D','E','F'],['G','Ğ','H','I','İ','J','K'],['L','M','N','O','Ö','P','R'],['S','Ş','T','U','Ü','V','Y'],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'ar', label: 'العربية', flag: '🇸🇦',
+    rows: [['ا','ب','ت','ث','ج','ح','خ'],['د','ذ','ر','ز','س','ش','ص'],['ض','ط','ظ','ع','غ','ف','ق'],['ك','ل','م','ن','ه','و','ي'],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'ru', label: 'Русский', flag: '🇷🇺',
+    rows: [['А','Б','В','Г','Д','Е','Ж'],['З','И','К','Л','М','Н','О'],['П','Р','С','Т','У','Ф','Х'],['Ц','Ч','Ш','Щ','Э','Ю','Я'],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'de', label: 'Deutsch', flag: '🇩🇪',
+    rows: [['A','B','C','D','E','F','G'],['H','I','J','K','L','M','N'],['O','P','Q','R','S','T','U'],['V','W','X','Y','Z','Ä','Ö'],['Ü','ß','SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'fr', label: 'Français', flag: '🇫🇷',
+    rows: [['A','B','C','D','E','F','G'],['H','I','J','K','L','M','N'],['O','P','Q','R','S','T','U'],['V','W','X','Y','Z','É','È'],['Ê','Ç','SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'es', label: 'Español', flag: '🇪🇸',
+    rows: [['A','B','C','D','E','F','G'],['H','I','J','K','L','M','N'],['Ñ','O','P','Q','R','S','T'],['U','V','W','X','Y','Z','-'],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'ja', label: '日本語', flag: '🇯🇵',
+    rows: [['あ','い','う','え','お','か','き'],['く','け','こ','さ','し','す','せ'],['そ','た','ち','つ','て','と','な'],['に','ぬ','ね','の','は','ひ','ふ'],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'zh', label: '中文', flag: '🇨🇳',
+    rows: [['A','B','C','D','E','F','G'],['H','I','J','K','L','M','N'],['O','P','Q','R','S','T','U'],['V','W','X','Y','Z','-',"'"],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'ko', label: '한국어', flag: '🇰🇷',
+    rows: [['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ'],['ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'],['ㅏ','ㅑ','ㅓ','ㅕ','ㅗ','ㅛ','ㅜ'],['ㅠ','ㅡ','ㅣ','ㄲ','ㄸ','ㅃ','ㅆ'],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'el', label: 'Ελληνικά', flag: '🇬🇷',
+    rows: [['Α','Β','Γ','Δ','Ε','Ζ','Η'],['Θ','Ι','Κ','Λ','Μ','Ν','Ξ'],['Ο','Π','Ρ','Σ','Τ','Υ','Φ'],['Χ','Ψ','Ω','-',"'",' ',' '],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'hi', label: 'हिन्दी', flag: '🇮🇳',
+    rows: [['अ','आ','इ','ई','उ','ऊ','ए'],['क','ख','ग','घ','च','छ','ज'],['ट','ठ','ड','ढ','त','थ','द'],['प','फ','ब','म','र','ल','स'],['SPACE','DELETE','CLEAR']],
+  },
+  {
+    id: 'th', label: 'ไทย', flag: '🇹🇭',
+    rows: [['ก','ข','ค','ง','จ','ช','ซ'],['ด','ต','ถ','ท','น','บ','ป'],['พ','ม','ย','ร','ล','ว','ส'],['ห','อ','ะ','า','ิ','ี','ุ'],['SPACE','DELETE','CLEAR']],
+  },
+];
+
+type FocusZone = 'sidebar' | 'keyboard' | 'list' | 'langButton' | 'langDropdown' | 'recent';
+
 export const Search = (): JSX.Element => {
   const [, setLocation] = useLocation();
-  const { selectedCountry, selectedCountryCode, selectedCountryFlag } = useCountry();
   const { playStation } = useGlobalPlayer();
   const { t } = useLocalization();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const [recentlyPlayedStations, setRecentlyPlayedStations] = useState<Station[]>([]);
-  const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
+
+  const [focusZone, setFocusZone] = useState<FocusZone>('keyboard');
+  const [sidebarIndex, setSidebarIndex] = useState(2);
+  const [keyboardRow, setKeyboardRow] = useState(0);
+  const [keyboardCol, setKeyboardCol] = useState(0);
+  const [listFocusIndex, setListFocusIndex] = useState(0);
+  const [recentFocusIndex, setRecentFocusIndex] = useState(0);
+  const [activeLayoutIndex, setActiveLayoutIndex] = useState(0);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownIndex, setDropdownIndex] = useState(0);
+
+  const lastKeyboardPos = useRef({ row: 0, col: 0 });
+  const lastListPos = useRef(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const dropdownScrollRef = useRef<HTMLDivElement>(null);
+
+  const activeLayout = KEYBOARD_LAYOUTS[activeLayoutIndex];
+  const KEYBOARD_ROWS = activeLayout.rows;
+
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+
+  const isFocused = (idx: number) => focusZone === 'sidebar' && sidebarIndex === idx;
+  const getFocusClasses = (focused: boolean) => focused ? 'ring-2 ring-[#ff4199] scale-105' : '';
 
   useEffect(() => {
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
-
     if (searchQuery.length === 0) {
       setDebouncedSearchQuery("");
       return;
     }
-
     searchTimeoutRef.current = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
     }, 150);
-
     return () => {
       if (searchTimeoutRef.current) {
         clearTimeout(searchTimeoutRef.current);
@@ -54,279 +133,55 @@ export const Search = (): JSX.Element => {
     placeholderData: (prev) => prev,
   });
 
-  // Fetch popular stations as fallback
-  // CACHE: 24 hours
   const { data: popularStationsData } = useQuery({
-    queryKey: ['/api/stations/popular', { limit: 6, country: selectedCountryCode }],
-    queryFn: () => megaRadioApi.getPopularStations({ limit: 6, country: selectedCountryCode }),
-    staleTime: 24 * 60 * 60 * 1000, // 24 hours
-    gcTime: 24 * 60 * 60 * 1000, // 24 hours
+    queryKey: ['/api/stations/popular', { limit: 6 }],
+    queryFn: () => megaRadioApi.getPopularStations({ limit: 6 }),
+    staleTime: 24 * 60 * 60 * 1000,
+    gcTime: 24 * 60 * 60 * 1000,
   });
 
   const allSearchResults = debouncedSearchQuery.length > 0 ? (searchData?.results || []) : [];
   const visibleSearchResults = allSearchResults.slice(0, 8);
-  
-  // Load recently played stations from localStorage
+
   useEffect(() => {
     try {
       const recent = recentlyPlayedService.getStations();
-      if (Array.isArray(recent)) {
-        setRecentlyPlayedStations(recent);
-      } else {
-        setRecentlyPlayedStations([]);
-      }
-    } catch (error) {
-      console.error('Failed to load recently played stations:', error);
-      setRecentlyPlayedStations([]);
-    }
+      if (Array.isArray(recent)) setRecentlyPlayedStations(recent);
+      else setRecentlyPlayedStations([]);
+    } catch { setRecentlyPlayedStations([]); }
   }, []);
 
-  // Use recently played if available, otherwise fall back to popular stations
-  const recentStations = recentlyPlayedStations.length > 0 
-    ? recentlyPlayedStations 
+  const recentStations = recentlyPlayedStations.length > 0
+    ? recentlyPlayedStations
     : (popularStationsData?.stations || []);
 
-  // Calculate totalItems: 5 (sidebar) + 1 (input) + visible results + recent (NO country selector)
-  const totalItems = 6 + 1 + visibleSearchResults.length + recentStations.length;
-
-  // Define sidebar routes (removed Records)
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
-
-  // Custom navigation logic for multi-section layout
-  const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
-    const current = focusIndex;
-    let newIndex = current;
-
-    // Sidebar section (0-5)
-    if (current >= 0 && current <= 5) {
-      if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
-      } else if (direction === 'UP') {
-        newIndex = current > 0 ? current - 1 : current;
-      } else if (direction === 'RIGHT') {
-        newIndex = 6; // Jump to search input
-      }
-    }
-    // Search input (6)
-    else if (current === 6) {
-      if (direction === 'DOWN') {
-        if (visibleSearchResults.length > 0) {
-          newIndex = 7;
-        } else if (recentStations.length > 0) {
-          newIndex = 7;
-        }
-      } else if (direction === 'RIGHT') {
-        if (recentStations.length > 0) {
-          newIndex = 7 + visibleSearchResults.length;
-        }
-      } else if (direction === 'LEFT') {
-        newIndex = 0;
-      }
-    }
-    // Search results section (7 to 7+visibleSearchResults.length-1)
-    else if (current >= 7 && current < 7 + (visibleSearchResults?.length || 0)) {
-      const relIndex = current - 7;
-      const searchResultsLength = visibleSearchResults?.length || 0;
-
-      if (direction === 'UP') {
-        if (relIndex > 0) {
-          newIndex = current - 1;
-        } else {
-          newIndex = 6;
-        }
-      } else if (direction === 'DOWN') {
-        if (relIndex < searchResultsLength - 1) {
-          newIndex = current + 1;
-        } else {
-          if (Array.isArray(recentStations) && recentStations.length > 0) {
-            newIndex = 7 + searchResultsLength;
-          }
-        }
-      } else if (direction === 'LEFT') {
-        newIndex = 0;
-      }
-    }
-    // Recently played section (2-column grid)
-    else if (current >= 7 + (visibleSearchResults?.length || 0)) {
-      const recentStartIndex = 7 + (visibleSearchResults?.length || 0);
-      const relIndex = current - recentStartIndex;
-      const row = Math.floor(relIndex / 2);
-      const col = relIndex % 2;
-      const recentStationsLength = Array.isArray(recentStations) ? recentStations.length : 0;
-
-      if (direction === 'LEFT') {
-        if (col > 0) {
-          newIndex = current - 1;
-        } else {
-          newIndex = 0;
-        }
-      } else if (direction === 'RIGHT') {
-        if (col < 1 && current < totalItems - 1) {
-          newIndex = current + 1;
-        }
-      } else if (direction === 'UP') {
-        if (row > 0) {
-          newIndex = current - 2;
-        } else {
-          const searchResultsLength = visibleSearchResults?.length || 0;
-          if (searchResultsLength > 0) {
-            newIndex = 7 + searchResultsLength - 1;
-          } else {
-            newIndex = 6;
-          }
-        }
-      } else if (direction === 'DOWN') {
-        const nextIndex = current + 2;
-        if (nextIndex < totalItems) {
-          newIndex = nextIndex;
-        }
-      }
-    }
-
-    // Clamp to valid range
-    newIndex = Math.max(0, Math.min(totalItems - 1, newIndex));
-    setFocusIndex(newIndex);
-  };
-
-  // LGTV Reference Pattern: Set cursor position to end of input text
-  const setInputCursorToEnd = () => {
-    setTimeout(() => {
-      if (inputRef.current) {
-        const length = inputRef.current.value.length;
-        inputRef.current.setSelectionRange(length, length);
-      }
-    }, 200);
-  };
-
-  // Focus management with custom navigation
-  const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
-    totalItems,
-    cols: 1,
-    initialIndex: 6,
-    onSelect: (index) => {
-      // Sidebar navigation (0-5)
-      if (index >= 0 && index <= 5) {
-        const route = sidebarRoutes[index];
-        if (route !== '#') {
-          window.location.hash = '#' + route;
-        }
-      }
-      else if (index === 6) {
-        if (inputRef.current) {
-          inputRef.current.focus();
-          setInputCursorToEnd();
-        }
-      }
-      else if (index >= 7 && index < 7 + visibleSearchResults.length) {
-        const resultIndex = index - 7;
-        const station = visibleSearchResults[resultIndex];
-        if (station) {
-          playStation(station);
-          setLocation(`/radio-playing?station=${station._id}`);
-        }
-      }
-      else if (index >= 7 + visibleSearchResults.length) {
-        const recentIndex = index - 7 - visibleSearchResults.length;
-        const station = recentStations[recentIndex];
-        if (station) {
-          playStation(station);
-          setLocation(`/radio-playing?station=${station._id}`);
-        }
-      }
-    },
-    onBack: () => {
-      setLocation('/discover-no-user');
-    }
-  });
-  
-  // Fix: Blur input when focusIndex moves away from search input (index 5)
-  useEffect(() => {
-    if (focusIndex !== 6 && inputRef.current) {
-      inputRef.current.blur();
-    }
-  }, [focusIndex]);
-
-  // Register page-specific key handler with custom navigation
-  usePageKeyHandler('/search', (e) => {
-    // Ignore all key events when country selector modal is open
-    if (isCountrySelectorOpen) {
-      return;
-    }
-
-    const key = (window as any).tvKey;
-    
-    switch(e.keyCode) {
-      case key?.UP:
-      case 38:
-        e.preventDefault();
-        customHandleNavigation('UP');
-        break;
-      case key?.DOWN:
-      case 40:
-        e.preventDefault();
-        customHandleNavigation('DOWN');
-        break;
-      case key?.LEFT:
-      case 37:
-        e.preventDefault();
-        customHandleNavigation('LEFT');
-        break;
-      case key?.RIGHT:
-      case 39:
-        e.preventDefault();
-        customHandleNavigation('RIGHT');
-        break;
-      case key?.ENTER:
-      case 13:
-        e.preventDefault();
-        handleSelect();
-        break;
-      case key?.RETURN:
-      case 461:
-      case 10009:
-        e.preventDefault();
-        handleBack();
-        break;
-    }
-  });
-
-  // REMOVED: Auto-focus on navigation was blocking navigation on Samsung TV
-  // Input only focuses when user explicitly presses ENTER on it (handled in onSelect)
-
-  // Fallback image
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
-  // Helper function to get station image
   const getStationImage = (station: Station) => {
-    // Check for null, undefined, empty string, or the string "null"
     if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
-      return station.favicon.startsWith('http') 
-        ? station.favicon.replace(/^http:\/\//, 'https://') 
+      return station.favicon.startsWith('http')
+        ? station.favicon.replace(/^http:\/\//, 'https://')
         : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
     }
     return FALLBACK_IMAGE;
   };
 
-  // Helper function to get station tags as array
   const getStationTags = (station: Station): string[] => {
     if (!station.tags) return [];
     if (Array.isArray(station.tags)) return station.tags;
     return station.tags.split(',').map(tag => tag.trim());
   };
 
-  // Helper function to get first category/tag
   const getStationCategory = (station: Station): string => {
     const tags = getStationTags(station);
     if (tags.length > 0) return tags[0];
     return station.country || 'Radio';
   };
 
-  // Helper to highlight matching text
   const highlightText = (text: string, query: string) => {
     if (!query) return <span className="text-[#a5a5a5]">{text}</span>;
     const index = text.toLowerCase().indexOf(query.toLowerCase());
     if (index === -1) return <span className="text-[#a5a5a5]">{text}</span>;
-    
     return (
       <>
         <span className="text-[#a5a5a5]">{text.substring(0, index)}</span>
@@ -336,9 +191,279 @@ export const Search = (): JSX.Element => {
     );
   };
 
+  const getKeyLabel = (key: string) => {
+    if (key === 'SPACE') return 'SPACE';
+    if (key === 'DELETE') return '⌫';
+    if (key === 'CLEAR') return 'CLEAR';
+    return key;
+  };
+
+  const handleKeyPress = useCallback((key: string) => {
+    if (key === 'SPACE') {
+      setSearchQuery(prev => prev + ' ');
+    } else if (key === 'DELETE') {
+      setSearchQuery(prev => prev.slice(0, -1));
+    } else if (key === 'CLEAR') {
+      setSearchQuery('');
+    } else if (key.trim() === '') {
+      return;
+    } else {
+      setSearchQuery(prev => prev + key.toLowerCase());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (visibleSearchResults.length > 0 && listFocusIndex >= visibleSearchResults.length) {
+      setListFocusIndex(0);
+    }
+  }, [visibleSearchResults.length, listFocusIndex]);
+
+  useEffect(() => {
+    if (scrollContainerRef.current && searchQuery) {
+      scrollContainerRef.current.scrollTop = 0;
+      setListFocusIndex(0);
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (focusZone !== 'list' || !scrollContainerRef.current || visibleSearchResults.length === 0) return;
+    const container = scrollContainerRef.current;
+    const focusedElement = container.children[listFocusIndex] as HTMLElement | undefined;
+    if (!focusedElement) return;
+
+    const TOP_PADDING = 20;
+    const BOTTOM_PADDING = 60;
+    const viewTop = container.scrollTop;
+    const viewBottom = viewTop + container.clientHeight - BOTTOM_PADDING;
+
+    let elementTop = 0;
+    let el: HTMLElement | null = focusedElement;
+    while (el && el !== container) {
+      elementTop += el.offsetTop;
+      el = el.offsetParent as HTMLElement;
+    }
+    const elementBottom = elementTop + focusedElement.offsetHeight;
+
+    if (elementTop < viewTop + TOP_PADDING) {
+      container.scrollTo({ top: Math.max(0, elementTop - TOP_PADDING), behavior: 'smooth' });
+    } else if (elementBottom > viewBottom) {
+      container.scrollTo({ top: elementBottom - container.clientHeight + BOTTOM_PADDING, behavior: 'smooth' });
+    }
+  }, [listFocusIndex, visibleSearchResults.length, focusZone]);
+
+  useEffect(() => {
+    if (focusZone === 'langDropdown' && dropdownScrollRef.current) {
+      const container = dropdownScrollRef.current;
+      const item = container.children[dropdownIndex] as HTMLElement | undefined;
+      if (item) {
+        const itemTop = item.offsetTop;
+        const itemBottom = itemTop + item.offsetHeight;
+        if (itemTop < container.scrollTop) {
+          container.scrollTo({ top: itemTop, behavior: 'smooth' });
+        } else if (itemBottom > container.scrollTop + container.clientHeight) {
+          container.scrollTo({ top: itemBottom - container.clientHeight, behavior: 'smooth' });
+        }
+      }
+    }
+  }, [dropdownIndex, focusZone]);
+
+  usePageKeyHandler('/search', (e) => {
+    const key = (window as any).tvKey;
+    const keyCode = e.keyCode;
+    const isUp = keyCode === 38 || keyCode === key?.UP;
+    const isDown = keyCode === 40 || keyCode === key?.DOWN;
+    const isLeft = keyCode === 37 || keyCode === key?.LEFT;
+    const isRight = keyCode === 39 || keyCode === key?.RIGHT;
+    const isEnter = keyCode === 13 || keyCode === key?.ENTER;
+    const isBack = keyCode === 461 || keyCode === 10009 || keyCode === key?.RETURN;
+
+    if (isBack) {
+      e.preventDefault();
+      if (dropdownOpen) {
+        setDropdownOpen(false);
+        setFocusZone('langButton');
+        return;
+      }
+      window.location.hash = '#/discover-no-user';
+      return;
+    }
+
+    if (focusZone === 'langDropdown') {
+      if (isUp) {
+        e.preventDefault();
+        setDropdownIndex(prev => Math.max(0, prev - 1));
+      } else if (isDown) {
+        e.preventDefault();
+        setDropdownIndex(prev => Math.min(KEYBOARD_LAYOUTS.length - 1, prev + 1));
+      } else if (isEnter) {
+        e.preventDefault();
+        setActiveLayoutIndex(dropdownIndex);
+        setDropdownOpen(false);
+        setFocusZone('langButton');
+        setKeyboardRow(0);
+        setKeyboardCol(0);
+      } else if (isLeft) {
+        e.preventDefault();
+        setDropdownOpen(false);
+        setFocusZone('langButton');
+      }
+      return;
+    }
+
+    if (focusZone === 'sidebar') {
+      if (isUp) {
+        e.preventDefault();
+        setSidebarIndex(prev => Math.max(0, prev - 1));
+      } else if (isDown) {
+        e.preventDefault();
+        setSidebarIndex(prev => Math.min(5, prev + 1));
+      } else if (isRight) {
+        e.preventDefault();
+        setFocusZone('keyboard');
+        setKeyboardRow(lastKeyboardPos.current.row);
+        setKeyboardCol(lastKeyboardPos.current.col);
+      } else if (isEnter) {
+        e.preventDefault();
+        const route = sidebarRoutes[sidebarIndex];
+        if (route) {
+          window.location.hash = '#' + route;
+        }
+      }
+      return;
+    }
+
+    if (focusZone === 'keyboard') {
+      const currentRow = KEYBOARD_ROWS[keyboardRow];
+      if (isUp) {
+        e.preventDefault();
+        if (keyboardRow > 0) {
+          const newRow = keyboardRow - 1;
+          const newRowLen = KEYBOARD_ROWS[newRow].length;
+          setKeyboardRow(newRow);
+          setKeyboardCol(prev => Math.min(prev, newRowLen - 1));
+        }
+      } else if (isDown) {
+        e.preventDefault();
+        if (keyboardRow < KEYBOARD_ROWS.length - 1) {
+          const newRow = keyboardRow + 1;
+          const newRowLen = KEYBOARD_ROWS[newRow].length;
+          setKeyboardRow(newRow);
+          setKeyboardCol(prev => Math.min(prev, newRowLen - 1));
+        } else {
+          setFocusZone('langButton');
+        }
+      } else if (isLeft) {
+        e.preventDefault();
+        if (keyboardCol > 0) {
+          setKeyboardCol(prev => prev - 1);
+        } else {
+          lastKeyboardPos.current = { row: keyboardRow, col: keyboardCol };
+          if (visibleSearchResults.length > 0) {
+            setFocusZone('list');
+            setListFocusIndex(lastListPos.current);
+          } else {
+            setFocusZone('sidebar');
+          }
+        }
+      } else if (isRight) {
+        e.preventDefault();
+        if (keyboardCol < currentRow.length - 1) {
+          setKeyboardCol(prev => prev + 1);
+        }
+      } else if (isEnter) {
+        e.preventDefault();
+        const pressedKey = currentRow[keyboardCol];
+        handleKeyPress(pressedKey);
+      }
+      return;
+    }
+
+    if (focusZone === 'list') {
+      if (isUp) {
+        e.preventDefault();
+        setListFocusIndex(prev => Math.max(0, prev - 1));
+      } else if (isDown) {
+        e.preventDefault();
+        setListFocusIndex(prev => Math.min(visibleSearchResults.length - 1, prev + 1));
+      } else if (isRight) {
+        e.preventDefault();
+        lastListPos.current = listFocusIndex;
+        setFocusZone('keyboard');
+        setKeyboardRow(lastKeyboardPos.current.row);
+        setKeyboardCol(lastKeyboardPos.current.col);
+      } else if (isLeft) {
+        e.preventDefault();
+        setFocusZone('sidebar');
+      } else if (isEnter) {
+        e.preventDefault();
+        const station = visibleSearchResults[listFocusIndex];
+        if (station) {
+          playStation(station);
+          setLocation(`/radio-playing?station=${station._id}`);
+        }
+      }
+      return;
+    }
+
+    if (focusZone === 'langButton') {
+      if (isUp) {
+        e.preventDefault();
+        setFocusZone('keyboard');
+        setKeyboardRow(KEYBOARD_ROWS.length - 1);
+        setKeyboardCol(0);
+      } else if (isDown) {
+        e.preventDefault();
+        if (recentStations.length > 0) {
+          setFocusZone('recent');
+          setRecentFocusIndex(0);
+        }
+      } else if (isEnter) {
+        e.preventDefault();
+        setDropdownOpen(true);
+        setDropdownIndex(activeLayoutIndex);
+        setFocusZone('langDropdown');
+      } else if (isLeft) {
+        e.preventDefault();
+        if (visibleSearchResults.length > 0) {
+          setFocusZone('list');
+          setListFocusIndex(lastListPos.current);
+        } else {
+          setFocusZone('sidebar');
+        }
+      }
+      return;
+    }
+
+    if (focusZone === 'recent') {
+      if (isUp) {
+        e.preventDefault();
+        setFocusZone('langButton');
+      } else if (isLeft) {
+        e.preventDefault();
+        if (recentFocusIndex > 0) {
+          setRecentFocusIndex(prev => prev - 1);
+        } else {
+          setFocusZone('sidebar');
+        }
+      } else if (isRight) {
+        e.preventDefault();
+        if (recentFocusIndex < Math.min(recentStations.length, 6) - 1) {
+          setRecentFocusIndex(prev => prev + 1);
+        }
+      } else if (isEnter) {
+        e.preventDefault();
+        const station = recentStations[recentFocusIndex];
+        if (station) {
+          playStation(station);
+          setLocation(`/radio-playing?station=${station._id}`);
+        }
+      }
+      return;
+    }
+  });
+
   return (
     <div className="relative w-[1920px] h-[1080px] overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-[#0e0e0e]" data-testid="page-search">
-      {/* Logo */}
       <div className="absolute left-[30px] top-[64px] w-[164.421px] h-[57px]">
         <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[27.029px] text-white leading-normal whitespace-pre-wrap">
           <span className="font-bold">mega</span>radio
@@ -350,151 +475,264 @@ export const Search = (): JSX.Element => {
         />
       </div>
 
-      {/* Country Selector Modal - Hidden on Search page */}
-      <CountrySelector 
-        isOpen={isCountrySelectorOpen}
-        onClose={() => setIsCountrySelectorOpen(false)}
-        selectedCountry={selectedCountry}
-        onSelectCountry={() => {
-          setIsCountrySelectorOpen(false);
-        }}
-      />
-
-      {/* Fixed Left Sidebar */}
       <Sidebar activePage="search" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
-      {/* Search Title */}
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[246px] not-italic text-[32px] text-white top-[58px]">
         {t('search') || 'Search'}
       </p>
 
-      {/* Search Input */}
-      <div 
-        className={`absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px] ${getFocusClasses(isFocused(6))}`}
+      {/* LEFT SIDE: Search bar + Results list */}
+      <div
+        className="absolute left-[246px] top-[110px] w-[660px] h-[76px] rounded-[14px] z-10 flex items-center px-[30px] gap-[14px]"
+        style={{
+          background: 'rgba(255,255,255,0.14)',
+          backdropFilter: 'blur(13.621px)',
+          border: focusZone === 'list' ? '2.594px solid #ff4199' : '2.594px solid #717171',
+          boxShadow: 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
+        }}
         data-testid="input-search"
       >
-        <div className="h-[91px] overflow-clip relative rounded-[inherit] w-[774px]">
-          <input
-            ref={inputRef}
-            type="text"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-            }}
-            onFocus={() => {
-            }}
-            onBlur={() => {
-            }}
-            placeholder={t('search_placeholder') || 'Search...'}
-            className="absolute bg-transparent border-0 font-['Ubuntu',Helvetica] font-medium leading-normal left-[88.21px] not-italic outline-none text-[25.94px] text-white top-[29.84px] w-[650px] placeholder:text-[rgba(255,255,255,0.5)]"
-          />
-          <div className="absolute left-[32.43px] w-[31.134px] h-[31.134px] top-[29.84px] pointer-events-none">
-            <img
-              alt=""
-              className="block max-w-none w-full h-full"
-              src={assetPath("images/search-icon.svg")}
-            />
-          </div>
+        <div className="w-[31px] h-[31px] flex-shrink-0 opacity-60">
+          <img alt="" className="block max-w-none w-full h-full" src={assetPath("images/search-icon.svg")} />
+        </div>
+        <div className="flex items-center flex-1 min-w-0">
+          <span className="font-['Ubuntu',Helvetica] font-medium text-[25.94px] text-white truncate">
+            {searchQuery}
+          </span>
+          <span className="inline-block w-[3px] h-[30px] bg-[#ff4199] ml-[2px] animate-pulse flex-shrink-0" />
+          {!searchQuery && (
+            <span className="font-['Ubuntu',Helvetica] font-medium text-[25.94px] text-[rgba(255,255,255,0.35)] ml-[4px]">
+              {t('search_placeholder') || 'Search...'}
+            </span>
+          )}
+        </div>
+        <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30 flex-shrink-0">
+          {visibleSearchResults.length > 0 ? visibleSearchResults.length : ''}
+        </span>
+      </div>
+
+      <div
+        className="absolute left-[246px] top-[200px] z-10"
+        style={{ width: '660px', bottom: '30px' }}
+      >
+        <div
+          ref={scrollContainerRef}
+          className="absolute left-0 right-0 top-0 bottom-0 overflow-y-auto"
+          style={{ scrollbarWidth: 'none' }}
+        >
+          {searchQuery.length > 0 && visibleSearchResults.length > 0 && visibleSearchResults.map((station, index) => {
+            if (!station) return null;
+            const isItemFocused = focusZone === 'list' && listFocusIndex === index;
+            return (
+              <div
+                key={station._id || index}
+                className={`flex items-center gap-[16px] px-[24px] rounded-[12px] mb-[4px] transition-all duration-150 cursor-pointer h-[80px] ${
+                  isItemFocused
+                    ? 'bg-[#ff4199]'
+                    : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
+                }`}
+                style={{
+                  boxShadow: isItemFocused
+                    ? '0 0 20px rgba(255,65,153,0.35), inset 1px 1px 8px rgba(255,255,255,0.1)'
+                    : 'none',
+                }}
+                data-testid={`search-result-${index}`}
+                onClick={() => {
+                  if (station) {
+                    playStation(station);
+                    setLocation(`/radio-playing?station=${station._id}`);
+                  }
+                }}
+              >
+                <img
+                  src={getStationImage(station)}
+                  alt=""
+                  className="w-[44px] h-[44px] rounded-[6px] object-cover flex-shrink-0"
+                  onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
+                />
+                <div className="flex flex-col min-w-0 flex-1">
+                  <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[22px] text-white' : 'text-[20px]'}`}>
+                    {isItemFocused ? <span className="text-white">{station.name || 'Unknown Station'}</span> : highlightText(station.name || 'Unknown Station', searchQuery)}
+                  </p>
+                  <p className={`font-['Ubuntu',Helvetica] font-light text-[16px] truncate ${isItemFocused ? 'text-white/80' : 'text-[rgba(255,255,255,0.5)]'}`}>
+                    {getStationCategory(station)}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+
+          {searchQuery.length > 0 && debouncedSearchQuery.length > 0 && !isSearching && visibleSearchResults.length === 0 && (
+            <div className="text-center text-white/50 font-['Ubuntu',Helvetica] text-[20px] mt-[40px]">
+              {t('no_results_found') || `No stations found for "${searchQuery}"`}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Search Results */}
-      {searchQuery.length > 0 && Array.isArray(visibleSearchResults) && visibleSearchResults.length > 0 && visibleSearchResults.map((station, index) => {
-        if (!station) return null;
-        const topOffset = 259;
-        const rowHeight = 80;
-        const focusIdx = 7 + index;
-        
-        return (
-          <div
-            key={station._id || index}
-            className={`absolute bg-[rgba(255,255,255,0.14)] box-border flex items-center left-[246px] px-[50px] py-[20px] rounded-[14px] w-[774px] h-[65px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
-            style={{ top: `${topOffset + index * rowHeight}px` }}
-            data-testid={`search-result-${index}`}
-            onMouseEnter={() => {
-              setFocusIndex(focusIdx);
-            }}
-            onClick={() => {
-              handleSelect();
-            }}
-          >
-            <img
-              src={getStationImage(station)}
-              alt=""
-              className="w-[40px] h-[40px] rounded-[6px] object-cover mr-[16px] flex-shrink-0"
-              onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
-            />
-            <div className="flex flex-col min-w-0 flex-1">
-              <p className="font-['Ubuntu',Helvetica] font-medium leading-normal not-italic text-[22px] truncate">
-                {highlightText(station.name || 'Unknown Station', searchQuery)}
-              </p>
-              <p className="font-['Ubuntu',Helvetica] font-light text-[16px] text-[rgba(255,255,255,0.5)] truncate">
-                {getStationCategory(station)}
-              </p>
+      {/* RIGHT SIDE: Keyboard + Language dropdown + Recently Played */}
+      <div className="absolute top-[110px] z-10" style={{ left: '960px', width: '700px' }}>
+        {KEYBOARD_ROWS.map((row, rowIndex) => {
+          const isActionRow = rowIndex === KEYBOARD_ROWS.length - 1;
+          return (
+            <div key={`${activeLayout.id}-${rowIndex}`} className={`flex ${isActionRow ? 'gap-[10px] mt-[14px]' : 'gap-[6px] mb-[6px]'}`}>
+              {row.map((keyChar, colIndex) => {
+                const isKeyFocused = focusZone === 'keyboard' && keyboardRow === rowIndex && keyboardCol === colIndex;
+                const isAction = keyChar === 'SPACE' || keyChar === 'DELETE' || keyChar === 'CLEAR';
+
+                let widthClass = 'w-[92px]';
+                if (keyChar === 'SPACE') widthClass = 'flex-1';
+                else if (keyChar === 'DELETE' || keyChar === 'CLEAR') widthClass = 'w-[170px]';
+
+                return (
+                  <button
+                    key={`${activeLayout.id}-${keyChar}-${colIndex}`}
+                    className={`h-[68px] ${widthClass} rounded-[12px] font-['Ubuntu',Helvetica] font-medium text-white flex items-center justify-center transition-all duration-150 select-none ${
+                      isKeyFocused
+                        ? 'bg-[#ff4199] scale-105 text-[24px]'
+                        : isAction
+                          ? 'bg-[rgba(255,255,255,0.08)] text-[18px] text-white/70'
+                          : 'bg-[rgba(255,255,255,0.14)] text-[22px]'
+                    }`}
+                    style={{
+                      boxShadow: isKeyFocused
+                        ? '0 0 25px rgba(255,65,153,0.5), inset 1px 1px 8px rgba(255,255,255,0.15)'
+                        : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
+                    }}
+                    tabIndex={-1}
+                    data-testid={`key-${keyChar}`}
+                  >
+                    {getKeyLabel(keyChar)}
+                  </button>
+                );
+              })}
             </div>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)] rounded-[14px]" />
-          </div>
-        );
-      })}
+          );
+        })}
 
-      {/* No results message - only show after search completes, not while typing */}
-      {searchQuery.length > 0 && debouncedSearchQuery.length > 0 && !isSearching && visibleSearchResults.length === 0 && (
-        <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[246px] not-italic text-[22px] text-[rgba(255,255,255,0.5)] top-[259px]">
-          {t('no_results_found') || `No stations found for "${searchQuery}"`}
-        </p>
-      )}
-
-      {/* Recently Played Title */}
-      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[1110px] not-italic text-[32px] text-white top-[58px]">
-        {t('recently_played') || t('recent') || 'Recently Played'}
-      </p>
-
-      {/* Recently Played Stations - 2 columns x 3 rows */}
-      {Array.isArray(recentStations) && recentStations.length > 0 && recentStations.map((station, index) => {
-        if (!station) return null;
-        const row = Math.floor(index / 2);
-        const col = index % 2;
-        const leftPositions = [1110, 1340];
-        const topPositions = [136, 430, 724]; // Added 30px gap between rows (card height 264px + 30px gap)
-        const focusIdx = 7 + visibleSearchResults.length + index;
-        
-        return (
-          <div 
-            key={station._id || index}
-            className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
-            style={{ 
-              left: `${leftPositions[col] || 1110}px`,
-              top: `${topPositions[row] || 136}px`
+        <div className="relative mt-[20px]">
+          <button
+            className={`w-full h-[60px] rounded-[12px] font-['Ubuntu',Helvetica] font-medium text-[20px] flex items-center justify-between px-[24px] transition-all duration-150 select-none ${
+              focusZone === 'langButton'
+                ? 'bg-[#ff4199] text-white'
+                : 'bg-[rgba(255,255,255,0.08)] text-white/70'
+            }`}
+            style={{
+              boxShadow: focusZone === 'langButton'
+                ? '0 0 20px rgba(255,65,153,0.4)'
+                : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
             }}
-            data-testid={`recent-station-${index}`}
-            onMouseEnter={() => {
-              setFocusIndex(focusIdx);
-            }}
-            onClick={() => {
-              handleSelect();
-            }}
+            tabIndex={-1}
+            data-testid="lang-selector-button"
           >
-            <div className="absolute bg-white left-[34px] overflow-clip rounded-[6.6px] w-[132px] h-[132px] top-[34px]">
-              <img
-                alt={station.name || 'Station'}
-                className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
-                src={getStationImage(station)}
-                    loading="lazy"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
-                }}
-              />
+            <div className="flex items-center gap-[12px]">
+              <span className="text-[22px]">{activeLayout.flag}</span>
+              <span>{activeLayout.label}</span>
             </div>
-            <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[100px] not-italic text-[22px] text-center text-white top-[187px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-              {station.name || 'Unknown'}
+            <span className={`text-[16px] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}>▼</span>
+          </button>
+
+          {dropdownOpen && (
+            <div
+              className="absolute left-0 right-0 rounded-[14px] overflow-hidden z-20"
+              style={{
+                bottom: '70px',
+                background: 'rgba(30,30,30,0.98)',
+                backdropFilter: 'blur(20px)',
+                border: '2px solid rgba(255,65,153,0.3)',
+                boxShadow: '0 -8px 40px rgba(0,0,0,0.6), 0 0 30px rgba(255,65,153,0.15)',
+              }}
+            >
+              <div
+                ref={dropdownScrollRef}
+                className="overflow-y-auto"
+                style={{ maxHeight: '400px', scrollbarWidth: 'none' }}
+              >
+                {KEYBOARD_LAYOUTS.map((layout, index) => {
+                  const isLangFocused = focusZone === 'langDropdown' && dropdownIndex === index;
+                  const isActive = activeLayoutIndex === index;
+                  return (
+                    <div
+                      key={layout.id}
+                      className={`flex items-center gap-[14px] px-[24px] h-[58px] cursor-pointer transition-all duration-100 ${
+                        isLangFocused
+                          ? 'bg-[#ff4199] text-white'
+                          : isActive
+                            ? 'bg-[rgba(255,65,153,0.15)] text-white'
+                            : 'text-white/70 hover:bg-[rgba(255,255,255,0.08)]'
+                      }`}
+                      onClick={() => {
+                        setActiveLayoutIndex(index);
+                        setDropdownOpen(false);
+                        setFocusZone('langButton');
+                        setKeyboardRow(0);
+                        setKeyboardCol(0);
+                      }}
+                      data-testid={`layout-${layout.id}`}
+                    >
+                      <span className="text-[20px] w-[32px] text-center">{layout.flag}</span>
+                      <span className="font-['Ubuntu',Helvetica] font-medium text-[19px]">{layout.label}</span>
+                      {isActive && !isLangFocused && (
+                        <span className="ml-auto text-[#ff4199] text-[16px]">✓</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Recently Played - horizontal row */}
+        {recentStations.length > 0 && (
+          <div className="mt-[20px]">
+            <p className="font-['Ubuntu',Helvetica] font-bold text-[20px] text-white mb-[12px]">
+              {t('recently_played') || t('recent') || 'Recently Played'}
             </p>
-            <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[100px] not-italic text-[18px] text-center text-white top-[218.2px] translate-x-[-50%] truncate px-2 max-w-[180px]">
-              {getStationCategory(station)}
-            </p>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+            <div className="flex gap-[10px]">
+              {recentStations.slice(0, 6).map((station, index) => {
+                if (!station) return null;
+                const isStationFocused = focusZone === 'recent' && recentFocusIndex === index;
+                return (
+                  <div
+                    key={station._id || index}
+                    className={`flex flex-col items-center w-[110px] rounded-[10px] p-[8px] cursor-pointer transition-all duration-150 ${
+                      isStationFocused
+                        ? 'bg-[#ff4199] scale-105'
+                        : 'bg-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.12)]'
+                    }`}
+                    style={{
+                      boxShadow: isStationFocused
+                        ? '0 0 20px rgba(255,65,153,0.5)'
+                        : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
+                    }}
+                    data-testid={`recent-station-${index}`}
+                    onClick={() => {
+                      if (station) {
+                        playStation(station);
+                        setLocation(`/radio-playing?station=${station._id}`);
+                      }
+                    }}
+                  >
+                    <div className="w-[70px] h-[70px] rounded-[8px] overflow-hidden bg-white mb-[6px] flex-shrink-0">
+                      <img
+                        alt={station.name || 'Station'}
+                        className="w-full h-full object-cover"
+                        src={getStationImage(station)}
+                        loading="lazy"
+                        onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
+                      />
+                    </div>
+                    <p className={`font-['Ubuntu',Helvetica] font-medium text-[13px] text-center text-white truncate w-full leading-tight ${isStationFocused ? 'text-white' : ''}`}>
+                      {station.name || 'Unknown'}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        );
-      })}
+        )}
+      </div>
     </div>
   );
 };
