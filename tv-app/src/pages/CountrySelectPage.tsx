@@ -16,7 +16,7 @@ export const CountrySelectPage = (): JSX.Element => {
 
   const handleNavigateToSidebar = useCallback(() => {
     setFocusZone('sidebar');
-    setSidebarIndex(5);
+    setSidebarIndex(0);
   }, []);
 
   const handleNavigateToContent = useCallback(() => {
