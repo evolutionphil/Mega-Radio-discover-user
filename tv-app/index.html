@@ -93,7 +93,7 @@
     <!-- Polyfills for older Samsung/LG TV browsers (MUST load before React) -->
     <script type="text/javascript" src="./js/polyfills.js?v=1770725353190"></script>
   
-    <!-- React App - Vite will replace this during build -->
-    <script src="assets/index-1770725353190.js"></script>
+    <!-- React App - Vite dev server uses this entry point, build replaces it -->
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

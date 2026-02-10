@@ -98,12 +98,6 @@ function makePathsRelative() {
           chunk.code = chunk.code.replace(/\/images\//g, './images/');
           chunk.code = chunk.code.replace(/\/assets\//g, './assets/');
           
-          // Fix misnamed PNG files that are actually SVG
-          chunk.code = chunk.code.replace(/ellipse2\.png/g, 'ellipse2.svg');
-          chunk.code = chunk.code.replace(/waves\.png/g, 'waves.svg');
-          chunk.code = chunk.code.replace(/monitor\.png/g, 'monitor.svg');
-          chunk.code = chunk.code.replace(/phone\.png/g, 'phone.svg');
-          chunk.code = chunk.code.replace(/tablet\.png/g, 'tablet.svg');
         }
       }
     },
