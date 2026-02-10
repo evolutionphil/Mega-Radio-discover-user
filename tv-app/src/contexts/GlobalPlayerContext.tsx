@@ -54,30 +54,48 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       audioPlayerRef.current = playerInstance;
       
       playerInstance.onPlay = () => {
+        console.log('[✅ EVENT] onPlay - Stream playing successfully');
         setIsPlaying(true);
         setIsBuffering(false);
         retryCountRef.current = 0;
       };
       
       playerInstance.onPause = () => {
+        console.log('[⏸️ EVENT] onPause');
         setIsPlaying(false);
       };
       
       playerInstance.onStop = () => {
+        console.log('[⏹️ EVENT] onStop');
         setIsPlaying(false);
       };
       
       playerInstance.onBuffering = () => {
+        console.log('[⏳ EVENT] onBuffering - Loading stream data...');
         setIsBuffering(true);
       };
       
       playerInstance.onReady = () => {
+        console.log('[✅ EVENT] onReady - Stream ready');
         setIsBuffering(false);
       };
       
       playerInstance.onError = (error: any) => {
+        const stationName = currentStationRef.current?.name || 'Unknown';
+        const stationUrl = currentStationRef.current?.url_resolved || currentStationRef.current?.url || 'no-url';
+        const errorMsg = error?.message || error?.type || (typeof error === 'string' ? error : JSON.stringify(error));
+        const errorCode = error?.code || error?.target?.error?.code || 'N/A';
+        
+        console.error('[🔴 ERROR] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+        console.error('[🔴 ERROR] Station:', stationName);
+        console.error('[🔴 ERROR] URL:', stationUrl.substring(0, 120));
+        console.error('[🔴 ERROR] Error:', errorMsg);
+        console.error('[🔴 ERROR] Error code:', errorCode);
+        console.error('[🔴 ERROR] Retry count:', retryCountRef.current, '/', maxRetries);
+        console.error('[🔴 ERROR] Full error object:', error);
+        
         setIsBuffering(false);
-        trackError(`Audio playback error: ${error?.message || 'Unknown error'}`, 'GlobalPlayer');
+        trackError(`Audio playback error: ${errorMsg}`, 'GlobalPlayer');
         
         if (retryTimeoutRef.current) {
           clearTimeout(retryTimeoutRef.current);
@@ -87,6 +105,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         const currentStationToRetry = currentStationRef.current;
         if (currentStationToRetry && retryCountRef.current < maxRetries) {
           const delay = Math.min(1000 * Math.pow(2, retryCountRef.current), 10000);
+          console.log(`[🔄 RETRY] Will retry in ${delay}ms (attempt ${retryCountRef.current + 1}/${maxRetries})`);
           
           retryTimeoutRef.current = setTimeout(() => {
             retryCountRef.current++;
@@ -94,10 +113,12 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
             if (audioPlayerRef.current && currentStationToRetry) {
               const rawUrl = currentStationToRetry.url_resolved || currentStationToRetry.url;
               const playUrl = getProxiedUrl(rawUrl);
+              console.log(`[🔄 RETRY] Retrying: ${currentStationToRetry.name} - ${playUrl.substring(0, 80)}`);
               audioPlayerRef.current.play(playUrl);
             }
           }, delay);
         } else if (retryCountRef.current >= maxRetries) {
+          console.error('[🔴 FAILED] Max retries reached. Giving up on:', stationName);
           setIsPlaying(false);
           retryCountRef.current = 0;
         }
@@ -239,6 +260,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
 
   const playStation = (station: Station) => {
     if (!audioPlayerRef.current) {
+      console.error('[🔴 PLAY] Audio player not initialized');
       trackError('Audio player not initialized', 'playStation');
       return;
     }
@@ -246,11 +268,25 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     const rawUrl = station.url_resolved || station.url;
     const playUrl = getProxiedUrl(rawUrl);
     
+    console.log('[🎵 PLAY] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('[🎵 PLAY] Station:', station.name);
+    console.log('[🎵 PLAY] ID:', station._id);
+    console.log('[🎵 PLAY] Raw URL:', rawUrl);
+    console.log('[🎵 PLAY] Proxied URL:', playUrl);
+    console.log('[🎵 PLAY] URL type:', rawUrl?.startsWith('https') ? 'HTTPS' : rawUrl?.startsWith('http') ? 'HTTP' : 'OTHER');
+    console.log('[🎵 PLAY] Has url_resolved:', !!station.url_resolved);
+    console.log('[🎵 PLAY] Has url:', !!station.url);
+    console.log('[🎵 PLAY] Country:', station.country);
+    console.log('[🎵 PLAY] Codec:', station.codec || 'unknown');
+    console.log('[🎵 PLAY] Bitrate:', station.bitrate || 'unknown');
+    
     try {
       if (audioPlayerRef.current && typeof audioPlayerRef.current.stop === 'function') {
+        console.log('[🎵 PLAY] Stopping previous stream...');
         audioPlayerRef.current.stop();
       }
     } catch (err) {
+      console.warn('[🎵 PLAY] Stop previous failed:', err);
     }
     
     setCurrentStation(station);
@@ -262,9 +298,13 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     }
     retryCountRef.current = 0;
     
+    console.log('[🎵 PLAY] Starting playback in 50ms...');
     setTimeout(() => {
       if (audioPlayerRef.current && currentStationRef.current?._id === station._id) {
+        console.log('[🎵 PLAY] Calling player.play() now');
         audioPlayerRef.current.play(playUrl);
+      } else {
+        console.warn('[🎵 PLAY] Skipped play - station changed or player gone');
       }
     }, 50);
 

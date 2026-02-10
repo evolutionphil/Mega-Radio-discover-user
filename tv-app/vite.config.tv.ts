@@ -26,11 +26,14 @@ function streamProxyPlugin() {
           return;
         }
 
+        console.log(`[PROXY] ━━━ Request: ${urlParam.substring(0, 100)}`);
+
         function followAndStream(url: string, redirectsLeft: number) {
           let parsedUrl: URL;
           try {
             parsedUrl = new URL(url);
           } catch {
+            console.error(`[PROXY] ❌ Invalid redirect URL: ${url}`);
             if (!res.headersSent) { res.statusCode = 502; res.end('Invalid redirect URL'); }
             return;
           }
@@ -44,14 +47,24 @@ function streamProxyPlugin() {
             },
             timeout: 15000,
           }, (proxyRes) => {
+            console.log(`[PROXY] Response: status=${proxyRes.statusCode} content-type=${proxyRes.headers['content-type'] || 'none'} url=${url.substring(0, 80)}`);
+            
             if (proxyRes.statusCode && proxyRes.statusCode >= 300 && proxyRes.statusCode < 400 && proxyRes.headers.location) {
               if (redirectsLeft <= 0) {
+                console.error(`[PROXY] ❌ Too many redirects for: ${urlParam.substring(0, 80)}`);
                 if (!res.headersSent) { res.statusCode = 502; res.end('Too many redirects'); }
                 return;
               }
               const redirectUrl = new URL(proxyRes.headers.location, parsedUrl.href).href;
+              console.log(`[PROXY] 🔄 Redirect → ${redirectUrl.substring(0, 80)}`);
               followAndStream(redirectUrl, redirectsLeft - 1);
               return;
+            }
+
+            if (proxyRes.statusCode && proxyRes.statusCode >= 400) {
+              console.error(`[PROXY] ❌ HTTP Error ${proxyRes.statusCode} for: ${url.substring(0, 80)}`);
+            } else {
+              console.log(`[PROXY] ✅ Streaming: content-type=${proxyRes.headers['content-type']}`);
             }
 
             const headers: Record<string, string> = {
@@ -67,11 +80,17 @@ function streamProxyPlugin() {
             proxyRes.pipe(res);
           });
 
-          proxyReq.on('error', () => {
+          proxyReq.on('error', (err: any) => {
+            console.error(`[PROXY] ❌ Connection error: ${err.message} for: ${url.substring(0, 80)}`);
             if (!res.headersSent) {
               res.statusCode = 502;
               res.end('Stream proxy error');
             }
+          });
+
+          proxyReq.on('timeout', () => {
+            console.error(`[PROXY] ❌ Timeout (15s) for: ${url.substring(0, 80)}`);
+            proxyReq.destroy();
           });
 
           req.on('close', () => {

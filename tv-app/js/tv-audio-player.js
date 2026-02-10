@@ -256,10 +256,13 @@
             var self = this;
             var container = document.getElementById(this.containerId);
             
+            console.log('[WebPlayer] Initializing HTML5 audio player');
+            
             // Create audio element
             this.audioElement = document.createElement('audio');
             this.audioElement.setAttribute('preload', 'auto');
             this.audioElement.setAttribute('controls', 'true');
+            this.audioElement.crossOrigin = 'anonymous';
             
             if (container) {
                 container.appendChild(this.audioElement);
@@ -267,27 +270,43 @@
             
             // Event listeners
             this.audioElement.addEventListener('canplay', function() {
+                console.log('[WebPlayer] ✅ canplay - ready to play');
                 self.onReady && self.onReady();
             });
             
             this.audioElement.addEventListener('play', function() {
+                console.log('[WebPlayer] ▶️ play event fired');
                 self.isPlaying = true;
                 self.onPlay && self.onPlay();
             });
             
             this.audioElement.addEventListener('pause', function() {
+                console.log('[WebPlayer] ⏸️ pause event fired');
                 self.isPlaying = false;
                 self.onPause && self.onPause();
             });
             
             this.audioElement.addEventListener('ended', function() {
+                console.log('[WebPlayer] ⏹️ ended event fired');
                 self.isPlaying = false;
                 self.onEnded && self.onEnded();
             });
             
             this.audioElement.addEventListener('error', function(e) {
                 var mediaErr = self.audioElement.error;
-                console.error('Web audio error:', mediaErr ? 'code=' + mediaErr.code + ' msg=' + mediaErr.message : 'unknown', 'src=' + (self.currentUrl || '').substring(0, 80));
+                var errorInfo = {
+                    code: mediaErr ? mediaErr.code : 'N/A',
+                    message: mediaErr ? mediaErr.message : 'unknown',
+                    networkState: self.audioElement.networkState,
+                    readyState: self.audioElement.readyState,
+                    src: (self.currentUrl || '').substring(0, 120)
+                };
+                // MediaError codes: 1=ABORTED, 2=NETWORK, 3=DECODE, 4=SRC_NOT_SUPPORTED
+                var codeNames = {1: 'ABORTED', 2: 'NETWORK', 3: 'DECODE', 4: 'SRC_NOT_SUPPORTED'};
+                var codeName = codeNames[errorInfo.code] || 'UNKNOWN';
+                console.error('[WebPlayer] 🔴 ERROR:', codeName, '(' + errorInfo.code + ')', errorInfo.message);
+                console.error('[WebPlayer] 🔴 Network state:', errorInfo.networkState, '| Ready state:', errorInfo.readyState);
+                console.error('[WebPlayer] 🔴 URL:', errorInfo.src);
                 self.onError && self.onError(e);
             });
             
@@ -296,18 +315,34 @@
             });
             
             this.audioElement.addEventListener('waiting', function() {
+                console.log('[WebPlayer] ⏳ waiting/buffering...');
                 self.onBuffering && self.onBuffering();
+            });
+
+            this.audioElement.addEventListener('stalled', function() {
+                console.warn('[WebPlayer] ⚠️ stalled - data transfer interrupted');
+            });
+
+            this.audioElement.addEventListener('abort', function() {
+                console.warn('[WebPlayer] ⚠️ abort - loading aborted');
+            });
+
+            this.audioElement.addEventListener('loadstart', function() {
+                console.log('[WebPlayer] 📥 loadstart - beginning to load:', (self.currentUrl || '').substring(0, 80));
             });
             
             this.play = function(url) {
                 self.currentUrl = url;
+                console.log('[WebPlayer] 🎵 play() called with:', url.substring(0, 120));
                 self.audioElement.src = url;
                 self.audioElement.load();
                 
                 var playPromise = self.audioElement.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(function(error) {
-                        console.error('Play error:', error.name, error.message);
+                    playPromise.then(function() {
+                        console.log('[WebPlayer] ✅ play() promise resolved');
+                    }).catch(function(error) {
+                        console.error('[WebPlayer] 🔴 play() promise rejected:', error.name, error.message);
                         self.onError && self.onError(error);
                     });
                 }
