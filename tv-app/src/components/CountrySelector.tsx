@@ -17,6 +17,8 @@ interface CountrySelectorProps {
   selectedCountry: string;
   onSelectCountry: (country: Country) => void;
   mode?: 'modal' | 'page';
+  onNavigateToSidebar?: () => void;
+  keyboardDisabled?: boolean;
 }
 
 const KEYBOARD_ROWS = [
@@ -27,7 +29,7 @@ const KEYBOARD_ROWS = [
   ['SPACE', 'DELETE', 'CLEAR'],
 ];
 
-export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry, mode = 'modal' }: CountrySelectorProps) => {
+export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry, mode = 'modal', onNavigateToSidebar, keyboardDisabled = false }: CountrySelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [focusZone, setFocusZone] = useState<'keyboard' | 'list'>('keyboard');
   const [keyboardRow, setKeyboardRow] = useState(0);
@@ -143,6 +145,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (keyboardDisabled) return;
       const key = (window as any).tvKey;
       e.stopPropagation();
 
@@ -183,6 +186,8 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           e.preventDefault();
           if (keyboardCol > 0) {
             setKeyboardCol(prev => prev - 1);
+          } else if (mode === 'page' && onNavigateToSidebar) {
+            onNavigateToSidebar();
           }
         } else if (isRight) {
           e.preventDefault();
@@ -223,7 +228,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, focusZone, keyboardRow, keyboardCol, listFocusIndex, filteredCountries, onSelectCountry, onClose, handleKeyPress]);
+  }, [isOpen, focusZone, keyboardRow, keyboardCol, listFocusIndex, filteredCountries, onSelectCountry, onClose, handleKeyPress, keyboardDisabled, mode, onNavigateToSidebar]);
 
   useEffect(() => {
     if (isOpen) {
