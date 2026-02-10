@@ -520,6 +520,18 @@ export const Search = (): JSX.Element => {
           className="absolute left-0 right-0 top-0 bottom-0 overflow-y-auto"
           style={{ scrollbarWidth: 'none' }}
         >
+          {searchQuery.length > 0 && isSearching && visibleSearchResults.length === 0 && (
+            <div className="flex flex-col items-center justify-center mt-[80px] gap-[20px]">
+              <div className="relative w-[48px] h-[48px]">
+                <div className="absolute inset-0 rounded-full border-[3px] border-white/10" />
+                <div className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-[#ff4199] animate-spin" />
+              </div>
+              <span className="font-['Ubuntu',Helvetica] text-[20px] text-white/40 animate-pulse">
+                {t('searching') || 'Searching...'}
+              </span>
+            </div>
+          )}
+
           {searchQuery.length > 0 && visibleSearchResults.length > 0 && visibleSearchResults.map((station, index) => {
             if (!station) return null;
             const isItemFocused = focusZone === 'list' && listFocusIndex === index;
