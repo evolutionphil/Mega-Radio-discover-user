@@ -19,18 +19,21 @@ interface CountrySelectorProps {
 }
 
 const KEYBOARD_ROWS = [
-  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-  ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+  ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+  ['H', 'I', 'J', 'K', 'L', 'M', 'N'],
+  ['O', 'P', 'Q', 'R', 'S', 'T', 'U'],
+  ['V', 'W', 'X', 'Y', 'Z', '-', "'"],
   ['SPACE', 'DELETE', 'CLEAR'],
 ];
 
 export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry }: CountrySelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [focusZone, setFocusZone] = useState<'keyboard' | 'list'>('keyboard');
-  const [keyboardRow, setKeyboardRow] = useState(1);
+  const [keyboardRow, setKeyboardRow] = useState(0);
   const [keyboardCol, setKeyboardCol] = useState(0);
   const [listFocusIndex, setListFocusIndex] = useState(0);
+  const lastKeyboardPos = useRef({ row: 0, col: 0 });
+  const lastListPos = useRef(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { t } = useLocalization();
 
@@ -71,18 +74,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     const filtered = countries
       .filter(country => country.name.toLowerCase().includes(searchQuery.toLowerCase()))
       .sort((a, b) => {
-        if (!searchQuery) {
-          return a.name.localeCompare(b.name);
-        }
+        if (!searchQuery) return a.name.localeCompare(b.name);
         const queryLower = searchQuery.toLowerCase();
-        const aNameLower = a.name.toLowerCase();
-        const bNameLower = b.name.toLowerCase();
-        const aExact = aNameLower === queryLower;
-        const bExact = bNameLower === queryLower;
-        if (aExact && !bExact) return -1;
-        if (!aExact && bExact) return 1;
-        const aStarts = aNameLower.startsWith(queryLower);
-        const bStarts = bNameLower.startsWith(queryLower);
+        const aStarts = a.name.toLowerCase().startsWith(queryLower);
+        const bStarts = b.name.toLowerCase().startsWith(queryLower);
         if (aStarts && !bStarts) return -1;
         if (!aStarts && bStarts) return 1;
         return a.name.localeCompare(b.name);
@@ -193,7 +188,9 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           if (keyboardCol < currentRow.length - 1) {
             setKeyboardCol(prev => prev + 1);
           } else {
+            lastKeyboardPos.current = { row: keyboardRow, col: keyboardCol };
             setFocusZone('list');
+            setListFocusIndex(lastListPos.current);
           }
         } else if (isEnter) {
           e.preventDefault();
@@ -209,7 +206,10 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           setListFocusIndex(prev => Math.min(filteredCountries.length - 1, prev + 1));
         } else if (isLeft) {
           e.preventDefault();
+          lastListPos.current = listFocusIndex;
           setFocusZone('keyboard');
+          setKeyboardRow(lastKeyboardPos.current.row);
+          setKeyboardCol(lastKeyboardPos.current.col);
         } else if (isEnter) {
           e.preventDefault();
           if (filteredCountries[listFocusIndex]) {
@@ -228,26 +228,34 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     if (isOpen) {
       setSearchQuery('');
       setFocusZone('keyboard');
-      setKeyboardRow(1);
+      setKeyboardRow(0);
       setKeyboardCol(0);
       setListFocusIndex(0);
+      lastKeyboardPos.current = { row: 0, col: 0 };
+      lastListPos.current = 0;
     }
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   const getKeyLabel = (key: string) => {
-    if (key === 'SPACE') return '␣';
+    if (key === 'SPACE') return 'SPACE';
     if (key === 'DELETE') return '⌫';
-    if (key === 'CLEAR') return 'CLR';
+    if (key === 'CLEAR') return 'CLEAR';
     return key;
   };
 
-  const getKeyWidth = (key: string) => {
-    if (key === 'SPACE') return 'w-[160px]';
-    if (key === 'DELETE') return 'w-[100px]';
-    if (key === 'CLEAR') return 'w-[100px]';
-    return 'w-[52px]';
+  const highlightMatch = (name: string) => {
+    if (!searchQuery) return <span>{name}</span>;
+    const idx = name.toLowerCase().indexOf(searchQuery.toLowerCase());
+    if (idx === -1) return <span>{name}</span>;
+    return (
+      <>
+        <span>{name.substring(0, idx)}</span>
+        <span className="text-[#ff4199]">{name.substring(idx, idx + searchQuery.length)}</span>
+        <span>{name.substring(idx + searchQuery.length)}</span>
+      </>
+    );
   };
 
   return (
@@ -256,45 +264,75 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       onKeyDown={(e) => { e.stopPropagation(); }}
       data-testid="country-selector-fullpage"
     >
-      <div className="absolute top-0 left-0 w-[1920px] h-[1080px] bg-[#0e0e0e] bg-opacity-95" />
+      <div className="absolute top-0 left-0 w-[1920px] h-[1080px] bg-gradient-to-br from-[#1a1a1a] to-[#0e0e0e]" />
 
-      <div className="absolute top-0 left-0 w-[1920px] h-[1080px] flex flex-col">
-        <div className="flex items-center justify-between px-[60px] pt-[40px] pb-[10px]">
-          <h1 className="font-['Ubuntu',Helvetica] font-bold text-[42px] text-white">
-            {t('select_country') || 'Select Country'}
-          </h1>
-          <div className="font-['Ubuntu',Helvetica] text-[18px] text-white/40">
-            {t('press_back_to_close') || 'Press BACK to close'}
+      <div className="absolute top-0 left-0 w-[1920px] h-[1080px]">
+        <div className="absolute left-[30px] top-[40px] w-[164.421px] h-[57px] z-10">
+          <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[27.029px] text-white leading-normal whitespace-pre-wrap">
+            <span className="font-bold">mega</span>radio
+          </p>
+          <div className="absolute bottom-[2.84%] left-0 right-[65.2%] top-0">
+            <img alt="" className="block max-w-none w-full h-full" src={assetPath("images/path-8.svg")} />
           </div>
         </div>
 
-        <div className="mx-[60px] mb-[20px] px-[24px] py-[14px] rounded-[12px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] flex items-center min-h-[56px]">
-          <span className="font-['Ubuntu',Helvetica] text-[24px] text-white/60 mr-[12px]">🔍</span>
-          <span className="font-['Ubuntu',Helvetica] text-[24px] text-white">
-            {searchQuery || ''}
-          </span>
-          <span className="inline-block w-[2px] h-[28px] bg-[#ff4199] ml-[2px] animate-pulse" />
-          {!searchQuery && (
-            <span className="font-['Ubuntu',Helvetica] text-[24px] text-white/30 ml-[4px]">
-              {t('search_countries') || 'Type to search...'}
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[246px] top-[42px] text-[32px] text-white z-10">
+          {t('select_country') || 'Select Country'}
+        </p>
+
+        <div
+          className="absolute left-[246px] top-[110px] w-[660px] h-[76px] rounded-[14px] z-10 flex items-center px-[30px] gap-[14px]"
+          style={{
+            background: 'rgba(255,255,255,0.14)',
+            backdropFilter: 'blur(13.621px)',
+            border: focusZone === 'keyboard' ? '2.594px solid #ff4199' : '2.594px solid #717171',
+            boxShadow: 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
+          }}
+        >
+          <div className="w-[31px] h-[31px] flex-shrink-0 opacity-60">
+            <img alt="" className="block max-w-none w-full h-full" src={assetPath("images/search-icon.svg")} />
+          </div>
+          <div className="flex items-center flex-1 min-w-0">
+            <span className="font-['Ubuntu',Helvetica] font-medium text-[25.94px] text-white truncate">
+              {searchQuery}
             </span>
-          )}
+            <span className="inline-block w-[3px] h-[30px] bg-[#ff4199] ml-[2px] animate-pulse flex-shrink-0" />
+            {!searchQuery && (
+              <span className="font-['Ubuntu',Helvetica] font-medium text-[25.94px] text-[rgba(255,255,255,0.35)] ml-[4px]">
+                {t('search_countries') || 'Search countries...'}
+              </span>
+            )}
+          </div>
         </div>
 
-        <div className="flex flex-1 px-[60px] gap-[40px] overflow-hidden">
-          <div className="flex flex-col gap-[8px] pt-[10px] flex-shrink-0" style={{ width: '550px' }}>
-            {KEYBOARD_ROWS.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex gap-[6px] justify-start">
+        <div className="absolute left-[246px] top-[220px] z-10" style={{ width: '660px' }}>
+          {KEYBOARD_ROWS.map((row, rowIndex) => {
+            const isActionRow = rowIndex === KEYBOARD_ROWS.length - 1;
+            return (
+              <div key={rowIndex} className={`flex ${isActionRow ? 'gap-[10px] mt-[14px]' : 'gap-[6px] mb-[6px]'}`}>
                 {row.map((keyChar, colIndex) => {
-                  const isFocused = focusZone === 'keyboard' && keyboardRow === rowIndex && keyboardCol === colIndex;
+                  const isKeyFocused = focusZone === 'keyboard' && keyboardRow === rowIndex && keyboardCol === colIndex;
+                  const isAction = keyChar === 'SPACE' || keyChar === 'DELETE' || keyChar === 'CLEAR';
+
+                  let widthClass = 'w-[88px]';
+                  if (keyChar === 'SPACE') widthClass = 'flex-1';
+                  else if (keyChar === 'DELETE' || keyChar === 'CLEAR') widthClass = 'w-[160px]';
+
                   return (
                     <button
                       key={keyChar}
-                      className={`h-[52px] ${getKeyWidth(keyChar)} rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[20px] text-white flex items-center justify-center transition-all duration-150 select-none ${
-                        isFocused
-                          ? 'bg-[#ff4199] shadow-[0_0_20px_rgba(255,65,153,0.6)] scale-110'
-                          : 'bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.15)]'
+                      className={`h-[68px] ${widthClass} rounded-[12px] font-['Ubuntu',Helvetica] font-medium text-white flex items-center justify-center transition-all duration-150 select-none ${
+                        isKeyFocused
+                          ? 'bg-[#ff4199] scale-105 text-[24px]'
+                          : isAction
+                            ? 'bg-[rgba(255,255,255,0.08)] text-[18px] text-white/70'
+                            : 'bg-[rgba(255,255,255,0.14)] text-[22px]'
                       }`}
+                      style={{
+                        boxShadow: isKeyFocused
+                          ? '0 0 25px rgba(255,65,153,0.5), inset 1px 1px 8px rgba(255,255,255,0.15)'
+                          : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
+                      }}
                       tabIndex={-1}
                       data-testid={`key-${keyChar}`}
                     >
@@ -303,63 +341,108 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                   );
                 })}
               </div>
-            ))}
-            <div className="mt-[16px] font-['Ubuntu',Helvetica] text-[16px] text-white/30">
-              {focusZone === 'keyboard'
-                ? '← → ↑ ↓ Navigate • OK to type • → to list'
-                : '← Back to keyboard'}
+            );
+          })}
+
+          <div className="flex items-center justify-between mt-[20px] px-[4px]">
+            <div className="flex items-center gap-[20px]">
+              <div className="flex items-center gap-[6px]">
+                <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
+                  <span className="text-white/60 text-[14px]">OK</span>
+                </div>
+                <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30">{t('type') || 'Type'}</span>
+              </div>
+              <div className="flex items-center gap-[6px]">
+                <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
+                  <span className="text-white/60 text-[14px]">→</span>
+                </div>
+                <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30">{t('results') || 'Results'}</span>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <div className="font-['Ubuntu',Helvetica] text-[18px] text-white/50 mb-[10px]">
-              {filteredCountries.length} {filteredCountries.length === 1 ? 'country' : 'countries'}
-            </div>
-            <div
-              ref={scrollContainerRef}
-              className="flex-1 overflow-y-auto pr-[8px]"
-              style={{
-                scrollbarWidth: 'thin',
-                scrollbarColor: '#ff4199 rgba(255,255,255,0.1)',
-              }}
-            >
-              {countriesLoading ? (
-                <div className="text-center text-white font-['Ubuntu',Helvetica] text-[24px] mt-20">
-                  {t('loading') || 'Loading countries...'}
-                </div>
-              ) : filteredCountries.length === 0 ? (
-                <div className="text-center text-white/50 font-['Ubuntu',Helvetica] text-[20px] mt-10">
-                  {t('no_countries_found') || 'No countries found'}
-                </div>
-              ) : (
-                filteredCountries.map((country, index) => {
-                  const isFocused = focusZone === 'list' && listFocusIndex === index;
-                  return (
-                    <div
-                      key={`${country.code}-${index}`}
-                      className={`flex items-center gap-[16px] px-[20px] py-[12px] rounded-[10px] mb-[4px] transition-all duration-150 ${
-                        isFocused
-                          ? 'bg-[#ff4199] shadow-[0_0_15px_rgba(255,65,153,0.4)]'
-                          : 'bg-[rgba(255,255,255,0.03)]'
-                      }`}
-                      data-testid={`country-option-${country.code}`}
-                    >
-                      <img
-                        src={country.flag}
-                        alt={country.name}
-                        className="w-[40px] h-[30px] object-cover rounded-[4px] flex-shrink-0"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="30"%3E%3Crect width="40" height="30" fill="%23979797"/%3E%3C/svg%3E';
-                        }}
-                      />
-                      <span className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-white truncate">
-                        {country.name}
-                      </span>
-                    </div>
-                  );
-                })
-              )}
-            </div>
+        <div className="absolute right-[60px] top-[42px] z-10">
+          <span className="font-['Ubuntu',Helvetica] text-[18px] text-white/30">
+            {filteredCountries.length - 1} {t('countries') || 'countries'}
+          </span>
+        </div>
+
+        <div
+          className="absolute right-0 top-[110px] z-10 flex flex-col"
+          style={{ left: '960px', bottom: '30px' }}
+        >
+          <div className="absolute top-0 left-0 right-[60px] h-[76px] rounded-[14px] bg-[rgba(255,255,255,0.08)] flex items-center px-[24px]" style={{ boxShadow: 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)' }}>
+            <span className="font-['Ubuntu',Helvetica] font-bold text-[22px] text-white/70">
+              {searchQuery
+                ? `"${searchQuery}" — ${filteredCountries.length} ${t('results') || 'results'}`
+                : t('all_countries') || 'All Countries'
+              }
+            </span>
+          </div>
+
+          <div
+            ref={scrollContainerRef}
+            className="absolute left-0 right-[60px] overflow-y-auto"
+            style={{
+              top: '96px',
+              bottom: '0px',
+              scrollbarWidth: 'none',
+            }}
+          >
+            {countriesLoading ? (
+              <div className="text-center text-white/50 font-['Ubuntu',Helvetica] text-[22px] mt-[80px]">
+                {t('loading') || 'Loading...'}
+              </div>
+            ) : filteredCountries.length === 0 ? (
+              <div className="text-center text-white/50 font-['Ubuntu',Helvetica] text-[20px] mt-[40px]">
+                {t('no_countries_found') || 'No countries found'}
+              </div>
+            ) : (
+              filteredCountries.map((country, index) => {
+                const isItemFocused = focusZone === 'list' && listFocusIndex === index;
+                const isSelected = country.name === selectedCountry;
+                return (
+                  <div
+                    key={`${country.code}-${index}`}
+                    className={`flex items-center gap-[16px] px-[24px] rounded-[12px] mb-[4px] transition-all duration-150 cursor-pointer ${
+                      isItemFocused
+                        ? 'bg-[#ff4199] py-[14px]'
+                        : isSelected
+                          ? 'bg-[rgba(255,65,153,0.15)] py-[12px]'
+                          : 'bg-[rgba(255,255,255,0.05)] py-[12px] hover:bg-[rgba(255,255,255,0.08)]'
+                    }`}
+                    style={{
+                      boxShadow: isItemFocused
+                        ? '0 0 20px rgba(255,65,153,0.35), inset 1px 1px 8px rgba(255,255,255,0.1)'
+                        : isSelected
+                          ? 'inset 1px 1px 8px rgba(255,65,153,0.15)'
+                          : 'none',
+                    }}
+                    onClick={() => {
+                      onSelectCountry(country);
+                      onClose();
+                    }}
+                    data-testid={`country-option-${country.code}`}
+                  >
+                    <img
+                      src={country.flag}
+                      alt={country.name}
+                      className={`object-cover rounded-[6px] flex-shrink-0 ${isItemFocused ? 'w-[44px] h-[33px]' : 'w-[38px] h-[28px]'}`}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="30"%3E%3Crect width="40" height="30" fill="%23979797"/%3E%3C/svg%3E';
+                      }}
+                    />
+                    <span className={`font-['Ubuntu',Helvetica] font-medium text-white truncate ${isItemFocused ? 'text-[24px]' : 'text-[20px]'}`}>
+                      {highlightMatch(country.name)}
+                    </span>
+                    {isSelected && !isItemFocused && (
+                      <span className="ml-auto font-['Ubuntu',Helvetica] text-[16px] text-[#ff4199] flex-shrink-0">✓</span>
+                    )}
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </div>
