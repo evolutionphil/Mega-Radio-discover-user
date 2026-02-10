@@ -3,7 +3,7 @@ import { assetPath } from "@/lib/assetPath";
 import { useLocalization } from "@/contexts/LocalizationContext";
 
 interface SidebarProps {
-  activePage: 'discover' | 'genres' | 'search' | 'favorites' | 'settings';
+  activePage: 'discover' | 'genres' | 'search' | 'favorites' | 'settings' | 'country';
   isFocused: (index: number) => boolean;
   getFocusClasses: (focused: boolean) => string;
 }
@@ -24,7 +24,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
   };
   
   return (
-    <div className="fixed h-[638px] left-[48px] top-[242px] w-[120px] z-50 pointer-events-auto">
+    <div className="fixed h-[650px] left-[48px] top-[242px] w-[120px] z-50 pointer-events-auto">
       {/* Discover */}
       <Link href="/discover-no-user">
         <div 
@@ -161,6 +161,27 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
             </div>
             <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
               {t('nav_settings') || 'Settings'}
+            </p>
+          </div>
+        </div>
+      </Link>
+
+      {/* Country */}
+      <Link href="/country-select">
+        <div 
+          className={`absolute left-0 overflow-hidden rounded-[10px] w-[120px] h-[100px] top-[540px] transition-colors ${getFocusClasses(isFocused(5))} ${getActiveClasses('country')}`} 
+          data-testid="button-country"
+        >
+          <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px]">
+            <div className="w-[28px] h-[28px] mb-[6px] flex-shrink-0">
+              <img
+                alt=""
+                className="block max-w-none w-full h-full"
+                src={assetPath("images/globe-icon.png")}
+              />
+            </div>
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
+              {t('nav_country') || 'Country'}
             </p>
           </div>
         </div>

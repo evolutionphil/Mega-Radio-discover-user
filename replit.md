@@ -44,10 +44,11 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 
 **Application Flow:**
 -   **Onboarding:** Guided tour for new users.
--   **Main Pages:** Discover, Genres, Search, Favorites, Settings, and a full-screen Radio Playing interface.
+-   **Main Pages:** Discover, Genres, Search, Favorites, Settings, Country Select, and a full-screen Radio Playing interface.
 -   **Auto-Play:** Configurable startup modes (Last Played, Random, Favorite, None), with "None" as the default.
 -   **Localization & Internationalization:** Supports 48 languages via API translations and automatic language detection.
--   **Global Country Support:** Defaults to "Global" country if no country is saved, allowing browsing of worldwide stations and genres, with a dedicated globe icon.
+-   **Global Country Support:** Defaults to "Global" country if no country is saved, allowing browsing of worldwide stations and genres, with a dedicated globe icon. Country selection accessible via sidebar navigation (6th item) and as a standalone page at `/country-select` with sidebar visible.
+-   **CountrySelector Modes:** Supports `mode='modal'` (full-screen overlay, z-50) for inline use from pages, and `mode='page'` (lower z-index z-30, no overlay background) for standalone page use with sidebar visible.
 -   **Navigation History:** `NavigationContext` tracks page navigation and focus state for proper back button behavior. Implemented across multiple pages:
     -   **Discover Page:** When clicking on Popular Genres or More From Country stations, saves focus state before navigating to RadioPlaying. Back button restores focus to the exact station clicked.
     -   **GenreList Page:** When clicking on stations, saves focus state before navigating to RadioPlaying. Back button restores focus to the exact station clicked.

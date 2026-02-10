@@ -31,6 +31,7 @@ import { Search } from "@/pages/Search";
 import { Favorites } from "@/pages/Favorites";
 import { Settings } from "@/pages/Settings";
 import { ScreensaverTest } from "@/pages/ScreensaverTest";
+import { CountrySelectPage } from "@/pages/CountrySelectPage";
 
 function NetworkDisconnectModal() {
   const { isNetworkModalOpen, closeNetworkModal } = useNetworkStatus();
@@ -111,6 +112,7 @@ function Router() {
       <Route path="/search" component={Search} />
       <Route path="/favorites" component={Favorites} />
       <Route path="/settings" component={Settings} />
+      <Route path="/country-select" component={CountrySelectPage} />
       <Route path="/screensaver-test" component={ScreensaverTest} />
       
       {/* Fallback to 404 */}

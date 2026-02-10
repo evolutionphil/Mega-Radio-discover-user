@@ -16,6 +16,7 @@ interface CountrySelectorProps {
   onClose: () => void;
   selectedCountry: string;
   onSelectCountry: (country: Country) => void;
+  mode?: 'modal' | 'page';
 }
 
 const KEYBOARD_ROWS = [
@@ -26,7 +27,7 @@ const KEYBOARD_ROWS = [
   ['SPACE', 'DELETE', 'CLEAR'],
 ];
 
-export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry }: CountrySelectorProps) => {
+export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry, mode = 'modal' }: CountrySelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [focusZone, setFocusZone] = useState<'keyboard' | 'list'>('keyboard');
   const [keyboardRow, setKeyboardRow] = useState(0);
@@ -260,11 +261,13 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
 
   return (
     <div
-      className="absolute top-0 left-0 w-[1920px] h-[1080px] z-50"
+      className={`absolute top-0 left-0 w-[1920px] h-[1080px] ${mode === 'page' ? 'z-30' : 'z-50'}`}
       onKeyDown={(e) => { e.stopPropagation(); }}
       data-testid="country-selector-fullpage"
     >
-      <div className="absolute top-0 left-0 w-[1920px] h-[1080px] bg-gradient-to-br from-[#1a1a1a] to-[#0e0e0e]" />
+      {mode === 'modal' && (
+        <div className="absolute top-0 left-0 w-[1920px] h-[1080px] bg-gradient-to-br from-[#1a1a1a] to-[#0e0e0e]" />
+      )}
 
       <div className="absolute top-0 left-0 w-[1920px] h-[1080px]">
         <div className="absolute left-[30px] top-[40px] w-[164.421px] h-[57px] z-10">

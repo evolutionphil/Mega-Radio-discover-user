@@ -104,8 +104,19 @@ function makePathsRelative() {
   };
 }
 
+function removeModuleType() {
+  return {
+    name: 'remove-module-type',
+    enforce: 'post' as const,
+    transformIndexHtml(html: string) {
+      return html.replace(/<script\s+type\s*=\s*["']module["']\s*/gi, '<script ');
+    },
+    apply: 'build' as const,
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), makePathsRelative(), streamProxyPlugin()],
+  plugins: [react(), makePathsRelative(), removeModuleType(), streamProxyPlugin()],
   base: './', // Use relative paths for all assets
   resolve: {
     alias: {
