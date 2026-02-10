@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import fs from "fs";
 import http from "http";
 import https from "https";
 
@@ -104,6 +105,43 @@ function makePathsRelative() {
   };
 }
 
+function copyStaticAssets() {
+  const root = path.resolve(import.meta.dirname);
+  const outDir = path.resolve(root, "dist/public");
+  const staticDirs = ['js', 'css', 'images', 'webOSTVjs-1.2.0'];
+  const staticFiles = ['config.xml', 'appinfo.json'];
+
+  function copyDir(src: string, dest: string) {
+    if (!fs.existsSync(src)) return;
+    fs.mkdirSync(dest, { recursive: true });
+    for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(dest, entry.name);
+      if (entry.isDirectory()) {
+        copyDir(srcPath, destPath);
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
+  }
+
+  return {
+    name: 'copy-static-assets',
+    apply: 'build' as const,
+    closeBundle() {
+      for (const dir of staticDirs) {
+        copyDir(path.join(root, dir), path.join(outDir, dir));
+      }
+      for (const file of staticFiles) {
+        const src = path.join(root, file);
+        if (fs.existsSync(src)) {
+          fs.copyFileSync(src, path.join(outDir, file));
+        }
+      }
+    },
+  };
+}
+
 function removeModuleType() {
   return {
     name: 'remove-module-type',
@@ -116,7 +154,7 @@ function removeModuleType() {
 }
 
 export default defineConfig({
-  plugins: [react(), makePathsRelative(), removeModuleType(), streamProxyPlugin()],
+  plugins: [react(), makePathsRelative(), removeModuleType(), copyStaticAssets(), streamProxyPlugin()],
   base: './', // Use relative paths for all assets
   resolve: {
     alias: {
