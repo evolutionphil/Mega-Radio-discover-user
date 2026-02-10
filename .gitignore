@@ -7,6 +7,3 @@ vite.config.ts.*
 # Large files
 LGTV-master*.zip
 *.zip
-# TV build artifacts
-tv-app/index-prod.html
-tv-app/assets/
