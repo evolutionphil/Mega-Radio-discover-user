@@ -2,7 +2,7 @@
     "vendor": "Radio Mega",
     "largeIcon": "images/logo.png",
     "icon": "images/logo.png",
-    "main": "index-prod.html",
+    "main": "index.html",
     "id": "com.radiomega.tv",
     "title": "Radio Mega",
     "type": "web",

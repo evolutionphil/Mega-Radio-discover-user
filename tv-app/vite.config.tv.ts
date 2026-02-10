@@ -141,7 +141,7 @@ function copyStaticAssets() {
 
       const builtHtml = path.join(outDir, 'index.html');
       if (fs.existsSync(builtHtml)) {
-        fs.copyFileSync(builtHtml, path.join(root, 'index-prod.html'));
+        fs.copyFileSync(builtHtml, path.join(root, 'index.html'));
       }
       const builtAssetsDir = path.join(outDir, 'assets');
       if (fs.existsSync(builtAssetsDir)) {
