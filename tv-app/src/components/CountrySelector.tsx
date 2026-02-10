@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { megaRadioApi } from '@/services/megaRadioApi';
 import { useLocalization } from '@/contexts/LocalizationContext';
@@ -18,123 +18,104 @@ interface CountrySelectorProps {
   onSelectCountry: (country: Country) => void;
 }
 
+const KEYBOARD_ROWS = [
+  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+  ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+  ['SPACE', 'DELETE', 'CLEAR'],
+];
+
 export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCountry }: CountrySelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [focusIndex, setFocusIndex] = useState(0);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [focusZone, setFocusZone] = useState<'keyboard' | 'list'>('keyboard');
+  const [keyboardRow, setKeyboardRow] = useState(1);
+  const [keyboardCol, setKeyboardCol] = useState(0);
+  const [listFocusIndex, setListFocusIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const { t } = useLocalization();
 
-  // Fetch countries from API (fetch upfront, cache for instant modal opening)
-  // CACHE: 30 days
   const { data: countriesData, isLoading: countriesLoading } = useQuery({
     queryKey: ['/api/countries'],
     queryFn: async () => {
       const result = await megaRadioApi.getAllCountries();
       return result;
     },
-    staleTime: 30 * 24 * 60 * 60 * 1000, // 30 days
-    gcTime: 30 * 24 * 60 * 60 * 1000, // 30 days
+    staleTime: 30 * 24 * 60 * 60 * 1000,
+    gcTime: 30 * 24 * 60 * 60 * 1000,
   });
 
-  // Map API countries to component format with flag URLs
   const countries: Country[] = useMemo(() => {
     const apiCountries = countriesData?.countries || [];
-    
-    const mapped = apiCountries
+    return apiCountries
       .filter(country => country.name && country.iso_3166_1)
       .map(country => {
         const flagUrl = country.iso_3166_1 === 'XX' || country.iso_3166_1.length !== 2
           ? 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40"%3E%3Crect width="40" height="40" fill="%23979797"/%3E%3C/svg%3E'
           : `https://flagcdn.com/w40/${country.iso_3166_1.toLowerCase()}.png`;
-        
         return {
           name: country.name,
           code: country.iso_3166_1,
           flag: flagUrl,
         };
       })
-      .sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically since no station counts
-    
-    return mapped;
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [countriesData]);
 
-  // Filter and sort countries based on search query
   const filteredCountries = useMemo(() => {
-    // Create Global option with globe icon (no station count available from API)
     const globalOption: Country = {
       name: 'Global',
       code: 'GLOBAL',
       flag: assetPath('images/globe-icon.png'),
     };
-    
+
     const filtered = countries
       .filter(country => country.name.toLowerCase().includes(searchQuery.toLowerCase()))
       .sort((a, b) => {
         if (!searchQuery) {
-          // Alphabetical sort when no search query
           return a.name.localeCompare(b.name);
         }
-        
         const queryLower = searchQuery.toLowerCase();
         const aNameLower = a.name.toLowerCase();
         const bNameLower = b.name.toLowerCase();
-        
-        // Prioritize exact matches
         const aExact = aNameLower === queryLower;
         const bExact = bNameLower === queryLower;
         if (aExact && !bExact) return -1;
         if (!aExact && bExact) return 1;
-        
-        // Then prioritize starts-with matches
         const aStarts = aNameLower.startsWith(queryLower);
         const bStarts = bNameLower.startsWith(queryLower);
         if (aStarts && !bStarts) return -1;
         if (!aStarts && bStarts) return 1;
-        
-        // Finally alphabetical
         return a.name.localeCompare(b.name);
       });
-    
-    // ALWAYS add Global option at the beginning, regardless of search query
-    // This ensures users can always select Global even when filtering for other countries
+
     filtered.unshift(globalOption);
-    
     return filtered;
   }, [countries, searchQuery]);
 
-  // Reset focus when filtered countries change
   useEffect(() => {
-    if (filteredCountries.length > 0 && focusIndex >= filteredCountries.length) {
-      setFocusIndex(0);
+    if (filteredCountries.length > 0 && listFocusIndex >= filteredCountries.length) {
+      setListFocusIndex(0);
     }
-  }, [filteredCountries.length, focusIndex]);
+  }, [filteredCountries.length, listFocusIndex]);
 
-  // Scroll to top when search query changes (user is typing/filtering)
   useEffect(() => {
     if (scrollContainerRef.current && searchQuery) {
       scrollContainerRef.current.scrollTop = 0;
+      setListFocusIndex(0);
     }
   }, [searchQuery]);
 
-  // Auto-scroll focused item into view - ONLY if element is truly off-screen
-  // Uses scrollTop/offsetTop based math for accurate visibility detection
   useEffect(() => {
-    if (!scrollContainerRef.current || filteredCountries.length === 0) return;
-    
+    if (focusZone !== 'list' || !scrollContainerRef.current || filteredCountries.length === 0) return;
     const container = scrollContainerRef.current;
-    const focusedElement = container.children[focusIndex] as HTMLElement | undefined;
+    const focusedElement = container.children[listFocusIndex] as HTMLElement | undefined;
     if (!focusedElement) return;
-    
-    // Use scrollTop/offsetTop based calculation (NOT scrollIntoView)
-    const TOP_PADDING = 20;  // Padding from top edge
-    const BOTTOM_PADDING = 60;  // Leave space at bottom
-    
+
+    const TOP_PADDING = 20;
+    const BOTTOM_PADDING = 60;
     const viewTop = container.scrollTop;
     const viewBottom = viewTop + container.clientHeight - BOTTOM_PADDING;
-    
-    // Get element position relative to scroll container
+
     let elementTop = 0;
     let el: HTMLElement | null = focusedElement;
     while (el && el !== container) {
@@ -142,264 +123,243 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
       el = el.offsetParent as HTMLElement;
     }
     const elementBottom = elementTop + focusedElement.offsetHeight;
-    
-    // Check if element is FULLY visible
-    const isAboveView = elementTop < viewTop + TOP_PADDING;
-    const isBelowView = elementBottom > viewBottom;
-    
-    // Only scroll if element is actually outside the visible viewport
-    if (isAboveView) {
-      container.scrollTo({ top: Math.max(0, elementTop - TOP_PADDING), behavior: 'smooth' });
-    } else if (isBelowView) {
-      const newScrollTop = elementBottom - container.clientHeight + BOTTOM_PADDING;
-      container.scrollTo({ top: newScrollTop, behavior: 'smooth' });
-    }
-    // If element is FULLY visible, do NOTHING - no scroll!
-  }, [focusIndex, filteredCountries.length]);
 
-  // Handle keyboard navigation
+    if (elementTop < viewTop + TOP_PADDING) {
+      container.scrollTo({ top: Math.max(0, elementTop - TOP_PADDING), behavior: 'smooth' });
+    } else if (elementBottom > viewBottom) {
+      container.scrollTo({ top: elementBottom - container.clientHeight + BOTTOM_PADDING, behavior: 'smooth' });
+    }
+  }, [listFocusIndex, filteredCountries.length, focusZone]);
+
+  const handleKeyPress = useCallback((key: string) => {
+    if (key === 'SPACE') {
+      setSearchQuery(prev => prev + ' ');
+    } else if (key === 'DELETE') {
+      setSearchQuery(prev => prev.slice(0, -1));
+    } else if (key === 'CLEAR') {
+      setSearchQuery('');
+    } else {
+      setSearchQuery(prev => prev + key.toLowerCase());
+    }
+  }, []);
+
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = (window as any).tvKey;
-      
-      // CRITICAL: Stop ALL key events from propagating to parent pages
       e.stopPropagation();
-      
-      // When search input is focused, only handle navigation keys (let input handle typing)
-      if (isSearchFocused) {
-        switch(e.keyCode) {
-          case key?.DOWN:
-          case 40:
-            // Move focus from search to country list
-            e.preventDefault();
-            if (searchInputRef.current) {
-              searchInputRef.current.blur(); // Remove focus from input
-            }
-            setIsSearchFocused(false);
-            setFocusIndex(0);
-            break;
-            
-          case key?.RETURN:
-          case 461:
-          case 10009:
-            // TWO-STEP BEHAVIOR: First press closes keyboard, second press closes modal
-            e.preventDefault();
-            if (searchInputRef.current) {
-              searchInputRef.current.blur(); // Close keyboard
-            }
-            setIsSearchFocused(false); // Move to country list mode
-            break;
-            
-          // Let all other keys (letters, numbers, backspace) be handled by the input element
-          default:
-            break;
+
+      const keyCode = e.keyCode;
+      const isUp = keyCode === 38 || keyCode === key?.UP;
+      const isDown = keyCode === 40 || keyCode === key?.DOWN;
+      const isLeft = keyCode === 37 || keyCode === key?.LEFT;
+      const isRight = keyCode === 39 || keyCode === key?.RIGHT;
+      const isEnter = keyCode === 13 || keyCode === key?.ENTER;
+      const isBack = keyCode === 461 || keyCode === 10009 || keyCode === key?.RETURN;
+
+      if (isBack) {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (focusZone === 'keyboard') {
+        const currentRow = KEYBOARD_ROWS[keyboardRow];
+
+        if (isUp) {
+          e.preventDefault();
+          if (keyboardRow > 0) {
+            const newRow = keyboardRow - 1;
+            const newRowLen = KEYBOARD_ROWS[newRow].length;
+            setKeyboardRow(newRow);
+            setKeyboardCol(prev => Math.min(prev, newRowLen - 1));
+          }
+        } else if (isDown) {
+          e.preventDefault();
+          if (keyboardRow < KEYBOARD_ROWS.length - 1) {
+            const newRow = keyboardRow + 1;
+            const newRowLen = KEYBOARD_ROWS[newRow].length;
+            setKeyboardRow(newRow);
+            setKeyboardCol(prev => Math.min(prev, newRowLen - 1));
+          }
+        } else if (isLeft) {
+          e.preventDefault();
+          if (keyboardCol > 0) {
+            setKeyboardCol(prev => prev - 1);
+          }
+        } else if (isRight) {
+          e.preventDefault();
+          if (keyboardCol < currentRow.length - 1) {
+            setKeyboardCol(prev => prev + 1);
+          } else {
+            setFocusZone('list');
+          }
+        } else if (isEnter) {
+          e.preventDefault();
+          const pressedKey = currentRow[keyboardCol];
+          handleKeyPress(pressedKey);
         }
       } else {
-        // Country list navigation
-        switch(e.keyCode) {
-          case key?.UP:
-          case 38:
-            e.preventDefault();
-            if (focusIndex === 0) {
-              // Move back to search mode (virtual keyboard focus)
-              setIsSearchFocused(true);
-            } else {
-              setFocusIndex(prev => Math.max(0, prev - 1));
-            }
-            break;
-            
-          case key?.DOWN:
-          case 40:
-            e.preventDefault();
-            setFocusIndex(prev => Math.min(filteredCountries.length - 1, prev + 1));
-            break;
-            
-          case key?.ENTER:
-          case 13:
-            e.preventDefault();
-            if (filteredCountries[focusIndex]) {
-              onSelectCountry(filteredCountries[focusIndex]);
-              onClose();
-            }
-            break;
-            
-          case key?.RETURN:
-          case 461:
-          case 10009:
-            e.preventDefault();
+        if (isUp) {
+          e.preventDefault();
+          setListFocusIndex(prev => Math.max(0, prev - 1));
+        } else if (isDown) {
+          e.preventDefault();
+          setListFocusIndex(prev => Math.min(filteredCountries.length - 1, prev + 1));
+        } else if (isLeft) {
+          e.preventDefault();
+          setFocusZone('keyboard');
+        } else if (isEnter) {
+          e.preventDefault();
+          if (filteredCountries[listFocusIndex]) {
+            onSelectCountry(filteredCountries[listFocusIndex]);
             onClose();
-            break;
+          }
         }
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, filteredCountries, focusIndex, onSelectCountry, onClose, isSearchFocused]);
+  }, [isOpen, focusZone, keyboardRow, keyboardCol, listFocusIndex, filteredCountries, onSelectCountry, onClose, handleKeyPress]);
 
-  // Reset when modal opens and focus on currently selected country
-  // Only run when isOpen changes, not when filteredCountries changes (to allow navigation)
   useEffect(() => {
     if (isOpen) {
       setSearchQuery('');
-      setIsSearchFocused(true); // Auto-focus search input for easier typing
-      
-      // Find the currently selected country in the FILTERED country list and focus on it
-      // (filteredCountries includes the injected Global option at index 0)
-      const currentIndex = filteredCountries.findIndex(
-        country => country.name === selectedCountry
-      );
-      const initialIndex = currentIndex >= 0 ? currentIndex : 0;
-      setFocusIndex(initialIndex);
-    } else {
-      setIsSearchFocused(false);
+      setFocusZone('keyboard');
+      setKeyboardRow(1);
+      setKeyboardCol(0);
+      setListFocusIndex(0);
     }
-  }, [isOpen, selectedCountry, countries]);
-
-  // Auto-focus search input when search mode is activated
-  useEffect(() => {
-    if (isSearchFocused && searchInputRef.current) {
-      searchInputRef.current.focus();
-    } else if (!isSearchFocused && searchInputRef.current && document.activeElement === searchInputRef.current) {
-      searchInputRef.current.blur();
-    }
-  }, [isSearchFocused]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
+  const getKeyLabel = (key: string) => {
+    if (key === 'SPACE') return '␣';
+    if (key === 'DELETE') return '⌫';
+    if (key === 'CLEAR') return 'CLR';
+    return key;
+  };
+
+  const getKeyWidth = (key: string) => {
+    if (key === 'SPACE') return 'w-[160px]';
+    if (key === 'DELETE') return 'w-[100px]';
+    if (key === 'CLEAR') return 'w-[100px]';
+    return 'w-[52px]';
+  };
+
   return (
-    <div 
+    <div
       className="absolute top-0 left-0 w-[1920px] h-[1080px] z-50"
-      onKeyDown={(e) => {
-        // CRITICAL: Block all keyboard events from reaching parent pages
-        e.stopPropagation();
-      }}
+      onKeyDown={(e) => { e.stopPropagation(); }}
+      data-testid="country-selector-fullpage"
     >
-      {/* Backdrop */}
-      <div 
-        className="absolute top-0 left-0 w-[1920px] h-[1080px] backdrop-blur-[7px] backdrop-filter"
-        onClick={onClose}
-        data-testid="country-selector-backdrop"
-      />
+      <div className="absolute top-0 left-0 w-[1920px] h-[1080px] bg-[#0e0e0e] bg-opacity-95" />
 
-      {/* Modal Container */}
-      <div 
-        className="absolute bg-[#1a1a1a] rounded-[20px] border-2 border-[rgba(255,255,255,0.1)]" 
-        style={{ left: '457px', top: '251px', width: '1006px', height: '534px' }}
-      >
-        {/* Header */}
-        <div className="absolute top-[30px] left-[40px] right-[40px]">
-          <h2 className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white">
+      <div className="absolute top-0 left-0 w-[1920px] h-[1080px] flex flex-col">
+        <div className="flex items-center justify-between px-[60px] pt-[40px] pb-[10px]">
+          <h1 className="font-['Ubuntu',Helvetica] font-bold text-[42px] text-white">
             {t('select_country') || 'Select Country'}
-          </h2>
+          </h1>
+          <div className="font-['Ubuntu',Helvetica] text-[18px] text-white/40">
+            {t('press_back_to_close') || 'Press BACK to close'}
+          </div>
         </div>
 
-        {/* Search Input - Real input for TV keyboard */}
-        <div className="absolute top-[90px] left-[40px] right-[40px]">
-          <input
-            ref={searchInputRef}
-            type="text"
-            placeholder={t('search_countries') || 'Search countries...'}
-            value={searchQuery}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              setSearchQuery(newValue);
-              setFocusIndex(0);
-              // Force scroll to top immediately
-              if (scrollContainerRef.current) {
-                scrollContainerRef.current.scrollTop = 0;
-              }
-            }}
-            onKeyDown={(e) => {
-              // Handle DOWN key to exit search and go to list
-              const key = (window as any).tvKey;
-              if (e.keyCode === 40 || e.keyCode === key?.DOWN) {
-                e.preventDefault();
-                setIsSearchFocused(false);
-                setFocusIndex(0);
-                if (searchInputRef.current) {
-                  searchInputRef.current.blur();
-                }
-              }
-            }}
-            onFocus={() => {
-              setIsSearchFocused(true);
-            }}
-            onBlur={() => {
-              // Don't set isSearchFocused to false here - let arrow keys control it
-            }}
-            className={`w-full px-6 py-4 rounded-[15px] bg-[rgba(255,255,255,0.1)] border-2 text-white text-[20px] font-['Ubuntu',Helvetica] placeholder-white/50 focus:outline-none transition-colors ${
-              isSearchFocused 
-                ? 'border-[#ff4199]' 
-                : 'border-[rgba(255,255,255,0.2)]'
-            }`}
-            data-testid="input-country-search"
-          />
-        </div>
-
-        {/* Country List */}
-        <div
-          ref={scrollContainerRef}
-          className="absolute top-[160px] left-[40px] right-[40px] bottom-[30px] overflow-y-auto pr-2"
-          style={{
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#ff4199 rgba(255,255,255,0.1)'
-          }}
-        >
-          {countriesLoading ? (
-            <div className="text-center text-white font-['Ubuntu',Helvetica] text-[24px] mt-20">
-              {t('loading') || 'Loading countries...'}
-            </div>
-          ) : filteredCountries.length === 0 ? (
-            <div className="text-center text-white/50 font-['Ubuntu',Helvetica] text-[20px] mt-10">
-              {searchQuery ? (t('no_countries_found') || 'No countries found') : (t('loading') || 'Loading...')}
-            </div>
-          ) : (
-            <>
-              {filteredCountries.map((country, index) => (
-                <div
-                  key={`${country.code}-${searchQuery}-${index}`}
-                className={`flex items-center gap-4 px-6 py-4 rounded-[10px] cursor-pointer transition-all mb-2 ${
-                  focusIndex === index
-                    ? 'bg-[#ff4199] border-2 border-[#ff4199]'
-                    : 'bg-[rgba(255,255,255,0.05)] border-2 border-transparent hover:bg-[rgba(255,255,255,0.1)]'
-                }`}
-                onClick={() => {
-                  onSelectCountry(country);
-                  onClose();
-                }}
-                data-testid={`country-option-${country.code}`}
-              >
-                <img
-                  src={country.flag}
-                  alt={country.name}
-                  className="w-[40px] h-[30px] object-cover rounded-[4px]"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="30"%3E%3Crect width="40" height="30" fill="%23979797"/%3E%3C/svg%3E';
-                  }}
-                />
-                <div className="flex-1">
-                  <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">
-                    {country.name}
-                  </p>
-                </div>
-                </div>
-              ))}
-            </>
+        <div className="mx-[60px] mb-[20px] px-[24px] py-[14px] rounded-[12px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] flex items-center min-h-[56px]">
+          <span className="font-['Ubuntu',Helvetica] text-[24px] text-white/60 mr-[12px]">🔍</span>
+          <span className="font-['Ubuntu',Helvetica] text-[24px] text-white">
+            {searchQuery || ''}
+          </span>
+          <span className="inline-block w-[2px] h-[28px] bg-[#ff4199] ml-[2px] animate-pulse" />
+          {!searchQuery && (
+            <span className="font-['Ubuntu',Helvetica] text-[24px] text-white/30 ml-[4px]">
+              {t('search_countries') || 'Type to search...'}
+            </span>
           )}
         </div>
 
-        {/* Navigation hints */}
-        <div className="absolute bottom-[10px] left-[40px] right-[40px] flex justify-between text-white/50 font-['Ubuntu',Helvetica] text-[14px]">
-          <div>
-            {isSearchFocused 
-              ? (t('type_to_search') || 'Type to search • Press ↓ for list') 
-              : (t('press_up_to_search') || 'Press ↑ to search • Type to filter')}
+        <div className="flex flex-1 px-[60px] gap-[40px] overflow-hidden">
+          <div className="flex flex-col gap-[8px] pt-[10px] flex-shrink-0" style={{ width: '550px' }}>
+            {KEYBOARD_ROWS.map((row, rowIndex) => (
+              <div key={rowIndex} className="flex gap-[6px] justify-start">
+                {row.map((keyChar, colIndex) => {
+                  const isFocused = focusZone === 'keyboard' && keyboardRow === rowIndex && keyboardCol === colIndex;
+                  return (
+                    <button
+                      key={keyChar}
+                      className={`h-[52px] ${getKeyWidth(keyChar)} rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[20px] text-white flex items-center justify-center transition-all duration-150 select-none ${
+                        isFocused
+                          ? 'bg-[#ff4199] shadow-[0_0_20px_rgba(255,65,153,0.6)] scale-110'
+                          : 'bg-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.15)]'
+                      }`}
+                      tabIndex={-1}
+                      data-testid={`key-${keyChar}`}
+                    >
+                      {getKeyLabel(keyChar)}
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
+            <div className="mt-[16px] font-['Ubuntu',Helvetica] text-[16px] text-white/30">
+              {focusZone === 'keyboard'
+                ? '← → ↑ ↓ Navigate • OK to type • → to list'
+                : '← Back to keyboard'}
+            </div>
           </div>
-          <div>
-            {t('press_back_to_close') || 'Press BACK to close'}
+
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="font-['Ubuntu',Helvetica] text-[18px] text-white/50 mb-[10px]">
+              {filteredCountries.length} {filteredCountries.length === 1 ? 'country' : 'countries'}
+            </div>
+            <div
+              ref={scrollContainerRef}
+              className="flex-1 overflow-y-auto pr-[8px]"
+              style={{
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#ff4199 rgba(255,255,255,0.1)',
+              }}
+            >
+              {countriesLoading ? (
+                <div className="text-center text-white font-['Ubuntu',Helvetica] text-[24px] mt-20">
+                  {t('loading') || 'Loading countries...'}
+                </div>
+              ) : filteredCountries.length === 0 ? (
+                <div className="text-center text-white/50 font-['Ubuntu',Helvetica] text-[20px] mt-10">
+                  {t('no_countries_found') || 'No countries found'}
+                </div>
+              ) : (
+                filteredCountries.map((country, index) => {
+                  const isFocused = focusZone === 'list' && listFocusIndex === index;
+                  return (
+                    <div
+                      key={`${country.code}-${index}`}
+                      className={`flex items-center gap-[16px] px-[20px] py-[12px] rounded-[10px] mb-[4px] transition-all duration-150 ${
+                        isFocused
+                          ? 'bg-[#ff4199] shadow-[0_0_15px_rgba(255,65,153,0.4)]'
+                          : 'bg-[rgba(255,255,255,0.03)]'
+                      }`}
+                      data-testid={`country-option-${country.code}`}
+                    >
+                      <img
+                        src={country.flag}
+                        alt={country.name}
+                        className="w-[40px] h-[30px] object-cover rounded-[4px] flex-shrink-0"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="30"%3E%3Crect width="40" height="30" fill="%23979797"/%3E%3C/svg%3E';
+                        }}
+                      />
+                      <span className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-white truncate">
+                        {country.name}
+                      </span>
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         </div>
       </div>
