@@ -394,7 +394,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
             className="absolute left-0 right-[60px] overflow-y-auto"
             style={{
               top: '96px',
-              bottom: '0px',
+              height: '800px',
               scrollbarWidth: 'none',
             }}
           >
@@ -413,12 +413,12 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                 return (
                   <div
                     key={`${country.code}-${index}`}
-                    className={`flex items-center gap-[16px] px-[24px] rounded-[12px] mb-[4px] transition-all duration-150 cursor-pointer ${
+                    className={`flex items-center gap-[16px] px-[24px] rounded-[12px] mb-[4px] transition-all duration-150 cursor-pointer h-[96px] ${
                       isItemFocused
-                        ? 'bg-[#ff4199] py-[14px]'
+                        ? 'bg-[#ff4199]'
                         : isSelected
-                          ? 'bg-[rgba(255,65,153,0.15)] py-[12px]'
-                          : 'bg-[rgba(255,255,255,0.05)] py-[12px] hover:bg-[rgba(255,255,255,0.08)]'
+                          ? 'bg-[rgba(255,65,153,0.15)]'
+                          : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
                     }`}
                     style={{
                       boxShadow: isItemFocused
