@@ -139,15 +139,31 @@ function copyStaticAssets() {
         }
       }
 
-      const builtHtml = path.join(outDir, 'index.html');
+      const builtHtml = path.join(outDir, 'index-dev.html');
       if (fs.existsSync(builtHtml)) {
-        fs.copyFileSync(builtHtml, path.join(root, 'index.html'));
+        fs.renameSync(builtHtml, path.join(outDir, 'index.html'));
+        fs.copyFileSync(path.join(outDir, 'index.html'), path.join(root, 'index.html'));
       }
       const builtAssetsDir = path.join(outDir, 'assets');
       if (fs.existsSync(builtAssetsDir)) {
         copyDir(builtAssetsDir, path.join(root, 'assets'));
       }
     },
+  };
+}
+
+function useDevHtml() {
+  return {
+    name: 'use-dev-html',
+    configureServer(server: any) {
+      server.middlewares.use((req: any, _res: any, next: any) => {
+        if (req.url === '/' || req.url === '/index.html') {
+          req.url = '/index-dev.html';
+        }
+        next();
+      });
+    },
+    apply: 'serve' as const,
   };
 }
 
@@ -173,7 +189,7 @@ function removeModuleType() {
 }
 
 export default defineConfig({
-  plugins: [react(), makePathsRelative(), removeModuleType(), copyStaticAssets(), streamProxyPlugin()],
+  plugins: [react(), useDevHtml(), makePathsRelative(), removeModuleType(), copyStaticAssets(), streamProxyPlugin()],
   base: './', // Use relative paths for all assets
   resolve: {
     alias: {
@@ -197,6 +213,7 @@ export default defineConfig({
     target: 'es2015', // Compatible with older TVs
     cssCodeSplit: false, // Generate a single CSS file instead of splitting
     rollupOptions: {
+      input: path.resolve(import.meta.dirname, 'index-dev.html'),
       output: {
         format: 'iife', // IIFE format instead of ES modules for TV compatibility
         inlineDynamicImports: true, // Bundle everything into one file

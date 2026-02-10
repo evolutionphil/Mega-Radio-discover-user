@@ -47,7 +47,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd tv-app && cp index-dev.html index.html && npx vite --config vite.config.tv.ts --port 5000 --host"
+args = "cd tv-app && npx vite --config vite.config.tv.ts --port 5000 --host"
 waitForPort = 5000
 
 [agent]
