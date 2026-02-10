@@ -166,12 +166,7 @@ export const RadioPlaying = (): JSX.Element => {
       if (!stationId) return { stations: [] };
       try {
         const data = await megaRadioApi.getSimilarStations(stationId, 30);
-        const filtered = (data?.stations || []).filter(s => s && s._id && s._id !== stationId);
-        for (let i = filtered.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
-        }
-        return { stations: filtered };
+        return { stations: (data?.stations || []).filter(s => s && s._id && s._id !== stationId) };
       } catch (error) {
         console.error('Failed to fetch similar stations:', error);
         return { stations: [] };
@@ -182,37 +177,43 @@ export const RadioPlaying = (): JSX.Element => {
     gcTime: 7 * 24 * 60 * 60 * 1000,
   });
 
-  const similarStations = similarData?.stations || [];
+  const similarStations = useMemo(() => {
+    const stations = [...(similarData?.stations || [])];
+    for (let i = stations.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [stations[i], stations[j]] = [stations[j], stations[i]];
+    }
+    return stations;
+  }, [similarData]);
 
-  // Fetch popular stations from GLOBAL (random selection)
+  // Fetch popular stations from GLOBAL - stable queryKey (no stationId) for efficient caching
   // CACHE: 24 hours
   const { data: popularData } = useQuery({
-    queryKey: ['popular-global-stations', stationId],
+    queryKey: ['popular-global-stations'],
     queryFn: async () => {
       try {
         const data = await megaRadioApi.getPopularStations({ limit: 50 });
-        const filtered = (data?.stations || []).filter(s => s && s._id && s._id !== stationId);
-        for (let i = filtered.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
-        }
-        return { stations: filtered };
+        return { stations: (data?.stations || []).filter(s => s && s._id) };
       } catch (error) {
         console.error('Failed to fetch popular stations:', error);
         return { stations: [] };
       }
     },
-    enabled: !!stationId,
     staleTime: 24 * 60 * 60 * 1000,
     gcTime: 24 * 60 * 60 * 1000,
   });
 
-  // Update all popular stations when data changes
+  // Update all popular stations when data changes - shuffle once and filter current station
   useEffect(() => {
     if (popularData?.stations) {
-      setAllPopularStations(popularData.stations);
+      const filtered = popularData.stations.filter(s => s._id !== stationId);
+      for (let i = filtered.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+      }
+      setAllPopularStations(filtered);
     }
-  }, [popularData]);
+  }, [popularData, stationId]);
 
   const popularStations = allPopularStations.slice(0, popularStationsToShow);
   const hasMorePopular = allPopularStations.length > popularStationsToShow;
