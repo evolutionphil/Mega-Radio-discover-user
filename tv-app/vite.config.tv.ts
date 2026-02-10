@@ -5,6 +5,28 @@ import fs from "fs";
 import http from "http";
 import https from "https";
 
+function parsePlaylistContent(body: string, urlHint: string): string | null {
+  const lines = body.split(/\r?\n/);
+  
+  if (body.toLowerCase().includes('[playlist]') || urlHint.endsWith('.pls')) {
+    for (const line of lines) {
+      const match = line.match(/^File\d*\s*=\s*(.+)/i);
+      if (match && match[1].trim().startsWith('http')) {
+        return match[1].trim();
+      }
+    }
+  }
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#') && trimmed.startsWith('http')) {
+      return trimmed;
+    }
+  }
+  
+  return null;
+}
+
 function streamProxyPlugin() {
   return {
     name: 'stream-proxy',
@@ -61,6 +83,27 @@ function streamProxyPlugin() {
               return;
             }
 
+            const contentType = (proxyRes.headers['content-type'] || '').toLowerCase();
+            const urlLower = url.toLowerCase();
+            const isPlaylist = contentType.includes('mpegurl') || contentType.includes('x-scpls') || 
+              urlLower.endsWith('.m3u') || urlLower.endsWith('.m3u8') || urlLower.endsWith('.pls');
+
+            if (isPlaylist && !urlLower.endsWith('.m3u8')) {
+              let body = '';
+              proxyRes.on('data', (chunk: any) => { body += chunk.toString(); });
+              proxyRes.on('end', () => {
+                const streamUrl = parsePlaylistContent(body, urlLower);
+                if (streamUrl) {
+                  console.log(`[PROXY] 📋 Playlist resolved → ${streamUrl.substring(0, 80)}`);
+                  followAndStream(streamUrl, redirectsLeft - 1);
+                } else {
+                  console.error(`[PROXY] ❌ Could not parse playlist`);
+                  if (!res.headersSent) { res.statusCode = 502; res.end('Could not parse playlist'); }
+                }
+              });
+              return;
+            }
+
             if (proxyRes.statusCode && proxyRes.statusCode >= 400) {
               console.error(`[PROXY] ❌ HTTP Error ${proxyRes.statusCode} for: ${url.substring(0, 80)}`);
             } else {
@@ -99,6 +142,201 @@ function streamProxyPlugin() {
         }
 
         followAndStream(targetUrl.href, 5);
+      });
+
+      server.middlewares.use('/api/stream-check', (req: any, res: any) => {
+        const urlParam = new URL(req.url, 'http://localhost').searchParams.get('url');
+        if (!urlParam) {
+          res.statusCode = 400;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ ok: false, error: 'Missing url parameter' }));
+          return;
+        }
+
+        const startTime = Date.now();
+        console.log(`[STREAM-CHECK] Checking: ${urlParam.substring(0, 100)}`);
+
+        let parsedUrl: URL;
+        try {
+          parsedUrl = new URL(urlParam);
+        } catch {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ ok: false, error: 'Invalid URL', url: urlParam }));
+          return;
+        }
+
+        const client = parsedUrl.protocol === 'https:' ? https : http;
+        
+        const checkReq = client.request(parsedUrl.href, {
+          method: 'HEAD',
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (SMART-TV; Linux; Tizen 5.5)',
+            'Accept': '*/*',
+          },
+          timeout: 5000,
+        }, (checkRes) => {
+          const responseTime = Date.now() - startTime;
+          const contentType = checkRes.headers['content-type'] || '';
+          const urlLower = urlParam.toLowerCase();
+          const isPlaylist = contentType.includes('mpegurl') || contentType.includes('x-scpls') ||
+            urlLower.endsWith('.m3u') || urlLower.endsWith('.pls');
+          
+          const result = {
+            ok: checkRes.statusCode !== undefined && checkRes.statusCode < 400,
+            url: urlParam,
+            finalUrl: urlParam,
+            contentType: contentType,
+            statusCode: checkRes.statusCode,
+            isPlaylist: isPlaylist,
+            responseTime: responseTime,
+          };
+          
+          console.log(`[STREAM-CHECK] Result: ok=${result.ok} status=${result.statusCode} type=${contentType} time=${responseTime}ms`);
+          res.setHeader('Content-Type', 'application/json');
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.end(JSON.stringify(result));
+        });
+
+        checkReq.on('error', (err: any) => {
+          const responseTime = Date.now() - startTime;
+          console.error(`[STREAM-CHECK] Error: ${err.message} for: ${urlParam.substring(0, 80)}`);
+          res.setHeader('Content-Type', 'application/json');
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.end(JSON.stringify({ ok: false, url: urlParam, error: err.message, responseTime }));
+        });
+
+        checkReq.on('timeout', () => {
+          console.error(`[STREAM-CHECK] Timeout for: ${urlParam.substring(0, 80)}`);
+          checkReq.destroy();
+          res.setHeader('Content-Type', 'application/json');
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.end(JSON.stringify({ ok: false, url: urlParam, error: 'Timeout', responseTime: Date.now() - startTime }));
+        });
+
+        checkReq.end();
+      });
+
+      server.middlewares.use('/api/stream-resolve', (req: any, res: any) => {
+        const urlParam = new URL(req.url, 'http://localhost').searchParams.get('url');
+        if (!urlParam) {
+          res.statusCode = 400;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Missing url parameter' }));
+          return;
+        }
+
+        console.log(`[STREAM-RESOLVE] Resolving: ${urlParam.substring(0, 100)}`);
+
+        function resolveUrl(url: string, redirectCount: number, maxRedirects: number) {
+          if (redirectCount >= maxRedirects) {
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.end(JSON.stringify({
+              originalUrl: urlParam,
+              resolvedUrl: url,
+              redirectCount,
+              error: 'Too many redirects',
+            }));
+            return;
+          }
+
+          let parsedUrl: URL;
+          try {
+            parsedUrl = new URL(url);
+          } catch {
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.end(JSON.stringify({ originalUrl: urlParam, error: 'Invalid URL: ' + url }));
+            return;
+          }
+
+          const client = parsedUrl.protocol === 'https:' ? https : http;
+
+          const resolveReq = client.get(parsedUrl.href, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (SMART-TV; Linux; Tizen 5.5)',
+              'Accept': '*/*',
+            },
+            timeout: 10000,
+          }, (resolveRes) => {
+            if (resolveRes.statusCode && resolveRes.statusCode >= 300 && resolveRes.statusCode < 400 && resolveRes.headers.location) {
+              const redirectUrl = new URL(resolveRes.headers.location, parsedUrl.href).href;
+              console.log(`[STREAM-RESOLVE] Redirect ${redirectCount + 1} → ${redirectUrl.substring(0, 80)}`);
+              resolveRes.resume();
+              resolveUrl(redirectUrl, redirectCount + 1, maxRedirects);
+              return;
+            }
+
+            const contentType = (resolveRes.headers['content-type'] || '').toLowerCase();
+            const urlLower = url.toLowerCase();
+            const isHLS = urlLower.endsWith('.m3u8') || contentType.includes('x-mpegurl');
+            const isPlaylist = !isHLS && (contentType.includes('mpegurl') || contentType.includes('x-scpls') ||
+              urlLower.endsWith('.m3u') || urlLower.endsWith('.pls'));
+
+            if (isPlaylist) {
+              let body = '';
+              resolveRes.on('data', (chunk: any) => { body += chunk.toString(); });
+              resolveRes.on('end', () => {
+                const streamUrl = parsePlaylistContent(body, urlLower);
+                if (streamUrl) {
+                  console.log(`[STREAM-RESOLVE] Playlist → ${streamUrl.substring(0, 80)}`);
+                  res.setHeader('Content-Type', 'application/json');
+                  res.setHeader('Access-Control-Allow-Origin', '*');
+                  res.end(JSON.stringify({
+                    originalUrl: urlParam,
+                    resolvedUrl: streamUrl,
+                    contentType: contentType,
+                    isPlaylist: true,
+                    isHLS: false,
+                    redirectCount,
+                  }));
+                } else {
+                  res.setHeader('Content-Type', 'application/json');
+                  res.setHeader('Access-Control-Allow-Origin', '*');
+                  res.end(JSON.stringify({
+                    originalUrl: urlParam,
+                    resolvedUrl: url,
+                    contentType: contentType,
+                    isPlaylist: true,
+                    isHLS: false,
+                    redirectCount,
+                    error: 'Could not parse playlist',
+                  }));
+                }
+              });
+              return;
+            }
+
+            resolveRes.resume();
+            console.log(`[STREAM-RESOLVE] Resolved: ${url.substring(0, 80)} (type: ${contentType})`);
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.end(JSON.stringify({
+              originalUrl: urlParam,
+              resolvedUrl: url,
+              contentType: contentType,
+              isPlaylist: false,
+              isHLS: isHLS,
+              redirectCount,
+            }));
+          });
+
+          resolveReq.on('error', (err: any) => {
+            console.error(`[STREAM-RESOLVE] Error: ${err.message}`);
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.end(JSON.stringify({ originalUrl: urlParam, resolvedUrl: url, error: err.message, redirectCount }));
+          });
+
+          resolveReq.on('timeout', () => {
+            resolveReq.destroy();
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.end(JSON.stringify({ originalUrl: urlParam, resolvedUrl: url, error: 'Timeout', redirectCount }));
+          });
+        }
+
+        resolveUrl(urlParam, 0, 5);
       });
     },
   };

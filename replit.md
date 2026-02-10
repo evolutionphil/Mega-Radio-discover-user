@@ -63,6 +63,13 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 -   The global player bar is automatically hidden on the RadioPlaying page to avoid duplication.
 -   Playback continues uninterrupted when navigating between pages.
 
+**Stream Handling Backend (server/routes.ts & vite.config.tv.ts):**
+-   `/api/stream-proxy` - Proxies HTTP audio streams through HTTPS to solve mixed content blocking. Follows up to 5 redirects, resolves .m3u/.pls playlists to direct stream URLs, pipes audio with CORS headers (15s timeout). HLS (.m3u8) is passed through without parsing.
+-   `/api/stream-check` - Validates if a stream URL is accessible (HEAD request with GET fallback). Returns JSON with ok, contentType, statusCode, isPlaylist, responseTime (5s timeout).
+-   `/api/stream-resolve` - Resolves stream URLs by following all redirects and parsing .m3u/.pls playlists. Returns the final direct stream URL with metadata (isPlaylist, isHLS, redirectCount).
+-   Both Vite dev server (vite.config.tv.ts) and Express backend (server/routes.ts) implement these endpoints for dev/prod parity.
+-   Frontend retry strategy: Try url_resolved first → try original url on 2nd retry → force-proxy through backend on 3rd retry. Playlist URLs (.m3u/.pls) are resolved via stream-resolve before playback.
+
 **Pagination:**
 -   **GenreList Page:** Implements paginated loading with 28 stations per batch (4 rows × 7 columns) for improved navigation performance. Automatically loads next batch when scrolling within 600px of bottom.
 -   **Discover Page:** Uses 100 stations per batch with offset-based pagination for infinite scrolling.

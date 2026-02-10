@@ -17,17 +17,38 @@ interface GlobalPlayerContextType {
 
 const GlobalPlayerContext = createContext<GlobalPlayerContextType | undefined>(undefined);
 
+const isTizen = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('tizen');
+const isWebOS = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('webos');
+const isTV = isTizen || isWebOS;
+
 function getProxiedUrl(url: string): string {
   if (!url) return url;
   const isHttpStream = url.startsWith('http://');
   const isPageHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
-  const isTizen = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('tizen');
-  const isWebOS = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('webos');
 
-  if (isHttpStream && isPageHttps && !isTizen && !isWebOS) {
+  if (isHttpStream && isPageHttps && !isTV) {
     return `/api/stream-proxy?url=${encodeURIComponent(url)}`;
   }
   return url;
+}
+
+async function resolveStreamUrl(url: string): Promise<{ resolvedUrl: string; isPlaylist: boolean; isHLS: boolean; error?: string }> {
+  try {
+    const response = await fetch(`/api/stream-resolve?url=${encodeURIComponent(url)}`);
+    if (!response.ok) {
+      return { resolvedUrl: url, isPlaylist: false, isHLS: false, error: `HTTP ${response.status}` };
+    }
+    const data = await response.json();
+    return {
+      resolvedUrl: data.resolvedUrl || url,
+      isPlaylist: data.isPlaylist || false,
+      isHLS: data.isHLS || false,
+      error: data.error || undefined,
+    };
+  } catch (err: any) {
+    console.warn('[RESOLVE] Failed to resolve URL, using original:', err.message);
+    return { resolvedUrl: url, isPlaylist: false, isHLS: false, error: err.message };
+  }
 }
 
 export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
@@ -107,14 +128,28 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
           const delay = Math.min(1000 * Math.pow(2, retryCountRef.current), 10000);
           console.log(`[🔄 RETRY] Will retry in ${delay}ms (attempt ${retryCountRef.current + 1}/${maxRetries})`);
           
-          retryTimeoutRef.current = setTimeout(() => {
+          retryTimeoutRef.current = setTimeout(async () => {
             retryCountRef.current++;
             
             if (audioPlayerRef.current && currentStationToRetry) {
-              const rawUrl = currentStationToRetry.url_resolved || currentStationToRetry.url;
-              const playUrl = getProxiedUrl(rawUrl);
-              console.log(`[🔄 RETRY] Retrying: ${currentStationToRetry.name} - ${playUrl.substring(0, 80)}`);
-              audioPlayerRef.current.play(playUrl);
+              let rawUrl: string;
+              
+              if (retryCountRef.current === 2 && currentStationToRetry.url_resolved && currentStationToRetry.url !== currentStationToRetry.url_resolved) {
+                rawUrl = currentStationToRetry.url;
+                console.log(`[🔄 RETRY] Trying original url instead of url_resolved`);
+              } else {
+                rawUrl = currentStationToRetry.url_resolved || currentStationToRetry.url;
+              }
+
+              if (retryCountRef.current >= 2 && !isTV) {
+                const proxyUrl = `/api/stream-proxy?url=${encodeURIComponent(rawUrl)}`;
+                console.log(`[🔄 RETRY] Force-proxying on retry ${retryCountRef.current}`);
+                audioPlayerRef.current.play(proxyUrl);
+              } else {
+                const playUrl = getProxiedUrl(rawUrl);
+                audioPlayerRef.current.play(playUrl);
+              }
+              console.log(`[🔄 RETRY] Retrying: ${currentStationToRetry.name}`);
             }
           }, delay);
         } else if (retryCountRef.current >= maxRetries) {
@@ -266,59 +301,79 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     }
 
     const rawUrl = station.url_resolved || station.url;
-    const playUrl = getProxiedUrl(rawUrl);
     
     console.log('[🎵 PLAY] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('[🎵 PLAY] Station:', station.name);
     console.log('[🎵 PLAY] ID:', station._id);
     console.log('[🎵 PLAY] Raw URL:', rawUrl);
-    console.log('[🎵 PLAY] Proxied URL:', playUrl);
     console.log('[🎵 PLAY] URL type:', rawUrl?.startsWith('https') ? 'HTTPS' : rawUrl?.startsWith('http') ? 'HTTP' : 'OTHER');
-    console.log('[🎵 PLAY] Has url_resolved:', !!station.url_resolved);
-    console.log('[🎵 PLAY] Has url:', !!station.url);
-    console.log('[🎵 PLAY] Country:', station.country);
     console.log('[🎵 PLAY] Codec:', station.codec || 'unknown');
     console.log('[🎵 PLAY] Bitrate:', station.bitrate || 'unknown');
     
     try {
       if (audioPlayerRef.current && typeof audioPlayerRef.current.stop === 'function') {
-        console.log('[🎵 PLAY] Stopping previous stream...');
         audioPlayerRef.current.stop();
       }
     } catch (err) {
-      console.warn('[🎵 PLAY] Stop previous failed:', err);
+      // ignore cleanup errors
     }
     
     setCurrentStation(station);
     currentStationRef.current = station;
+    setIsBuffering(true);
     
     if (retryTimeoutRef.current) {
       clearTimeout(retryTimeoutRef.current);
       retryTimeoutRef.current = null;
     }
     retryCountRef.current = 0;
-    
-    console.log('[🎵 PLAY] Starting playback in 50ms...');
-    setTimeout(() => {
-      if (audioPlayerRef.current && currentStationRef.current?._id === station._id) {
-        console.log('[🎵 PLAY] Calling player.play() now');
-        audioPlayerRef.current.play(playUrl);
-      } else {
-        console.warn('[🎵 PLAY] Skipped play - station changed or player gone');
-      }
-    }, 50);
 
-    // Track station play event in Google Analytics
+    const startPlayback = (finalUrl: string) => {
+      const playUrl = getProxiedUrl(finalUrl);
+      console.log('[🎵 PLAY] Final play URL:', playUrl.substring(0, 120));
+      
+      setTimeout(() => {
+        if (audioPlayerRef.current && currentStationRef.current?._id === station._id) {
+          audioPlayerRef.current.play(playUrl);
+        }
+      }, 50);
+    };
+
+    const urlLower = rawUrl.toLowerCase();
+    const needsResolve = urlLower.endsWith('.m3u') || urlLower.endsWith('.pls') || 
+      urlLower.includes('.m3u?') || urlLower.includes('.pls?');
+
+    if (needsResolve && !isTV) {
+      console.log('[🎵 PLAY] URL looks like a playlist, resolving first...');
+      resolveStreamUrl(rawUrl).then(result => {
+        if (currentStationRef.current?._id !== station._id) {
+          setIsBuffering(false);
+          return;
+        }
+        if (result.error) {
+          console.warn('[🎵 PLAY] Resolve had error:', result.error, '- using resolved anyway');
+        }
+        console.log('[🎵 PLAY] Resolved:', rawUrl.substring(0, 60), '→', result.resolvedUrl.substring(0, 60));
+        startPlayback(result.resolvedUrl);
+      }).catch(() => {
+        if (currentStationRef.current?._id === station._id) {
+          startPlayback(rawUrl);
+        } else {
+          setIsBuffering(false);
+        }
+      });
+    } else {
+      startPlayback(rawUrl);
+    }
+
     trackStationPlay(station.name, station.country || '', station.tags?.[0] || '');
 
-    // Save last played station to localStorage
     try {
       localStorage.setItem("lastPlayedStation", JSON.stringify(station));
     } catch (err) {
       trackError('Failed to save station to localStorage', 'playStation');
     }
 
-    // Add to recently played list
     recentlyPlayedService.addStation(station);
   };
 
