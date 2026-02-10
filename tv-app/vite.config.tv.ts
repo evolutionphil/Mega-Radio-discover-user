@@ -156,7 +156,17 @@ function removeModuleType() {
     name: 'remove-module-type',
     enforce: 'post' as const,
     transformIndexHtml(html: string) {
-      return html.replace(/<script\s+type\s*=\s*["']module["']\s*/gi, '<script ');
+      let result = html.replace(/<script\s+type\s*=\s*["']module["']\s*/gi, '<script ');
+
+      const scriptRegex = /<script\s+crossorigin\s+src=["']\.\/assets\/index-[^"']+\.js["'][^>]*><\/script>/gi;
+      const matches = result.match(scriptRegex);
+      if (matches && matches.length > 0) {
+        const scriptTag = matches[0];
+        result = result.replace(scriptTag, '');
+        result = result.replace('</body>', `  ${scriptTag}\n  </body>`);
+      }
+
+      return result;
     },
     apply: 'build' as const,
   };
