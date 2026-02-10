@@ -189,9 +189,9 @@ export const GenreList = (): JSX.Element => {
 
   // Focus management with sidebar: 5 sidebar + stations
   // Sidebar: 0-4, Stations: 5+
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
-  const stationsStart = 5;
-  const totalItems = 5 + displayedStations.length;
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+  const stationsStart = 6;
+  const totalItems = 6 + displayedStations.length;
 
   // Custom navigation for sidebar + content
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
@@ -199,9 +199,9 @@ export const GenreList = (): JSX.Element => {
     let newIndex = current;
 
     // Sidebar (0-4)
-    if (current >= 0 && current <= 4) {
+    if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 4 ? current + 1 : current;
+        newIndex = current < 5 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
@@ -264,8 +264,8 @@ export const GenreList = (): JSX.Element => {
     cols: 1,
     initialIndex: 0, // Start on sidebar, will jump to first station when loaded
     onSelect: (index) => {
-      // Sidebar (0-4)
-      if (index >= 0 && index <= 4) {
+      // Sidebar (0-5)
+      if (index >= 0 && index <= 5) {
         const route = sidebarRoutes[index];
         window.location.hash = '#' + route;
       }

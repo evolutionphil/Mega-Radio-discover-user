@@ -48,17 +48,17 @@ export const Genres = (): JSX.Element => {
 
   const popularGenres = allGenres.slice(0, 8);
 
-  const totalItems = 5 + 1 + 1 + popularGenres.length + allGenres.length;
+  const totalItems = 6 + 1 + popularGenres.length + allGenres.length;
 
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
 
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
 
-    if (current >= 0 && current <= 4) {
+    if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 4 ? current + 1 : current;
+        newIndex = current < 5 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
@@ -160,7 +160,7 @@ export const Genres = (): JSX.Element => {
     cols: 1,
     initialIndex: 7,
     onSelect: (index) => {
-      if (index >= 0 && index <= 4) {
+      if (index >= 0 && index <= 5) {
         const route = sidebarRoutes[index];
         if (route !== '#') {
           window.location.hash = '#' + route;

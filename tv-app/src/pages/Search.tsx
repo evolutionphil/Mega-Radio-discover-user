@@ -87,71 +87,68 @@ export const Search = (): JSX.Element => {
     : (popularStationsData?.stations || []);
 
   // Calculate totalItems: 5 (sidebar) + 1 (input) + visible results + recent (NO country selector)
-  const totalItems = 5 + 1 + visibleSearchResults.length + recentStations.length;
+  const totalItems = 6 + 1 + visibleSearchResults.length + recentStations.length;
 
   // Define sidebar routes (removed Records)
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
 
   // Custom navigation logic for multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-4)
-    if (current >= 0 && current <= 4) {
+    // Sidebar section (0-5)
+    if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 4 ? current + 1 : current;
+        newIndex = current < 5 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 5; // Jump to search input
+        newIndex = 6; // Jump to search input
       }
     }
-    // Search input (5)
-    else if (current === 5) {
+    // Search input (6)
+    else if (current === 6) {
       if (direction === 'DOWN') {
-        // Jump to first search result or first recent station
         if (visibleSearchResults.length > 0) {
-          newIndex = 6; // First search result
+          newIndex = 7;
         } else if (recentStations.length > 0) {
-          newIndex = 6; // First recent station (no search results)
+          newIndex = 7;
         }
       } else if (direction === 'RIGHT') {
-        // Jump directly to recently played section
         if (recentStations.length > 0) {
-          newIndex = 6 + visibleSearchResults.length; // First recent station
+          newIndex = 7 + visibleSearchResults.length;
         }
       } else if (direction === 'LEFT') {
-        newIndex = 0; // Jump to sidebar
+        newIndex = 0;
       }
     }
-    // Search results section (6 to 6+visibleSearchResults.length-1)
-    else if (current >= 6 && current < 6 + (visibleSearchResults?.length || 0)) {
-      const relIndex = current - 6;
+    // Search results section (7 to 7+visibleSearchResults.length-1)
+    else if (current >= 7 && current < 7 + (visibleSearchResults?.length || 0)) {
+      const relIndex = current - 7;
       const searchResultsLength = visibleSearchResults?.length || 0;
 
       if (direction === 'UP') {
         if (relIndex > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 5; // Jump to search input
+          newIndex = 6;
         }
       } else if (direction === 'DOWN') {
         if (relIndex < searchResultsLength - 1) {
           newIndex = current + 1;
         } else {
-          // Jump to recently played if available
           if (Array.isArray(recentStations) && recentStations.length > 0) {
-            newIndex = 6 + searchResultsLength; // First recent station
+            newIndex = 7 + searchResultsLength;
           }
         }
       } else if (direction === 'LEFT') {
-        newIndex = 0; // Jump to sidebar
+        newIndex = 0;
       }
     }
     // Recently played section (2-column grid)
-    else if (current >= 6 + (visibleSearchResults?.length || 0)) {
-      const recentStartIndex = 6 + (visibleSearchResults?.length || 0);
+    else if (current >= 7 + (visibleSearchResults?.length || 0)) {
+      const recentStartIndex = 7 + (visibleSearchResults?.length || 0);
       const relIndex = current - recentStartIndex;
       const row = Math.floor(relIndex / 2);
       const col = relIndex % 2;
@@ -161,7 +158,7 @@ export const Search = (): JSX.Element => {
         if (col > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 0; // Jump to sidebar
+          newIndex = 0;
         }
       } else if (direction === 'RIGHT') {
         if (col < 1 && current < totalItems - 1) {
@@ -171,12 +168,11 @@ export const Search = (): JSX.Element => {
         if (row > 0) {
           newIndex = current - 2;
         } else {
-          // Jump to search results or search input
           const searchResultsLength = visibleSearchResults?.length || 0;
           if (searchResultsLength > 0) {
-            newIndex = 6 + searchResultsLength - 1; // Last search result
+            newIndex = 7 + searchResultsLength - 1;
           } else {
-            newIndex = 5; // Search input
+            newIndex = 6;
           }
         }
       } else if (direction === 'DOWN') {
@@ -206,34 +202,31 @@ export const Search = (): JSX.Element => {
   const { focusIndex, setFocusIndex, handleSelect, handleBack, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 5, // Start on search input
+    initialIndex: 6,
     onSelect: (index) => {
-      // Sidebar navigation (0-4)
-      if (index >= 0 && index <= 4) {
+      // Sidebar navigation (0-5)
+      if (index >= 0 && index <= 5) {
         const route = sidebarRoutes[index];
         if (route !== '#') {
           window.location.hash = '#' + route;
         }
       }
-      // Search input (5) - LGTV pattern: focus input and set cursor to end
-      else if (index === 5) {
+      else if (index === 6) {
         if (inputRef.current) {
           inputRef.current.focus();
           setInputCursorToEnd();
         }
       }
-      // Search results (6 to 6+visibleSearchResults.length-1)
-      else if (index >= 6 && index < 6 + visibleSearchResults.length) {
-        const resultIndex = index - 6;
+      else if (index >= 7 && index < 7 + visibleSearchResults.length) {
+        const resultIndex = index - 7;
         const station = visibleSearchResults[resultIndex];
         if (station) {
           playStation(station);
           setLocation(`/radio-playing?station=${station._id}`);
         }
       }
-      // Recently played (6+visibleSearchResults.length onwards)
-      else if (index >= 6 + visibleSearchResults.length) {
-        const recentIndex = index - 6 - visibleSearchResults.length;
+      else if (index >= 7 + visibleSearchResults.length) {
+        const recentIndex = index - 7 - visibleSearchResults.length;
         const station = recentStations[recentIndex];
         if (station) {
           playStation(station);
@@ -248,7 +241,7 @@ export const Search = (): JSX.Element => {
   
   // Fix: Blur input when focusIndex moves away from search input (index 5)
   useEffect(() => {
-    if (focusIndex !== 5 && inputRef.current) {
+    if (focusIndex !== 6 && inputRef.current) {
       inputRef.current.blur();
     }
   }, [focusIndex]);
@@ -377,7 +370,7 @@ export const Search = (): JSX.Element => {
 
       {/* Search Input */}
       <div 
-        className={`absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px] ${getFocusClasses(isFocused(5))}`}
+        className={`absolute backdrop-blur-[13.621px] backdrop-filter bg-[rgba(255,255,255,0.2)] border-[#717171] border-[2.594px] border-solid h-[91px] left-[246px] rounded-[14px] top-[136px] w-[774px] ${getFocusClasses(isFocused(6))}`}
         data-testid="input-search"
       >
         <div className="h-[91px] overflow-clip relative rounded-[inherit] w-[774px]">
@@ -410,7 +403,7 @@ export const Search = (): JSX.Element => {
         if (!station) return null;
         const topOffset = 259;
         const rowHeight = 80;
-        const focusIdx = 6 + index;
+        const focusIdx = 7 + index;
         
         return (
           <div
@@ -463,7 +456,7 @@ export const Search = (): JSX.Element => {
         const col = index % 2;
         const leftPositions = [1110, 1340];
         const topPositions = [136, 430, 724]; // Added 30px gap between rows (card height 264px + 30px gap)
-        const focusIdx = 6 + visibleSearchResults.length + index;
+        const focusIdx = 7 + visibleSearchResults.length + index;
         
         return (
           <div 

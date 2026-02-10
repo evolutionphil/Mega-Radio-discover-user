@@ -227,7 +227,7 @@ export const RadioPlaying = (): JSX.Element => {
   const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20) + popularCount;
 
   // Define sidebar routes (NO PROFILE - 5 items)
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
 
   // Custom navigation logic for multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
@@ -235,16 +235,16 @@ export const RadioPlaying = (): JSX.Element => {
     let newIndex = current;
 
     // Sidebar section (0-4) - 5 items
-    if (current >= 0 && current <= 4) {
+    if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 4 ? current + 1 : current;
+        newIndex = current < 5 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = 5; // Jump to country selector
+        newIndex = 6; // Jump to first playback button
       }
     }
-    // Country selector (5)
+    // Country selector (5) - legacy, now handled by sidebar
     else if (current === 5) {
       if (direction === 'DOWN') {
         newIndex = 6; // Jump to first playback button (previous)
@@ -399,8 +399,8 @@ export const RadioPlaying = (): JSX.Element => {
     cols: 1,
     initialIndex: 8, // Start on play/pause button
     onSelect: (index) => {
-      // Sidebar navigation (0-4)
-      if (index >= 0 && index <= 4) {
+      // Sidebar navigation (0-5)
+      if (index >= 0 && index <= 5) {
         const route = sidebarRoutes[index];
         if (route !== '#') {
           window.location.hash = '#' + route;

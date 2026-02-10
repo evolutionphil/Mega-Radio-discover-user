@@ -177,6 +177,7 @@ export function LocalizationProvider({ children }: { children: ReactNode }) {
     'nav_search': 'Search',
     'nav_favorites': 'Favorites',
     'nav_settings': 'Settings',
+    'nav_country': 'Country',
     // Common UI
     'popular_genres': 'Popular Genres',
     'popular_stations': 'Popular Stations',

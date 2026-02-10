@@ -161,7 +161,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const totalItems = 5 + 1 + popularStations.length + genres.length + displayedStations.length;
 
   // Define sidebar routes (NO PROFILE - 5 items: Discover, Genres, Search, Favorites, Settings)
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
 
   // Scroll genre container to show focused genre - SMOOTH SCROLL like similar stations
   const scrollGenreIntoView = (genreIndex: number) => {
@@ -185,9 +185,9 @@ export const DiscoverNoUser = (): JSX.Element => {
     let newIndex = current;
 
     // Sidebar section (0-4) - 5 items
-    if (current >= 0 && current <= 4) {
+    if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 4 ? current + 1 : current;
+        newIndex = current < 5 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
@@ -315,7 +315,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     initialIndex: 0,
     onSelect: (index) => {
       // Sidebar navigation (0-4) - 5 items
-      if (index >= 0 && index <= 4) {
+      if (index >= 0 && index <= 5) {
         const route = sidebarRoutes[index];
         window.location.hash = '#' + route;
       }

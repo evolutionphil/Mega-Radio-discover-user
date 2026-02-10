@@ -13,14 +13,14 @@ export const Favorites = (): JSX.Element => {
   const [, setLocation] = useLocation();
   
   // Define sidebar routes (5 items)
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
   
   // Safely get favorites array with null checks
   const favoritesArray = Array.isArray(favorites) ? favorites : [];
   
   // Calculate totalItems: 5 sidebar + favorites (or 1 for empty state)
-  const favoritesStart = 5;
-  const totalItems = 5 + (favoritesArray.length || 1);
+  const favoritesStart = 6;
+  const totalItems = 6 + (favoritesArray.length || 1);
   
   // Focus management with custom navigation
   const { focusIndex, handleNavigation: baseHandleNavigation, handleSelect, handleBack, isFocused, setFocusIndex } = useFocusManager({
@@ -28,8 +28,8 @@ export const Favorites = (): JSX.Element => {
     cols: 1,
     initialIndex: favoritesStart,
     onSelect: (index) => {
-      // Sidebar navigation (0-4)
-      if (index >= 0 && index <= 4) {
+      // Sidebar navigation (0-5)
+      if (index >= 0 && index <= 5) {
         window.location.hash = '#' + sidebarRoutes[index];
       }
       // Favorites section
@@ -58,9 +58,9 @@ export const Favorites = (): JSX.Element => {
     let newIndex = current;
 
     // Sidebar section (0-4)
-    if (current >= 0 && current <= 4) {
+    if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 4 ? current + 1 : current;
+        newIndex = current < 5 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {

@@ -13,23 +13,21 @@ export const Settings = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("none");
 
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
   const settingsOptions: PlayAtStartMode[] = ["last-played", "random", "favorite", "none"];
-  const totalItems = 5 + 4;
+  const totalItems = 6 + 4;
 
   // Focus management
   const { focusIndex, handleNavigation, handleSelect, handleBack, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 5, // Start on first settings option
+    initialIndex: 6,
     onSelect: (index) => {
-      if (index < 5) {
-        // Sidebar navigation (0-4)
+      if (index < 6) {
         const route = sidebarRoutes[index];
         setLocation(route);
       } else {
-        // Settings option
-        const optionIndex = index - 5;
+        const optionIndex = index - 6;
         handlePlayAtStartChange(settingsOptions[optionIndex]);
       }
     },
@@ -135,7 +133,7 @@ export const Settings = (): JSX.Element => {
 
         {/* Last Played Option */}
         <div 
-          className={`absolute left-[30px] top-[95px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(5))}`}
+          className={`absolute left-[30px] top-[95px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(6))}`}
           onClick={() => handlePlayAtStartChange("last-played")}
           data-testid="option-last-played"
         >
@@ -155,7 +153,7 @@ export const Settings = (): JSX.Element => {
 
         {/* Random Option */}
         <div 
-          className={`absolute left-[30px] top-[152px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(6))}`}
+          className={`absolute left-[30px] top-[152px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(7))}`}
           onClick={() => handlePlayAtStartChange("random")}
           data-testid="option-random"
         >
@@ -175,7 +173,7 @@ export const Settings = (): JSX.Element => {
 
         {/* Favorite Option */}
         <div 
-          className={`absolute left-[30px] top-[209px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(7))}`}
+          className={`absolute left-[30px] top-[209px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(8))}`}
           onClick={() => handlePlayAtStartChange("favorite")}
           data-testid="option-favorite"
         >
@@ -195,7 +193,7 @@ export const Settings = (): JSX.Element => {
 
         {/* None Option */}
         <div 
-          className={`absolute left-[30px] top-[266px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(8))}`}
+          className={`absolute left-[30px] top-[266px] flex items-center gap-[20px] cursor-pointer ${getFocusClasses(isFocused(9))}`}
           onClick={() => handlePlayAtStartChange("none")}
           data-testid="option-none"
         >
