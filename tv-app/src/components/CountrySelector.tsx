@@ -195,14 +195,12 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
   const [listFocusIndex, setListFocusIndex] = useState(0);
   const [activeLayoutIndex, setActiveLayoutIndex] = useState(0);
   const [layoutSelectorIndex, setLayoutSelectorIndex] = useState(0);
-  const [layoutSelectorScroll, setLayoutSelectorScroll] = useState(0);
   const lastKeyboardPos = useRef({ row: 0, col: 0 });
   const lastListPos = useRef(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const layoutScrollRef = useRef<HTMLDivElement>(null);
   const { t } = useLocalization();
 
-  const VISIBLE_LAYOUTS = 6;
   const activeLayout = KEYBOARD_LAYOUTS[activeLayoutIndex];
   const KEYBOARD_ROWS = activeLayout.rows;
 
@@ -345,8 +343,6 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           e.preventDefault();
           if (layoutSelectorIndex > 0) {
             setLayoutSelectorIndex(prev => prev - 1);
-          } else if (mode === 'page' && onNavigateToSidebar) {
-            onNavigateToSidebar();
           }
         } else if (isRight) {
           e.preventDefault();
@@ -394,36 +390,39 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           e.preventDefault();
           if (keyboardCol > 0) {
             setKeyboardCol(prev => prev - 1);
-          } else if (mode === 'page' && onNavigateToSidebar) {
-            onNavigateToSidebar();
+          } else {
+            lastKeyboardPos.current = { row: keyboardRow, col: keyboardCol };
+            setFocusZone('list');
+            setListFocusIndex(lastListPos.current);
           }
         } else if (isRight) {
           e.preventDefault();
           if (keyboardCol < currentRow.length - 1) {
             setKeyboardCol(prev => prev + 1);
-          } else {
-            lastKeyboardPos.current = { row: keyboardRow, col: keyboardCol };
-            setFocusZone('list');
-            setListFocusIndex(lastListPos.current);
           }
         } else if (isEnter) {
           e.preventDefault();
           const pressedKey = currentRow[keyboardCol];
           handleKeyPress(pressedKey);
         }
-      } else {
+      } else if (focusZone === 'list') {
         if (isUp) {
           e.preventDefault();
           setListFocusIndex(prev => Math.max(0, prev - 1));
         } else if (isDown) {
           e.preventDefault();
           setListFocusIndex(prev => Math.min(filteredCountries.length - 1, prev + 1));
-        } else if (isLeft) {
+        } else if (isRight) {
           e.preventDefault();
           lastListPos.current = listFocusIndex;
           setFocusZone('keyboard');
           setKeyboardRow(lastKeyboardPos.current.row);
           setKeyboardCol(lastKeyboardPos.current.col);
+        } else if (isLeft) {
+          e.preventDefault();
+          if (mode === 'page' && onNavigateToSidebar) {
+            onNavigateToSidebar();
+          }
         } else if (isEnter) {
           e.preventDefault();
           if (filteredCountries[listFocusIndex]) {
@@ -496,12 +495,13 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
           {t('select_country') || 'Select Country'}
         </p>
 
+        {/* LEFT SIDE: Search bar + Results list */}
         <div
           className="absolute left-[246px] top-[110px] w-[660px] h-[76px] rounded-[14px] z-10 flex items-center px-[30px] gap-[14px]"
           style={{
             background: 'rgba(255,255,255,0.14)',
             backdropFilter: 'blur(13.621px)',
-            border: (focusZone === 'keyboard' || focusZone === 'layoutSelector') ? '2.594px solid #ff4199' : '2.594px solid #717171',
+            border: focusZone === 'list' ? '2.594px solid #ff4199' : '2.594px solid #717171',
             boxShadow: 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
           }}
         >
@@ -519,136 +519,19 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
               </span>
             )}
           </div>
-        </div>
-
-        <div className="absolute left-[246px] top-[205px] z-10" style={{ width: '660px' }}>
-          <div
-            ref={layoutScrollRef}
-            className="flex gap-[6px] mb-[12px] overflow-x-hidden"
-            style={{ scrollBehavior: 'smooth' }}
-            data-testid="keyboard-layout-selector"
-          >
-            {KEYBOARD_LAYOUTS.map((layout, index) => {
-              const isActive = activeLayoutIndex === index;
-              const isFocused = focusZone === 'layoutSelector' && layoutSelectorIndex === index;
-              return (
-                <button
-                  key={layout.id}
-                  className={`flex-shrink-0 h-[48px] px-[14px] rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] flex items-center justify-center gap-[6px] transition-all duration-150 select-none ${
-                    isFocused
-                      ? 'bg-[#ff4199] text-white scale-105'
-                      : isActive
-                        ? 'bg-[rgba(255,65,153,0.25)] text-white border border-[#ff4199]'
-                        : 'bg-[rgba(255,255,255,0.08)] text-white/60'
-                  }`}
-                  style={{
-                    boxShadow: isFocused
-                      ? '0 0 20px rgba(255,65,153,0.5)'
-                      : 'none',
-                    minWidth: '90px',
-                  }}
-                  tabIndex={-1}
-                  data-testid={`layout-${layout.id}`}
-                  onClick={() => {
-                    setActiveLayoutIndex(index);
-                    setKeyboardRow(0);
-                    setKeyboardCol(0);
-                  }}
-                >
-                  <span className="text-[16px]">{layout.flag}</span>
-                  <span>{layout.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {KEYBOARD_ROWS.map((row, rowIndex) => {
-            const isActionRow = rowIndex === KEYBOARD_ROWS.length - 1;
-            return (
-              <div key={`${activeLayout.id}-${rowIndex}`} className={`flex ${isActionRow ? 'gap-[10px] mt-[14px]' : 'gap-[6px] mb-[6px]'}`}>
-                {row.map((keyChar, colIndex) => {
-                  const isKeyFocused = focusZone === 'keyboard' && keyboardRow === rowIndex && keyboardCol === colIndex;
-                  const isAction = keyChar === 'SPACE' || keyChar === 'DELETE' || keyChar === 'CLEAR';
-
-                  let widthClass = 'w-[88px]';
-                  if (keyChar === 'SPACE') widthClass = 'flex-1';
-                  else if (keyChar === 'DELETE' || keyChar === 'CLEAR') widthClass = 'w-[160px]';
-
-                  return (
-                    <button
-                      key={`${activeLayout.id}-${keyChar}-${colIndex}`}
-                      className={`h-[68px] ${widthClass} rounded-[12px] font-['Ubuntu',Helvetica] font-medium text-white flex items-center justify-center transition-all duration-150 select-none ${
-                        isKeyFocused
-                          ? 'bg-[#ff4199] scale-105 text-[24px]'
-                          : isAction
-                            ? 'bg-[rgba(255,255,255,0.08)] text-[18px] text-white/70'
-                            : 'bg-[rgba(255,255,255,0.14)] text-[22px]'
-                      }`}
-                      style={{
-                        boxShadow: isKeyFocused
-                          ? '0 0 25px rgba(255,65,153,0.5), inset 1px 1px 8px rgba(255,255,255,0.15)'
-                          : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
-                      }}
-                      tabIndex={-1}
-                      data-testid={`key-${keyChar}`}
-                    >
-                      {getKeyLabel(keyChar)}
-                    </button>
-                  );
-                })}
-              </div>
-            );
-          })}
-
-          <div className="flex items-center justify-between mt-[16px] px-[4px]">
-            <div className="flex items-center gap-[20px]">
-              <div className="flex items-center gap-[6px]">
-                <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
-                  <span className="text-white/60 text-[14px]">▲</span>
-                </div>
-                <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30">{t('keyboard') || 'Keyboard'}</span>
-              </div>
-              <div className="flex items-center gap-[6px]">
-                <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
-                  <span className="text-white/60 text-[14px]">OK</span>
-                </div>
-                <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30">{t('type') || 'Type'}</span>
-              </div>
-              <div className="flex items-center gap-[6px]">
-                <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
-                  <span className="text-white/60 text-[14px]">→</span>
-                </div>
-                <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30">{t('results') || 'Results'}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute right-[60px] top-[42px] z-10">
-          <span className="font-['Ubuntu',Helvetica] text-[18px] text-white/30">
-            {filteredCountries.length - 1} {t('countries') || 'countries'}
+          <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30 flex-shrink-0">
+            {filteredCountries.length - 1}
           </span>
         </div>
 
         <div
-          className="absolute right-0 top-[110px] z-10 flex flex-col"
-          style={{ left: '960px', bottom: '30px' }}
+          className="absolute left-[246px] top-[200px] z-10"
+          style={{ width: '660px', bottom: '30px' }}
         >
-          <div className="absolute top-0 left-0 right-[60px] h-[76px] rounded-[14px] bg-[rgba(255,255,255,0.08)] flex items-center px-[24px]" style={{ boxShadow: 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)' }}>
-            <span className="font-['Ubuntu',Helvetica] font-bold text-[22px] text-white/70">
-              {searchQuery
-                ? `"${searchQuery}" — ${filteredCountries.length} ${t('results') || 'results'}`
-                : t('all_countries') || 'All Countries'
-              }
-            </span>
-          </div>
-
           <div
             ref={scrollContainerRef}
-            className="absolute left-0 right-[60px] overflow-y-auto"
+            className="absolute left-0 right-0 top-0 bottom-0 overflow-y-auto"
             style={{
-              top: '96px',
-              height: '800px',
               scrollbarWidth: 'none',
             }}
           >
@@ -705,6 +588,110 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                 );
               })
             )}
+          </div>
+        </div>
+
+        {/* RIGHT SIDE: Keyboard */}
+        <div className="absolute top-[110px] z-10" style={{ left: '960px', width: '700px' }}>
+          <div
+            ref={layoutScrollRef}
+            className="flex gap-[6px] mb-[12px] overflow-x-hidden"
+            style={{ scrollBehavior: 'smooth' }}
+            data-testid="keyboard-layout-selector"
+          >
+            {KEYBOARD_LAYOUTS.map((layout, index) => {
+              const isActive = activeLayoutIndex === index;
+              const isFocused = focusZone === 'layoutSelector' && layoutSelectorIndex === index;
+              return (
+                <button
+                  key={layout.id}
+                  className={`flex-shrink-0 h-[48px] px-[14px] rounded-[10px] font-['Ubuntu',Helvetica] font-medium text-[18px] flex items-center justify-center gap-[6px] transition-all duration-150 select-none ${
+                    isFocused
+                      ? 'bg-[#ff4199] text-white scale-105'
+                      : isActive
+                        ? 'bg-[rgba(255,65,153,0.25)] text-white border border-[#ff4199]'
+                        : 'bg-[rgba(255,255,255,0.08)] text-white/60'
+                  }`}
+                  style={{
+                    boxShadow: isFocused
+                      ? '0 0 20px rgba(255,65,153,0.5)'
+                      : 'none',
+                    minWidth: '90px',
+                  }}
+                  tabIndex={-1}
+                  data-testid={`layout-${layout.id}`}
+                  onClick={() => {
+                    setActiveLayoutIndex(index);
+                    setKeyboardRow(0);
+                    setKeyboardCol(0);
+                  }}
+                >
+                  <span className="text-[16px]">{layout.flag}</span>
+                  <span>{layout.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {KEYBOARD_ROWS.map((row, rowIndex) => {
+            const isActionRow = rowIndex === KEYBOARD_ROWS.length - 1;
+            return (
+              <div key={`${activeLayout.id}-${rowIndex}`} className={`flex ${isActionRow ? 'gap-[10px] mt-[14px]' : 'gap-[6px] mb-[6px]'}`}>
+                {row.map((keyChar, colIndex) => {
+                  const isKeyFocused = focusZone === 'keyboard' && keyboardRow === rowIndex && keyboardCol === colIndex;
+                  const isAction = keyChar === 'SPACE' || keyChar === 'DELETE' || keyChar === 'CLEAR';
+
+                  let widthClass = 'w-[92px]';
+                  if (keyChar === 'SPACE') widthClass = 'flex-1';
+                  else if (keyChar === 'DELETE' || keyChar === 'CLEAR') widthClass = 'w-[170px]';
+
+                  return (
+                    <button
+                      key={`${activeLayout.id}-${keyChar}-${colIndex}`}
+                      className={`h-[68px] ${widthClass} rounded-[12px] font-['Ubuntu',Helvetica] font-medium text-white flex items-center justify-center transition-all duration-150 select-none ${
+                        isKeyFocused
+                          ? 'bg-[#ff4199] scale-105 text-[24px]'
+                          : isAction
+                            ? 'bg-[rgba(255,255,255,0.08)] text-[18px] text-white/70'
+                            : 'bg-[rgba(255,255,255,0.14)] text-[22px]'
+                      }`}
+                      style={{
+                        boxShadow: isKeyFocused
+                          ? '0 0 25px rgba(255,65,153,0.5), inset 1px 1px 8px rgba(255,255,255,0.15)'
+                          : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
+                      }}
+                      tabIndex={-1}
+                      data-testid={`key-${keyChar}`}
+                    >
+                      {getKeyLabel(keyChar)}
+                    </button>
+                  );
+                })}
+              </div>
+            );
+          })}
+
+          <div className="flex items-center justify-between mt-[16px] px-[4px]">
+            <div className="flex items-center gap-[20px]">
+              <div className="flex items-center gap-[6px]">
+                <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
+                  <span className="text-white/60 text-[14px]">←</span>
+                </div>
+                <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30">{t('results') || 'Results'}</span>
+              </div>
+              <div className="flex items-center gap-[6px]">
+                <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
+                  <span className="text-white/60 text-[14px]">OK</span>
+                </div>
+                <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30">{t('type') || 'Type'}</span>
+              </div>
+              <div className="flex items-center gap-[6px]">
+                <div className="w-[28px] h-[28px] rounded-[6px] bg-[rgba(255,255,255,0.14)] flex items-center justify-center" style={{ boxShadow: 'inset 1px 1px 6px rgba(255,255,255,0.12)' }}>
+                  <span className="text-white/60 text-[14px]">▲</span>
+                </div>
+                <span className="font-['Ubuntu',Helvetica] text-[16px] text-white/30">{t('keyboard') || 'Keyboard'}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
