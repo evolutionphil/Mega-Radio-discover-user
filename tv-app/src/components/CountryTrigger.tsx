@@ -16,7 +16,7 @@ export const CountryTrigger = ({
   className = ''
 }: CountryTriggerProps) => {
   const isGlobal = selectedCountryCode === 'GLOBAL';
-  const globeIcon = assetPath('images/globe-icon.png');
+  const globeIcon = assetPath('images/globe-icon.svg');
   
   return (
     <div 

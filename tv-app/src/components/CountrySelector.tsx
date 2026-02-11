@@ -132,7 +132,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
     const globalOption: Country = {
       name: 'Global',
       code: 'GLOBAL',
-      flag: assetPath('images/globe-icon.png'),
+      flag: assetPath('images/globe-icon.svg'),
     };
 
     const filtered = countries

@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
+import { cacheService } from "@/services/cacheService";
 import { AppLayout } from "@/components/AppLayout";
 import { useCountry } from "@/contexts/CountryContext";
 import { useRef, useEffect, useState } from "react";
@@ -23,21 +24,25 @@ export const GenreList = (): JSX.Element => {
   
   let genreSlug = pathParts[2] || 'pop'; // /genre-list/SLUG
   
-  // Convert slug back to display name (e.g., "rock" -> "Rock", "hip-hop" -> "Hip Hop")
   const genreName = genreSlug
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
-  // PAGINATION state - Load stations in smaller batches for better navigation
   const [displayedStations, setDisplayedStations] = useState<Station[]>([]);
   const [currentOffset, setCurrentOffset] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const STATIONS_PER_LOAD = 28; // Fetch 28 stations per batch (4 rows × 7 columns)
+  const STATIONS_PER_LOAD = 28;
 
-  // Fetch initial batch (28 stations) with offset=0 for pagination
-  // CACHE: 7 days
+  const cachedGenreStations = (() => {
+    const cached = cacheService.getGenreStations(genreSlug, selectedCountryCode);
+    if (cached.data && cached.data.length > 0) {
+      return { stations: cached.data, pagination: {}, genre: { slug: genreSlug, name: genreName } };
+    }
+    return undefined;
+  })();
+
   const { data: stationsData, isLoading } = useQuery({
     queryKey: ['genre-stations/initial', genreSlug, selectedCountryCode],
     queryFn: async () => {
@@ -50,8 +55,9 @@ export const GenreList = (): JSX.Element => {
       
       return result;
     },
-    staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
-    gcTime: 7 * 24 * 60 * 60 * 1000, // 7 days (renamed from cacheTime in v5)
+    staleTime: 7 * 24 * 60 * 60 * 1000,
+    gcTime: 7 * 24 * 60 * 60 * 1000,
+    initialData: cachedGenreStations,
   });
   
   // Initialize when initial data loads - PAGINATION
@@ -81,6 +87,12 @@ export const GenreList = (): JSX.Element => {
       setCurrentOffset(0);
     }
   }, [stationsData?.stations, genreSlug, selectedCountryCode]);
+
+  useEffect(() => {
+    if (stationsData?.stations && stationsData.stations.length > 0) {
+      cacheService.setGenreStations(genreSlug, selectedCountryCode, stationsData.stations);
+    }
+  }, [stationsData, genreSlug, selectedCountryCode]);
 
   // PAGINATION - Fetch next batch from API using offset
   const loadMore = async () => {
@@ -493,17 +505,7 @@ export const GenreList = (): JSX.Element => {
           );
         })}
 
-        {/* Loading Indicator */}
-        {isLoadingMore && (
-          <div 
-            className="absolute left-[236px] w-[1580px] h-[100px] flex items-center justify-center"
-            style={{ top: `${316 + (Math.ceil(displayedStations.length / 7) * 294)}px` }}
-          >
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[24px] text-white">
-              {t('loading') || 'Loading...'}
-            </p>
-          </div>
-        )}
+        {/* Loading silently - no visible indicator */}
 
         {/* No Stations Found */}
         {!isLoading && (!Array.isArray(displayedStations) || displayedStations.length === 0) && (

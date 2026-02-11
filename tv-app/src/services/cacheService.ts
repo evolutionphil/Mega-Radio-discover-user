@@ -18,6 +18,7 @@ const KEYS = {
   GENRES: (country: string) => `cache_genres_${country}`,
   POPULAR_STATIONS: (country: string) => `cache_popular_${country}`,
   INITIAL_STATIONS: (country: string) => `cache_stations_${country}`,
+  GENRE_STATIONS: (genre: string, country: string) => `cache_genre_${genre}_${country}`,
   TRANSLATIONS: (lang: string) => `cache_translations_${lang}`,
   BROKEN_IMAGES: 'cache_broken_images',
 };
@@ -244,6 +245,21 @@ export const cacheService = {
     trackCountryAccess(countryCode);
   },
   
+  // Genre Stations (per genre + country)
+  getGenreStations: (genre: string, countryCode: string): { data: Station[] | null; isExpired: boolean } => {
+    const result = getCacheEntry<MinimalStation[]>(KEYS.GENRE_STATIONS(genre, countryCode));
+    if (result.data) {
+      return { data: result.data.map(restoreStation), isExpired: result.isExpired };
+    }
+    return { data: null, isExpired: true };
+  },
+  
+  setGenreStations: (genre: string, countryCode: string, stations: Station[]): void => {
+    const limited = stations.slice(0, 56);
+    const minimal = limited.map(minimizeStation);
+    setCacheEntry(KEYS.GENRE_STATIONS(genre, countryCode), minimal, TTL.STATIONS);
+  },
+
   // Translations
   getTranslations: (lang: string): { data: Record<string, string> | null; isExpired: boolean } => {
     return getCacheEntry<Record<string, string>>(KEYS.TRANSLATIONS(lang));

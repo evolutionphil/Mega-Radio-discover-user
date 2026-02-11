@@ -110,9 +110,9 @@ export const RadioPlaying = (): JSX.Element => {
     return station.tags.split(',').map(tag => tag.trim());
   };
 
-  // Fetch station details
-  // CACHE: 24 hours
-  const { data: stationData, isLoading: isLoadingStation, error: stationError } = useQuery({
+  const hasCurrentStationData = currentStation && currentStation._id === stationId;
+
+  const { data: stationData, error: stationError } = useQuery({
     queryKey: ['station', stationId],
     queryFn: async () => {
       if (!stationId || stationId.trim().length === 0) {
@@ -129,13 +129,13 @@ export const RadioPlaying = (): JSX.Element => {
         throw error;
       }
     },
-    enabled: !!stationId && stationId.trim().length > 0,
+    enabled: !!stationId && stationId.trim().length > 0 && !hasCurrentStationData,
     retry: 2,
-    staleTime: 24 * 60 * 60 * 1000, // 24 hours
-    gcTime: 24 * 60 * 60 * 1000, // 24 hours
+    staleTime: 24 * 60 * 60 * 1000,
+    gcTime: 24 * 60 * 60 * 1000,
   });
 
-  const station = stationData?.station || null;
+  const station = stationData?.station || (hasCurrentStationData ? currentStation : null);
 
 
   // Fetch station metadata
@@ -637,14 +637,13 @@ export const RadioPlaying = (): JSX.Element => {
     );
   }
 
-  if (isLoadingStation || !station) {
+  if (!station) {
     return (
       <div className="absolute inset-0 w-[1920px] h-[1080px] bg-black flex flex-col items-center justify-center gap-8">
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#ff4199]"></div>
         <p className="font-['Ubuntu',Helvetica] font-medium text-[32px] text-white animate-pulse">
-          {stationData?.station?.name || t('loading_station') || 'Loading station...'}
+          {t('loading_station') || 'Loading station...'}
         </p>
-        <p className="font-['Ubuntu',Helvetica] font-normal text-[20px] text-gray-500">{t('please_wait') || 'Please wait'}</p>
         <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-gray-600 mt-4">{t('press_return_to_go_back') || 'Press RETURN to go back'}</p>
       </div>
     );

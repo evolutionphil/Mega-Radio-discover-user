@@ -177,7 +177,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
               <img
                 alt=""
                 className="block max-w-none w-full h-full"
-                src={assetPath("images/globe-icon.png")}
+                src={assetPath("images/globe-icon.svg")}
               />
             </div>
             <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">

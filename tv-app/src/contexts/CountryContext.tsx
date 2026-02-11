@@ -15,7 +15,7 @@ const CountryContext = createContext<CountryContextType | undefined>(undefined);
 export const CountryProvider = ({ children }: { children: ReactNode }) => {
   const { detectedCountry, detectedCountryCode } = useLocalization();
   
-  const globeIcon = assetPath('images/globe-icon.png');
+  const globeIcon = assetPath('images/globe-icon.svg');
   
   // Initialize from localStorage or temporary default
   const [selectedCountry, setSelectedCountry] = useState<string>(() => {
