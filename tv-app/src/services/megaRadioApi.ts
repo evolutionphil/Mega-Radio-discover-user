@@ -236,9 +236,12 @@ export const megaRadioApi = {
     offset?: number;
   }): Promise<{ stations: Station[] }> => {
     const queryParams = new URLSearchParams();
-    queryParams.append('search', '');
-    if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.offset != null) queryParams.append('offset', params.offset.toString());
+    const limit = params?.limit || 21;
+    queryParams.append('limit', limit.toString());
+    if (params?.offset != null && params.offset > 0) {
+      const page = Math.floor(params.offset / limit) + 1;
+      queryParams.append('page', page.toString());
+    }
     if (params?.country) {
       const countryName = getCountryNameFromCode(params.country);
       queryParams.append('country', countryName);
@@ -401,12 +404,15 @@ export const megaRadioApi = {
     }
   ): Promise<{ stations: Station[]; pagination: any; genre: Genre }> => {
     const queryParams = new URLSearchParams();
-    if (params?.page) queryParams.append('page', params.page.toString());
-    if (params?.limit) queryParams.append('limit', params.limit.toString());
-    if (params?.offset) queryParams.append('offset', params.offset.toString());
+    const limit = params?.limit || 28;
+    queryParams.append('limit', limit.toString());
+    if (params?.page) {
+      queryParams.append('page', params.page.toString());
+    } else if (params?.offset && params.offset > 0) {
+      const page = Math.floor(params.offset / limit) + 1;
+      queryParams.append('page', page.toString());
+    }
     if (params?.country && params.country !== 'GLOBAL') {
-      // GLOBAL means worldwide - don't filter by country
-      // Only add country filter for specific countries
       const countryName = getCountryNameFromCode(params.country);
       queryParams.append('country', countryName);
     }
