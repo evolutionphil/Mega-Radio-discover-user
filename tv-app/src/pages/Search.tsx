@@ -71,6 +71,14 @@ const KEYBOARD_LAYOUTS: KeyboardLayout[] = [
   },
 ];
 
+const getKbFlagUrl = (id: string): string => {
+  const map: Record<string, string> = {
+    en: 'gb', tr: 'tr', ar: 'sa', ru: 'ru', de: 'de', fr: 'fr',
+    es: 'es', ja: 'jp', zh: 'cn', ko: 'kr', el: 'gr', hi: 'in', th: 'th',
+  };
+  return `https://flagcdn.com/w40/${map[id] || 'gb'}.png`;
+};
+
 type FocusZone = 'sidebar' | 'keyboard' | 'list' | 'langButton' | 'langDropdown' | 'recent';
 
 export const Search = (): JSX.Element => {
@@ -673,7 +681,7 @@ export const Search = (): JSX.Element => {
             data-testid="lang-selector-button"
           >
             <div className="flex items-center gap-[12px]">
-              <span className="text-[22px]">{activeLayout.flag}</span>
+              <img src={getKbFlagUrl(activeLayout.id)} alt={activeLayout.label} className="w-[32px] h-[22px] rounded-[2px] object-cover" />
               <span>{activeLayout.label}</span>
             </div>
             <span className={`text-[16px] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`}>▼</span>
@@ -717,7 +725,7 @@ export const Search = (): JSX.Element => {
                       }}
                       data-testid={`layout-${layout.id}`}
                     >
-                      <span className="text-[20px] w-[32px] text-center">{layout.flag}</span>
+                      <img src={getKbFlagUrl(layout.id)} alt={layout.label} className="w-[30px] h-[20px] rounded-[2px] object-cover" />
                       <span className="font-['Ubuntu',Helvetica] font-medium text-[19px]">{layout.label}</span>
                       {isActive && !isLangFocused && (
                         <span className="ml-auto text-[#ff4199] text-[16px]">✓</span>
