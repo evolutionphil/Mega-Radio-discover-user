@@ -89,7 +89,14 @@ export const Search = (): JSX.Element => {
   const [keyboardCol, setKeyboardCol] = useState(0);
   const [listFocusIndex, setListFocusIndex] = useState(0);
   const [recentFocusIndex, setRecentFocusIndex] = useState(0);
-  const [activeLayoutIndex, setActiveLayoutIndex] = useState(0);
+  const [activeLayoutIndex, setActiveLayoutIndex] = useState(() => {
+    const saved = localStorage.getItem('preferredKeyboard');
+    if (saved) {
+      const idx = KEYBOARD_LAYOUTS.findIndex(k => k.id === saved);
+      if (idx >= 0) return idx;
+    }
+    return 0;
+  });
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownIndex, setDropdownIndex] = useState(0);
 
