@@ -10,81 +10,84 @@ type PlayAtStartMode = "last-played" | "random" | "favorite" | "none";
 interface KeyboardOption {
   id: string;
   label: string;
-  flag: string;
+  country: string;
 }
 
 interface LanguageOption {
   code: string;
   label: string;
-  flag: string;
+  country: string;
 }
 
 const KEYBOARD_OPTIONS: KeyboardOption[] = [
-  { id: 'en', label: 'English', flag: '🇬🇧' },
-  { id: 'tr', label: 'Türkçe', flag: '🇹🇷' },
-  { id: 'ar', label: 'العربية', flag: '🇸🇦' },
-  { id: 'ru', label: 'Русский', flag: '🇷🇺' },
-  { id: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { id: 'fr', label: 'Français', flag: '🇫🇷' },
-  { id: 'es', label: 'Español', flag: '🇪🇸' },
-  { id: 'ja', label: '日本語', flag: '🇯🇵' },
-  { id: 'zh', label: '中文', flag: '🇨🇳' },
-  { id: 'ko', label: '한국어', flag: '🇰🇷' },
-  { id: 'el', label: 'Ελληνικά', flag: '🇬🇷' },
-  { id: 'hi', label: 'हिन्दी', flag: '🇮🇳' },
-  { id: 'th', label: 'ไทย', flag: '🇹🇭' },
+  { id: 'en', label: 'English', country: 'GB' },
+  { id: 'tr', label: 'Türkçe', country: 'TR' },
+  { id: 'ar', label: 'العربية', country: 'SA' },
+  { id: 'ru', label: 'Русский', country: 'RU' },
+  { id: 'de', label: 'Deutsch', country: 'DE' },
+  { id: 'fr', label: 'Français', country: 'FR' },
+  { id: 'es', label: 'Español', country: 'ES' },
+  { id: 'ja', label: '日本語', country: 'JP' },
+  { id: 'zh', label: '中文', country: 'CN' },
+  { id: 'ko', label: '한국어', country: 'KR' },
+  { id: 'el', label: 'Ελληνικά', country: 'GR' },
+  { id: 'hi', label: 'हिन्दी', country: 'IN' },
+  { id: 'th', label: 'ไทย', country: 'TH' },
 ];
 
 const LANGUAGE_OPTIONS: LanguageOption[] = [
-  { code: 'en', label: 'English', flag: '🇺🇸' },
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'es', label: 'Español', flag: '🇪🇸' },
-  { code: 'it', label: 'Italiano', flag: '🇮🇹' },
-  { code: 'pt', label: 'Português', flag: '🇵🇹' },
-  { code: 'ru', label: 'Русский', flag: '🇷🇺' },
-  { code: 'ja', label: '日本語', flag: '🇯🇵' },
-  { code: 'zh', label: '中文', flag: '🇨🇳' },
-  { code: 'ar', label: 'العربية', flag: '🇸🇦' },
-  { code: 'tr', label: 'Türkçe', flag: '🇹🇷' },
-  { code: 'pl', label: 'Polski', flag: '🇵🇱' },
-  { code: 'nl', label: 'Nederlands', flag: '🇳🇱' },
-  { code: 'sv', label: 'Svenska', flag: '🇸🇪' },
-  { code: 'no', label: 'Norsk', flag: '🇳🇴' },
-  { code: 'da', label: 'Dansk', flag: '🇩🇰' },
-  { code: 'fi', label: 'Suomi', flag: '🇫🇮' },
-  { code: 'cs', label: 'Čeština', flag: '🇨🇿' },
-  { code: 'hu', label: 'Magyar', flag: '🇭🇺' },
-  { code: 'ro', label: 'Română', flag: '🇷🇴' },
-  { code: 'el', label: 'Ελληνικά', flag: '🇬🇷' },
-  { code: 'th', label: 'ไทย', flag: '🇹🇭' },
-  { code: 'ko', label: '한국어', flag: '🇰🇷' },
-  { code: 'vi', label: 'Tiếng Việt', flag: '🇻🇳' },
-  { code: 'id', label: 'Bahasa Indonesia', flag: '🇮🇩' },
-  { code: 'ms', label: 'Bahasa Melayu', flag: '🇲🇾' },
-  { code: 'hi', label: 'हिन्दी', flag: '🇮🇳' },
-  { code: 'bn', label: 'বাংলা', flag: '🇧🇩' },
-  { code: 'ta', label: 'தமிழ்', flag: '🇮🇳' },
-  { code: 'te', label: 'తెలుగు', flag: '🇮🇳' },
-  { code: 'ur', label: 'اردو', flag: '🇵🇰' },
-  { code: 'fa', label: 'فارسی', flag: '🇮🇷' },
-  { code: 'he', label: 'עברית', flag: '🇮🇱' },
-  { code: 'uk', label: 'Українська', flag: '🇺🇦' },
-  { code: 'bg', label: 'Български', flag: '🇧🇬' },
-  { code: 'sr', label: 'Српски', flag: '🇷🇸' },
-  { code: 'hr', label: 'Hrvatski', flag: '🇭🇷' },
-  { code: 'sk', label: 'Slovenčina', flag: '🇸🇰' },
-  { code: 'sl', label: 'Slovenščina', flag: '🇸🇮' },
-  { code: 'et', label: 'Eesti', flag: '🇪🇪' },
-  { code: 'lv', label: 'Latviešu', flag: '🇱🇻' },
-  { code: 'lt', label: 'Lietuvių', flag: '🇱🇹' },
-  { code: 'is', label: 'Íslenska', flag: '🇮🇸' },
-  { code: 'ga', label: 'Gaeilge', flag: '🇮🇪' },
-  { code: 'sq', label: 'Shqip', flag: '🇦🇱' },
-  { code: 'mk', label: 'Македонски', flag: '🇲🇰' },
-  { code: 'am', label: 'አማርኛ', flag: '🇪🇹' },
-  { code: 'sw', label: 'Kiswahili', flag: '🇰🇪' },
+  { code: 'en', label: 'English', country: 'US' },
+  { code: 'de', label: 'Deutsch', country: 'DE' },
+  { code: 'fr', label: 'Français', country: 'FR' },
+  { code: 'es', label: 'Español', country: 'ES' },
+  { code: 'it', label: 'Italiano', country: 'IT' },
+  { code: 'pt', label: 'Português', country: 'PT' },
+  { code: 'ru', label: 'Русский', country: 'RU' },
+  { code: 'ja', label: '日本語', country: 'JP' },
+  { code: 'zh', label: '中文', country: 'CN' },
+  { code: 'ar', label: 'العربية', country: 'SA' },
+  { code: 'tr', label: 'Türkçe', country: 'TR' },
+  { code: 'pl', label: 'Polski', country: 'PL' },
+  { code: 'nl', label: 'Nederlands', country: 'NL' },
+  { code: 'sv', label: 'Svenska', country: 'SE' },
+  { code: 'no', label: 'Norsk', country: 'NO' },
+  { code: 'da', label: 'Dansk', country: 'DK' },
+  { code: 'fi', label: 'Suomi', country: 'FI' },
+  { code: 'cs', label: 'Čeština', country: 'CZ' },
+  { code: 'hu', label: 'Magyar', country: 'HU' },
+  { code: 'ro', label: 'Română', country: 'RO' },
+  { code: 'el', label: 'Ελληνικά', country: 'GR' },
+  { code: 'th', label: 'ไทย', country: 'TH' },
+  { code: 'ko', label: '한국어', country: 'KR' },
+  { code: 'vi', label: 'Tiếng Việt', country: 'VN' },
+  { code: 'id', label: 'Bahasa Indonesia', country: 'ID' },
+  { code: 'ms', label: 'Bahasa Melayu', country: 'MY' },
+  { code: 'hi', label: 'हिन्दी', country: 'IN' },
+  { code: 'bn', label: 'বাংলা', country: 'BD' },
+  { code: 'ta', label: 'தமிழ்', country: 'IN' },
+  { code: 'te', label: 'తెలుగు', country: 'IN' },
+  { code: 'ur', label: 'اردو', country: 'PK' },
+  { code: 'fa', label: 'فارسی', country: 'IR' },
+  { code: 'he', label: 'עברית', country: 'IL' },
+  { code: 'uk', label: 'Українська', country: 'UA' },
+  { code: 'bg', label: 'Български', country: 'BG' },
+  { code: 'sr', label: 'Српски', country: 'RS' },
+  { code: 'hr', label: 'Hrvatski', country: 'HR' },
+  { code: 'sk', label: 'Slovenčina', country: 'SK' },
+  { code: 'sl', label: 'Slovenščina', country: 'SI' },
+  { code: 'et', label: 'Eesti', country: 'EE' },
+  { code: 'lv', label: 'Latviešu', country: 'LV' },
+  { code: 'lt', label: 'Lietuvių', country: 'LT' },
+  { code: 'is', label: 'Íslenska', country: 'IS' },
+  { code: 'ga', label: 'Gaeilge', country: 'IE' },
+  { code: 'sq', label: 'Shqip', country: 'AL' },
+  { code: 'mk', label: 'Македонски', country: 'MK' },
+  { code: 'am', label: 'አማርኛ', country: 'ET' },
+  { code: 'sw', label: 'Kiswahili', country: 'KE' },
 ];
+
+const getFlagUrl = (countryCode: string) =>
+  `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
 
 export const Settings = (): JSX.Element => {
   const { t, language, setLanguage } = useLocalization();
@@ -336,7 +339,7 @@ export const Settings = (): JSX.Element => {
                   onClick={() => handleKeyboardChange(index)}
                   data-testid={`keyboard-${kb.id}`}
                 >
-                  <span className="text-[26px] mb-[2px]">{kb.flag}</span>
+                  <img src={getFlagUrl(kb.country)} alt={kb.label} className="w-[36px] h-[26px] rounded-[3px] object-cover mb-[2px]" />
                   <p className={`font-['Ubuntu',Helvetica] font-medium text-center text-white truncate w-full px-[6px] ${isItemFocused ? 'text-[18px]' : 'text-[16px]'}`}>
                     {kb.label}
                   </p>
@@ -377,7 +380,7 @@ export const Settings = (): JSX.Element => {
                   onClick={() => handleLanguageChange(index)}
                   data-testid={`language-${lang.code}`}
                 >
-                  <span className="text-[24px] flex-shrink-0">{lang.flag}</span>
+                  <img src={getFlagUrl(lang.country)} alt={lang.label} className="w-[36px] h-[26px] rounded-[3px] object-cover flex-shrink-0" />
                   <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[24px] text-white' : 'text-[22px] text-white'}`}>
                     {lang.label}
                   </p>
