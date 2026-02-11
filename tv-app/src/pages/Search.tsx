@@ -110,13 +110,13 @@ export const Search = (): JSX.Element => {
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
-    if (searchQuery.length === 0) {
+    if (searchQuery.length < 3) {
       setDebouncedSearchQuery("");
       return;
     }
     searchTimeoutRef.current = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
-    }, 150);
+    }, 300);
     return () => {
       if (searchTimeoutRef.current) {
         clearTimeout(searchTimeoutRef.current);
