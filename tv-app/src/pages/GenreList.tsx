@@ -461,6 +461,24 @@ export const GenreList = (): JSX.Element => {
           {genreName} {t('radios') || 'Radios'}
         </p>
 
+        {/* Skeleton Loading Cards - only shown during active loading, not on error/empty */}
+        {isLoading && !stationsData && displayedStations.length === 0 && Array.from({ length: 14 }).map((_, index) => {
+          const row = Math.floor(index / 7);
+          const col = index % 7;
+          const positions = [74, 304, 534, 764, 994, 1224, 1454];
+          return (
+            <div
+              key={`skeleton-${index}`}
+              className="absolute bg-[rgba(255,255,255,0.08)] h-[264px] rounded-[11px] w-[200px] animate-pulse"
+              style={{ left: `${positions[col]}px`, top: `${316 + row * 294}px` }}
+            >
+              <div className="absolute bg-[rgba(255,255,255,0.1)] left-[34px] rounded-[6.6px] w-[132px] h-[132px] top-[34px]" />
+              <div className="absolute bg-[rgba(255,255,255,0.1)] left-[16px] right-[16px] h-[14px] rounded top-[186px]" />
+              <div className="absolute bg-[rgba(255,255,255,0.06)] left-[16px] w-[80px] h-[12px] rounded top-[210px]" />
+            </div>
+          );
+        })}
+
         {/* Radio Station Cards - Dynamic Grid */}
         {Array.isArray(displayedStations) && displayedStations.map((station, index) => {
           // Validate station object exists and has required properties

@@ -179,6 +179,51 @@ function buildApiUrl(path: string, existingParams?: URLSearchParams): string {
   return `${url}?${params}`;
 }
 
+const FETCH_TIMEOUT = 12000; // 12 second timeout
+
+async function fetchWithTimeout(url: string, options?: RequestInit, timeout = FETCH_TIMEOUT): Promise<Response> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(timeoutId);
+    return response;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Request timeout after ${timeout}ms`);
+    }
+    throw error;
+  }
+}
+
+function slimStation(station: any): Station {
+  return {
+    _id: station._id,
+    name: station.name,
+    url: station.url,
+    url_resolved: station.urlResolved || station.url_resolved,
+    homepage: station.homepage,
+    favicon: station.favicon,
+    tags: station.tags,
+    country: station.country,
+    countrycode: station.countrycode || station.countryCode,
+    countryCode: station.countryCode || station.countrycode,
+    state: station.state,
+    language: station.language,
+    votes: station.votes,
+    clickcount: station.clickcount || station.clickCount,
+    codec: station.codec,
+    bitrate: station.bitrate,
+    hls: station.hls,
+    slug: station.slug,
+  };
+}
+
+function slimStations(stations: any[]): Station[] {
+  return stations.map(slimStation);
+}
+
 export const megaRadioApi = {
   // Stations
   getAllStations: async (params?: {
@@ -208,7 +253,7 @@ export const megaRadioApi = {
     try {
       const url = buildApiUrl('/stations', queryParams);
       
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -218,7 +263,7 @@ export const megaRadioApi = {
       // API returns { stations: [...] } or just [...]
       const stations = data.stations || (Array.isArray(data) ? data : []);
       
-      return { stations, pagination: {} };
+      return { stations: slimStations(stations), pagination: {} };
     } catch (error) {
       return { stations: [], pagination: {} };
     }
@@ -231,7 +276,6 @@ export const megaRadioApi = {
     genre?: string;
   }): Promise<{ stations: Station[] }> => {
     const queryParams = new URLSearchParams();
-    queryParams.append('search', '');
     if (params?.limit) queryParams.append('limit', params.limit.toString());
     if (params?.country) {
       const countryName = getCountryNameFromCode(params.country);
@@ -243,7 +287,7 @@ export const megaRadioApi = {
 
     try {
       const url = buildApiUrl('/stations', queryParams);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getPopularStations] HTTP ${response.status}: ${response.statusText}`);
@@ -252,7 +296,7 @@ export const megaRadioApi = {
       
       const data = await response.json();
       const stations = data.stations || (Array.isArray(data) ? data : []);
-      return { stations };
+      return { stations: slimStations(stations) };
     } catch (error) {
       console.error('[getPopularStations] Error:', error instanceof Error ? error.message : String(error));
       return { stations: [] };
@@ -277,7 +321,7 @@ export const megaRadioApi = {
     }
 
     const url = buildApiUrl('/stations', queryParams);
-    const response = await fetch(url, {
+    const response = await fetchWithTimeout(url, {
       headers: {
         'Accept': 'application/json',
       },
@@ -287,7 +331,7 @@ export const megaRadioApi = {
     }
     const data = await response.json();
     const stations = data.stations || [];
-    return { stations };
+    return { stations: slimStations(stations) };
   },
 
   getNearbyStations: async (params: {
@@ -305,7 +349,7 @@ export const megaRadioApi = {
       if (params?.limit) queryParams.append('limit', params.limit.toString());
 
       const url = buildApiUrl('/stations/nearby', queryParams);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getNearbyStations] HTTP ${response.status}: ${response.statusText}`);
@@ -322,7 +366,7 @@ export const megaRadioApi = {
   getStationById: async (identifier: string): Promise<{ station: Station | null }> => {
     try {
       const url = buildApiUrl(`/station/${identifier}`);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getStationById] HTTP ${response.status}: ${response.statusText}`);
@@ -330,7 +374,7 @@ export const megaRadioApi = {
       }
       
       const data = await response.json();
-      return { station: data };
+      return { station: slimStation(data) };
     } catch (error) {
       console.error('[getStationById] Error:', error instanceof Error ? error.message : String(error));
       return { station: null };
@@ -341,7 +385,7 @@ export const megaRadioApi = {
     try {
       const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
       const url = buildApiUrl(`/stations/similar/${stationId}`, params);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getSimilarStations] HTTP ${response.status}: ${response.statusText}`);
@@ -349,7 +393,7 @@ export const megaRadioApi = {
       }
       
       const data = await response.json();
-      return { stations: Array.isArray(data) ? data : data.stations || [] };
+      return { stations: slimStations(Array.isArray(data) ? data : data.stations || []) };
     } catch (error) {
       console.error('[getSimilarStations] Error:', error instanceof Error ? error.message : String(error));
       return { stations: [] };
@@ -359,7 +403,7 @@ export const megaRadioApi = {
   getStationMetadata: async (stationId: string): Promise<{ metadata: { title?: string; artist?: string; album?: string } }> => {
     try {
       const url = buildApiUrl(`/stations/${stationId}/metadata`);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getStationMetadata] HTTP ${response.status}: ${response.statusText}`);
@@ -393,7 +437,7 @@ export const megaRadioApi = {
       params.append('limit', '500');
       
       const url = buildApiUrl('/genres', params);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
@@ -407,7 +451,7 @@ export const megaRadioApi = {
   getGenreBySlug: async (slug: string): Promise<{ genre: Genre | null }> => {
     try {
       const url = buildApiUrl(`/genres/slug/${slug}`);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getGenreBySlug] HTTP ${response.status}: ${response.statusText}`);
@@ -449,7 +493,7 @@ export const megaRadioApi = {
 
     try {
       const url = buildApiUrl(`/genres/${slug}/stations`, queryParams);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getStationsByGenre] HTTP ${response.status}: ${response.statusText}`);
@@ -457,7 +501,7 @@ export const megaRadioApi = {
       }
       
       const data = await response.json();
-      return data;
+      return { ...data, stations: slimStations(data.stations || []) };
     } catch (error) {
       console.error('[getStationsByGenre] Error:', error instanceof Error ? error.message : String(error));
       return { stations: [], pagination: {}, genre: { slug, name: '' } };
@@ -467,7 +511,7 @@ export const megaRadioApi = {
   getDiscoverableGenres: async (): Promise<{ genres: Genre[] }> => {
     try {
       const url = buildApiUrl('/genres/discoverable');
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
@@ -482,7 +526,7 @@ export const megaRadioApi = {
   getAllCountries: async (): Promise<{ countries: Country[] }> => {
     try {
       const url = buildApiUrl('/countries');
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
@@ -505,7 +549,7 @@ export const megaRadioApi = {
   getAllLanguages: async (): Promise<{ languages: Language[] }> => {
     try {
       const url = buildApiUrl('/languages');
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getAllLanguages] HTTP ${response.status}: ${response.statusText}`);
@@ -539,7 +583,7 @@ export const megaRadioApi = {
 
     try {
       const url = buildApiUrl('/stations', queryParams);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
@@ -555,7 +599,7 @@ export const megaRadioApi = {
     try {
       const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
       const url = buildApiUrl('/radio-browser/top-clicked', params);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getTopClicked] HTTP ${response.status}: ${response.statusText}`);
@@ -573,7 +617,7 @@ export const megaRadioApi = {
     try {
       const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
       const url = buildApiUrl('/radio-browser/top-voted', params);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getTopVoted] HTTP ${response.status}: ${response.statusText}`);
@@ -591,7 +635,7 @@ export const megaRadioApi = {
     try {
       const params = limit ? new URLSearchParams({ limit: limit.toString() }) : undefined;
       const url = buildApiUrl('/radio-browser/recent', params);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getRecentStations] HTTP ${response.status}: ${response.statusText}`);
@@ -609,7 +653,7 @@ export const megaRadioApi = {
   getTranslations: async (lang: string): Promise<any> => {
     try {
       const url = buildApiUrl(`/translations/${lang}`);
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       
       if (!response.ok) {
         console.error(`[getTranslations] HTTP ${response.status}: ${response.statusText}`);

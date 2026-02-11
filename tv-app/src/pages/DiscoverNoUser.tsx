@@ -853,6 +853,36 @@ export const DiscoverNoUser = (): JSX.Element => {
             : t('homepage_popular_stations')}
         </p>
 
+        {/* Skeleton Loading for Popular Stations - only shown during active loading */}
+        {!popularStationsData && popularStations.length === 0 && Array.from({ length: 14 }).map((_, index) => {
+          const row = Math.floor(index / 7);
+          const col = index % 7;
+          return (
+            <div
+              key={`skeleton-pop-${index}`}
+              className="absolute bg-[rgba(255,255,255,0.08)] h-[264px] rounded-[11px] w-[200px] animate-pulse"
+              style={{ left: `${stationRow1Positions[col] - 162}px`, top: `${297 + row * 294}px` }}
+            >
+              <div className="absolute bg-[rgba(255,255,255,0.1)] left-[34px] rounded-[6.6px] w-[132px] h-[132px] top-[34px]" />
+              <div className="absolute bg-[rgba(255,255,255,0.1)] left-[16px] right-[16px] h-[14px] rounded top-[186px]" />
+              <div className="absolute bg-[rgba(255,255,255,0.06)] left-[16px] w-[80px] h-[12px] rounded top-[210px]" />
+            </div>
+          );
+        })}
+
+        {/* Skeleton Loading for Country Stations - only shown during active loading */}
+        {isInitialLoading && displayedStations.length === 0 && Array.from({ length: 7 }).map((_, index) => (
+          <div
+            key={`skeleton-country-${index}`}
+            className="absolute bg-[rgba(255,255,255,0.08)] h-[264px] rounded-[11px] w-[200px] animate-pulse"
+            style={{ left: `${stationRow1Positions[index] - 162}px`, top: '1013px' }}
+          >
+            <div className="absolute bg-[rgba(255,255,255,0.1)] left-[34px] rounded-[6.6px] w-[132px] h-[132px] top-[34px]" />
+            <div className="absolute bg-[rgba(255,255,255,0.1)] left-[16px] right-[16px] h-[14px] rounded top-[186px]" />
+            <div className="absolute bg-[rgba(255,255,255,0.06)] left-[16px] w-[80px] h-[12px] rounded top-[210px]" />
+          </div>
+        ))}
+
         {/* Popular Radio Station Cards - Row 1 */}
         {popularStations.slice(0, 7).map((station, index) => {
           const focusIdx = popularStationsStart + index;

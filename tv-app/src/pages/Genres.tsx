@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi } from "@/services/megaRadioApi";
 import { useEffect, useRef, useMemo, useState } from "react";
+import { queryClient } from "@/lib/queryClient";
 import { useCountry } from "@/contexts/CountryContext";
 import { CountrySelector } from "@/components/CountrySelector";
 import { CountryTrigger } from "@/components/CountryTrigger";
@@ -45,6 +46,27 @@ export const Genres = (): JSX.Element => {
       stationCount: genre.stationCount || 0
     }));
   }, [genresData]);
+
+  useEffect(() => {
+    if (allGenres.length > 0) {
+      const topGenres = allGenres.slice(0, 4);
+      topGenres.forEach(genre => {
+        const key = ['genre-stations/initial', genre.slug, selectedCountryCode];
+        if (!queryClient.getQueryData(key)) {
+          queryClient.prefetchQuery({
+            queryKey: key,
+            queryFn: () => megaRadioApi.getStationsByGenre(genre.slug, { 
+              country: selectedCountryCode,
+              limit: 28,
+              offset: 0,
+              sort: 'votes'
+            }),
+            staleTime: 7 * 24 * 60 * 60 * 1000,
+          });
+        }
+      });
+    }
+  }, [allGenres, selectedCountryCode]);
 
   const popularGenres = allGenres.slice(0, 8);
 
