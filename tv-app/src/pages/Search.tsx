@@ -553,7 +553,7 @@ export const Search = (): JSX.Element => {
             return (
               <div
                 key={station._id || index}
-                className={`flex items-center gap-[16px] px-[24px] rounded-[12px] mb-[4px] transition-all duration-150 cursor-pointer h-[80px] ${
+                className={`flex items-center gap-[16px] px-[24px] rounded-[12px] mb-[6px] transition-all duration-150 cursor-pointer h-[110px] ${
                   isItemFocused
                     ? 'bg-[#ff4199]'
                     : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
@@ -574,14 +574,14 @@ export const Search = (): JSX.Element => {
                 <img
                   src={getStationImage(station)}
                   alt=""
-                  className="w-[44px] h-[44px] rounded-[6px] object-cover flex-shrink-0"
+                  className={`rounded-[6px] object-cover flex-shrink-0 ${isItemFocused ? 'w-[52px] h-[52px]' : 'w-[46px] h-[46px]'}`}
                   onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
                 />
                 <div className="flex flex-col min-w-0 flex-1">
-                  <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[22px] text-white' : 'text-[20px]'}`}>
+                  <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[30px] text-white' : 'text-[26px]'}`}>
                     {isItemFocused ? <span className="text-white">{station.name || 'Unknown Station'}</span> : highlightText(station.name || 'Unknown Station', searchQuery)}
                   </p>
-                  <p className={`font-['Ubuntu',Helvetica] font-light text-[16px] truncate ${isItemFocused ? 'text-white/80' : 'text-[rgba(255,255,255,0.5)]'}`}>
+                  <p className={`font-['Ubuntu',Helvetica] font-light truncate ${isItemFocused ? 'text-[20px] text-white/80' : 'text-[18px] text-[rgba(255,255,255,0.5)]'}`}>
                     {getStationCategory(station)}
                   </p>
                 </div>
