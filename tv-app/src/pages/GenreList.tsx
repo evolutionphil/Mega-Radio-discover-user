@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 import { cacheService } from "@/services/cacheService";
 import { AppLayout } from "@/components/AppLayout";
@@ -18,6 +18,7 @@ export const GenreList = (): JSX.Element => {
   const { t } = useLocalization();
   const { setNavigationState, popNavigationState } = useNavigation();
   const { playStation } = useGlobalPlayer();
+  const queryClient = useQueryClient();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const pathParts = location.split('/');
@@ -91,10 +92,22 @@ export const GenreList = (): JSX.Element => {
   useEffect(() => {
     if (stationsData?.stations && stationsData.stations.length > 0) {
       cacheService.setGenreStations(genreSlug, selectedCountryCode, stationsData.stations);
+      prefetchGenreNextPage(genreSlug, selectedCountryCode, STATIONS_PER_LOAD);
     }
   }, [stationsData, genreSlug, selectedCountryCode]);
 
-  // PAGINATION - Fetch next batch from API using offset
+  const fetchGenrePage = (slug: string, country: string, offset: number, limit: number) => {
+    return megaRadioApi.getStationsByGenre(slug, { country, limit, offset, sort: 'votes' });
+  };
+
+  const prefetchGenreNextPage = (slug: string, country: string, nextOffset: number) => {
+    queryClient.prefetchQuery({
+      queryKey: ['/api/genre-stations/page', slug, country, nextOffset, STATIONS_PER_LOAD],
+      queryFn: () => fetchGenrePage(slug, country, nextOffset, STATIONS_PER_LOAD),
+      staleTime: 7 * 24 * 60 * 60 * 1000,
+    });
+  };
+
   const loadMore = async () => {
     if (isLoadingMore || !hasMore) {
       return;
@@ -103,11 +116,12 @@ export const GenreList = (): JSX.Element => {
     setIsLoadingMore(true);
     
     try {
-      const result = await megaRadioApi.getStationsByGenre(genreSlug, { 
-        country: selectedCountryCode,
-        limit: STATIONS_PER_LOAD,
-        offset: currentOffset,
-        sort: 'votes'
+      const queryKey = ['/api/genre-stations/page', genreSlug, selectedCountryCode, currentOffset, STATIONS_PER_LOAD];
+      const result = await queryClient.fetchQuery({
+        queryKey,
+        queryFn: () => fetchGenrePage(genreSlug, selectedCountryCode, currentOffset, STATIONS_PER_LOAD),
+        staleTime: 7 * 24 * 60 * 60 * 1000,
+        gcTime: 7 * 24 * 60 * 60 * 1000,
       });
       
       if (!result || !result.stations) {
@@ -125,10 +139,15 @@ export const GenreList = (): JSX.Element => {
           const uniqueNewStations = newStations.filter(s => !existingIds.has(s._id));
           return [...prev, ...uniqueNewStations];
         });
-        setCurrentOffset(prev => prev + STATIONS_PER_LOAD);
+        const nextOffset = currentOffset + STATIONS_PER_LOAD;
+        setCurrentOffset(nextOffset);
         
         const hasMoreStations = newStations.length >= STATIONS_PER_LOAD;
         setHasMore(hasMoreStations);
+
+        if (hasMoreStations) {
+          prefetchGenreNextPage(genreSlug, selectedCountryCode, nextOffset);
+        }
       } else {
         setHasMore(false);
       }

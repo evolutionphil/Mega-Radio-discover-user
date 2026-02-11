@@ -76,6 +76,9 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 
 **Caching Strategy:**
 -   A multi-tiered caching strategy is implemented using TanStack Query v5. Cache durations vary based on data volatility: Countries (30 days), Genres & Station Lists (7 days), Popular Stations & Station Details (24 hours), Search Results (24 hours), and Live Metadata (30 seconds refresh).
+-   **Pagination Cache:** Infinite scroll pagination on Discover and GenreList pages uses `queryClient.fetchQuery()` so each page (offset) is individually cached in TanStack Query. Revisiting previously scrolled sections loads instantly from cache.
+-   **Prefetch Strategy:** When a page of stations loads, the next page is automatically prefetched in the background using `queryClient.prefetchQuery()`, so scrolling down shows stations instantly without waiting for API.
+-   **Backend Cache:** Redis-based server-side caching on themegaradio.com API reduces response times for repeated queries.
 
 **UI Enhancements:**
 -   Control buttons feature pulse animations and pink glow effects when focused for enhanced visual feedback.

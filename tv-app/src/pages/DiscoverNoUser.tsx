@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { megaRadioApi, type Station, type Genre } from "@/services/megaRadioApi";
 import { cacheService } from "@/services/cacheService";
 import { CountrySelector } from "@/components/CountrySelector";
@@ -21,6 +21,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const { playStation, isPlaying } = useGlobalPlayer();
   const [location, setLocation] = useLocation();
   const { setNavigationState, popNavigationState } = useNavigation();
+  const queryClient = useQueryClient();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
   const [exitModalFocusIndex, setExitModalFocusIndex] = useState(0);
@@ -119,6 +120,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   useEffect(() => {
     if (initialStationsData?.stations && initialStationsData.stations.length > 0) {
       cacheService.setInitialStations(selectedCountryCode, initialStationsData.stations);
+      prefetchNextPage(selectedCountryCode, STATIONS_PER_LOAD);
     }
   }, [initialStationsData, selectedCountryCode]);
 
@@ -545,6 +547,21 @@ export const DiscoverNoUser = (): JSX.Element => {
   useEffect(() => { displayedCountRef.current = displayedStations.length; }, [displayedStations.length]);
   useEffect(() => { countryCodeRef.current = selectedCountryCode; }, [selectedCountryCode]);
 
+  const fetchStationsPage = async (country: string, offset: number, limit: number) => {
+    return country === 'GLOBAL'
+      ? megaRadioApi.getWorkingStations({ limit, offset })
+      : megaRadioApi.getWorkingStations({ limit, country, offset });
+  };
+
+  const prefetchNextPage = (country: string, nextOffset: number) => {
+    const queryKey = ['/api/stations/page', country, nextOffset, STATIONS_PER_LOAD];
+    queryClient.prefetchQuery({
+      queryKey,
+      queryFn: () => fetchStationsPage(country, nextOffset, STATIONS_PER_LOAD),
+      staleTime: 7 * 24 * 60 * 60 * 1000,
+    });
+  };
+
   const loadMoreCountryStations = async (silent = false) => {
     if (isLoadingRef.current) return;
     if (!hasMoreRef.current) return;
@@ -559,16 +576,14 @@ export const DiscoverNoUser = (): JSX.Element => {
     try {
       const offsetToUse = currentOffsetRef.current;
       const countryToUse = countryCodeRef.current;
-      const result = countryToUse === 'GLOBAL'
-        ? await megaRadioApi.getWorkingStations({ 
-            limit: STATIONS_PER_LOAD, 
-            offset: offsetToUse 
-          })
-        : await megaRadioApi.getWorkingStations({ 
-            limit: STATIONS_PER_LOAD, 
-            country: countryToUse, 
-            offset: offsetToUse 
-          });
+      const queryKey = ['/api/stations/page', countryToUse, offsetToUse, STATIONS_PER_LOAD];
+
+      const result = await queryClient.fetchQuery({
+        queryKey,
+        queryFn: () => fetchStationsPage(countryToUse, offsetToUse, STATIONS_PER_LOAD),
+        staleTime: 7 * 24 * 60 * 60 * 1000,
+        gcTime: 7 * 24 * 60 * 60 * 1000,
+      });
       
       if (countryToUse !== countryCodeRef.current) return;
 
@@ -584,15 +599,15 @@ export const DiscoverNoUser = (): JSX.Element => {
           displayedCountRef.current = combined.length;
           return combined;
         });
-        setCurrentOffset(prev => {
-          const next = prev + STATIONS_PER_LOAD;
-          currentOffsetRef.current = next;
-          return next;
-        });
+        const nextOffset = offsetToUse + STATIONS_PER_LOAD;
+        setCurrentOffset(nextOffset);
+        currentOffsetRef.current = nextOffset;
         
         if (newStations.length < STATIONS_PER_LOAD || 
             displayedCountRef.current >= MAX_STATIONS) {
           setHasMoreCountryStations(false);
+        } else {
+          prefetchNextPage(countryToUse, nextOffset);
         }
       }
     } catch (error) {
