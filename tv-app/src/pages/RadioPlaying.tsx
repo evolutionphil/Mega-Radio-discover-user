@@ -453,43 +453,34 @@ export const RadioPlaying = (): JSX.Element => {
     }
   });
 
-  // Scroll stations into view when focused - SMOOTH SCROLL like Discover page
-  const scrollSimilarIntoView = (stationIndex: number) => {
-    if (!similarScrollRef.current) return;
+  const scrollHorizontalIntoView = (ref: React.RefObject<HTMLDivElement>, stationIndex: number) => {
+    if (!ref.current) return;
     
-    // Calculate scroll position based on card width + gap
-    const cardWidth = 200; // card width
-    const gap = 24; // gap between cards (marginRight)
-    const scrollPosition = stationIndex * (cardWidth + gap);
+    const cardWidth = 200;
+    const gap = 24;
+    const itemLeft = stationIndex * (cardWidth + gap);
+    const itemRight = itemLeft + cardWidth;
+    const containerWidth = ref.current.clientWidth;
+    const currentScroll = ref.current.scrollLeft;
     
-    similarScrollRef.current.scrollTo({
-      left: scrollPosition,
-      behavior: 'smooth'
-    });
+    if (itemRight > currentScroll + containerWidth) {
+      ref.current.scrollTo({
+        left: itemRight - containerWidth + gap,
+        behavior: 'smooth'
+      });
+    } else if (itemLeft < currentScroll) {
+      ref.current.scrollTo({
+        left: itemLeft,
+        behavior: 'smooth'
+      });
+    }
   };
 
-  const scrollPopularIntoView = (stationIndex: number) => {
-    if (!popularScrollRef.current) return;
-    
-    // Calculate scroll position based on card width + gap
-    const cardWidth = 200; // card width
-    const gap = 24; // gap between cards (marginRight)
-    const scrollPosition = stationIndex * (cardWidth + gap);
-    
-    popularScrollRef.current.scrollTo({
-      left: scrollPosition,
-      behavior: 'smooth'
-    });
-  };
-
-  // Auto-scroll when focus changes
   useEffect(() => {
-    // Similar stations (10-29)
     if (focusIndex >= 10 && focusIndex <= 29) {
       const stationIndex = focusIndex - 10;
-      scrollSimilarIntoView(stationIndex);
+      scrollHorizontalIntoView(similarScrollRef as React.RefObject<HTMLDivElement>, stationIndex);
       
-      // Scroll container to top when in Similar section
       if (containerScrollRef.current) {
         containerScrollRef.current.scrollTo({
           top: 0,
@@ -498,15 +489,13 @@ export const RadioPlaying = (): JSX.Element => {
       }
     }
     
-    // Popular stations (30+)
     if (focusIndex >= 30) {
       const stationIndex = focusIndex - 30;
-      scrollPopularIntoView(stationIndex);
+      scrollHorizontalIntoView(popularScrollRef as React.RefObject<HTMLDivElement>, stationIndex);
       
-      // Scroll container down to show Popular section
       if (containerScrollRef.current) {
         containerScrollRef.current.scrollTo({
-          top: 350, // Scroll down to reveal Popular Radios section
+          top: 350,
           behavior: 'smooth'
         });
       }
