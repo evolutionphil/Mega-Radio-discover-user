@@ -7,20 +7,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/style.css?v=1761229987899" id="main-styles">
-    <link rel="stylesheet" href="./css/tv-styles.css?v=1761229987899" id="tv-styles">
     <script>
+      // CSS Loading Detection (compatible with older browsers)
       (function() {
+        // Wait for DOM to be ready
         function checkCSS() {
-          console.log('CSS CHECK: Starting verification...');
+          console.log('🔍 CSS CHECK: Starting verification...');
           
+          // Check if link elements exist
           var mainStyles = document.getElementById('main-styles');
           var tvStyles = document.getElementById('tv-styles');
-          console.log('CSS Links found:', {
+          console.log('📄 CSS Links found:', {
             mainStyles: !!mainStyles,
             tvStyles: !!tvStyles
           });
           
+          // Check if stylesheets are loaded by testing if styles are applied
           var testDiv = document.createElement('div');
           testDiv.className = 'hidden bg-red-500 flex';
           testDiv.style.cssText = 'position:absolute;left:-9999px;';
@@ -29,19 +31,31 @@
           var computedStyle = window.getComputedStyle(testDiv);
           var isHidden = computedStyle.display === 'none';
           var hasBg = computedStyle.backgroundColor && computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)' && computedStyle.backgroundColor !== 'transparent';
+          var hasFlex = computedStyle.display === 'flex' || computedStyle.display === 'none';
+          
+          console.log('🎨 Tailwind Test Results:', {
+            display: computedStyle.display,
+            bgColor: computedStyle.backgroundColor,
+            hiddenWorks: isHidden,
+            bgWorks: hasBg
+          });
           
           if (isHidden) {
-            console.log('TAILWIND CSS: Working correctly!');
+            console.log('✅ TAILWIND CSS: Working correctly!');
           } else {
-            console.error('TAILWIND CSS: Not applied!');
+            console.error('❌ TAILWIND CSS: Not applied!');
+            console.error('🔍 DEBUG: Checking CSS file accessibility...');
+            console.error('   assets/style.css path: ./assets/style.css');
+            console.error('   css/tv-styles.css path: ./css/tv-styles.css');
           }
           
           document.body.removeChild(testDiv);
           
+          // Check root element
           var rootDiv = document.getElementById('root');
           if (rootDiv) {
             var rootStyle = window.getComputedStyle(rootDiv);
-            console.log('#root element styles:', {
+            console.log('🎯 #root element styles:', {
               display: rootStyle.display,
               position: rootStyle.position,
               width: rootStyle.width,
@@ -50,10 +64,13 @@
           }
         }
         
+        // Run check after a delay to ensure CSS is loaded
         setTimeout(checkCSS, 500);
       })();
     </script>
     <title>Radio Mega - TV</title>
+    
+    <link rel="stylesheet" crossorigin href="./assets/style.css">
   </head>
   <body>
     <div id="root"></div>
@@ -77,6 +94,6 @@
     <script type="text/javascript" src="./js/polyfills.js?v=1770725353190"></script>
   
     <!-- React App - Vite dev server uses this entry point, build replaces it -->
-    <script type="module" src="/src/main.tsx"></script>
+    <script crossorigin src="./assets/index-dev-Btyeug_M.js"></script>
   </body>
 </html>
