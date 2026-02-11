@@ -126,7 +126,7 @@ export const Search = (): JSX.Element => {
 
   const { data: searchData, isFetching: isSearching } = useQuery({
     queryKey: ['/api/stations/search', debouncedSearchQuery],
-    queryFn: () => megaRadioApi.searchStations({ q: debouncedSearchQuery, limit: 10 }),
+    queryFn: () => megaRadioApi.searchStations({ q: debouncedSearchQuery, limit: 50 }),
     enabled: debouncedSearchQuery.length > 0,
     staleTime: 24 * 60 * 60 * 1000,
     gcTime: 24 * 60 * 60 * 1000,
@@ -140,7 +140,22 @@ export const Search = (): JSX.Element => {
     gcTime: 24 * 60 * 60 * 1000,
   });
 
-  const allSearchResults = debouncedSearchQuery.length > 0 ? (searchData?.results || []) : [];
+  const allSearchResults = useMemo(() => {
+    if (debouncedSearchQuery.length === 0) return [];
+    const results = searchData?.results || [];
+    const query = debouncedSearchQuery.toLowerCase();
+    return [...results].sort((a, b) => {
+      const aName = (a.name || '').toLowerCase();
+      const bName = (b.name || '').toLowerCase();
+      const aExact = aName === query ? 1 : 0;
+      const bExact = bName === query ? 1 : 0;
+      if (aExact !== bExact) return bExact - aExact;
+      const aStarts = aName.startsWith(query) ? 1 : 0;
+      const bStarts = bName.startsWith(query) ? 1 : 0;
+      if (aStarts !== bStarts) return bStarts - aStarts;
+      return (b.votes || 0) - (a.votes || 0);
+    });
+  }, [searchData, debouncedSearchQuery]);
   const visibleSearchResults = allSearchResults.slice(0, 8);
 
   useEffect(() => {
