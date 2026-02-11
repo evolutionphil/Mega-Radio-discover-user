@@ -163,20 +163,29 @@ export const DiscoverNoUser = (): JSX.Element => {
   // Define sidebar routes (NO PROFILE - 5 items: Discover, Genres, Search, Favorites, Settings)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
 
-  // Scroll genre container to show focused genre - SMOOTH SCROLL like similar stations
   const scrollGenreIntoView = (genreIndex: number) => {
     if (!genreScrollRef.current) return;
     
-    // Calculate scroll position based on genre width + gap + padding
-    // Each genre pill has variable width, but we can estimate spacing
-    const genreWidth = 200; // approximate width
-    const gap = 20; // gap between genres
-    const scrollPosition = genreIndex * (genreWidth + gap);
+    const children = genreScrollRef.current.children;
+    if (genreIndex < 0 || genreIndex >= children.length) return;
     
-    genreScrollRef.current.scrollTo({
-      left: scrollPosition,
-      behavior: 'smooth'
-    });
+    const child = children[genreIndex] as HTMLElement;
+    const containerWidth = genreScrollRef.current.clientWidth;
+    const currentScroll = genreScrollRef.current.scrollLeft;
+    const itemLeft = child.offsetLeft;
+    const itemRight = itemLeft + child.offsetWidth;
+    
+    if (itemRight > currentScroll + containerWidth) {
+      genreScrollRef.current.scrollTo({
+        left: itemRight - containerWidth + 20,
+        behavior: 'smooth'
+      });
+    } else if (itemLeft < currentScroll) {
+      genreScrollRef.current.scrollTo({
+        left: itemLeft,
+        behavior: 'smooth'
+      });
+    }
   };
 
   // Custom navigation logic for complex multi-section layout
