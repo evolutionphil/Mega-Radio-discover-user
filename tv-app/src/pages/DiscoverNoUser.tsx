@@ -931,6 +931,16 @@ export const DiscoverNoUser = (): JSX.Element => {
           {t('more_from')} {selectedCountry}
         </p>
 
+        {/* Loading Spinner for lazy loading */}
+        {isLoadingMore && displayedStations.length > 0 && (
+          <div 
+            className="absolute left-[236px] w-[1580px] h-[80px] flex items-center justify-center gap-4"
+            style={{ top: `${1013 + (Math.ceil(displayedStations.length / 7) * 294)}px` }}
+          >
+            <div className="animate-spin rounded-full h-10 w-10 border-t-3 border-b-3 border-[#ff4199]"></div>
+          </div>
+        )}
+
         {/* Country Stations - Dynamic Rows with Infinite Scroll */}
         {displayedStations.map((station, index) => {
           const row = Math.floor(index / 7);
