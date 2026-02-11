@@ -47,7 +47,7 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 -   **Main Pages:** Discover, Genres, Search, Favorites, Settings, Country Select, and a full-screen Radio Playing interface.
 -   **Virtual Keyboard:** Both Search and Country Select pages use a shared virtual keyboard design with 13 language layouts (en, tr, ar, ru, de, fr, es, ja, zh, ko, el, hi, th). Keyboard is on the right side with a dropdown language selector below it. Navigation uses focus zones (keyboard, list, langButton, langDropdown, recent/sidebar).
 -   **Auto-Play:** Configurable startup modes (Last Played, Random, Favorite, None), with "None" as the default.
--   **Localization & Internationalization:** Supports 48 languages via API translations and automatic language detection.
+-   **Localization & Internationalization:** Supports 48 languages via API translations and automatic language detection. Language can be changed from the Settings page, which saves the preference to localStorage (`app_language`).
 -   **Global Country Support:** Defaults to "Global" country if no country is saved, allowing browsing of worldwide stations and genres, with a dedicated globe icon. Country selection accessible via sidebar navigation (6th item) and as a standalone page at `/country-select` with sidebar visible.
 -   **CountrySelector Modes:** Supports `mode='modal'` (full-screen overlay, z-50) for inline use from pages, and `mode='page'` (lower z-index z-30, no overlay background) for standalone page use with sidebar visible.
 -   **Navigation History:** `NavigationContext` tracks page navigation and focus state for proper back button behavior. Implemented across multiple pages:
