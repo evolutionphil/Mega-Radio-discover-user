@@ -34,7 +34,7 @@ export const Settings = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("none");
   const [selectedKeyboard, setSelectedKeyboard] = useState(0);
-  const [focusSection, setFocusSection] = useState<'sidebar' | 'playAtStart' | 'keyboard'>('playAtStart');
+  const [focusSection, setFocusSection] = useState<'sidebar' | 'playAtStart' | 'keyboard'>('keyboard');
   const [sidebarIndex, setSidebarIndex] = useState(4);
   const [playAtStartIndex, setPlayAtStartIndex] = useState(0);
   const [keyboardIndex, setKeyboardIndex] = useState(0);
@@ -94,11 +94,7 @@ export const Settings = (): JSX.Element => {
         setSidebarIndex(prev => Math.min(5, prev + 1));
       } else if (isRight) {
         e.preventDefault();
-        if (sidebarIndex <= 2) {
-          setFocusSection('playAtStart');
-        } else {
-          setFocusSection('keyboard');
-        }
+        setFocusSection('keyboard');
       } else if (isEnter) {
         e.preventDefault();
         setLocation(sidebarRoutes[sidebarIndex]);
@@ -116,16 +112,13 @@ export const Settings = (): JSX.Element => {
         e.preventDefault();
         if (playAtStartIndex < settingsOptions.length - 1) {
           setPlayAtStartIndex(prev => prev + 1);
-        } else {
-          setFocusSection('keyboard');
         }
       } else if (isLeft) {
         e.preventDefault();
-        setFocusSection('sidebar');
-      } else if (isRight) {
-        e.preventDefault();
         setFocusSection('keyboard');
         setKeyboardIndex(Math.min(playAtStartIndex * 4, KEYBOARD_OPTIONS.length - 1));
+      } else if (isRight) {
+        e.preventDefault();
       } else if (isEnter) {
         e.preventDefault();
         handlePlayAtStartChange(settingsOptions[playAtStartIndex]);
@@ -142,9 +135,6 @@ export const Settings = (): JSX.Element => {
         if (row > 0) {
           const newIdx = keyboardIndex - 4;
           setKeyboardIndex(Math.max(0, newIdx));
-        } else {
-          setFocusSection('playAtStart');
-          setPlayAtStartIndex(settingsOptions.length - 1);
         }
       } else if (isDown) {
         e.preventDefault();
@@ -157,13 +147,15 @@ export const Settings = (): JSX.Element => {
         if (col > 0) {
           setKeyboardIndex(keyboardIndex - 1);
         } else {
-          setFocusSection('playAtStart');
-          setPlayAtStartIndex(Math.min(Math.floor(keyboardIndex / 4), settingsOptions.length - 1));
+          setFocusSection('sidebar');
         }
       } else if (isRight) {
         e.preventDefault();
         if (col < 3 && keyboardIndex + 1 <= maxIdx) {
           setKeyboardIndex(keyboardIndex + 1);
+        } else {
+          setFocusSection('playAtStart');
+          setPlayAtStartIndex(Math.min(row, settingsOptions.length - 1));
         }
       } else if (isEnter) {
         e.preventDefault();
@@ -208,11 +200,49 @@ export const Settings = (): JSX.Element => {
       </p>
 
       <div
-        className="absolute left-[236px] top-[140px] w-[1600px] h-[900px] overflow-y-auto z-10"
-        style={{ scrollbarWidth: 'none' }}
+        className="absolute left-[236px] top-[140px] w-[1650px] h-[900px] overflow-hidden z-10 flex gap-[60px]"
       >
-        {/* Play at Start Section */}
-        <div className="mb-[40px]">
+        {/* Keyboard Selection Section - LEFT */}
+        <div className="flex-shrink-0">
+          <p className="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white mb-[20px]">
+            {t('select_keyboard') || 'Select Keyboard'}
+          </p>
+          <div className="flex flex-wrap gap-[14px]" style={{ width: '780px' }}>
+            {KEYBOARD_OPTIONS.map((kb, index) => {
+              const isItemFocused = focusSection === 'keyboard' && keyboardIndex === index;
+              const isSelected = selectedKeyboard === index;
+              return (
+                <div
+                  key={kb.id}
+                  className={`flex flex-col items-center justify-center w-[180px] h-[110px] rounded-[14px] transition-all duration-150 cursor-pointer ${
+                    isItemFocused
+                      ? 'bg-[#ff4199] scale-105'
+                      : isSelected
+                        ? 'bg-[rgba(255,65,153,0.2)] border-[2px] border-[#ff4199]'
+                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)] border-[2px] border-transparent'
+                  }`}
+                  style={{
+                    boxShadow: isItemFocused
+                      ? '0 0 20px rgba(255,65,153,0.5)'
+                      : isSelected
+                        ? 'inset 1px 1px 8px rgba(255,65,153,0.15)'
+                        : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
+                  }}
+                  onClick={() => handleKeyboardChange(index)}
+                  data-testid={`keyboard-${kb.id}`}
+                >
+                  <span className="text-[28px] mb-[4px]">{kb.flag}</span>
+                  <p className={`font-['Ubuntu',Helvetica] font-medium text-center text-white truncate w-full px-[8px] ${isItemFocused ? 'text-[20px]' : 'text-[18px]'}`}>
+                    {kb.label}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Play at Start Section - RIGHT */}
+        <div className="flex-shrink-0">
           <p className="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white mb-[20px]">
             {t('settings_play_at_start') || 'Play at Start'}
           </p>
@@ -223,7 +253,7 @@ export const Settings = (): JSX.Element => {
               return (
                 <div
                   key={option}
-                  className={`flex items-center gap-[20px] px-[28px] rounded-[14px] transition-all duration-150 cursor-pointer h-[90px] w-[700px] ${
+                  className={`flex items-center gap-[20px] px-[28px] rounded-[14px] transition-all duration-150 cursor-pointer h-[90px] w-[600px] ${
                     isItemFocused
                       ? 'bg-[#ff4199]'
                       : isSelected
@@ -249,45 +279,6 @@ export const Settings = (): JSX.Element => {
                   {isSelected && !isItemFocused && (
                     <span className="ml-auto font-['Ubuntu',Helvetica] text-[18px] text-[#ff4199] flex-shrink-0">✓</span>
                   )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Keyboard Selection Section */}
-        <div className="mb-[40px]">
-          <p className="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white mb-[20px]">
-            {t('select_keyboard') || 'Select Keyboard'}
-          </p>
-          <div className="flex flex-wrap gap-[14px]" style={{ width: '740px' }}>
-            {KEYBOARD_OPTIONS.map((kb, index) => {
-              const isItemFocused = focusSection === 'keyboard' && keyboardIndex === index;
-              const isSelected = selectedKeyboard === index;
-              return (
-                <div
-                  key={kb.id}
-                  className={`flex flex-col items-center justify-center w-[170px] h-[100px] rounded-[14px] transition-all duration-150 cursor-pointer ${
-                    isItemFocused
-                      ? 'bg-[#ff4199] scale-105'
-                      : isSelected
-                        ? 'bg-[rgba(255,65,153,0.2)] border-[2px] border-[#ff4199]'
-                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)] border-[2px] border-transparent'
-                  }`}
-                  style={{
-                    boxShadow: isItemFocused
-                      ? '0 0 20px rgba(255,65,153,0.5)'
-                      : isSelected
-                        ? 'inset 1px 1px 8px rgba(255,65,153,0.15)'
-                        : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
-                  }}
-                  onClick={() => handleKeyboardChange(index)}
-                  data-testid={`keyboard-${kb.id}`}
-                >
-                  <span className="text-[28px] mb-[4px]">{kb.flag}</span>
-                  <p className={`font-['Ubuntu',Helvetica] font-medium text-center text-white truncate w-full px-[8px] ${isItemFocused ? 'text-[20px]' : 'text-[18px]'}`}>
-                    {kb.label}
-                  </p>
                 </div>
               );
             })}
