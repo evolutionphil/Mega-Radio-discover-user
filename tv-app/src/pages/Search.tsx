@@ -450,21 +450,34 @@ export const Search = (): JSX.Element => {
     }
 
     if (focusZone === 'recent') {
+      const maxRecent = Math.min(recentStations.length, 8);
+      const row = Math.floor(recentFocusIndex / 4);
+      const col = recentFocusIndex % 4;
       if (isUp) {
         e.preventDefault();
-        if (recentFocusIndex > 0) {
-          setRecentFocusIndex(prev => prev - 1);
+        if (row > 0) {
+          setRecentFocusIndex(recentFocusIndex - 4);
         } else {
           setFocusZone('langButton');
         }
       } else if (isDown) {
         e.preventDefault();
-        if (recentFocusIndex < Math.min(recentStations.length, 8) - 1) {
-          setRecentFocusIndex(prev => prev + 1);
+        const nextIdx = recentFocusIndex + 4;
+        if (nextIdx < maxRecent) {
+          setRecentFocusIndex(nextIdx);
         }
       } else if (isLeft) {
         e.preventDefault();
-        setFocusZone('sidebar');
+        if (col > 0) {
+          setRecentFocusIndex(recentFocusIndex - 1);
+        } else {
+          setFocusZone('sidebar');
+        }
+      } else if (isRight) {
+        e.preventDefault();
+        if (col < 3 && recentFocusIndex + 1 < maxRecent) {
+          setRecentFocusIndex(recentFocusIndex + 1);
+        }
       } else if (isEnter) {
         e.preventDefault();
         const station = recentStations[recentFocusIndex];
@@ -710,28 +723,28 @@ export const Search = (): JSX.Element => {
           )}
         </div>
 
-        {/* Recently Played - vertical list */}
+        {/* Recently Played - 2 rows of 4 cards */}
         {recentStations.length > 0 && (
           <div className="mt-[20px]">
             <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[14px]">
               {t('recently_played') || t('recent') || 'Recently Played'}
             </p>
-            <div className="flex flex-col">
+            <div className="flex flex-wrap gap-[14px]" style={{ width: '690px' }}>
               {recentStations.slice(0, 8).map((station, index) => {
                 if (!station) return null;
                 const isStationFocused = focusZone === 'recent' && recentFocusIndex === index;
                 return (
                   <div
                     key={station._id || index}
-                    className={`flex items-center gap-[16px] px-[24px] rounded-[12px] mb-[6px] transition-all duration-150 cursor-pointer h-[110px] ${
+                    className={`flex flex-col items-center w-[162px] rounded-[12px] p-[12px] cursor-pointer transition-all duration-150 ${
                       isStationFocused
-                        ? 'bg-[#ff4199]'
-                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
+                        ? 'bg-[#ff4199] scale-105'
+                        : 'bg-[rgba(255,255,255,0.08)] hover:bg-[rgba(255,255,255,0.12)]'
                     }`}
                     style={{
                       boxShadow: isStationFocused
-                        ? '0 0 20px rgba(255,65,153,0.35), inset 1px 1px 8px rgba(255,255,255,0.1)'
-                        : 'none',
+                        ? '0 0 20px rgba(255,65,153,0.5)'
+                        : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
                     }}
                     data-testid={`recent-station-${index}`}
                     onClick={() => {
@@ -741,21 +754,18 @@ export const Search = (): JSX.Element => {
                       }
                     }}
                   >
-                    <img
-                      alt={station.name || 'Station'}
-                      className={`rounded-[6px] object-cover flex-shrink-0 ${isStationFocused ? 'w-[52px] h-[52px]' : 'w-[46px] h-[46px]'}`}
-                      src={getStationImage(station)}
-                      loading="lazy"
-                      onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
-                    />
-                    <div className="flex flex-col min-w-0 flex-1">
-                      <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isStationFocused ? 'text-[30px] text-white' : 'text-[26px]'}`}>
-                        {station.name || 'Unknown'}
-                      </p>
-                      <p className={`font-['Ubuntu',Helvetica] font-light truncate ${isStationFocused ? 'text-[20px] text-white/80' : 'text-[18px] text-[rgba(255,255,255,0.5)]'}`}>
-                        {getStationCategory(station)}
-                      </p>
+                    <div className="w-[110px] h-[110px] rounded-[10px] overflow-hidden bg-white mb-[10px] flex-shrink-0">
+                      <img
+                        alt={station.name || 'Station'}
+                        className="w-full h-full object-cover"
+                        src={getStationImage(station)}
+                        loading="lazy"
+                        onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
+                      />
                     </div>
+                    <p className={`font-['Ubuntu',Helvetica] font-medium text-[18px] text-center text-white truncate w-full leading-tight`}>
+                      {station.name || 'Unknown'}
+                    </p>
                   </div>
                 );
               })}
