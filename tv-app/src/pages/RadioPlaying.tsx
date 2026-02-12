@@ -702,32 +702,45 @@ export const RadioPlaying = (): JSX.Element => {
     <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
 
       {isIdle && currentStation && !streamError && (
-        <div className="absolute inset-0 w-[1920px] h-[1080px] z-0 overflow-hidden pointer-events-none" data-testid="ambient-mode-overlay">
-          <div className="absolute w-[600px] h-[600px] rounded-full opacity-20 animate-ambient-float-1"
+        <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" style={{ zIndex: 100, backgroundColor: '#000000' }} data-testid="ambient-mode-overlay">
+          <div className="absolute w-[600px] h-[600px] rounded-full animate-ambient-float-1"
             style={{
               background: 'radial-gradient(circle, rgba(255,65,153,0.4) 0%, transparent 70%)',
+              opacity: 0.25,
               top: '-100px',
               left: '-100px',
             }}
           />
-          <div className="absolute w-[500px] h-[500px] rounded-full opacity-15 animate-ambient-float-2"
+          <div className="absolute w-[500px] h-[500px] rounded-full animate-ambient-float-2"
             style={{
               background: 'radial-gradient(circle, rgba(100,100,255,0.3) 0%, transparent 70%)',
+              opacity: 0.2,
               bottom: '-100px',
               right: '-100px',
             }}
           />
-          <div className="absolute w-[400px] h-[400px] rounded-full opacity-10 animate-ambient-float-3"
+          <div className="absolute w-[400px] h-[400px] rounded-full animate-ambient-float-3"
             style={{
               background: 'radial-gradient(circle, rgba(255,200,50,0.3) 0%, transparent 70%)',
+              opacity: 0.15,
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
             }}
           />
           <div className="absolute top-[40px] right-[40px]">
-            <p className="font-['Ubuntu',Helvetica] font-light text-[48px] text-[rgba(255,255,255,0.5)]" data-testid="ambient-clock">
+            <p className="font-['Ubuntu',Helvetica] font-light text-[48px]" style={{ color: 'rgba(255,255,255,0.5)' }} data-testid="ambient-clock">
               {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </p>
+          </div>
+          <div className="absolute bottom-[60px] left-0 right-0 flex flex-col items-center">
+            {currentStation && (
+              <p className="font-['Ubuntu',Helvetica] font-medium text-[28px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                {currentStation.name}
+              </p>
+            )}
+            <p className="font-['Ubuntu',Helvetica] font-light text-[18px] mt-4" style={{ color: 'rgba(255,255,255,0.2)' }}>
+              {t('press_any_button') || 'Press any button to dismiss'}
             </p>
           </div>
         </div>
