@@ -2,6 +2,8 @@ import { useLocation } from "wouter";
 import { useState, useEffect, useRef } from "react";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
+import { useSleepTimer } from "@/contexts/SleepTimerContext";
+import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
 
@@ -91,15 +93,34 @@ const getFlagUrl = (countryCode: string) =>
 
 export const Settings = (): JSX.Element => {
   const { t, language, setLanguage } = useLocalization();
+  const { sleepTimerMinutes, remainingSeconds, setSleepTimer, cancelSleepTimer, isTimerActive } = useSleepTimer();
   const [, setLocation] = useLocation();
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("none");
   const [selectedKeyboard, setSelectedKeyboard] = useState(0);
-  const [focusSection, setFocusSection] = useState<'sidebar' | 'keyboard' | 'language' | 'playAtStart'>('keyboard');
+  const { highContrast, largeText, setHighContrast, setLargeText } = useAccessibility();
+  const [focusSection, setFocusSection] = useState<'sidebar' | 'keyboard' | 'language' | 'playAtStart' | 'sleepTimer' | 'accessibility'>('keyboard');
   const [sidebarIndex, setSidebarIndex] = useState(4);
   const [playAtStartIndex, setPlayAtStartIndex] = useState(0);
+  const [sleepTimerIndex, setSleepTimerIndex] = useState(0);
   const [keyboardIndex, setKeyboardIndex] = useState(0);
   const [languageIndex, setLanguageIndex] = useState(0);
+  const [accessibilityIndex, setAccessibilityIndex] = useState(0);
   const langListRef = useRef<HTMLDivElement>(null);
+
+  const sleepTimerOptions: (number | null)[] = [15, 30, 60, 120, null];
+  const sleepTimerLabels: Record<string, string> = {
+    '15': t('sleep_timer_15') || '15 min',
+    '30': t('sleep_timer_30') || '30 min',
+    '60': t('sleep_timer_60') || '1 hour',
+    '120': t('sleep_timer_120') || '2 hours',
+    'null': t('sleep_timer_off') || 'Off',
+  };
+
+  const formatRemainingTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
   const settingsOptions: PlayAtStartMode[] = ["last-played", "random", "favorite", "none"];
@@ -265,9 +286,66 @@ export const Settings = (): JSX.Element => {
         setFocusSection('language');
       } else if (isRight) {
         e.preventDefault();
+        setFocusSection('sleepTimer');
       } else if (isEnter) {
         e.preventDefault();
         handlePlayAtStartChange(settingsOptions[playAtStartIndex]);
+      }
+      return;
+    }
+
+    if (focusSection === 'sleepTimer') {
+      if (isUp) {
+        e.preventDefault();
+        if (sleepTimerIndex > 0) {
+          setSleepTimerIndex(prev => prev - 1);
+        }
+      } else if (isDown) {
+        e.preventDefault();
+        if (sleepTimerIndex < sleepTimerOptions.length - 1) {
+          setSleepTimerIndex(prev => prev + 1);
+        }
+      } else if (isLeft) {
+        e.preventDefault();
+        setFocusSection('playAtStart');
+      } else if (isRight) {
+        e.preventDefault();
+        setFocusSection('accessibility');
+      } else if (isEnter) {
+        e.preventDefault();
+        const selectedOption = sleepTimerOptions[sleepTimerIndex];
+        if (selectedOption === null) {
+          cancelSleepTimer();
+        } else {
+          setSleepTimer(selectedOption);
+        }
+      }
+      return;
+    }
+
+    if (focusSection === 'accessibility') {
+      if (isUp) {
+        e.preventDefault();
+        if (accessibilityIndex > 0) {
+          setAccessibilityIndex(prev => prev - 1);
+        }
+      } else if (isDown) {
+        e.preventDefault();
+        if (accessibilityIndex < 1) {
+          setAccessibilityIndex(prev => prev + 1);
+        }
+      } else if (isLeft) {
+        e.preventDefault();
+        setFocusSection('sleepTimer');
+      } else if (isRight) {
+        e.preventDefault();
+      } else if (isEnter) {
+        e.preventDefault();
+        if (accessibilityIndex === 0) {
+          setHighContrast(!highContrast);
+        } else {
+          setLargeText(!largeText);
+        }
       }
       return;
     }
@@ -393,8 +471,8 @@ export const Settings = (): JSX.Element => {
           </div>
         </div>
 
-        {/* Play at Start Section - RIGHT */}
-        <div className="flex-shrink-0" style={{ width: '460px' }}>
+        {/* Play at Start Section */}
+        <div className="flex-shrink-0" style={{ width: '340px' }}>
           <p className="font-['Ubuntu',Helvetica] font-bold text-[26px] text-white mb-[16px]">
             {t('settings_play_at_start') || 'Play at Start'}
           </p>
@@ -431,6 +509,103 @@ export const Settings = (): JSX.Element => {
                   {isSelected && !isItemFocused && (
                     <span className="ml-auto font-['Ubuntu',Helvetica] text-[18px] text-[#ff4199] flex-shrink-0">✓</span>
                   )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Sleep Timer Section */}
+        <div className="flex-shrink-0" style={{ width: '340px' }}>
+          <p className="font-['Ubuntu',Helvetica] font-bold text-[26px] text-white mb-[16px]">
+            {t('sleep_timer') || 'Sleep Timer'}
+          </p>
+          {isTimerActive && remainingSeconds !== null && (
+            <div className="mb-[12px] px-[24px] py-[10px] rounded-[12px] bg-[rgba(255,65,153,0.15)] border-[2px] border-[#ff4199]" data-testid="sleep-timer-remaining">
+              <p className="font-['Ubuntu',Helvetica] font-bold text-[22px] text-[#ff4199]">
+                💤 {formatRemainingTime(remainingSeconds)}
+              </p>
+            </div>
+          )}
+          <div className="flex flex-col gap-[8px]">
+            {sleepTimerOptions.map((option, index) => {
+              const isItemFocused = focusSection === 'sleepTimer' && sleepTimerIndex === index;
+              const isSelected = option === null ? sleepTimerMinutes === null : sleepTimerMinutes === option;
+              const optionKey = option === null ? 'null' : String(option);
+              return (
+                <div
+                  key={optionKey}
+                  className={`flex items-center gap-[20px] px-[24px] rounded-[12px] transition-all duration-150 cursor-pointer h-[82px] ${
+                    isItemFocused
+                      ? 'bg-[#ff4199]'
+                      : isSelected
+                        ? 'bg-[rgba(255,65,153,0.15)]'
+                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
+                  }`}
+                  style={{
+                    boxShadow: isItemFocused
+                      ? '0 0 20px rgba(255,65,153,0.35), inset 1px 1px 8px rgba(255,255,255,0.1)'
+                      : 'none',
+                  }}
+                  onClick={() => {
+                    if (option === null) {
+                      cancelSleepTimer();
+                    } else {
+                      setSleepTimer(option);
+                    }
+                  }}
+                  data-testid={`sleep-timer-${optionKey}`}
+                >
+                  <div className="border-[#ff4199] border-[3px] border-solid rounded-full w-[32px] h-[32px] flex items-center justify-center flex-shrink-0">
+                    {isSelected && (
+                      <div className="bg-[#ff4199] rounded-full w-[18px] h-[18px]" />
+                    )}
+                  </div>
+                  <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[24px] text-white' : 'text-[22px] text-white'}`}>
+                    {sleepTimerLabels[optionKey]}
+                  </p>
+                  {isSelected && !isItemFocused && (
+                    <span className="ml-auto font-['Ubuntu',Helvetica] text-[18px] text-[#ff4199] flex-shrink-0">✓</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Accessibility Section - RIGHTMOST */}
+        <div className="flex-shrink-0" style={{ width: '340px' }}>
+          <p className="font-['Ubuntu',Helvetica] font-bold text-[26px] text-white mb-[16px]">
+            {t('accessibility') || 'Accessibility'}
+          </p>
+          <div className="flex flex-col gap-[8px]">
+            {[
+              { label: t('high_contrast') || 'High Contrast', value: highContrast, toggle: () => setHighContrast(!highContrast), testId: 'toggle-high-contrast' },
+              { label: t('large_text') || 'Large Text', value: largeText, toggle: () => setLargeText(!largeText), testId: 'toggle-large-text' },
+            ].map((item, index) => {
+              const isItemFocused = focusSection === 'accessibility' && accessibilityIndex === index;
+              return (
+                <div
+                  key={item.testId}
+                  className={`flex items-center justify-between px-[24px] rounded-[12px] transition-all duration-150 cursor-pointer h-[82px] ${
+                    isItemFocused
+                      ? 'bg-[#ff4199]'
+                      : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
+                  }`}
+                  style={{
+                    boxShadow: isItemFocused
+                      ? '0 0 20px rgba(255,65,153,0.35), inset 1px 1px 8px rgba(255,255,255,0.1)'
+                      : 'none',
+                  }}
+                  onClick={item.toggle}
+                  data-testid={item.testId}
+                >
+                  <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[24px] text-white' : 'text-[22px] text-white'}`}>
+                    {item.label}
+                  </p>
+                  <div className={`w-[56px] h-[32px] rounded-full transition-colors ${item.value ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.2)]'}`}>
+                    <div className={`w-[26px] h-[26px] rounded-full bg-white transition-transform mt-[3px] ${item.value ? 'ml-[27px]' : 'ml-[3px]'}`} />
+                  </div>
                 </div>
               );
             })}

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode } from "react";
 import { Station, megaRadioApi } from "@/services/megaRadioApi";
 import { recentlyPlayedService } from "@/services/recentlyPlayedService";
+import { recommendationService } from "@/services/recommendationService";
 import { trackStationPlay, trackError } from "@/lib/analytics";
 
 interface GlobalPlayerContextType {
@@ -8,11 +9,14 @@ interface GlobalPlayerContextType {
   isPlaying: boolean;
   isBuffering: boolean;
   nowPlayingMetadata: string | null;
+  streamError: string | null;
   playStation: (station: Station) => void;
   pauseStation: () => void;
   resumeStation: () => void;
   stopStation: () => void;
   togglePlayPause: () => void;
+  clearStreamError: () => void;
+  retryCurrentStation: () => void;
 }
 
 const GlobalPlayerContext = createContext<GlobalPlayerContextType | undefined>(undefined);
@@ -56,6 +60,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
   const [nowPlayingMetadata, setNowPlayingMetadata] = useState<string | null>(null);
+  const [streamError, setStreamError] = useState<string | null>(null);
   const audioPlayerRef = useRef<any>(null);
   const metadataIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const screenLockActiveRef = useRef(false);
@@ -78,6 +83,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         console.log('[✅ EVENT] onPlay - Stream playing successfully');
         setIsPlaying(true);
         setIsBuffering(false);
+        setStreamError(null);
         retryCountRef.current = 0;
       };
       
@@ -154,6 +160,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
           }, delay);
         } else if (retryCountRef.current >= maxRetries) {
           console.error('[🔴 FAILED] Max retries reached. Giving up on:', stationName);
+          setStreamError('This station is currently unavailable');
           setIsPlaying(false);
           retryCountRef.current = 0;
         }
@@ -321,6 +328,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     setCurrentStation(station);
     currentStationRef.current = station;
     setIsBuffering(true);
+    setStreamError(null);
     
     if (retryTimeoutRef.current) {
       clearTimeout(retryTimeoutRef.current);
@@ -375,6 +383,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     }
 
     recentlyPlayedService.addStation(station);
+    recommendationService.trackListen(station);
   };
 
   const pauseStation = () => {
@@ -412,6 +421,18 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const retryCurrentStation = () => {
+    if (currentStation) {
+      setStreamError(null);
+      retryCountRef.current = 0;
+      playStation(currentStation);
+    }
+  };
+
+  const clearStreamError = () => {
+    setStreamError(null);
+  };
+
   // Expose player controls to window for TV remote media buttons
   useEffect(() => {
     (window as any).globalPlayer = {
@@ -438,11 +459,14 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
         isPlaying,
         isBuffering,
         nowPlayingMetadata,
+        streamError,
         playStation,
         pauseStation,
         resumeStation,
         stopStation,
         togglePlayPause,
+        clearStreamError,
+        retryCurrentStation,
       }}
     >
       {/* Hidden audio container */}

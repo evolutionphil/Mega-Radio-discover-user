@@ -8,7 +8,9 @@ import { useLocalization } from "@/contexts/LocalizationContext";
 import { useCountry } from "@/contexts/CountryContext";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
+import { useSleepTimer } from "@/contexts/SleepTimerContext";
 import { useNavigation } from "@/contexts/NavigationContext";
+import { useIdleDetection } from "@/hooks/useIdleDetection";
 import { CountrySelector } from "@/components/CountrySelector";
 import { CountryTrigger } from "@/components/CountryTrigger";
 import { Sidebar } from "@/components/Sidebar";
@@ -20,8 +22,24 @@ export const RadioPlaying = (): JSX.Element => {
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { playStation, togglePlayPause, isPlaying, isBuffering, currentStation } = useGlobalPlayer();
+  const { playStation, togglePlayPause, isPlaying, isBuffering, currentStation, streamError, retryCurrentStation, clearStreamError } = useGlobalPlayer();
+  const { isTimerActive, remainingSeconds } = useSleepTimer();
   const { getPreviousPage } = useNavigation();
+
+  const { isIdle } = useIdleDetection({ idleTime: 180000 });
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+  useEffect(() => {
+    if (!isIdle || !isPlaying) return;
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, [isIdle, isPlaying]);
+
+  const formatSleepTimer = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
   
   // Station history for Previous button (stores station IDs)
   const stationHistoryRef = useRef<string[]>([]);
@@ -225,7 +243,8 @@ export const RadioPlaying = (): JSX.Element => {
 
   // Calculate totalItems: 5 (sidebar) + 1 (country) + 4 (playback) + similar stations (20) + popular stations
   const popularCount = popularStations.length;
-  const totalItems = 5 + 1 + 4 + Math.min(similarStations.length, 20) + popularCount;
+  const baseItems = 5 + 1 + 4 + Math.min(similarStations.length, 20) + popularCount;
+  const totalItems = streamError ? Math.max(baseItems, 101) : baseItems;
 
   // Define sidebar routes (NO PROFILE - 5 items)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
@@ -268,13 +287,28 @@ export const RadioPlaying = (): JSX.Element => {
       } else if (direction === 'RIGHT') {
         if (relIndex < 3) {
           newIndex = current + 1;
+        } else if (streamError) {
+          newIndex = 100; // Jump to retry button when error is shown
         }
       } else if (direction === 'UP') {
         newIndex = 5; // Jump to country selector
       } else if (direction === 'DOWN') {
-        // Jump to similar stations if available
-        if (similarStations.length > 0) {
+        if (streamError) {
+          newIndex = 100; // Jump to retry button when error is shown
+        } else if (similarStations.length > 0) {
           newIndex = 10; // First similar station
+        }
+      }
+    }
+    // Retry button (100) - only when streamError is shown
+    else if (current === 100) {
+      if (direction === 'LEFT') {
+        newIndex = 9; // Jump to favorite button
+      } else if (direction === 'UP') {
+        newIndex = 7; // Jump to play/pause
+      } else if (direction === 'DOWN') {
+        if (similarStations.length > 0) {
+          newIndex = 10;
         }
       }
     }
@@ -428,6 +462,10 @@ export const RadioPlaying = (): JSX.Element => {
         if (station) {
           toggleFavorite(station);
         }
+      }
+      // Retry stream button (100)
+      else if (index === 100) {
+        retryCurrentStation();
       }
       // Similar stations (10-29)
       else if (index >= 10 && index <= 29) {
@@ -650,6 +688,38 @@ export const RadioPlaying = (): JSX.Element => {
   return (
     <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
 
+      {isIdle && isPlaying && (
+        <div className="absolute inset-0 w-[1920px] h-[1080px] z-0 overflow-hidden pointer-events-none" data-testid="ambient-mode-overlay">
+          <div className="absolute w-[600px] h-[600px] rounded-full opacity-20 animate-ambient-float-1"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,65,153,0.4) 0%, transparent 70%)',
+              top: '-100px',
+              left: '-100px',
+            }}
+          />
+          <div className="absolute w-[500px] h-[500px] rounded-full opacity-15 animate-ambient-float-2"
+            style={{
+              background: 'radial-gradient(circle, rgba(100,100,255,0.3) 0%, transparent 70%)',
+              bottom: '-100px',
+              right: '-100px',
+            }}
+          />
+          <div className="absolute w-[400px] h-[400px] rounded-full opacity-10 animate-ambient-float-3"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,200,50,0.3) 0%, transparent 70%)',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          />
+          <div className="absolute top-[40px] right-[40px]">
+            <p className="font-['Ubuntu',Helvetica] font-light text-[48px] text-[rgba(255,255,255,0.5)]" data-testid="ambient-clock">
+              {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Logo */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
         <p className="absolute bottom-0 font-['Ubuntu',Helvetica] leading-normal left-[18.67%] not-italic right-0 text-[27.029px] text-white top-[46.16%] whitespace-pre-wrap">
@@ -838,6 +908,41 @@ export const RadioPlaying = (): JSX.Element => {
           </svg>
         </div>
       </div>
+
+      {/* Sleep Timer Indicator */}
+      {isTimerActive && remainingSeconds !== null && (
+        <div
+          className="absolute left-[1372px] top-[460px] flex items-center gap-[8px]"
+          data-testid="sleep-timer-indicator"
+        >
+          <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-[#ff4199]">
+            💤 {formatSleepTimer(remainingSeconds)}
+          </p>
+        </div>
+      )}
+
+      {/* Stream Error Banner */}
+      {streamError && (
+        <div className="absolute left-[1290px] top-[160px] w-[560px] bg-[rgba(255,65,153,0.15)] border-[2px] border-[#ff4199] rounded-[16px] p-[24px] z-20" data-testid="stream-error-banner">
+          <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[8px]">
+            {t('stream_error_title') || 'Stream Unavailable'}
+          </p>
+          <p className="font-['Ubuntu',Helvetica] font-light text-[18px] text-[rgba(255,255,255,0.7)] mb-[16px]">
+            {t('stream_error_message') || 'This station is currently not responding. Please try again or select another station.'}
+          </p>
+          <div className="flex gap-[16px]">
+            <div
+              className={`bg-[#ff4199] rounded-[12px] px-[32px] py-[12px] cursor-pointer hover:bg-[#e0368a] transition-colors ${isFocused(100) ? 'ring-2 ring-white scale-105' : ''}`}
+              onClick={retryCurrentStation}
+              data-testid="button-retry-stream"
+            >
+              <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white">
+                {t('retry') || 'Retry'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Scrollable Content Area for Similar & Popular Radios */}
       <div 

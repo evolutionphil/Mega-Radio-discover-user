@@ -433,3 +433,60 @@ html, body {
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+/* High Contrast Mode */
+.high-contrast .bg-\[rgba\(255\,255\,255\,0\.14\)\] {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
+.high-contrast .bg-\[\#0e0e0e\] {
+  background-color: #000000 !important;
+}
+.high-contrast .text-\[rgba\(255\,255\,255\,0\.7\)\],
+.high-contrast .text-\[rgba\(255\,255\,255\,0\.5\)\] {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+.high-contrast .border-transparent {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Large Text Mode */
+.large-text p,
+.large-text span {
+  font-size: calc(1em * 1.15) !important;
+}
+.large-text .text-\[22px\] { font-size: 26px !important; }
+.large-text .text-\[18px\] { font-size: 22px !important; }
+.large-text .text-\[16px\] { font-size: 20px !important; }
+.large-text .text-\[24px\] { font-size: 28px !important; }
+.large-text .text-\[32px\] { font-size: 36px !important; }
+
+/* Ambient Mode Animations - Slow floating orbs for OLED burn-in prevention */
+@keyframes ambient-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(200px, 100px) scale(1.1); }
+  50% { transform: translate(100px, 300px) scale(0.9); }
+  75% { transform: translate(-100px, 200px) scale(1.05); }
+}
+
+@keyframes ambient-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-200px, -150px) scale(1.15); }
+  66% { transform: translate(150px, -100px) scale(0.85); }
+}
+
+@keyframes ambient-float-3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-30%, -60%) scale(1.2); }
+}
+
+.animate-ambient-float-1 {
+  animation: ambient-float-1 25s ease-in-out infinite;
+}
+
+.animate-ambient-float-2 {
+  animation: ambient-float-2 30s ease-in-out infinite;
+}
+
+.animate-ambient-float-3 {
+  animation: ambient-float-3 20s ease-in-out infinite;
+}

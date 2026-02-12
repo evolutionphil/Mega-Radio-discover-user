@@ -9,9 +9,11 @@ import { CountryProvider } from "@/contexts/CountryContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import { NavigationProvider } from "@/contexts/NavigationContext";
 import { GlobalPlayerProvider } from "@/contexts/GlobalPlayerContext";
+import { SleepTimerProvider } from "@/contexts/SleepTimerContext";
 import { NetworkStatusProvider, useNetworkStatus } from "@/contexts/NetworkStatusContext";
 import { AppLifecycleProvider } from "@/contexts/AppLifecycleContext";
 import { FocusRouterProvider } from "@/contexts/FocusRouterContext";
+import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 import { GlobalPlayer } from "@/components/GlobalPlayer";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import NotFound from "@/pages/not-found";
@@ -128,28 +130,32 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <LocalizationProvider>
-        <NetworkStatusProvider>
-          <CountryProvider>
-            <FavoritesProvider>
-              <NavigationProvider>
-                <GlobalPlayerProvider>
-                  <AppLifecycleProvider>
-                    <FocusRouterProvider>
-                      <TooltipProvider>
-                        <Toaster />
-                        <Router />
-                      </TooltipProvider>
-                    </FocusRouterProvider>
-                  </AppLifecycleProvider>
-                </GlobalPlayerProvider>
-              </NavigationProvider>
-            </FavoritesProvider>
-          </CountryProvider>
-        </NetworkStatusProvider>
-      </LocalizationProvider>
-    </QueryClientProvider>
+    <AccessibilityProvider>
+      <QueryClientProvider client={queryClient}>
+        <LocalizationProvider>
+          <NetworkStatusProvider>
+            <CountryProvider>
+              <FavoritesProvider>
+                <NavigationProvider>
+                  <GlobalPlayerProvider>
+                    <SleepTimerProvider>
+                    <AppLifecycleProvider>
+                      <FocusRouterProvider>
+                        <TooltipProvider>
+                          <Toaster />
+                          <Router />
+                        </TooltipProvider>
+                      </FocusRouterProvider>
+                    </AppLifecycleProvider>
+                    </SleepTimerProvider>
+                  </GlobalPlayerProvider>
+                </NavigationProvider>
+              </FavoritesProvider>
+            </CountryProvider>
+          </NetworkStatusProvider>
+        </LocalizationProvider>
+      </QueryClientProvider>
+    </AccessibilityProvider>
   );
 }
 

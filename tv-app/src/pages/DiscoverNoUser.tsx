@@ -12,6 +12,8 @@ import { useLocalization } from "@/contexts/LocalizationContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { useNavigation } from "@/contexts/NavigationContext";
 import { autoPlayService } from "@/services/autoPlayService";
+import { recentlyPlayedService } from "@/services/recentlyPlayedService";
+import { recommendationService } from "@/services/recommendationService";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
 
@@ -28,6 +30,10 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [showHeader, setShowHeader] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const genreScrollRef = useRef<HTMLDivElement>(null);
+  const recentScrollRef = useRef<HTMLDivElement>(null);
+  const forYouScrollRef = useRef<HTMLDivElement>(null);
+  const [recentStations, setRecentStations] = useState<Station[]>([]);
+  const [forYouStations, setForYouStations] = useState<Station[]>([]);
   const lastScrollY = useRef(0);
   const lastScrollTime = useRef(0); // Throttle scroll events
   const MAX_STATIONS = 200; // Prevent memory bloat on TV devices
@@ -153,17 +159,75 @@ export const DiscoverNoUser = (): JSX.Element => {
   const popularStations = popularStationsData?.stations?.slice(0, 12) || [];
 
   // Calculate dynamic section boundaries (5 sidebar + 1 country selector = 6)
-  const popularStationsStart = 6;
-  const popularStationsEnd = popularStationsStart + popularStations.length - 1;
-  const genresStart = popularStationsEnd + 1;
+  const recentCount = recentStations.length;
+  const recentStart = 6;
+  const recentEnd = recentStart + recentCount - 1;
+  const forYouCount = forYouStations.length;
+  const forYouStart = recentCount > 0 ? recentEnd + 1 : 6;
+  const forYouEnd = forYouStart + forYouCount - 1;
+  const genresStart = forYouCount > 0 ? forYouEnd + 1 : (recentCount > 0 ? recentEnd + 1 : 6);
   const genresEnd = genresStart + genres.length - 1;
-  const countryStationsStart = genresEnd + 1;
+  const popularStationsStart = genresEnd + 1;
+  const popularStationsEnd = popularStationsStart + popularStations.length - 1;
+  const countryStationsStart = popularStationsEnd + 1;
+  const recentOffset = recentStations.length > 0 ? 300 : 0;
+  const forYouOffset = forYouStations.length > 0 ? 300 : 0;
 
   // Calculate dynamic totalItems using actual array lengths (5 sidebar + 1 country selector + content)
-  const totalItems = 5 + 1 + popularStations.length + genres.length + displayedStations.length;
+  const totalItems = 5 + 1 + recentCount + forYouCount + genres.length + popularStations.length + displayedStations.length;
 
   // Define sidebar routes (NO PROFILE - 5 items: Discover, Genres, Search, Favorites, Settings)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+
+  const scrollRecentIntoView = (recentIndex: number) => {
+    if (!recentScrollRef.current) return;
+    
+    const children = recentScrollRef.current.children;
+    if (recentIndex < 0 || recentIndex >= children.length) return;
+    
+    const child = children[recentIndex] as HTMLElement;
+    const containerWidth = recentScrollRef.current.clientWidth;
+    const currentScroll = recentScrollRef.current.scrollLeft;
+    const itemLeft = child.offsetLeft;
+    const itemRight = itemLeft + child.offsetWidth;
+    
+    if (itemRight > currentScroll + containerWidth) {
+      recentScrollRef.current.scrollTo({
+        left: itemRight - containerWidth + 20,
+        behavior: 'smooth'
+      });
+    } else if (itemLeft < currentScroll) {
+      recentScrollRef.current.scrollTo({
+        left: itemLeft,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const scrollForYouIntoView = (forYouIndex: number) => {
+    if (!forYouScrollRef.current) return;
+    
+    const children = forYouScrollRef.current.children;
+    if (forYouIndex < 0 || forYouIndex >= children.length) return;
+    
+    const child = children[forYouIndex] as HTMLElement;
+    const containerWidth = forYouScrollRef.current.clientWidth;
+    const currentScroll = forYouScrollRef.current.scrollLeft;
+    const itemLeft = child.offsetLeft;
+    const itemRight = itemLeft + child.offsetWidth;
+    
+    if (itemRight > currentScroll + containerWidth) {
+      forYouScrollRef.current.scrollTo({
+        left: itemRight - containerWidth + 20,
+        behavior: 'smooth'
+      });
+    } else if (itemLeft < currentScroll) {
+      forYouScrollRef.current.scrollTo({
+        left: itemLeft,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const scrollGenreIntoView = (genreIndex: number) => {
     if (!genreScrollRef.current) return;
@@ -203,11 +267,17 @@ export const DiscoverNoUser = (): JSX.Element => {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
         if (current === 0 || current === 1) {
-          // From Discover or Genres, jump to first Popular Genre
-          newIndex = genresStart;
-          scrollGenreIntoView(0);
+          if (recentCount > 0) {
+            newIndex = recentStart;
+            scrollRecentIntoView(0);
+          } else if (forYouCount > 0) {
+            newIndex = forYouStart;
+            scrollForYouIntoView(0);
+          } else {
+            newIndex = genresStart;
+            scrollGenreIntoView(0);
+          }
         } else {
-          // From Search, Favorites, or Settings, jump to first Popular Station
           newIndex = popularStationsStart;
         }
       }
@@ -215,9 +285,101 @@ export const DiscoverNoUser = (): JSX.Element => {
     // Country selector (5)
     else if (current === 5) {
       if (direction === 'DOWN') {
-        newIndex = genresStart; // Jump to first genre
+        if (recentCount > 0) {
+          newIndex = recentStart;
+        } else if (forYouCount > 0) {
+          newIndex = forYouStart;
+        } else {
+          newIndex = genresStart;
+        }
       } else if (direction === 'LEFT') {
-        newIndex = 0; // Jump to first sidebar item
+        newIndex = 0;
+      }
+    }
+    // Recently played section - horizontal scrolling
+    else if (recentCount > 0 && current >= recentStart && current <= recentEnd) {
+      const col = current - recentStart;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+          scrollRecentIntoView(col - 1);
+        } else {
+          newIndex = 0;
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < recentCount - 1) {
+          newIndex = current + 1;
+          scrollRecentIntoView(col + 1);
+        }
+      } else if (direction === 'UP') {
+        newIndex = 5;
+      } else if (direction === 'DOWN') {
+        if (forYouCount > 0) {
+          newIndex = forYouStart;
+          scrollForYouIntoView(0);
+        } else {
+          newIndex = genresStart;
+          scrollGenreIntoView(0);
+        }
+      }
+    }
+    // For You section - horizontal scrolling
+    else if (forYouCount > 0 && current >= forYouStart && current <= forYouEnd) {
+      const col = current - forYouStart;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+          scrollForYouIntoView(col - 1);
+        } else {
+          newIndex = 0;
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < forYouCount - 1) {
+          newIndex = current + 1;
+          scrollForYouIntoView(col + 1);
+        }
+      } else if (direction === 'UP') {
+        if (recentCount > 0) {
+          newIndex = recentStart + Math.min(col, recentCount - 1);
+          scrollRecentIntoView(Math.min(col, recentCount - 1));
+        } else {
+          newIndex = 5;
+        }
+      } else if (direction === 'DOWN') {
+        newIndex = genresStart;
+        scrollGenreIntoView(0);
+      }
+    }
+    // Genres section - dynamic boundaries (horizontal scrolling)
+    else if (current >= genresStart && current <= genresEnd) {
+      const col = current - genresStart;
+
+      if (direction === 'LEFT') {
+        if (col > 0) {
+          newIndex = current - 1;
+          scrollGenreIntoView(col - 1);
+        } else {
+          newIndex = 0;
+        }
+      } else if (direction === 'RIGHT') {
+        if (col < genres.length - 1) {
+          newIndex = current + 1;
+          scrollGenreIntoView(col + 1);
+        }
+      } else if (direction === 'UP') {
+        if (forYouCount > 0) {
+          newIndex = forYouStart + Math.min(col, forYouCount - 1);
+          scrollForYouIntoView(Math.min(col, forYouCount - 1));
+        } else if (recentCount > 0) {
+          newIndex = recentStart + Math.min(col, recentCount - 1);
+          scrollRecentIntoView(Math.min(col, recentCount - 1));
+        } else {
+          newIndex = 5;
+        }
+      } else if (direction === 'DOWN') {
+        newIndex = popularStationsStart + Math.min(col, Math.min(6, popularStations.length - 1));
       }
     }
     // Popular stations section - dynamic boundaries
@@ -230,7 +392,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         if (col > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 2; // Jump to Search sidebar item
+          newIndex = 2;
         }
       } else if (direction === 'RIGHT') {
         if (col < 6 && current + 1 <= popularStationsEnd) {
@@ -240,7 +402,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         if (row > 0) {
           newIndex = current - 7;
         } else {
-          // Jump to genres above
           newIndex = genresStart + Math.min(col, genres.length - 1);
         }
       } else if (direction === 'DOWN') {
@@ -255,29 +416,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         }
       }
     }
-    // Genres section - dynamic boundaries (horizontal scrolling)
-    else if (current >= genresStart && current <= genresEnd) {
-      const col = current - genresStart;
-
-      if (direction === 'LEFT') {
-        if (col > 0) {
-          newIndex = current - 1;
-          scrollGenreIntoView(col - 1);
-        } else {
-          newIndex = 0; // Jump to sidebar
-        }
-      } else if (direction === 'RIGHT') {
-        if (col < genres.length - 1) {
-          newIndex = current + 1;
-          scrollGenreIntoView(col + 1);
-        }
-      } else if (direction === 'UP') {
-        newIndex = 5; // Jump to country selector
-      } else if (direction === 'DOWN') {
-        // Jump to popular stations below
-        newIndex = popularStationsStart + Math.min(col, Math.min(6, popularStations.length - 1));
-      }
-    }
     // Country stations section - dynamic boundary
     else if (current >= countryStationsStart) {
       const relIndex = current - countryStationsStart;
@@ -288,7 +426,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         if (col > 0) {
           newIndex = current - 1;
         } else {
-          newIndex = 0; // Jump to sidebar
+          newIndex = 0;
         }
       } else if (direction === 'RIGHT') {
         if (col < 6 && current < totalItems - 1) {
@@ -298,7 +436,6 @@ export const DiscoverNoUser = (): JSX.Element => {
         if (row > 0) {
           newIndex = current - 7;
         } else {
-          // Jump to popular stations above (last row)
           const targetCol = Math.min(col, 6);
           const lastRowStart = popularStationsEnd - (popularStations.length % 7 === 0 ? 6 : (popularStations.length % 7) - 1);
           newIndex = lastRowStart + targetCol;
@@ -333,6 +470,26 @@ export const DiscoverNoUser = (): JSX.Element => {
       // Country selector (5)
       else if (index === 5) {
         setIsCountrySelectorOpen(true);
+      }
+      // Recently played stations
+      else if (recentCount > 0 && index >= recentStart && index <= recentEnd) {
+        const stationIndex = index - recentStart;
+        const station = recentStations[stationIndex];
+        if (station) {
+          setNavigationState(location, index);
+          playStation(station);
+          setLocation(`/radio-playing?station=${station._id}`);
+        }
+      }
+      // For You stations
+      else if (forYouCount > 0 && index >= forYouStart && index <= forYouEnd) {
+        const stationIndex = index - forYouStart;
+        const station = forYouStations[stationIndex];
+        if (station) {
+          setNavigationState(location, index);
+          playStation(station);
+          setLocation(`/radio-playing?station=${station._id}`);
+        }
       }
       // Popular stations - dynamic boundaries
       else if (index >= popularStationsStart && index <= popularStationsEnd) {
@@ -496,10 +653,54 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   }, [initialStationsData, selectedCountryCode]);
 
+  // Load recently played stations on mount
+  useEffect(() => {
+    const stations = recentlyPlayedService.getStations();
+    setRecentStations(stations);
+  }, []);
+
+  // Load personalized recommendations on mount
+  useEffect(() => {
+    const loadRecommendations = async () => {
+      if (!recommendationService.hasEnoughData()) return;
+      
+      const topGenres = recommendationService.getTopGenres(2);
+      const allStations: Station[] = [];
+      
+      for (const genre of topGenres) {
+        try {
+          const result = await megaRadioApi.getStationsByGenre(genre, { limit: 10 });
+          if (result?.stations) {
+            allStations.push(...result.stations);
+          }
+        } catch {}
+      }
+      
+      const uniqueIds = new Set<string>();
+      const unique = allStations.filter(s => {
+        if (uniqueIds.has(s._id)) return false;
+        uniqueIds.add(s._id);
+        return true;
+      });
+      
+      for (let i = unique.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [unique[i], unique[j]] = [unique[j], unique[i]];
+      }
+      
+      setForYouStations(unique.slice(0, 12));
+    };
+    
+    loadRecommendations();
+  }, []);
+
   // Restore focus when returning from RadioPlaying
   useEffect(() => {
     const navState = popNavigationState(); // Pop and clear in one atomic operation
     if (navState && navState.returnFocusIndex !== null) {
+      // Refresh recently played when returning from RadioPlaying
+      const stations = recentlyPlayedService.getStations();
+      setRecentStations(stations);
       // Restore focus when returning from RadioPlaying
       setFocusIndex(navState.returnFocusIndex);
     }
@@ -693,7 +894,11 @@ export const DiscoverNoUser = (): JSX.Element => {
       const scrollContainer = scrollContainerRef.current;
       let focusedElement: HTMLElement | null = null;
       
-      if (focusIndex >= genresStart && focusIndex <= genresEnd) {
+      if (recentCount > 0 && focusIndex >= recentStart && focusIndex <= recentEnd) {
+        focusedElement = scrollContainer.querySelector('[data-testid="section-recently-played"]') as HTMLElement;
+      } else if (forYouCount > 0 && focusIndex >= forYouStart && focusIndex <= forYouEnd) {
+        focusedElement = scrollContainer.querySelector('[data-testid="section-for-you"]') as HTMLElement;
+      } else if (focusIndex >= genresStart && focusIndex <= genresEnd) {
         focusedElement = scrollContainer.querySelector('[data-testid="section-genres"]') as HTMLElement;
       } else {
         focusedElement = scrollContainer.querySelector(`[data-focus-idx="${focusIndex}"]`) as HTMLElement;
@@ -817,11 +1022,113 @@ export const DiscoverNoUser = (): JSX.Element => {
         <div 
           className="relative pb-[100px]"
           style={{
-            minHeight: `${1013 + (Math.ceil(displayedStations.length / 7) * 294) + 364}px`
+            minHeight: `${1013 + recentOffset + forYouOffset + (Math.ceil(displayedStations.length / 7) * 294) + 364}px`
           }}
         >
+        {/* Recently Played Section */}
+        {recentStations.length > 0 && (
+          <div data-testid="section-recently-played">
+            <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
+              {t('recently_played') || 'Recently Played'}
+            </p>
+            <div 
+              ref={recentScrollRef}
+              className="absolute left-[74px] top-[50px] w-[1580px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
+            >
+              <div className="flex py-[10px] px-[10px]" style={{ gap: '16px' }}>
+                {recentStations.map((station, index) => {
+                  const focusIdx = recentStart + index;
+                  return (
+                    <div
+                      key={`recent-${station._id}-${index}`}
+                      className={`relative bg-[rgba(255,255,255,0.14)] h-[220px] overflow-clip rounded-[11px] w-[180px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors flex-shrink-0 ${getFocusClasses(isFocused(focusIdx))}`}
+                      data-testid={`card-recent-station-${station._id}`}
+                      data-focus-idx={focusIdx}
+                      onClick={() => {
+                        setNavigationState(location, focusIdx);
+                        playStation(station);
+                        setLocation(`/radio-playing?station=${station._id}`);
+                      }}
+                    >
+                      <div className="absolute bg-white left-[30px] overflow-clip rounded-[6.6px] w-[120px] h-[120px] top-[20px]">
+                        <img
+                          alt={station.name}
+                          className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
+                          src={getStationImage(station)}
+                          loading="lazy"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                          }}
+                        />
+                      </div>
+                      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[90px] not-italic text-[18px] text-center text-white top-[152px] translate-x-[-50%] truncate px-2 max-w-[160px]">
+                        {station.name}
+                      </p>
+                      <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[90px] not-italic text-[14px] text-center text-white top-[178px] translate-x-[-50%] truncate px-2 max-w-[160px]">
+                        {getStationCategory(station)}
+                      </p>
+                      <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* For You Section */}
+        {forYouStations.length > 0 && (
+          <div data-testid="section-for-you" style={{ position: 'absolute', top: `${recentOffset}px`, left: 0, right: 0 }}>
+            <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
+              {t('for_you') || 'For You'}
+            </p>
+            <div 
+              ref={forYouScrollRef}
+              className="absolute left-[74px] top-[50px] w-[1580px] overflow-x-auto overflow-y-visible scrollbar-hide scroll-smooth"
+            >
+              <div className="flex py-[10px] px-[10px]" style={{ gap: '16px' }}>
+                {forYouStations.map((station, index) => {
+                  const focusIdx = forYouStart + index;
+                  return (
+                    <div
+                      key={`foryou-${station._id}-${index}`}
+                      className={`relative bg-[rgba(255,255,255,0.14)] h-[220px] overflow-clip rounded-[11px] w-[180px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors flex-shrink-0 ${getFocusClasses(isFocused(focusIdx))}`}
+                      data-testid={`card-foryou-station-${station._id}`}
+                      data-focus-idx={focusIdx}
+                      onClick={() => {
+                        setNavigationState(location, focusIdx);
+                        playStation(station);
+                        setLocation(`/radio-playing?station=${station._id}`);
+                      }}
+                    >
+                      <div className="absolute bg-white left-[30px] overflow-clip rounded-[6.6px] w-[120px] h-[120px] top-[20px]">
+                        <img
+                          alt={station.name}
+                          className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
+                          src={getStationImage(station)}
+                          loading="lazy"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                          }}
+                        />
+                      </div>
+                      <p className="absolute font-['Ubuntu',Helvetica] font-medium leading-normal left-[90px] not-italic text-[18px] text-center text-white top-[152px] translate-x-[-50%] truncate px-2 max-w-[160px]">
+                        {station.name}
+                      </p>
+                      <p className="absolute font-['Ubuntu',Helvetica] font-light leading-normal left-[90px] not-italic text-[14px] text-center text-white top-[178px] translate-x-[-50%] truncate px-2 max-w-[160px]">
+                        {getStationCategory(station)}
+                      </p>
+                      <div className="absolute inset-0 pointer-events-none shadow-[inset_1.1px_1.1px_12.1px_0px_rgba(255,255,255,0.12)]" />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Popular Genres Section */}
-        <div data-testid="section-genres">
+        <div data-testid="section-genres" style={{ position: 'absolute', top: `${recentOffset + forYouOffset}px`, left: 0, right: 0 }}>
         <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-0">
           {selectedCountryCode === 'GLOBAL' 
             ? `${t('popular_genres')} (Global)` 
@@ -862,7 +1169,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         </div>
 
         {/* Popular Radios Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[223px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white" style={{ top: `${223 + recentOffset + forYouOffset}px` }}>
           {selectedCountryCode === 'GLOBAL' 
             ? `${t('homepage_popular_stations')} (Global)` 
             : t('homepage_popular_stations')}
@@ -876,7 +1183,7 @@ export const DiscoverNoUser = (): JSX.Element => {
             <div
               key={`skeleton-pop-${index}`}
               className="absolute bg-[rgba(255,255,255,0.08)] h-[264px] rounded-[11px] w-[200px] animate-pulse"
-              style={{ left: `${stationRow1Positions[col] - 162}px`, top: `${297 + row * 294}px` }}
+              style={{ left: `${stationRow1Positions[col] - 162}px`, top: `${297 + recentOffset + forYouOffset + row * 294}px` }}
             >
               <div className="absolute bg-[rgba(255,255,255,0.1)] left-[34px] rounded-[6.6px] w-[132px] h-[132px] top-[34px]" />
               <div className="absolute bg-[rgba(255,255,255,0.1)] left-[16px] right-[16px] h-[14px] rounded top-[186px]" />
@@ -890,7 +1197,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           <div
             key={`skeleton-country-${index}`}
             className="absolute bg-[rgba(255,255,255,0.08)] h-[264px] rounded-[11px] w-[200px] animate-pulse"
-            style={{ left: `${stationRow1Positions[index] - 162}px`, top: '1013px' }}
+            style={{ left: `${stationRow1Positions[index] - 162}px`, top: `${1013 + recentOffset + forYouOffset}px` }}
           >
             <div className="absolute bg-[rgba(255,255,255,0.1)] left-[34px] rounded-[6.6px] w-[132px] h-[132px] top-[34px]" />
             <div className="absolute bg-[rgba(255,255,255,0.1)] left-[16px] right-[16px] h-[14px] rounded top-[186px]" />
@@ -911,8 +1218,8 @@ export const DiscoverNoUser = (): JSX.Element => {
               }}
             >
               <div 
-                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[297px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
-                style={{ left: `${stationRow1Positions[index] - 162}px` }}
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                style={{ left: `${stationRow1Positions[index] - 162}px`, top: `${297 + recentOffset + forYouOffset}px` }}
                 data-testid={`card-station-${station._id}`}
                 data-focus-idx={focusIdx}
               >
@@ -952,8 +1259,8 @@ export const DiscoverNoUser = (): JSX.Element => {
               }}
             >
               <div 
-                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] top-[591px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
-                style={{ left: `${stationRow2Positions[index] - 162}px` }}
+                className={`absolute bg-[rgba(255,255,255,0.14)] h-[264px] overflow-clip rounded-[11px] w-[200px] cursor-pointer hover:bg-[rgba(255,255,255,0.2)] transition-colors ${getFocusClasses(isFocused(focusIdx))}`}
+                style={{ left: `${stationRow2Positions[index] - 162}px`, top: `${591 + recentOffset + forYouOffset}px` }}
                 data-testid={`card-station-${station._id}`}
                 data-focus-idx={focusIdx}
               >
@@ -981,7 +1288,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         })}
 
         {/* More From [Country] Section */}
-        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white top-[939px]">
+        <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[74px] not-italic text-[32px] text-white" style={{ top: `${939 + recentOffset + forYouOffset}px` }}>
           {t('more_from')} {selectedCountry}
         </p>
 
@@ -989,7 +1296,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         {isLoadingMore && displayedStations.length > 0 && (
           <div 
             className="absolute left-[236px] w-[1580px] h-[80px] flex items-center justify-center gap-4"
-            style={{ top: `${1013 + (Math.ceil(displayedStations.length / 7) * 294)}px` }}
+            style={{ top: `${1013 + recentOffset + forYouOffset + (Math.ceil(displayedStations.length / 7) * 294)}px` }}
           >
             <div className="animate-spin rounded-full h-10 w-10 border-t-3 border-b-3 border-[#ff4199]"></div>
           </div>
@@ -1000,7 +1307,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           const row = Math.floor(index / 7);
           const col = index % 7;
           const positions = [236, 466, 696, 926, 1156, 1386, 1616];
-          const topPosition = 1013 + (row * 294);
+          const topPosition = 1013 + recentOffset + forYouOffset + (row * 294);
           const focusIdx = countryStationsStart + index;
           
           return (
