@@ -91,6 +91,16 @@ const LANGUAGE_OPTIONS: LanguageOption[] = [
 const getFlagUrl = (countryCode: string) =>
   `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
 
+type SettingsCategory = 'language' | 'keyboard' | 'playback' | 'timer' | 'accessibility';
+
+const CATEGORY_ICONS: Record<SettingsCategory, string> = {
+  language: '🌍',
+  keyboard: '⌨️',
+  playback: '▶️',
+  timer: '⏰',
+  accessibility: '♿',
+};
+
 export const Settings = (): JSX.Element => {
   const { t, language, setLanguage } = useLocalization();
   const { sleepTimerMinutes, remainingSeconds, setSleepTimer, cancelSleepTimer, isTimerActive } = useSleepTimer();
@@ -98,18 +108,15 @@ export const Settings = (): JSX.Element => {
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("none");
   const [selectedKeyboard, setSelectedKeyboard] = useState(0);
   const { highContrast, largeText, setHighContrast, setLargeText } = useAccessibility();
-  const [focusSection, setFocusSection] = useState<'sidebar' | 'keyboard' | 'language' | 'playAtStart' | 'sleepTimer' | 'accessibility'>('language');
-  const [sidebarIndex, setSidebarIndex] = useState(4);
-  const [playAtStartIndex, setPlayAtStartIndex] = useState(0);
-  const [sleepTimerIndex, setSleepTimerIndex] = useState(0);
-  const [keyboardIndex, setKeyboardIndex] = useState(0);
-  const [languageIndex, setLanguageIndex] = useState(0);
-  const [accessibilityIndex, setAccessibilityIndex] = useState(0);
-  const langListRef = useRef<HTMLDivElement>(null);
-  const kbListRef = useRef<HTMLDivElement>(null);
 
-  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
-  const [keyboardDropdownOpen, setKeyboardDropdownOpen] = useState(false);
+  const [focusSection, setFocusSection] = useState<'sidebar' | 'categories' | 'options'>('categories');
+  const [sidebarIndex, setSidebarIndex] = useState(4);
+  const [categoryIndex, setCategoryIndex] = useState(0);
+  const [optionIndex, setOptionIndex] = useState(0);
+
+  const optionListRef = useRef<HTMLDivElement>(null);
+
+  const categories: SettingsCategory[] = ['language', 'keyboard', 'playback', 'timer', 'accessibility'];
 
   const sleepTimerOptions: (number | null)[] = [15, 30, 60, 120, null];
   const sleepTimerLabels: Record<string, string> = {
@@ -132,6 +139,27 @@ export const Settings = (): JSX.Element => {
   const isFocused = (idx: number) => focusSection === 'sidebar' && sidebarIndex === idx;
   const getFocusClasses = (focused: boolean) => focused ? 'ring-2 ring-[#ff4199] scale-105' : '';
 
+  const getCategoryLabel = (cat: SettingsCategory): string => {
+    switch (cat) {
+      case 'language': return t('select_language') || 'Language';
+      case 'keyboard': return t('select_keyboard') || 'Keyboard';
+      case 'playback': return t('settings_play_at_start') || 'Playback';
+      case 'timer': return t('sleep_timer') || 'Sleep Timer';
+      case 'accessibility': return t('accessibility') || 'Accessibility';
+    }
+  };
+
+  const getOptionCount = (): number => {
+    switch (categories[categoryIndex]) {
+      case 'language': return LANGUAGE_OPTIONS.length;
+      case 'keyboard': return KEYBOARD_OPTIONS.length;
+      case 'playback': return settingsOptions.length;
+      case 'timer': return sleepTimerOptions.length;
+      case 'accessibility': return 2;
+      default: return 0;
+    }
+  };
+
   useEffect(() => {
     const saved = localStorage.getItem("playAtStart");
     if (saved && settingsOptions.includes(saved as PlayAtStartMode)) {
@@ -142,36 +170,22 @@ export const Settings = (): JSX.Element => {
       const idx = KEYBOARD_OPTIONS.findIndex(k => k.id === savedKb);
       if (idx >= 0) {
         setSelectedKeyboard(idx);
-        setKeyboardIndex(idx);
       }
-    }
-    const langIdx = LANGUAGE_OPTIONS.findIndex(l => l.code === language);
-    if (langIdx >= 0) {
-      setLanguageIndex(langIdx);
     }
   }, []);
 
   useEffect(() => {
-    if (languageDropdownOpen && langListRef.current) {
-      const container = langListRef.current;
-      const itemHeight = 56;
-      const itemTop = languageIndex * itemHeight;
-      const itemBottom = itemTop + itemHeight;
-      const scrollTop = container.scrollTop;
-      const viewHeight = container.clientHeight;
-      if (itemTop < scrollTop) {
-        container.scrollTop = itemTop;
-      } else if (itemBottom > scrollTop + viewHeight) {
-        container.scrollTop = itemBottom - viewHeight;
-      }
+    setOptionIndex(0);
+    if (optionListRef.current) {
+      optionListRef.current.scrollTop = 0;
     }
-  }, [languageIndex, languageDropdownOpen]);
+  }, [categoryIndex]);
 
   useEffect(() => {
-    if (keyboardDropdownOpen && kbListRef.current) {
-      const container = kbListRef.current;
-      const itemHeight = 56;
-      const itemTop = keyboardIndex * itemHeight;
+    if (focusSection === 'options' && optionListRef.current) {
+      const container = optionListRef.current;
+      const itemHeight = 72;
+      const itemTop = optionIndex * itemHeight;
       const itemBottom = itemTop + itemHeight;
       const scrollTop = container.scrollTop;
       const viewHeight = container.clientHeight;
@@ -181,7 +195,7 @@ export const Settings = (): JSX.Element => {
         container.scrollTop = itemBottom - viewHeight;
       }
     }
-  }, [keyboardIndex, keyboardDropdownOpen]);
+  }, [optionIndex, focusSection]);
 
   const handlePlayAtStartChange = (mode: PlayAtStartMode) => {
     setPlayAtStart(mode);
@@ -197,6 +211,31 @@ export const Settings = (): JSX.Element => {
     setLanguage(LANGUAGE_OPTIONS[index].code);
   };
 
+  const handleOptionSelect = () => {
+    const cat = categories[categoryIndex];
+    switch (cat) {
+      case 'language':
+        handleLanguageChange(optionIndex);
+        break;
+      case 'keyboard':
+        handleKeyboardChange(optionIndex);
+        break;
+      case 'playback':
+        handlePlayAtStartChange(settingsOptions[optionIndex]);
+        break;
+      case 'timer': {
+        const opt = sleepTimerOptions[optionIndex];
+        if (opt === null) cancelSleepTimer();
+        else setSleepTimer(opt);
+        break;
+      }
+      case 'accessibility':
+        if (optionIndex === 0) setHighContrast(!highContrast);
+        else setLargeText(!largeText);
+        break;
+    }
+  };
+
   usePageKeyHandler('/settings', (e) => {
     const key = (window as any).tvKey;
     const isUp = e.keyCode === key?.UP || e.keyCode === 38;
@@ -206,183 +245,40 @@ export const Settings = (): JSX.Element => {
     const isEnter = e.keyCode === key?.ENTER || e.keyCode === 13;
     const isReturn = e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009;
 
-    if (languageDropdownOpen) {
-      if (isUp) {
-        e.preventDefault();
-        if (languageIndex > 0) setLanguageIndex(prev => prev - 1);
-      } else if (isDown) {
-        e.preventDefault();
-        if (languageIndex < LANGUAGE_OPTIONS.length - 1) setLanguageIndex(prev => prev + 1);
-      } else if (isEnter) {
-        e.preventDefault();
-        handleLanguageChange(languageIndex);
-        setLanguageDropdownOpen(false);
-      } else if (isReturn || isLeft) {
-        e.preventDefault();
-        setLanguageDropdownOpen(false);
-      }
-      return;
-    }
-
-    if (keyboardDropdownOpen) {
-      if (isUp) {
-        e.preventDefault();
-        if (keyboardIndex > 0) setKeyboardIndex(prev => prev - 1);
-      } else if (isDown) {
-        e.preventDefault();
-        if (keyboardIndex < KEYBOARD_OPTIONS.length - 1) setKeyboardIndex(prev => prev + 1);
-      } else if (isEnter) {
-        e.preventDefault();
-        handleKeyboardChange(keyboardIndex);
-        setKeyboardDropdownOpen(false);
-      } else if (isReturn || isLeft) {
-        e.preventDefault();
-        setKeyboardDropdownOpen(false);
-      }
-      return;
-    }
-
     if (isReturn) {
       e.preventDefault();
-      setLocation('/discover-no-user');
+      if (focusSection === 'options') {
+        setFocusSection('categories');
+      } else if (focusSection === 'categories') {
+        setFocusSection('sidebar');
+      } else {
+        setLocation('/discover-no-user');
+      }
       return;
     }
 
     if (focusSection === 'sidebar') {
-      if (isUp) {
-        e.preventDefault();
-        setSidebarIndex(prev => Math.max(0, prev - 1));
-      } else if (isDown) {
-        e.preventDefault();
-        setSidebarIndex(prev => Math.min(5, prev + 1));
-      } else if (isRight) {
-        e.preventDefault();
-        setFocusSection('language');
-      } else if (isEnter) {
-        e.preventDefault();
-        setLocation(sidebarRoutes[sidebarIndex]);
-      }
+      if (isUp) { e.preventDefault(); setSidebarIndex(prev => Math.max(0, prev - 1)); }
+      else if (isDown) { e.preventDefault(); setSidebarIndex(prev => Math.min(5, prev + 1)); }
+      else if (isRight) { e.preventDefault(); setFocusSection('categories'); }
+      else if (isEnter) { e.preventDefault(); setLocation(sidebarRoutes[sidebarIndex]); }
       return;
     }
 
-    if (focusSection === 'language') {
-      if (isUp) {
-        e.preventDefault();
-      } else if (isDown) {
-        e.preventDefault();
-        setFocusSection('sleepTimer');
-      } else if (isLeft) {
-        e.preventDefault();
-        setFocusSection('sidebar');
-      } else if (isRight) {
-        e.preventDefault();
-        setFocusSection('keyboard');
-      } else if (isEnter) {
-        e.preventDefault();
-        setLanguageDropdownOpen(true);
-      }
+    if (focusSection === 'categories') {
+      if (isUp) { e.preventDefault(); setCategoryIndex(prev => Math.max(0, prev - 1)); }
+      else if (isDown) { e.preventDefault(); setCategoryIndex(prev => Math.min(categories.length - 1, prev + 1)); }
+      else if (isLeft) { e.preventDefault(); setFocusSection('sidebar'); }
+      else if (isRight || isEnter) { e.preventDefault(); setFocusSection('options'); setOptionIndex(0); }
       return;
     }
 
-    if (focusSection === 'keyboard') {
-      if (isUp) {
-        e.preventDefault();
-      } else if (isDown) {
-        e.preventDefault();
-        setFocusSection('accessibility');
-      } else if (isLeft) {
-        e.preventDefault();
-        setFocusSection('language');
-      } else if (isRight) {
-        e.preventDefault();
-        setFocusSection('playAtStart');
-      } else if (isEnter) {
-        e.preventDefault();
-        setKeyboardDropdownOpen(true);
-      }
-      return;
-    }
-
-    if (focusSection === 'playAtStart') {
-      if (isUp) {
-        e.preventDefault();
-        if (playAtStartIndex > 0) setPlayAtStartIndex(prev => prev - 1);
-      } else if (isDown) {
-        e.preventDefault();
-        if (playAtStartIndex < settingsOptions.length - 1) {
-          setPlayAtStartIndex(prev => prev + 1);
-        } else {
-          setFocusSection('accessibility');
-        }
-      } else if (isLeft) {
-        e.preventDefault();
-        setFocusSection('keyboard');
-      } else if (isRight) {
-        e.preventDefault();
-      } else if (isEnter) {
-        e.preventDefault();
-        handlePlayAtStartChange(settingsOptions[playAtStartIndex]);
-      }
-      return;
-    }
-
-    if (focusSection === 'sleepTimer') {
-      if (isUp) {
-        e.preventDefault();
-        if (sleepTimerIndex > 0) {
-          setSleepTimerIndex(prev => prev - 1);
-        } else {
-          setFocusSection('language');
-        }
-      } else if (isDown) {
-        e.preventDefault();
-        if (sleepTimerIndex < sleepTimerOptions.length - 1) {
-          setSleepTimerIndex(prev => prev + 1);
-        }
-      } else if (isLeft) {
-        e.preventDefault();
-        setFocusSection('sidebar');
-      } else if (isRight) {
-        e.preventDefault();
-        setFocusSection('accessibility');
-      } else if (isEnter) {
-        e.preventDefault();
-        const selectedOption = sleepTimerOptions[sleepTimerIndex];
-        if (selectedOption === null) {
-          cancelSleepTimer();
-        } else {
-          setSleepTimer(selectedOption);
-        }
-      }
-      return;
-    }
-
-    if (focusSection === 'accessibility') {
-      if (isUp) {
-        e.preventDefault();
-        if (accessibilityIndex > 0) {
-          setAccessibilityIndex(prev => prev - 1);
-        } else {
-          setFocusSection('keyboard');
-        }
-      } else if (isDown) {
-        e.preventDefault();
-        if (accessibilityIndex < 1) {
-          setAccessibilityIndex(prev => prev + 1);
-        }
-      } else if (isLeft) {
-        e.preventDefault();
-        setFocusSection('sleepTimer');
-      } else if (isRight) {
-        e.preventDefault();
-      } else if (isEnter) {
-        e.preventDefault();
-        if (accessibilityIndex === 0) {
-          setHighContrast(!highContrast);
-        } else {
-          setLargeText(!largeText);
-        }
-      }
+    if (focusSection === 'options') {
+      const maxIdx = getOptionCount() - 1;
+      if (isUp) { e.preventDefault(); if (optionIndex > 0) setOptionIndex(prev => prev - 1); }
+      else if (isDown) { e.preventDefault(); if (optionIndex < maxIdx) setOptionIndex(prev => prev + 1); }
+      else if (isLeft) { e.preventDefault(); setFocusSection('categories'); }
+      else if (isEnter) { e.preventDefault(); handleOptionSelect(); }
       return;
     }
   });
@@ -397,20 +293,207 @@ export const Settings = (): JSX.Element => {
   const selectedLang = LANGUAGE_OPTIONS.find(l => l.code === language) || LANGUAGE_OPTIONS[0];
   const selectedKb = KEYBOARD_OPTIONS[selectedKeyboard];
 
-  const cardBase = "bg-[rgba(255,255,255,0.06)] rounded-[20px] p-[28px] transition-all duration-150";
-  const cardFocused = "border-[2px] border-[rgba(255,65,153,0.3)]";
-  const cardUnfocused = "border-[2px] border-transparent";
+  const renderCategoryDescription = (): string => {
+    const cat = categories[categoryIndex];
+    switch (cat) {
+      case 'language': return selectedLang.label;
+      case 'keyboard': return selectedKb.label;
+      case 'playback': return playAtStartLabels[playAtStart];
+      case 'timer': return isTimerActive && remainingSeconds !== null
+        ? `${sleepTimerLabels[String(sleepTimerMinutes)]} (${formatRemainingTime(remainingSeconds)})`
+        : sleepTimerMinutes !== null ? sleepTimerLabels[String(sleepTimerMinutes)] : (t('sleep_timer_off') || 'Off');
+      case 'accessibility': {
+        const active: string[] = [];
+        if (highContrast) active.push(t('high_contrast') || 'High Contrast');
+        if (largeText) active.push(t('large_text') || 'Large Text');
+        return active.length > 0 ? active.join(', ') : (t('settings_none') || 'None');
+      }
+      default: return '';
+    }
+  };
+
+  const renderOptions = () => {
+    const cat = categories[categoryIndex];
+    const isFocusedOnOptions = focusSection === 'options';
+
+    switch (cat) {
+      case 'language':
+        return LANGUAGE_OPTIONS.map((lang, index) => {
+          const isItemFocused = isFocusedOnOptions && optionIndex === index;
+          const isSelected = language === lang.code;
+          return (
+            <div
+              key={lang.code}
+              className={`flex items-center gap-[20px] h-[68px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
+                isItemFocused
+                  ? 'bg-[#ff4199]'
+                  : isSelected
+                    ? 'bg-[rgba(255,65,153,0.12)]'
+                    : 'bg-transparent'
+              }`}
+              style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.3)' } : undefined}
+              onClick={() => { handleLanguageChange(index); }}
+              data-testid={`language-${lang.code}`}
+            >
+              <img src={getFlagUrl(lang.country)} alt={lang.label} className="w-[40px] h-[28px] rounded-[4px] object-cover flex-shrink-0" style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.3)' }} />
+              <p className={`font-['Ubuntu',Helvetica] font-medium text-[22px] text-white flex-1 truncate`}>
+                {lang.label}
+              </p>
+              {isSelected && (
+                <div className="w-[28px] h-[28px] rounded-full bg-[#ff4199] flex items-center justify-center flex-shrink-0">
+                  <span className="text-white text-[16px]">✓</span>
+                </div>
+              )}
+            </div>
+          );
+        });
+
+      case 'keyboard':
+        return KEYBOARD_OPTIONS.map((kb, index) => {
+          const isItemFocused = isFocusedOnOptions && optionIndex === index;
+          const isSelected = selectedKeyboard === index;
+          return (
+            <div
+              key={kb.id}
+              className={`flex items-center gap-[20px] h-[68px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
+                isItemFocused
+                  ? 'bg-[#ff4199]'
+                  : isSelected
+                    ? 'bg-[rgba(255,65,153,0.12)]'
+                    : 'bg-transparent'
+              }`}
+              style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.3)' } : undefined}
+              onClick={() => { handleKeyboardChange(index); }}
+              data-testid={`keyboard-${kb.id}`}
+            >
+              <img src={getFlagUrl(kb.country)} alt={kb.label} className="w-[40px] h-[28px] rounded-[4px] object-cover flex-shrink-0" style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.3)' }} />
+              <p className={`font-['Ubuntu',Helvetica] font-medium text-[22px] text-white flex-1 truncate`}>
+                {kb.label}
+              </p>
+              {isSelected && (
+                <div className="w-[28px] h-[28px] rounded-full bg-[#ff4199] flex items-center justify-center flex-shrink-0">
+                  <span className="text-white text-[16px]">✓</span>
+                </div>
+              )}
+            </div>
+          );
+        });
+
+      case 'playback':
+        return settingsOptions.map((option, index) => {
+          const isItemFocused = isFocusedOnOptions && optionIndex === index;
+          const isSelected = playAtStart === option;
+          return (
+            <div
+              key={option}
+              className={`flex items-center gap-[20px] h-[68px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
+                isItemFocused
+                  ? 'bg-[#ff4199]'
+                  : isSelected
+                    ? 'bg-[rgba(255,65,153,0.12)]'
+                    : 'bg-transparent'
+              }`}
+              style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.3)' } : undefined}
+              onClick={() => handlePlayAtStartChange(option)}
+              data-testid={`option-${option}`}
+            >
+              <div className={`w-[28px] h-[28px] rounded-full border-[3px] flex items-center justify-center flex-shrink-0 ${
+                isSelected ? 'border-[#ff4199]' : 'border-[rgba(255,255,255,0.3)]'
+              }`}>
+                {isSelected && <div className="w-[14px] h-[14px] rounded-full bg-[#ff4199]" />}
+              </div>
+              <p className={`font-['Ubuntu',Helvetica] font-medium text-[22px] text-white flex-1 truncate`}>
+                {playAtStartLabels[option]}
+              </p>
+            </div>
+          );
+        });
+
+      case 'timer':
+        return (
+          <>
+            {isTimerActive && remainingSeconds !== null && (
+              <div className="flex items-center gap-[12px] h-[56px] px-[24px] mb-[8px] rounded-[14px] bg-[rgba(255,65,153,0.1)] border border-[rgba(255,65,153,0.25)] flex-shrink-0" data-testid="sleep-timer-remaining">
+                <span className="text-[20px]">💤</span>
+                <p className="font-['Ubuntu',Helvetica] font-bold text-[20px] text-[#ff4199]">
+                  {formatRemainingTime(remainingSeconds)}
+                </p>
+              </div>
+            )}
+            {sleepTimerOptions.map((option, index) => {
+              const isItemFocused = isFocusedOnOptions && optionIndex === index;
+              const optionKey = option === null ? 'null' : String(option);
+              const isSelected = option === null ? sleepTimerMinutes === null : sleepTimerMinutes === option;
+              return (
+                <div
+                  key={optionKey}
+                  className={`flex items-center gap-[20px] h-[68px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
+                    isItemFocused
+                      ? 'bg-[#ff4199]'
+                      : isSelected
+                        ? 'bg-[rgba(255,65,153,0.12)]'
+                        : 'bg-transparent'
+                  }`}
+                  style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.3)' } : undefined}
+                  onClick={() => { option === null ? cancelSleepTimer() : setSleepTimer(option); }}
+                  data-testid={`sleep-timer-${optionKey}`}
+                >
+                  <div className={`w-[28px] h-[28px] rounded-full border-[3px] flex items-center justify-center flex-shrink-0 ${
+                    isSelected ? 'border-[#ff4199]' : 'border-[rgba(255,255,255,0.3)]'
+                  }`}>
+                    {isSelected && <div className="w-[14px] h-[14px] rounded-full bg-[#ff4199]" />}
+                  </div>
+                  <p className={`font-['Ubuntu',Helvetica] font-medium text-[22px] text-white flex-1 truncate`}>
+                    {sleepTimerLabels[optionKey]}
+                  </p>
+                </div>
+              );
+            })}
+          </>
+        );
+
+      case 'accessibility':
+        return [
+          { label: t('high_contrast') || 'High Contrast', value: highContrast, toggle: () => setHighContrast(!highContrast), testId: 'toggle-high-contrast', desc: t('high_contrast_desc') || 'Increases text and element visibility' },
+          { label: t('large_text') || 'Large Text', value: largeText, toggle: () => setLargeText(!largeText), testId: 'toggle-large-text', desc: t('large_text_desc') || 'Makes all text 15% larger' },
+        ].map((item, index) => {
+          const isItemFocused = isFocusedOnOptions && optionIndex === index;
+          return (
+            <div
+              key={item.testId}
+              className={`flex items-center gap-[20px] h-[88px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
+                isItemFocused ? 'bg-[rgba(255,65,153,0.15)]' : 'bg-transparent'
+              }`}
+              style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.15)' } : undefined}
+              onClick={item.toggle}
+              data-testid={item.testId}
+            >
+              <div className="flex flex-col flex-1 min-w-0">
+                <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-white truncate">
+                  {item.label}
+                </p>
+                <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-[rgba(255,255,255,0.45)] truncate">
+                  {item.desc}
+                </p>
+              </div>
+              <div className={`w-[60px] h-[34px] rounded-full transition-colors duration-200 flex-shrink-0 relative ${
+                item.value ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.15)]'
+              }`}>
+                <div className={`absolute top-[4px] w-[26px] h-[26px] rounded-full bg-white transition-all duration-200 ${
+                  item.value ? 'left-[30px]' : 'left-[4px]'
+                }`} style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.3)' }} />
+              </div>
+            </div>
+          );
+        });
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-settings">
-      <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
-        <img
-          alt=""
-          className="absolute inset-0 max-w-none object-center object-cover pointer-events-none w-full h-full"
-          src={assetPath("images/hand-crowd-disco-1.png")}
-        />
-      </div>
-
       <div className="absolute bg-[#0e0e0e] h-[1080px] left-0 top-0 w-[1920px]" />
 
       <div className="absolute h-[57px] left-[31px] top-[64px] w-[164.421px] z-50">
@@ -428,292 +511,90 @@ export const Settings = (): JSX.Element => {
         {t('settings') || 'Settings'}
       </p>
 
-      <div className="absolute left-[236px] top-[140px] w-[1650px] h-[900px] z-10">
-        <div className="flex gap-[24px]" style={{ marginBottom: '24px' }}>
-          {/* Card 1: Select Language */}
-          <div
-            className={`${cardBase} ${focusSection === 'language' && !languageDropdownOpen ? cardFocused : cardUnfocused} relative`}
-            style={{ width: '520px', height: '380px' }}
-          >
-            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
-              {t('select_language') || 'Select Language'}
-            </p>
-            <div
-              className={`flex items-center gap-[16px] bg-[rgba(255,255,255,0.08)] rounded-[14px] px-[20px] h-[64px] cursor-pointer transition-all duration-150 ${
-                focusSection === 'language' && !languageDropdownOpen ? 'bg-[#ff4199] scale-[1.02]' : ''
-              }`}
-              onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
-              data-testid="dropdown-language"
-            >
-              <img src={getFlagUrl(selectedLang.country)} alt={selectedLang.label} className="w-[36px] h-[26px] rounded-[3px] object-cover flex-shrink-0" />
-              <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white truncate">
-                {selectedLang.label}
-              </p>
-              <span className="ml-auto text-white text-[18px]">{languageDropdownOpen ? '▲' : '▼'}</span>
-            </div>
+      <div className="absolute left-[236px] top-[140px] w-[1650px] h-[900px] z-10 flex gap-0">
 
-            {languageDropdownOpen && (
-              <div
-                ref={langListRef}
-                className="absolute z-50 bg-[#1a1a1a] border-[2px] border-[rgba(255,65,153,0.3)] rounded-[16px] p-[8px] max-h-[500px] overflow-y-auto"
-                style={{ left: '28px', right: '28px', top: '120px', scrollbarWidth: 'none' }}
-              >
-                {LANGUAGE_OPTIONS.map((lang, index) => {
-                  const isItemFocused = languageIndex === index;
-                  const isSelected = language === lang.code;
-                  return (
-                    <div
-                      key={lang.code}
-                      className={`flex items-center gap-[16px] h-[56px] px-[16px] rounded-[10px] cursor-pointer transition-all duration-100 ${
-                        isItemFocused
-                          ? 'bg-[#ff4199]'
-                          : isSelected
-                            ? 'bg-[rgba(255,65,153,0.15)]'
-                            : 'hover:bg-[rgba(255,255,255,0.08)]'
-                      }`}
-                      onClick={() => {
-                        handleLanguageChange(index);
-                        setLanguageDropdownOpen(false);
-                      }}
-                      data-testid={`language-${lang.code}`}
-                    >
-                      <img src={getFlagUrl(lang.country)} alt={lang.label} className="w-[32px] h-[22px] rounded-[3px] object-cover flex-shrink-0" />
-                      <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white truncate">
-                        {lang.label}
-                      </p>
-                      {isSelected && !isItemFocused && (
-                        <span className="ml-auto font-['Ubuntu',Helvetica] text-[16px] text-[#ff4199] flex-shrink-0">✓</span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Card 2: Select Keyboard */}
-          <div
-            className={`${cardBase} ${focusSection === 'keyboard' && !keyboardDropdownOpen ? cardFocused : cardUnfocused} relative`}
-            style={{ width: '520px', height: '380px' }}
-          >
-            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
-              {t('select_keyboard') || 'Select Keyboard'}
-            </p>
-            <div
-              className={`flex items-center gap-[16px] bg-[rgba(255,255,255,0.08)] rounded-[14px] px-[20px] h-[64px] cursor-pointer transition-all duration-150 ${
-                focusSection === 'keyboard' && !keyboardDropdownOpen ? 'bg-[#ff4199] scale-[1.02]' : ''
-              }`}
-              onClick={() => setKeyboardDropdownOpen(!keyboardDropdownOpen)}
-              data-testid="dropdown-keyboard"
-            >
-              <img src={getFlagUrl(selectedKb.country)} alt={selectedKb.label} className="w-[36px] h-[26px] rounded-[3px] object-cover flex-shrink-0" />
-              <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white truncate">
-                {selectedKb.label}
-              </p>
-              <span className="ml-auto text-white text-[18px]">{keyboardDropdownOpen ? '▲' : '▼'}</span>
-            </div>
-
-            {keyboardDropdownOpen && (
-              <div
-                ref={kbListRef}
-                className="absolute z-50 bg-[#1a1a1a] border-[2px] border-[rgba(255,65,153,0.3)] rounded-[16px] p-[8px] max-h-[500px] overflow-y-auto"
-                style={{ left: '28px', right: '28px', top: '120px', scrollbarWidth: 'none' }}
-              >
-                {KEYBOARD_OPTIONS.map((kb, index) => {
-                  const isItemFocused = keyboardIndex === index;
-                  const isSelected = selectedKeyboard === index;
-                  return (
-                    <div
-                      key={kb.id}
-                      className={`flex items-center gap-[16px] h-[56px] px-[16px] rounded-[10px] cursor-pointer transition-all duration-100 ${
-                        isItemFocused
-                          ? 'bg-[#ff4199]'
-                          : isSelected
-                            ? 'bg-[rgba(255,65,153,0.15)]'
-                            : 'hover:bg-[rgba(255,255,255,0.08)]'
-                      }`}
-                      onClick={() => {
-                        handleKeyboardChange(index);
-                        setKeyboardDropdownOpen(false);
-                      }}
-                      data-testid={`keyboard-${kb.id}`}
-                    >
-                      <img src={getFlagUrl(kb.country)} alt={kb.label} className="w-[32px] h-[22px] rounded-[3px] object-cover flex-shrink-0" />
-                      <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white truncate">
-                        {kb.label}
-                      </p>
-                      {isSelected && !isItemFocused && (
-                        <span className="ml-auto font-['Ubuntu',Helvetica] text-[16px] text-[#ff4199] flex-shrink-0">✓</span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Card 3: Play at Start */}
-          <div
-            className={`${cardBase} ${focusSection === 'playAtStart' ? cardFocused : cardUnfocused}`}
-            style={{ width: '520px', height: '380px' }}
-          >
-            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
-              {t('settings_play_at_start') || 'Play at Start'}
-            </p>
-            <div className="flex flex-col gap-[8px]">
-              {settingsOptions.map((option, index) => {
-                const isItemFocused = focusSection === 'playAtStart' && playAtStartIndex === index;
-                const isSelected = playAtStart === option;
-                return (
-                  <div
-                    key={option}
-                    className={`flex items-center gap-[16px] px-[20px] rounded-[12px] transition-all duration-150 cursor-pointer h-[64px] ${
-                      isItemFocused
-                        ? 'bg-[#ff4199]'
-                        : isSelected
-                          ? 'bg-[rgba(255,65,153,0.15)]'
-                          : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
-                    }`}
-                    onClick={() => handlePlayAtStartChange(option)}
-                    data-testid={`option-${option}`}
-                  >
-                    <div className="border-[#ff4199] border-[3px] border-solid rounded-full w-[28px] h-[28px] flex items-center justify-center flex-shrink-0">
-                      {isSelected && (
-                        <div className="bg-[#ff4199] rounded-full w-[16px] h-[16px]" />
-                      )}
-                    </div>
-                    <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[20px] text-white' : 'text-[18px] text-white'}`}>
-                      {playAtStartLabels[option]}
+        <div className="flex-shrink-0" style={{ width: '420px' }}>
+          <div className="flex flex-col gap-[4px] pr-[24px]">
+            {categories.map((cat, index) => {
+              const isCatFocused = focusSection === 'categories' && categoryIndex === index;
+              const isActive = categoryIndex === index;
+              return (
+                <div
+                  key={cat}
+                  className={`flex items-center gap-[20px] h-[80px] px-[24px] rounded-[16px] cursor-pointer transition-all duration-200 ${
+                    isCatFocused
+                      ? 'bg-[#ff4199]'
+                      : isActive
+                        ? 'bg-[rgba(255,255,255,0.08)]'
+                        : 'bg-transparent'
+                  }`}
+                  style={isCatFocused ? { boxShadow: '0 0 30px rgba(255,65,153,0.25)' } : undefined}
+                  onClick={() => { setCategoryIndex(index); setFocusSection('options'); setOptionIndex(0); }}
+                  data-testid={`category-${cat}`}
+                >
+                  <span className="text-[28px] flex-shrink-0 w-[40px] text-center">{CATEGORY_ICONS[cat]}</span>
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <p className={`font-['Ubuntu',Helvetica] font-semibold text-[22px] truncate ${
+                      isCatFocused ? 'text-white' : isActive ? 'text-white' : 'text-[rgba(255,255,255,0.7)]'
+                    }`}>
+                      {getCategoryLabel(cat)}
                     </p>
-                    {isSelected && !isItemFocused && (
-                      <span className="ml-auto font-['Ubuntu',Helvetica] text-[16px] text-[#ff4199] flex-shrink-0">✓</span>
+                    {!isCatFocused && (
+                      <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-[rgba(255,255,255,0.35)] truncate">
+                        {cat === 'language' ? selectedLang.label
+                          : cat === 'keyboard' ? selectedKb.label
+                          : cat === 'playback' ? playAtStartLabels[playAtStart]
+                          : cat === 'timer' ? (sleepTimerMinutes !== null ? sleepTimerLabels[String(sleepTimerMinutes)] : (t('sleep_timer_off') || 'Off'))
+                          : cat === 'accessibility' ? (highContrast || largeText ? (
+                              [highContrast && (t('high_contrast') || 'High Contrast'), largeText && (t('large_text') || 'Large Text')].filter(Boolean).join(', ')
+                            ) : (t('settings_none') || 'None'))
+                          : ''
+                        }
+                      </p>
                     )}
                   </div>
-                );
-              })}
+                  {isActive && !isCatFocused && (
+                    <div className="w-[4px] h-[40px] rounded-full bg-[#ff4199] flex-shrink-0" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-[40px] px-[24px] pt-[24px] border-t border-[rgba(255,255,255,0.06)]">
+            <div className="flex items-center gap-[16px]">
+              <img alt="" className="w-[36px] h-[36px]" src={assetPath("images/path-8.svg")} />
+              <div>
+                <p className="font-['Ubuntu',Helvetica] font-bold text-[18px] text-white">
+                  <span className="font-bold">mega</span><span className="font-light">radio</span>
+                </p>
+                <p className="font-['Ubuntu',Helvetica] font-normal text-[14px] text-[rgba(255,255,255,0.3)]" data-testid="text-app-version">
+                  Version 3.0
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="flex gap-[24px]">
-          {/* Card 4: Sleep Timer */}
-          <div
-            className={`${cardBase} ${focusSection === 'sleepTimer' ? cardFocused : cardUnfocused}`}
-            style={{ width: '520px', height: '380px' }}
-          >
-            <div className="flex items-center gap-[16px] mb-[20px]">
-              <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white">
-                {t('sleep_timer') || 'Sleep Timer'}
-              </p>
-              {isTimerActive && remainingSeconds !== null && (
-                <div className="px-[12px] py-[4px] rounded-[8px] bg-[rgba(255,65,153,0.15)] border border-[#ff4199]" data-testid="sleep-timer-remaining">
-                  <p className="font-['Ubuntu',Helvetica] font-bold text-[16px] text-[#ff4199]">
-                    💤 {formatRemainingTime(remainingSeconds)}
-                  </p>
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col gap-[8px]">
-              {sleepTimerOptions.map((option, index) => {
-                const isItemFocused = focusSection === 'sleepTimer' && sleepTimerIndex === index;
-                const isSelected = option === null ? sleepTimerMinutes === null : sleepTimerMinutes === option;
-                const optionKey = option === null ? 'null' : String(option);
-                return (
-                  <div
-                    key={optionKey}
-                    className={`flex items-center gap-[16px] px-[20px] rounded-[12px] transition-all duration-150 cursor-pointer h-[64px] ${
-                      isItemFocused
-                        ? 'bg-[#ff4199]'
-                        : isSelected
-                          ? 'bg-[rgba(255,65,153,0.15)]'
-                          : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
-                    }`}
-                    onClick={() => {
-                      if (option === null) {
-                        cancelSleepTimer();
-                      } else {
-                        setSleepTimer(option);
-                      }
-                    }}
-                    data-testid={`sleep-timer-${optionKey}`}
-                  >
-                    <div className="border-[#ff4199] border-[3px] border-solid rounded-full w-[28px] h-[28px] flex items-center justify-center flex-shrink-0">
-                      {isSelected && (
-                        <div className="bg-[#ff4199] rounded-full w-[16px] h-[16px]" />
-                      )}
-                    </div>
-                    <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[20px] text-white' : 'text-[18px] text-white'}`}>
-                      {sleepTimerLabels[optionKey]}
-                    </p>
-                    {isSelected && !isItemFocused && (
-                      <span className="ml-auto font-['Ubuntu',Helvetica] text-[16px] text-[#ff4199] flex-shrink-0">✓</span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+        <div className="w-[1px] bg-[rgba(255,255,255,0.06)] flex-shrink-0 mx-[8px]" />
+
+        <div className="flex-1 min-w-0 pl-[32px]">
+          <div className="flex items-center gap-[16px] mb-[24px] h-[48px]">
+            <p className="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white">
+              {getCategoryLabel(categories[categoryIndex])}
+            </p>
+            <div className="h-[1px] flex-1 bg-[rgba(255,255,255,0.06)]" />
+            <p className="font-['Ubuntu',Helvetica] font-normal text-[18px] text-[rgba(255,255,255,0.35)] flex-shrink-0">
+              {renderCategoryDescription()}
+            </p>
           </div>
 
-          {/* Card 5: Accessibility */}
           <div
-            className={`${cardBase} ${focusSection === 'accessibility' ? cardFocused : cardUnfocused}`}
-            style={{ width: '520px', height: '380px' }}
+            ref={optionListRef}
+            className="flex flex-col gap-[4px] overflow-y-auto pr-[16px]"
+            style={{ height: '800px', scrollbarWidth: 'none' }}
           >
-            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
-              {t('accessibility') || 'Accessibility'}
-            </p>
-            <div className="flex flex-col gap-[8px]">
-              {[
-                { label: t('high_contrast') || 'High Contrast', value: highContrast, toggle: () => setHighContrast(!highContrast), testId: 'toggle-high-contrast' },
-                { label: t('large_text') || 'Large Text', value: largeText, toggle: () => setLargeText(!largeText), testId: 'toggle-large-text' },
-              ].map((item, index) => {
-                const isItemFocused = focusSection === 'accessibility' && accessibilityIndex === index;
-                return (
-                  <div
-                    key={item.testId}
-                    className={`flex items-center justify-between px-[20px] rounded-[12px] transition-all duration-150 cursor-pointer h-[64px] ${
-                      isItemFocused
-                        ? 'bg-[#ff4199]'
-                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
-                    }`}
-                    onClick={item.toggle}
-                    data-testid={item.testId}
-                  >
-                    <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[20px] text-white' : 'text-[18px] text-white'}`}>
-                      {item.label}
-                    </p>
-                    <div className={`w-[56px] h-[32px] rounded-full transition-colors ${item.value ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.2)]'}`}>
-                      <div className={`w-[26px] h-[26px] rounded-full bg-white transition-transform mt-[3px] ${item.value ? 'ml-[27px]' : 'ml-[3px]'}`} />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Card 6: About */}
-          <div
-            className={`${cardBase} ${cardUnfocused}`}
-            style={{ width: '520px', height: '380px' }}
-            data-testid="card-about"
-          >
-            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
-              {t('about') || 'About'}
-            </p>
-            <div className="flex flex-col items-center justify-center h-[260px] gap-[16px]">
-              <div className="flex items-center gap-[12px]">
-                <img alt="" className="w-[40px] h-[40px]" src={assetPath("images/path-8.svg")} />
-                <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white">
-                  <span className="font-bold">Radio</span> Mega
-                </p>
-              </div>
-              <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-[rgba(255,255,255,0.5)]" data-testid="text-app-version">
-                Version 3.0
-              </p>
-              <p className="font-['Ubuntu',Helvetica] font-normal text-[18px] text-[rgba(255,255,255,0.4)] italic">
-                Listen freely
-              </p>
-            </div>
+            {renderOptions()}
           </div>
         </div>
       </div>
