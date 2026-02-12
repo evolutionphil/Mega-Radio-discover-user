@@ -98,7 +98,7 @@ export const Settings = (): JSX.Element => {
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("none");
   const [selectedKeyboard, setSelectedKeyboard] = useState(0);
   const { highContrast, largeText, setHighContrast, setLargeText } = useAccessibility();
-  const [focusSection, setFocusSection] = useState<'sidebar' | 'keyboard' | 'language' | 'playAtStart' | 'sleepTimer' | 'accessibility'>('keyboard');
+  const [focusSection, setFocusSection] = useState<'sidebar' | 'keyboard' | 'language' | 'playAtStart' | 'sleepTimer' | 'accessibility'>('language');
   const [sidebarIndex, setSidebarIndex] = useState(4);
   const [playAtStartIndex, setPlayAtStartIndex] = useState(0);
   const [sleepTimerIndex, setSleepTimerIndex] = useState(0);
@@ -106,6 +106,10 @@ export const Settings = (): JSX.Element => {
   const [languageIndex, setLanguageIndex] = useState(0);
   const [accessibilityIndex, setAccessibilityIndex] = useState(0);
   const langListRef = useRef<HTMLDivElement>(null);
+  const kbListRef = useRef<HTMLDivElement>(null);
+
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
+  const [keyboardDropdownOpen, setKeyboardDropdownOpen] = useState(false);
 
   const sleepTimerOptions: (number | null)[] = [15, 30, 60, 120, null];
   const sleepTimerLabels: Record<string, string> = {
@@ -148,21 +152,36 @@ export const Settings = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (focusSection === 'language' && langListRef.current) {
+    if (languageDropdownOpen && langListRef.current) {
       const container = langListRef.current;
-      const itemHeight = 72;
+      const itemHeight = 56;
       const itemTop = languageIndex * itemHeight;
       const itemBottom = itemTop + itemHeight;
       const scrollTop = container.scrollTop;
       const viewHeight = container.clientHeight;
-
       if (itemTop < scrollTop) {
         container.scrollTop = itemTop;
       } else if (itemBottom > scrollTop + viewHeight) {
         container.scrollTop = itemBottom - viewHeight;
       }
     }
-  }, [languageIndex, focusSection]);
+  }, [languageIndex, languageDropdownOpen]);
+
+  useEffect(() => {
+    if (keyboardDropdownOpen && kbListRef.current) {
+      const container = kbListRef.current;
+      const itemHeight = 56;
+      const itemTop = keyboardIndex * itemHeight;
+      const itemBottom = itemTop + itemHeight;
+      const scrollTop = container.scrollTop;
+      const viewHeight = container.clientHeight;
+      if (itemTop < scrollTop) {
+        container.scrollTop = itemTop;
+      } else if (itemBottom > scrollTop + viewHeight) {
+        container.scrollTop = itemBottom - viewHeight;
+      }
+    }
+  }, [keyboardIndex, keyboardDropdownOpen]);
 
   const handlePlayAtStartChange = (mode: PlayAtStartMode) => {
     setPlayAtStart(mode);
@@ -187,6 +206,42 @@ export const Settings = (): JSX.Element => {
     const isEnter = e.keyCode === key?.ENTER || e.keyCode === 13;
     const isReturn = e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009;
 
+    if (languageDropdownOpen) {
+      if (isUp) {
+        e.preventDefault();
+        if (languageIndex > 0) setLanguageIndex(prev => prev - 1);
+      } else if (isDown) {
+        e.preventDefault();
+        if (languageIndex < LANGUAGE_OPTIONS.length - 1) setLanguageIndex(prev => prev + 1);
+      } else if (isEnter) {
+        e.preventDefault();
+        handleLanguageChange(languageIndex);
+        setLanguageDropdownOpen(false);
+      } else if (isReturn || isLeft) {
+        e.preventDefault();
+        setLanguageDropdownOpen(false);
+      }
+      return;
+    }
+
+    if (keyboardDropdownOpen) {
+      if (isUp) {
+        e.preventDefault();
+        if (keyboardIndex > 0) setKeyboardIndex(prev => prev - 1);
+      } else if (isDown) {
+        e.preventDefault();
+        if (keyboardIndex < KEYBOARD_OPTIONS.length - 1) setKeyboardIndex(prev => prev + 1);
+      } else if (isEnter) {
+        e.preventDefault();
+        handleKeyboardChange(keyboardIndex);
+        setKeyboardDropdownOpen(false);
+      } else if (isReturn || isLeft) {
+        e.preventDefault();
+        setKeyboardDropdownOpen(false);
+      }
+      return;
+    }
+
     if (isReturn) {
       e.preventDefault();
       setLocation('/discover-no-user');
@@ -202,7 +257,7 @@ export const Settings = (): JSX.Element => {
         setSidebarIndex(prev => Math.min(5, prev + 1));
       } else if (isRight) {
         e.preventDefault();
-        setFocusSection('keyboard');
+        setFocusSection('language');
       } else if (isEnter) {
         e.preventDefault();
         setLocation(sidebarRoutes[sidebarIndex]);
@@ -210,62 +265,40 @@ export const Settings = (): JSX.Element => {
       return;
     }
 
-    if (focusSection === 'keyboard') {
-      const row = Math.floor(keyboardIndex / 4);
-      const col = keyboardIndex % 4;
-      const maxIdx = KEYBOARD_OPTIONS.length - 1;
+    if (focusSection === 'language') {
       if (isUp) {
         e.preventDefault();
-        if (row > 0) {
-          setKeyboardIndex(Math.max(0, keyboardIndex - 4));
-        }
       } else if (isDown) {
         e.preventDefault();
-        const newIdx = keyboardIndex + 4;
-        if (newIdx <= maxIdx) {
-          setKeyboardIndex(newIdx);
-        }
+        setFocusSection('sleepTimer');
       } else if (isLeft) {
         e.preventDefault();
-        if (col > 0) {
-          setKeyboardIndex(keyboardIndex - 1);
-        } else {
-          setFocusSection('sidebar');
-        }
+        setFocusSection('sidebar');
       } else if (isRight) {
         e.preventDefault();
-        if (col < 3 && keyboardIndex + 1 <= maxIdx) {
-          setKeyboardIndex(keyboardIndex + 1);
-        } else {
-          setFocusSection('language');
-        }
+        setFocusSection('keyboard');
       } else if (isEnter) {
         e.preventDefault();
-        handleKeyboardChange(keyboardIndex);
+        setLanguageDropdownOpen(true);
       }
       return;
     }
 
-    if (focusSection === 'language') {
+    if (focusSection === 'keyboard') {
       if (isUp) {
         e.preventDefault();
-        if (languageIndex > 0) {
-          setLanguageIndex(prev => prev - 1);
-        }
       } else if (isDown) {
         e.preventDefault();
-        if (languageIndex < LANGUAGE_OPTIONS.length - 1) {
-          setLanguageIndex(prev => prev + 1);
-        }
+        setFocusSection('accessibility');
       } else if (isLeft) {
         e.preventDefault();
-        setFocusSection('keyboard');
+        setFocusSection('language');
       } else if (isRight) {
         e.preventDefault();
         setFocusSection('playAtStart');
       } else if (isEnter) {
         e.preventDefault();
-        handleLanguageChange(languageIndex);
+        setKeyboardDropdownOpen(true);
       }
       return;
     }
@@ -273,20 +306,19 @@ export const Settings = (): JSX.Element => {
     if (focusSection === 'playAtStart') {
       if (isUp) {
         e.preventDefault();
-        if (playAtStartIndex > 0) {
-          setPlayAtStartIndex(prev => prev - 1);
-        }
+        if (playAtStartIndex > 0) setPlayAtStartIndex(prev => prev - 1);
       } else if (isDown) {
         e.preventDefault();
         if (playAtStartIndex < settingsOptions.length - 1) {
           setPlayAtStartIndex(prev => prev + 1);
+        } else {
+          setFocusSection('accessibility');
         }
       } else if (isLeft) {
         e.preventDefault();
-        setFocusSection('language');
+        setFocusSection('keyboard');
       } else if (isRight) {
         e.preventDefault();
-        setFocusSection('sleepTimer');
       } else if (isEnter) {
         e.preventDefault();
         handlePlayAtStartChange(settingsOptions[playAtStartIndex]);
@@ -299,6 +331,8 @@ export const Settings = (): JSX.Element => {
         e.preventDefault();
         if (sleepTimerIndex > 0) {
           setSleepTimerIndex(prev => prev - 1);
+        } else {
+          setFocusSection('language');
         }
       } else if (isDown) {
         e.preventDefault();
@@ -307,7 +341,7 @@ export const Settings = (): JSX.Element => {
         }
       } else if (isLeft) {
         e.preventDefault();
-        setFocusSection('playAtStart');
+        setFocusSection('sidebar');
       } else if (isRight) {
         e.preventDefault();
         setFocusSection('accessibility');
@@ -328,6 +362,8 @@ export const Settings = (): JSX.Element => {
         e.preventDefault();
         if (accessibilityIndex > 0) {
           setAccessibilityIndex(prev => prev - 1);
+        } else {
+          setFocusSection('keyboard');
         }
       } else if (isDown) {
         e.preventDefault();
@@ -358,6 +394,13 @@ export const Settings = (): JSX.Element => {
     "none": t('settings_none') || 'None',
   };
 
+  const selectedLang = LANGUAGE_OPTIONS.find(l => l.code === language) || LANGUAGE_OPTIONS[0];
+  const selectedKb = KEYBOARD_OPTIONS[selectedKeyboard];
+
+  const cardBase = "bg-[rgba(255,255,255,0.06)] rounded-[20px] p-[28px] transition-all duration-150";
+  const cardFocused = "border-[2px] border-[rgba(255,65,153,0.3)]";
+  const cardUnfocused = "border-[2px] border-transparent";
+
   return (
     <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-settings">
       <div className="absolute h-[1292px] left-[-10px] top-[-523px] w-[1939px]">
@@ -381,234 +424,296 @@ export const Settings = (): JSX.Element => {
 
       <Sidebar activePage="settings" isFocused={isFocused} getFocusClasses={getFocusClasses} />
 
-      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[36px] text-white top-[64px] z-10">
+      <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[36px] text-white top-[64px] z-10" data-testid="text-settings-title">
         {t('settings') || 'Settings'}
       </p>
 
-      <div
-        className="absolute left-[236px] top-[140px] w-[1650px] h-[900px] overflow-hidden z-10 flex gap-[40px]"
-      >
-        {/* Keyboard Selection Section - LEFT */}
-        <div className="flex-shrink-0" style={{ width: '580px' }}>
-          <p className="font-['Ubuntu',Helvetica] font-bold text-[26px] text-white mb-[16px]">
-            {t('select_keyboard') || 'Select Keyboard'}
-          </p>
-          <div className="flex flex-wrap gap-[10px]" style={{ width: '580px' }}>
-            {KEYBOARD_OPTIONS.map((kb, index) => {
-              const isItemFocused = focusSection === 'keyboard' && keyboardIndex === index;
-              const isSelected = selectedKeyboard === index;
-              return (
-                <div
-                  key={kb.id}
-                  className={`flex flex-col items-center justify-center w-[135px] h-[100px] rounded-[12px] transition-all duration-150 cursor-pointer ${
-                    isItemFocused
-                      ? 'bg-[#ff4199] scale-105'
-                      : isSelected
-                        ? 'bg-[rgba(255,65,153,0.2)] border-[2px] border-[#ff4199]'
-                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)] border-[2px] border-transparent'
-                  }`}
-                  style={{
-                    boxShadow: isItemFocused
-                      ? '0 0 20px rgba(255,65,153,0.5)'
-                      : isSelected
-                        ? 'inset 1px 1px 8px rgba(255,65,153,0.15)'
-                        : 'inset 1.1px 1.1px 12.1px 0px rgba(255,255,255,0.12)',
-                  }}
-                  onClick={() => handleKeyboardChange(index)}
-                  data-testid={`keyboard-${kb.id}`}
-                >
-                  <img src={getFlagUrl(kb.country)} alt={kb.label} className="w-[36px] h-[26px] rounded-[3px] object-cover mb-[2px]" />
-                  <p className={`font-['Ubuntu',Helvetica] font-medium text-center text-white truncate w-full px-[6px] ${isItemFocused ? 'text-[18px]' : 'text-[16px]'}`}>
-                    {kb.label}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Language Selection Section - CENTER */}
-        <div className="flex-shrink-0" style={{ width: '460px' }}>
-          <p className="font-['Ubuntu',Helvetica] font-bold text-[26px] text-white mb-[16px]">
-            {t('select_language') || 'Select Language'}
-          </p>
+      <div className="absolute left-[236px] top-[140px] w-[1650px] h-[900px] z-10">
+        <div className="flex gap-[24px]" style={{ marginBottom: '24px' }}>
+          {/* Card 1: Select Language */}
           <div
-            ref={langListRef}
-            className="flex flex-col gap-[4px] overflow-y-auto"
-            style={{ height: '840px', scrollbarWidth: 'none' }}
+            className={`${cardBase} ${focusSection === 'language' && !languageDropdownOpen ? cardFocused : cardUnfocused} relative`}
+            style={{ width: '520px', height: '380px' }}
           >
-            {LANGUAGE_OPTIONS.map((lang, index) => {
-              const isItemFocused = focusSection === 'language' && languageIndex === index;
-              const isSelected = language === lang.code;
-              return (
-                <div
-                  key={lang.code}
-                  className={`flex items-center gap-[16px] px-[20px] rounded-[12px] transition-all duration-150 cursor-pointer h-[68px] flex-shrink-0 ${
-                    isItemFocused
-                      ? 'bg-[#ff4199]'
-                      : isSelected
-                        ? 'bg-[rgba(255,65,153,0.15)]'
-                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
-                  }`}
-                  style={{
-                    boxShadow: isItemFocused
-                      ? '0 0 20px rgba(255,65,153,0.35), inset 1px 1px 8px rgba(255,255,255,0.1)'
-                      : 'none',
-                  }}
-                  onClick={() => handleLanguageChange(index)}
-                  data-testid={`language-${lang.code}`}
-                >
-                  <img src={getFlagUrl(lang.country)} alt={lang.label} className="w-[36px] h-[26px] rounded-[3px] object-cover flex-shrink-0" />
-                  <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[24px] text-white' : 'text-[22px] text-white'}`}>
-                    {lang.label}
-                  </p>
-                  {isSelected && !isItemFocused && (
-                    <span className="ml-auto font-['Ubuntu',Helvetica] text-[18px] text-[#ff4199] flex-shrink-0">✓</span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
+              {t('select_language') || 'Select Language'}
+            </p>
+            <div
+              className={`flex items-center gap-[16px] bg-[rgba(255,255,255,0.08)] rounded-[14px] px-[20px] h-[64px] cursor-pointer transition-all duration-150 ${
+                focusSection === 'language' && !languageDropdownOpen ? 'bg-[#ff4199] scale-[1.02]' : ''
+              }`}
+              onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
+              data-testid="dropdown-language"
+            >
+              <img src={getFlagUrl(selectedLang.country)} alt={selectedLang.label} className="w-[36px] h-[26px] rounded-[3px] object-cover flex-shrink-0" />
+              <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white truncate">
+                {selectedLang.label}
+              </p>
+              <span className="ml-auto text-white text-[18px]">{languageDropdownOpen ? '▲' : '▼'}</span>
+            </div>
 
-        {/* Play at Start Section */}
-        <div className="flex-shrink-0" style={{ width: '340px' }}>
-          <p className="font-['Ubuntu',Helvetica] font-bold text-[26px] text-white mb-[16px]">
-            {t('settings_play_at_start') || 'Play at Start'}
-          </p>
-          <div className="flex flex-col gap-[8px]">
-            {settingsOptions.map((option, index) => {
-              const isItemFocused = focusSection === 'playAtStart' && playAtStartIndex === index;
-              const isSelected = playAtStart === option;
-              return (
-                <div
-                  key={option}
-                  className={`flex items-center gap-[20px] px-[24px] rounded-[12px] transition-all duration-150 cursor-pointer h-[82px] ${
-                    isItemFocused
-                      ? 'bg-[#ff4199]'
-                      : isSelected
-                        ? 'bg-[rgba(255,65,153,0.15)]'
-                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
-                  }`}
-                  style={{
-                    boxShadow: isItemFocused
-                      ? '0 0 20px rgba(255,65,153,0.35), inset 1px 1px 8px rgba(255,255,255,0.1)'
-                      : 'none',
-                  }}
-                  onClick={() => handlePlayAtStartChange(option)}
-                  data-testid={`option-${option}`}
-                >
-                  <div className="border-[#ff4199] border-[3px] border-solid rounded-full w-[32px] h-[32px] flex items-center justify-center flex-shrink-0">
-                    {isSelected && (
-                      <div className="bg-[#ff4199] rounded-full w-[18px] h-[18px]" />
+            {languageDropdownOpen && (
+              <div
+                ref={langListRef}
+                className="absolute z-50 bg-[#1a1a1a] border-[2px] border-[rgba(255,65,153,0.3)] rounded-[16px] p-[8px] max-h-[500px] overflow-y-auto"
+                style={{ left: '28px', right: '28px', top: '120px', scrollbarWidth: 'none' }}
+              >
+                {LANGUAGE_OPTIONS.map((lang, index) => {
+                  const isItemFocused = languageIndex === index;
+                  const isSelected = language === lang.code;
+                  return (
+                    <div
+                      key={lang.code}
+                      className={`flex items-center gap-[16px] h-[56px] px-[16px] rounded-[10px] cursor-pointer transition-all duration-100 ${
+                        isItemFocused
+                          ? 'bg-[#ff4199]'
+                          : isSelected
+                            ? 'bg-[rgba(255,65,153,0.15)]'
+                            : 'hover:bg-[rgba(255,255,255,0.08)]'
+                      }`}
+                      onClick={() => {
+                        handleLanguageChange(index);
+                        setLanguageDropdownOpen(false);
+                      }}
+                      data-testid={`language-${lang.code}`}
+                    >
+                      <img src={getFlagUrl(lang.country)} alt={lang.label} className="w-[32px] h-[22px] rounded-[3px] object-cover flex-shrink-0" />
+                      <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white truncate">
+                        {lang.label}
+                      </p>
+                      {isSelected && !isItemFocused && (
+                        <span className="ml-auto font-['Ubuntu',Helvetica] text-[16px] text-[#ff4199] flex-shrink-0">✓</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Card 2: Select Keyboard */}
+          <div
+            className={`${cardBase} ${focusSection === 'keyboard' && !keyboardDropdownOpen ? cardFocused : cardUnfocused} relative`}
+            style={{ width: '520px', height: '380px' }}
+          >
+            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
+              {t('select_keyboard') || 'Select Keyboard'}
+            </p>
+            <div
+              className={`flex items-center gap-[16px] bg-[rgba(255,255,255,0.08)] rounded-[14px] px-[20px] h-[64px] cursor-pointer transition-all duration-150 ${
+                focusSection === 'keyboard' && !keyboardDropdownOpen ? 'bg-[#ff4199] scale-[1.02]' : ''
+              }`}
+              onClick={() => setKeyboardDropdownOpen(!keyboardDropdownOpen)}
+              data-testid="dropdown-keyboard"
+            >
+              <img src={getFlagUrl(selectedKb.country)} alt={selectedKb.label} className="w-[36px] h-[26px] rounded-[3px] object-cover flex-shrink-0" />
+              <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-white truncate">
+                {selectedKb.label}
+              </p>
+              <span className="ml-auto text-white text-[18px]">{keyboardDropdownOpen ? '▲' : '▼'}</span>
+            </div>
+
+            {keyboardDropdownOpen && (
+              <div
+                ref={kbListRef}
+                className="absolute z-50 bg-[#1a1a1a] border-[2px] border-[rgba(255,65,153,0.3)] rounded-[16px] p-[8px] max-h-[500px] overflow-y-auto"
+                style={{ left: '28px', right: '28px', top: '120px', scrollbarWidth: 'none' }}
+              >
+                {KEYBOARD_OPTIONS.map((kb, index) => {
+                  const isItemFocused = keyboardIndex === index;
+                  const isSelected = selectedKeyboard === index;
+                  return (
+                    <div
+                      key={kb.id}
+                      className={`flex items-center gap-[16px] h-[56px] px-[16px] rounded-[10px] cursor-pointer transition-all duration-100 ${
+                        isItemFocused
+                          ? 'bg-[#ff4199]'
+                          : isSelected
+                            ? 'bg-[rgba(255,65,153,0.15)]'
+                            : 'hover:bg-[rgba(255,255,255,0.08)]'
+                      }`}
+                      onClick={() => {
+                        handleKeyboardChange(index);
+                        setKeyboardDropdownOpen(false);
+                      }}
+                      data-testid={`keyboard-${kb.id}`}
+                    >
+                      <img src={getFlagUrl(kb.country)} alt={kb.label} className="w-[32px] h-[22px] rounded-[3px] object-cover flex-shrink-0" />
+                      <p className="font-['Ubuntu',Helvetica] font-medium text-[18px] text-white truncate">
+                        {kb.label}
+                      </p>
+                      {isSelected && !isItemFocused && (
+                        <span className="ml-auto font-['Ubuntu',Helvetica] text-[16px] text-[#ff4199] flex-shrink-0">✓</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Card 3: Play at Start */}
+          <div
+            className={`${cardBase} ${focusSection === 'playAtStart' ? cardFocused : cardUnfocused}`}
+            style={{ width: '520px', height: '380px' }}
+          >
+            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
+              {t('settings_play_at_start') || 'Play at Start'}
+            </p>
+            <div className="flex flex-col gap-[8px]">
+              {settingsOptions.map((option, index) => {
+                const isItemFocused = focusSection === 'playAtStart' && playAtStartIndex === index;
+                const isSelected = playAtStart === option;
+                return (
+                  <div
+                    key={option}
+                    className={`flex items-center gap-[16px] px-[20px] rounded-[12px] transition-all duration-150 cursor-pointer h-[64px] ${
+                      isItemFocused
+                        ? 'bg-[#ff4199]'
+                        : isSelected
+                          ? 'bg-[rgba(255,65,153,0.15)]'
+                          : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
+                    }`}
+                    onClick={() => handlePlayAtStartChange(option)}
+                    data-testid={`option-${option}`}
+                  >
+                    <div className="border-[#ff4199] border-[3px] border-solid rounded-full w-[28px] h-[28px] flex items-center justify-center flex-shrink-0">
+                      {isSelected && (
+                        <div className="bg-[#ff4199] rounded-full w-[16px] h-[16px]" />
+                      )}
+                    </div>
+                    <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[20px] text-white' : 'text-[18px] text-white'}`}>
+                      {playAtStartLabels[option]}
+                    </p>
+                    {isSelected && !isItemFocused && (
+                      <span className="ml-auto font-['Ubuntu',Helvetica] text-[16px] text-[#ff4199] flex-shrink-0">✓</span>
                     )}
                   </div>
-                  <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[24px] text-white' : 'text-[22px] text-white'}`}>
-                    {playAtStartLabels[option]}
-                  </p>
-                  {isSelected && !isItemFocused && (
-                    <span className="ml-auto font-['Ubuntu',Helvetica] text-[18px] text-[#ff4199] flex-shrink-0">✓</span>
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Sleep Timer Section */}
-        <div className="flex-shrink-0" style={{ width: '340px' }}>
-          <p className="font-['Ubuntu',Helvetica] font-bold text-[26px] text-white mb-[16px]">
-            {t('sleep_timer') || 'Sleep Timer'}
-          </p>
-          {isTimerActive && remainingSeconds !== null && (
-            <div className="mb-[12px] px-[24px] py-[10px] rounded-[12px] bg-[rgba(255,65,153,0.15)] border-[2px] border-[#ff4199]" data-testid="sleep-timer-remaining">
-              <p className="font-['Ubuntu',Helvetica] font-bold text-[22px] text-[#ff4199]">
-                💤 {formatRemainingTime(remainingSeconds)}
+        <div className="flex gap-[24px]">
+          {/* Card 4: Sleep Timer */}
+          <div
+            className={`${cardBase} ${focusSection === 'sleepTimer' ? cardFocused : cardUnfocused}`}
+            style={{ width: '520px', height: '380px' }}
+          >
+            <div className="flex items-center gap-[16px] mb-[20px]">
+              <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white">
+                {t('sleep_timer') || 'Sleep Timer'}
+              </p>
+              {isTimerActive && remainingSeconds !== null && (
+                <div className="px-[12px] py-[4px] rounded-[8px] bg-[rgba(255,65,153,0.15)] border border-[#ff4199]" data-testid="sleep-timer-remaining">
+                  <p className="font-['Ubuntu',Helvetica] font-bold text-[16px] text-[#ff4199]">
+                    💤 {formatRemainingTime(remainingSeconds)}
+                  </p>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col gap-[8px]">
+              {sleepTimerOptions.map((option, index) => {
+                const isItemFocused = focusSection === 'sleepTimer' && sleepTimerIndex === index;
+                const isSelected = option === null ? sleepTimerMinutes === null : sleepTimerMinutes === option;
+                const optionKey = option === null ? 'null' : String(option);
+                return (
+                  <div
+                    key={optionKey}
+                    className={`flex items-center gap-[16px] px-[20px] rounded-[12px] transition-all duration-150 cursor-pointer h-[64px] ${
+                      isItemFocused
+                        ? 'bg-[#ff4199]'
+                        : isSelected
+                          ? 'bg-[rgba(255,65,153,0.15)]'
+                          : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
+                    }`}
+                    onClick={() => {
+                      if (option === null) {
+                        cancelSleepTimer();
+                      } else {
+                        setSleepTimer(option);
+                      }
+                    }}
+                    data-testid={`sleep-timer-${optionKey}`}
+                  >
+                    <div className="border-[#ff4199] border-[3px] border-solid rounded-full w-[28px] h-[28px] flex items-center justify-center flex-shrink-0">
+                      {isSelected && (
+                        <div className="bg-[#ff4199] rounded-full w-[16px] h-[16px]" />
+                      )}
+                    </div>
+                    <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[20px] text-white' : 'text-[18px] text-white'}`}>
+                      {sleepTimerLabels[optionKey]}
+                    </p>
+                    {isSelected && !isItemFocused && (
+                      <span className="ml-auto font-['Ubuntu',Helvetica] text-[16px] text-[#ff4199] flex-shrink-0">✓</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Card 5: Accessibility */}
+          <div
+            className={`${cardBase} ${focusSection === 'accessibility' ? cardFocused : cardUnfocused}`}
+            style={{ width: '520px', height: '380px' }}
+          >
+            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
+              {t('accessibility') || 'Accessibility'}
+            </p>
+            <div className="flex flex-col gap-[8px]">
+              {[
+                { label: t('high_contrast') || 'High Contrast', value: highContrast, toggle: () => setHighContrast(!highContrast), testId: 'toggle-high-contrast' },
+                { label: t('large_text') || 'Large Text', value: largeText, toggle: () => setLargeText(!largeText), testId: 'toggle-large-text' },
+              ].map((item, index) => {
+                const isItemFocused = focusSection === 'accessibility' && accessibilityIndex === index;
+                return (
+                  <div
+                    key={item.testId}
+                    className={`flex items-center justify-between px-[20px] rounded-[12px] transition-all duration-150 cursor-pointer h-[64px] ${
+                      isItemFocused
+                        ? 'bg-[#ff4199]'
+                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
+                    }`}
+                    onClick={item.toggle}
+                    data-testid={item.testId}
+                  >
+                    <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[20px] text-white' : 'text-[18px] text-white'}`}>
+                      {item.label}
+                    </p>
+                    <div className={`w-[56px] h-[32px] rounded-full transition-colors ${item.value ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.2)]'}`}>
+                      <div className={`w-[26px] h-[26px] rounded-full bg-white transition-transform mt-[3px] ${item.value ? 'ml-[27px]' : 'ml-[3px]'}`} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Card 6: About */}
+          <div
+            className={`${cardBase} ${cardUnfocused}`}
+            style={{ width: '520px', height: '380px' }}
+            data-testid="card-about"
+          >
+            <p className="font-['Ubuntu',Helvetica] font-bold text-[24px] text-white mb-[20px]">
+              {t('about') || 'About'}
+            </p>
+            <div className="flex flex-col items-center justify-center h-[260px] gap-[16px]">
+              <div className="flex items-center gap-[12px]">
+                <img alt="" className="w-[40px] h-[40px]" src={assetPath("images/path-8.svg")} />
+                <p className="font-['Ubuntu',Helvetica] font-bold text-[32px] text-white">
+                  <span className="font-bold">Radio</span> Mega
+                </p>
+              </div>
+              <p className="font-['Ubuntu',Helvetica] font-medium text-[20px] text-[rgba(255,255,255,0.5)]" data-testid="text-app-version">
+                Version 3.0
+              </p>
+              <p className="font-['Ubuntu',Helvetica] font-normal text-[18px] text-[rgba(255,255,255,0.4)] italic">
+                Listen freely
               </p>
             </div>
-          )}
-          <div className="flex flex-col gap-[8px]">
-            {sleepTimerOptions.map((option, index) => {
-              const isItemFocused = focusSection === 'sleepTimer' && sleepTimerIndex === index;
-              const isSelected = option === null ? sleepTimerMinutes === null : sleepTimerMinutes === option;
-              const optionKey = option === null ? 'null' : String(option);
-              return (
-                <div
-                  key={optionKey}
-                  className={`flex items-center gap-[20px] px-[24px] rounded-[12px] transition-all duration-150 cursor-pointer h-[82px] ${
-                    isItemFocused
-                      ? 'bg-[#ff4199]'
-                      : isSelected
-                        ? 'bg-[rgba(255,65,153,0.15)]'
-                        : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
-                  }`}
-                  style={{
-                    boxShadow: isItemFocused
-                      ? '0 0 20px rgba(255,65,153,0.35), inset 1px 1px 8px rgba(255,255,255,0.1)'
-                      : 'none',
-                  }}
-                  onClick={() => {
-                    if (option === null) {
-                      cancelSleepTimer();
-                    } else {
-                      setSleepTimer(option);
-                    }
-                  }}
-                  data-testid={`sleep-timer-${optionKey}`}
-                >
-                  <div className="border-[#ff4199] border-[3px] border-solid rounded-full w-[32px] h-[32px] flex items-center justify-center flex-shrink-0">
-                    {isSelected && (
-                      <div className="bg-[#ff4199] rounded-full w-[18px] h-[18px]" />
-                    )}
-                  </div>
-                  <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[24px] text-white' : 'text-[22px] text-white'}`}>
-                    {sleepTimerLabels[optionKey]}
-                  </p>
-                  {isSelected && !isItemFocused && (
-                    <span className="ml-auto font-['Ubuntu',Helvetica] text-[18px] text-[#ff4199] flex-shrink-0">✓</span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Accessibility Section - RIGHTMOST */}
-        <div className="flex-shrink-0" style={{ width: '340px' }}>
-          <p className="font-['Ubuntu',Helvetica] font-bold text-[26px] text-white mb-[16px]">
-            {t('accessibility') || 'Accessibility'}
-          </p>
-          <div className="flex flex-col gap-[8px]">
-            {[
-              { label: t('high_contrast') || 'High Contrast', value: highContrast, toggle: () => setHighContrast(!highContrast), testId: 'toggle-high-contrast' },
-              { label: t('large_text') || 'Large Text', value: largeText, toggle: () => setLargeText(!largeText), testId: 'toggle-large-text' },
-            ].map((item, index) => {
-              const isItemFocused = focusSection === 'accessibility' && accessibilityIndex === index;
-              return (
-                <div
-                  key={item.testId}
-                  className={`flex items-center justify-between px-[24px] rounded-[12px] transition-all duration-150 cursor-pointer h-[82px] ${
-                    isItemFocused
-                      ? 'bg-[#ff4199]'
-                      : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.08)]'
-                  }`}
-                  style={{
-                    boxShadow: isItemFocused
-                      ? '0 0 20px rgba(255,65,153,0.35), inset 1px 1px 8px rgba(255,255,255,0.1)'
-                      : 'none',
-                  }}
-                  onClick={item.toggle}
-                  data-testid={item.testId}
-                >
-                  <p className={`font-['Ubuntu',Helvetica] font-medium leading-normal not-italic truncate ${isItemFocused ? 'text-[24px] text-white' : 'text-[22px] text-white'}`}>
-                    {item.label}
-                  </p>
-                  <div className={`w-[56px] h-[32px] rounded-full transition-colors ${item.value ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.2)]'}`}>
-                    <div className={`w-[26px] h-[26px] rounded-full bg-white transition-transform mt-[3px] ${item.value ? 'ml-[27px]' : 'ml-[3px]'}`} />
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </div>
