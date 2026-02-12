@@ -216,7 +216,7 @@ export const GenreList = (): JSX.Element => {
 
   // Focus management with sidebar: 5 sidebar + stations
   // Sidebar: 0-4, Stations: 5+
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
   const stationsStart = 6;
   const totalItems = 6 + displayedStations.length;
 

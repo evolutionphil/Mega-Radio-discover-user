@@ -73,7 +73,7 @@ export const Genres = (): JSX.Element => {
 
   const totalItems = 6 + 1 + popularGenres.length + allGenres.length;
 
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
 
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
     const current = focusIndex;

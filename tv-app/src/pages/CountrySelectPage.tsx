@@ -6,13 +6,13 @@ import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { Sidebar } from "@/components/Sidebar";
 import { CountrySelector } from "@/components/CountrySelector";
 
-const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
 
 export const CountrySelectPage = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const { selectedCountry, setCountry } = useCountry();
   const [focusZone, setFocusZone] = useState<'sidebar' | 'content'>('content');
-  const [sidebarIndex, setSidebarIndex] = useState(5);
+  const [sidebarIndex, setSidebarIndex] = useState(4);
 
   const handleNavigateToSidebar = useCallback(() => {
     setFocusZone('sidebar');

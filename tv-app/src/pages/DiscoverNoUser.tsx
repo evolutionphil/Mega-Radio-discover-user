@@ -177,7 +177,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const totalItems = 5 + 1 + recentCount + forYouCount + genres.length + popularStations.length + displayedStations.length;
 
   // Define sidebar routes (NO PROFILE - 5 items: Discover, Genres, Search, Favorites, Settings)
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
 
   const scrollRecentIntoView = (recentIndex: number) => {
     if (!recentScrollRef.current) return;

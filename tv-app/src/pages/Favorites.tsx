@@ -13,7 +13,7 @@ export const Favorites = (): JSX.Element => {
   const [, setLocation] = useLocation();
   
   // Define sidebar routes (5 items)
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
   
   // Safely get favorites array with null checks
   const favoritesArray = Array.isArray(favorites) ? favorites : [];

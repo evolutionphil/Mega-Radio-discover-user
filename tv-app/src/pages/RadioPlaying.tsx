@@ -247,7 +247,7 @@ export const RadioPlaying = (): JSX.Element => {
   const totalItems = streamError ? Math.max(baseItems, 101) : baseItems;
 
   // Define sidebar routes (NO PROFILE - 5 items)
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
 
   // Custom navigation logic for multi-section layout
   const customHandleNavigation = (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {

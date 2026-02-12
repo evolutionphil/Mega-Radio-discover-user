@@ -110,7 +110,7 @@ export const Settings = (): JSX.Element => {
   const { highContrast, largeText, setHighContrast, setLargeText } = useAccessibility();
 
   const [focusSection, setFocusSection] = useState<'sidebar' | 'categories' | 'options'>('categories');
-  const [sidebarIndex, setSidebarIndex] = useState(4);
+  const [sidebarIndex, setSidebarIndex] = useState(5);
   const [categoryIndex, setCategoryIndex] = useState(0);
   const [optionIndex, setOptionIndex] = useState(0);
 
@@ -133,7 +133,7 @@ export const Settings = (): JSX.Element => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
   const settingsOptions: PlayAtStartMode[] = ["last-played", "random", "favorite", "none"];
 
   const isFocused = (idx: number) => focusSection === 'sidebar' && sidebarIndex === idx;

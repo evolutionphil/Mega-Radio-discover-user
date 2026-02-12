@@ -145,31 +145,10 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
         </div>
       </Link>
 
-      {/* Settings */}
-      <Link href="/settings">
-        <div 
-          className={`absolute left-0 overflow-hidden rounded-[10px] w-[120px] h-[100px] top-[432px] transition-colors ${getFocusClasses(isFocused(4))} ${getActiveClasses('settings')}`} 
-          data-testid="button-settings"
-        >
-          <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px]">
-            <div className="w-[28px] h-[28px] mb-[6px] flex-shrink-0">
-              <img
-                alt=""
-                className="block max-w-none w-full h-full"
-                src={assetPath("images/settings-icon.svg")}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
-              {t('nav_settings') || 'Settings'}
-            </p>
-          </div>
-        </div>
-      </Link>
-
       {/* Country */}
       <Link href="/country-select">
         <div 
-          className={`absolute left-0 overflow-hidden rounded-[10px] w-[120px] h-[100px] top-[540px] transition-colors ${getFocusClasses(isFocused(5))} ${getActiveClasses('country')}`} 
+          className={`absolute left-0 overflow-hidden rounded-[10px] w-[120px] h-[100px] top-[432px] transition-colors ${getFocusClasses(isFocused(4))} ${getActiveClasses('country')}`} 
           data-testid="button-country"
         >
           <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px]">
@@ -182,6 +161,27 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
             </div>
             <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
               {t('nav_country') || 'Country'}
+            </p>
+          </div>
+        </div>
+      </Link>
+
+      {/* Settings */}
+      <Link href="/settings">
+        <div 
+          className={`absolute left-0 overflow-hidden rounded-[10px] w-[120px] h-[100px] top-[540px] transition-colors ${getFocusClasses(isFocused(5))} ${getActiveClasses('settings')}`} 
+          data-testid="button-settings"
+        >
+          <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px]">
+            <div className="w-[28px] h-[28px] mb-[6px] flex-shrink-0">
+              <img
+                alt=""
+                className="block max-w-none w-full h-full"
+                src={assetPath("images/settings-icon.svg")}
+              />
+            </div>
+            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
+              {t('nav_settings') || 'Settings'}
             </p>
           </div>
         </div>

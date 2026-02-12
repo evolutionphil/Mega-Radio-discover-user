@@ -116,7 +116,7 @@ export const Search = (): JSX.Element => {
   const activeLayout = KEYBOARD_LAYOUTS[activeLayoutIndex];
   const KEYBOARD_ROWS = activeLayout.rows;
 
-  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/settings', '/country-select'];
+  const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
 
   const isFocused = (idx: number) => focusZone === 'sidebar' && sidebarIndex === idx;
   const getFocusClasses = (focused: boolean) => focused ? 'ring-2 ring-[#ff4199] scale-105' : '';
