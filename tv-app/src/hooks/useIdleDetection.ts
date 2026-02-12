@@ -1,61 +1,53 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface UseIdleDetectionOptions {
-  idleTime?: number; // milliseconds (default: 3 minutes)
+  idleTime?: number;
   onIdle?: () => void;
   onActive?: () => void;
 }
 
-/**
- * Hook to detect user inactivity
- * Monitors mouse, keyboard, and remote control events
- * Returns true when user has been idle for specified duration
- */
 export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
   const { 
-    idleTime = 3 * 60 * 1000, // Default: 3 minutes
+    idleTime = 3 * 60 * 1000,
     onIdle,
     onActive 
   } = options;
 
   const [isIdle, setIsIdle] = useState(false);
-  const [lastActivity, setLastActivity] = useState(Date.now());
+  const lastActivityRef = useRef(Date.now());
+  const isIdleRef = useRef(false);
+  const onIdleRef = useRef(onIdle);
+  const onActiveRef = useRef(onActive);
+  const idleTimeRef = useRef(idleTime);
+
+  onIdleRef.current = onIdle;
+  onActiveRef.current = onActive;
+  idleTimeRef.current = idleTime;
 
   const resetIdleTimer = useCallback(() => {
-    const now = Date.now();
-    setLastActivity(now);
+    lastActivityRef.current = Date.now();
     
-    if (isIdle) {
+    if (isIdleRef.current) {
+      isIdleRef.current = false;
       setIsIdle(false);
-      onActive?.();
+      onActiveRef.current?.();
     }
-  }, [isIdle, onActive]);
+  }, []);
 
   useEffect(() => {
-    // Events that indicate user activity
-    const events = [
-      'mousedown',
-      'mousemove',
-      'keydown',
-      'touchstart',
-      'click',
-      'scroll',
-      // TV remote control events
-      'keypress'
-    ];
+    const events = ['keydown', 'keypress', 'mousedown', 'touchstart', 'click'];
 
-    // Add event listeners (no passive option to allow preventDefault)
     events.forEach(event => {
       window.addEventListener(event, resetIdleTimer);
     });
 
-    // Check idle status every second
     const checkInterval = setInterval(() => {
-      const timeSinceLastActivity = Date.now() - lastActivity;
+      const elapsed = Date.now() - lastActivityRef.current;
       
-      if (timeSinceLastActivity >= idleTime && !isIdle) {
+      if (elapsed >= idleTimeRef.current && !isIdleRef.current) {
+        isIdleRef.current = true;
         setIsIdle(true);
-        onIdle?.();
+        onIdleRef.current?.();
       }
     }, 1000);
 
@@ -65,11 +57,11 @@ export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
       });
       clearInterval(checkInterval);
     };
-  }, [lastActivity, idleTime, isIdle, resetIdleTimer, onIdle]);
+  }, [resetIdleTimer]);
 
   return {
     isIdle,
-    lastActivity,
+    lastActivity: lastActivityRef.current,
     resetIdleTimer
   };
 }
