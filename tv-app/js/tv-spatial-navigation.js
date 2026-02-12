@@ -7,6 +7,7 @@
     window.tvSpatialNav = {
         focusedElement: null,
         focusableElements: [],
+        scrollEnabled: true,
         
         init: function() {
             this.updateFocusableElements();
@@ -79,12 +80,13 @@
             
             console.log('[TV Nav] Focused:', element.dataset.testid || (element.textContent && element.textContent.trim().substring(0, 20)) || element.tagName);
             
-            // Scroll into view
-            element.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'nearest',
-                inline: 'nearest'
-            });
+            if (this.scrollEnabled) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest',
+                    inline: 'nearest'
+                });
+            }
         },
         
         getElementCenter: function(el) {

@@ -158,36 +158,32 @@ export const GenreList = (): JSX.Element => {
     }
   };
 
-  // Scroll-based pagination trigger (when within 600px of bottom)
+  const loadMoreTimer = useRef<ReturnType<typeof setTimeout>>();
+
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
 
     const handleScroll = () => {
-      // Add null check for scrollContainerRef.current inside scroll handler
       if (!scrollContainerRef.current) return;
-
-      try {
-        const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
-        
-        // Validate all properties are valid numbers
-        if (typeof scrollTop !== 'number' || typeof scrollHeight !== 'number' || typeof clientHeight !== 'number') {
-          return;
-        }
-
-        const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
-        
-        // Trigger load when within 600px of bottom
-        if (distanceFromBottom < 600 && hasMore && !isLoadingMore) {
-          loadMore();
-        }
-      } catch (error) {
-        console.error('Error in scroll handler:', error);
-      }
+      clearTimeout(loadMoreTimer.current);
+      loadMoreTimer.current = setTimeout(() => {
+        if (!scrollContainerRef.current) return;
+        try {
+          const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+          const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+          if (distanceFromBottom < 600 && hasMore && !isLoadingMore) {
+            loadMore();
+          }
+        } catch (_) {}
+      }, 200);
     };
 
-    scrollContainer.addEventListener('scroll', handleScroll);
-    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      scrollContainer.removeEventListener('scroll', handleScroll);
+      clearTimeout(loadMoreTimer.current);
+    };
   }, [hasMore, isLoadingMore, currentOffset]);
 
   // Fallback image - music note on pink gradient background
@@ -314,92 +310,70 @@ export const GenreList = (): JSX.Element => {
     onBack: () => setLocation('/genres')
   });
 
+  useEffect(() => {
+    const nav = (window as any).tvSpatialNav;
+    if (nav) {
+      nav.scrollEnabled = false;
+    }
+    return () => {
+      if (nav) {
+        nav.scrollEnabled = true;
+      }
+    };
+  }, []);
+
   // Jump to first station when stations load OR restore focus when returning
   useEffect(() => {
     const navState = popNavigationState(); // Pop and clear in one atomic operation
     if (navState && navState.returnFocusIndex !== null) {
-      // Restore focus when returning from RadioPlaying
       setFocusIndex(navState.returnFocusIndex);
     } else if (displayedStations.length > 0 && focusIndex < stationsStart) {
-      // Default: Jump to first station when stations load
       setFocusIndex(stationsStart);
     }
   }, [displayedStations.length]);
 
-  // Auto-scroll focused station into view - ONLY if element is truly off-screen
-  // Uses scrollTop/offsetTop based math for accurate visibility detection
+  const scrollRAF = useRef<number>(0);
+
   useEffect(() => {
-    if (focusIndex >= stationsStart && scrollContainerRef.current) {
+    if (focusIndex < stationsStart || !scrollContainerRef.current) return;
+
+    cancelAnimationFrame(scrollRAF.current);
+    scrollRAF.current = requestAnimationFrame(() => {
       try {
-        const stationIndex = focusIndex - stationsStart;
         const container = scrollContainerRef.current;
-        
-        // Validate container exists
-        if (!container) {
-          return;
-        }
-        
-        // Find the focused station element using data attribute
-        const focusedElement = container.querySelector(`[data-station-index="${stationIndex}"]`) as HTMLElement;
-        
-        // Validate focusedElement exists before computing offsetTop
-        if (!focusedElement) {
-          return;
-        }
-        
-        // Validate element has required properties
-        if (typeof focusedElement.offsetTop !== 'number' || typeof focusedElement.offsetHeight !== 'number') {
-          return;
-        }
-        
-        // Use scrollTop/offsetTop based calculation (NOT getBoundingClientRect)
-        const TOP_PADDING = 20;  // Padding from top edge
-        const BOTTOM_PADDING = 120;  // Leave space for global player bar
-        
+        if (!container) return;
+
+        const stationIndex = focusIndex - stationsStart;
+        const focusedEl = container.querySelector(`[data-station-index="${stationIndex}"]`) as HTMLElement;
+        if (!focusedEl) return;
+
+        const TOP_PADDING = 20;
+        const BOTTOM_PADDING = 120;
+
         const viewTop = container.scrollTop;
         const viewBottom = viewTop + container.clientHeight - BOTTOM_PADDING;
-        
-        // Validate container properties
-        if (typeof viewTop !== 'number' || typeof container.clientHeight !== 'number') {
-          return;
-        }
-        
-        // Get element position relative to scroll container
+
         let elementTop = 0;
-        let el: HTMLElement | null = focusedElement;
-        
-        // Calculate offset with safety checks
+        let el: HTMLElement | null = focusedEl;
         while (el && el !== container) {
-          if (typeof el.offsetTop === 'number') {
-            elementTop += el.offsetTop;
-          }
+          elementTop += el.offsetTop;
           el = el.offsetParent as HTMLElement;
-          
-          // Safety check to prevent infinite loops
-          if (!el || (el && el.nodeType !== 1)) {
-            break;
-          }
+          if (!el || el.nodeType !== 1) break;
         }
-        
-        const elementBottom = elementTop + focusedElement.offsetHeight;
-        
-        // Check if element is FULLY visible
+
+        const elementBottom = elementTop + focusedEl.offsetHeight;
         const isAboveView = elementTop < viewTop + TOP_PADDING;
         const isBelowView = elementBottom > viewBottom;
-        
-        // Only scroll if element is actually outside the visible viewport
+
         if (isAboveView) {
-          container.scrollTo({ top: elementTop - TOP_PADDING, behavior: 'smooth' });
+          container.scrollTop = elementTop - TOP_PADDING;
         } else if (isBelowView) {
-          const newScrollTop = elementBottom - container.clientHeight + BOTTOM_PADDING;
-          container.scrollTo({ top: newScrollTop, behavior: 'smooth' });
+          container.scrollTop = elementBottom - container.clientHeight + BOTTOM_PADDING;
         }
-        // If element is FULLY visible, do NOTHING - no scroll!
-      } catch (error) {
-        console.error('Error in auto-scroll calculation:', error);
-        // Don't crash - just skip the scroll
-      }
-    }
+      } catch (_) {}
+    });
+
+    return () => cancelAnimationFrame(scrollRAF.current);
   }, [focusIndex, stationsStart]);
 
   // TRUE INFINITE SCROLL trigger - Focus-based (when within last 28 items / 4 rows)
