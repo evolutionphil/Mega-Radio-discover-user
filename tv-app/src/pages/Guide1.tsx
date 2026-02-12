@@ -24,7 +24,7 @@ export const Guide1 = (): JSX.Element => {
 
   return (
       <div 
-        className="bg-black absolute inset-0 w-[1920px] h-[1080px] overflow-hidden cursor-pointer" 
+        className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden cursor-pointer" 
         data-testid="page-guide-1"
         onClick={handleClick}
       >
@@ -32,7 +32,7 @@ export const Guide1 = (): JSX.Element => {
         <div 
           className="absolute h-[1080px] left-0 top-0 w-[1920px]"
           style={{
-            background: `linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url(${assetPath("images/discover-background.png")}) lightgray center top / cover no-repeat`
+            background: `linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url(${assetPath("images/discover-background.png")}) center top / cover no-repeat`
           }}
         />
 
