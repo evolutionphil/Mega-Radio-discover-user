@@ -398,7 +398,7 @@ export const RadioPlaying = (): JSX.Element => {
   const { focusIndex, setFocusIndex, handleSelect, isFocused } = useFocusManager({
     totalItems,
     cols: 1,
-    initialIndex: 8, // Start on play/pause button
+    initialIndex: 7, // Start on play/pause button
     onSelect: (index) => {
       // Sidebar navigation (0-5)
       if (index >= 0 && index <= 5) {
