@@ -168,6 +168,9 @@ export const Genres = (): JSX.Element => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = 0;
     }
+    const nav = (window as any).tvSpatialNav;
+    if (nav) nav.scrollEnabled = false;
+    return () => { if (nav) nav.scrollEnabled = true; };
   }, []);
   
   useEffect(() => {
@@ -255,52 +258,47 @@ export const Genres = (): JSX.Element => {
     }
   });
 
+  const scrollRAF = useRef<number>(0);
+
   useEffect(() => {
     if (!scrollContainerRef.current) return;
-    
-    const scrollContainer = scrollContainerRef.current;
-    
-    if (focusIndex < 7) {
-      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
 
-    if (focusIndex === 7) {
-      scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
+    cancelAnimationFrame(scrollRAF.current);
+    scrollRAF.current = requestAnimationFrame(() => {
+      const scrollContainer = scrollContainerRef.current;
+      if (!scrollContainer) return;
 
-    const focusedEl = scrollContainer.querySelector(`[data-focus-idx="${focusIndex}"]`) as HTMLElement;
-    if (!focusedEl) return;
+      if (focusIndex <= 7) {
+        scrollContainer.scrollTop = 0;
+        return;
+      }
 
-    const BOTTOM_PADDING = 140;
-    const TOP_PADDING = 20;
+      const focusedEl = scrollContainer.querySelector(`[data-focus-idx="${focusIndex}"]`) as HTMLElement;
+      if (!focusedEl) return;
 
-    const viewTop = scrollContainer.scrollTop;
-    const viewBottom = viewTop + scrollContainer.clientHeight - BOTTOM_PADDING;
+      const BOTTOM_PADDING = 140;
+      const TOP_PADDING = 20;
 
-    let elementTop = 0;
-    let el: HTMLElement | null = focusedEl;
-    while (el && el !== scrollContainer) {
-      elementTop += el.offsetTop;
-      el = el.offsetParent as HTMLElement;
-    }
-    const elementBottom = elementTop + focusedEl.offsetHeight;
+      const viewTop = scrollContainer.scrollTop;
+      const viewBottom = viewTop + scrollContainer.clientHeight - BOTTOM_PADDING;
 
-    const isAboveView = elementTop < viewTop + TOP_PADDING;
-    const isBelowView = elementBottom > viewBottom;
+      let elementTop = 0;
+      let el: HTMLElement | null = focusedEl;
+      while (el && el !== scrollContainer) {
+        elementTop += el.offsetTop;
+        el = el.offsetParent as HTMLElement;
+        if (!el || el.nodeType !== 1) break;
+      }
+      const elementBottom = elementTop + focusedEl.offsetHeight;
 
-    if (isAboveView) {
-      scrollContainer.scrollTo({
-        top: Math.max(0, elementTop - TOP_PADDING),
-        behavior: 'smooth'
-      });
-    } else if (isBelowView) {
-      scrollContainer.scrollTo({
-        top: elementTop - scrollContainer.clientHeight + focusedEl.offsetHeight + BOTTOM_PADDING,
-        behavior: 'smooth'
-      });
-    }
+      if (elementTop < viewTop + TOP_PADDING) {
+        scrollContainer.scrollTop = Math.max(0, elementTop - TOP_PADDING);
+      } else if (elementBottom > viewBottom) {
+        scrollContainer.scrollTop = elementTop - scrollContainer.clientHeight + focusedEl.offsetHeight + BOTTOM_PADDING;
+      }
+    });
+
+    return () => cancelAnimationFrame(scrollRAF.current);
   }, [focusIndex]);
 
   const CARD_HEIGHT = 139;

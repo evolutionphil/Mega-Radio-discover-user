@@ -257,28 +257,32 @@ export const Search = (): JSX.Element => {
 
   useEffect(() => {
     if (focusZone !== 'list' || !scrollContainerRef.current || visibleSearchResults.length === 0) return;
-    const container = scrollContainerRef.current;
-    const focusedElement = container.children[listFocusIndex] as HTMLElement | undefined;
-    if (!focusedElement) return;
 
-    const TOP_PADDING = 20;
-    const BOTTOM_PADDING = 60;
-    const viewTop = container.scrollTop;
-    const viewBottom = viewTop + container.clientHeight - BOTTOM_PADDING;
+    requestAnimationFrame(() => {
+      const container = scrollContainerRef.current;
+      if (!container) return;
+      const focusedElement = container.children[listFocusIndex] as HTMLElement | undefined;
+      if (!focusedElement) return;
 
-    let elementTop = 0;
-    let el: HTMLElement | null = focusedElement;
-    while (el && el !== container) {
-      elementTop += el.offsetTop;
-      el = el.offsetParent as HTMLElement;
-    }
-    const elementBottom = elementTop + focusedElement.offsetHeight;
+      const TOP_PADDING = 20;
+      const BOTTOM_PADDING = 60;
+      const viewTop = container.scrollTop;
+      const viewBottom = viewTop + container.clientHeight - BOTTOM_PADDING;
 
-    if (elementTop < viewTop + TOP_PADDING) {
-      container.scrollTo({ top: Math.max(0, elementTop - TOP_PADDING), behavior: 'smooth' });
-    } else if (elementBottom > viewBottom) {
-      container.scrollTo({ top: elementBottom - container.clientHeight + BOTTOM_PADDING, behavior: 'smooth' });
-    }
+      let elementTop = 0;
+      let el: HTMLElement | null = focusedElement;
+      while (el && el !== container) {
+        elementTop += el.offsetTop;
+        el = el.offsetParent as HTMLElement;
+      }
+      const elementBottom = elementTop + focusedElement.offsetHeight;
+
+      if (elementTop < viewTop + TOP_PADDING) {
+        container.scrollTop = Math.max(0, elementTop - TOP_PADDING);
+      } else if (elementBottom > viewBottom) {
+        container.scrollTop = elementBottom - container.clientHeight + BOTTOM_PADDING;
+      }
+    });
   }, [listFocusIndex, visibleSearchResults.length, focusZone]);
 
   useEffect(() => {
@@ -289,9 +293,9 @@ export const Search = (): JSX.Element => {
         const itemTop = item.offsetTop;
         const itemBottom = itemTop + item.offsetHeight;
         if (itemTop < container.scrollTop) {
-          container.scrollTo({ top: itemTop, behavior: 'smooth' });
+          container.scrollTop = itemTop;
         } else if (itemBottom > container.scrollTop + container.clientHeight) {
-          container.scrollTo({ top: itemBottom - container.clientHeight, behavior: 'smooth' });
+          container.scrollTop = itemBottom - container.clientHeight;
         }
       }
     }
