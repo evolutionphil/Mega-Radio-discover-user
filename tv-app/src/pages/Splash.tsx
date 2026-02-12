@@ -1,33 +1,44 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useTVNavigation } from "@/hooks/useTVNavigation";
 import { assetPath } from "@/lib/assetPath";
 
 export const Splash = (): JSX.Element => {
   const [, setLocation] = useLocation();
+  const [isReady, setIsReady] = useState(false);
   
-  // Initialize TV navigation
   useTVNavigation();
 
   useEffect(() => {
-    // Check onboarding status immediately
+    var loader = document.getElementById('app-loader');
+    if (loader) {
+      loader.style.display = 'none';
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setIsReady(true);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isReady) return;
+
     try {
       const onboardingCompleted = localStorage.getItem('onboardingCompleted');
       if (onboardingCompleted) {
-        // Skip splash entirely if onboarding completed
         setLocation("/discover-no-user");
         return;
       }
     } catch (error) {
-      // localStorage not available, continue with splash
     }
     
-    // Only show splash for first-time users
     const timer = setTimeout(() => {
       setLocation("/guide-1");
     }, 1500);
     return () => clearTimeout(timer);
-  }, [setLocation]);
+  }, [isReady, setLocation]);
 
   return (
     <div className="bg-[#0e0e0e] absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-splash">
