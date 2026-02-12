@@ -32,7 +32,8 @@ export const Guide1 = (): JSX.Element => {
         <div 
           className="absolute h-[1080px] left-0 top-0 w-[1920px]"
           style={{
-            background: `linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url(${assetPath("images/discover-background.png")}) center top / cover no-repeat`
+            background: `linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url(${assetPath("images/discover-background.png")}) center top / cover no-repeat`,
+            opacity: 0.70
           }}
         />
 
