@@ -691,6 +691,15 @@ export const RadioPlaying = (): JSX.Element => {
       {isIdle && currentStation && !streamError && (
         <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden animate-ambient-fadein" style={{ zIndex: 100, backgroundColor: '#050508' }} data-testid="ambient-mode-overlay">
 
+          <div className="absolute" style={{ top: '50px', left: '48px' }}>
+            <div className="flex items-center gap-2">
+              <img alt="" src={assetPath("images/path-8.svg")} style={{ width: '36px', height: '36px' }} />
+              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '28px', color: 'rgba(255,255,255,0.35)' }}>
+                <span style={{ fontWeight: 700 }}>mega</span>radio
+              </p>
+            </div>
+          </div>
+
           <div className="absolute w-[800px] h-[800px] rounded-full animate-ambient-orb-1"
             style={{ background: 'radial-gradient(circle, rgba(255,65,153,0.35) 0%, rgba(255,65,153,0.05) 50%, transparent 70%)', top: '-200px', left: '-200px' }}
           />
@@ -707,11 +716,11 @@ export const RadioPlaying = (): JSX.Element => {
             style={{ background: 'radial-gradient(circle, rgba(200,50,255,0.2) 0%, rgba(200,50,255,0.03) 50%, transparent 70%)', bottom: '-100px', left: '300px' }}
           />
 
-          <div className="absolute animate-ambient-ring-1" style={{ top: '50%', left: '50%', width: '420px', height: '420px', borderRadius: '50%', border: '1px solid rgba(255,65,153,0.12)' }} />
-          <div className="absolute animate-ambient-ring-2" style={{ top: '50%', left: '50%', width: '520px', height: '520px', borderRadius: '50%', border: '1px solid rgba(80,60,220,0.08)' }} />
-          <div className="absolute animate-ambient-ring-1" style={{ top: '50%', left: '50%', width: '620px', height: '620px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.04)' }} />
+          <div className="absolute animate-ambient-ring-1" style={{ top: '50%', left: '50%', width: '460px', height: '460px', borderRadius: '50%', border: '1.5px solid rgba(255,65,153,0.18)' }} />
+          <div className="absolute animate-ambient-ring-2" style={{ top: '50%', left: '50%', width: '560px', height: '560px', borderRadius: '50%', border: '1.5px solid rgba(80,60,220,0.12)' }} />
+          <div className="absolute animate-ambient-ring-1" style={{ top: '50%', left: '50%', width: '680px', height: '680px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.06)' }} />
 
-          <div className="absolute animate-ambient-logo-pulse" style={{ top: '44%', left: '50%', width: '280px', height: '280px', borderRadius: '24px', overflow: 'hidden', backgroundColor: '#ffffff' }}>
+          <div className="absolute animate-ambient-logo-pulse" style={{ top: '42%', left: '50%', width: '320px', height: '320px', borderRadius: '28px', overflow: 'hidden', backgroundColor: '#ffffff' }}>
             <img
               src={getStationImage(currentStation)}
               alt={currentStation.name}
