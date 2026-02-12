@@ -30,10 +30,10 @@ export const RadioPlaying = (): JSX.Element => {
 
   const [currentTime, setCurrentTime] = useState(new Date());
   useEffect(() => {
-    if (!isIdle || !isPlaying) return;
+    if (!isIdle || !currentStation) return;
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
     return () => clearInterval(timer);
-  }, [isIdle, isPlaying]);
+  }, [isIdle, currentStation]);
 
   const formatSleepTimer = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -688,7 +688,7 @@ export const RadioPlaying = (): JSX.Element => {
   return (
     <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
 
-      {isIdle && isPlaying && (
+      {isIdle && currentStation && !streamError && (
         <div className="absolute inset-0 w-[1920px] h-[1080px] z-0 overflow-hidden pointer-events-none" data-testid="ambient-mode-overlay">
           <div className="absolute w-[600px] h-[600px] rounded-full opacity-20 animate-ambient-float-1"
             style={{
