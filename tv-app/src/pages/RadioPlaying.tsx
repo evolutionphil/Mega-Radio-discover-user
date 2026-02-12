@@ -28,6 +28,19 @@ export const RadioPlaying = (): JSX.Element => {
 
   const { isIdle } = useIdleDetection({ idleTime: 180000 });
 
+  const [idleCountdown, setIdleCountdown] = useState(180);
+  useEffect(() => {
+    if (isIdle) { setIdleCountdown(0); return; }
+    setIdleCountdown(180);
+    var start = Date.now();
+    var t = setInterval(function() {
+      var elapsed = Math.floor((Date.now() - start) / 1000);
+      var remaining = 180 - elapsed;
+      setIdleCountdown(remaining > 0 ? remaining : 0);
+    }, 1000);
+    return function() { clearInterval(t); };
+  }, [isIdle]);
+
   const [currentTime, setCurrentTime] = useState(new Date());
   useEffect(() => {
     if (!isIdle || !currentStation) return;
@@ -719,6 +732,13 @@ export const RadioPlaying = (): JSX.Element => {
           </div>
         </div>
       )}
+
+      {/* Debug: Ambient Mode Status - REMOVE AFTER TESTING */}
+      <div className="absolute bottom-[10px] right-[10px] z-[200] bg-black/80 px-3 py-1 rounded" data-testid="debug-ambient">
+        <p className="font-['Ubuntu'] text-[14px] text-[#ff4199]">
+          AMB: {isIdle ? 'IDLE' : idleCountdown + 's'} | ST: {currentStation ? 'Y' : 'N'} | ERR: {streamError ? 'Y' : 'N'} | SHOW: {(isIdle && currentStation && !streamError) ? 'YES' : 'NO'}
+        </p>
+      </div>
 
       {/* Logo */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">

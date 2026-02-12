@@ -19,49 +19,68 @@ export function useIdleDetection(options: UseIdleDetectionOptions = {}) {
   const onIdleRef = useRef(onIdle);
   const onActiveRef = useRef(onActive);
   const idleTimeRef = useRef(idleTime);
+  const timerIdRef = useRef<any>(null);
 
   onIdleRef.current = onIdle;
   onActiveRef.current = onActive;
   idleTimeRef.current = idleTime;
 
-  const resetIdleTimer = useCallback(() => {
+  const resetIdleTimer = useCallback(function() {
     lastActivityRef.current = Date.now();
     
     if (isIdleRef.current) {
       isIdleRef.current = false;
       setIsIdle(false);
-      onActiveRef.current?.();
+      if (onActiveRef.current) {
+        onActiveRef.current();
+      }
     }
   }, []);
 
-  useEffect(() => {
-    const events = ['keydown', 'keypress', 'mousedown', 'touchstart', 'click'];
+  useEffect(function() {
+    function onActivity() {
+      resetIdleTimer();
+    }
 
-    events.forEach(event => {
-      window.addEventListener(event, resetIdleTimer);
-    });
-
-    const checkInterval = setInterval(() => {
-      const elapsed = Date.now() - lastActivityRef.current;
+    function checkIdle() {
+      var now = Date.now();
+      var elapsed = now - lastActivityRef.current;
       
       if (elapsed >= idleTimeRef.current && !isIdleRef.current) {
         isIdleRef.current = true;
         setIsIdle(true);
-        onIdleRef.current?.();
+        if (onIdleRef.current) {
+          onIdleRef.current();
+        }
       }
-    }, 1000);
+      
+      timerIdRef.current = setTimeout(checkIdle, 2000);
+    }
 
-    return () => {
-      events.forEach(event => {
-        window.removeEventListener(event, resetIdleTimer);
-      });
-      clearInterval(checkInterval);
+    document.addEventListener('keydown', onActivity, false);
+    document.addEventListener('keypress', onActivity, false);
+    document.addEventListener('mousedown', onActivity, false);
+    document.addEventListener('touchstart', onActivity, false);
+    document.addEventListener('click', onActivity, false);
+
+    timerIdRef.current = setTimeout(checkIdle, 2000);
+
+    return function() {
+      document.removeEventListener('keydown', onActivity, false);
+      document.removeEventListener('keypress', onActivity, false);
+      document.removeEventListener('mousedown', onActivity, false);
+      document.removeEventListener('touchstart', onActivity, false);
+      document.removeEventListener('click', onActivity, false);
+      
+      if (timerIdRef.current) {
+        clearTimeout(timerIdRef.current);
+      }
     };
   }, [resetIdleTimer]);
 
   return {
-    isIdle,
+    isIdle: isIdle,
     lastActivity: lastActivityRef.current,
-    resetIdleTimer
+    resetIdleTimer: resetIdleTimer
   };
 }
