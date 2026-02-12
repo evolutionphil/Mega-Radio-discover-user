@@ -238,10 +238,13 @@
             };
             
             this.stop = function() {
+                self.isStopping = true;
                 self.audioElement.pause();
-                self.audioElement.currentTime = 0;
-                self.audioElement.src = '';
+                self.audioElement.removeAttribute('src');
+                self.audioElement.load();
                 self.isPlaying = false;
+                self.currentUrl = '';
+                setTimeout(function() { self.isStopping = false; }, 100);
                 self.onStop && self.onStop();
             };
             
@@ -293,6 +296,7 @@
             });
             
             this.audioElement.addEventListener('error', function(e) {
+                if (self.isStopping || !self.currentUrl) return;
                 var mediaErr = self.audioElement.error;
                 var errorInfo = {
                     code: mediaErr ? mediaErr.code : 'N/A',
@@ -301,7 +305,6 @@
                     readyState: self.audioElement.readyState,
                     src: (self.currentUrl || '').substring(0, 120)
                 };
-                // MediaError codes: 1=ABORTED, 2=NETWORK, 3=DECODE, 4=SRC_NOT_SUPPORTED
                 var codeNames = {1: 'ABORTED', 2: 'NETWORK', 3: 'DECODE', 4: 'SRC_NOT_SUPPORTED'};
                 var codeName = codeNames[errorInfo.code] || 'UNKNOWN';
                 console.error('[WebPlayer] 🔴 ERROR:', codeName, '(' + errorInfo.code + ')', errorInfo.message);
@@ -363,10 +366,13 @@
             };
             
             this.stop = function() {
+                self.isStopping = true;
                 self.audioElement.pause();
-                self.audioElement.currentTime = 0;
-                self.audioElement.src = '';
+                self.audioElement.removeAttribute('src');
+                self.audioElement.load();
                 self.isPlaying = false;
+                self.currentUrl = '';
+                setTimeout(function() { self.isStopping = false; }, 100);
                 self.onStop && self.onStop();
             };
             
