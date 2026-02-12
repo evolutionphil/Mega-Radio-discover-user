@@ -22,24 +22,11 @@ export const RadioPlaying = (): JSX.Element => {
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { playStation, togglePlayPause, isPlaying, isBuffering, currentStation, streamError, retryCurrentStation, clearStreamError } = useGlobalPlayer();
+  const { playStation, togglePlayPause, isPlaying, isBuffering, currentStation, streamError, retryCurrentStation, clearStreamError, nowPlayingMetadata } = useGlobalPlayer();
   const { isTimerActive, remainingSeconds } = useSleepTimer();
   const { getPreviousPage } = useNavigation();
 
   const { isIdle } = useIdleDetection({ idleTime: 180000 });
-
-  const [idleCountdown, setIdleCountdown] = useState(180);
-  useEffect(() => {
-    if (isIdle) { setIdleCountdown(0); return; }
-    setIdleCountdown(180);
-    var start = Date.now();
-    var t = setInterval(function() {
-      var elapsed = Math.floor((Date.now() - start) / 1000);
-      var remaining = 180 - elapsed;
-      setIdleCountdown(remaining > 0 ? remaining : 0);
-    }, 1000);
-    return function() { clearInterval(t); };
-  }, [isIdle]);
 
   const [currentTime, setCurrentTime] = useState(new Date());
   useEffect(() => {
@@ -702,56 +689,80 @@ export const RadioPlaying = (): JSX.Element => {
     <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
 
       {isIdle && currentStation && !streamError && (
-        <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" style={{ zIndex: 100, backgroundColor: '#000000' }} data-testid="ambient-mode-overlay">
-          <div className="absolute w-[600px] h-[600px] rounded-full animate-ambient-float-1"
-            style={{
-              background: 'radial-gradient(circle, rgba(255,65,153,0.4) 0%, transparent 70%)',
-              opacity: 0.25,
-              top: '-100px',
-              left: '-100px',
-            }}
+        <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden animate-ambient-fadein" style={{ zIndex: 100, backgroundColor: '#050508' }} data-testid="ambient-mode-overlay">
+
+          <div className="absolute w-[800px] h-[800px] rounded-full animate-ambient-orb-1"
+            style={{ background: 'radial-gradient(circle, rgba(255,65,153,0.35) 0%, rgba(255,65,153,0.05) 50%, transparent 70%)', top: '-200px', left: '-200px' }}
           />
-          <div className="absolute w-[500px] h-[500px] rounded-full animate-ambient-float-2"
-            style={{
-              background: 'radial-gradient(circle, rgba(100,100,255,0.3) 0%, transparent 70%)',
-              opacity: 0.2,
-              bottom: '-100px',
-              right: '-100px',
-            }}
+          <div className="absolute w-[700px] h-[700px] rounded-full animate-ambient-orb-2"
+            style={{ background: 'radial-gradient(circle, rgba(80,60,220,0.3) 0%, rgba(80,60,220,0.05) 50%, transparent 70%)', bottom: '-200px', right: '-200px' }}
           />
-          <div className="absolute w-[400px] h-[400px] rounded-full animate-ambient-float-3"
-            style={{
-              background: 'radial-gradient(circle, rgba(255,200,50,0.3) 0%, transparent 70%)',
-              opacity: 0.15,
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
+          <div className="absolute w-[600px] h-[600px] rounded-full animate-ambient-orb-3"
+            style={{ background: 'radial-gradient(circle, rgba(0,200,180,0.25) 0%, rgba(0,200,180,0.03) 50%, transparent 70%)', top: '50%', left: '50%' }}
           />
-          <div className="absolute top-[40px] right-[40px]">
-            <p className="font-['Ubuntu',Helvetica] font-light text-[48px]" style={{ color: 'rgba(255,255,255,0.5)' }} data-testid="ambient-clock">
+          <div className="absolute w-[500px] h-[500px] rounded-full animate-ambient-orb-4"
+            style={{ background: 'radial-gradient(circle, rgba(255,180,50,0.2) 0%, rgba(255,180,50,0.03) 50%, transparent 70%)', top: '-100px', right: '200px' }}
+          />
+          <div className="absolute w-[650px] h-[650px] rounded-full animate-ambient-orb-5"
+            style={{ background: 'radial-gradient(circle, rgba(200,50,255,0.2) 0%, rgba(200,50,255,0.03) 50%, transparent 70%)', bottom: '-100px', left: '300px' }}
+          />
+
+          <div className="absolute animate-ambient-ring-1" style={{ top: '50%', left: '50%', width: '420px', height: '420px', borderRadius: '50%', border: '1px solid rgba(255,65,153,0.12)' }} />
+          <div className="absolute animate-ambient-ring-2" style={{ top: '50%', left: '50%', width: '520px', height: '520px', borderRadius: '50%', border: '1px solid rgba(80,60,220,0.08)' }} />
+          <div className="absolute animate-ambient-ring-1" style={{ top: '50%', left: '50%', width: '620px', height: '620px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.04)' }} />
+
+          <div className="absolute animate-ambient-logo-pulse" style={{ top: '44%', left: '50%', width: '280px', height: '280px', borderRadius: '24px', overflow: 'hidden', backgroundColor: '#ffffff' }}>
+            <img
+              src={getStationImage(currentStation)}
+              alt={currentStation.name}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              onError={function(e) { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
+            />
+          </div>
+
+          <div className="absolute flex items-end justify-center" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '280px', height: '280px', gap: '6px', pointerEvents: 'none', opacity: 0.15 }}>
+            {[1.2, 0.8, 1.5, 0.6, 1.3, 0.9, 1.1, 0.7, 1.4, 1.0].map(function(delay, i) {
+              return (
+                <div key={i} style={{
+                  width: '6px',
+                  borderRadius: '3px',
+                  background: 'linear-gradient(to top, #ff4199, #ff6bb3)',
+                  animation: 'ambient-bar ' + (1 + delay * 0.5) + 's ease-in-out ' + (delay * 0.3) + 's infinite',
+                  height: '20px',
+                }} />
+              );
+            })}
+          </div>
+
+          <div className="absolute" style={{ top: '65%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
+            <p className="font-['Ubuntu',Helvetica] font-bold" style={{ fontSize: '36px', color: 'rgba(255,255,255,0.85)', marginBottom: '12px', maxWidth: '800px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {currentStation.name}
+            </p>
+            {nowPlayingMetadata && (
+              <p className="font-['Ubuntu',Helvetica] font-light animate-ambient-text-fade" style={{ fontSize: '24px', color: '#ff4199', maxWidth: '700px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: '0 auto' }}>
+                {nowPlayingMetadata}
+              </p>
+            )}
+            {currentStation.country && (
+              <p className="font-['Ubuntu',Helvetica] font-light" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.3)', marginTop: '8px' }}>
+                {currentStation.country}
+              </p>
+            )}
+          </div>
+
+          <div className="absolute" style={{ top: '50px', right: '60px' }}>
+            <p className="font-['Ubuntu',Helvetica] font-extralight" style={{ fontSize: '72px', color: 'rgba(255,255,255,0.25)', letterSpacing: '4px' }} data-testid="ambient-clock">
               {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </p>
           </div>
-          <div className="absolute bottom-[60px] left-0 right-0 flex flex-col items-center">
-            {currentStation && (
-              <p className="font-['Ubuntu',Helvetica] font-medium text-[28px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                {currentStation.name}
-              </p>
-            )}
-            <p className="font-['Ubuntu',Helvetica] font-light text-[18px] mt-4" style={{ color: 'rgba(255,255,255,0.2)' }}>
+
+          <div className="absolute" style={{ bottom: '40px', left: '50%', transform: 'translateX(-50%)' }}>
+            <p className="font-['Ubuntu',Helvetica] font-light animate-ambient-text-fade" style={{ fontSize: '16px', color: 'rgba(255,255,255,0.15)' }}>
               {t('press_any_button') || 'Press any button to dismiss'}
             </p>
           </div>
         </div>
       )}
-
-      {/* Debug: Ambient Mode Status - REMOVE AFTER TESTING */}
-      <div className="absolute bottom-[10px] right-[10px] z-[200] bg-black/80 px-3 py-1 rounded" data-testid="debug-ambient">
-        <p className="font-['Ubuntu'] text-[14px] text-[#ff4199]">
-          AMB: {isIdle ? 'IDLE' : idleCountdown + 's'} | ST: {currentStation ? 'Y' : 'N'} | ERR: {streamError ? 'Y' : 'N'} | SHOW: {(isIdle && currentStation && !streamError) ? 'YES' : 'NO'}
-        </p>
-      </div>
 
       {/* Logo */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
