@@ -11,6 +11,7 @@ import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { useSleepTimer } from "@/contexts/SleepTimerContext";
 import { useNavigation } from "@/contexts/NavigationContext";
 import { useIdleDetection } from "@/hooks/useIdleDetection";
+import { useImageColors } from "@/hooks/useImageColors";
 import { CountrySelector } from "@/components/CountrySelector";
 import { CountryTrigger } from "@/components/CountryTrigger";
 import { Sidebar } from "@/components/Sidebar";
@@ -27,6 +28,17 @@ export const RadioPlaying = (): JSX.Element => {
   const { getPreviousPage } = useNavigation();
 
   const { isIdle } = useIdleDetection({ idleTime: 180000 });
+
+  const ambientImageUrl = useMemo(function() {
+    if (!currentStation) return undefined;
+    if (currentStation.favicon && currentStation.favicon !== 'null' && currentStation.favicon.trim() !== '') {
+      return currentStation.favicon.startsWith('http')
+        ? currentStation.favicon.replace(/^http:\/\//, 'https://')
+        : 'https://themegaradio.com/api/image/' + encodeURIComponent(currentStation.favicon);
+    }
+    return undefined;
+  }, [currentStation]);
+  const ambientColors = useImageColors(ambientImageUrl);
 
   const [currentTime, setCurrentTime] = useState(new Date());
   useEffect(() => {
@@ -688,27 +700,37 @@ export const RadioPlaying = (): JSX.Element => {
   return (
     <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
 
-      {isIdle && currentStation && !streamError && (
-        <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden amb-fadein" style={{ zIndex: 100, background: 'linear-gradient(135deg, #030308 0%, #0a0612 40%, #0d0518 60%, #050510 100%)' }} data-testid="ambient-mode-overlay">
+      {isIdle && currentStation && !streamError && (function() {
+        var p = ambientColors.primary;
+        var s = ambientColors.secondary;
+        var a = ambientColors.accent;
+        var pR = 'rgba(' + p[0] + ',' + p[1] + ',' + p[2] + ',';
+        var sR = 'rgba(' + s[0] + ',' + s[1] + ',' + s[2] + ',';
+        var aR = 'rgba(' + a[0] + ',' + a[1] + ',' + a[2] + ',';
+        var bgDark1 = 'rgb(' + Math.round(p[0] * 0.04) + ',' + Math.round(p[1] * 0.04) + ',' + Math.round(p[2] * 0.04) + ')';
+        var bgDark2 = 'rgb(' + Math.round(s[0] * 0.05) + ',' + Math.round(s[1] * 0.05) + ',' + Math.round(s[2] * 0.05) + ')';
+        var metaColor = 'rgb(' + Math.min(p[0] + 40, 255) + ',' + Math.min(p[1] + 40, 255) + ',' + Math.min(p[2] + 40, 255) + ')';
+        return (
+        <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden amb-fadein" style={{ zIndex: 100, background: 'linear-gradient(135deg, #020204 0%, ' + bgDark1 + ' 40%, ' + bgDark2 + ' 60%, #030306 100%)' }} data-testid="ambient-mode-overlay">
 
           <div className="absolute rounded-full amb-drift-1"
-            style={{ width: '900px', height: '900px', background: 'radial-gradient(circle, rgba(255,65,153,0.2) 0%, transparent 60%)', top: '-300px', left: '-200px' }}
+            style={{ width: '900px', height: '900px', background: 'radial-gradient(circle, ' + pR + '0.2) 0%, transparent 60%)', top: '-300px', left: '-200px' }}
           />
           <div className="absolute rounded-full amb-drift-2"
-            style={{ width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(60,40,200,0.18) 0%, transparent 60%)', bottom: '-250px', right: '-150px' }}
+            style={{ width: '800px', height: '800px', background: 'radial-gradient(circle, ' + sR + '0.18) 0%, transparent 60%)', bottom: '-250px', right: '-150px' }}
           />
           <div className="absolute rounded-full amb-drift-3"
-            style={{ width: '700px', height: '700px', background: 'radial-gradient(circle, rgba(0,180,160,0.12) 0%, transparent 60%)', top: '50%', left: '50%' }}
+            style={{ width: '700px', height: '700px', background: 'radial-gradient(circle, ' + aR + '0.12) 0%, transparent 60%)', top: '50%', left: '50%' }}
           />
           <div className="absolute rounded-full amb-drift-4"
-            style={{ width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(180,50,220,0.12) 0%, transparent 60%)', bottom: '-100px', left: '200px' }}
+            style={{ width: '600px', height: '600px', background: 'radial-gradient(circle, ' + pR + '0.1) 0%, transparent 60%)', bottom: '-100px', left: '200px' }}
           />
 
-          <div className="absolute amb-ring-1" style={{ top: '50%', left: '50%', width: '500px', height: '500px', borderRadius: '50%', border: '1px solid rgba(255,65,153,0.1)' }} />
-          <div className="absolute amb-ring-2" style={{ top: '50%', left: '50%', width: '640px', height: '640px', borderRadius: '50%', border: '1px solid rgba(100,80,220,0.07)' }} />
+          <div className="absolute amb-ring-1" style={{ top: '50%', left: '50%', width: '500px', height: '500px', borderRadius: '50%', border: '1px solid ' + pR + '0.1)' }} />
+          <div className="absolute amb-ring-2" style={{ top: '50%', left: '50%', width: '640px', height: '640px', borderRadius: '50%', border: '1px solid ' + sR + '0.07)' }} />
 
           <div className="absolute rounded-full amb-glow"
-            style={{ top: '45%', left: '50%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(255,65,153,0.25) 0%, rgba(255,65,153,0.05) 40%, transparent 65%)', pointerEvents: 'none' }}
+            style={{ top: '45%', left: '50%', width: '500px', height: '500px', background: 'radial-gradient(circle, ' + pR + '0.25) 0%, ' + pR + '0.05) 40%, transparent 65%)', pointerEvents: 'none' }}
           />
 
           <div className="absolute" style={{ top: '45%', left: '50%', transform: 'translate(-50%, -50%)', width: '280px', height: '280px', borderRadius: '24px', overflow: 'hidden', backgroundColor: '#fff' }}>
@@ -727,7 +749,7 @@ export const RadioPlaying = (): JSX.Element => {
                   width: '4px',
                   height: '40px',
                   borderRadius: '2px',
-                  background: '#ff4199',
+                  background: 'rgb(' + p[0] + ',' + p[1] + ',' + p[2] + ')',
                   opacity: 0.4,
                   transformOrigin: 'bottom',
                   animation: 'amb-eq-bar ' + (1.2 + i * 0.15) + 's ease-in-out ' + delay + 's infinite',
@@ -741,7 +763,7 @@ export const RadioPlaying = (): JSX.Element => {
               {currentStation.name}
             </p>
             {nowPlayingMetadata && (
-              <p className="font-['Ubuntu',Helvetica] font-light amb-text-pulse" style={{ fontSize: '22px', color: 'rgba(255,65,153,0.85)', marginTop: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <p className="font-['Ubuntu',Helvetica] font-light amb-text-pulse" style={{ fontSize: '22px', color: metaColor, opacity: 0.85, marginTop: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {nowPlayingMetadata}
               </p>
             )}
@@ -773,7 +795,8 @@ export const RadioPlaying = (): JSX.Element => {
             </p>
           </div>
         </div>
-      )}
+        );
+      })()}
 
       {/* Logo */}
       <div className="absolute h-[57px] left-[30px] top-[64px] w-[164.421px] z-50">
