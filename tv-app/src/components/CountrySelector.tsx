@@ -508,7 +508,7 @@ export const CountrySelector = ({ isOpen, onClose, selectedCountry, onSelectCoun
                     <img
                       src={country.flag}
                       alt={country.name}
-                      className={`object-cover rounded-[6px] flex-shrink-0 ${isItemFocused ? 'w-[52px] h-[39px]' : 'w-[46px] h-[34px]'}`}
+                      className={`${country.code === 'GLOBAL' ? 'object-contain' : 'object-cover'} rounded-[6px] flex-shrink-0 ${isItemFocused ? 'w-[52px] h-[39px]' : 'w-[46px] h-[34px]'}`}
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="30"%3E%3Crect width="40" height="30" fill="%23979797"/%3E%3C/svg%3E';
                       }}
