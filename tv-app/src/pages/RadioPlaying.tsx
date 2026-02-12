@@ -707,30 +707,30 @@ export const RadioPlaying = (): JSX.Element => {
         var pR = 'rgba(' + p[0] + ',' + p[1] + ',' + p[2] + ',';
         var sR = 'rgba(' + s[0] + ',' + s[1] + ',' + s[2] + ',';
         var aR = 'rgba(' + a[0] + ',' + a[1] + ',' + a[2] + ',';
-        var bgDark1 = 'rgb(' + Math.round(p[0] * 0.04) + ',' + Math.round(p[1] * 0.04) + ',' + Math.round(p[2] * 0.04) + ')';
-        var bgDark2 = 'rgb(' + Math.round(s[0] * 0.05) + ',' + Math.round(s[1] * 0.05) + ',' + Math.round(s[2] * 0.05) + ')';
+        var bgDark1 = 'rgb(' + Math.round(p[0] * 0.06) + ',' + Math.round(p[1] * 0.06) + ',' + Math.round(p[2] * 0.06) + ')';
+        var bgDark2 = 'rgb(' + Math.round(s[0] * 0.07) + ',' + Math.round(s[1] * 0.07) + ',' + Math.round(s[2] * 0.07) + ')';
         var metaColor = 'rgb(' + Math.min(p[0] + 40, 255) + ',' + Math.min(p[1] + 40, 255) + ',' + Math.min(p[2] + 40, 255) + ')';
         return (
         <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden amb-fadein" style={{ zIndex: 100, background: 'linear-gradient(135deg, #020204 0%, ' + bgDark1 + ' 40%, ' + bgDark2 + ' 60%, #030306 100%)' }} data-testid="ambient-mode-overlay">
 
           <div className="absolute rounded-full amb-drift-1"
-            style={{ width: '900px', height: '900px', background: 'radial-gradient(circle, ' + pR + '0.2) 0%, transparent 60%)', top: '-300px', left: '-200px' }}
+            style={{ width: '1000px', height: '1000px', background: 'radial-gradient(circle, ' + pR + '0.4) 0%, ' + pR + '0.1) 40%, transparent 70%)', top: '-300px', left: '-200px' }}
           />
           <div className="absolute rounded-full amb-drift-2"
-            style={{ width: '800px', height: '800px', background: 'radial-gradient(circle, ' + sR + '0.18) 0%, transparent 60%)', bottom: '-250px', right: '-150px' }}
+            style={{ width: '900px', height: '900px', background: 'radial-gradient(circle, ' + sR + '0.35) 0%, ' + sR + '0.08) 40%, transparent 70%)', bottom: '-250px', right: '-150px' }}
           />
           <div className="absolute rounded-full amb-drift-3"
-            style={{ width: '700px', height: '700px', background: 'radial-gradient(circle, ' + aR + '0.12) 0%, transparent 60%)', top: '50%', left: '50%' }}
+            style={{ width: '800px', height: '800px', background: 'radial-gradient(circle, ' + aR + '0.25) 0%, ' + aR + '0.06) 40%, transparent 70%)', top: '50%', left: '50%' }}
           />
           <div className="absolute rounded-full amb-drift-4"
-            style={{ width: '600px', height: '600px', background: 'radial-gradient(circle, ' + pR + '0.1) 0%, transparent 60%)', bottom: '-100px', left: '200px' }}
+            style={{ width: '700px', height: '700px', background: 'radial-gradient(circle, ' + sR + '0.2) 0%, ' + sR + '0.04) 40%, transparent 70%)', bottom: '-100px', left: '200px' }}
           />
 
-          <div className="absolute amb-ring-1" style={{ top: '50%', left: '50%', width: '500px', height: '500px', borderRadius: '50%', border: '1px solid ' + pR + '0.1)' }} />
-          <div className="absolute amb-ring-2" style={{ top: '50%', left: '50%', width: '640px', height: '640px', borderRadius: '50%', border: '1px solid ' + sR + '0.07)' }} />
+          <div className="absolute amb-ring-1" style={{ top: '50%', left: '50%', width: '500px', height: '500px', borderRadius: '50%', border: '1.5px solid ' + pR + '0.18)' }} />
+          <div className="absolute amb-ring-2" style={{ top: '50%', left: '50%', width: '640px', height: '640px', borderRadius: '50%', border: '1.5px solid ' + sR + '0.12)' }} />
 
           <div className="absolute rounded-full amb-glow"
-            style={{ top: '45%', left: '50%', width: '500px', height: '500px', background: 'radial-gradient(circle, ' + pR + '0.25) 0%, ' + pR + '0.05) 40%, transparent 65%)', pointerEvents: 'none' }}
+            style={{ top: '45%', left: '50%', width: '550px', height: '550px', background: 'radial-gradient(circle, ' + pR + '0.45) 0%, ' + pR + '0.15) 35%, ' + pR + '0.03) 55%, transparent 70%)', pointerEvents: 'none' }}
           />
 
           <div className="absolute" style={{ top: '45%', left: '50%', transform: 'translate(-50%, -50%)', width: '280px', height: '280px', borderRadius: '24px', overflow: 'hidden', backgroundColor: '#fff' }}>
