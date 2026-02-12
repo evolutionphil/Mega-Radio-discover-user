@@ -20,6 +20,7 @@ export const Genres = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
+  
 
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres', selectedCountryCode],
@@ -258,52 +259,66 @@ export const Genres = (): JSX.Element => {
     }
   });
 
-  const scrollRAF = useRef<number>(0);
-
-  useEffect(() => {
-    if (!scrollContainerRef.current) return;
-
-    cancelAnimationFrame(scrollRAF.current);
-    scrollRAF.current = requestAnimationFrame(() => {
-      const scrollContainer = scrollContainerRef.current;
-      if (!scrollContainer) return;
-
-      if (focusIndex <= 7) {
-        scrollContainer.scrollTop = 0;
-        return;
-      }
-
-      const focusedEl = scrollContainer.querySelector(`[data-focus-idx="${focusIndex}"]`) as HTMLElement;
-      if (!focusedEl) return;
-
-      const BOTTOM_PADDING = 140;
-      const TOP_PADDING = 20;
-
-      const viewTop = scrollContainer.scrollTop;
-      const viewBottom = viewTop + scrollContainer.clientHeight - BOTTOM_PADDING;
-
-      let elementTop = 0;
-      let el: HTMLElement | null = focusedEl;
-      while (el && el !== scrollContainer) {
-        elementTop += el.offsetTop;
-        el = el.offsetParent as HTMLElement;
-        if (!el || el.nodeType !== 1) break;
-      }
-      const elementBottom = elementTop + focusedEl.offsetHeight;
-
-      if (elementTop < viewTop + TOP_PADDING) {
-        scrollContainer.scrollTop = Math.max(0, elementTop - TOP_PADDING);
-      } else if (elementBottom > viewBottom) {
-        scrollContainer.scrollTop = elementTop - scrollContainer.clientHeight + focusedEl.offsetHeight + BOTTOM_PADDING;
-      }
-    });
-
-    return () => cancelAnimationFrame(scrollRAF.current);
-  }, [focusIndex]);
-
   const CARD_HEIGHT = 139;
   const CARD_GAP = 19;
   const ROW_HEIGHT = CARD_HEIGHT + CARD_GAP;
+
+  const CONTENT_PADDING_TOP = 60;
+  const POPULAR_TITLE_HEIGHT = 32 + 24;
+  const POPULAR_ROWS = 2;
+  const POPULAR_SECTION_HEIGHT = POPULAR_TITLE_HEIGHT + (POPULAR_ROWS * ROW_HEIGHT) + 40;
+  const ALL_TITLE_HEIGHT = 32 + 24;
+  const ALL_SECTION_START = CONTENT_PADDING_TOP + POPULAR_SECTION_HEIGHT + ALL_TITLE_HEIGHT;
+
+  const prevRowRef = useRef<number>(-1);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    if (focusIndex <= 7) {
+      scrollContainer.scrollTop = 0;
+      prevRowRef.current = -1;
+      return;
+    }
+
+    if (focusIndex >= 7 && focusIndex <= 14) {
+      const row = Math.floor((focusIndex - 7) / 4);
+      const elementTop = CONTENT_PADDING_TOP + POPULAR_TITLE_HEIGHT + (row * ROW_HEIGHT);
+      const elementBottom = elementTop + CARD_HEIGHT;
+      const BOTTOM_PADDING = 140;
+      const viewTop = scrollContainer.scrollTop;
+      const viewBottom = viewTop + scrollContainer.clientHeight - BOTTOM_PADDING;
+
+      if (elementTop < viewTop + 20) {
+        scrollContainer.scrollTop = Math.max(0, elementTop - 20);
+      } else if (elementBottom > viewBottom) {
+        scrollContainer.scrollTop = elementTop - scrollContainer.clientHeight + CARD_HEIGHT + BOTTOM_PADDING;
+      }
+      prevRowRef.current = -1;
+      return;
+    }
+
+    if (focusIndex >= 15) {
+      const relIndex = focusIndex - 15;
+      const row = Math.floor(relIndex / 4);
+
+      if (row === prevRowRef.current) return;
+      prevRowRef.current = row;
+
+      const elementTop = ALL_SECTION_START + (row * ROW_HEIGHT);
+      const elementBottom = elementTop + CARD_HEIGHT;
+      const BOTTOM_PADDING = 140;
+      const viewTop = scrollContainer.scrollTop;
+      const viewBottom = viewTop + scrollContainer.clientHeight - BOTTOM_PADDING;
+
+      if (elementTop < viewTop + 20) {
+        scrollContainer.scrollTop = Math.max(0, elementTop - 20);
+      } else if (elementBottom > viewBottom) {
+        scrollContainer.scrollTop = elementTop - scrollContainer.clientHeight + CARD_HEIGHT + BOTTOM_PADDING;
+      }
+    }
+  }, [focusIndex]);
 
   return (
     <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden" data-testid="page-genres">
