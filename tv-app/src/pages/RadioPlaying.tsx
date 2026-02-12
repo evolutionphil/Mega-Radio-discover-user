@@ -689,38 +689,29 @@ export const RadioPlaying = (): JSX.Element => {
     <div className="absolute inset-0 w-[1920px] h-[1080px]" style={{ background: 'radial-gradient(181.15% 96.19% at 5.26% 9.31%, #0E0E0E 0%, #3F1660 29.6%, #0E0E0E 100%)' }}>
 
       {isIdle && currentStation && !streamError && (
-        <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden animate-ambient-fadein" style={{ zIndex: 100, backgroundColor: '#050508' }} data-testid="ambient-mode-overlay">
+        <div className="absolute inset-0 w-[1920px] h-[1080px] overflow-hidden amb-fadein" style={{ zIndex: 100, background: 'linear-gradient(135deg, #030308 0%, #0a0612 40%, #0d0518 60%, #050510 100%)' }} data-testid="ambient-mode-overlay">
 
-          <div className="absolute" style={{ top: '50px', left: '48px' }}>
-            <div className="flex items-center gap-2">
-              <img alt="" src={assetPath("images/path-8.svg")} style={{ width: '36px', height: '36px' }} />
-              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '28px', color: 'rgba(255,255,255,0.35)' }}>
-                <span style={{ fontWeight: 700 }}>mega</span>radio
-              </p>
-            </div>
-          </div>
-
-          <div className="absolute w-[800px] h-[800px] rounded-full animate-ambient-orb-1"
-            style={{ background: 'radial-gradient(circle, rgba(255,65,153,0.35) 0%, rgba(255,65,153,0.05) 50%, transparent 70%)', top: '-200px', left: '-200px' }}
+          <div className="absolute rounded-full amb-drift-1"
+            style={{ width: '900px', height: '900px', background: 'radial-gradient(circle, rgba(255,65,153,0.2) 0%, transparent 60%)', top: '-300px', left: '-200px' }}
           />
-          <div className="absolute w-[700px] h-[700px] rounded-full animate-ambient-orb-2"
-            style={{ background: 'radial-gradient(circle, rgba(80,60,220,0.3) 0%, rgba(80,60,220,0.05) 50%, transparent 70%)', bottom: '-200px', right: '-200px' }}
+          <div className="absolute rounded-full amb-drift-2"
+            style={{ width: '800px', height: '800px', background: 'radial-gradient(circle, rgba(60,40,200,0.18) 0%, transparent 60%)', bottom: '-250px', right: '-150px' }}
           />
-          <div className="absolute w-[600px] h-[600px] rounded-full animate-ambient-orb-3"
-            style={{ background: 'radial-gradient(circle, rgba(0,200,180,0.25) 0%, rgba(0,200,180,0.03) 50%, transparent 70%)', top: '50%', left: '50%' }}
+          <div className="absolute rounded-full amb-drift-3"
+            style={{ width: '700px', height: '700px', background: 'radial-gradient(circle, rgba(0,180,160,0.12) 0%, transparent 60%)', top: '50%', left: '50%' }}
           />
-          <div className="absolute w-[500px] h-[500px] rounded-full animate-ambient-orb-4"
-            style={{ background: 'radial-gradient(circle, rgba(255,180,50,0.2) 0%, rgba(255,180,50,0.03) 50%, transparent 70%)', top: '-100px', right: '200px' }}
-          />
-          <div className="absolute w-[650px] h-[650px] rounded-full animate-ambient-orb-5"
-            style={{ background: 'radial-gradient(circle, rgba(200,50,255,0.2) 0%, rgba(200,50,255,0.03) 50%, transparent 70%)', bottom: '-100px', left: '300px' }}
+          <div className="absolute rounded-full amb-drift-4"
+            style={{ width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(180,50,220,0.12) 0%, transparent 60%)', bottom: '-100px', left: '200px' }}
           />
 
-          <div className="absolute animate-ambient-ring-1" style={{ top: '50%', left: '50%', width: '460px', height: '460px', borderRadius: '50%', border: '1.5px solid rgba(255,65,153,0.18)' }} />
-          <div className="absolute animate-ambient-ring-2" style={{ top: '50%', left: '50%', width: '560px', height: '560px', borderRadius: '50%', border: '1.5px solid rgba(80,60,220,0.12)' }} />
-          <div className="absolute animate-ambient-ring-1" style={{ top: '50%', left: '50%', width: '680px', height: '680px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.06)' }} />
+          <div className="absolute amb-ring-1" style={{ top: '50%', left: '50%', width: '500px', height: '500px', borderRadius: '50%', border: '1px solid rgba(255,65,153,0.1)' }} />
+          <div className="absolute amb-ring-2" style={{ top: '50%', left: '50%', width: '640px', height: '640px', borderRadius: '50%', border: '1px solid rgba(100,80,220,0.07)' }} />
 
-          <div className="absolute animate-ambient-logo-pulse" style={{ top: '42%', left: '50%', width: '320px', height: '320px', borderRadius: '28px', overflow: 'hidden', backgroundColor: '#ffffff' }}>
+          <div className="absolute rounded-full amb-glow"
+            style={{ top: '45%', left: '50%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(255,65,153,0.25) 0%, rgba(255,65,153,0.05) 40%, transparent 65%)', pointerEvents: 'none' }}
+          />
+
+          <div className="absolute" style={{ top: '45%', left: '50%', transform: 'translate(-50%, -50%)', width: '280px', height: '280px', borderRadius: '24px', overflow: 'hidden', backgroundColor: '#fff' }}>
             <img
               src={getStationImage(currentStation)}
               alt={currentStation.name}
@@ -729,44 +720,55 @@ export const RadioPlaying = (): JSX.Element => {
             />
           </div>
 
-          <div className="absolute flex items-end justify-center" style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '280px', height: '280px', gap: '6px', pointerEvents: 'none', opacity: 0.15 }}>
-            {[1.2, 0.8, 1.5, 0.6, 1.3, 0.9, 1.1, 0.7, 1.4, 1.0].map(function(delay, i) {
+          <div className="absolute flex items-end justify-center" style={{ top: '45%', left: '50%', transform: 'translate(-50%, -50%)', width: '200px', height: '60px', gap: '4px', pointerEvents: 'none', marginTop: '170px' }}>
+            {[0, 0.15, 0.3, 0.1, 0.25, 0.35, 0.05, 0.2].map(function(delay, i) {
               return (
                 <div key={i} style={{
-                  width: '6px',
-                  borderRadius: '3px',
-                  background: 'linear-gradient(to top, #ff4199, #ff6bb3)',
-                  animation: 'ambient-bar ' + (1 + delay * 0.5) + 's ease-in-out ' + (delay * 0.3) + 's infinite',
-                  height: '20px',
+                  width: '4px',
+                  height: '40px',
+                  borderRadius: '2px',
+                  background: '#ff4199',
+                  opacity: 0.4,
+                  transformOrigin: 'bottom',
+                  animation: 'amb-eq-bar ' + (1.2 + i * 0.15) + 's ease-in-out ' + delay + 's infinite',
                 }} />
               );
             })}
           </div>
 
-          <div className="absolute" style={{ top: '65%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center' }}>
-            <p className="font-['Ubuntu',Helvetica] font-bold" style={{ fontSize: '36px', color: 'rgba(255,255,255,0.85)', marginBottom: '12px', maxWidth: '800px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <div className="absolute" style={{ top: '66%', left: '50%', transform: 'translateX(-50%)', textAlign: 'center', width: '900px' }}>
+            <p className="font-['Ubuntu',Helvetica] font-medium" style={{ fontSize: '34px', color: 'rgba(255,255,255,0.9)', letterSpacing: '0.5px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {currentStation.name}
             </p>
             {nowPlayingMetadata && (
-              <p className="font-['Ubuntu',Helvetica] font-light animate-ambient-text-fade" style={{ fontSize: '24px', color: '#ff4199', maxWidth: '700px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: '0 auto' }}>
+              <p className="font-['Ubuntu',Helvetica] font-light amb-text-pulse" style={{ fontSize: '22px', color: 'rgba(255,65,153,0.85)', marginTop: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {nowPlayingMetadata}
               </p>
             )}
             {currentStation.country && (
-              <p className="font-['Ubuntu',Helvetica] font-light" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.3)', marginTop: '8px' }}>
+              <p className="font-['Ubuntu',Helvetica] font-light" style={{ fontSize: '18px', color: 'rgba(255,255,255,0.25)', marginTop: '10px', letterSpacing: '2px', textTransform: 'uppercase' }}>
                 {currentStation.country}
               </p>
             )}
           </div>
 
-          <div className="absolute" style={{ top: '50px', right: '60px' }}>
-            <p className="font-['Ubuntu',Helvetica] font-extralight" style={{ fontSize: '72px', color: 'rgba(255,255,255,0.25)', letterSpacing: '4px' }} data-testid="ambient-clock">
+          <div className="absolute" style={{ top: '48px', left: '48px' }}>
+            <div className="flex items-center" style={{ gap: '8px' }}>
+              <img alt="" src={assetPath("images/path-8.svg")} style={{ width: '32px', height: '32px', opacity: 0.4 }} />
+              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '24px', color: 'rgba(255,255,255,0.3)' }}>
+                <span style={{ fontWeight: 700 }}>mega</span>radio
+              </p>
+            </div>
+          </div>
+
+          <div className="absolute" style={{ top: '48px', right: '60px' }}>
+            <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '64px', fontWeight: 200, color: 'rgba(255,255,255,0.2)', letterSpacing: '6px' }} data-testid="ambient-clock">
               {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </p>
           </div>
 
-          <div className="absolute" style={{ bottom: '40px', left: '50%', transform: 'translateX(-50%)' }}>
-            <p className="font-['Ubuntu',Helvetica] font-light animate-ambient-text-fade" style={{ fontSize: '16px', color: 'rgba(255,255,255,0.15)' }}>
+          <div className="absolute" style={{ bottom: '36px', left: '50%', transform: 'translateX(-50%)' }}>
+            <p className="font-['Ubuntu',Helvetica] font-light amb-text-pulse" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.12)', letterSpacing: '3px', textTransform: 'uppercase' }}>
               {t('press_any_button') || 'Press any button to dismiss'}
             </p>
           </div>
