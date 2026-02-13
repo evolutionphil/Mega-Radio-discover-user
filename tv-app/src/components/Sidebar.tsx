@@ -8,184 +8,117 @@ interface SidebarProps {
   getFocusClasses: (focused: boolean) => string;
 }
 
-// Color indicators matching onboarding guide pages
 const MENU_COLORS = {
-  discover: '#ff4199',   // Vibrant pink/red
-  genres: '#10b981',     // Fresh green
-  search: '#3b82f6',     // Electric blue
-  favorites: '#fbbf24'   // Sunny yellow
+  discover: '#ff4199',
+  genres: '#10b981',
+  search: '#3b82f6',
+  favorites: '#fbbf24'
 };
+
+interface SidebarItemProps {
+  href: string;
+  icon: string;
+  label: string;
+  index: number;
+  page: SidebarProps['activePage'];
+  activePage: SidebarProps['activePage'];
+  isFocused: boolean;
+  getFocusClasses: string;
+  color?: string;
+  colorShadow?: string;
+  testId: string;
+}
+
+function SidebarItem({ href, icon, label, isFocused: focused, getFocusClasses: focusClasses, activePage, page, color, colorShadow, testId }: SidebarItemProps) {
+  var activeClass = activePage === page ? 'bg-[rgba(255,65,153,0.2)]' : '';
+  return (
+    <Link href={href}>
+      <div
+        className={"rounded-[10px] overflow-hidden transition-colors " + focusClasses + " " + activeClass}
+        style={{ width: '120px', height: '100px', position: 'relative' }}
+        data-testid={testId}
+      >
+        {color && (
+          <span
+            style={{
+              position: 'absolute',
+              top: '8px',
+              right: '8px',
+              width: '16px',
+              height: '16px',
+              borderRadius: '50%',
+              backgroundColor: color,
+              boxShadow: colorShadow || 'none',
+              transform: focused ? 'scale(1.1)' : 'scale(1)',
+              transition: 'transform 0.2s'
+            }}
+          />
+        )}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', padding: '14px 8px' }}>
+          <div style={{ width: '28px', height: '28px', marginBottom: '6px', flexShrink: 0 }}>
+            <img
+              alt=""
+              style={{ display: 'block', width: '100%', height: '100%', maxWidth: 'none' }}
+              src={assetPath(icon)}
+            />
+          </div>
+          <p
+            className="font-['Ubuntu',Helvetica]"
+            style={{
+              fontSize: '16px',
+              fontWeight: 500,
+              color: '#ffffff',
+              textAlign: 'center',
+              lineHeight: '1.2',
+              width: '104px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              margin: 0,
+              padding: 0
+            }}
+          >
+            {label}
+          </p>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps): JSX.Element => {
   const { t } = useLocalization();
-  
-  const getActiveClasses = (page: typeof activePage): string => {
-    return activePage === page ? 'bg-[rgba(255,65,153,0.2)]' : '';
-  };
-  
+
+  var items = [
+    { href: '/discover-no-user', icon: 'images/radio-icon.svg', label: t('nav_discover') || 'Discover', page: 'discover' as const, color: MENU_COLORS.discover, colorShadow: '0 0 8px rgba(255,65,153,0.6)', testId: 'button-discover' },
+    { href: '/genres', icon: 'images/music-icon.svg', label: t('nav_genres') || 'Genres', page: 'genres' as const, color: MENU_COLORS.genres, colorShadow: '0 0 8px rgba(16,185,129,0.6)', testId: 'button-genres' },
+    { href: '/search', icon: 'images/search-icon.svg', label: t('nav_search') || 'Search', page: 'search' as const, color: MENU_COLORS.search, colorShadow: '0 0 8px rgba(59,130,246,0.6)', testId: 'button-search' },
+    { href: '/favorites', icon: 'images/heart-icon.svg', label: t('nav_favorites') || 'Favorites', page: 'favorites' as const, color: MENU_COLORS.favorites, colorShadow: '0 0 8px rgba(251,191,36,0.6)', testId: 'button-favorites' },
+    { href: '/country-select', icon: 'images/globe-icon.svg', label: t('nav_country') || 'Country', page: 'country' as const, testId: 'button-country' },
+    { href: '/settings', icon: 'images/settings-icon.svg', label: t('nav_settings') || 'Settings', page: 'settings' as const, testId: 'button-settings' },
+  ];
+
   return (
-    <div className="fixed h-[650px] left-[48px] top-[242px] w-[120px] z-50 pointer-events-auto">
-      {/* Discover */}
-      <Link href="/discover-no-user">
-        <div 
-          className={`absolute left-0 rounded-[10px] w-[120px] h-[100px] top-0 transition-colors ${getFocusClasses(isFocused(0))} ${getActiveClasses('discover')}`} 
-          data-testid="button-discover"
-        >
-          {/* Color indicator - Pink */}
-          <span 
-            className={`absolute top-2 right-2 w-[16px] h-[16px] rounded-full transition-transform ${isFocused(0) ? 'scale-110' : ''}`}
-            style={{ 
-              backgroundColor: MENU_COLORS.discover,
-              boxShadow: '0 0 8px rgba(255,65,153,0.6)'
-            }}
-            data-testid="indicator-discover"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px] overflow-hidden rounded-[10px]">
-            <div className="w-[28px] h-[28px] mb-[6px] flex-shrink-0">
-              <img
-                alt=""
-                className="block max-w-none w-full h-full"
-                src={assetPath("images/radio-icon.svg")}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
-              {t('nav_discover') || 'Discover'}
-            </p>
+    <div style={{ position: 'fixed', left: '48px', top: '242px', width: '120px', height: '650px', zIndex: 50, pointerEvents: 'auto' }}>
+      {items.map(function(item, index) {
+        return (
+          <div key={item.page} style={{ position: 'absolute', left: 0, top: (index * 108) + 'px' }}>
+            <SidebarItem
+              href={item.href}
+              icon={item.icon}
+              label={item.label}
+              index={index}
+              page={item.page}
+              activePage={activePage}
+              isFocused={isFocused(index)}
+              getFocusClasses={getFocusClasses(isFocused(index))}
+              color={item.color}
+              colorShadow={item.colorShadow}
+              testId={item.testId}
+            />
           </div>
-        </div>
-      </Link>
-
-      {/* Genres */}
-      <Link href="/genres">
-        <div 
-          className={`absolute left-0 rounded-[10px] w-[120px] h-[100px] top-[108px] transition-colors ${getFocusClasses(isFocused(1))} ${getActiveClasses('genres')}`} 
-          data-testid="button-genres"
-        >
-          {/* Color indicator - Green */}
-          <span 
-            className={`absolute top-2 right-2 w-[16px] h-[16px] rounded-full transition-transform ${isFocused(1) ? 'scale-110' : ''}`}
-            style={{ 
-              backgroundColor: MENU_COLORS.genres,
-              boxShadow: '0 0 8px rgba(16,185,129,0.6)'
-            }}
-            data-testid="indicator-genres"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px] overflow-hidden rounded-[10px]">
-            <div className="w-[28px] h-[28px] mb-[6px] flex-shrink-0">
-              <img
-                alt=""
-                className="block max-w-none w-full h-full"
-                src={assetPath("images/music-icon.svg")}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
-              {t('nav_genres') || 'Genres'}
-            </p>
-          </div>
-        </div>
-      </Link>
-
-      {/* Search */}
-      <Link href="/search">
-        <div 
-          className={`absolute left-0 rounded-[10px] w-[120px] h-[100px] top-[216px] transition-colors ${getFocusClasses(isFocused(2))} ${getActiveClasses('search')}`} 
-          data-testid="button-search"
-        >
-          {/* Color indicator - Blue */}
-          <span 
-            className={`absolute top-2 right-2 w-[16px] h-[16px] rounded-full transition-transform ${isFocused(2) ? 'scale-110' : ''}`}
-            style={{ 
-              backgroundColor: MENU_COLORS.search,
-              boxShadow: '0 0 8px rgba(59,130,246,0.6)'
-            }}
-            data-testid="indicator-search"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px] overflow-hidden rounded-[10px]">
-            <div className="w-[28px] h-[28px] mb-[6px] flex-shrink-0">
-              <img
-                alt=""
-                className="block max-w-none w-full h-full"
-                src={assetPath("images/search-icon.svg")}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
-              {t('nav_search') || 'Search'}
-            </p>
-          </div>
-        </div>
-      </Link>
-
-      {/* Favorites */}
-      <Link href="/favorites">
-        <div 
-          className={`absolute left-0 rounded-[10px] w-[120px] h-[100px] top-[324px] transition-colors ${getFocusClasses(isFocused(3))} ${getActiveClasses('favorites')}`} 
-          data-testid="button-favorites"
-        >
-          {/* Color indicator - Yellow */}
-          <span 
-            className={`absolute top-2 right-2 w-[16px] h-[16px] rounded-full transition-transform ${isFocused(3) ? 'scale-110' : ''}`}
-            style={{ 
-              backgroundColor: MENU_COLORS.favorites,
-              boxShadow: '0 0 8px rgba(251,191,36,0.6)'
-            }}
-            data-testid="indicator-favorites"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px] overflow-hidden rounded-[10px]">
-            <div className="w-[28px] h-[28px] mb-[6px] flex-shrink-0">
-              <img
-                alt=""
-                className="block max-w-none w-full h-full"
-                src={assetPath("images/heart-icon.svg")}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
-              {t('nav_favorites') || 'Favorites'}
-            </p>
-          </div>
-        </div>
-      </Link>
-
-      {/* Country */}
-      <Link href="/country-select">
-        <div 
-          className={`absolute left-0 overflow-hidden rounded-[10px] w-[120px] h-[100px] top-[432px] transition-colors ${getFocusClasses(isFocused(4))} ${getActiveClasses('country')}`} 
-          data-testid="button-country"
-        >
-          <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px]">
-            <div className="w-[28px] h-[28px] mb-[6px] flex-shrink-0">
-              <img
-                alt=""
-                className="block max-w-none w-full h-full"
-                src={assetPath("images/globe-icon.svg")}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
-              {t('nav_country') || 'Country'}
-            </p>
-          </div>
-        </div>
-      </Link>
-
-      {/* Settings */}
-      <Link href="/settings">
-        <div 
-          className={`absolute left-0 overflow-hidden rounded-[10px] w-[120px] h-[100px] top-[540px] transition-colors ${getFocusClasses(isFocused(5))} ${getActiveClasses('settings')}`} 
-          data-testid="button-settings"
-        >
-          <div className="absolute inset-0 flex flex-col items-center justify-center pt-[14px] pb-[14px] px-[8px]">
-            <div className="w-[28px] h-[28px] mb-[6px] flex-shrink-0">
-              <img
-                alt=""
-                className="block max-w-none w-full h-full"
-                src={assetPath("images/settings-icon.svg")}
-              />
-            </div>
-            <p className="font-['Ubuntu',Helvetica] font-medium text-[16px] text-center text-white leading-tight w-full">
-              {t('nav_settings') || 'Settings'}
-            </p>
-          </div>
-        </div>
-      </Link>
+        );
+      })}
     </div>
   );
 };
