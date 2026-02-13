@@ -312,6 +312,74 @@ export const Settings = (): JSX.Element => {
     }
   };
 
+  var optionRowBase = {
+    display: 'flex',
+    flexDirection: 'row' as const,
+    alignItems: 'center',
+    gap: '20px',
+    height: '68px',
+    paddingLeft: '24px',
+    paddingRight: '24px',
+    borderRadius: '14px',
+    cursor: 'pointer',
+    flexShrink: 0,
+  };
+
+  var getOptionRowBg = (focused: boolean, selected: boolean) =>
+    focused ? '#ff4199' : selected ? 'rgba(255,65,153,0.12)' : 'transparent';
+
+  var getOptionRowShadow = (focused: boolean) =>
+    focused ? '0 0 24px rgba(255,65,153,0.3)' : 'none';
+
+  var checkmarkStyle = {
+    width: '28px',
+    height: '28px',
+    borderRadius: '50%',
+    backgroundColor: '#ff4199',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  };
+
+  var optionTextStyle = {
+    fontWeight: 500,
+    fontSize: '22px',
+    color: '#ffffff',
+    flex: 1,
+    overflow: 'hidden' as const,
+    textOverflow: 'ellipsis' as const,
+    whiteSpace: 'nowrap' as const,
+    margin: 0,
+  };
+
+  var radioStyle = (selected: boolean) => ({
+    width: '28px',
+    height: '28px',
+    borderRadius: '50%',
+    border: '3px solid ' + (selected ? '#ff4199' : 'rgba(255,255,255,0.3)'),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  });
+
+  var radioDotStyle = {
+    width: '14px',
+    height: '14px',
+    borderRadius: '50%',
+    backgroundColor: '#ff4199',
+  };
+
+  var flagStyle = {
+    width: '40px',
+    height: '28px',
+    borderRadius: '4px',
+    objectFit: 'cover' as const,
+    flexShrink: 0,
+    boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
+  };
+
   const renderOptions = () => {
     const cat = categories[categoryIndex];
     const isFocusedOnOptions = focusSection === 'options';
@@ -324,24 +392,17 @@ export const Settings = (): JSX.Element => {
           return (
             <div
               key={lang.code}
-              className={`flex items-center gap-[20px] h-[68px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
-                isItemFocused
-                  ? 'bg-[#ff4199]'
-                  : isSelected
-                    ? 'bg-[rgba(255,65,153,0.12)]'
-                    : 'bg-transparent'
-              }`}
-              style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.3)' } : undefined}
+              style={{ ...optionRowBase, backgroundColor: getOptionRowBg(isItemFocused, isSelected), boxShadow: getOptionRowShadow(isItemFocused) }}
               onClick={() => { handleLanguageChange(index); }}
               data-testid={`language-${lang.code}`}
             >
-              <img src={getFlagUrl(lang.country)} alt={lang.label} className="w-[40px] h-[28px] rounded-[4px] object-cover flex-shrink-0" style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.3)' }} />
-              <p className={`font-['Ubuntu',Helvetica] font-medium text-[22px] text-white flex-1 truncate`}>
+              <img src={getFlagUrl(lang.country)} alt={lang.label} style={flagStyle} />
+              <p className="font-['Ubuntu',Helvetica]" style={optionTextStyle}>
                 {lang.label}
               </p>
               {isSelected && (
-                <div className="w-[28px] h-[28px] rounded-full bg-[#ff4199] flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-[16px]">✓</span>
+                <div style={checkmarkStyle}>
+                  <span style={{ color: '#ffffff', fontSize: '16px' }}>✓</span>
                 </div>
               )}
             </div>
@@ -355,24 +416,17 @@ export const Settings = (): JSX.Element => {
           return (
             <div
               key={kb.id}
-              className={`flex items-center gap-[20px] h-[68px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
-                isItemFocused
-                  ? 'bg-[#ff4199]'
-                  : isSelected
-                    ? 'bg-[rgba(255,65,153,0.12)]'
-                    : 'bg-transparent'
-              }`}
-              style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.3)' } : undefined}
+              style={{ ...optionRowBase, backgroundColor: getOptionRowBg(isItemFocused, isSelected), boxShadow: getOptionRowShadow(isItemFocused) }}
               onClick={() => { handleKeyboardChange(index); }}
               data-testid={`keyboard-${kb.id}`}
             >
-              <img src={getFlagUrl(kb.country)} alt={kb.label} className="w-[40px] h-[28px] rounded-[4px] object-cover flex-shrink-0" style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.3)' }} />
-              <p className={`font-['Ubuntu',Helvetica] font-medium text-[22px] text-white flex-1 truncate`}>
+              <img src={getFlagUrl(kb.country)} alt={kb.label} style={flagStyle} />
+              <p className="font-['Ubuntu',Helvetica]" style={optionTextStyle}>
                 {kb.label}
               </p>
               {isSelected && (
-                <div className="w-[28px] h-[28px] rounded-full bg-[#ff4199] flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-[16px]">✓</span>
+                <div style={checkmarkStyle}>
+                  <span style={{ color: '#ffffff', fontSize: '16px' }}>✓</span>
                 </div>
               )}
             </div>
@@ -386,23 +440,14 @@ export const Settings = (): JSX.Element => {
           return (
             <div
               key={option}
-              className={`flex items-center gap-[20px] h-[68px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
-                isItemFocused
-                  ? 'bg-[#ff4199]'
-                  : isSelected
-                    ? 'bg-[rgba(255,65,153,0.12)]'
-                    : 'bg-transparent'
-              }`}
-              style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.3)' } : undefined}
+              style={{ ...optionRowBase, backgroundColor: getOptionRowBg(isItemFocused, isSelected), boxShadow: getOptionRowShadow(isItemFocused) }}
               onClick={() => handlePlayAtStartChange(option)}
               data-testid={`option-${option}`}
             >
-              <div className={`w-[28px] h-[28px] rounded-full border-[3px] flex items-center justify-center flex-shrink-0 ${
-                isSelected ? 'border-[#ff4199]' : 'border-[rgba(255,255,255,0.3)]'
-              }`}>
-                {isSelected && <div className="w-[14px] h-[14px] rounded-full bg-[#ff4199]" />}
+              <div style={radioStyle(isSelected)}>
+                {isSelected && <div style={radioDotStyle} />}
               </div>
-              <p className={`font-['Ubuntu',Helvetica] font-medium text-[22px] text-white flex-1 truncate`}>
+              <p className="font-['Ubuntu',Helvetica]" style={optionTextStyle}>
                 {playAtStartLabels[option]}
               </p>
             </div>
@@ -413,9 +458,12 @@ export const Settings = (): JSX.Element => {
         return (
           <>
             {isTimerActive && remainingSeconds !== null && (
-              <div className="flex items-center gap-[12px] h-[56px] px-[24px] mb-[8px] rounded-[14px] bg-[rgba(255,65,153,0.1)] border border-[rgba(255,65,153,0.25)] flex-shrink-0" data-testid="sleep-timer-remaining">
-                <span className="text-[20px]">💤</span>
-                <p className="font-['Ubuntu',Helvetica] font-bold text-[20px] text-[#ff4199]">
+              <div
+                style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', height: '56px', paddingLeft: '24px', paddingRight: '24px', marginBottom: '8px', borderRadius: '14px', backgroundColor: 'rgba(255,65,153,0.1)', border: '1px solid rgba(255,65,153,0.25)', flexShrink: 0 }}
+                data-testid="sleep-timer-remaining"
+              >
+                <span style={{ fontSize: '20px' }}>💤</span>
+                <p className="font-['Ubuntu',Helvetica]" style={{ fontWeight: 700, fontSize: '20px', color: '#ff4199', margin: 0 }}>
                   {formatRemainingTime(remainingSeconds)}
                 </p>
               </div>
@@ -427,23 +475,14 @@ export const Settings = (): JSX.Element => {
               return (
                 <div
                   key={optionKey}
-                  className={`flex items-center gap-[20px] h-[68px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
-                    isItemFocused
-                      ? 'bg-[#ff4199]'
-                      : isSelected
-                        ? 'bg-[rgba(255,65,153,0.12)]'
-                        : 'bg-transparent'
-                  }`}
-                  style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.3)' } : undefined}
+                  style={{ ...optionRowBase, backgroundColor: getOptionRowBg(isItemFocused, isSelected), boxShadow: getOptionRowShadow(isItemFocused) }}
                   onClick={() => { option === null ? cancelSleepTimer() : setSleepTimer(option); }}
                   data-testid={`sleep-timer-${optionKey}`}
                 >
-                  <div className={`w-[28px] h-[28px] rounded-full border-[3px] flex items-center justify-center flex-shrink-0 ${
-                    isSelected ? 'border-[#ff4199]' : 'border-[rgba(255,255,255,0.3)]'
-                  }`}>
-                    {isSelected && <div className="w-[14px] h-[14px] rounded-full bg-[#ff4199]" />}
+                  <div style={radioStyle(isSelected)}>
+                    {isSelected && <div style={radioDotStyle} />}
                   </div>
-                  <p className={`font-['Ubuntu',Helvetica] font-medium text-[22px] text-white flex-1 truncate`}>
+                  <p className="font-['Ubuntu',Helvetica]" style={optionTextStyle}>
                     {sleepTimerLabels[optionKey]}
                   </p>
                 </div>
@@ -461,27 +500,51 @@ export const Settings = (): JSX.Element => {
           return (
             <div
               key={item.testId}
-              className={`flex items-center gap-[20px] h-[88px] px-[24px] rounded-[14px] cursor-pointer transition-all duration-150 flex-shrink-0 ${
-                isItemFocused ? 'bg-[rgba(255,65,153,0.15)]' : 'bg-transparent'
-              }`}
-              style={isItemFocused ? { boxShadow: '0 0 24px rgba(255,65,153,0.15)' } : undefined}
+              style={{
+                display: 'flex',
+                flexDirection: 'row' as const,
+                alignItems: 'center',
+                gap: '20px',
+                height: '88px',
+                paddingLeft: '24px',
+                paddingRight: '24px',
+                borderRadius: '14px',
+                cursor: 'pointer',
+                flexShrink: 0,
+                backgroundColor: isItemFocused ? 'rgba(255,65,153,0.15)' : 'transparent',
+                boxShadow: isItemFocused ? '0 0 24px rgba(255,65,153,0.15)' : 'none',
+              }}
               onClick={item.toggle}
               data-testid={item.testId}
             >
-              <div className="flex flex-col flex-1 min-w-0">
-                <p className="font-['Ubuntu',Helvetica] font-medium text-[22px] text-white truncate">
+              <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+                <p className="font-['Ubuntu',Helvetica]" style={{ fontWeight: 500, fontSize: '22px', color: '#ffffff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: 0 }}>
                   {item.label}
                 </p>
-                <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-[rgba(255,255,255,0.45)] truncate">
+                <p className="font-['Ubuntu',Helvetica]" style={{ fontWeight: 400, fontSize: '16px', color: 'rgba(255,255,255,0.45)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: 0 }}>
                   {item.desc}
                 </p>
               </div>
-              <div className={`w-[60px] h-[34px] rounded-full transition-colors duration-200 flex-shrink-0 relative ${
-                item.value ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.15)]'
-              }`}>
-                <div className={`absolute top-[4px] w-[26px] h-[26px] rounded-full bg-white transition-all duration-200 ${
-                  item.value ? 'left-[30px]' : 'left-[4px]'
-                }`} style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.3)' }} />
+              <div style={{
+                width: '60px',
+                height: '34px',
+                borderRadius: '9999px',
+                flexShrink: 0,
+                position: 'relative' as const,
+                backgroundColor: item.value ? '#ff4199' : 'rgba(255,255,255,0.15)',
+                transition: 'background-color 0.2s',
+              }}>
+                <div style={{
+                  position: 'absolute' as const,
+                  top: '4px',
+                  left: item.value ? '30px' : '4px',
+                  width: '26px',
+                  height: '26px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+                  transition: 'left 0.2s',
+                }} />
               </div>
             </div>
           );
@@ -511,36 +574,61 @@ export const Settings = (): JSX.Element => {
         {t('settings') || 'Settings'}
       </p>
 
-      <div className="absolute left-[236px] top-[140px] w-[1650px] h-[900px] z-10 flex gap-0">
+      <div style={{ position: 'absolute', left: '236px', top: '140px', width: '1650px', height: '900px', zIndex: 10, display: 'flex', gap: 0 }}>
 
-        <div className="flex-shrink-0" style={{ width: '420px' }}>
-          <div className="flex flex-col gap-[4px] pr-[24px]">
+        <div style={{ flexShrink: 0, width: '420px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingRight: '24px' }}>
             {categories.map((cat, index) => {
               const isCatFocused = focusSection === 'categories' && categoryIndex === index;
               const isActive = categoryIndex === index;
               return (
                 <div
                   key={cat}
-                  className={`flex items-center gap-[20px] h-[80px] px-[24px] rounded-[16px] cursor-pointer transition-all duration-200 ${
-                    isCatFocused
-                      ? 'bg-[#ff4199]'
-                      : isActive
-                        ? 'bg-[rgba(255,255,255,0.08)]'
-                        : 'bg-transparent'
-                  }`}
-                  style={isCatFocused ? { boxShadow: '0 0 30px rgba(255,65,153,0.25)' } : undefined}
+                  className="cursor-pointer transition-all duration-200"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: '20px',
+                    height: '80px',
+                    paddingLeft: '24px',
+                    paddingRight: '24px',
+                    borderRadius: '16px',
+                    backgroundColor: isCatFocused ? '#ff4199' : isActive ? 'rgba(255,255,255,0.08)' : 'transparent',
+                    boxShadow: isCatFocused ? '0 0 30px rgba(255,65,153,0.25)' : 'none'
+                  }}
                   onClick={() => { setCategoryIndex(index); setFocusSection('options'); setOptionIndex(0); }}
                   data-testid={`category-${cat}`}
                 >
-                  <span className="text-[28px] flex-shrink-0 w-[40px] text-center">{CATEGORY_ICONS[cat]}</span>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <p className={`font-['Ubuntu',Helvetica] font-semibold text-[22px] truncate ${
-                      isCatFocused ? 'text-white' : isActive ? 'text-white' : 'text-[rgba(255,255,255,0.7)]'
-                    }`}>
+                  <span style={{ fontSize: '28px', flexShrink: 0, width: '40px', textAlign: 'center' }}>{CATEGORY_ICONS[cat]}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+                    <p
+                      className="font-['Ubuntu',Helvetica]"
+                      style={{
+                        fontWeight: 600,
+                        fontSize: '22px',
+                        color: isCatFocused || isActive ? '#ffffff' : 'rgba(255,255,255,0.7)',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        margin: 0
+                      }}
+                    >
                       {getCategoryLabel(cat)}
                     </p>
                     {!isCatFocused && (
-                      <p className="font-['Ubuntu',Helvetica] font-normal text-[16px] text-[rgba(255,255,255,0.35)] truncate">
+                      <p
+                        className="font-['Ubuntu',Helvetica]"
+                        style={{
+                          fontWeight: 400,
+                          fontSize: '16px',
+                          color: 'rgba(255,255,255,0.35)',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          margin: 0
+                        }}
+                      >
                         {cat === 'language' ? selectedLang.label
                           : cat === 'keyboard' ? selectedKb.label
                           : cat === 'playback' ? playAtStartLabels[playAtStart]
@@ -554,21 +642,21 @@ export const Settings = (): JSX.Element => {
                     )}
                   </div>
                   {isActive && !isCatFocused && (
-                    <div className="w-[4px] h-[40px] rounded-full bg-[#ff4199] flex-shrink-0" />
+                    <div style={{ width: '4px', height: '40px', borderRadius: '9999px', backgroundColor: '#ff4199', flexShrink: 0 }} />
                   )}
                 </div>
               );
             })}
           </div>
 
-          <div className="mt-[40px] px-[24px] pt-[24px] border-t border-[rgba(255,255,255,0.06)]">
-            <div className="flex items-center gap-[16px]">
-              <img alt="" className="w-[36px] h-[36px]" src={assetPath("images/path-8.svg")} />
+          <div style={{ marginTop: '40px', paddingLeft: '24px', paddingRight: '24px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '16px' }}>
+              <img alt="" style={{ width: '36px', height: '36px' }} src={assetPath("images/path-8.svg")} />
               <div>
-                <p className="font-['Ubuntu',Helvetica] font-bold text-[18px] text-white">
-                  <span className="font-bold">mega</span><span className="font-light">radio</span>
+                <p className="font-['Ubuntu',Helvetica]" style={{ fontWeight: 700, fontSize: '18px', color: '#ffffff', margin: 0 }}>
+                  <span style={{ fontWeight: 700 }}>mega</span><span style={{ fontWeight: 300 }}>radio</span>
                 </p>
-                <p className="font-['Ubuntu',Helvetica] font-normal text-[14px] text-[rgba(255,255,255,0.3)]" data-testid="text-app-version">
+                <p className="font-['Ubuntu',Helvetica]" style={{ fontWeight: 400, fontSize: '14px', color: 'rgba(255,255,255,0.3)', margin: 0 }} data-testid="text-app-version">
                   Version 3.0
                 </p>
               </div>
@@ -576,23 +664,22 @@ export const Settings = (): JSX.Element => {
           </div>
         </div>
 
-        <div className="w-[1px] bg-[rgba(255,255,255,0.06)] flex-shrink-0 mx-[8px]" />
+        <div style={{ width: '1px', backgroundColor: 'rgba(255,255,255,0.06)', flexShrink: 0, marginLeft: '8px', marginRight: '8px' }} />
 
-        <div className="flex-1 min-w-0 pl-[32px]">
-          <div className="flex items-center gap-[16px] mb-[24px] h-[48px]">
-            <p className="font-['Ubuntu',Helvetica] font-bold text-[28px] text-white">
+        <div style={{ flex: 1, minWidth: 0, paddingLeft: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '16px', marginBottom: '24px', height: '48px' }}>
+            <p className="font-['Ubuntu',Helvetica]" style={{ fontWeight: 700, fontSize: '28px', color: '#ffffff', margin: 0, whiteSpace: 'nowrap' }}>
               {getCategoryLabel(categories[categoryIndex])}
             </p>
-            <div className="h-[1px] flex-1 bg-[rgba(255,255,255,0.06)]" />
-            <p className="font-['Ubuntu',Helvetica] font-normal text-[18px] text-[rgba(255,255,255,0.35)] flex-shrink-0">
+            <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(255,255,255,0.06)' }} />
+            <p className="font-['Ubuntu',Helvetica]" style={{ fontWeight: 400, fontSize: '18px', color: 'rgba(255,255,255,0.35)', flexShrink: 0, margin: 0 }}>
               {renderCategoryDescription()}
             </p>
           </div>
 
           <div
             ref={optionListRef}
-            className="flex flex-col gap-[4px] overflow-y-auto pr-[16px]"
-            style={{ height: '800px', scrollbarWidth: 'none' }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto', paddingRight: '16px', height: '800px', scrollbarWidth: 'none' }}
           >
             {renderOptions()}
           </div>
