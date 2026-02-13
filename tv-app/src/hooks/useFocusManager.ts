@@ -172,14 +172,9 @@ export function useFocusManager({
 
 /**
  * Helper to get CSS classes for focused element
- * 
- * Usage:
- * ```
- * <div className={getFocusClasses(isFocused(index))}>...</div>
- * ```
+ * Used by content cards/buttons (NOT sidebar - sidebar handles its own focus internally).
+ * No scale transform to avoid layout shifts on LG webOS.
  */
 export function getFocusClasses(isFocused: boolean): string {
-  return isFocused
-    ? 'ring-[8px] ring-[#ff4199] ring-offset-2 ring-offset-black scale-105 transition-all duration-200 shadow-[0_0_30px_rgba(255,65,153,0.8)]'
-    : 'transition-all duration-200';
+  return isFocused ? 'ring-2 ring-[#ff4199]' : '';
 }

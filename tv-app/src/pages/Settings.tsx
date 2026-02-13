@@ -93,13 +93,56 @@ const getFlagUrl = (countryCode: string) =>
 
 type SettingsCategory = 'language' | 'keyboard' | 'playback' | 'timer' | 'accessibility';
 
-const CATEGORY_ICONS: Record<SettingsCategory, string> = {
-  language: '🌍',
-  keyboard: '⌨️',
-  playback: '▶️',
-  timer: '⏰',
-  accessibility: '♿',
-};
+function CategoryIcon({ type }: { type: SettingsCategory }) {
+  const size = 24;
+  const fill = '#ffffff';
+  switch (type) {
+    case 'language':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke={fill} strokeWidth="1.5" fill="none" />
+          <ellipse cx="12" cy="12" rx="5" ry="10" stroke={fill} strokeWidth="1.5" fill="none" />
+          <line x1="2" y1="12" x2="22" y2="12" stroke={fill} strokeWidth="1.5" />
+          <line x1="12" y1="2" x2="12" y2="22" stroke={fill} strokeWidth="1.5" />
+        </svg>
+      );
+    case 'keyboard':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="5" width="20" height="14" rx="2" stroke={fill} strokeWidth="1.5" fill="none" />
+          <line x1="6" y1="9" x2="8" y2="9" stroke={fill} strokeWidth="1.5" />
+          <line x1="11" y1="9" x2="13" y2="9" stroke={fill} strokeWidth="1.5" />
+          <line x1="16" y1="9" x2="18" y2="9" stroke={fill} strokeWidth="1.5" />
+          <line x1="6" y1="15" x2="18" y2="15" stroke={fill} strokeWidth="1.5" />
+        </svg>
+      );
+    case 'playback':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <polygon points="8,5 20,12 8,19" fill={fill} />
+        </svg>
+      );
+    case 'timer':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="13" r="9" stroke={fill} strokeWidth="1.5" fill="none" />
+          <line x1="12" y1="13" x2="12" y2="7" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="12" y1="13" x2="16" y2="13" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="10" y1="2" x2="14" y2="2" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case 'accessibility':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="5" r="2.5" fill={fill} />
+          <line x1="12" y1="8" x2="12" y2="16" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="7" y1="10" x2="17" y2="10" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="12" y1="16" x2="8" y2="22" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="12" y1="16" x2="16" y2="22" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+  }
+}
 
 export const Settings = (): JSX.Element => {
   const { t, language, setLanguage } = useLocalization();
@@ -137,7 +180,7 @@ export const Settings = (): JSX.Element => {
   const settingsOptions: PlayAtStartMode[] = ["last-played", "random", "favorite", "none"];
 
   const isFocused = (idx: number) => focusSection === 'sidebar' && sidebarIndex === idx;
-  const getFocusClasses = (focused: boolean) => focused ? 'ring-2 ring-[#ff4199] scale-105' : '';
+  const getFocusClasses = (_focused: boolean) => '';
 
   const getCategoryLabel = (cat: SettingsCategory): string => {
     switch (cat) {
@@ -237,6 +280,7 @@ export const Settings = (): JSX.Element => {
   };
 
   usePageKeyHandler('/settings', (e) => {
+    e.stopPropagation();
     const key = (window as any).tvKey;
     const isUp = e.keyCode === key?.UP || e.keyCode === 38;
     const isDown = e.keyCode === key?.DOWN || e.keyCode === 40;
@@ -600,7 +644,7 @@ export const Settings = (): JSX.Element => {
                   onClick={() => { setCategoryIndex(index); setFocusSection('options'); setOptionIndex(0); }}
                   data-testid={`category-${cat}`}
                 >
-                  <span style={{ fontSize: '28px', flexShrink: 0, width: '40px', textAlign: 'center' }}>{CATEGORY_ICONS[cat]}</span>
+                  <span style={{ flexShrink: 0, width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CategoryIcon type={cat} /></span>
                   <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
                     <p
                       className="font-['Ubuntu',Helvetica]"

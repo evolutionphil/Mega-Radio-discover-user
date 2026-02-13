@@ -119,7 +119,7 @@ export const Search = (): JSX.Element => {
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
 
   const isFocused = (idx: number) => focusZone === 'sidebar' && sidebarIndex === idx;
-  const getFocusClasses = (focused: boolean) => focused ? 'ring-2 ring-[#ff4199] scale-105' : '';
+  const getFocusClasses = (_focused: boolean) => '';
 
   useEffect(() => {
     if (searchTimeoutRef.current) {

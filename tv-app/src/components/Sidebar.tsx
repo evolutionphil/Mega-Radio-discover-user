@@ -23,19 +23,27 @@ interface SidebarItemProps {
   page: SidebarProps['activePage'];
   activePage: SidebarProps['activePage'];
   isFocused: boolean;
-  getFocusClasses: string;
   color?: string;
   colorShadow?: string;
   testId: string;
 }
 
-function SidebarItem({ href, icon, label, isFocused: focused, getFocusClasses: focusClasses, activePage, page, color, colorShadow, testId }: SidebarItemProps) {
-  var activeClass = activePage === page ? 'bg-[rgba(255,65,153,0.2)]' : '';
+function SidebarItem({ href, icon, label, isFocused: focused, activePage, page, color, colorShadow, testId }: SidebarItemProps) {
+  var isActive = activePage === page;
   return (
     <Link href={href}>
       <div
-        className={"rounded-[10px] overflow-hidden transition-colors " + focusClasses + " " + activeClass}
-        style={{ width: '120px', height: '100px', position: 'relative' }}
+        style={{
+          width: '120px',
+          height: '100px',
+          position: 'relative',
+          borderRadius: '10px',
+          overflow: 'hidden',
+          backgroundColor: focused ? 'rgba(255,65,153,0.25)' : isActive ? 'rgba(255,65,153,0.2)' : 'transparent',
+          boxShadow: focused ? '0 0 16px rgba(255,65,153,0.5)' : 'none',
+          opacity: focused ? 1 : 0.85,
+          transition: 'background-color 0.2s, box-shadow 0.2s, opacity 0.2s',
+        }}
         data-testid={testId}
       >
         {color && (
@@ -49,8 +57,7 @@ function SidebarItem({ href, icon, label, isFocused: focused, getFocusClasses: f
               borderRadius: '50%',
               backgroundColor: color,
               boxShadow: colorShadow || 'none',
-              transform: focused ? 'scale(1.1)' : 'scale(1)',
-              transition: 'transform 0.2s'
+              transition: 'opacity 0.2s',
             }}
           />
         )}
@@ -63,8 +70,8 @@ function SidebarItem({ href, icon, label, isFocused: focused, getFocusClasses: f
             />
           </div>
           <p
-            className="font-['Ubuntu',Helvetica]"
             style={{
+              fontFamily: "'Ubuntu', Helvetica, sans-serif",
               fontSize: '16px',
               fontWeight: 500,
               color: '#ffffff',
@@ -111,7 +118,6 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
               page={item.page}
               activePage={activePage}
               isFocused={isFocused(index)}
-              getFocusClasses={getFocusClasses(isFocused(index))}
               color={item.color}
               colorShadow={item.colorShadow}
               testId={item.testId}
