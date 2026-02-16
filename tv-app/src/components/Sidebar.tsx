@@ -3,7 +3,7 @@ import { assetPath } from "@/lib/assetPath";
 import { useLocalization } from "@/contexts/LocalizationContext";
 
 interface SidebarProps {
-  activePage: 'discover' | 'genres' | 'search' | 'favorites' | 'settings' | 'country';
+  activePage: 'cast' | 'discover' | 'genres' | 'search' | 'favorites' | 'settings' | 'country';
   isFocused: (index: number) => boolean;
   getFocusClasses: (focused: boolean) => string;
 }
@@ -97,6 +97,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
   const { t } = useLocalization();
 
   var items = [
+    { href: '/cast', icon: 'images/cast-icon.svg', label: t('nav_cast') || 'Cast', page: 'cast' as const, color: '#8b5cf6', colorShadow: '0 0 8px rgba(139,92,246,0.6)', testId: 'button-cast' },
     { href: '/discover-no-user', icon: 'images/radio-icon.svg', label: t('nav_discover') || 'Discover', page: 'discover' as const, color: MENU_COLORS.discover, colorShadow: '0 0 8px rgba(255,65,153,0.6)', testId: 'button-discover' },
     { href: '/genres', icon: 'images/music-icon.svg', label: t('nav_genres') || 'Genres', page: 'genres' as const, color: MENU_COLORS.genres, colorShadow: '0 0 8px rgba(16,185,129,0.6)', testId: 'button-genres' },
     { href: '/search', icon: 'images/search-icon.svg', label: t('nav_search') || 'Search', page: 'search' as const, color: MENU_COLORS.search, colorShadow: '0 0 8px rgba(59,130,246,0.6)', testId: 'button-search' },
@@ -106,7 +107,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
   ];
 
   return (
-    <div style={{ position: 'fixed', left: '48px', top: '242px', width: '120px', height: '650px', zIndex: 50, pointerEvents: 'auto' }}>
+    <div style={{ position: 'fixed', left: '48px', top: '200px', width: '120px', height: '756px', zIndex: 50, pointerEvents: 'auto' }}>
       {items.map(function(item, index) {
         return (
           <div key={item.page} style={{ position: 'absolute', left: 0, top: (index * 108) + 'px' }}>

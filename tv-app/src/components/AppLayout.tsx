@@ -115,7 +115,7 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
 
       {/* Global Sidebar */}
       <Sidebar 
-        activePage={(currentPage || 'discover') as 'discover' | 'genres' | 'search' | 'favorites' | 'settings'}
+        activePage={(currentPage || 'discover') as 'cast' | 'discover' | 'genres' | 'search' | 'favorites' | 'settings'}
         isFocused={() => false}
         getFocusClasses={getFocusClasses}
       />
