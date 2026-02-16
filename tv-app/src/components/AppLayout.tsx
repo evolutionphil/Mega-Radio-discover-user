@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef, RefObject } from "react";
+import { useLocation } from "wouter";
 import { CountrySelector } from "@/components/CountrySelector";
 import { useCountry } from "@/contexts/CountryContext";
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Sidebar } from "@/components/Sidebar";
 import { getFocusClasses } from "@/hooks/useFocusManager";
 import { assetPath } from "@/lib/assetPath";
@@ -16,6 +18,8 @@ interface AppLayoutProps {
 export const AppLayout = ({ children, currentPage, hideHeaderControls = false, scrollContainerRef }: AppLayoutProps) => {
   const { selectedCountry, selectedCountryFlag, setCountry } = useCountry();
   const { isPlaying } = useGlobalPlayer();
+  const { isAuthenticated, user } = useAuth();
+  const [, setLocation] = useLocation();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const lastScrollY = useRef(0);
@@ -110,12 +114,49 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
             </div>
           </div>
 
+          {/* Login/Profile Button - Right of Country Selector */}
+          <div
+            className="absolute top-[67px] flex h-[51px] rounded-[30px] cursor-pointer transition-colors pointer-events-auto flex-shrink-0"
+            style={{
+              left: '1694px',
+              backgroundColor: isAuthenticated ? 'rgba(255,255,255,0.1)' : '#ff4199',
+              padding: '8px 20px 8px 12px',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '10px',
+            }}
+            onClick={function() { setLocation(isAuthenticated ? '/settings' : '/login'); }}
+            data-testid="button-header-login"
+            data-tv-focusable="true"
+          >
+            {isAuthenticated && user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                {user.avatar ? (
+                  <img src={user.avatar} alt="" style={{ width: '34px', height: '34px', borderRadius: '50%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{ width: '34px', height: '34px', borderRadius: '50%', backgroundColor: '#ff4199', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ color: '#fff', fontSize: '16px', fontWeight: 700, fontFamily: "'Ubuntu', Helvetica" }}>{user.name.charAt(0).toUpperCase()}</span>
+                  </div>
+                )}
+                <p className="font-['Ubuntu',Helvetica] font-bold text-[20px] text-white whitespace-nowrap">{user.name}</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="8" r="4" stroke="#ffffff" strokeWidth="1.5" fill="none" />
+                  <path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                </svg>
+                <p className="font-['Ubuntu',Helvetica] font-bold text-[20px] text-white whitespace-nowrap">Login</p>
+              </div>
+            )}
+          </div>
+
         </div>
       )}
 
       {/* Global Sidebar */}
       <Sidebar 
-        activePage={(currentPage || 'discover') as 'cast' | 'discover' | 'genres' | 'search' | 'favorites' | 'settings'}
+        activePage={(currentPage || 'discover') as 'discover' | 'genres' | 'search' | 'favorites' | 'settings' | 'country'}
         isFocused={() => false}
         getFocusClasses={getFocusClasses}
       />

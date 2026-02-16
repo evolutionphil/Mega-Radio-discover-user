@@ -5,6 +5,7 @@ import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useSleepTimer } from "@/contexts/SleepTimerContext";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Sidebar } from "@/components/Sidebar";
+import { useAuth } from "@/contexts/AuthContext";
 import { assetPath } from "@/lib/assetPath";
 
 type PlayAtStartMode = "last-played" | "random" | "favorite" | "none";
@@ -91,7 +92,7 @@ const LANGUAGE_OPTIONS: LanguageOption[] = [
 const getFlagUrl = (countryCode: string) =>
   `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
 
-type SettingsCategory = 'language' | 'keyboard' | 'playback' | 'timer' | 'accessibility';
+type SettingsCategory = 'language' | 'keyboard' | 'playback' | 'timer' | 'accessibility' | 'account';
 
 function CategoryIcon({ type }: { type: SettingsCategory }) {
   const size = 24;
@@ -141,6 +142,13 @@ function CategoryIcon({ type }: { type: SettingsCategory }) {
           <line x1="12" y1="16" x2="16" y2="22" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       );
+    case 'account':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="8" r="4" stroke={fill} strokeWidth="1.5" fill="none" />
+          <path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke={fill} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+        </svg>
+      );
   }
 }
 
@@ -151,6 +159,7 @@ export const Settings = (): JSX.Element => {
   const [playAtStart, setPlayAtStart] = useState<PlayAtStartMode>("none");
   const [selectedKeyboard, setSelectedKeyboard] = useState(0);
   const { highContrast, largeText, setHighContrast, setLargeText } = useAccessibility();
+  const { isAuthenticated, user, logout } = useAuth();
 
   const [focusSection, setFocusSection] = useState<'sidebar' | 'categories' | 'options'>('categories');
   const [sidebarIndex, setSidebarIndex] = useState(5);
@@ -159,7 +168,7 @@ export const Settings = (): JSX.Element => {
 
   const optionListRef = useRef<HTMLDivElement>(null);
 
-  const categories: SettingsCategory[] = ['language', 'keyboard', 'playback', 'timer', 'accessibility'];
+  const categories: SettingsCategory[] = ['language', 'keyboard', 'playback', 'timer', 'accessibility', 'account'];
 
   const sleepTimerOptions: (number | null)[] = [15, 30, 60, 120, null];
   const sleepTimerLabels: Record<string, string> = {
@@ -189,6 +198,7 @@ export const Settings = (): JSX.Element => {
       case 'playback': return t('settings_play_at_start') || 'Playback';
       case 'timer': return t('sleep_timer') || 'Sleep Timer';
       case 'accessibility': return t('accessibility') || 'Accessibility';
+      case 'account': return t('account') || 'Account';
     }
   };
 
@@ -199,6 +209,7 @@ export const Settings = (): JSX.Element => {
       case 'playback': return settingsOptions.length;
       case 'timer': return sleepTimerOptions.length;
       case 'accessibility': return 2;
+      case 'account': return isAuthenticated ? 1 : 1;
       default: return 0;
     }
   };
@@ -276,6 +287,13 @@ export const Settings = (): JSX.Element => {
         if (optionIndex === 0) setHighContrast(!highContrast);
         else setLargeText(!largeText);
         break;
+      case 'account':
+        if (isAuthenticated) {
+          logout();
+        } else {
+          setLocation('/login');
+        }
+        break;
     }
   };
 
@@ -352,6 +370,8 @@ export const Settings = (): JSX.Element => {
         if (largeText) active.push(t('large_text') || 'Large Text');
         return active.length > 0 ? active.join(', ') : (t('settings_none') || 'None');
       }
+      case 'account':
+        return isAuthenticated ? (user ? user.name : (t('logged_in') || 'Logged In')) : (t('not_logged_in') || 'Not Logged In');
       default: return '';
     }
   };
@@ -593,6 +613,62 @@ export const Settings = (): JSX.Element => {
             </div>
           );
         });
+
+      case 'account': {
+        var accountFocused = isFocusedOnOptions && optionIndex === 0;
+        if (isAuthenticated) {
+          return (
+            <div>
+              {user && (
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '16px', height: '80px', paddingLeft: '24px', paddingRight: '24px', marginBottom: '16px', borderRadius: '14px', backgroundColor: 'rgba(255,255,255,0.05)' }}>
+                  {user.avatar ? (
+                    <img src={user.avatar} alt="" style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
+                  ) : (
+                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#ff4199', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <span style={{ color: '#fff', fontSize: '22px', fontWeight: 700 }}>{user.name.charAt(0).toUpperCase()}</span>
+                    </div>
+                  )}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p className="font-['Ubuntu',Helvetica]" style={{ fontWeight: 600, fontSize: '22px', color: '#ffffff', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name}</p>
+                    {user.email && <p className="font-['Ubuntu',Helvetica]" style={{ fontWeight: 400, fontSize: '16px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>{user.email}</p>}
+                  </div>
+                </div>
+              )}
+              <div
+                style={{ ...optionRowBase, backgroundColor: accountFocused ? 'rgba(239,68,68,0.2)' : 'transparent', boxShadow: accountFocused ? '0 0 24px rgba(239,68,68,0.2)' : 'none', border: '1px solid rgba(239,68,68,0.3)' }}
+                onClick={function() { logout(); }}
+                data-testid="button-logout"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <polyline points="16,17 21,12 16,7" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <line x1="21" y1="12" x2="9" y2="12" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <p className="font-['Ubuntu',Helvetica]" style={{ ...optionTextStyle, color: '#ef4444' }}>
+                  {t('logout') || 'Log Out'}
+                </p>
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div
+              style={{ ...optionRowBase, backgroundColor: accountFocused ? '#ff4199' : 'transparent', boxShadow: accountFocused ? '0 0 24px rgba(255,65,153,0.3)' : 'none', border: '1px solid rgba(255,65,153,0.3)' }}
+              onClick={function() { setLocation('/login'); }}
+              data-testid="button-login"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <polyline points="10,17 15,12 10,7" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <line x1="15" y1="12" x2="3" y2="12" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <p className="font-['Ubuntu',Helvetica]" style={optionTextStyle}>
+                {t('login') || 'Log In'}
+              </p>
+            </div>
+          );
+        }
+      }
 
       default:
         return null;

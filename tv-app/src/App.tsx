@@ -9,6 +9,8 @@ import { CountryProvider } from "@/contexts/CountryContext";
 import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import { NavigationProvider } from "@/contexts/NavigationContext";
 import { GlobalPlayerProvider } from "@/contexts/GlobalPlayerContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { CastProvider } from "@/contexts/CastContext";
 import { SleepTimerProvider } from "@/contexts/SleepTimerContext";
 import { NetworkStatusProvider, useNetworkStatus } from "@/contexts/NetworkStatusContext";
 import { AppLifecycleProvider } from "@/contexts/AppLifecycleContext";
@@ -137,7 +139,9 @@ function App() {
             <CountryProvider>
               <FavoritesProvider>
                 <NavigationProvider>
+                  <AuthProvider>
                   <GlobalPlayerProvider>
+                    <CastProvider>
                     <SleepTimerProvider>
                     <AppLifecycleProvider>
                       <FocusRouterProvider>
@@ -148,7 +152,9 @@ function App() {
                       </FocusRouterProvider>
                     </AppLifecycleProvider>
                     </SleepTimerProvider>
+                    </CastProvider>
                   </GlobalPlayerProvider>
+                  </AuthProvider>
                 </NavigationProvider>
               </FavoritesProvider>
             </CountryProvider>

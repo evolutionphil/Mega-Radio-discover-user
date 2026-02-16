@@ -1,107 +1,323 @@
-import { Link } from "wouter";
-import { Apple, Facebook, Mail } from "lucide-react";
-import { SiGoogle } from "react-icons/si";
-import { useTVNavigation } from "@/hooks/useTVNavigation";
+import { useEffect, useState, useRef } from "react";
+import { useLocation } from "wouter";
+import { useAuth } from "@/contexts/AuthContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
-import { useEffect } from "react";
+import { useFocusManager } from "@/hooks/useFocusManager";
+import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { assetPath } from "@/lib/assetPath";
 
-export const Login = (): JSX.Element => {
-  useTVNavigation();
-  const { t } = useLocalization();
+export function Login(): JSX.Element {
+  var { login, deviceCode, codeExpiresAt, isAuthenticated, isPolling } = useAuth();
+  var { t } = useLocalization();
+  var [, setLocation] = useLocation();
+  var [countdown, setCountdown] = useState('');
+  var loginCalledRef = useRef(false);
 
-  // Set initial focus on Login with Apple button
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if ((window as any).TVNavigation) {
-        const firstButton = document.querySelector('[data-testid="button-login-apple"]') as HTMLElement;
-        if (firstButton && (window as any).TVNavigation.focusElement) {
-          (window as any).TVNavigation.focusElement(firstButton);
-        }
-      }
-    }, 100);
-    return () => clearTimeout(timeout);
+  var { focusIndex, handleNavigation, handleSelect } = useFocusManager({
+    totalItems: 1,
+    cols: 1,
+    initialIndex: 0,
+    onSelect: function() {
+      setLocation('/discover-no-user');
+    }
+  });
+
+  usePageKeyHandler('/login', function(e: KeyboardEvent) {
+    var keyCode = e.keyCode || 0;
+    switch (keyCode) {
+      case 38: // UP
+        handleNavigation('UP');
+        break;
+      case 40: // DOWN
+        handleNavigation('DOWN');
+        break;
+      case 37: // LEFT
+        handleNavigation('LEFT');
+        break;
+      case 39: // RIGHT
+        handleNavigation('RIGHT');
+        break;
+      case 13: // ENTER
+        handleSelect();
+        break;
+      case 10009: // Samsung BACK
+      case 461: // LG BACK
+      case 8: // Backspace
+        setLocation('/');
+        break;
+    }
+  });
+
+  useEffect(function() {
+    if (!loginCalledRef.current) {
+      loginCalledRef.current = true;
+      login();
+    }
   }, []);
 
+  useEffect(function() {
+    if (isAuthenticated) {
+      setLocation('/discover-no-user');
+    }
+  }, [isAuthenticated]);
+
+  useEffect(function() {
+    if (!codeExpiresAt) {
+      setCountdown('');
+      return;
+    }
+
+    function updateCountdown() {
+      var now = Date.now();
+      var expires = new Date(codeExpiresAt as string).getTime();
+      var diff = expires - now;
+
+      if (diff <= 0) {
+        setCountdown('00:00');
+        return;
+      }
+
+      var minutes = Math.floor(diff / 60000);
+      var seconds = Math.floor((diff % 60000) / 1000);
+      var mm = minutes < 10 ? '0' + minutes : '' + minutes;
+      var ss = seconds < 10 ? '0' + seconds : '' + seconds;
+      setCountdown(mm + ':' + ss);
+    }
+
+    updateCountdown();
+    var intervalId = setInterval(updateCountdown, 1000);
+    return function() {
+      clearInterval(intervalId);
+    };
+  }, [codeExpiresAt]);
+
+  var codeChars: string[] = [];
+  if (deviceCode) {
+    for (var i = 0; i < deviceCode.length; i++) {
+      codeChars.push(deviceCode.charAt(i));
+    }
+  }
+
+  var skipFocused = focusIndex === 0;
+
   return (
-    <div className="relative w-[1920px] h-[1080px] bg-[#0e0e0e] overflow-hidden" data-testid="page-login">
-      <div className="absolute left-[712px] top-[235px] w-[496px] h-[609px]">
-        {/* Logo */}
-        <div className="absolute left-[150px] top-0 w-[195px] h-[67.601px]">
-          <p className="absolute bottom-0 left-[18.67%] right-0 top-[46.16%] font-['Ubuntu',Helvetica] text-[32.055px] text-white leading-normal whitespace-pre-wrap">
-            <span className="font-bold">mega</span>radio
-          </p>
-          <img
-            className="absolute left-0 bottom-[2.84%] w-[34.8%] h-[97.16%]"
-            alt="Path"
-            src={assetPath("images/path-8.svg")}
-          />
-        </div>
-
-        {/* Login Buttons Container */}
-        <div className="absolute left-0 top-[129px] w-[496px] h-[480px]">
-          {/* Login With Apple */}
-          <Link href="/guide-1">
-            <div className="absolute left-0 top-0 w-[496px] h-[96px] rounded-[48px] border-[3.2px] border-solid border-[#545454] overflow-clip cursor-pointer hover:bg-white/5 transition-colors" data-testid="button-login-apple" data-tv-focusable="true">
-              {/* Apple Icon Background Circle */}
-              <div className="absolute left-[17.6px] top-[17.6px] w-[60.8px] h-[60.8px] rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
-                <Apple className="w-[32px] h-[32px] text-white" fill="white" />
-              </div>
-              <p className="absolute left-[152px] top-[33.6px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                {t('auth_continue_with_apple')}
-              </p>
-            </div>
-          </Link>
-
-          {/* Login With Facebook */}
-          <Link href="/guide-1">
-            <div className="absolute left-0 top-[128px] w-[496px] h-[96px] rounded-[48px] border-[3.2px] border-solid border-[#545454] overflow-clip cursor-pointer hover:bg-white/5 transition-colors" data-testid="button-login-facebook" data-tv-focusable="true">
-              {/* Facebook Icon Background Circle */}
-              <div className="absolute left-[17.6px] top-[17.6px] w-[60.8px] h-[60.8px] rounded-full bg-[#1877F2] flex items-center justify-center">
-                <Facebook className="w-[32px] h-[32px] text-white" fill="white" />
-              </div>
-              <p className="absolute left-[131.2px] top-[33.6px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                {t('auth_continue_with_facebook')}
-              </p>
-            </div>
-          </Link>
-
-          {/* Login With Google */}
-          <Link href="/guide-1">
-            <div className="absolute left-0 top-[256px] w-[496px] h-[96px] rounded-[48px] border-[3.2px] border-solid border-[#545454] overflow-clip cursor-pointer hover:bg-white/5 transition-colors" data-testid="button-login-google" data-tv-focusable="true">
-              {/* Google Icon Background Circle */}
-              <div className="absolute left-[17.6px] top-[17.6px] w-[60.8px] h-[60.8px] rounded-full bg-white flex items-center justify-center">
-                <SiGoogle className="w-[32px] h-[32px] text-[#4285f4]" />
-              </div>
-              <p className="absolute left-[145.6px] top-[33.6px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                {t('auth_continue_with_google')}
-              </p>
-            </div>
-          </Link>
-
-          {/* Login With Mail */}
-          <Link href="/login-with-email">
-            <div className="absolute left-0 top-[384px] w-[496px] h-[96px] rounded-[48px] border-[3.2px] border-solid border-[#545454] overflow-clip cursor-pointer hover:bg-white/5 transition-colors" data-testid="button-login-email" data-tv-focusable="true">
-              {/* Email Icon Background Circle */}
-              <div className="absolute left-[17.6px] top-[17.6px] w-[60.8px] h-[60.8px] rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center">
-                <Mail className="w-[32px] h-[32px] text-white" />
-              </div>
-              <p className="absolute left-[161.6px] top-[33.6px] font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                {t('auth_continue_with_email')}
-              </p>
-            </div>
-          </Link>
-
-          {/* Continue Without Login - Shows Guide Pages First */}
-          <Link href="/guide-1">
-            <div className="absolute left-0 top-[512px] w-[496px] h-[96px] rounded-[48px] bg-[rgba(255,255,255,0.1)] overflow-clip cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors" data-testid="button-continue-without-login" data-tv-focusable="true">
-              <p className="absolute left-1/2 top-[33.6px] -translate-x-1/2 font-['Ubuntu',Helvetica] font-medium text-[24px] text-white leading-normal">
-                {t('continue_without_login')}
-              </p>
-            </div>
-          </Link>
-        </div>
+    <div
+      style={{
+        position: 'relative',
+        width: '1920px',
+        height: '1080px',
+        backgroundColor: '#0e0e0e',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      data-testid="page-login"
+    >
+      {/* Logo */}
+      <div style={{ position: 'relative', width: '195px', height: '68px', marginBottom: '50px' }}>
+        <p
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: '18.67%',
+            right: 0,
+            top: '46.16%',
+            fontFamily: "'Ubuntu', Helvetica",
+            fontSize: '32.055px',
+            color: '#ffffff',
+            lineHeight: 'normal',
+            whiteSpace: 'pre-wrap',
+            margin: 0,
+          }}
+        >
+          <span style={{ fontWeight: 'bold' }}>mega</span>radio
+        </p>
+        <img
+          style={{
+            position: 'absolute',
+            left: 0,
+            bottom: '2.84%',
+            width: '34.8%',
+            height: '97.16%',
+          }}
+          alt="Path"
+          src={assetPath("images/path-8.svg")}
+        />
       </div>
+
+      {/* Instructions */}
+      <p
+        style={{
+          fontFamily: "'Ubuntu', Helvetica",
+          fontSize: '28px',
+          color: 'rgba(255,255,255,0.7)',
+          textAlign: 'center',
+          marginBottom: '12px',
+        }}
+      >
+        {t('tv_login_visit') || 'To connect your TV, visit:'}
+      </p>
+
+      {/* URL */}
+      <p
+        style={{
+          fontFamily: "'Ubuntu', Helvetica",
+          fontSize: '42px',
+          fontWeight: 'bold',
+          color: '#ff4199',
+          textAlign: 'center',
+          marginBottom: '12px',
+        }}
+        data-testid="text-tv-url"
+      >
+        themegaradio.com/tv
+      </p>
+
+      {/* Enter code instruction */}
+      <p
+        style={{
+          fontFamily: "'Ubuntu', Helvetica",
+          fontSize: '28px',
+          color: 'rgba(255,255,255,0.7)',
+          textAlign: 'center',
+          marginBottom: '30px',
+        }}
+      >
+        {t('tv_login_enter_code') || 'and enter this code:'}
+      </p>
+
+      {/* Code display */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '16px',
+          marginBottom: '30px',
+        }}
+        data-testid="text-device-code"
+      >
+        {codeChars.length > 0 ? (
+          codeChars.map(function(char, idx) {
+            return (
+              <div
+                key={idx}
+                style={{
+                  width: '100px',
+                  height: '120px',
+                  borderRadius: '16px',
+                  border: '3px solid rgba(255,65,153,0.5)',
+                  backgroundColor: 'rgba(255,65,153,0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'Ubuntu', Helvetica",
+                    fontSize: '96px',
+                    fontWeight: 'bold',
+                    color: '#ff4199',
+                    lineHeight: 1,
+                  }}
+                >
+                  {char}
+                </span>
+              </div>
+            );
+          })
+        ) : (
+          <div style={{ display: 'flex', gap: '16px' }}>
+            {[0, 1, 2, 3, 4, 5].map(function(idx) {
+              return (
+                <div
+                  key={idx}
+                  style={{
+                    width: '100px',
+                    height: '120px',
+                    borderRadius: '16px',
+                    border: '3px solid rgba(255,255,255,0.15)',
+                    backgroundColor: 'rgba(255,255,255,0.03)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Ubuntu', Helvetica",
+                      fontSize: '96px',
+                      fontWeight: 'bold',
+                      color: 'rgba(255,255,255,0.15)',
+                      lineHeight: 1,
+                    }}
+                  >
+                    -
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Countdown timer */}
+      {countdown && (
+        <p
+          style={{
+            fontFamily: "'Ubuntu', Helvetica",
+            fontSize: '22px',
+            color: 'rgba(255,255,255,0.5)',
+            textAlign: 'center',
+            marginBottom: '40px',
+          }}
+          data-testid="text-countdown"
+        >
+          {t('tv_login_code_expires') || 'Code expires in:'} {countdown}
+        </p>
+      )}
+
+      {/* Polling indicator */}
+      {isPolling && !countdown && (
+        <p
+          style={{
+            fontFamily: "'Ubuntu', Helvetica",
+            fontSize: '22px',
+            color: 'rgba(255,255,255,0.5)',
+            textAlign: 'center',
+            marginBottom: '40px',
+          }}
+        >
+          {t('loading') || 'Loading...'}
+        </p>
+      )}
+
+      {/* Skip button */}
+      <button
+        onClick={function() { setLocation('/guide-1'); }}
+        style={{
+          width: '300px',
+          height: '64px',
+          borderRadius: '32px',
+          border: skipFocused ? '3px solid #ff4199' : '3px solid rgba(255,255,255,0.2)',
+          backgroundColor: skipFocused ? 'rgba(255,65,153,0.2)' : 'rgba(255,255,255,0.08)',
+          color: '#ffffff',
+          fontFamily: "'Ubuntu', Helvetica",
+          fontSize: '24px',
+          fontWeight: 500,
+          cursor: 'pointer',
+          outline: 'none',
+          boxShadow: skipFocused ? '0 0 20px rgba(255,65,153,0.4)' : 'none',
+          transition: 'all 0.2s',
+          marginTop: '10px',
+        }}
+        data-testid="button-skip-login"
+      >
+        {t('continue_without_login') || 'Skip'}
+      </button>
     </div>
   );
-};
+}
+
+export { Login as default };

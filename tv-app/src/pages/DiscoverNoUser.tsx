@@ -15,12 +15,14 @@ import { autoPlayService } from "@/services/autoPlayService";
 import { recentlyPlayedService } from "@/services/recentlyPlayedService";
 import { recommendationService } from "@/services/recommendationService";
 import { Sidebar } from "@/components/Sidebar";
+import { useAuth } from "@/contexts/AuthContext";
 import { assetPath } from "@/lib/assetPath";
 
 export const DiscoverNoUser = (): JSX.Element => {
   const { t } = useLocalization();
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
   const { playStation, isPlaying } = useGlobalPlayer();
+  const { isAuthenticated, user } = useAuth();
   const [location, setLocation] = useLocation();
   const { setNavigationState, popNavigationState } = useNavigation();
   const queryClient = useQueryClient();
@@ -1003,8 +1005,44 @@ export const DiscoverNoUser = (): JSX.Element => {
           selectedCountryCode={selectedCountryCode}
           onClick={() => setIsCountrySelectorOpen(true)}
           focusClasses={getFocusClasses(isFocused(5))}
-          className="absolute left-[1593px] top-[67px] pointer-events-auto"
+          className="absolute left-[1453px] top-[67px] pointer-events-auto"
         />
+
+        {/* Login/Profile Button - Right of Country Selector */}
+        <div
+          className="absolute top-[67px] flex h-[51px] rounded-[30px] cursor-pointer transition-colors pointer-events-auto flex-shrink-0"
+          style={{
+            left: '1694px',
+            backgroundColor: isAuthenticated ? 'rgba(255,255,255,0.1)' : '#ff4199',
+            padding: '8px 16px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+          onClick={function() { setLocation(isAuthenticated ? '/settings' : '/login'); }}
+          data-testid="button-header-login"
+          data-tv-focusable="true"
+        >
+          {isAuthenticated && user ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {user.avatar ? (
+                <img src={user.avatar} alt="" style={{ width: '34px', height: '34px', borderRadius: '50%', objectFit: 'cover' }} />
+              ) : (
+                <div style={{ width: '34px', height: '34px', borderRadius: '50%', backgroundColor: '#ff4199', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ color: '#fff', fontSize: '16px', fontWeight: 700, fontFamily: "'Ubuntu', Helvetica" }}>{user.name.charAt(0).toUpperCase()}</span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="8" r="4" stroke="#ffffff" strokeWidth="1.5" fill="none" />
+                <path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+              </svg>
+              <p className="font-['Ubuntu',Helvetica] font-bold text-[18px] text-white whitespace-nowrap">Login</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Fixed Left Sidebar */}

@@ -60,6 +60,9 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
     -   **Discover Page:** When clicking on Popular Genres or More From Country stations, saves focus state before navigating to RadioPlaying. Back button restores focus to the exact station clicked.
     -   **GenreList Page:** When clicking on stations, saves focus state before navigating to RadioPlaying. Back button restores focus to the exact station clicked.
     -   Navigation flow example: Discover → RadioPlaying → Back → Discover (focus restored to clicked station).
+-   **TV Login (Device Code Flow):** Netflix-style login on Login page. TV generates 6-digit code via POST `themegaradio.com/api/auth/tv/code`, shows code on screen with countdown timer. User enters code on `themegaradio.com/tv` from mobile/browser. TV polls every 3s for activation. On success, saves Bearer token and user info to localStorage. `AuthContext` manages auth state globally.
+-   **Cast Integration:** After login, `CastContext` starts `castService` which polls `themegaradio.com/api/cast/poll` every 5s. When mobile app sends a station, TV auto-plays it and navigates to RadioPlaying page. No separate Cast button/page needed - it works invisibly in background.
+-   **Account Settings:** Settings page includes Account category (6th) with Login/Logout options. Shows user avatar, name, email when logged in. Logout button in red.
 
 ### System Design Choices
 
