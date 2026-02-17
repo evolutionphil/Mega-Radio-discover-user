@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useGlobalPlayer } from '@/contexts/GlobalPlayerContext';
 import { castService } from '@/services/castService';
 import { Station, megaRadioApi } from '@/services/megaRadioApi';
+import { navigate as wouterNavigate } from 'wouter/use-hash-location';
 
 interface CastContextType {
   isConnected: boolean;
@@ -27,15 +28,20 @@ export function CastProvider({ children }: { children: ReactNode }) {
   useEffect(function() { stopStationRef.current = stopStation; }, [stopStation]);
 
   function navigateToRadioPlaying(stationId: string) {
-    var hash = '/radio-playing';
+    var path = '/radio-playing';
     if (stationId) {
-      hash = hash + '?station=' + stationId;
+      path = path + '?station=' + stationId;
     }
-    console.log('[Cast] Navigating to:', hash);
+    console.log('[Cast] Navigating to:', path);
     try {
-      window.location.hash = '#' + hash;
+      wouterNavigate(path);
     } catch (e) {
-      console.error('[Cast] Navigation error:', e);
+      console.error('[Cast] Navigate failed, trying fallback:', e);
+      try {
+        window.location.hash = '#/' + 'radio-playing';
+      } catch (e2) {
+        console.error('[Cast] Fallback also failed:', e2);
+      }
     }
   }
 
