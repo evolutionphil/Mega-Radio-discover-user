@@ -144,6 +144,64 @@ function streamProxyPlugin() {
         followAndStream(targetUrl.href, 5);
       });
 
+      server.middlewares.use('/api/image-proxy', (req: any, res: any) => {
+        const urlParam = new URL(req.url, 'http://localhost').searchParams.get('url');
+        if (!urlParam) {
+          res.statusCode = 400;
+          res.end('Missing url parameter');
+          return;
+        }
+
+        let parsedUrl: URL;
+        try {
+          parsedUrl = new URL(urlParam);
+        } catch {
+          res.statusCode = 400;
+          res.end('Invalid url');
+          return;
+        }
+
+        const client = parsedUrl.protocol === 'https:' ? https : http;
+        const proxyReq = client.request(parsedUrl.href, {
+          method: 'GET',
+          timeout: 8000,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (SMART-TV) AppleWebKit/537.36',
+            'Accept': 'image/*,*/*'
+          }
+        }, (proxyRes: any) => {
+          if (proxyRes.statusCode >= 300 && proxyRes.statusCode < 400 && proxyRes.headers.location) {
+            const redirectUrl = proxyRes.headers.location.startsWith('http') ? proxyRes.headers.location : new URL(proxyRes.headers.location, parsedUrl.href).href;
+            const rClient = redirectUrl.startsWith('https') ? https : http;
+            const rReq = rClient.request(redirectUrl, { method: 'GET', timeout: 8000, headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'image/*,*/*' } }, (rRes: any) => {
+              res.writeHead(rRes.statusCode, {
+                'Content-Type': rRes.headers['content-type'] || 'image/png',
+                'Access-Control-Allow-Origin': '*',
+                'Cache-Control': 'public, max-age=86400'
+              });
+              rRes.pipe(res);
+            });
+            rReq.on('error', () => { if (!res.headersSent) { res.statusCode = 502; res.end('Image fetch error'); } });
+            rReq.end();
+            return;
+          }
+          res.writeHead(proxyRes.statusCode, {
+            'Content-Type': proxyRes.headers['content-type'] || 'image/png',
+            'Access-Control-Allow-Origin': '*',
+            'Cache-Control': 'public, max-age=86400'
+          });
+          proxyRes.pipe(res);
+        });
+        proxyReq.on('error', () => {
+          if (!res.headersSent) { res.statusCode = 502; res.end('Image fetch error'); }
+        });
+        proxyReq.on('timeout', () => {
+          proxyReq.destroy();
+          if (!res.headersSent) { res.statusCode = 504; res.end('Image timeout'); }
+        });
+        proxyReq.end();
+      });
+
       server.middlewares.use('/api/stream-check', (req: any, res: any) => {
         const urlParam = new URL(req.url, 'http://localhost').searchParams.get('url');
         if (!urlParam) {

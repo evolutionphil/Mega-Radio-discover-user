@@ -32,9 +32,8 @@ export const RadioPlaying = (): JSX.Element => {
   const ambientImageUrl = useMemo(function() {
     if (!currentStation) return undefined;
     if (currentStation.favicon && currentStation.favicon !== 'null' && currentStation.favicon.trim() !== '') {
-      return currentStation.favicon.startsWith('http')
-        ? currentStation.favicon.replace(/^http:\/\//, 'https://')
-        : 'https://themegaradio.com/api/image/' + encodeURIComponent(currentStation.favicon);
+      var imgUrl = currentStation.favicon.startsWith('http') ? currentStation.favicon : 'https://themegaradio.com/api/image/' + encodeURIComponent(currentStation.favicon);
+      return '/api/image-proxy?url=' + encodeURIComponent(imgUrl);
     }
     return undefined;
   }, [currentStation]);
@@ -152,9 +151,8 @@ export const RadioPlaying = (): JSX.Element => {
     
     // Check for null, undefined, empty string, or the string "null"
     if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
-      return station.favicon.startsWith('http') 
-        ? station.favicon.replace(/^http:\/\//, 'https://') 
-        : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
+      var imgUrl = station.favicon.startsWith('http') ? station.favicon : 'https://themegaradio.com/api/image/' + encodeURIComponent(station.favicon);
+      return '/api/image-proxy?url=' + encodeURIComponent(imgUrl);
     }
     return FALLBACK_IMAGE;
   };

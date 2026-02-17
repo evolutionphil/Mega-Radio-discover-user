@@ -47,10 +47,10 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   const getStationImage = (station: typeof currentStation) => {
+    if (!station) return FALLBACK_IMAGE;
     if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
-      return station.favicon.startsWith('http') 
-        ? station.favicon.replace(/^http:\/\//, 'https://') 
-        : `https://themegaradio.com/api/image/${encodeURIComponent(station.favicon)}`;
+      var imgUrl = station.favicon.startsWith('http') ? station.favicon : 'https://themegaradio.com/api/image/' + encodeURIComponent(station.favicon);
+      return '/api/image-proxy?url=' + encodeURIComponent(imgUrl);
     }
     return FALLBACK_IMAGE;
   };
