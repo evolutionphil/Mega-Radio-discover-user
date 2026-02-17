@@ -192,19 +192,43 @@ export const RadioPlaying = (): JSX.Element => {
 
   const station = stationData?.station || (hasCurrentStationData ? currentStation : null);
 
-  // Auto-play station from URL/cast when it doesn't match current playing station
+  // Auto-play station from URL/cast when needed
   const autoPlayedRef = useRef<string>('');
+  const castPendingRef = useRef<boolean>(false);
+  
   useEffect(function() {
-    if (station && stationId && station._id) {
-      var isNewStation = currentStation ? currentStation._id !== station._id : true;
-      var notAutoPlayedYet = autoPlayedRef.current !== station._id;
-      if (isNewStation && notAutoPlayedYet) {
-        console.log('[RadioPlaying] Auto-playing station from URL/cast:', station.name, 'ID:', station._id);
-        autoPlayedRef.current = station._id;
-        playStation(station);
+    try {
+      var castPending = localStorage.getItem('cast_autoplay_pending');
+      if (castPending) {
+        castPendingRef.current = true;
+        localStorage.removeItem('cast_autoplay_pending');
       }
+    } catch (e) {}
+  }, []);
+
+  useEffect(function() {
+    if (!station || !stationId || !station._id) return;
+    if (autoPlayedRef.current === station._id) return;
+
+    var needsPlay = false;
+    
+    if (!currentStation) {
+      needsPlay = true;
+      console.log('[RadioPlaying] Auto-play: no current station');
+    } else if (currentStation._id !== station._id) {
+      needsPlay = true;
+      console.log('[RadioPlaying] Auto-play: different station (current:', currentStation.name, 'vs target:', station.name, ')');
+    } else if (!isPlaying && !isBuffering) {
+      needsPlay = true;
+      console.log('[RadioPlaying] Auto-play: same station but not playing/buffering');
     }
-  }, [station, stationId]);
+
+    if (needsPlay) {
+      console.log('[RadioPlaying] Auto-playing:', station.name, 'ID:', station._id);
+      autoPlayedRef.current = station._id;
+      playStation(station);
+    }
+  }, [station, stationId, isPlaying, isBuffering]);
 
   // Fetch station metadata
   const { data: metadataData } = useQuery({

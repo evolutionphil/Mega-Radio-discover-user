@@ -78,8 +78,10 @@ export function CastProvider({ children }: { children: ReactNode }) {
       megaRadioApi.getStationById(stationId).then(function(result) {
         if (result && result.station) {
           console.log('[Cast] API station loaded:', result.station.name, 'URL:', (result.station.url_resolved || result.station.url || '').substring(0, 60));
+          console.log('[Cast] Calling playStation with API data...');
           playStationRef.current(result.station);
-          navigateToRadioPlaying(stationId);
+          console.log('[Cast] playStation called, now navigating...');
+          setTimeout(function() { navigateToRadioPlaying(stationId); }, 200);
         } else {
           console.warn('[Cast] Station not found in API, trying cast data');
           var streamUrl = station.url_resolved || station.urlResolved || station.url || '';
@@ -89,7 +91,7 @@ export function CastProvider({ children }: { children: ReactNode }) {
             }
             playStationRef.current(station as Station);
           }
-          navigateToRadioPlaying(stationId);
+          setTimeout(function() { navigateToRadioPlaying(stationId); }, 200);
         }
       }).catch(function(err) {
         console.error('[Cast] API fetch error, trying cast data:', err);
@@ -100,7 +102,7 @@ export function CastProvider({ children }: { children: ReactNode }) {
           }
           playStationRef.current(station as Station);
         }
-        navigateToRadioPlaying(stationId);
+        setTimeout(function() { navigateToRadioPlaying(stationId); }, 200);
       });
     } else {
       console.log('[Cast] No stationId, trying direct play with cast data');
