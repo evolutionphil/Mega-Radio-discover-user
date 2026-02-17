@@ -200,14 +200,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       var currentDeviceId = getAuthDeviceId();
-      var statusUrl = API_BASE + '/api/auth/tv/code/' + code + '/status';
+      var statusUrl = API_BASE + '/api/auth/tv/code/' + code + '/status?deviceId=' + encodeURIComponent(currentDeviceId);
       fetch(statusUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Device-Id': currentDeviceId
-        },
-        body: JSON.stringify({ deviceId: currentDeviceId })
+        method: 'GET'
       })
       .then(function(response) {
         if (!response.ok) {
@@ -217,22 +212,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             login();
             return;
           }
-          if (response.status === 405) {
-            return fetch(statusUrl + '?deviceId=' + encodeURIComponent(currentDeviceId), {
-              method: 'GET',
-              headers: { 'X-Device-Id': currentDeviceId }
-            });
-          }
           throw new Error('Polling failed: ' + response.status);
-        }
-        return response;
-      })
-      .then(function(response) {
-        if (!response || !response.ok) {
-          if (response && !response.ok) {
-            throw new Error('Polling failed: ' + response.status);
-          }
-          return null;
         }
         return response.json();
       })
