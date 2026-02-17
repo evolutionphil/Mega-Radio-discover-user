@@ -138,12 +138,17 @@ export function CastProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(function() {
+    console.log('[Cast] Provider mounted. Auth:', isAuthenticated, 'Token:', token ? 'yes' : 'no');
     if (isAuthenticated && token) {
       var savedSessionId = castService.getSavedSessionId();
       if (savedSessionId) {
         console.log('[Cast] Found saved session, auto-connecting:', savedSessionId);
         connectCast(savedSessionId, token);
+      } else {
+        console.log('[Cast] Authenticated but no saved session. Go to Settings > Cast to pair.');
       }
+    } else {
+      console.log('[Cast] Not authenticated. Login required for Cast feature.');
     }
 
     return function() {
@@ -161,15 +166,22 @@ export function CastProvider({ children }: { children: ReactNode }) {
   }, [isAuthenticated]);
 
   function pairWithCode(code: string) {
+    console.log('[Cast] Pairing code entered:', code);
     setIsPairing(true);
     setPairingError(null);
 
     castService.pair(code).then(function(result) {
+      console.log('[Cast] Pair result:', JSON.stringify(result));
       if (result.success && result.sessionId) {
+        console.log('[Cast] Session paired successfully:', result.sessionId);
         if (token) {
+          console.log('[Cast] Starting polling for session:', result.sessionId);
           connectCast(result.sessionId, token);
+        } else {
+          console.warn('[Cast] Paired but no auth token available');
         }
       } else {
+        console.warn('[Cast] Pairing failed:', result.error);
         setPairingError(result.error || 'Pairing failed');
       }
       setIsPairing(false);
