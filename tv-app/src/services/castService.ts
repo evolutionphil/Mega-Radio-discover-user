@@ -75,6 +75,49 @@ function getDeviceName(): string {
   return 'TV';
 }
 
+function extractCommand(data: any): any {
+  if (!data) return null;
+
+  if (data.pendingCommand) return data.pendingCommand;
+  if (data.command && typeof data.command === 'object') return data.command;
+  if (data.lastCommand && typeof data.lastCommand === 'object') return data.lastCommand;
+
+  if (data.type && typeof data.type === 'string' && data.type.indexOf('cast:') === 0) {
+    return data;
+  }
+
+  if (data.action && typeof data.action === 'string') {
+    var actionType = data.action;
+    if (actionType.indexOf('cast:') !== 0) {
+      actionType = 'cast:' + actionType;
+    }
+    return { type: actionType, data: data.data || data };
+  }
+
+  if (data.station && typeof data.station === 'object' && data.station._id) {
+    return { type: 'cast:play', data: { station: data.station } };
+  }
+
+  if (data.currentStation && typeof data.currentStation === 'object') {
+    return { type: 'cast:play', data: { station: data.currentStation } };
+  }
+
+  if (data.playStation && typeof data.playStation === 'object') {
+    return { type: 'cast:play', data: { station: data.playStation } };
+  }
+
+  return null;
+}
+
+function getCommandId(cmd: any): string {
+  if (cmd.id) return String(cmd.id);
+  if (cmd.timestamp) return String(cmd.timestamp);
+  if (cmd.commandId) return String(cmd.commandId);
+  if (cmd._id) return String(cmd._id);
+  if (cmd.createdAt) return String(cmd.createdAt);
+  return JSON.stringify(cmd);
+}
+
 function pollForCommands() {
   if (!_sessionId || !_token) return;
 
@@ -83,7 +126,8 @@ function pollForCommands() {
   fetch(url, {
     method: 'GET',
     headers: {
-      'Authorization': 'Bearer ' + _token
+      'Authorization': 'Bearer ' + _token,
+      'Content-Type': 'application/json'
     }
   })
   .then(function(response) {
@@ -93,6 +137,8 @@ function pollForCommands() {
     return response.json();
   })
   .then(function(data) {
+    console.log('[Cast] Poll response:', JSON.stringify(data));
+
     if (!_isConnected) {
       _isConnected = true;
       if (_onStatusChange) {
@@ -100,23 +146,14 @@ function pollForCommands() {
       }
     }
 
-    var command = data.pendingCommand || data.command || data.lastCommand || data.action;
-    if (command && command.type) {
-      var commandId = command.id || command.timestamp || JSON.stringify(command);
-      if (commandId !== _lastCommandId) {
-        _lastCommandId = commandId;
+    var command = extractCommand(data);
+    if (command) {
+      var cmdId = getCommandId(command);
+      if (cmdId !== _lastCommandId) {
+        _lastCommandId = cmdId;
+        console.log('[Cast] New command:', command.type, command);
         if (_onMessage) {
           _onMessage(command);
-        }
-      }
-    }
-
-    if (data.type && data.type.indexOf('cast:') === 0) {
-      var dataId = data.id || data.timestamp || JSON.stringify(data);
-      if (dataId !== _lastCommandId) {
-        _lastCommandId = dataId;
-        if (_onMessage) {
-          _onMessage(data);
         }
       }
     }
