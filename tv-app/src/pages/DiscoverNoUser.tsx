@@ -464,14 +464,14 @@ export const DiscoverNoUser = (): JSX.Element => {
     cols: 1,
     initialIndex: 0,
     onSelect: (index) => {
-      // Sidebar navigation (0-4) - 5 items
+      // Sidebar navigation (0-5) - 6 items (index 4 = country selector opens modal)
       if (index >= 0 && index <= 5) {
-        const route = sidebarRoutes[index];
-        window.location.hash = '#' + route;
-      }
-      // Country selector (5)
-      else if (index === 5) {
-        setIsCountrySelectorOpen(true);
+        if (index === 4) {
+          setIsCountrySelectorOpen(true);
+        } else {
+          var route = sidebarRoutes[index];
+          window.location.hash = '#' + route;
+        }
       }
       // Recently played stations
       else if (recentCount > 0 && index >= recentStart && index <= recentEnd) {

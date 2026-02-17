@@ -2,6 +2,48 @@ import { createContext, useContext, useState, useEffect, useRef, ReactNode } fro
 
 var API_BASE = 'https://themegaradio.com';
 
+function getAuthDeviceId(): string {
+  try {
+    var w = window as any;
+    if (w.webapis && w.webapis.productinfo && typeof w.webapis.productinfo.getDuid === 'function') {
+      return w.webapis.productinfo.getDuid();
+    }
+  } catch (e) {}
+  try {
+    var w2 = window as any;
+    if (w2.webOS && w2.webOS.deviceInfo) {
+      if (typeof w2.webOS.deviceInfo === 'object' && w2.webOS.deviceInfo.serialNumber) {
+        return w2.webOS.deviceInfo.serialNumber;
+      }
+    }
+  } catch (e) {}
+  try {
+    var saved = localStorage.getItem('tv_device_id');
+    if (saved) return saved;
+  } catch (e) {}
+  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0;
+    var v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+  try { localStorage.setItem('tv_device_id', uuid); } catch (e) {}
+  return uuid;
+}
+
+function getAuthPlatformName(): string {
+  var ua = (typeof navigator !== 'undefined' && navigator.userAgent) ? navigator.userAgent.toLowerCase() : '';
+  if (ua.indexOf('tizen') !== -1) return 'tizen';
+  if (ua.indexOf('webos') !== -1) return 'webos';
+  return 'browser';
+}
+
+function getAuthDeviceName(): string {
+  var platform = getAuthPlatformName();
+  if (platform === 'tizen') return 'Samsung TV';
+  if (platform === 'webos') return 'LG TV';
+  return 'TV';
+}
+
 interface User {
   id: string;
   name: string;
@@ -115,7 +157,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     fetch(API_BASE + '/api/auth/tv/code', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        deviceId: getAuthDeviceId(),
+        deviceName: getAuthDeviceName(),
+        platform: getAuthPlatformName()
+      })
     })
     .then(function(response) {
       if (!response.ok) {
