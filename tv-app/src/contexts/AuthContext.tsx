@@ -19,6 +19,7 @@ interface AuthContextType {
   deviceCode: string | null;
   codeExpiresAt: string | null;
   isPolling: boolean;
+  loginError: boolean;
 }
 
 var AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,6 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   var [deviceCode, setDeviceCode] = useState<string | null>(null);
   var [codeExpiresAt, setCodeExpiresAt] = useState<string | null>(null);
   var [isPolling, setIsPolling] = useState(false);
+  var [loginError, setLoginError] = useState(false);
   var pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
   var codeExpiresAtRef = useRef<string | null>(null);
 
@@ -109,6 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     stopPolling();
     setDeviceCode(null);
     setCodeExpiresAt(null);
+    setLoginError(false);
 
     fetch(API_BASE + '/api/auth/tv/code', {
       method: 'POST',
@@ -125,10 +128,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       var expiresAt = data.expiresAt;
       setDeviceCode(code);
       setCodeExpiresAt(expiresAt);
+      setLoginError(false);
       startPolling(code);
     })
     .catch(function(err) {
       console.error('[Auth] Failed to get device code:', err);
+      setLoginError(true);
     });
   }
 
@@ -238,6 +243,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         deviceCode: deviceCode,
         codeExpiresAt: codeExpiresAt,
         isPolling: isPolling,
+        loginError: loginError,
       }}
     >
       {children}
