@@ -70,38 +70,51 @@ export function CastProvider({ children }: { children: ReactNode }) {
   }
 
   function handleMessage(msg: any) {
-    console.log('[Cast] ====== MESSAGE ======', JSON.stringify(msg).substring(0, 200));
+    console.log('[Cast] ====== MESSAGE RECEIVED ======');
+    console.log('[Cast] Message type:', msg ? msg.type : 'undefined');
+    console.log('[Cast] Message data:', JSON.stringify(msg).substring(0, 300));
 
     var msgType = msg && msg.type ? msg.type : '';
 
     if (msgType === 'cast:play' || msgType === 'cast:change_station') {
       var station = msg.station || (msg.data && msg.data.station);
       if (station) {
+        console.log('[Cast] Playing station from cast:', station.name || station._id);
         playStationFromCast(station);
+      } else {
+        console.error('[Cast] cast:play message but no station found in msg');
       }
     } else if (msgType === 'cast:pause') {
+      console.log('[Cast] Pause command received');
       pauseStationRef.current();
     } else if (msgType === 'cast:resume') {
+      console.log('[Cast] Resume command received');
       resumeStationRef.current();
     } else if (msgType === 'cast:stop') {
+      console.log('[Cast] Stop command received');
       stopStationRef.current();
+    } else {
+      console.log('[Cast] Unknown message type:', msgType);
     }
   }
 
   function handleStatusChange(status: string) {
-    console.log('[Cast] Status:', status);
+    console.log('[Cast] Status changed to:', status);
     setIsConnected(status === 'connected');
   }
 
   useEffect(function() {
-    console.log('[Cast] === Provider mount === auth=' + isAuthenticated + ' token=' + (token ? 'yes' : 'no'));
+    console.log('[Cast] === Effect === auth=' + isAuthenticated + ' token=' + (token ? 'yes(' + token.substring(0, 10) + '...)' : 'no'));
 
     if (isAuthenticated && token) {
       console.log('[Cast] Starting auto-poll (same account = auto cast)');
       castService.startPolling(token, handleMessage, handleStatusChange);
+    } else {
+      console.log('[Cast] Not starting poll - auth=' + isAuthenticated + ' token=' + (token ? 'yes' : 'no'));
     }
 
     return function() {
+      console.log('[Cast] Effect cleanup - stopping poll');
       castService.stopPolling();
     };
   }, [isAuthenticated, token]);

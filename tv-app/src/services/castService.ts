@@ -136,6 +136,8 @@ function pollForCommands() {
 
   var url = API_BASE + '/api/cast/poll?deviceId=' + encodeURIComponent(getDeviceId()) + '&platform=' + encodeURIComponent(getPlatformName());
 
+  console.log('[Cast] Poll #' + currentPoll + ' fetching...');
+
   fetch(url, {
     method: 'GET',
     headers: {
@@ -144,15 +146,16 @@ function pollForCommands() {
     }
   })
   .then(function(response) {
+    console.log('[Cast] Poll #' + currentPoll + ' HTTP ' + response.status);
     if (!response.ok) {
-      throw new Error('Poll HTTP ' + response.status);
+      return response.text().then(function(txt) {
+        throw new Error('Poll HTTP ' + response.status + ': ' + txt.substring(0, 200));
+      });
     }
     return response.json();
   })
   .then(function(data) {
-    if (currentPoll <= 5 || currentPoll % 20 === 0) {
-      console.log('[Cast] Poll #' + currentPoll + ':', JSON.stringify(data).substring(0, 300));
-    }
+    console.log('[Cast] Poll #' + currentPoll + ' response:', JSON.stringify(data).substring(0, 500));
 
     if (!_isConnected) {
       _isConnected = true;
@@ -163,14 +166,21 @@ function pollForCommands() {
     var station = extractStationFromResponse(data);
     var action = extractAction(data);
 
+    console.log('[Cast] Poll #' + currentPoll + ' extracted: station=' + (station ? (station.name || station._id || 'YES') : 'null') + ' action=' + (action || 'none'));
+
     if (station) {
       var cmdHash = makeCommandHash(data.pendingCommand || data.command || data.lastCommand || data);
+      console.log('[Cast] cmdHash=' + cmdHash + ' lastHash=' + _lastCommandHash);
       if (cmdHash !== _lastCommandHash) {
         _lastCommandHash = cmdHash;
         console.log('[Cast] >>> NEW STATION from poll:', station.name || station._id, 'action:', action);
         if (_onMessage) {
           _onMessage({ type: 'cast:play', station: station });
+        } else {
+          console.error('[Cast] No _onMessage handler!');
         }
+      } else {
+        console.log('[Cast] Same command hash, skipping duplicate');
       }
     } else if (action) {
       var normalizedAction = action.indexOf('cast:') === 0 ? action : 'cast:' + action;
@@ -184,12 +194,12 @@ function pollForCommands() {
           }
         }
       }
+    } else {
+      console.log('[Cast] Poll #' + currentPoll + ' no station or action found in response');
     }
   })
   .catch(function(err) {
-    if (currentPoll <= 5 || currentPoll % 30 === 0) {
-      console.warn('[Cast] Poll #' + currentPoll + ' error:', err.message || err);
-    }
+    console.warn('[Cast] Poll #' + currentPoll + ' error:', err.message || err);
     if (_isConnected) {
       _isConnected = false;
       if (_onStatusChange) _onStatusChange('disconnected');
