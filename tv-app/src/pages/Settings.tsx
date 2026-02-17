@@ -168,18 +168,7 @@ export const Settings = (): JSX.Element => {
   const [selectedKeyboard, setSelectedKeyboard] = useState(0);
   const { highContrast, largeText, setHighContrast, setLargeText } = useAccessibility();
   const { isAuthenticated, user, logout } = useAuth();
-  const { isPaired, isConnected, pairWithCode, disconnectCast, pairingError, isPairing } = useCast();
-
-  const [castCodeDigits, setCastCodeDigits] = useState<string[]>(['', '', '', '', '', '']);
-  const [castNumpadRow, setCastNumpadRow] = useState(0);
-  const [castNumpadCol, setCastNumpadCol] = useState(0);
-
-  const NUMPAD_KEYS = [
-    ['1', '2', '3'],
-    ['4', '5', '6'],
-    ['7', '8', '9'],
-    ['⌫', '0', 'OK'],
-  ];
+  const { isConnected } = useCast();
 
   const [focusSection, setFocusSection] = useState<'sidebar' | 'categories' | 'options'>('categories');
   const [sidebarIndex, setSidebarIndex] = useState(5);
@@ -231,7 +220,7 @@ export const Settings = (): JSX.Element => {
       case 'timer': return sleepTimerOptions.length;
       case 'accessibility': return 2;
       case 'account': return isAuthenticated ? 1 : 1;
-      case 'cast': return isPaired ? 1 : 1;
+      case 'cast': return 1;
       default: return 0;
     }
   };
@@ -252,9 +241,6 @@ export const Settings = (): JSX.Element => {
 
   useEffect(() => {
     setOptionIndex(0);
-    setCastNumpadRow(0);
-    setCastNumpadCol(0);
-    setCastCodeDigits(['', '', '', '', '', '']);
     if (optionListRef.current) {
       optionListRef.current.scrollTop = 0;
     }
@@ -320,14 +306,6 @@ export const Settings = (): JSX.Element => {
         }
         break;
       case 'cast':
-        if (isPaired) {
-          disconnectCast();
-        } else {
-          var fullCode = castCodeDigits.join('');
-          if (fullCode.length === 6) {
-            pairWithCode(fullCode);
-          }
-        }
         break;
     }
   };
@@ -373,61 +351,8 @@ export const Settings = (): JSX.Element => {
     if (focusSection === 'options') {
       var currentCat = categories[categoryIndex];
 
-      if (currentCat === 'cast' && !isPaired) {
-        if (isUp) {
-          e.preventDefault();
-          setCastNumpadRow(function(prev) { return Math.max(0, prev - 1); });
-        } else if (isDown) {
-          e.preventDefault();
-          setCastNumpadRow(function(prev) { return Math.min(3, prev + 1); });
-        } else if (isRight) {
-          e.preventDefault();
-          setCastNumpadCol(function(prev) { return Math.min(2, prev + 1); });
-        } else if (isLeft) {
-          e.preventDefault();
-          if (castNumpadCol > 0) {
-            setCastNumpadCol(function(prev) { return prev - 1; });
-          } else {
-            setFocusSection('categories');
-          }
-        } else if (isEnter) {
-          e.preventDefault();
-          var numpadKey = NUMPAD_KEYS[castNumpadRow][castNumpadCol];
-          if (numpadKey === '⌫') {
-            setCastCodeDigits(function(prev) {
-              var next = prev.slice();
-              for (var i = 5; i >= 0; i--) {
-                if (next[i] !== '') {
-                  next[i] = '';
-                  break;
-                }
-              }
-              return next;
-            });
-          } else if (numpadKey === 'OK') {
-            var fullCode = castCodeDigits.join('');
-            if (fullCode.length === 6 && fullCode !== '000000') {
-              pairWithCode(fullCode);
-            }
-          } else {
-            setCastCodeDigits(function(prev) {
-              var next = prev.slice();
-              var filled = false;
-              for (var i = 0; i < 6; i++) {
-                if (next[i] === '') {
-                  next[i] = numpadKey;
-                  filled = true;
-                  if (i === 5) {
-                    setCastNumpadRow(3);
-                    setCastNumpadCol(2);
-                  }
-                  break;
-                }
-              }
-              return next;
-            });
-          }
-        }
+      if (currentCat === 'cast') {
+        if (isLeft) { e.preventDefault(); setFocusSection('categories'); }
         return;
       }
 
@@ -469,8 +394,7 @@ export const Settings = (): JSX.Element => {
         return isAuthenticated ? (user ? user.name : (t('logged_in') || 'Logged In')) : (t('not_logged_in') || 'Not Logged In');
       case 'cast':
         if (isConnected) return t('cast_connected') || 'Connected';
-        if (isPaired) return t('cast_connecting') || 'Connecting...';
-        return t('cast_not_connected') || 'Not Connected';
+        return isAuthenticated ? (t('cast_waiting') || 'Waiting for mobile...') : (t('not_logged_in') || 'Not Logged In');
       default: return '';
     }
   };
@@ -770,135 +694,33 @@ export const Settings = (): JSX.Element => {
       }
 
       case 'cast': {
-        if (isPaired || isConnected) {
-          var disconnectFocused = isFocusedOnOptions && optionIndex === 0;
-          return (
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px', paddingLeft: '24px' }}>
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: isConnected ? '#22c55e' : '#eab308' }} />
-                <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.7)', margin: 0 }}>
-                  {isConnected ? (t('cast_connected') || 'Connected to mobile app') : (t('cast_connecting') || 'Connecting...')}
-                </p>
-              </div>
-              <div
-                style={{ ...optionRowBase, backgroundColor: disconnectFocused ? 'rgba(239,68,68,0.2)' : 'transparent', boxShadow: disconnectFocused ? '0 0 24px rgba(239,68,68,0.2)' : 'none', border: '1px solid rgba(239,68,68,0.3)' }}
-                onClick={function() { disconnectCast(); }}
-                data-testid="button-cast-disconnect"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <line x1="18" y1="6" x2="6" y2="18" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" />
-                  <line x1="6" y1="6" x2="18" y2="18" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-                <p className="font-['Ubuntu',Helvetica]" style={{ ...optionTextStyle, color: '#ef4444' }}>
-                  {t('cast_disconnect') || 'Disconnect'}
-                </p>
-              </div>
-            </div>
-          );
-        }
-
         return (
           <div>
-            <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.7)', margin: 0, marginBottom: '16px', paddingLeft: '24px' }}>
-              {t('cast_enter_code') || 'Enter the code from your mobile app:'}
-            </p>
-
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '24px', paddingLeft: '24px' }}>
-              {castCodeDigits.map(function(digit, idx) {
-                var filledCount = castCodeDigits.filter(function(d) { return d !== ''; }).length;
-                var isNextEmpty = idx === filledCount;
-                return (
-                  <div
-                    key={idx}
-                    style={{
-                      width: '64px',
-                      height: '76px',
-                      borderRadius: '10px',
-                      border: isNextEmpty ? '2px solid #ff4199' : digit ? '2px solid rgba(255,65,153,0.4)' : '2px solid rgba(255,255,255,0.15)',
-                      backgroundColor: digit ? 'rgba(255,65,153,0.08)' : 'rgba(255,255,255,0.03)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                    data-testid={'input-cast-digit-' + idx}
-                  >
-                    <span style={{ fontFamily: "'Ubuntu', Helvetica", fontSize: '40px', fontWeight: 'bold', color: digit ? '#ff4199' : 'rgba(255,255,255,0.15)', lineHeight: '1' }}>
-                      {digit || '-'}
-                    </span>
-                  </div>
-                );
-              })}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px', paddingLeft: '24px' }}>
+              <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: isConnected ? '#22c55e' : isAuthenticated ? '#eab308' : '#ef4444' }} />
+              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '22px', color: 'rgba(255,255,255,0.8)', margin: 0 }}>
+                {isConnected 
+                  ? (t('cast_connected') || 'Connected to mobile app')
+                  : isAuthenticated 
+                    ? (t('cast_auto_info') || 'Cast is active. Play a station from your mobile app.')
+                    : (t('cast_login_required') || 'Login required for Cast')}
+              </p>
             </div>
-
-            <div style={{ paddingLeft: '24px' }}>
-              {NUMPAD_KEYS.map(function(row, rowIdx) {
-                return (
-                  <div key={rowIdx} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                    {row.map(function(key, colIdx) {
-                      var isKeyFocused = isFocusedOnOptions && castNumpadRow === rowIdx && castNumpadCol === colIdx;
-                      var isOK = key === 'OK';
-                      var isBackspace = key === '⌫';
-                      var allFilled = castCodeDigits.every(function(d) { return d !== ''; });
-
-                      return (
-                        <div
-                          key={colIdx}
-                          style={{
-                            width: '100px',
-                            height: '72px',
-                            borderRadius: '12px',
-                            border: isKeyFocused
-                              ? (isOK ? '3px solid #22c55e' : isBackspace ? '3px solid #f59e0b' : '3px solid #ff4199')
-                              : '2px solid rgba(255,255,255,0.12)',
-                            backgroundColor: isKeyFocused
-                              ? (isOK ? 'rgba(34,197,94,0.15)' : isBackspace ? 'rgba(245,158,11,0.1)' : 'rgba(255,65,153,0.12)')
-                              : 'rgba(255,255,255,0.04)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            boxShadow: isKeyFocused
-                              ? (isOK ? '0 0 20px rgba(34,197,94,0.25)' : isBackspace ? '0 0 20px rgba(245,158,11,0.2)' : '0 0 20px rgba(255,65,153,0.25)')
-                              : 'none',
-                            cursor: 'pointer',
-                          }}
-                          data-testid={'cast-numpad-' + key}
-                        >
-                          {isBackspace ? (
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                              <path d="M9 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" stroke={isKeyFocused ? '#f59e0b' : 'rgba(255,255,255,0.5)'} strokeWidth="1.5" strokeLinecap="round" />
-                              <path d="M3 12l5-7h13v14H8l-5-7z" stroke={isKeyFocused ? '#f59e0b' : 'rgba(255,255,255,0.5)'} strokeWidth="1.5" fill="none" />
-                            </svg>
-                          ) : (
-                            <span style={{
-                              fontFamily: "'Ubuntu', Helvetica",
-                              fontSize: isOK ? '22px' : '32px',
-                              fontWeight: isOK ? 700 : 600,
-                              color: isKeyFocused
-                                ? (isOK ? '#22c55e' : '#ff4199')
-                                : (isOK && allFilled ? 'rgba(34,197,94,0.7)' : 'rgba(255,255,255,0.6)'),
-                              lineHeight: '1',
-                            }}>
-                              {key}
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
-
-            {pairingError && (
-              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '18px', color: '#ef4444', margin: 0, marginTop: '12px', paddingLeft: '24px' }}>
-                {pairingError}
+            {isAuthenticated && (
+              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '18px', color: 'rgba(255,255,255,0.4)', margin: 0, paddingLeft: '24px', lineHeight: '1.6' }}>
+                {t('cast_how') || 'Open megaradio app on your phone, select a station and tap Cast. It will automatically play here.'}
               </p>
             )}
-
-            {isPairing && (
-              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)', margin: 0, marginTop: '12px', paddingLeft: '24px' }}>
-                {t('cast_pairing') || 'Pairing...'}
-              </p>
+            {!isAuthenticated && (
+              <div
+                style={{ ...optionRowBase, backgroundColor: isFocusedOnOptions && optionIndex === 0 ? '#ff4199' : 'transparent', boxShadow: isFocusedOnOptions && optionIndex === 0 ? '0 0 24px rgba(255,65,153,0.3)' : 'none', border: '1px solid rgba(255,65,153,0.3)', marginTop: '16px' }}
+                onClick={function() { setLocation('/login'); }}
+                data-testid="button-cast-login"
+              >
+                <p className="font-['Ubuntu',Helvetica]" style={{ ...optionTextStyle, color: isFocusedOnOptions && optionIndex === 0 ? '#fff' : '#ff4199' }}>
+                  {t('login') || 'Login'}
+                </p>
+              </div>
             )}
           </div>
         );
@@ -990,7 +812,7 @@ export const Settings = (): JSX.Element => {
                           : cat === 'accessibility' ? (highContrast || largeText ? (
                               [highContrast && (t('high_contrast') || 'High Contrast'), largeText && (t('large_text') || 'Large Text')].filter(Boolean).join(', ')
                             ) : (t('settings_none') || 'None'))
-                          : cat === 'cast' ? (isConnected ? (t('cast_connected') || 'Connected') : isPaired ? (t('cast_connecting') || 'Connecting...') : (t('cast_not_connected') || 'Not Connected'))
+                          : cat === 'cast' ? (isConnected ? (t('cast_connected') || 'Connected') : isAuthenticated ? (t('cast_waiting') || 'Waiting...') : (t('cast_not_connected') || 'Not Connected'))
                           : ''
                         }
                       </p>

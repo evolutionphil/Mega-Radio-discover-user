@@ -3,50 +3,43 @@ import { Station } from '@/services/megaRadioApi';
 var API_BASE = 'https://themegaradio.com';
 
 var _pollInterval: ReturnType<typeof setInterval> | null = null;
-var _reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
 var _shouldPoll: boolean = false;
-var _sessionId: string | null = null;
 var _token: string | null = null;
+var _deviceId: string | null = null;
 var _onMessage: ((msg: any) => void) | null = null;
 var _onStatusChange: ((status: string) => void) | null = null;
-var _lastCommandId: string | null = null;
+var _lastCommandHash: string | null = null;
 var _isConnected: boolean = false;
 var _pollCount: number = 0;
 
 function getDeviceId(): string {
+  if (_deviceId) return _deviceId;
+
   try {
     var w = window as any;
     if (w.webapis && w.webapis.productinfo && typeof w.webapis.productinfo.getDuid === 'function') {
-      return w.webapis.productinfo.getDuid();
+      _deviceId = w.webapis.productinfo.getDuid();
+      return _deviceId!;
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 
   try {
     var w2 = window as any;
     if (w2.webOS && w2.webOS.deviceInfo) {
       if (typeof w2.webOS.deviceInfo === 'object' && w2.webOS.deviceInfo.serialNumber) {
-        return w2.webOS.deviceInfo.serialNumber;
-      }
-      if (typeof w2.webOS.deviceInfo === 'function') {
-        var serial: string | null = null;
-        w2.webOS.deviceInfo(function(info: any) {
-          if (info && info.serialNumber) {
-            serial = info.serialNumber;
-            try { localStorage.setItem('tv_device_id', info.serialNumber); } catch (e) {}
-          }
-        });
-        if (serial) return serial;
+        _deviceId = w2.webOS.deviceInfo.serialNumber;
+        return _deviceId!;
       }
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 
   try {
     var saved = localStorage.getItem('tv_device_id');
-    if (saved) return saved;
-  } catch (e) {
-  }
+    if (saved) {
+      _deviceId = saved;
+      return saved;
+    }
+  } catch (e) {}
 
   var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0;
@@ -56,9 +49,9 @@ function getDeviceId(): string {
 
   try {
     localStorage.setItem('tv_device_id', uuid);
-  } catch (e) {
-  }
+  } catch (e) {}
 
+  _deviceId = uuid;
   return uuid;
 }
 
@@ -69,67 +62,79 @@ function getPlatformName(): string {
   return 'browser';
 }
 
-function getDeviceName(): string {
-  var platform = getPlatformName();
-  if (platform === 'tizen') return 'Samsung TV';
-  if (platform === 'webos') return 'LG TV';
-  return 'TV';
+function makeCommandHash(data: any): string {
+  try {
+    if (data.id) return 'id:' + data.id;
+    if (data.timestamp) return 'ts:' + data.timestamp;
+    if (data.commandId) return 'cmd:' + data.commandId;
+    if (data._id) return '_id:' + data._id;
+    if (data.createdAt) return 'ca:' + data.createdAt;
+    return 'h:' + JSON.stringify(data).length + ':' + JSON.stringify(data).substring(0, 100);
+  } catch (e) {
+    return 'err:' + Date.now();
+  }
 }
 
-function extractCommand(data: any): any {
+function extractStationFromResponse(data: any): any {
   if (!data) return null;
 
-  if (data.pendingCommand) return data.pendingCommand;
-  if (data.command && typeof data.command === 'object') return data.command;
-  if (data.lastCommand && typeof data.lastCommand === 'object') return data.lastCommand;
-
-  if (data.type && typeof data.type === 'string' && data.type.indexOf('cast:') === 0) {
-    return data;
+  if (data.pendingCommand && data.pendingCommand.station) {
+    return data.pendingCommand.station;
+  }
+  if (data.pendingCommand && data.pendingCommand.data && data.pendingCommand.data.station) {
+    return data.pendingCommand.data.station;
   }
 
-  if (data.action && typeof data.action === 'string') {
-    var actionType = data.action;
-    if (actionType.indexOf('cast:') !== 0) {
-      actionType = 'cast:' + actionType;
-    }
-    return { type: actionType, data: data.data || data };
+  if (data.command && typeof data.command === 'object') {
+    if (data.command.station) return data.command.station;
+    if (data.command.data && data.command.data.station) return data.command.data.station;
   }
 
-  if (data.station && typeof data.station === 'object' && data.station._id) {
-    return { type: 'cast:play', data: { station: data.station } };
+  if (data.lastCommand && typeof data.lastCommand === 'object') {
+    if (data.lastCommand.station) return data.lastCommand.station;
+    if (data.lastCommand.data && data.lastCommand.data.station) return data.lastCommand.data.station;
   }
 
-  if (data.currentStation && typeof data.currentStation === 'object') {
-    return { type: 'cast:play', data: { station: data.currentStation } };
-  }
+  if (data.station && typeof data.station === 'object') return data.station;
+  if (data.currentStation && typeof data.currentStation === 'object') return data.currentStation;
+  if (data.playStation && typeof data.playStation === 'object') return data.playStation;
 
-  if (data.playStation && typeof data.playStation === 'object') {
-    return { type: 'cast:play', data: { station: data.playStation } };
+  if (data.data && typeof data.data === 'object') {
+    if (data.data.station) return data.data.station;
   }
 
   return null;
 }
 
-function getCommandId(cmd: any): string {
-  if (cmd.id) return String(cmd.id);
-  if (cmd.timestamp) return String(cmd.timestamp);
-  if (cmd.commandId) return String(cmd.commandId);
-  if (cmd._id) return String(cmd._id);
-  if (cmd.createdAt) return String(cmd.createdAt);
-  return JSON.stringify(cmd);
+function extractAction(data: any): string {
+  if (!data) return '';
+
+  if (data.pendingCommand) {
+    var pc = data.pendingCommand;
+    if (pc.type) return pc.type;
+    if (pc.action) return pc.action;
+    if (pc.command) return pc.command;
+  }
+
+  if (data.command && typeof data.command === 'object') {
+    if (data.command.type) return data.command.type;
+    if (data.command.action) return data.command.action;
+  }
+
+  if (data.type) return data.type;
+  if (data.action) return data.action;
+  if (data.command && typeof data.command === 'string') return data.command;
+
+  return '';
 }
 
 function pollForCommands() {
-  if (!_sessionId || !_token) return;
+  if (!_token) return;
 
   _pollCount++;
   var currentPoll = _pollCount;
 
-  var url = API_BASE + '/api/cast/session/' + encodeURIComponent(_sessionId) + '/status?deviceId=' + encodeURIComponent(getDeviceId());
-
-  if (currentPoll <= 3 || currentPoll % 10 === 0) {
-    console.log('[Cast] Polling #' + currentPoll + ' session=' + _sessionId);
-  }
+  var url = API_BASE + '/api/cast/poll?deviceId=' + encodeURIComponent(getDeviceId()) + '&platform=' + encodeURIComponent(getPlatformName());
 
   fetch(url, {
     method: 'GET',
@@ -140,97 +145,70 @@ function pollForCommands() {
   })
   .then(function(response) {
     if (!response.ok) {
-      throw new Error('Poll failed: ' + response.status);
+      throw new Error('Poll HTTP ' + response.status);
     }
     return response.json();
   })
   .then(function(data) {
     if (currentPoll <= 5 || currentPoll % 20 === 0) {
-      console.log('[Cast] Poll #' + currentPoll + ' response:', JSON.stringify(data).substring(0, 300));
+      console.log('[Cast] Poll #' + currentPoll + ':', JSON.stringify(data).substring(0, 300));
     }
 
     if (!_isConnected) {
       _isConnected = true;
-      console.log('[Cast] Connected! Polling active for session:', _sessionId);
-      if (_onStatusChange) {
-        _onStatusChange('connected');
-      }
+      console.log('[Cast] Poll connected OK');
+      if (_onStatusChange) _onStatusChange('connected');
     }
 
-    var command = extractCommand(data);
-    if (command) {
-      var cmdId = getCommandId(command);
-      if (cmdId !== _lastCommandId) {
-        _lastCommandId = cmdId;
-        console.log('[Cast] >>> NEW COMMAND:', command.type, JSON.stringify(command).substring(0, 200));
+    var station = extractStationFromResponse(data);
+    var action = extractAction(data);
+
+    if (station) {
+      var cmdHash = makeCommandHash(data.pendingCommand || data.command || data.lastCommand || data);
+      if (cmdHash !== _lastCommandHash) {
+        _lastCommandHash = cmdHash;
+        console.log('[Cast] >>> NEW STATION from poll:', station.name || station._id, 'action:', action);
         if (_onMessage) {
-          _onMessage(command);
+          _onMessage({ type: 'cast:play', station: station });
+        }
+      }
+    } else if (action) {
+      var normalizedAction = action.indexOf('cast:') === 0 ? action : 'cast:' + action;
+      if (normalizedAction === 'cast:pause' || normalizedAction === 'cast:resume' || normalizedAction === 'cast:stop') {
+        var actionHash = makeCommandHash(data.pendingCommand || data.command || data);
+        if (actionHash !== _lastCommandHash) {
+          _lastCommandHash = actionHash;
+          console.log('[Cast] >>> ACTION from poll:', normalizedAction);
+          if (_onMessage) {
+            _onMessage({ type: normalizedAction });
+          }
         }
       }
     }
   })
   .catch(function(err) {
-    console.warn('[Cast] Poll #' + currentPoll + ' error:', err.message || err);
+    if (currentPoll <= 5 || currentPoll % 30 === 0) {
+      console.warn('[Cast] Poll #' + currentPoll + ' error:', err.message || err);
+    }
     if (_isConnected) {
       _isConnected = false;
-      if (_onStatusChange) {
-        _onStatusChange('disconnected');
-      }
+      if (_onStatusChange) _onStatusChange('disconnected');
     }
   });
 }
 
 export var castService = {
-  pair: function(pairingCode: string): Promise<{ success: boolean; sessionId?: string; error?: string }> {
-    return fetch(API_BASE + '/api/cast/session/pair', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        pairingCode: pairingCode,
-        deviceId: getDeviceId(),
-        deviceName: getDeviceName(),
-        platform: getPlatformName()
-      })
-    })
-    .then(function(response) {
-      return response.json().then(function(data: any) {
-        if (!response.ok || !data.success) {
-          return { success: false, error: data.message || data.error || 'Pairing failed' };
-        }
-        var sid = data.sessionId as string;
-        try {
-          localStorage.setItem('cast_session_id', sid);
-        } catch (e) {
-        }
-        return { success: true, sessionId: sid };
-      });
-    })
-    .catch(function(err) {
-      console.error('[Cast] Pair error:', err);
-      return { success: false, error: 'Network error' };
-    }) as Promise<{ success: boolean; sessionId?: string; error?: string }>;
-  },
+  startPolling: function(token: string, onMessage: (msg: any) => void, onStatusChange: (status: string) => void) {
+    console.log('[Cast] startPolling() token=' + (token ? 'yes' : 'no') + ' deviceId=' + getDeviceId());
 
-  connect: function(sessionId: string, token: string, onMessage: (msg: any) => void, onStatusChange: (status: string) => void) {
-    console.log('[Cast] connect() called. session=' + sessionId + ' token=' + (token ? 'yes' : 'no'));
-    _sessionId = sessionId;
+    castService.stopPolling();
+
     _token = token;
     _onMessage = onMessage;
     _onStatusChange = onStatusChange;
     _shouldPoll = true;
-    _lastCommandId = null;
+    _lastCommandHash = null;
     _pollCount = 0;
-
-    if (_pollInterval) {
-      clearInterval(_pollInterval);
-      _pollInterval = null;
-    }
-    if (_reconnectTimeout) {
-      clearTimeout(_reconnectTimeout);
-      _reconnectTimeout = null;
-    }
-
-    console.log('[Cast] Starting HTTP polling for session:', sessionId);
 
     pollForCommands();
 
@@ -242,59 +220,24 @@ export var castService = {
   },
 
   stopPolling: function() {
-    console.log('[Cast] stopPolling() - keeping session in localStorage');
     _shouldPoll = false;
     _isConnected = false;
     _onMessage = null;
     _onStatusChange = null;
-    _sessionId = null;
     _token = null;
-    _lastCommandId = null;
+    _lastCommandHash = null;
     _pollCount = 0;
 
     if (_pollInterval) {
       clearInterval(_pollInterval);
       _pollInterval = null;
     }
-    if (_reconnectTimeout) {
-      clearTimeout(_reconnectTimeout);
-      _reconnectTimeout = null;
-    }
-  },
-
-  fullDisconnect: function() {
-    console.log('[Cast] fullDisconnect() - clearing session from localStorage');
-    _shouldPoll = false;
-    _isConnected = false;
-    _onMessage = null;
-    _onStatusChange = null;
-    _sessionId = null;
-    _token = null;
-    _lastCommandId = null;
-    _pollCount = 0;
-
-    if (_pollInterval) {
-      clearInterval(_pollInterval);
-      _pollInterval = null;
-    }
-    if (_reconnectTimeout) {
-      clearTimeout(_reconnectTimeout);
-      _reconnectTimeout = null;
-    }
-
-    try {
-      localStorage.removeItem('cast_session_id');
-    } catch (e) {}
-  },
-
-  disconnect: function() {
-    castService.fullDisconnect();
   },
 
   sendNowPlaying: function(data: { title?: string; artist?: string; stationName?: string; isPlaying: boolean }) {
-    if (!_sessionId || !_token || !_isConnected) return;
+    if (!_token || !_isConnected) return;
 
-    fetch(API_BASE + '/api/cast/session/' + encodeURIComponent(_sessionId) + '/now-playing', {
+    fetch(API_BASE + '/api/cast/now-playing', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + _token,
@@ -302,6 +245,7 @@ export var castService = {
       },
       body: JSON.stringify({
         deviceId: getDeviceId(),
+        platform: getPlatformName(),
         title: data.title,
         artist: data.artist,
         stationName: data.stationName,
@@ -314,17 +258,5 @@ export var castService = {
 
   isConnected: function(): boolean {
     return _isConnected;
-  },
-
-  getSessionId: function(): string | null {
-    return _sessionId;
-  },
-
-  getSavedSessionId: function(): string | null {
-    try {
-      return localStorage.getItem('cast_session_id');
-    } catch (e) {
-      return null;
-    }
   }
 };
