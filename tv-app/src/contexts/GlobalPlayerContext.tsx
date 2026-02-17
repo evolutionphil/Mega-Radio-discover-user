@@ -3,6 +3,7 @@ import { Station, megaRadioApi } from "@/services/megaRadioApi";
 import { recentlyPlayedService } from "@/services/recentlyPlayedService";
 import { recommendationService } from "@/services/recommendationService";
 import { trackStationPlay, trackError } from "@/lib/analytics";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface GlobalPlayerContextType {
   currentStation: Station | null;
@@ -56,6 +57,7 @@ async function resolveStreamUrl(url: string): Promise<{ resolvedUrl: string; isP
 }
 
 export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
+  var { isAuthenticated, token } = useAuth();
   const [currentStation, setCurrentStation] = useState<Station | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
@@ -382,7 +384,7 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
       trackError('Failed to save station to localStorage', 'playStation');
     }
 
-    recentlyPlayedService.addStation(station);
+    recentlyPlayedService.addStation(station, token);
     recommendationService.trackListen(station);
   };
 
@@ -432,6 +434,12 @@ export function GlobalPlayerProvider({ children }: { children: ReactNode }) {
   const clearStreamError = () => {
     setStreamError(null);
   };
+
+  useEffect(function() {
+    if (isAuthenticated && token) {
+      recentlyPlayedService.syncFromApi(token);
+    }
+  }, [isAuthenticated, token]);
 
   // Expose player controls to window for TV remote media buttons
   useEffect(() => {

@@ -137,26 +137,26 @@ function App() {
         <LocalizationProvider>
           <NetworkStatusProvider>
             <CountryProvider>
-              <FavoritesProvider>
-                <NavigationProvider>
-                  <AuthProvider>
-                  <GlobalPlayerProvider>
-                    <CastProvider>
-                    <SleepTimerProvider>
-                    <AppLifecycleProvider>
-                      <FocusRouterProvider>
-                        <TooltipProvider>
-                          <Toaster />
-                          <Router />
-                        </TooltipProvider>
-                      </FocusRouterProvider>
-                    </AppLifecycleProvider>
-                    </SleepTimerProvider>
-                    </CastProvider>
-                  </GlobalPlayerProvider>
-                  </AuthProvider>
-                </NavigationProvider>
-              </FavoritesProvider>
+              <AuthProvider>
+                <FavoritesProvider>
+                  <NavigationProvider>
+                    <GlobalPlayerProvider>
+                      <CastProvider>
+                      <SleepTimerProvider>
+                      <AppLifecycleProvider>
+                        <FocusRouterProvider>
+                          <TooltipProvider>
+                            <Toaster />
+                            <Router />
+                          </TooltipProvider>
+                        </FocusRouterProvider>
+                      </AppLifecycleProvider>
+                      </SleepTimerProvider>
+                      </CastProvider>
+                    </GlobalPlayerProvider>
+                  </NavigationProvider>
+                </FavoritesProvider>
+              </AuthProvider>
             </CountryProvider>
           </NetworkStatusProvider>
         </LocalizationProvider>

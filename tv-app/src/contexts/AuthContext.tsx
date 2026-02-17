@@ -44,6 +44,17 @@ function getAuthDeviceName(): string {
   return 'TV';
 }
 
+function fixAvatarUrl(user: any): any {
+  if (!user) return user;
+  if (user.avatar && user.avatar.indexOf('http') !== 0) {
+    user.avatar = 'https://themegaradio.com/' + user.avatar;
+  }
+  if (user.profileImage && user.profileImage.indexOf('http') !== 0) {
+    user.profileImage = 'https://themegaradio.com/' + user.profileImage;
+  }
+  return user;
+}
+
 interface User {
   id: string;
   name: string;
@@ -122,9 +133,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // parse error
       }
       if (savedUser) {
-        setUser(savedUser);
+        setUser(fixAvatarUrl(savedUser));
       } else if (data && data.user) {
-        setUser(data.user);
+        setUser(fixAvatarUrl(data.user));
       }
       setIsLoading(false);
     })
@@ -232,7 +243,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         var isActivated = data.activated || data.status === 'activated' || data.status === 'verified';
         if (isActivated && data.token) {
           var newToken = data.token;
-          var newUser = data.user;
+          var newUser = fixAvatarUrl(data.user);
 
           try {
             localStorage.setItem('tv_auth_token', newToken);
