@@ -655,11 +655,19 @@ export const DiscoverNoUser = (): JSX.Element => {
     }
   }, [initialStationsData, selectedCountryCode]);
 
-  // Load recently played stations on mount
-  useEffect(() => {
-    const stations = recentlyPlayedService.getStations();
-    setRecentStations(stations);
-  }, []);
+  // Load recently played stations on mount and after auth changes
+  useEffect(function() {
+    if (isAuthenticated) {
+      var timer = setTimeout(function() {
+        var stations = recentlyPlayedService.getStations();
+        setRecentStations(stations);
+      }, 2000);
+      return function() { clearTimeout(timer); };
+    } else {
+      var stations = recentlyPlayedService.getStations();
+      setRecentStations(stations);
+    }
+  }, [isAuthenticated]);
 
   // Load personalized recommendations on mount
   useEffect(() => {

@@ -1,16 +1,16 @@
 import { Station } from '@/services/megaRadioApi';
 
 var API_BASE = 'https://themegaradio.com';
-var WS_BASE = 'wss://themegaradio.com/ws/cast';
 
-var _ws: WebSocket | null = null;
-var _heartbeatInterval: ReturnType<typeof setInterval> | null = null;
+var _pollInterval: ReturnType<typeof setInterval> | null = null;
 var _reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
-var _shouldReconnect: boolean = false;
+var _shouldPoll: boolean = false;
 var _sessionId: string | null = null;
 var _token: string | null = null;
 var _onMessage: ((msg: any) => void) | null = null;
 var _onStatusChange: ((status: string) => void) | null = null;
+var _lastCommandId: string | null = null;
+var _isConnected: boolean = false;
 
 function getDeviceId(): string {
   try {
@@ -75,6 +75,63 @@ function getDeviceName(): string {
   return 'TV';
 }
 
+function pollForCommands() {
+  if (!_sessionId || !_token) return;
+
+  var url = API_BASE + '/api/cast/session/' + encodeURIComponent(_sessionId) + '/status?deviceId=' + encodeURIComponent(getDeviceId());
+
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer ' + _token
+    }
+  })
+  .then(function(response) {
+    if (!response.ok) {
+      throw new Error('Poll failed: ' + response.status);
+    }
+    return response.json();
+  })
+  .then(function(data) {
+    if (!_isConnected) {
+      _isConnected = true;
+      if (_onStatusChange) {
+        _onStatusChange('connected');
+      }
+    }
+
+    var command = data.pendingCommand || data.command || data.lastCommand || data.action;
+    if (command && command.type) {
+      var commandId = command.id || command.timestamp || JSON.stringify(command);
+      if (commandId !== _lastCommandId) {
+        _lastCommandId = commandId;
+        if (_onMessage) {
+          _onMessage(command);
+        }
+      }
+    }
+
+    if (data.type && data.type.indexOf('cast:') === 0) {
+      var dataId = data.id || data.timestamp || JSON.stringify(data);
+      if (dataId !== _lastCommandId) {
+        _lastCommandId = dataId;
+        if (_onMessage) {
+          _onMessage(data);
+        }
+      }
+    }
+  })
+  .catch(function(err) {
+    console.warn('[Cast] Poll error:', err);
+    if (_isConnected) {
+      _isConnected = false;
+      if (_onStatusChange) {
+        _onStatusChange('disconnected');
+      }
+    }
+  });
+}
+
 export var castService = {
   pair: function(pairingCode: string): Promise<{ success: boolean; sessionId?: string; error?: string }> {
     return fetch(API_BASE + '/api/cast/session/pair', {
@@ -111,119 +168,76 @@ export var castService = {
     _token = token;
     _onMessage = onMessage;
     _onStatusChange = onStatusChange;
-    _shouldReconnect = true;
+    _shouldPoll = true;
+    _lastCommandId = null;
 
-    if (_ws) {
-      try { _ws.close(); } catch (e) {}
-      _ws = null;
-    }
-    if (_heartbeatInterval) {
-      clearInterval(_heartbeatInterval);
-      _heartbeatInterval = null;
+    if (_pollInterval) {
+      clearInterval(_pollInterval);
+      _pollInterval = null;
     }
     if (_reconnectTimeout) {
       clearTimeout(_reconnectTimeout);
       _reconnectTimeout = null;
     }
 
-    var wsUrl = WS_BASE +
-      '?sessionId=' + encodeURIComponent(sessionId) +
-      '&role=tv' +
-      '&token=' + encodeURIComponent(token) +
-      '&deviceId=' + encodeURIComponent(getDeviceId());
+    console.log('[Cast] Starting HTTP polling...');
 
-    console.log('[Cast] Connecting WebSocket...');
-    var ws = new WebSocket(wsUrl);
-    _ws = ws;
+    pollForCommands();
 
-    ws.onopen = function() {
-      console.log('[Cast] WebSocket connected');
-      if (_onStatusChange) {
-        _onStatusChange('connected');
+    _pollInterval = setInterval(function() {
+      if (_shouldPoll) {
+        pollForCommands();
       }
-
-      _heartbeatInterval = setInterval(function() {
-        if (_ws && _ws.readyState === WebSocket.OPEN) {
-          _ws.send(JSON.stringify({ type: 'cast:heartbeat' }));
-        }
-      }, 30000);
-    };
-
-    ws.onmessage = function(event) {
-      try {
-        var msg = JSON.parse(event.data);
-        if (_onMessage) {
-          _onMessage(msg);
-        }
-      } catch (e) {
-        console.warn('[Cast] Failed to parse message:', e);
-      }
-    };
-
-    ws.onclose = function(event) {
-      console.log('[Cast] WebSocket closed:', event.code, event.reason);
-      if (_heartbeatInterval) {
-        clearInterval(_heartbeatInterval);
-        _heartbeatInterval = null;
-      }
-      if (_onStatusChange) {
-        _onStatusChange('disconnected');
-      }
-
-      if (_shouldReconnect && _sessionId && _token && _onMessage && _onStatusChange) {
-        console.log('[Cast] Scheduling reconnect in 5s...');
-        _reconnectTimeout = setTimeout(function() {
-          _reconnectTimeout = null;
-          if (_shouldReconnect && _sessionId && _token && _onMessage && _onStatusChange) {
-            castService.connect(_sessionId, _token, _onMessage, _onStatusChange);
-          }
-        }, 5000);
-      }
-    };
-
-    ws.onerror = function(event) {
-      console.error('[Cast] WebSocket error:', event);
-    };
+    }, 3000);
   },
 
   disconnect: function() {
     console.log('[Cast] Disconnecting...');
-    _shouldReconnect = false;
+    _shouldPoll = false;
+    _isConnected = false;
     _onMessage = null;
     _onStatusChange = null;
     _sessionId = null;
     _token = null;
+    _lastCommandId = null;
 
-    if (_heartbeatInterval) {
-      clearInterval(_heartbeatInterval);
-      _heartbeatInterval = null;
+    if (_pollInterval) {
+      clearInterval(_pollInterval);
+      _pollInterval = null;
     }
     if (_reconnectTimeout) {
       clearTimeout(_reconnectTimeout);
       _reconnectTimeout = null;
     }
-    if (_ws) {
-      try { _ws.close(); } catch (e) {}
-      _ws = null;
-    }
 
     try {
       localStorage.removeItem('cast_session_id');
-    } catch (e) {
-    }
+    } catch (e) {}
   },
 
   sendNowPlaying: function(data: { title?: string; artist?: string; stationName?: string; isPlaying: boolean }) {
-    if (_ws && _ws.readyState === WebSocket.OPEN) {
-      _ws.send(JSON.stringify({
-        type: 'cast:now_playing',
-        data: data
-      }));
-    }
+    if (!_sessionId || !_token || !_isConnected) return;
+
+    fetch(API_BASE + '/api/cast/session/' + encodeURIComponent(_sessionId) + '/now-playing', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + _token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        deviceId: getDeviceId(),
+        title: data.title,
+        artist: data.artist,
+        stationName: data.stationName,
+        isPlaying: data.isPlaying
+      })
+    }).catch(function(err) {
+      console.warn('[Cast] sendNowPlaying error:', err);
+    });
   },
 
   isConnected: function(): boolean {
-    return !!_ws && _ws.readyState === WebSocket.OPEN;
+    return _isConnected;
   },
 
   getSessionId: function(): string | null {

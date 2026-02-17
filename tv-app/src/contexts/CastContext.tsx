@@ -131,7 +131,7 @@ export function CastProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  function connectWebSocket(sid: string, authToken: string) {
+  function connectCast(sid: string, authToken: string) {
     castService.connect(sid, authToken, handleMessage, handleStatusChange);
     setIsPaired(true);
     setSessionId(sid);
@@ -142,7 +142,7 @@ export function CastProvider({ children }: { children: ReactNode }) {
       var savedSessionId = castService.getSavedSessionId();
       if (savedSessionId) {
         console.log('[Cast] Found saved session, auto-connecting:', savedSessionId);
-        connectWebSocket(savedSessionId, token);
+        connectCast(savedSessionId, token);
       }
     }
 
@@ -167,7 +167,7 @@ export function CastProvider({ children }: { children: ReactNode }) {
     castService.pair(code).then(function(result) {
       if (result.success && result.sessionId) {
         if (token) {
-          connectWebSocket(result.sessionId, token);
+          connectCast(result.sessionId, token);
         }
       } else {
         setPairingError(result.error || 'Pairing failed');
