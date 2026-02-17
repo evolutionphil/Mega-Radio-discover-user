@@ -192,6 +192,19 @@ export const RadioPlaying = (): JSX.Element => {
 
   const station = stationData?.station || (hasCurrentStationData ? currentStation : null);
 
+  // Auto-play station from URL/cast when it doesn't match current playing station
+  const autoPlayedRef = useRef<string>('');
+  useEffect(function() {
+    if (station && stationId && station._id) {
+      var isNewStation = currentStation ? currentStation._id !== station._id : true;
+      var notAutoPlayedYet = autoPlayedRef.current !== station._id;
+      if (isNewStation && notAutoPlayedYet) {
+        console.log('[RadioPlaying] Auto-playing station from URL/cast:', station.name, 'ID:', station._id);
+        autoPlayedRef.current = station._id;
+        playStation(station);
+      }
+    }
+  }, [station, stationId]);
 
   // Fetch station metadata
   const { data: metadataData } = useQuery({
