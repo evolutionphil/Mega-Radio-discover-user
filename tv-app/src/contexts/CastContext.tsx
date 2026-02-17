@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
-import { useLocation } from 'wouter';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGlobalPlayer } from '@/contexts/GlobalPlayerContext';
 import { castService } from '@/services/castService';
@@ -20,7 +19,6 @@ var CastContext = createContext<CastContextType | undefined>(undefined);
 export function CastProvider({ children }: { children: ReactNode }) {
   var { isAuthenticated, token } = useAuth();
   var { playStation, pauseStation, resumeStation, stopStation, currentStation, isPlaying, nowPlayingMetadata } = useGlobalPlayer();
-  var [, setLocation] = useLocation();
 
   var [isPaired, setIsPaired] = useState(false);
   var [isConnected, setIsConnected] = useState(false);
@@ -32,7 +30,6 @@ export function CastProvider({ children }: { children: ReactNode }) {
   var pauseStationRef = useRef(pauseStation);
   var resumeStationRef = useRef(resumeStation);
   var stopStationRef = useRef(stopStation);
-  var setLocationRef = useRef(setLocation);
 
   useEffect(function() {
     playStationRef.current = playStation;
@@ -50,74 +47,95 @@ export function CastProvider({ children }: { children: ReactNode }) {
     stopStationRef.current = stopStation;
   }, [stopStation]);
 
-  useEffect(function() {
-    setLocationRef.current = setLocation;
-  }, [setLocation]);
+  function navigateToRadioPlaying(stationId?: string) {
+    try {
+      var hash = '#/radio-playing';
+      if (stationId) {
+        hash = hash + '?station=' + stationId;
+      }
+      console.log('[Cast] Navigating to:', hash);
+      window.location.hash = hash;
+    } catch (e) {
+      console.error('[Cast] Navigation error:', e);
+    }
+  }
 
   function handleMessage(msg: any) {
     var msgType = msg && msg.type ? msg.type : '';
-    console.log('[Cast] Message received:', msgType, msg);
+    console.log('[Cast] ====== MESSAGE RECEIVED ======');
+    console.log('[Cast] Type:', msgType);
+    console.log('[Cast] Data:', JSON.stringify(msg).substring(0, 300));
 
     switch (msgType) {
       case 'cast:play':
       case 'cast:change_station':
         if (msg.data && msg.data.station) {
+          console.log('[Cast] Playing station:', msg.data.station.name || msg.data.station._id);
           playStationRef.current(msg.data.station as Station);
-          setLocationRef.current('/radio-playing');
+          navigateToRadioPlaying(msg.data.station._id);
+        } else {
+          console.warn('[Cast] play/change_station but no station data:', JSON.stringify(msg));
         }
         break;
 
       case 'cast:pause':
+        console.log('[Cast] Pausing playback');
         pauseStationRef.current();
         break;
 
       case 'cast:resume':
+        console.log('[Cast] Resuming playback');
         resumeStationRef.current();
         break;
 
       case 'cast:stop':
+        console.log('[Cast] Stopping playback');
         stopStationRef.current();
         break;
 
       case 'cast:volume_up':
       case 'cast:volume_down':
       case 'cast:set_volume':
-        console.log('[Cast] Volume command received (TV volume is system-controlled):', msgType);
+        console.log('[Cast] Volume command (TV system-controlled):', msgType);
         break;
 
       case 'cast:peer_connected':
-        console.log('[Cast] Peer connected:', msg);
+        console.log('[Cast] Peer connected');
         break;
 
       case 'cast:peer_disconnected':
-        console.log('[Cast] Peer disconnected:', msg);
+        console.log('[Cast] Peer disconnected');
         break;
 
       case 'cast:session_ended':
-        console.log('[Cast] Session ended');
-        castService.disconnect();
+        console.log('[Cast] Session ended - clearing');
+        castService.fullDisconnect();
         setIsPaired(false);
         setIsConnected(false);
         setSessionId(null);
         break;
 
       case 'cast:connected':
-        console.log('[Cast] Connected, initial state:', msg);
+        console.log('[Cast] Connected initial state');
         break;
 
       case 'cast:command_ack':
-        console.log('[Cast] Command acknowledged:', msg.command);
         break;
 
       case 'cast:heartbeat_ack':
         break;
 
       case 'error':
-        console.error('[Cast] Error from server:', msg.message);
+        console.error('[Cast] Server error:', msg.message);
         break;
 
       default:
-        console.log('[Cast] Unknown message type:', msgType);
+        console.log('[Cast] Unknown message type:', msgType, '- checking if it has station data');
+        if (msg.station && typeof msg.station === 'object' && msg.station._id) {
+          console.log('[Cast] Found station in unknown message, playing:', msg.station.name);
+          playStationRef.current(msg.station as Station);
+          navigateToRadioPlaying(msg.station._id);
+        }
         break;
     }
   }
@@ -132,33 +150,39 @@ export function CastProvider({ children }: { children: ReactNode }) {
   }
 
   function connectCast(sid: string, authToken: string) {
+    console.log('[Cast] connectCast() session=' + sid);
     castService.connect(sid, authToken, handleMessage, handleStatusChange);
     setIsPaired(true);
     setSessionId(sid);
   }
 
   useEffect(function() {
-    console.log('[Cast] Provider mounted. Auth:', isAuthenticated, 'Token:', token ? 'yes' : 'no');
+    console.log('[Cast] ===== Provider mounted =====');
+    console.log('[Cast] Auth:', isAuthenticated, 'Token:', token ? 'yes(' + token.substring(0, 8) + '...)' : 'no');
+
     if (isAuthenticated && token) {
       var savedSessionId = castService.getSavedSessionId();
+      console.log('[Cast] Saved session:', savedSessionId || 'NONE');
       if (savedSessionId) {
-        console.log('[Cast] Found saved session, auto-connecting:', savedSessionId);
+        console.log('[Cast] Auto-connecting with saved session:', savedSessionId);
         connectCast(savedSessionId, token);
       } else {
-        console.log('[Cast] Authenticated but no saved session. Go to Settings > Cast to pair.');
+        console.log('[Cast] No saved session. Pair via Settings > Cast.');
       }
     } else {
-      console.log('[Cast] Not authenticated. Login required for Cast feature.');
+      console.log('[Cast] Not authenticated - cast disabled');
     }
 
     return function() {
-      castService.disconnect();
+      console.log('[Cast] Effect cleanup - stopPolling (keeping session)');
+      castService.stopPolling();
     };
   }, [isAuthenticated, token]);
 
   useEffect(function() {
     if (!isAuthenticated) {
-      castService.disconnect();
+      console.log('[Cast] Logged out - full disconnect');
+      castService.fullDisconnect();
       setIsPaired(false);
       setIsConnected(false);
       setSessionId(null);
@@ -166,19 +190,18 @@ export function CastProvider({ children }: { children: ReactNode }) {
   }, [isAuthenticated]);
 
   function pairWithCode(code: string) {
-    console.log('[Cast] Pairing code entered:', code);
+    console.log('[Cast] Pairing with code:', code);
     setIsPairing(true);
     setPairingError(null);
 
     castService.pair(code).then(function(result) {
       console.log('[Cast] Pair result:', JSON.stringify(result));
       if (result.success && result.sessionId) {
-        console.log('[Cast] Session paired successfully:', result.sessionId);
+        console.log('[Cast] Paired! Session:', result.sessionId);
         if (token) {
-          console.log('[Cast] Starting polling for session:', result.sessionId);
           connectCast(result.sessionId, token);
         } else {
-          console.warn('[Cast] Paired but no auth token available');
+          console.warn('[Cast] Paired but no auth token');
         }
       } else {
         console.warn('[Cast] Pairing failed:', result.error);
@@ -193,7 +216,8 @@ export function CastProvider({ children }: { children: ReactNode }) {
   }
 
   function disconnectCast() {
-    castService.disconnect();
+    console.log('[Cast] User disconnecting cast');
+    castService.fullDisconnect();
     setIsPaired(false);
     setIsConnected(false);
     setSessionId(null);

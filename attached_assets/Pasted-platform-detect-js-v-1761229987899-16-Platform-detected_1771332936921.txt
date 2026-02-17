@@ -1,0 +1,99 @@
+platform-detect.js?v=1761229987899:16 Platform detected: Samsung Tizen
+tv-spatial-navigation.js?v=1761229987899:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+polyfills.js?v=1771331664386:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js?v=1771331664386:290 [Polyfills] All polyfills loaded successfully
+VM18:1 [network_api.js] addListener [1]
+tv-spatial-navigation.js?v=1761229987899:264 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1761229987899:216 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1761229987899:220 [TV Remote Keys] Key handler attached, waiting for React...
+tv-spatial-navigation.js?v=1761229987899:53 [TV Nav] Found 0 focusable elements
+index.html:17 🔍 CSS CHECK: Starting verification...
+index.html:22 📄 CSS Links found: Object
+index.html:38 🎨 Tailwind Test Results: Object
+index.html:46 ✅ TAILWIND CSS: Working correctly!
+index.html:60 🎯 #root element styles: Object
+tv-spatial-navigation.js?v=1761229987899:53 [TV Nav] Found 0 focusable elements
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+aggregatorservice.loverad.io/wp-content/uploads/2018/10/90s90s_hiphoprap_600x600.png:1          GET https://aggregatorservice.loverad.io/wp-content/uploads/2018/10/90s90s_hiphoprap_600x600.png net::ERR_CERT_AUTHORITY_INVALID
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: 'LEFT', key: 'ArrowLeft', code: 'ArrowLeft', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: 'UP', key: 'ArrowUp', code: 'ArrowUp', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+aggregatorservice.loverad.io/wp-content/uploads/2018/10/90s90s_hiphoprap_600x600.png:1          GET https://aggregatorservice.loverad.io/wp-content/uploads/2018/10/90s90s_hiphoprap_600x600.png net::ERR_CERT_AUTHORITY_INVALID
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: 'LEFT', key: 'ArrowLeft', code: 'ArrowLeft', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 37, keyName: 'LEFT', key: 'ArrowLeft', code: 'ArrowLeft', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+%2Fstation-logos%2Farabesk-fm_11aadb0b%2Flogo-256.webp:1          GET https://themegaradio.com/api/image/%2Fstation-logos%2Farabesk-fm_11aadb0b%2Flogo-256.webp 400
+Image (async)
+mg @ index-1771331664386.js:40
+gg @ index-1771331664386.js:40
+e1 @ index-1771331664386.js:40
+s1 @ index-1771331664386.js:40
+ao @ index-1771331664386.js:40
+yg @ index-1771331664386.js:40
+j @ index-1771331664386.js:25
+F @ index-1771331664386.js:25

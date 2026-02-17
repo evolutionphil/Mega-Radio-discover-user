@@ -11,6 +11,7 @@ var _onMessage: ((msg: any) => void) | null = null;
 var _onStatusChange: ((status: string) => void) | null = null;
 var _lastCommandId: string | null = null;
 var _isConnected: boolean = false;
+var _pollCount: number = 0;
 
 function getDeviceId(): string {
   try {
@@ -121,7 +122,14 @@ function getCommandId(cmd: any): string {
 function pollForCommands() {
   if (!_sessionId || !_token) return;
 
+  _pollCount++;
+  var currentPoll = _pollCount;
+
   var url = API_BASE + '/api/cast/session/' + encodeURIComponent(_sessionId) + '/status?deviceId=' + encodeURIComponent(getDeviceId());
+
+  if (currentPoll <= 3 || currentPoll % 10 === 0) {
+    console.log('[Cast] Polling #' + currentPoll + ' session=' + _sessionId);
+  }
 
   fetch(url, {
     method: 'GET',
@@ -137,10 +145,13 @@ function pollForCommands() {
     return response.json();
   })
   .then(function(data) {
-    console.log('[Cast] Poll response:', JSON.stringify(data));
+    if (currentPoll <= 5 || currentPoll % 20 === 0) {
+      console.log('[Cast] Poll #' + currentPoll + ' response:', JSON.stringify(data).substring(0, 300));
+    }
 
     if (!_isConnected) {
       _isConnected = true;
+      console.log('[Cast] Connected! Polling active for session:', _sessionId);
       if (_onStatusChange) {
         _onStatusChange('connected');
       }
@@ -151,7 +162,7 @@ function pollForCommands() {
       var cmdId = getCommandId(command);
       if (cmdId !== _lastCommandId) {
         _lastCommandId = cmdId;
-        console.log('[Cast] New command:', command.type, command);
+        console.log('[Cast] >>> NEW COMMAND:', command.type, JSON.stringify(command).substring(0, 200));
         if (_onMessage) {
           _onMessage(command);
         }
@@ -159,7 +170,7 @@ function pollForCommands() {
     }
   })
   .catch(function(err) {
-    console.warn('[Cast] Poll error:', err);
+    console.warn('[Cast] Poll #' + currentPoll + ' error:', err.message || err);
     if (_isConnected) {
       _isConnected = false;
       if (_onStatusChange) {
@@ -201,12 +212,14 @@ export var castService = {
   },
 
   connect: function(sessionId: string, token: string, onMessage: (msg: any) => void, onStatusChange: (status: string) => void) {
+    console.log('[Cast] connect() called. session=' + sessionId + ' token=' + (token ? 'yes' : 'no'));
     _sessionId = sessionId;
     _token = token;
     _onMessage = onMessage;
     _onStatusChange = onStatusChange;
     _shouldPoll = true;
     _lastCommandId = null;
+    _pollCount = 0;
 
     if (_pollInterval) {
       clearInterval(_pollInterval);
@@ -217,7 +230,7 @@ export var castService = {
       _reconnectTimeout = null;
     }
 
-    console.log('[Cast] Starting HTTP polling...');
+    console.log('[Cast] Starting HTTP polling for session:', sessionId);
 
     pollForCommands();
 
@@ -228,8 +241,8 @@ export var castService = {
     }, 3000);
   },
 
-  disconnect: function() {
-    console.log('[Cast] Disconnecting...');
+  stopPolling: function() {
+    console.log('[Cast] stopPolling() - keeping session in localStorage');
     _shouldPoll = false;
     _isConnected = false;
     _onMessage = null;
@@ -237,6 +250,28 @@ export var castService = {
     _sessionId = null;
     _token = null;
     _lastCommandId = null;
+    _pollCount = 0;
+
+    if (_pollInterval) {
+      clearInterval(_pollInterval);
+      _pollInterval = null;
+    }
+    if (_reconnectTimeout) {
+      clearTimeout(_reconnectTimeout);
+      _reconnectTimeout = null;
+    }
+  },
+
+  fullDisconnect: function() {
+    console.log('[Cast] fullDisconnect() - clearing session from localStorage');
+    _shouldPoll = false;
+    _isConnected = false;
+    _onMessage = null;
+    _onStatusChange = null;
+    _sessionId = null;
+    _token = null;
+    _lastCommandId = null;
+    _pollCount = 0;
 
     if (_pollInterval) {
       clearInterval(_pollInterval);
@@ -250,6 +285,10 @@ export var castService = {
     try {
       localStorage.removeItem('cast_session_id');
     } catch (e) {}
+  },
+
+  disconnect: function() {
+    castService.fullDisconnect();
   },
 
   sendNowPlaying: function(data: { title?: string; artist?: string; stationName?: string; isPlaying: boolean }) {
