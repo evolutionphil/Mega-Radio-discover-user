@@ -34,7 +34,7 @@ function getAuthPlatformName(): string {
   var ua = (typeof navigator !== 'undefined' && navigator.userAgent) ? navigator.userAgent.toLowerCase() : '';
   if (ua.indexOf('tizen') !== -1) return 'tizen';
   if (ua.indexOf('webos') !== -1) return 'webos';
-  return 'browser';
+  return 'other';
 }
 
 function getAuthDeviceName(): string {
@@ -171,8 +171,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return response.json();
     })
     .then(function(data) {
+      console.log('[Auth] Code response:', JSON.stringify(data));
       var code = data.code;
       var expiresAt = data.expiresAt;
+      if (!expiresAt && data.expiresIn) {
+        expiresAt = new Date(Date.now() + data.expiresIn * 1000).toISOString();
+      }
       setDeviceCode(code);
       setCodeExpiresAt(expiresAt);
       setLoginError(false);
@@ -218,13 +222,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       .then(function(data) {
         if (!data) return;
-        if (data.expired) {
+        console.log('[Auth] Polling response:', JSON.stringify(data));
+        if (data.expired || data.status === 'expired') {
           console.log('[Auth] Server reported code expired, requesting new code');
           stopPolling();
           login();
           return;
         }
-        if (data.activated && data.token) {
+        var isActivated = data.activated || data.status === 'activated' || data.status === 'verified';
+        if (isActivated && data.token) {
           var newToken = data.token;
           var newUser = data.user;
 
