@@ -171,7 +171,15 @@ export const Settings = (): JSX.Element => {
   const { isPaired, isConnected, pairWithCode, disconnectCast, pairingError, isPairing } = useCast();
 
   const [castCodeDigits, setCastCodeDigits] = useState<string[]>(['', '', '', '', '', '']);
-  const [castCodeFocusIdx, setCastCodeFocusIdx] = useState(0);
+  const [castNumpadRow, setCastNumpadRow] = useState(0);
+  const [castNumpadCol, setCastNumpadCol] = useState(0);
+
+  const NUMPAD_KEYS = [
+    ['1', '2', '3'],
+    ['4', '5', '6'],
+    ['7', '8', '9'],
+    ['⌫', '0', 'OK'],
+  ];
 
   const [focusSection, setFocusSection] = useState<'sidebar' | 'categories' | 'options'>('categories');
   const [sidebarIndex, setSidebarIndex] = useState(5);
@@ -244,7 +252,8 @@ export const Settings = (): JSX.Element => {
 
   useEffect(() => {
     setOptionIndex(0);
-    setCastCodeFocusIdx(0);
+    setCastNumpadRow(0);
+    setCastNumpadCol(0);
     setCastCodeDigits(['', '', '', '', '', '']);
     if (optionListRef.current) {
       optionListRef.current.scrollTop = 0;
@@ -367,37 +376,56 @@ export const Settings = (): JSX.Element => {
       if (currentCat === 'cast' && !isPaired) {
         if (isUp) {
           e.preventDefault();
-          setCastCodeDigits(function(prev) {
-            var next = prev.slice();
-            var current = parseInt(next[castCodeFocusIdx] || '0', 10);
-            next[castCodeFocusIdx] = String((current + 1) % 10);
-            return next;
-          });
+          setCastNumpadRow(function(prev) { return Math.max(0, prev - 1); });
         } else if (isDown) {
           e.preventDefault();
-          setCastCodeDigits(function(prev) {
-            var next = prev.slice();
-            var current = parseInt(next[castCodeFocusIdx] || '0', 10);
-            next[castCodeFocusIdx] = String((current + 9) % 10);
-            return next;
-          });
+          setCastNumpadRow(function(prev) { return Math.min(3, prev + 1); });
         } else if (isRight) {
           e.preventDefault();
-          if (castCodeFocusIdx < 5) {
-            setCastCodeFocusIdx(function(prev) { return prev + 1; });
-          }
+          setCastNumpadCol(function(prev) { return Math.min(2, prev + 1); });
         } else if (isLeft) {
           e.preventDefault();
-          if (castCodeFocusIdx > 0) {
-            setCastCodeFocusIdx(function(prev) { return prev - 1; });
+          if (castNumpadCol > 0) {
+            setCastNumpadCol(function(prev) { return prev - 1; });
           } else {
             setFocusSection('categories');
           }
         } else if (isEnter) {
           e.preventDefault();
-          var fullCode = castCodeDigits.join('');
-          if (fullCode.length === 6 && fullCode !== '000000') {
-            pairWithCode(fullCode);
+          var numpadKey = NUMPAD_KEYS[castNumpadRow][castNumpadCol];
+          if (numpadKey === '⌫') {
+            setCastCodeDigits(function(prev) {
+              var next = prev.slice();
+              for (var i = 5; i >= 0; i--) {
+                if (next[i] !== '') {
+                  next[i] = '';
+                  break;
+                }
+              }
+              return next;
+            });
+          } else if (numpadKey === 'OK') {
+            var fullCode = castCodeDigits.join('');
+            if (fullCode.length === 6 && fullCode !== '000000') {
+              pairWithCode(fullCode);
+            }
+          } else {
+            setCastCodeDigits(function(prev) {
+              var next = prev.slice();
+              var filled = false;
+              for (var i = 0; i < 6; i++) {
+                if (next[i] === '') {
+                  next[i] = numpadKey;
+                  filled = true;
+                  if (i === 5) {
+                    setCastNumpadRow(3);
+                    setCastNumpadCol(2);
+                  }
+                  break;
+                }
+              }
+              return next;
+            });
           }
         }
         return;
@@ -771,31 +799,30 @@ export const Settings = (): JSX.Element => {
 
         return (
           <div>
-            <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.7)', margin: 0, marginBottom: '12px', paddingLeft: '24px' }}>
+            <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.7)', margin: 0, marginBottom: '16px', paddingLeft: '24px' }}>
               {t('cast_enter_code') || 'Enter the code from your mobile app:'}
             </p>
 
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', paddingLeft: '24px' }}>
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '24px', paddingLeft: '24px' }}>
               {castCodeDigits.map(function(digit, idx) {
-                var isDigitFocused = isFocusedOnOptions && castCodeFocusIdx === idx;
+                var filledCount = castCodeDigits.filter(function(d) { return d !== ''; }).length;
+                var isNextEmpty = idx === filledCount;
                 return (
                   <div
                     key={idx}
                     style={{
-                      width: '72px',
-                      height: '88px',
-                      borderRadius: '12px',
-                      border: isDigitFocused ? '3px solid #ff4199' : '2px solid rgba(255,255,255,0.2)',
-                      backgroundColor: isDigitFocused ? 'rgba(255,65,153,0.1)' : 'rgba(255,255,255,0.05)',
+                      width: '64px',
+                      height: '76px',
+                      borderRadius: '10px',
+                      border: isNextEmpty ? '2px solid #ff4199' : digit ? '2px solid rgba(255,65,153,0.4)' : '2px solid rgba(255,255,255,0.15)',
+                      backgroundColor: digit ? 'rgba(255,65,153,0.08)' : 'rgba(255,255,255,0.03)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      boxShadow: isDigitFocused ? '0 0 16px rgba(255,65,153,0.3)' : 'none',
-                      transition: 'all 0.15s',
                     }}
                     data-testid={'input-cast-digit-' + idx}
                   >
-                    <span style={{ fontFamily: "'Ubuntu', Helvetica", fontSize: '48px', fontWeight: 'bold', color: digit ? '#ff4199' : 'rgba(255,255,255,0.2)', lineHeight: '1' }}>
+                    <span style={{ fontFamily: "'Ubuntu', Helvetica", fontSize: '40px', fontWeight: 'bold', color: digit ? '#ff4199' : 'rgba(255,255,255,0.15)', lineHeight: '1' }}>
                       {digit || '-'}
                     </span>
                   </div>
@@ -803,21 +830,76 @@ export const Settings = (): JSX.Element => {
               })}
             </div>
 
+            <div style={{ paddingLeft: '24px' }}>
+              {NUMPAD_KEYS.map(function(row, rowIdx) {
+                return (
+                  <div key={rowIdx} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                    {row.map(function(key, colIdx) {
+                      var isKeyFocused = isFocusedOnOptions && castNumpadRow === rowIdx && castNumpadCol === colIdx;
+                      var isOK = key === 'OK';
+                      var isBackspace = key === '⌫';
+                      var allFilled = castCodeDigits.every(function(d) { return d !== ''; });
+
+                      return (
+                        <div
+                          key={colIdx}
+                          style={{
+                            width: '100px',
+                            height: '72px',
+                            borderRadius: '12px',
+                            border: isKeyFocused
+                              ? (isOK ? '3px solid #22c55e' : isBackspace ? '3px solid #f59e0b' : '3px solid #ff4199')
+                              : '2px solid rgba(255,255,255,0.12)',
+                            backgroundColor: isKeyFocused
+                              ? (isOK ? 'rgba(34,197,94,0.15)' : isBackspace ? 'rgba(245,158,11,0.1)' : 'rgba(255,65,153,0.12)')
+                              : 'rgba(255,255,255,0.04)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: isKeyFocused
+                              ? (isOK ? '0 0 20px rgba(34,197,94,0.25)' : isBackspace ? '0 0 20px rgba(245,158,11,0.2)' : '0 0 20px rgba(255,65,153,0.25)')
+                              : 'none',
+                            cursor: 'pointer',
+                          }}
+                          data-testid={'cast-numpad-' + key}
+                        >
+                          {isBackspace ? (
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                              <path d="M9 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" stroke={isKeyFocused ? '#f59e0b' : 'rgba(255,255,255,0.5)'} strokeWidth="1.5" strokeLinecap="round" />
+                              <path d="M3 12l5-7h13v14H8l-5-7z" stroke={isKeyFocused ? '#f59e0b' : 'rgba(255,255,255,0.5)'} strokeWidth="1.5" fill="none" />
+                            </svg>
+                          ) : (
+                            <span style={{
+                              fontFamily: "'Ubuntu', Helvetica",
+                              fontSize: isOK ? '22px' : '32px',
+                              fontWeight: isOK ? 700 : 600,
+                              color: isKeyFocused
+                                ? (isOK ? '#22c55e' : '#ff4199')
+                                : (isOK && allFilled ? 'rgba(34,197,94,0.7)' : 'rgba(255,255,255,0.6)'),
+                              lineHeight: '1',
+                            }}>
+                              {key}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+
             {pairingError && (
-              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '18px', color: '#ef4444', margin: 0, marginBottom: '12px', paddingLeft: '24px' }}>
+              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '18px', color: '#ef4444', margin: 0, marginTop: '12px', paddingLeft: '24px' }}>
                 {pairingError}
               </p>
             )}
 
             {isPairing && (
-              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)', margin: 0, marginBottom: '12px', paddingLeft: '24px' }}>
+              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)', margin: 0, marginTop: '12px', paddingLeft: '24px' }}>
                 {t('cast_pairing') || 'Pairing...'}
               </p>
             )}
-
-            <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '16px', color: 'rgba(255,255,255,0.4)', margin: 0, paddingLeft: '24px', lineHeight: '1.6' }}>
-              {t('cast_instructions') || 'Use UP/DOWN to change digit, LEFT/RIGHT to move between digits. Press OK to connect.'}
-            </p>
           </div>
         );
       }
