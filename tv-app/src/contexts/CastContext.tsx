@@ -26,21 +26,24 @@ export function CastProvider({ children }: { children: ReactNode }) {
   useEffect(function() { resumeStationRef.current = resumeStation; }, [resumeStation]);
   useEffect(function() { stopStationRef.current = stopStation; }, [stopStation]);
 
+  function navigateToRadioPlaying(stationId: string) {
+    var hash = '/radio-playing';
+    if (stationId) {
+      hash = hash + '?station=' + stationId;
+    }
+    console.log('[Cast] Navigating to:', hash);
+    try {
+      window.location.hash = '#' + hash;
+    } catch (e) {
+      console.error('[Cast] Navigation error:', e);
+    }
+  }
+
   function playStationFromCast(station: any) {
     var stationId = station._id || station.id || station.stationuuid || '';
     var streamUrl = station.url_resolved || station.urlResolved || station.url || '';
 
     console.log('[Cast] playStationFromCast:', station.name, 'ID:', stationId, 'URL:', streamUrl ? streamUrl.substring(0, 60) : 'NONE');
-
-    try {
-      var hash = '#/radio-playing';
-      if (stationId) {
-        hash = hash + '?station=' + stationId;
-      }
-      window.location.hash = hash;
-    } catch (e) {
-      console.error('[Cast] Navigation error:', e);
-    }
 
     if (streamUrl) {
       if (station.urlResolved && !station.url_resolved) {
@@ -48,23 +51,28 @@ export function CastProvider({ children }: { children: ReactNode }) {
       }
       try {
         playStationRef.current(station as Station);
-        return;
+        console.log('[Cast] Station play started, now navigating...');
       } catch (e) {
         console.warn('[Cast] Direct play failed:', e);
       }
+      setTimeout(function() { navigateToRadioPlaying(stationId); }, 300);
+      return;
     }
 
     if (stationId) {
-      console.log('[Cast] Fetching full station from API:', stationId);
+      console.log('[Cast] No stream URL, fetching full station from API:', stationId);
       megaRadioApi.getStationById(stationId).then(function(result) {
         if (result && result.station) {
           console.log('[Cast] API station loaded:', result.station.name);
           playStationRef.current(result.station);
+          setTimeout(function() { navigateToRadioPlaying(stationId); }, 300);
         } else {
           console.error('[Cast] Station not found:', stationId);
+          navigateToRadioPlaying(stationId);
         }
       }).catch(function(err) {
         console.error('[Cast] API fetch error:', err);
+        navigateToRadioPlaying(stationId);
       });
     }
   }
