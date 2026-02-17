@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, useRef, ReactNode } fro
 import { useAuth } from '@/contexts/AuthContext';
 import { useGlobalPlayer } from '@/contexts/GlobalPlayerContext';
 import { castService } from '@/services/castService';
-import { Station } from '@/services/megaRadioApi';
+import { Station, megaRadioApi } from '@/services/megaRadioApi';
 
 interface CastContextType {
   isPaired: boolean;
@@ -60,6 +60,20 @@ export function CastProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  function fetchAndPlayStation(stationId: string) {
+    console.log('[Cast] Fetching station from API:', stationId);
+    megaRadioApi.getStationById(stationId).then(function(result) {
+      if (result && result.station) {
+        console.log('[Cast] Fetched station:', result.station.name, 'URL:', (result.station.url_resolved || result.station.url || '').substring(0, 60));
+        playStationRef.current(result.station);
+      } else {
+        console.error('[Cast] Station not found in API:', stationId);
+      }
+    }).catch(function(err) {
+      console.error('[Cast] Failed to fetch station:', err);
+    });
+  }
+
   function handleMessage(msg: any) {
     var msgType = msg && msg.type ? msg.type : '';
     console.log('[Cast] ====== MESSAGE RECEIVED ======');
@@ -70,9 +84,32 @@ export function CastProvider({ children }: { children: ReactNode }) {
       case 'cast:play':
       case 'cast:change_station':
         if (msg.data && msg.data.station) {
-          console.log('[Cast] Playing station:', msg.data.station.name || msg.data.station._id);
-          playStationRef.current(msg.data.station as Station);
-          navigateToRadioPlaying(msg.data.station._id);
+          var castStation = msg.data.station;
+          var stationId = castStation._id || castStation.id || castStation.stationuuid || '';
+          console.log('[Cast] Station:', castStation.name, 'ID:', stationId);
+
+          navigateToRadioPlaying(stationId);
+
+          var streamUrl = castStation.url_resolved || castStation.urlResolved || castStation.url;
+          if (streamUrl) {
+            console.log('[Cast] Station has URL, playing directly');
+            if (castStation.urlResolved && !castStation.url_resolved) {
+              castStation.url_resolved = castStation.urlResolved;
+            }
+            try {
+              playStationRef.current(castStation as Station);
+            } catch (e) {
+              console.error('[Cast] playStation error, fetching from API:', e);
+              if (stationId) {
+                fetchAndPlayStation(stationId);
+              }
+            }
+          } else {
+            console.log('[Cast] Station has no URL, fetching from API');
+            if (stationId) {
+              fetchAndPlayStation(stationId);
+            }
+          }
         } else {
           console.warn('[Cast] play/change_station but no station data:', JSON.stringify(msg));
         }
@@ -131,10 +168,21 @@ export function CastProvider({ children }: { children: ReactNode }) {
 
       default:
         console.log('[Cast] Unknown message type:', msgType, '- checking if it has station data');
-        if (msg.station && typeof msg.station === 'object' && msg.station._id) {
-          console.log('[Cast] Found station in unknown message, playing:', msg.station.name);
-          playStationRef.current(msg.station as Station);
-          navigateToRadioPlaying(msg.station._id);
+        var unknownStation = msg.station || (msg.data && msg.data.station);
+        if (unknownStation && typeof unknownStation === 'object') {
+          var unknownId = unknownStation._id || unknownStation.id || unknownStation.stationuuid || '';
+          console.log('[Cast] Found station in unknown message:', unknownStation.name, 'ID:', unknownId);
+          navigateToRadioPlaying(unknownId);
+          var unknownUrl = unknownStation.url_resolved || unknownStation.urlResolved || unknownStation.url;
+          if (unknownUrl) {
+            try {
+              playStationRef.current(unknownStation as Station);
+            } catch (e) {
+              if (unknownId) fetchAndPlayStation(unknownId);
+            }
+          } else if (unknownId) {
+            fetchAndPlayStation(unknownId);
+          }
         }
         break;
     }
