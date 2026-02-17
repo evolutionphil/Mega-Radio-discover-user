@@ -68,39 +68,48 @@ export function CastProvider({ children }: { children: ReactNode }) {
 
   function playStationFromCast(station: any) {
     var stationId = station._id || station.id || station.stationuuid || '';
-    var streamUrl = station.url_resolved || station.urlResolved || station.url || '';
 
-    console.log('[Cast] playStationFromCast:', station.name, 'ID:', stationId, 'URL:', streamUrl ? streamUrl.substring(0, 60) : 'NONE');
-
-    if (streamUrl) {
-      if (station.urlResolved && !station.url_resolved) {
-        station.url_resolved = station.urlResolved;
-      }
-      try {
-        playStationRef.current(station as Station);
-        console.log('[Cast] Station play started, now navigating...');
-      } catch (e) {
-        console.warn('[Cast] Direct play failed:', e);
-      }
-      setTimeout(function() { navigateToRadioPlaying(stationId); }, 300);
-      return;
-    }
+    console.log('[Cast] playStationFromCast:', station.name, 'ID:', stationId);
+    console.log('[Cast] Cast station data:', JSON.stringify(station).substring(0, 300));
 
     if (stationId) {
-      console.log('[Cast] No stream URL, fetching full station from API:', stationId);
+      console.log('[Cast] Fetching fresh station data from API:', stationId);
+      navigateToRadioPlaying(stationId);
+
       megaRadioApi.getStationById(stationId).then(function(result) {
         if (result && result.station) {
-          console.log('[Cast] API station loaded:', result.station.name);
+          console.log('[Cast] API station loaded:', result.station.name, 'URL:', (result.station.url_resolved || result.station.url || '').substring(0, 60));
           playStationRef.current(result.station);
-          setTimeout(function() { navigateToRadioPlaying(stationId); }, 300);
         } else {
-          console.error('[Cast] Station not found:', stationId);
-          navigateToRadioPlaying(stationId);
+          console.warn('[Cast] Station not found in API, trying cast data');
+          var streamUrl = station.url_resolved || station.urlResolved || station.url || '';
+          if (streamUrl) {
+            if (station.urlResolved && !station.url_resolved) {
+              station.url_resolved = station.urlResolved;
+            }
+            playStationRef.current(station as Station);
+          }
         }
       }).catch(function(err) {
-        console.error('[Cast] API fetch error:', err);
-        navigateToRadioPlaying(stationId);
+        console.error('[Cast] API fetch error, trying cast data:', err);
+        var streamUrl = station.url_resolved || station.urlResolved || station.url || '';
+        if (streamUrl) {
+          if (station.urlResolved && !station.url_resolved) {
+            station.url_resolved = station.urlResolved;
+          }
+          playStationRef.current(station as Station);
+        }
       });
+    } else {
+      console.log('[Cast] No stationId, trying direct play with cast data');
+      var streamUrl = station.url_resolved || station.urlResolved || station.url || '';
+      if (streamUrl) {
+        if (station.urlResolved && !station.url_resolved) {
+          station.url_resolved = station.urlResolved;
+        }
+        playStationRef.current(station as Station);
+        navigateToRadioPlaying('');
+      }
     }
   }
 
