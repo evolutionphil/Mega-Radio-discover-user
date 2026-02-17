@@ -236,7 +236,9 @@ export function Login(): JSX.Element {
           <button
             onClick={function() { setLocation('/discover-no-user'); }}
             style={{
-              width: '300px',
+              minWidth: '300px',
+              paddingLeft: '40px',
+              paddingRight: '40px',
               height: '64px',
               borderRadius: '32px',
               ...getFocusStyle(skipFocused),
@@ -247,6 +249,7 @@ export function Login(): JSX.Element {
               cursor: 'pointer',
               outline: 'none',
               transition: 'all 0.2s',
+              whiteSpace: 'nowrap',
             }}
             data-testid="button-skip-login"
             data-tv-focusable="true"
@@ -434,7 +437,9 @@ export function Login(): JSX.Element {
           <button
             onClick={function() { setLocation('/discover-no-user'); }}
             style={{
-              width: '300px',
+              minWidth: '300px',
+              paddingLeft: '40px',
+              paddingRight: '40px',
               height: '64px',
               borderRadius: '32px',
               ...getFocusStyle(skipFocused),
@@ -445,6 +450,7 @@ export function Login(): JSX.Element {
               cursor: 'pointer',
               outline: 'none',
               transition: 'all 0.2s',
+              whiteSpace: 'nowrap',
               marginTop: '10px',
             }}
             data-testid="button-skip-login"
