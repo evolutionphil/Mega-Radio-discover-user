@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import { useLocation } from 'wouter';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGlobalPlayer } from '@/contexts/GlobalPlayerContext';
@@ -6,16 +6,32 @@ import { castService } from '@/services/castService';
 import { Station } from '@/services/megaRadioApi';
 
 interface CastContextType {
-  isListening: boolean;
+  isPaired: boolean;
+  isConnected: boolean;
+  sessionId: string | null;
+  pairWithCode: (code: string) => void;
+  disconnectCast: () => void;
+  pairingError: string | null;
+  isPairing: boolean;
 }
 
 var CastContext = createContext<CastContextType | undefined>(undefined);
 
 export function CastProvider({ children }: { children: ReactNode }) {
   var { isAuthenticated, token } = useAuth();
-  var { playStation } = useGlobalPlayer();
+  var { playStation, pauseStation, resumeStation, stopStation, currentStation, isPlaying, nowPlayingMetadata } = useGlobalPlayer();
   var [, setLocation] = useLocation();
+
+  var [isPaired, setIsPaired] = useState(false);
+  var [isConnected, setIsConnected] = useState(false);
+  var [sessionId, setSessionId] = useState<string | null>(null);
+  var [pairingError, setPairingError] = useState<string | null>(null);
+  var [isPairing, setIsPairing] = useState(false);
+
   var playStationRef = useRef(playStation);
+  var pauseStationRef = useRef(pauseStation);
+  var resumeStationRef = useRef(resumeStation);
+  var stopStationRef = useRef(stopStation);
   var setLocationRef = useRef(setLocation);
 
   useEffect(function() {
@@ -23,26 +39,181 @@ export function CastProvider({ children }: { children: ReactNode }) {
   }, [playStation]);
 
   useEffect(function() {
+    pauseStationRef.current = pauseStation;
+  }, [pauseStation]);
+
+  useEffect(function() {
+    resumeStationRef.current = resumeStation;
+  }, [resumeStation]);
+
+  useEffect(function() {
+    stopStationRef.current = stopStation;
+  }, [stopStation]);
+
+  useEffect(function() {
     setLocationRef.current = setLocation;
   }, [setLocation]);
 
+  function handleMessage(msg: any) {
+    var msgType = msg && msg.type ? msg.type : '';
+    console.log('[Cast] Message received:', msgType, msg);
+
+    switch (msgType) {
+      case 'cast:play':
+      case 'cast:change_station':
+        if (msg.data && msg.data.station) {
+          playStationRef.current(msg.data.station as Station);
+          setLocationRef.current('/radio-playing');
+        }
+        break;
+
+      case 'cast:pause':
+        pauseStationRef.current();
+        break;
+
+      case 'cast:resume':
+        resumeStationRef.current();
+        break;
+
+      case 'cast:stop':
+        stopStationRef.current();
+        break;
+
+      case 'cast:volume_up':
+      case 'cast:volume_down':
+      case 'cast:set_volume':
+        console.log('[Cast] Volume command received (TV volume is system-controlled):', msgType);
+        break;
+
+      case 'cast:peer_connected':
+        console.log('[Cast] Peer connected:', msg);
+        break;
+
+      case 'cast:peer_disconnected':
+        console.log('[Cast] Peer disconnected:', msg);
+        break;
+
+      case 'cast:session_ended':
+        console.log('[Cast] Session ended');
+        castService.disconnect();
+        setIsPaired(false);
+        setIsConnected(false);
+        setSessionId(null);
+        break;
+
+      case 'cast:connected':
+        console.log('[Cast] Connected, initial state:', msg);
+        break;
+
+      case 'cast:command_ack':
+        console.log('[Cast] Command acknowledged:', msg.command);
+        break;
+
+      case 'cast:heartbeat_ack':
+        break;
+
+      case 'error':
+        console.error('[Cast] Error from server:', msg.message);
+        break;
+
+      default:
+        console.log('[Cast] Unknown message type:', msgType);
+        break;
+    }
+  }
+
+  function handleStatusChange(status: string) {
+    console.log('[Cast] Status changed:', status);
+    if (status === 'connected') {
+      setIsConnected(true);
+    } else if (status === 'disconnected') {
+      setIsConnected(false);
+    }
+  }
+
+  function connectWebSocket(sid: string, authToken: string) {
+    castService.connect(sid, authToken, handleMessage, handleStatusChange);
+    setIsPaired(true);
+    setSessionId(sid);
+  }
+
   useEffect(function() {
     if (isAuthenticated && token) {
-      castService.start(token, function(station: Station) {
-        playStationRef.current(station);
-        setLocationRef.current('/radio-playing');
-      });
-    } else {
-      castService.stop();
+      var savedSessionId = castService.getSavedSessionId();
+      if (savedSessionId) {
+        console.log('[Cast] Found saved session, auto-connecting:', savedSessionId);
+        connectWebSocket(savedSessionId, token);
+      }
     }
 
     return function() {
-      castService.stop();
+      castService.disconnect();
     };
   }, [isAuthenticated, token]);
 
+  useEffect(function() {
+    if (!isAuthenticated) {
+      castService.disconnect();
+      setIsPaired(false);
+      setIsConnected(false);
+      setSessionId(null);
+    }
+  }, [isAuthenticated]);
+
+  function pairWithCode(code: string) {
+    setIsPairing(true);
+    setPairingError(null);
+
+    castService.pair(code).then(function(result) {
+      if (result.success && result.sessionId) {
+        if (token) {
+          connectWebSocket(result.sessionId, token);
+        }
+      } else {
+        setPairingError(result.error || 'Pairing failed');
+      }
+      setIsPairing(false);
+    }).catch(function(err) {
+      console.error('[Cast] Pair error:', err);
+      setPairingError('Network error');
+      setIsPairing(false);
+    });
+  }
+
+  function disconnectCast() {
+    castService.disconnect();
+    setIsPaired(false);
+    setIsConnected(false);
+    setSessionId(null);
+  }
+
+  useEffect(function() {
+    if (isConnected && currentStation) {
+      var stationName = currentStation.name || '';
+      var metadata = nowPlayingMetadata || '';
+      var parts = metadata.split(' - ');
+      var title = parts.length > 1 ? parts[1] : metadata;
+      var artist = parts.length > 1 ? parts[0] : '';
+
+      castService.sendNowPlaying({
+        title: title || undefined,
+        artist: artist || undefined,
+        stationName: stationName || undefined,
+        isPlaying: isPlaying
+      });
+    }
+  }, [currentStation, nowPlayingMetadata, isPlaying, isConnected]);
+
   return (
-    <CastContext.Provider value={{ isListening: castService.isListening() }}>
+    <CastContext.Provider value={{
+      isPaired: isPaired,
+      isConnected: isConnected,
+      sessionId: sessionId,
+      pairWithCode: pairWithCode,
+      disconnectCast: disconnectCast,
+      pairingError: pairingError,
+      isPairing: isPairing
+    }}>
       {children}
     </CastContext.Provider>
   );

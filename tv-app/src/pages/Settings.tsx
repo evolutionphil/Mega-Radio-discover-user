@@ -6,6 +6,7 @@ import { useSleepTimer } from "@/contexts/SleepTimerContext";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Sidebar } from "@/components/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCast } from "@/contexts/CastContext";
 import { assetPath } from "@/lib/assetPath";
 
 type PlayAtStartMode = "last-played" | "random" | "favorite" | "none";
@@ -92,7 +93,7 @@ const LANGUAGE_OPTIONS: LanguageOption[] = [
 const getFlagUrl = (countryCode: string) =>
   `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
 
-type SettingsCategory = 'language' | 'keyboard' | 'playback' | 'timer' | 'accessibility' | 'account';
+type SettingsCategory = 'language' | 'keyboard' | 'playback' | 'timer' | 'accessibility' | 'account' | 'cast';
 
 function CategoryIcon({ type }: { type: SettingsCategory }) {
   const size = 24;
@@ -149,6 +150,13 @@ function CategoryIcon({ type }: { type: SettingsCategory }) {
           <path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke={fill} strokeWidth="1.5" strokeLinecap="round" fill="none" />
         </svg>
       );
+    case 'cast':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <path d="M2 16.1A5 5 0 015.9 20M2 12.05A9 9 0 019.95 20M2 8V6a2 2 0 012-2h16a2 2 0 012 2v12a2 2 0 01-2 2h-6" stroke={fill} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <line x1="2" y1="20" x2="2.01" y2="20" stroke={fill} strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
   }
 }
 
@@ -160,6 +168,10 @@ export const Settings = (): JSX.Element => {
   const [selectedKeyboard, setSelectedKeyboard] = useState(0);
   const { highContrast, largeText, setHighContrast, setLargeText } = useAccessibility();
   const { isAuthenticated, user, logout } = useAuth();
+  const { isPaired, isConnected, pairWithCode, disconnectCast, pairingError, isPairing } = useCast();
+
+  const [castCodeDigits, setCastCodeDigits] = useState<string[]>(['', '', '', '', '', '']);
+  const [castCodeFocusIdx, setCastCodeFocusIdx] = useState(0);
 
   const [focusSection, setFocusSection] = useState<'sidebar' | 'categories' | 'options'>('categories');
   const [sidebarIndex, setSidebarIndex] = useState(5);
@@ -168,7 +180,7 @@ export const Settings = (): JSX.Element => {
 
   const optionListRef = useRef<HTMLDivElement>(null);
 
-  const categories: SettingsCategory[] = ['language', 'keyboard', 'playback', 'timer', 'accessibility', 'account'];
+  const categories: SettingsCategory[] = ['language', 'keyboard', 'playback', 'timer', 'accessibility', 'account', 'cast'];
 
   const sleepTimerOptions: (number | null)[] = [15, 30, 60, 120, null];
   const sleepTimerLabels: Record<string, string> = {
@@ -199,6 +211,7 @@ export const Settings = (): JSX.Element => {
       case 'timer': return t('sleep_timer') || 'Sleep Timer';
       case 'accessibility': return t('accessibility') || 'Accessibility';
       case 'account': return t('account') || 'Account';
+      case 'cast': return t('cast') || 'Cast';
     }
   };
 
@@ -210,6 +223,7 @@ export const Settings = (): JSX.Element => {
       case 'timer': return sleepTimerOptions.length;
       case 'accessibility': return 2;
       case 'account': return isAuthenticated ? 1 : 1;
+      case 'cast': return isPaired ? 1 : 1;
       default: return 0;
     }
   };
@@ -230,6 +244,8 @@ export const Settings = (): JSX.Element => {
 
   useEffect(() => {
     setOptionIndex(0);
+    setCastCodeFocusIdx(0);
+    setCastCodeDigits(['', '', '', '', '', '']);
     if (optionListRef.current) {
       optionListRef.current.scrollTop = 0;
     }
@@ -294,6 +310,16 @@ export const Settings = (): JSX.Element => {
           setLocation('/login');
         }
         break;
+      case 'cast':
+        if (isPaired) {
+          disconnectCast();
+        } else {
+          var fullCode = castCodeDigits.join('');
+          if (fullCode.length === 6) {
+            pairWithCode(fullCode);
+          }
+        }
+        break;
     }
   };
 
@@ -336,9 +362,50 @@ export const Settings = (): JSX.Element => {
     }
 
     if (focusSection === 'options') {
-      const maxIdx = getOptionCount() - 1;
-      if (isUp) { e.preventDefault(); if (optionIndex > 0) setOptionIndex(prev => prev - 1); }
-      else if (isDown) { e.preventDefault(); if (optionIndex < maxIdx) setOptionIndex(prev => prev + 1); }
+      var currentCat = categories[categoryIndex];
+
+      if (currentCat === 'cast' && !isPaired) {
+        if (isUp) {
+          e.preventDefault();
+          setCastCodeDigits(function(prev) {
+            var next = prev.slice();
+            var current = parseInt(next[castCodeFocusIdx] || '0', 10);
+            next[castCodeFocusIdx] = String((current + 1) % 10);
+            return next;
+          });
+        } else if (isDown) {
+          e.preventDefault();
+          setCastCodeDigits(function(prev) {
+            var next = prev.slice();
+            var current = parseInt(next[castCodeFocusIdx] || '0', 10);
+            next[castCodeFocusIdx] = String((current + 9) % 10);
+            return next;
+          });
+        } else if (isRight) {
+          e.preventDefault();
+          if (castCodeFocusIdx < 5) {
+            setCastCodeFocusIdx(function(prev) { return prev + 1; });
+          }
+        } else if (isLeft) {
+          e.preventDefault();
+          if (castCodeFocusIdx > 0) {
+            setCastCodeFocusIdx(function(prev) { return prev - 1; });
+          } else {
+            setFocusSection('categories');
+          }
+        } else if (isEnter) {
+          e.preventDefault();
+          var fullCode = castCodeDigits.join('');
+          if (fullCode.length === 6 && fullCode !== '000000') {
+            pairWithCode(fullCode);
+          }
+        }
+        return;
+      }
+
+      var maxIdx = getOptionCount() - 1;
+      if (isUp) { e.preventDefault(); if (optionIndex > 0) setOptionIndex(function(prev) { return prev - 1; }); }
+      else if (isDown) { e.preventDefault(); if (optionIndex < maxIdx) setOptionIndex(function(prev) { return prev + 1; }); }
       else if (isLeft) { e.preventDefault(); setFocusSection('categories'); }
       else if (isEnter) { e.preventDefault(); handleOptionSelect(); }
       return;
@@ -372,6 +439,10 @@ export const Settings = (): JSX.Element => {
       }
       case 'account':
         return isAuthenticated ? (user ? user.name : (t('logged_in') || 'Logged In')) : (t('not_logged_in') || 'Not Logged In');
+      case 'cast':
+        if (isConnected) return t('cast_connected') || 'Connected';
+        if (isPaired) return t('cast_connecting') || 'Connecting...';
+        return t('cast_not_connected') || 'Not Connected';
       default: return '';
     }
   };
@@ -670,6 +741,87 @@ export const Settings = (): JSX.Element => {
         }
       }
 
+      case 'cast': {
+        if (isPaired || isConnected) {
+          var disconnectFocused = isFocusedOnOptions && optionIndex === 0;
+          return (
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px', paddingLeft: '24px' }}>
+                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: isConnected ? '#22c55e' : '#eab308' }} />
+                <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.7)', margin: 0 }}>
+                  {isConnected ? (t('cast_connected') || 'Connected to mobile app') : (t('cast_connecting') || 'Connecting...')}
+                </p>
+              </div>
+              <div
+                style={{ ...optionRowBase, backgroundColor: disconnectFocused ? 'rgba(239,68,68,0.2)' : 'transparent', boxShadow: disconnectFocused ? '0 0 24px rgba(239,68,68,0.2)' : 'none', border: '1px solid rgba(239,68,68,0.3)' }}
+                onClick={function() { disconnectCast(); }}
+                data-testid="button-cast-disconnect"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <line x1="18" y1="6" x2="6" y2="18" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="6" y1="6" x2="18" y2="18" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+                <p className="font-['Ubuntu',Helvetica]" style={{ ...optionTextStyle, color: '#ef4444' }}>
+                  {t('cast_disconnect') || 'Disconnect'}
+                </p>
+              </div>
+            </div>
+          );
+        }
+
+        return (
+          <div>
+            <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '20px', color: 'rgba(255,255,255,0.7)', margin: 0, marginBottom: '12px', paddingLeft: '24px' }}>
+              {t('cast_enter_code') || 'Enter the code from your mobile app:'}
+            </p>
+
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', paddingLeft: '24px' }}>
+              {castCodeDigits.map(function(digit, idx) {
+                var isDigitFocused = isFocusedOnOptions && castCodeFocusIdx === idx;
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      width: '72px',
+                      height: '88px',
+                      borderRadius: '12px',
+                      border: isDigitFocused ? '3px solid #ff4199' : '2px solid rgba(255,255,255,0.2)',
+                      backgroundColor: isDigitFocused ? 'rgba(255,65,153,0.1)' : 'rgba(255,255,255,0.05)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: isDigitFocused ? '0 0 16px rgba(255,65,153,0.3)' : 'none',
+                      transition: 'all 0.15s',
+                    }}
+                    data-testid={'input-cast-digit-' + idx}
+                  >
+                    <span style={{ fontFamily: "'Ubuntu', Helvetica", fontSize: '48px', fontWeight: 'bold', color: digit ? '#ff4199' : 'rgba(255,255,255,0.2)', lineHeight: '1' }}>
+                      {digit || '-'}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {pairingError && (
+              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '18px', color: '#ef4444', margin: 0, marginBottom: '12px', paddingLeft: '24px' }}>
+                {pairingError}
+              </p>
+            )}
+
+            {isPairing && (
+              <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '18px', color: 'rgba(255,255,255,0.5)', margin: 0, marginBottom: '12px', paddingLeft: '24px' }}>
+                {t('cast_pairing') || 'Pairing...'}
+              </p>
+            )}
+
+            <p className="font-['Ubuntu',Helvetica]" style={{ fontSize: '16px', color: 'rgba(255,255,255,0.4)', margin: 0, paddingLeft: '24px', lineHeight: '1.6' }}>
+              {t('cast_instructions') || 'Use UP/DOWN to change digit, LEFT/RIGHT to move between digits. Press OK to connect.'}
+            </p>
+          </div>
+        );
+      }
+
       default:
         return null;
     }
@@ -756,6 +908,7 @@ export const Settings = (): JSX.Element => {
                           : cat === 'accessibility' ? (highContrast || largeText ? (
                               [highContrast && (t('high_contrast') || 'High Contrast'), largeText && (t('large_text') || 'Large Text')].filter(Boolean).join(', ')
                             ) : (t('settings_none') || 'None'))
+                          : cat === 'cast' ? (isConnected ? (t('cast_connected') || 'Connected') : isPaired ? (t('cast_connecting') || 'Connecting...') : (t('cast_not_connected') || 'Not Connected'))
                           : ''
                         }
                       </p>
