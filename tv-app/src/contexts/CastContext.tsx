@@ -3,7 +3,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useGlobalPlayer } from '@/contexts/GlobalPlayerContext';
 import { castService } from '@/services/castService';
 import { Station, megaRadioApi } from '@/services/megaRadioApi';
-import { navigate as wouterNavigate } from 'wouter/use-hash-location';
 
 interface CastContextType {
   isConnected: boolean;
@@ -28,20 +27,42 @@ export function CastProvider({ children }: { children: ReactNode }) {
   useEffect(function() { stopStationRef.current = stopStation; }, [stopStation]);
 
   function navigateToRadioPlaying(stationId: string) {
-    var path = '/radio-playing';
-    if (stationId) {
-      path = path + '?station=' + stationId;
-    }
-    console.log('[Cast] Navigating to:', path);
+    console.log('[Cast] navigateToRadioPlaying stationId=' + stationId);
+    console.log('[Cast] Current hash before nav:', window.location.hash);
+
     try {
-      wouterNavigate(path);
-    } catch (e) {
-      console.error('[Cast] Navigate failed, trying fallback:', e);
-      try {
-        window.location.hash = '#/' + 'radio-playing';
-      } catch (e2) {
-        console.error('[Cast] Fallback also failed:', e2);
+      if (stationId) {
+        try {
+          localStorage.setItem('cast_pending_station', stationId);
+        } catch (e) {}
       }
+
+      var currentHash = window.location.hash || '';
+      var isAlreadyOnRadioPlaying = currentHash.indexOf('radio-playing') !== -1;
+
+      if (isAlreadyOnRadioPlaying) {
+        console.log('[Cast] Already on radio-playing, forcing reload');
+        window.location.hash = '#/discover-no-user';
+        setTimeout(function() {
+          window.location.hash = '#/radio-playing';
+          console.log('[Cast] Hash after double-nav:', window.location.hash);
+        }, 100);
+      } else {
+        window.location.hash = '#/radio-playing';
+        console.log('[Cast] Hash set to:', window.location.hash);
+      }
+
+      setTimeout(function() {
+        var afterHash = window.location.hash || '';
+        console.log('[Cast] Hash verification after 500ms:', afterHash);
+        if (afterHash.indexOf('radio-playing') === -1) {
+          console.warn('[Cast] Hash not set correctly, retrying...');
+          window.location.hash = '#/radio-playing';
+        }
+      }, 500);
+
+    } catch (e) {
+      console.error('[Cast] Navigation error:', e);
     }
   }
 

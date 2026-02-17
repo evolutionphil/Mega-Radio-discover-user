@@ -72,7 +72,7 @@ export const RadioPlaying = (): JSX.Element => {
   const similarScrollRef = useRef<HTMLDivElement>(null);
   const popularScrollRef = useRef<HTMLDivElement>(null);
   
-  // Parse station ID from URL query params (supports both hash and pre-hash params)
+  // Parse station ID from URL query params, hash params, or cast localStorage
   const stationId = useMemo(() => {
     try {
       // Try to get from wouter location first (hash-based: /#/radio-playing?station=123)
@@ -81,7 +81,6 @@ export const RadioPlaying = (): JSX.Element => {
         const queryString = location.substring(queryStart + 1);
         const searchParams = new URLSearchParams(queryString);
         const id = searchParams.get('station') || searchParams.get('stationId');
-        // Validate station ID - must be non-empty string
         if (id && typeof id === 'string' && id.trim().length > 0) {
           return id.trim();
         }
@@ -91,15 +90,41 @@ export const RadioPlaying = (): JSX.Element => {
       if (window.location.search) {
         const searchParams = new URLSearchParams(window.location.search);
         const id = searchParams.get('station') || searchParams.get('stationId');
-        // Validate station ID - must be non-empty string
         if (id && typeof id === 'string' && id.trim().length > 0) {
           return id.trim();
         }
       }
 
+      // Fallback: Try window.location.hash query params directly
+      try {
+        var fullHash = window.location.hash || '';
+        var hashQueryStart = fullHash.indexOf('?');
+        if (hashQueryStart !== -1) {
+          var hashQuery = fullHash.substring(hashQueryStart + 1);
+          var hashParams = new URLSearchParams(hashQuery);
+          var hashId = hashParams.get('station') || hashParams.get('stationId');
+          if (hashId && typeof hashId === 'string' && hashId.trim().length > 0) {
+            return hashId.trim();
+          }
+        }
+      } catch (e) {}
+
+      // Fallback: Check cast_pending_station from localStorage (set by CastContext)
+      try {
+        var castStation = localStorage.getItem('cast_pending_station');
+        if (castStation && castStation.trim().length > 0) {
+          localStorage.removeItem('cast_pending_station');
+          return castStation.trim();
+        }
+      } catch (e) {}
+
+      // Final fallback: Use currentStation ID if available
+      if (currentStation && currentStation._id) {
+        return currentStation._id;
+      }
+
       return null;
     } catch (error) {
-      // Log error but don't crash - return null and show error state
       console.error('Error parsing station ID from URL:', error);
       return null;
     }
