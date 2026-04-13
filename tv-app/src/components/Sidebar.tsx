@@ -93,7 +93,7 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
   var helpIndex = items.length;
 
   return (
-    <div style={{ position: 'fixed', left: '48px', top: '242px', width: '120px', height: '750px', zIndex: 50, pointerEvents: 'auto' }}>
+    <div style={{ position: 'fixed', left: '48px', top: '170px', width: '120px', height: '760px', zIndex: 60, pointerEvents: 'auto' }}>
       {items.map(function(item, index) {
         return (
           <div key={item.page} style={{ position: 'absolute', left: 0, top: (index * 108) + 'px' }}>
