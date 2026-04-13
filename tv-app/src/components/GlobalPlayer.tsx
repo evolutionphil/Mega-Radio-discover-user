@@ -1,4 +1,5 @@
 import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
+import { resolveStationImageUrl } from "@/lib/imageUtils";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { Station } from "@/services/megaRadioApi";
@@ -30,12 +31,7 @@ export const GlobalPlayer = (): JSX.Element | null => {
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   const getStationImage = (station: Station) => {
-    // Check for null, undefined, empty string, or the string "null"
-    if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
-      var imgUrl = station.favicon.startsWith('http') ? station.favicon : 'https://api.themegaradio.com/api/image/' + encodeURIComponent(station.favicon);
-      return '/api/image-proxy?url=' + encodeURIComponent(imgUrl);
-    }
-    return FALLBACK_IMAGE;
+    return resolveStationImageUrl(station.favicon) || FALLBACK_IMAGE;
   };
 
   return (

@@ -1,4 +1,5 @@
 import { Link, useLocation } from "wouter";
+import { resolveStationImageUrl } from "@/lib/imageUtils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 import { cacheService } from "@/services/cacheService";
@@ -191,12 +192,7 @@ export const GenreList = (): JSX.Element => {
 
   // Helper function to get station image
   const getStationImage = (station: Station) => {
-    // Check for null, undefined, empty string, or the string "null"
-    if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
-      var imgUrl = station.favicon.startsWith('http') ? station.favicon : 'https://api.themegaradio.com/api/image/' + encodeURIComponent(station.favicon);
-      return '/api/image-proxy?url=' + encodeURIComponent(imgUrl);
-    }
-    return FALLBACK_IMAGE;
+    return resolveStationImageUrl(station.favicon) || FALLBACK_IMAGE;
   };
 
   // Helper function to get station tags as array

@@ -1,4 +1,5 @@
 import { useLocation, Link } from "wouter";
+import { resolveStationImageUrl } from "@/lib/imageUtils";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
 import { useMemo, useEffect, useRef, useState } from "react";
@@ -31,11 +32,7 @@ export const RadioPlaying = (): JSX.Element => {
 
   const ambientImageUrl = useMemo(function() {
     if (!currentStation) return undefined;
-    if (currentStation.favicon && currentStation.favicon !== 'null' && currentStation.favicon.trim() !== '') {
-      var imgUrl = currentStation.favicon.startsWith('http') ? currentStation.favicon : 'https://api.themegaradio.com/api/image/' + encodeURIComponent(currentStation.favicon);
-      return '/api/image-proxy?url=' + encodeURIComponent(imgUrl);
-    }
-    return undefined;
+    return resolveStationImageUrl(currentStation.favicon) || undefined;
   }, [currentStation]);
   const ambientColors = useImageColors(ambientImageUrl);
 
@@ -144,17 +141,8 @@ export const RadioPlaying = (): JSX.Element => {
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   const getStationImage = (station: Station | null | undefined): string => {
-    // Guard against null/undefined station
-    if (!station) {
-      return FALLBACK_IMAGE;
-    }
-    
-    // Check for null, undefined, empty string, or the string "null"
-    if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
-      var imgUrl = station.favicon.startsWith('http') ? station.favicon : 'https://api.themegaradio.com/api/image/' + encodeURIComponent(station.favicon);
-      return '/api/image-proxy?url=' + encodeURIComponent(imgUrl);
-    }
-    return FALLBACK_IMAGE;
+    if (!station) return FALLBACK_IMAGE;
+    return resolveStationImageUrl(station.favicon) || FALLBACK_IMAGE;
   };
 
   const getStationTags = (station: Station): string[] => {

@@ -1,4 +1,5 @@
 import { useLocation } from "wouter";
+import { resolveStationImageUrl } from "@/lib/imageUtils";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { megaRadioApi, type Station } from "@/services/megaRadioApi";
@@ -188,11 +189,7 @@ export const Search = (): JSX.Element => {
   const FALLBACK_IMAGE = assetPath('images/fallback-station.png');
 
   const getStationImage = (station: Station) => {
-    if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
-      var imgUrl = station.favicon.startsWith('http') ? station.favicon : 'https://api.themegaradio.com/api/image/' + encodeURIComponent(station.favicon);
-      return '/api/image-proxy?url=' + encodeURIComponent(imgUrl);
-    }
-    return FALLBACK_IMAGE;
+    return resolveStationImageUrl(station.favicon) || FALLBACK_IMAGE;
   };
 
   const getStationTags = (station: Station): string[] => {
