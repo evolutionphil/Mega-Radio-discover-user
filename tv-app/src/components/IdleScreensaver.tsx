@@ -49,7 +49,7 @@ export const IdleScreensaver = ({ isVisible, onInteraction }: IdleScreensaverPro
   const getStationImage = (station: typeof currentStation) => {
     if (!station) return FALLBACK_IMAGE;
     if (station.favicon && station.favicon !== 'null' && station.favicon.trim() !== '') {
-      var imgUrl = station.favicon.startsWith('http') ? station.favicon : 'https://themegaradio.com/api/image/' + encodeURIComponent(station.favicon);
+      var imgUrl = station.favicon.startsWith('http') ? station.favicon : 'https://api.themegaradio.com/api/image/' + encodeURIComponent(station.favicon);
       return '/api/image-proxy?url=' + encodeURIComponent(imgUrl);
     }
     return FALLBACK_IMAGE;

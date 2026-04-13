@@ -1,6 +1,6 @@
 import { Station } from '@/services/megaRadioApi';
 
-var API_BASE = 'https://themegaradio.com';
+var API_BASE = 'https://api.themegaradio.com';
 
 var _pollInterval: ReturnType<typeof setInterval> | null = null;
 var _shouldPoll: boolean = false;

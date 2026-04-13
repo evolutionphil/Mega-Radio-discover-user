@@ -106,5 +106,5 @@ The application targets a fixed 1920x1080px resolution for TV optimization, usin
 -   **Routing:** Wouter.
 -   **Typing:** TypeScript.
 -   **Fonts:** Ubuntu font family.
--   **API Integration:** themegaradio.com API (for station data, genres, metadata, translations).
+-   **API Integration:** api.themegaradio.com API (for station data, genres, metadata, translations, auth, cast, favorites, recently played).
 -   **Analytics:** Google Analytics 4.

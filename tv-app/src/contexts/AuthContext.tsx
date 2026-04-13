@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 
-var API_BASE = 'https://themegaradio.com';
+var API_BASE = 'https://api.themegaradio.com';
 
 function getAuthDeviceId(): string {
   try {

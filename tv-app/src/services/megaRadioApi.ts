@@ -1,5 +1,5 @@
 // Mega Radio API Service - VERSION 3.0 - COUNTRY FILTERED GENRES
-const BASE_URL = 'https://themegaradio.com';
+const BASE_URL = 'https://api.themegaradio.com';
 const API_PREFIX = '/api';
 
 const isSamsungTV = typeof window !== 'undefined' && (

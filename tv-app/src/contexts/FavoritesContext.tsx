@@ -3,7 +3,7 @@ import { Station } from "@/services/megaRadioApi";
 import { trackFavoriteToggle } from "@/lib/analytics";
 import { useAuth } from "@/contexts/AuthContext";
 
-var API_BASE = 'https://themegaradio.com';
+var API_BASE = 'https://api.themegaradio.com';
 var FAVORITES_STORAGE_KEY = "mega_radio_favorites";
 
 interface FavoritesContextType {
