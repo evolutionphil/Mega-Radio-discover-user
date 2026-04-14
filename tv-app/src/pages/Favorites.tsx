@@ -13,15 +13,15 @@ export const Favorites = (): JSX.Element => {
   const { t } = useLocalization();
   const [, setLocation] = useLocation();
   
-  // Define sidebar routes (5 items)
+  // Define sidebar routes (6 items: 0-5)
   const sidebarRoutes = ['/discover-no-user', '/genres', '/search', '/favorites', '/country-select', '/settings'];
   
   // Safely get favorites array with null checks
   const favoritesArray = Array.isArray(favorites) ? favorites : [];
   
-  // Calculate totalItems: 5 sidebar + favorites (or 1 for empty state)
-  const favoritesStart = 6;
-  const totalItems = 6 + (favoritesArray.length || 1);
+  // 0-5 = sidebar nav items, 6 = sidebar help button, 7+ = favorites content
+  const favoritesStart = 7;
+  const totalItems = 7 + (favoritesArray.length || 1);
   
   // Focus management with custom navigation
   const { focusIndex, handleNavigation: baseHandleNavigation, handleSelect, handleBack, isFocused, setFocusIndex } = useFocusManager({
@@ -33,6 +33,7 @@ export const Favorites = (): JSX.Element => {
       if (index >= 0 && index <= 5) {
         window.location.hash = '#' + sidebarRoutes[index];
       }
+      // Index 6 = Help button - handled inside Sidebar component, ignore here
       // Favorites section
       else if (index >= favoritesStart) {
         if (favoritesArray.length === 0) {
@@ -58,14 +59,14 @@ export const Favorites = (): JSX.Element => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-4)
-    if (current >= 0 && current <= 5) {
+    // Sidebar section (0-6, where 6 = help button)
+    if (current >= 0 && current <= 6) {
       if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
+        newIndex = current < 6 ? current + 1 : current;
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = favoritesStart; // Jump to first favorite
+        newIndex = favoritesStart; // Jump to first favorite (index 7)
       }
     }
     // Favorites section
