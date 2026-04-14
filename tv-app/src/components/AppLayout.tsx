@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, RefObject } from "react";
 import { useLocation } from "wouter";
 import { CountrySelector } from "@/components/CountrySelector";
 import { useCountry } from "@/contexts/CountryContext";
-import { useGlobalPlayer } from "@/contexts/GlobalPlayerContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Sidebar } from "@/components/Sidebar";
 import { getFocusClasses } from "@/hooks/useFocusManager";
@@ -17,7 +16,6 @@ interface AppLayoutProps {
 
 export const AppLayout = ({ children, currentPage, hideHeaderControls = false, scrollContainerRef }: AppLayoutProps) => {
   const { selectedCountry, selectedCountryFlag, setCountry } = useCountry();
-  const { isPlaying } = useGlobalPlayer();
   const { isAuthenticated, user } = useAuth();
   const [, setLocation] = useLocation();
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
@@ -69,15 +67,6 @@ export const AppLayout = ({ children, currentPage, hideHeaderControls = false, s
           className="absolute top-0 left-0 w-[1920px] h-[242px] z-50 pointer-events-none transition-transform duration-300 ease-in-out"
           style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
         >
-          {/* Equalizer Icon - Matching Global Player Animation */}
-          <div className={`absolute left-[1383px] overflow-clip rounded-[30px] w-[51px] h-[51px] top-[67px] pointer-events-auto transition-colors ${isPlaying ? 'bg-[#ff4199]' : 'bg-[rgba(255,255,255,0.1)]'}`}>
-            <div className="absolute h-[35.526px] left-[8.625px] overflow-clip top-[7.737px] w-[33.75px]">
-              <div className={`absolute bg-white left-0 rounded-[10px] top-0 w-[8.882px] ${isPlaying ? 'animate-equalizer-global-1' : 'h-[35.526px]'}`} style={{ height: isPlaying ? undefined : '35.526px' }} />
-              <div className={`absolute bg-white left-[12.43px] rounded-[10px] w-[8.882px] ${isPlaying ? 'animate-equalizer-global-2' : 'h-[24.868px] top-[10.66px]'}`} style={{ height: isPlaying ? undefined : '24.868px', top: isPlaying ? undefined : '10.66px' }} />
-              <div className={`absolute bg-white left-[24.87px] rounded-[10px] w-[8.882px] ${isPlaying ? 'animate-equalizer-global-3' : 'h-[30.197px] top-[5.33px]'}`} style={{ height: isPlaying ? undefined : '30.197px', top: isPlaying ? undefined : '5.33px' }} />
-            </div>
-          </div>
-
           {/* Country Selector Button - EXACT FIGMA SPECS */}
           <div 
             className="absolute left-[1453px] top-[67px] flex w-[223px] h-[51px] rounded-[30px] bg-[rgba(255,255,255,0.1)] cursor-pointer hover:bg-[rgba(255,255,255,0.15)] transition-colors pointer-events-auto flex-shrink-0"
