@@ -44,6 +44,7 @@ export const RadioPlaying = (): JSX.Element => {
   const helpOpenRef = useRef(false);
   helpFocusedRef.current = helpFocused;
   helpOpenRef.current = helpOpen;
+  const setHF = (v: boolean) => { helpFocusedRef.current = v; setHelpFocused(v); };
   useEffect(() => {
     if (!isIdle || !currentStation) return;
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -322,9 +323,9 @@ export const RadioPlaying = (): JSX.Element => {
     let newIndex = current;
 
     // Help button focus mode
-    if (helpFocused) {
-      if (direction === 'UP') { setHelpFocused(false); }
-      else if (direction === 'RIGHT') { setHelpFocused(false); setFocusIndex(6); }
+    if (helpFocusedRef.current) {
+      if (direction === 'UP') { setHF(false); }
+      else if (direction === 'RIGHT') { setHF(false); setFocusIndex(6); }
       return;
     }
 
@@ -332,7 +333,7 @@ export const RadioPlaying = (): JSX.Element => {
     if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
         if (current < 5) newIndex = current + 1;
-        else { setHelpFocused(true); return; }
+        else { setHF(true); return; }
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
@@ -461,7 +462,7 @@ export const RadioPlaying = (): JSX.Element => {
     
     // RETURN key handler ALWAYS works, even when loading
     if (e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009) {
-      if (helpFocusedRef.current) { setHelpFocused(false); return; }
+      if (helpFocusedRef.current) { setHF(false); return; }
       const previousPage = getPreviousPage();
       const backTo = previousPage || '/discover-no-user';
       setLocation(backTo);

@@ -99,6 +99,7 @@ export const Search = (): JSX.Element => {
   const helpOpenRef = useRef(false);
   helpFocusedRef.current = helpFocused;
   helpOpenRef.current = helpOpen;
+  const setHF = (v: boolean) => { helpFocusedRef.current = v; setHelpFocused(v); };
   const [focusZone, setFocusZone] = useState<FocusZone>('keyboard');
   const [sidebarIndex, setSidebarIndex] = useState(2);
   const [keyboardRow, setKeyboardRow] = useState(0);
@@ -323,7 +324,7 @@ export const Search = (): JSX.Element => {
 
     if (isBack) {
       e.preventDefault();
-      if (helpFocusedRef.current) { setHelpFocused(false); return; }
+      if (helpFocusedRef.current) { setHF(false); return; }
       if (dropdownOpen) {
         setDropdownOpen(false);
         setFocusZone('langButton');
@@ -358,9 +359,9 @@ export const Search = (): JSX.Element => {
     if (focusZone === 'sidebar') {
       // Help button focus mode
       if (helpFocusedRef.current) {
-        if (isUp) { e.preventDefault(); setHelpFocused(false); }
+        if (isUp) { e.preventDefault(); setHF(false); }
         else if (isEnter) { e.preventDefault(); openHelp(); }
-        else if (isRight) { e.preventDefault(); setHelpFocused(false); setFocusZone('keyboard'); setKeyboardRow(lastKeyboardPos.current.row); setKeyboardCol(lastKeyboardPos.current.col); }
+        else if (isRight) { e.preventDefault(); setHF(false); setFocusZone('keyboard'); setKeyboardRow(lastKeyboardPos.current.row); setKeyboardCol(lastKeyboardPos.current.col); }
         return;
       }
       if (isUp) {
@@ -368,7 +369,7 @@ export const Search = (): JSX.Element => {
         setSidebarIndex(prev => Math.max(0, prev - 1));
       } else if (isDown) {
         e.preventDefault();
-        if (sidebarIndex < 5) { setSidebarIndex(prev => prev + 1); } else { setHelpFocused(true); }
+        if (sidebarIndex < 5) { setSidebarIndex(prev => prev + 1); } else { setHF(true); }
       } else if (isRight) {
         e.preventDefault();
         setFocusZone('keyboard');

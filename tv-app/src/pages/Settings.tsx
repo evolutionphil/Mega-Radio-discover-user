@@ -177,6 +177,7 @@ export const Settings = (): JSX.Element => {
   const helpOpenRef = useRef(false);
   helpFocusedRef.current = helpFocused;
   helpOpenRef.current = helpOpen;
+  const setHF = (v: boolean) => { helpFocusedRef.current = v; setHelpFocused(v); };
   const [focusSection, setFocusSection] = useState<'sidebar' | 'categories' | 'options'>('categories');
   const [sidebarIndex, setSidebarIndex] = useState(5);
   const [categoryIndex, setCategoryIndex] = useState(0);
@@ -336,7 +337,7 @@ export const Settings = (): JSX.Element => {
 
     if (isReturn) {
       e.preventDefault();
-      if (helpFocusedRef.current) { setHelpFocused(false); return; }
+      if (helpFocusedRef.current) { setHF(false); return; }
       if (focusSection === 'options') {
         setFocusSection('categories');
       } else if (focusSection === 'categories') {
@@ -350,13 +351,13 @@ export const Settings = (): JSX.Element => {
     if (focusSection === 'sidebar') {
       // Help button focus mode
       if (helpFocusedRef.current) {
-        if (isUp) { e.preventDefault(); setHelpFocused(false); }
+        if (isUp) { e.preventDefault(); setHF(false); }
         else if (isEnter) { e.preventDefault(); openHelp(); }
-        else if (isRight) { e.preventDefault(); setHelpFocused(false); setFocusSection('categories'); }
+        else if (isRight) { e.preventDefault(); setHF(false); setFocusSection('categories'); }
         return;
       }
       if (isUp) { e.preventDefault(); setSidebarIndex(prev => Math.max(0, prev - 1)); }
-      else if (isDown) { e.preventDefault(); if (sidebarIndex < 5) { setSidebarIndex(prev => prev + 1); } else { setHelpFocused(true); } }
+      else if (isDown) { e.preventDefault(); if (sidebarIndex < 5) { setSidebarIndex(prev => prev + 1); } else { setHF(true); } }
       else if (isRight) { e.preventDefault(); setFocusSection('categories'); }
       else if (isEnter) { e.preventDefault(); setLocation(sidebarRoutes[sidebarIndex]); }
       return;

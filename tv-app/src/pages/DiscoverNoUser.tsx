@@ -39,6 +39,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const helpOpenRef = useRef(false);
   helpFocusedRef.current = helpFocused;
   helpOpenRef.current = helpOpen;
+  const setHF = (v: boolean) => { helpFocusedRef.current = v; setHelpFocused(v); };
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const genreScrollRef = useRef<HTMLDivElement>(null);
   const recentScrollRef = useRef<HTMLDivElement>(null);
@@ -271,10 +272,10 @@ export const DiscoverNoUser = (): JSX.Element => {
     let newIndex = current;
 
     // Help button focus mode
-    if (helpFocused) {
-      if (direction === 'UP') { setHelpFocused(false); }
+    if (helpFocusedRef.current) {
+      if (direction === 'UP') { setHF(false); }
       else if (direction === 'RIGHT') {
-        setHelpFocused(false);
+        setHF(false);
         if (recentCount > 0) { setFocusIndex(recentStart); } else if (forYouCount > 0) { setFocusIndex(forYouStart); } else { setFocusIndex(genresStart); }
       }
       return;
@@ -296,7 +297,7 @@ export const DiscoverNoUser = (): JSX.Element => {
     if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
         if (current < 5) { setIsCountryHeaderFocused(false); newIndex = current + 1; }
-        else { setHelpFocused(true); return; }
+        else { setHF(true); return; }
       } else if (direction === 'UP') {
         setIsCountryHeaderFocused(false);
         newIndex = current > 0 ? current - 1 : current;
@@ -670,7 +671,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       case 461:
       case 10009:
         e.preventDefault();
-        if (helpFocusedRef.current) { setHelpFocused(false); } else { handleBack(); }
+        if (helpFocusedRef.current) { setHF(false); } else { handleBack(); }
         break;
     }
   });

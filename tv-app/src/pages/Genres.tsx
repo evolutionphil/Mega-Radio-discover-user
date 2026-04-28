@@ -27,6 +27,7 @@ export const Genres = (): JSX.Element => {
   const helpOpenRef = useRef(false);
   helpFocusedRef.current = helpFocused;
   helpOpenRef.current = helpOpen;
+  const setHF = (v: boolean) => { helpFocusedRef.current = v; setHelpFocused(v); };
 
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres', selectedCountryCode],
@@ -86,16 +87,16 @@ export const Genres = (): JSX.Element => {
     let newIndex = current;
 
     // Help button focus mode
-    if (helpFocused) {
-      if (direction === 'UP') { setHelpFocused(false); }
-      else if (direction === 'RIGHT') { setHelpFocused(false); setFocusIndex(6); }
+    if (helpFocusedRef.current) {
+      if (direction === 'UP') { setHF(false); }
+      else if (direction === 'RIGHT') { setHF(false); setFocusIndex(6); }
       return;
     }
 
     if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
         if (current < 5) newIndex = current + 1;
-        else { setHelpFocused(true); return; }
+        else { setHF(true); return; }
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
@@ -276,7 +277,7 @@ export const Genres = (): JSX.Element => {
       case 461:
       case 10009:
         e.preventDefault();
-        if (helpFocusedRef.current) { setHelpFocused(false); } else { handleBack(); }
+        if (helpFocusedRef.current) { setHF(false); } else { handleBack(); }
         break;
     }
   });

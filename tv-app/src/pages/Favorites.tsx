@@ -26,6 +26,7 @@ export const Favorites = (): JSX.Element => {
   const helpOpenRef = useRef(false);
   helpFocusedRef.current = helpFocused;
   helpOpenRef.current = helpOpen;
+  const setHF = (v: boolean) => { helpFocusedRef.current = v; setHelpFocused(v); };
   
   // 0-5 = sidebar nav items, 6+ = favorites content (Help uses helpFocused state, not focusIndex)
   const favoritesStart = 6;
@@ -67,9 +68,9 @@ export const Favorites = (): JSX.Element => {
     let newIndex = current;
 
     // Help button focus mode
-    if (helpFocused) {
-      if (direction === 'UP') { setHelpFocused(false); }
-      else if (direction === 'RIGHT') { setHelpFocused(false); setFocusIndex(favoritesStart); }
+    if (helpFocusedRef.current) {
+      if (direction === 'UP') { setHF(false); }
+      else if (direction === 'RIGHT') { setHF(false); setFocusIndex(favoritesStart); }
       return;
     }
 
@@ -77,7 +78,7 @@ export const Favorites = (): JSX.Element => {
     if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
         if (current < 5) newIndex = current + 1;
-        else { setHelpFocused(true); return; }
+        else { setHF(true); return; }
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
@@ -160,7 +161,7 @@ export const Favorites = (): JSX.Element => {
       case 461:
       case 10009:
         e.preventDefault();
-        if (helpFocusedRef.current) { setHelpFocused(false); } else { handleBack(); }
+        if (helpFocusedRef.current) { setHF(false); } else { handleBack(); }
         break;
     }
   });
