@@ -71,18 +71,11 @@ function SidebarItem({ href, icon, label, isFocused: focused, activePage, page, 
   );
 }
 
-var REMOTE_COLORS = [
-  { color: '#e74c3c', label: 'Red', key: 'help_red', fallback: 'Add to Favorites' },
-  { color: '#27ae60', label: 'Green', key: 'help_green', fallback: 'Play / Pause' },
-  { color: '#f1c40f', label: 'Yellow', key: 'help_yellow', fallback: 'Open Search' },
-  { color: '#3498db', label: 'Blue', key: 'help_blue', fallback: 'Change Country' },
-];
 
 export const Sidebar = ({ activePage, isFocused, getFocusClasses, isHelpFocused }: SidebarProps): JSX.Element => {
   const { t } = useLocalization();
-  const { helpOpen, closeHelp } = useHelp();
-  var showHelp = helpOpen;
-  var setShowHelp = (v: boolean) => { if (!v) closeHelp(); };
+  const { openHelp } = useHelp();
+  var setShowHelp = (v: boolean) => { if (v) openHelp(); };
 
   var items = [
     { href: '/discover-no-user', icon: 'images/radio-icon.svg', label: t('nav_discover') || 'Discover', page: 'discover' as const, testId: 'button-discover' },
@@ -163,98 +156,6 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses, isHelpFocused 
         </div>
       </div>
 
-      {showHelp && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '1920px',
-            height: '1080px',
-            backgroundColor: 'rgba(0,0,0,0.75)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-          }}
-          onClick={function() { setShowHelp(false); }}
-          onKeyDown={function(e: any) { if (e.key === 'Escape' || e.keyCode === 27 || e.key === 'Enter' || e.keyCode === 13 || e.key === 'Return' || e.keyCode === 10009) { setShowHelp(false); } }}
-          data-testid="modal-help"
-        >
-          <div
-            style={{
-              backgroundColor: '#1a1a2e',
-              borderRadius: '20px',
-              padding: '48px 56px',
-              minWidth: '520px',
-              maxWidth: '640px',
-              border: '2px solid rgba(255,65,153,0.3)',
-              boxShadow: '0 0 40px rgba(255,65,153,0.15)',
-            }}
-            onClick={function(e: any) { e.stopPropagation(); }}
-          >
-            <h2 style={{
-              fontFamily: "'Ubuntu', Helvetica, sans-serif",
-              fontSize: '32px',
-              fontWeight: 700,
-              color: '#ffffff',
-              marginBottom: '32px',
-              textAlign: 'center',
-            }}>
-              {t('help_title') || 'Remote Control Colors'}
-            </h2>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              {REMOTE_COLORS.map(function(item) {
-                return (
-                  <div key={item.color} style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <span style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '50%',
-                      backgroundColor: item.color,
-                      boxShadow: '0 0 12px ' + item.color + '80',
-                      flexShrink: 0,
-                    }} />
-                    <span style={{
-                      fontFamily: "'Ubuntu', Helvetica, sans-serif",
-                      fontSize: '24px',
-                      fontWeight: 500,
-                      color: '#e0e0e0',
-                    }}>
-                      {t(item.key) || item.fallback}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div style={{ marginTop: '36px', textAlign: 'center' }}>
-              <button
-                tabIndex={0}
-                autoFocus
-                onClick={function() { setShowHelp(false); }}
-                onKeyDown={function(e: any) { if (e.key === 'Enter' || e.keyCode === 13) { setShowHelp(false); } }}
-                style={{
-                  fontFamily: "'Ubuntu', Helvetica, sans-serif",
-                  fontSize: '22px',
-                  fontWeight: 600,
-                  color: '#ffffff',
-                  backgroundColor: 'rgba(255,65,153,0.3)',
-                  border: '2px solid rgba(255,65,153,0.5)',
-                  borderRadius: '12px',
-                  padding: '12px 48px',
-                  cursor: 'pointer',
-                  outline: 'none',
-                }}
-                data-testid="button-help-close"
-              >
-                {t('btn_close') || 'Close'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -16,7 +16,7 @@ import { NetworkStatusProvider, useNetworkStatus } from "@/contexts/NetworkStatu
 import { AppLifecycleProvider } from "@/contexts/AppLifecycleContext";
 import { FocusRouterProvider } from "@/contexts/FocusRouterContext";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
-import { HelpProvider } from "@/contexts/HelpContext";
+import { HelpProvider, useHelp } from "@/contexts/HelpContext";
 import { GlobalPlayer } from "@/components/GlobalPlayer";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import NotFound from "@/pages/not-found";
@@ -93,6 +93,59 @@ function NetworkDisconnectModal() {
   );
 }
 
+var HELP_REMOTE_COLORS = [
+  { color: '#e74c3c', label: 'Red', key: 'help_red', fallback: 'Add to Favorites' },
+  { color: '#27ae60', label: 'Green', key: 'help_green', fallback: 'Play / Pause' },
+  { color: '#f1c40f', label: 'Yellow', key: 'help_yellow', fallback: 'Open Search' },
+  { color: '#3498db', label: 'Blue', key: 'help_blue', fallback: 'Change Country' },
+];
+
+function HelpModal() {
+  const { helpOpen, closeHelp } = useHelp();
+  const { t } = useLocalization();
+  if (!helpOpen) return null;
+  return (
+    <div
+      style={{ position: 'fixed', top: 0, left: 0, width: '1920px', height: '1080px', backgroundColor: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}
+      onClick={closeHelp}
+      data-testid="modal-help"
+    >
+      <div
+        style={{ backgroundColor: '#1a1a2e', borderRadius: '20px', padding: '48px 56px', minWidth: '520px', maxWidth: '640px', border: '2px solid rgba(255,65,153,0.3)', boxShadow: '0 0 40px rgba(255,65,153,0.15)' }}
+        onClick={function(e: any) { e.stopPropagation(); }}
+      >
+        <h2 style={{ fontFamily: "'Ubuntu', Helvetica, sans-serif", fontSize: '32px', fontWeight: 700, color: '#ffffff', marginBottom: '32px', textAlign: 'center' }}>
+          {t('help_title') || 'Remote Control Colors'}
+        </h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {HELP_REMOTE_COLORS.map(function(item) {
+            return (
+              <div key={item.color} style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <span style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: item.color, boxShadow: '0 0 12px ' + item.color + '80', flexShrink: 0 }} />
+                <span style={{ fontFamily: "'Ubuntu', Helvetica, sans-serif", fontSize: '24px', fontWeight: 500, color: '#e0e0e0' }}>
+                  {t(item.key) || item.fallback}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+        <div style={{ marginTop: '36px', textAlign: 'center' }}>
+          <button
+            tabIndex={0}
+            autoFocus
+            onClick={closeHelp}
+            onKeyDown={function(e: any) { if (e.key === 'Enter' || e.keyCode === 13 || e.keyCode === 27 || e.keyCode === 461 || e.keyCode === 10009) { closeHelp(); } }}
+            style={{ fontFamily: "'Ubuntu', Helvetica, sans-serif", fontSize: '22px', fontWeight: 600, color: '#ffffff', backgroundColor: 'rgba(255,65,153,0.3)', border: '2px solid rgba(255,65,153,0.5)', borderRadius: '12px', padding: '12px 48px', cursor: 'pointer', outline: 'none' }}
+            data-testid="button-help-close"
+          >
+            {t('btn_close') || 'Close'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Router() {
   useAnalytics();
   
@@ -127,6 +180,8 @@ function Router() {
     <GlobalPlayer />
     {/* Network Disconnect Modal - Global, highest z-index */}
     <NetworkDisconnectModal />
+    {/* Help Modal - Global, rendered at root level to avoid overflow:hidden clipping */}
+    <HelpModal />
     </WouterRouter>
   );
 }
