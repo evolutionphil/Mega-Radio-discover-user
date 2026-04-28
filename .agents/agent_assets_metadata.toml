@@ -1,0 +1,14 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "i0oU57m5bcT0lVNzNi-Bi"
+uri = "file://builds/RadioMega-Samsung-Tizen.tar.gz"
+type = "unspecified"
+title = "Radio Mega — Samsung Tizen TV (clean build)"
+
+[[outputs]]
+id = "u1H-dBGmbr_3G0ze_t0gf"
+uri = "file://builds/RadioMega-LG-webOS.tar.gz"
+type = "unspecified"
+title = "Radio Mega — LG webOS TV (clean build)"
