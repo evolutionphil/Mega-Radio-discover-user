@@ -34,7 +34,11 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [showHeader, setShowHeader] = useState(true);
   const [helpFocused, setHelpFocused] = useState(false);
   const [isCountryHeaderFocused, setIsCountryHeaderFocused] = useState(false);
-  const { openHelp } = useHelp();
+  const { openHelp, closeHelp, helpOpen } = useHelp();
+  const helpFocusedRef = useRef(false);
+  const helpOpenRef = useRef(false);
+  helpFocusedRef.current = helpFocused;
+  helpOpenRef.current = helpOpen;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const genreScrollRef = useRef<HTMLDivElement>(null);
   const recentScrollRef = useRef<HTMLDivElement>(null);
@@ -616,6 +620,14 @@ export const DiscoverNoUser = (): JSX.Element => {
       return;
     }
 
+    // Help modal open — block all page navigation; ENTER/BACK closes popup
+    if (helpOpenRef.current) {
+      e.preventDefault();
+      const _k = e.keyCode; const _tvk = (window as any).tvKey;
+      if (_k === 13 || _k === _tvk?.ENTER || _k === 461 || _k === 10009 || _k === _tvk?.RETURN) { closeHelp(); }
+      return;
+    }
+
     const key = (window as any).tvKey;
     
     switch(e.keyCode) {
@@ -637,7 +649,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         break;
       case key?.ENTER:
       case 13:
-        if (helpFocused) { openHelp(); } else { handleSelect(); }
+        if (helpFocusedRef.current) { openHelp(); } else { handleSelect(); }
         break;
       case key?.PAGE_DOWN:
       case 34:
@@ -658,7 +670,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       case 461:
       case 10009:
         e.preventDefault();
-        if (helpFocused) { setHelpFocused(false); } else { handleBack(); }
+        if (helpFocusedRef.current) { setHelpFocused(false); } else { handleBack(); }
         break;
     }
   });

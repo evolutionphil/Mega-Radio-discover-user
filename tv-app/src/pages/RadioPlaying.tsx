@@ -39,7 +39,11 @@ export const RadioPlaying = (): JSX.Element => {
 
   const [currentTime, setCurrentTime] = useState(new Date());
   const [helpFocused, setHelpFocused] = useState(false);
-  const { openHelp } = useHelp();
+  const { openHelp, closeHelp, helpOpen } = useHelp();
+  const helpFocusedRef = useRef(false);
+  const helpOpenRef = useRef(false);
+  helpFocusedRef.current = helpFocused;
+  helpOpenRef.current = helpOpen;
   useEffect(() => {
     if (!isIdle || !currentStation) return;
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -446,10 +450,18 @@ export const RadioPlaying = (): JSX.Element => {
     }
 
     const key = (window as any).tvKey;
+
+    // Help modal open — block all page navigation; ENTER/BACK closes popup
+    if (helpOpenRef.current) {
+      e.preventDefault();
+      const _k = e.keyCode;
+      if (_k === 13 || _k === key?.ENTER || _k === 461 || _k === 10009 || _k === key?.RETURN) { closeHelp(); }
+      return;
+    }
     
     // RETURN key handler ALWAYS works, even when loading
     if (e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009) {
-      if (helpFocused) { setHelpFocused(false); return; }
+      if (helpFocusedRef.current) { setHelpFocused(false); return; }
       const previousPage = getPreviousPage();
       const backTo = previousPage || '/discover-no-user';
       setLocation(backTo);
@@ -481,7 +493,7 @@ export const RadioPlaying = (): JSX.Element => {
       case key?.ENTER:
       case 13:
         e.preventDefault();
-        if (helpFocused) { openHelp(); } else { handleSelect(); }
+        if (helpFocusedRef.current) { openHelp(); } else { handleSelect(); }
         break;
       case key?.PAGE_DOWN:
       case 34:

@@ -22,8 +22,11 @@ export const Genres = (): JSX.Element => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [helpFocused, setHelpFocused] = useState(false);
-  const { openHelp } = useHelp();
-  
+  const { openHelp, closeHelp, helpOpen } = useHelp();
+  const helpFocusedRef = useRef(false);
+  const helpOpenRef = useRef(false);
+  helpFocusedRef.current = helpFocused;
+  helpOpenRef.current = helpOpen;
 
   const { data: genresData } = useQuery({
     queryKey: ['/api/genres', selectedCountryCode],
@@ -233,6 +236,14 @@ export const Genres = (): JSX.Element => {
       return;
     }
 
+    // Help modal open — block all page navigation; ENTER/BACK closes popup
+    if (helpOpenRef.current) {
+      e.preventDefault();
+      const _k = e.keyCode; const _tvk = (window as any).tvKey;
+      if (_k === 13 || _k === _tvk?.ENTER || _k === 461 || _k === 10009 || _k === _tvk?.RETURN) { closeHelp(); }
+      return;
+    }
+
     const key = (window as any).tvKey;
     
     switch(e.keyCode) {
@@ -259,13 +270,13 @@ export const Genres = (): JSX.Element => {
       case key?.ENTER:
       case 13:
         e.preventDefault();
-        if (helpFocused) { openHelp(); } else { handleSelect(); }
+        if (helpFocusedRef.current) { openHelp(); } else { handleSelect(); }
         break;
       case key?.RETURN:
       case 461:
       case 10009:
         e.preventDefault();
-        if (helpFocused) { setHelpFocused(false); } else { handleBack(); }
+        if (helpFocusedRef.current) { setHelpFocused(false); } else { handleBack(); }
         break;
     }
   });

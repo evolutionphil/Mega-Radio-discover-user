@@ -20,8 +20,12 @@ export const Favorites = (): JSX.Element => {
   
   // Safely get favorites array with null checks
   const favoritesArray = Array.isArray(favorites) ? favorites : [];
-  const { openHelp } = useHelp();
+  const { openHelp, closeHelp, helpOpen } = useHelp();
   const [helpFocused, setHelpFocused] = useState(false);
+  const helpFocusedRef = useRef(false);
+  const helpOpenRef = useRef(false);
+  helpFocusedRef.current = helpFocused;
+  helpOpenRef.current = helpOpen;
   
   // 0-5 = sidebar nav items, 6+ = favorites content (Help uses helpFocused state, not focusIndex)
   const favoritesStart = 6;
@@ -117,6 +121,14 @@ export const Favorites = (): JSX.Element => {
   // Register page-specific key handler
   usePageKeyHandler('/favorites', (e) => {
     const key = (window as any).tvKey;
+
+    // Help modal open — block all page navigation; ENTER/BACK closes popup
+    if (helpOpenRef.current) {
+      e.preventDefault();
+      const _k = e.keyCode;
+      if (_k === 13 || _k === key?.ENTER || _k === 461 || _k === 10009 || _k === key?.RETURN) { closeHelp(); }
+      return;
+    }
     
     switch(e.keyCode) {
       case key?.UP:
@@ -142,13 +154,13 @@ export const Favorites = (): JSX.Element => {
       case key?.ENTER:
       case 13:
         e.preventDefault();
-        if (helpFocused) { openHelp(); } else { handleSelect(); }
+        if (helpFocusedRef.current) { openHelp(); } else { handleSelect(); }
         break;
       case key?.RETURN:
       case 461:
       case 10009:
         e.preventDefault();
-        if (helpFocused) { setHelpFocused(false); } else { handleBack(); }
+        if (helpFocusedRef.current) { setHelpFocused(false); } else { handleBack(); }
         break;
     }
   });

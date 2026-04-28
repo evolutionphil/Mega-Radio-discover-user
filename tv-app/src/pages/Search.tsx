@@ -93,8 +93,12 @@ export const Search = (): JSX.Element => {
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [recentlyPlayedStations, setRecentlyPlayedStations] = useState<Station[]>([]);
 
-  const { openHelp } = useHelp();
+  const { openHelp, closeHelp, helpOpen } = useHelp();
   const [helpFocused, setHelpFocused] = useState(false);
+  const helpFocusedRef = useRef(false);
+  const helpOpenRef = useRef(false);
+  helpFocusedRef.current = helpFocused;
+  helpOpenRef.current = helpOpen;
   const [focusZone, setFocusZone] = useState<FocusZone>('keyboard');
   const [sidebarIndex, setSidebarIndex] = useState(2);
   const [keyboardRow, setKeyboardRow] = useState(0);
@@ -310,9 +314,16 @@ export const Search = (): JSX.Element => {
     const isEnter = keyCode === 13 || keyCode === key?.ENTER;
     const isBack = keyCode === 461 || keyCode === 10009 || keyCode === key?.RETURN;
 
+    // Help modal open — block all page navigation; ENTER/BACK closes popup
+    if (helpOpenRef.current) {
+      e.preventDefault();
+      if (isEnter || isBack) { closeHelp(); }
+      return;
+    }
+
     if (isBack) {
       e.preventDefault();
-      if (helpFocused) { setHelpFocused(false); return; }
+      if (helpFocusedRef.current) { setHelpFocused(false); return; }
       if (dropdownOpen) {
         setDropdownOpen(false);
         setFocusZone('langButton');
@@ -346,7 +357,7 @@ export const Search = (): JSX.Element => {
 
     if (focusZone === 'sidebar') {
       // Help button focus mode
-      if (helpFocused) {
+      if (helpFocusedRef.current) {
         if (isUp) { e.preventDefault(); setHelpFocused(false); }
         else if (isEnter) { e.preventDefault(); openHelp(); }
         else if (isRight) { e.preventDefault(); setHelpFocused(false); setFocusZone('keyboard'); setKeyboardRow(lastKeyboardPos.current.row); setKeyboardCol(lastKeyboardPos.current.col); }

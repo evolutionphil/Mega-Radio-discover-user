@@ -171,8 +171,12 @@ export const Settings = (): JSX.Element => {
   const { isAuthenticated, user, logout } = useAuth();
   const { isConnected } = useCast();
 
-  const { openHelp } = useHelp();
+  const { openHelp, closeHelp, helpOpen } = useHelp();
   const [helpFocused, setHelpFocused] = useState(false);
+  const helpFocusedRef = useRef(false);
+  const helpOpenRef = useRef(false);
+  helpFocusedRef.current = helpFocused;
+  helpOpenRef.current = helpOpen;
   const [focusSection, setFocusSection] = useState<'sidebar' | 'categories' | 'options'>('categories');
   const [sidebarIndex, setSidebarIndex] = useState(5);
   const [categoryIndex, setCategoryIndex] = useState(0);
@@ -323,9 +327,16 @@ export const Settings = (): JSX.Element => {
     const isEnter = e.keyCode === key?.ENTER || e.keyCode === 13;
     const isReturn = e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009;
 
+    // Help modal open — block all page navigation; ENTER/BACK closes popup
+    if (helpOpenRef.current) {
+      e.preventDefault();
+      if (isReturn || isEnter) { closeHelp(); }
+      return;
+    }
+
     if (isReturn) {
       e.preventDefault();
-      if (helpFocused) { setHelpFocused(false); return; }
+      if (helpFocusedRef.current) { setHelpFocused(false); return; }
       if (focusSection === 'options') {
         setFocusSection('categories');
       } else if (focusSection === 'categories') {
@@ -338,7 +349,7 @@ export const Settings = (): JSX.Element => {
 
     if (focusSection === 'sidebar') {
       // Help button focus mode
-      if (helpFocused) {
+      if (helpFocusedRef.current) {
         if (isUp) { e.preventDefault(); setHelpFocused(false); }
         else if (isEnter) { e.preventDefault(); openHelp(); }
         else if (isRight) { e.preventDefault(); setHelpFocused(false); setFocusSection('categories'); }
