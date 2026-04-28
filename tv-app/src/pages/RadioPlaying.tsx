@@ -17,6 +17,7 @@ import { CountrySelector } from "@/components/CountrySelector";
 import { CountryTrigger } from "@/components/CountryTrigger";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
+import { useHelp } from "@/contexts/HelpContext";
 
 
 export const RadioPlaying = (): JSX.Element => {
@@ -37,6 +38,8 @@ export const RadioPlaying = (): JSX.Element => {
   const ambientColors = useImageColors(ambientImageUrl);
 
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [helpFocused, setHelpFocused] = useState(false);
+  const { openHelp } = useHelp();
   useEffect(() => {
     if (!isIdle || !currentStation) return;
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -314,10 +317,18 @@ export const RadioPlaying = (): JSX.Element => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-4) - 5 items
+    // Help button focus mode
+    if (helpFocused) {
+      if (direction === 'UP') { setHelpFocused(false); }
+      else if (direction === 'RIGHT') { setHelpFocused(false); setFocusIndex(6); }
+      return;
+    }
+
+    // Sidebar section (0-5)
     if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
+        if (current < 5) newIndex = current + 1;
+        else { setHelpFocused(true); return; }
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
@@ -438,6 +449,7 @@ export const RadioPlaying = (): JSX.Element => {
     
     // RETURN key handler ALWAYS works, even when loading
     if (e.keyCode === key?.RETURN || e.keyCode === 461 || e.keyCode === 10009) {
+      if (helpFocused) { setHelpFocused(false); return; }
       const previousPage = getPreviousPage();
       const backTo = previousPage || '/discover-no-user';
       setLocation(backTo);
@@ -469,7 +481,7 @@ export const RadioPlaying = (): JSX.Element => {
       case key?.ENTER:
       case 13:
         e.preventDefault();
-        handleSelect();
+        if (helpFocused) { openHelp(); } else { handleSelect(); }
         break;
       case key?.PAGE_DOWN:
       case 34:
@@ -889,7 +901,7 @@ export const RadioPlaying = (): JSX.Element => {
       />
 
       {/* Left Menu / Sidebar */}
-      <Sidebar activePage="discover" isFocused={isFocused} getFocusClasses={getFocusClasses} />
+      <Sidebar activePage="discover" isFocused={helpFocused ? () => false : isFocused} getFocusClasses={getFocusClasses} isHelpFocused={helpFocused} />
 
       {/* Station Logo */}
       <div className="absolute bg-white left-[236px] overflow-clip rounded-[16.692px] w-[296px] h-[296px] top-[242px]">

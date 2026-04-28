@@ -9,6 +9,7 @@ import { recentlyPlayedService } from "@/services/recentlyPlayedService";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
+import { useHelp } from "@/contexts/HelpContext";
 
 interface KeyboardLayout {
   id: string;
@@ -92,6 +93,8 @@ export const Search = (): JSX.Element => {
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [recentlyPlayedStations, setRecentlyPlayedStations] = useState<Station[]>([]);
 
+  const { openHelp } = useHelp();
+  const [helpFocused, setHelpFocused] = useState(false);
   const [focusZone, setFocusZone] = useState<FocusZone>('keyboard');
   const [sidebarIndex, setSidebarIndex] = useState(2);
   const [keyboardRow, setKeyboardRow] = useState(0);
@@ -309,6 +312,7 @@ export const Search = (): JSX.Element => {
 
     if (isBack) {
       e.preventDefault();
+      if (helpFocused) { setHelpFocused(false); return; }
       if (dropdownOpen) {
         setDropdownOpen(false);
         setFocusZone('langButton');
@@ -341,12 +345,19 @@ export const Search = (): JSX.Element => {
     }
 
     if (focusZone === 'sidebar') {
+      // Help button focus mode
+      if (helpFocused) {
+        if (isUp) { e.preventDefault(); setHelpFocused(false); }
+        else if (isEnter) { e.preventDefault(); openHelp(); }
+        else if (isRight) { e.preventDefault(); setHelpFocused(false); setFocusZone('keyboard'); setKeyboardRow(lastKeyboardPos.current.row); setKeyboardCol(lastKeyboardPos.current.col); }
+        return;
+      }
       if (isUp) {
         e.preventDefault();
         setSidebarIndex(prev => Math.max(0, prev - 1));
       } else if (isDown) {
         e.preventDefault();
-        setSidebarIndex(prev => Math.min(5, prev + 1));
+        if (sidebarIndex < 5) { setSidebarIndex(prev => prev + 1); } else { setHelpFocused(true); }
       } else if (isRight) {
         e.preventDefault();
         setFocusZone('keyboard');
@@ -518,7 +529,7 @@ export const Search = (): JSX.Element => {
         />
       </div>
 
-      <Sidebar activePage="search" isFocused={isFocused} getFocusClasses={getFocusClasses} />
+      <Sidebar activePage="search" isFocused={helpFocused ? () => false : isFocused} getFocusClasses={getFocusClasses} isHelpFocused={helpFocused} />
 
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[246px] not-italic text-[32px] text-white top-[58px]">
         {t('search') || 'Search'}

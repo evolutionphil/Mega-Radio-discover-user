@@ -1,12 +1,13 @@
 import { Link } from "wouter";
-import { useState } from "react";
 import { assetPath } from "@/lib/assetPath";
 import { useLocalization } from "@/contexts/LocalizationContext";
+import { useHelp } from "@/contexts/HelpContext";
 
 interface SidebarProps {
   activePage: 'discover' | 'genres' | 'search' | 'favorites' | 'settings' | 'country';
   isFocused: (index: number) => boolean;
   getFocusClasses: (focused: boolean) => string;
+  isHelpFocused?: boolean;
 }
 
 interface SidebarItemProps {
@@ -77,9 +78,11 @@ var REMOTE_COLORS = [
   { color: '#3498db', label: 'Blue', key: 'help_blue', fallback: 'Change Country' },
 ];
 
-export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps): JSX.Element => {
+export const Sidebar = ({ activePage, isFocused, getFocusClasses, isHelpFocused }: SidebarProps): JSX.Element => {
   const { t } = useLocalization();
-  const [showHelp, setShowHelp] = useState(false);
+  const { helpOpen, closeHelp } = useHelp();
+  var showHelp = helpOpen;
+  var setShowHelp = (v: boolean) => { if (!v) closeHelp(); };
 
   var items = [
     { href: '/discover-no-user', icon: 'images/radio-icon.svg', label: t('nav_discover') || 'Discover', page: 'discover' as const, testId: 'button-discover' },
@@ -122,9 +125,9 @@ export const Sidebar = ({ activePage, isFocused, getFocusClasses }: SidebarProps
             position: 'relative',
             borderRadius: '10px',
             overflow: 'hidden',
-            backgroundColor: isFocused(helpIndex) ? 'rgba(255,65,153,0.25)' : 'transparent',
-            boxShadow: isFocused(helpIndex) ? '0 0 16px rgba(255,65,153,0.5)' : 'none',
-            opacity: isFocused(helpIndex) ? 1 : 0.85,
+            backgroundColor: isHelpFocused ? 'rgba(255,65,153,0.25)' : 'transparent',
+            boxShadow: isHelpFocused ? '0 0 16px rgba(255,65,153,0.5)' : 'none',
+            opacity: isHelpFocused ? 1 : 0.85,
             transition: 'background-color 0.2s, box-shadow 0.2s, opacity 0.2s',
             cursor: 'pointer',
           }}

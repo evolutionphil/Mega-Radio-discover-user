@@ -1,4 +1,5 @@
 import { Link, useLocation } from "wouter";
+import { useState } from "react";
 import { resolveStationImageUrl } from "@/lib/imageUtils";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
@@ -7,6 +8,7 @@ import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
+import { useHelp } from "@/contexts/HelpContext";
 
 export const Favorites = (): JSX.Element => {
   const { favorites } = useFavorites();
@@ -18,10 +20,12 @@ export const Favorites = (): JSX.Element => {
   
   // Safely get favorites array with null checks
   const favoritesArray = Array.isArray(favorites) ? favorites : [];
+  const { openHelp } = useHelp();
+  const [helpFocused, setHelpFocused] = useState(false);
   
-  // 0-5 = sidebar nav items, 6 = sidebar help button, 7+ = favorites content
-  const favoritesStart = 7;
-  const totalItems = 7 + (favoritesArray.length || 1);
+  // 0-5 = sidebar nav items, 6+ = favorites content (Help uses helpFocused state, not focusIndex)
+  const favoritesStart = 6;
+  const totalItems = 6 + (favoritesArray.length || 1);
   
   // Focus management with custom navigation
   const { focusIndex, handleNavigation: baseHandleNavigation, handleSelect, handleBack, isFocused, setFocusIndex } = useFocusManager({
@@ -33,7 +37,6 @@ export const Favorites = (): JSX.Element => {
       if (index >= 0 && index <= 5) {
         window.location.hash = '#' + sidebarRoutes[index];
       }
-      // Index 6 = Help button - handled inside Sidebar component, ignore here
       // Favorites section
       else if (index >= favoritesStart) {
         if (favoritesArray.length === 0) {
@@ -59,14 +62,22 @@ export const Favorites = (): JSX.Element => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-6, where 6 = help button)
-    if (current >= 0 && current <= 6) {
+    // Help button focus mode
+    if (helpFocused) {
+      if (direction === 'UP') { setHelpFocused(false); }
+      else if (direction === 'RIGHT') { setHelpFocused(false); setFocusIndex(favoritesStart); }
+      return;
+    }
+
+    // Sidebar section (0-5)
+    if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 6 ? current + 1 : current;
+        if (current < 5) newIndex = current + 1;
+        else { setHelpFocused(true); return; }
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
-        newIndex = favoritesStart; // Jump to first favorite (index 7)
+        newIndex = favoritesStart;
       }
     }
     // Favorites section
@@ -131,13 +142,13 @@ export const Favorites = (): JSX.Element => {
       case key?.ENTER:
       case 13:
         e.preventDefault();
-        handleSelect();
+        if (helpFocused) { openHelp(); } else { handleSelect(); }
         break;
       case key?.RETURN:
       case 461:
       case 10009:
         e.preventDefault();
-        handleBack();
+        if (helpFocused) { setHelpFocused(false); } else { handleBack(); }
         break;
     }
   });
@@ -273,7 +284,7 @@ export const Favorites = (): JSX.Element => {
       </div>
 
       {/* Sidebar */}
-      <Sidebar activePage="favorites" isFocused={isFocused} getFocusClasses={getFocusClasses} />
+      <Sidebar activePage="favorites" isFocused={helpFocused ? () => false : isFocused} getFocusClasses={getFocusClasses} isHelpFocused={helpFocused} />
     </>
   );
 };

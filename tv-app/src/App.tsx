@@ -16,6 +16,7 @@ import { NetworkStatusProvider, useNetworkStatus } from "@/contexts/NetworkStatu
 import { AppLifecycleProvider } from "@/contexts/AppLifecycleContext";
 import { FocusRouterProvider } from "@/contexts/FocusRouterContext";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
+import { HelpProvider } from "@/contexts/HelpContext";
 import { GlobalPlayer } from "@/components/GlobalPlayer";
 import { useLocalization } from "@/contexts/LocalizationContext";
 import NotFound from "@/pages/not-found";
@@ -133,6 +134,7 @@ function Router() {
 function App() {
   return (
     <AccessibilityProvider>
+      <HelpProvider>
       <QueryClientProvider client={queryClient}>
         <LocalizationProvider>
           <NetworkStatusProvider>
@@ -161,6 +163,7 @@ function App() {
           </NetworkStatusProvider>
         </LocalizationProvider>
       </QueryClientProvider>
+      </HelpProvider>
     </AccessibilityProvider>
   );
 }

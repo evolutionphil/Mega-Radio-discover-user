@@ -5,6 +5,7 @@ import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { useSleepTimer } from "@/contexts/SleepTimerContext";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Sidebar } from "@/components/Sidebar";
+import { useHelp } from "@/contexts/HelpContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCast } from "@/contexts/CastContext";
 import { assetPath } from "@/lib/assetPath";
@@ -170,6 +171,8 @@ export const Settings = (): JSX.Element => {
   const { isAuthenticated, user, logout } = useAuth();
   const { isConnected } = useCast();
 
+  const { openHelp } = useHelp();
+  const [helpFocused, setHelpFocused] = useState(false);
   const [focusSection, setFocusSection] = useState<'sidebar' | 'categories' | 'options'>('categories');
   const [sidebarIndex, setSidebarIndex] = useState(5);
   const [categoryIndex, setCategoryIndex] = useState(0);
@@ -322,6 +325,7 @@ export const Settings = (): JSX.Element => {
 
     if (isReturn) {
       e.preventDefault();
+      if (helpFocused) { setHelpFocused(false); return; }
       if (focusSection === 'options') {
         setFocusSection('categories');
       } else if (focusSection === 'categories') {
@@ -333,8 +337,15 @@ export const Settings = (): JSX.Element => {
     }
 
     if (focusSection === 'sidebar') {
+      // Help button focus mode
+      if (helpFocused) {
+        if (isUp) { e.preventDefault(); setHelpFocused(false); }
+        else if (isEnter) { e.preventDefault(); openHelp(); }
+        else if (isRight) { e.preventDefault(); setHelpFocused(false); setFocusSection('categories'); }
+        return;
+      }
       if (isUp) { e.preventDefault(); setSidebarIndex(prev => Math.max(0, prev - 1)); }
-      else if (isDown) { e.preventDefault(); setSidebarIndex(prev => Math.min(5, prev + 1)); }
+      else if (isDown) { e.preventDefault(); if (sidebarIndex < 5) { setSidebarIndex(prev => prev + 1); } else { setHelpFocused(true); } }
       else if (isRight) { e.preventDefault(); setFocusSection('categories'); }
       else if (isEnter) { e.preventDefault(); setLocation(sidebarRoutes[sidebarIndex]); }
       return;
@@ -744,7 +755,7 @@ export const Settings = (): JSX.Element => {
         </div>
       </div>
 
-      <Sidebar activePage="settings" isFocused={isFocused} getFocusClasses={getFocusClasses} />
+      <Sidebar activePage="settings" isFocused={helpFocused ? () => false : isFocused} getFocusClasses={getFocusClasses} isHelpFocused={helpFocused} />
 
       <p className="absolute font-['Ubuntu',Helvetica] font-bold leading-normal left-[236px] not-italic text-[36px] text-white top-[64px] z-10" data-testid="text-settings-title">
         {t('settings') || 'Settings'}

@@ -12,6 +12,7 @@ import { useFocusManager, getFocusClasses } from "@/hooks/useFocusManager";
 import { usePageKeyHandler } from "@/contexts/FocusRouterContext";
 import { Sidebar } from "@/components/Sidebar";
 import { assetPath } from "@/lib/assetPath";
+import { useHelp } from "@/contexts/HelpContext";
 
 export const Genres = (): JSX.Element => {
   const { selectedCountry, selectedCountryCode, selectedCountryFlag, setCountry } = useCountry();
@@ -20,6 +21,8 @@ export const Genres = (): JSX.Element => {
   const [, setLocation] = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
+  const [helpFocused, setHelpFocused] = useState(false);
+  const { openHelp } = useHelp();
   
 
   const { data: genresData } = useQuery({
@@ -79,9 +82,17 @@ export const Genres = (): JSX.Element => {
     const current = focusIndex;
     let newIndex = current;
 
+    // Help button focus mode
+    if (helpFocused) {
+      if (direction === 'UP') { setHelpFocused(false); }
+      else if (direction === 'RIGHT') { setHelpFocused(false); setFocusIndex(6); }
+      return;
+    }
+
     if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
+        if (current < 5) newIndex = current + 1;
+        else { setHelpFocused(true); return; }
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
@@ -248,13 +259,13 @@ export const Genres = (): JSX.Element => {
       case key?.ENTER:
       case 13:
         e.preventDefault();
-        handleSelect();
+        if (helpFocused) { openHelp(); } else { handleSelect(); }
         break;
       case key?.RETURN:
       case 461:
       case 10009:
         e.preventDefault();
-        handleBack();
+        if (helpFocused) { setHelpFocused(false); } else { handleBack(); }
         break;
     }
   });
@@ -378,7 +389,7 @@ export const Genres = (): JSX.Element => {
       />
 
       {/* Left Sidebar Menu - FIXED */}
-      <Sidebar activePage="genres" isFocused={isFocused} getFocusClasses={getFocusClasses} />
+      <Sidebar activePage="genres" isFocused={helpFocused ? () => false : isFocused} getFocusClasses={getFocusClasses} isHelpFocused={helpFocused} />
 
       {/* Scrollable Content Area - Only this part scrolls, edges hidden behind sidebar/header */}
       <div

@@ -18,6 +18,7 @@ import { recommendationService } from "@/services/recommendationService";
 import { Sidebar } from "@/components/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { assetPath } from "@/lib/assetPath";
+import { useHelp } from "@/contexts/HelpContext";
 
 export const DiscoverNoUser = (): JSX.Element => {
   const { t } = useLocalization();
@@ -31,6 +32,8 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
   const [exitModalFocusIndex, setExitModalFocusIndex] = useState(0);
   const [showHeader, setShowHeader] = useState(true);
+  const [helpFocused, setHelpFocused] = useState(false);
+  const { openHelp } = useHelp();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const genreScrollRef = useRef<HTMLDivElement>(null);
   const recentScrollRef = useRef<HTMLDivElement>(null);
@@ -262,10 +265,21 @@ export const DiscoverNoUser = (): JSX.Element => {
     const current = focusIndex;
     let newIndex = current;
 
-    // Sidebar section (0-4) - 5 items
+    // Help button focus mode
+    if (helpFocused) {
+      if (direction === 'UP') { setHelpFocused(false); }
+      else if (direction === 'RIGHT') {
+        setHelpFocused(false);
+        if (recentCount > 0) { setFocusIndex(recentStart); } else if (forYouCount > 0) { setFocusIndex(forYouStart); } else { setFocusIndex(genresStart); }
+      }
+      return;
+    }
+
+    // Sidebar section (0-5)
     if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        newIndex = current < 5 ? current + 1 : current;
+        if (current < 5) newIndex = current + 1;
+        else { setHelpFocused(true); return; }
       } else if (direction === 'UP') {
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
@@ -605,7 +619,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         break;
       case key?.ENTER:
       case 13:
-        handleSelect();
+        if (helpFocused) { openHelp(); } else { handleSelect(); }
         break;
       case key?.PAGE_DOWN:
       case 34:
@@ -626,7 +640,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       case 461:
       case 10009:
         e.preventDefault();
-        handleBack();
+        if (helpFocused) { setHelpFocused(false); } else { handleBack(); }
         break;
     }
   });
@@ -1040,7 +1054,7 @@ export const DiscoverNoUser = (): JSX.Element => {
       </div>
 
       {/* Fixed Left Sidebar */}
-      <Sidebar activePage="discover" isFocused={isFocused} getFocusClasses={getFocusClasses} />
+      <Sidebar activePage="discover" isFocused={helpFocused ? () => false : isFocused} getFocusClasses={getFocusClasses} isHelpFocused={helpFocused} />
 
       {/* Scrollable Content Area - Moves to top when header hides */}
       <div 
