@@ -131,10 +131,8 @@ function HelpModal() {
         </div>
         <div style={{ marginTop: '36px', textAlign: 'center' }}>
           <button
-            tabIndex={0}
-            autoFocus
+            tabIndex={-1}
             onClick={closeHelp}
-            onKeyDown={function(e: any) { if (e.key === 'Enter' || e.keyCode === 13 || e.keyCode === 27 || e.keyCode === 461 || e.keyCode === 10009) { closeHelp(); } }}
             style={{ fontFamily: "'Ubuntu', Helvetica, sans-serif", fontSize: '22px', fontWeight: 600, color: '#ffffff', backgroundColor: 'rgba(255,65,153,0.3)', border: '2px solid rgba(255,65,153,0.5)', borderRadius: '12px', padding: '12px 48px', cursor: 'pointer', outline: 'none' }}
             data-testid="button-help-close"
           >

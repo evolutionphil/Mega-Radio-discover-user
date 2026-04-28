@@ -650,6 +650,7 @@ export const DiscoverNoUser = (): JSX.Element => {
         break;
       case key?.ENTER:
       case 13:
+        e.preventDefault();
         if (helpFocusedRef.current) { openHelp(); } else { handleSelect(); }
         break;
       case key?.PAGE_DOWN:

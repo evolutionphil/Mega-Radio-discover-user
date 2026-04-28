@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { resolveStationImageUrl } from "@/lib/imageUtils";
 import { useFavorites } from "@/contexts/FavoritesContext";
 import { useLocalization } from "@/contexts/LocalizationContext";
