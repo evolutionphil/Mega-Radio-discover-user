@@ -33,6 +33,7 @@ export const DiscoverNoUser = (): JSX.Element => {
   const [exitModalFocusIndex, setExitModalFocusIndex] = useState(0);
   const [showHeader, setShowHeader] = useState(true);
   const [helpFocused, setHelpFocused] = useState(false);
+  const [isCountryHeaderFocused, setIsCountryHeaderFocused] = useState(false);
   const { openHelp } = useHelp();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const genreScrollRef = useRef<HTMLDivElement>(null);
@@ -275,12 +276,25 @@ export const DiscoverNoUser = (): JSX.Element => {
       return;
     }
 
+    // Header CountryTrigger focus mode (index 5 reached from content area UP)
+    if (isCountryHeaderFocused) {
+      if (direction === 'DOWN') {
+        setIsCountryHeaderFocused(false);
+        if (recentCount > 0) { setFocusIndex(recentStart); } else if (forYouCount > 0) { setFocusIndex(forYouStart); } else { setFocusIndex(genresStart); }
+      } else if (direction === 'LEFT') {
+        setIsCountryHeaderFocused(false);
+        setFocusIndex(0);
+      }
+      return;
+    }
+
     // Sidebar section (0-5)
     if (current >= 0 && current <= 5) {
       if (direction === 'DOWN') {
-        if (current < 5) newIndex = current + 1;
+        if (current < 5) { setIsCountryHeaderFocused(false); newIndex = current + 1; }
         else { setHelpFocused(true); return; }
       } else if (direction === 'UP') {
+        setIsCountryHeaderFocused(false);
         newIndex = current > 0 ? current - 1 : current;
       } else if (direction === 'RIGHT') {
         if (current === 0 || current === 1) {
@@ -330,7 +344,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           scrollRecentIntoView(col + 1);
         }
       } else if (direction === 'UP') {
-        newIndex = 5;
+        setIsCountryHeaderFocused(true); newIndex = 5;
       } else if (direction === 'DOWN') {
         if (forYouCount > 0) {
           newIndex = forYouStart;
@@ -362,7 +376,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           newIndex = recentStart + Math.min(col, recentCount - 1);
           scrollRecentIntoView(Math.min(col, recentCount - 1));
         } else {
-          newIndex = 5;
+          setIsCountryHeaderFocused(true); newIndex = 5;
         }
       } else if (direction === 'DOWN') {
         newIndex = genresStart;
@@ -393,7 +407,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           newIndex = recentStart + Math.min(col, recentCount - 1);
           scrollRecentIntoView(Math.min(col, recentCount - 1));
         } else {
-          newIndex = 5;
+          setIsCountryHeaderFocused(true); newIndex = 5;
         }
       } else if (direction === 'DOWN') {
         newIndex = popularStationsStart + Math.min(col, Math.min(6, popularStations.length - 1));
@@ -479,10 +493,14 @@ export const DiscoverNoUser = (): JSX.Element => {
     cols: 1,
     initialIndex: 0,
     onSelect: (index) => {
-      // Sidebar navigation (0-5) - 6 items (index 4 = country selector opens modal)
+      // Sidebar navigation (0-5) - 6 items
+      // index 4 = Country sidebar (opens modal), index 5 = Settings OR header CountryTrigger
       if (index >= 0 && index <= 5) {
         if (index === 4) {
           setIsCountrySelectorOpen(true);
+        } else if (index === 5 && isCountryHeaderFocused) {
+          // User is on the header CountryTrigger button, navigate to country page
+          window.location.hash = '#/country-select';
         } else {
           var route = sidebarRoutes[index];
           window.location.hash = '#' + route;
@@ -1012,7 +1030,7 @@ export const DiscoverNoUser = (): JSX.Element => {
           selectedCountry={selectedCountry}
           selectedCountryCode={selectedCountryCode}
           onClick={() => setIsCountrySelectorOpen(true)}
-          focusClasses={getFocusClasses(isFocused(5))}
+          focusClasses={getFocusClasses(isCountryHeaderFocused)}
           className="absolute left-[1453px] top-[67px] pointer-events-auto"
         />
 
