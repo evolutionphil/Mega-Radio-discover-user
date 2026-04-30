@@ -55,7 +55,26 @@ design-spec/
 │       ├── fallback-station.png             (Default station artwork — RadioPlaying / GlobalPlayer / Cards)
 │       └── fallback-favicon.svg             (Vector duplicate of station fallback)
 │
-├── source-extracts/                     ← Verbatim TSX/CSS/TS source companion
+├── full-source/                         ← FULL TV APP SOURCE CODE (137 files, 5.3 MB)
+│   │                                       Use this for deep analysis (Emergent / AI codegen / QA).
+│   ├── src/                                 (All React TSX/TS — pages, contexts, components, hooks, services, utils)
+│   ├── images/                              (All raw bundled assets — same as /assets/)
+│   ├── css/                                 (Production CSS bundles)
+│   ├── js/                                  (Production JS bundles + polyfills)
+│   ├── webOSTVjs-1.2.0/                     (LG webOS SDK)
+│   ├── _server/                             (Express backend: index.ts, routes.ts, vite.ts — stream-proxy, stream-resolve)
+│   ├── _root-configs/                       (Root package.json, vite.config.ts, tsconfig.json, tailwind.config.ts, postcss.config.js)
+│   ├── config.xml                           (Tizen application manifest)
+│   ├── index.html / index-dev.html / index.production.html / index.template.html
+│   ├── vite.config.tv.ts                    (Dev server + stream-proxy / stream-check / stream-resolve endpoints)
+│   ├── tailwind.config.cjs / postcss.config.js / tsconfig.json
+│   ├── appinfo.json                         (LG webOS appinfo)
+│   ├── build-samsung-tv.sh / build-lg-webos.sh    (Production build scripts)
+│   ├── BACKEND_OPTIMIZATION_GUIDE.md
+│   ├── TEST_LOCALIZATION.md
+│   └── TRANSLATION_KEYS_MAPPING.md
+│
+├── source-extracts/                     ← Hand-curated subset of full-source (for quick reading)
 │   ├── App.tsx
 │   ├── index.css                            (Full root CSS with all keyframes)
 │   ├── tailwind.config.cjs
