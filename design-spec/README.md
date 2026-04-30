@@ -24,7 +24,12 @@ design-spec/
 │   ├── 14-country-select.jpg
 │   └── 17-radio-playing-empty.jpg
 │
-├── assets/                              ← ALL design assets bundled (3.8 MB)
+├── assets/                              ← ALL design assets bundled (4.0 MB)
+│   ├── onboarding-screens/               (Splash + 4 guides + login screenshots — for visual reference)
+│   │   ├── 01-splash.jpg
+│   │   ├── 02-guide-1.jpg ... 05-guide-4.jpg
+│   │   └── 06-login.jpg
+│   ├── screen-references/                (All 15 reference screenshots @ 1920×1080 — duplicated here for convenience)
 │   ├── logos/                            (5 files: brand "M", logos, app icons)
 │   │   ├── path-8.svg                       (Brand "M" pink mark — used in Splash, Sidebar, Ambient, GlobalPlayer)
 │   │   ├── logo.png                         (1024×1024 PNG launcher logo)
