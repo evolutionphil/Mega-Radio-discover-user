@@ -12,3 +12,69 @@ id = "u1H-dBGmbr_3G0ze_t0gf"
 uri = "file://builds/RadioMega-LG-webOS.tar.gz"
 type = "unspecified"
 title = "Radio Mega — LG webOS TV (clean build)"
+
+[[outputs]]
+id = "RfP8bjUdfxArEwrLAONyQ"
+uri = "file://design-spec/RADIO_MEGA_DESIGN_SPEC.md"
+type = "text"
+title = "Radio Mega — Apple TV / Android TV Design Spec (full document)"
+
+[[outputs]]
+id = "FWNlfaE7REQVsjWJd-4KN"
+uri = "file://design-spec.tar.gz"
+type = "unspecified"
+title = "Tasarım Spesifikasyonu + Ekran Görüntüleri (download paketi)"
+
+[[outputs]]
+id = "L5I0YXkUM2nKHqLwYVawn"
+uri = "file://design-spec/screenshots/01-discover.jpg"
+type = "image"
+title = "Ekran 01 — Discover"
+
+[[outputs]]
+id = "jZqeHf0RLJyWMlI6rGzBo"
+uri = "file://design-spec/screenshots/02-genres.jpg"
+type = "image"
+title = "Ekran 02 — Genres"
+
+[[outputs]]
+id = "ygSVhO-akFSvIvSIw0iFE"
+uri = "file://design-spec/screenshots/03-search.jpg"
+type = "image"
+title = "Ekran 03 — Search"
+
+[[outputs]]
+id = "i7RIgGDDd9WRHjVvIt35L"
+uri = "file://design-spec/screenshots/04-favorites.jpg"
+type = "image"
+title = "Ekran 04 — Favorites"
+
+[[outputs]]
+id = "dlsy4rGnG75mcGtNoTjaY"
+uri = "file://design-spec/screenshots/05-settings.jpg"
+type = "image"
+title = "Ekran 05 — Settings"
+
+[[outputs]]
+id = "8whMPapLrAVedwYzOf3nC"
+uri = "file://design-spec/screenshots/06-country.jpg"
+type = "image"
+title = "Ekran 06 — Country Select"
+
+[[outputs]]
+id = "pFP_ULxJEnKGz6xKjxqEj"
+uri = "file://design-spec/screenshots/07-genre-list.jpg"
+type = "image"
+title = "Ekran 07 — GenreList"
+
+[[outputs]]
+id = "eywAPdz33Nn9wjOfgRMEl"
+uri = "file://design-spec/screenshots/08-login.jpg"
+type = "image"
+title = "Ekran 08 — Login (TV Code)"
+
+[[outputs]]
+id = "u_GS0iAqzFjR_5nAHNiMt"
+uri = "file://design-spec/screenshots/09-guide.jpg"
+type = "image"
+title = "Ekran 09 — Onboarding Guide"
