@@ -78,3 +78,21 @@ id = "u_GS0iAqzFjR_5nAHNiMt"
 uri = "file://design-spec/screenshots/09-guide.jpg"
 type = "image"
 title = "Ekran 09 — Onboarding Guide"
+
+[[outputs]]
+id = "2DQVXOn4X1JADgRkId8CH"
+uri = "file://RadioMega_DesignSpec_V2_complete.zip"
+type = "unspecified"
+title = "Radio Mega TV — V2 Design Spec (Tüm asset + kod + ekran görüntüleri)"
+
+[[outputs]]
+id = "_DD9B2iIUQVTdygn_Hmhg"
+uri = "file://design-spec/RADIO_MEGA_DESIGN_SPEC_V2.md"
+type = "text"
+title = "V2 Design Spec — Ana Doküman (~3000 satır)"
+
+[[outputs]]
+id = "VRGRRHFjL56Zs06W7qDgh"
+uri = "file://design-spec/README.md"
+type = "text"
+title = "Paket İçeriği — README"
