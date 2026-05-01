@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "slide-01-cover",
+    "position": 1,
+    "filepath": "src/pages/slides/Slide01Cover.tsx",
+    "title": "Cover — Radio Mega TV",
+    "description": "Hero cover slide with brand identity",
+    "speakerNotes": "Open with the big vision: radio, reimagined for the Smart TV era."
+  },
+  {
+    "id": "slide-02-problem",
+    "position": 2,
+    "filepath": "src/pages/slides/Slide02Problem.tsx",
+    "title": "The Problem",
+    "description": "Radio has no home on the world's most-used screen",
+    "speakerNotes": "TV is the dominant screen in 2.5B households. Radio has no native, high-quality presence there."
+  },
+  {
+    "id": "slide-03-solution",
+    "position": 3,
+    "filepath": "src/pages/slides/Slide03Solution.tsx",
+    "title": "The Solution",
+    "description": "Radio Mega brings world radio to every Smart TV",
+    "speakerNotes": "We built a premium radio streaming app purpose-built for the TV remote, not a phone port."
+  },
+  {
+    "id": "slide-04-product",
+    "position": 4,
+    "filepath": "src/pages/slides/Slide04Product.tsx",
+    "title": "The Product",
+    "description": "Feature walkthrough of the Radio Mega TV experience",
+    "speakerNotes": "Walk through the key UX pillars: remote navigation, ambient mode, device-code login, cross-device sync."
+  },
+  {
+    "id": "slide-05-market",
+    "position": 5,
+    "filepath": "src/pages/slides/Slide05Market.tsx",
+    "title": "Market Opportunity",
+    "description": "$18B global online radio market with 2.5B Smart TVs",
+    "speakerNotes": "The TAM is enormous. Smart TV installs are forecast at 3.4B by 2028. Radio is the killer app nobody has shipped yet."
+  },
+  {
+    "id": "slide-06-business-model",
+    "position": 6,
+    "filepath": "src/pages/slides/Slide06BusinessModel.tsx",
+    "title": "Business Model",
+    "description": "Four revenue streams: subscriptions, ads, B2B, station partners",
+    "speakerNotes": "Diversified model protects us. Premium subscription is the anchor; B2B is the growth multiplier."
+  },
+  {
+    "id": "slide-07-revenue",
+    "position": 7,
+    "filepath": "src/pages/slides/Slide07Revenue.tsx",
+    "title": "Revenue Projections",
+    "description": "Path to $10M ARR by Year 3",
+    "speakerNotes": "$820K Y1, $3.4M Y2, $10.1M Y3. 72% gross margin target. Conservative assumptions available in data room."
+  },
+  {
+    "id": "slide-08-tech-stack",
+    "position": 8,
+    "filepath": "src/pages/slides/Slide08TechStack.tsx",
+    "title": "Technology Stack",
+    "description": "Purpose-built for every screen — React, Tizen, webOS, Node.js",
+    "speakerNotes": "We own the full stack. TV SDKs are notoriously difficult — our in-house expertise is a genuine moat."
+  },
+  {
+    "id": "slide-09-platforms",
+    "position": 9,
+    "filepath": "src/pages/slides/Slide09Platforms.tsx",
+    "title": "Global Reach",
+    "description": "238 countries, 50 languages, 5 TV platforms",
+    "speakerNotes": "Samsung and LG are live now. Apple TV and Android TV are in active development. Fire TV by Q4."
+  },
+  {
+    "id": "slide-10-competition",
+    "position": 10,
+    "filepath": "src/pages/slides/Slide10Competition.tsx",
+    "title": "Competitive Landscape",
+    "description": "No direct competitor owns the TV screen for radio",
+    "speakerNotes": "TuneIn has a TV presence but no proper remote navigation. iHeart and Spotify don't. We are the only premium offering."
+  },
+  {
+    "id": "slide-11-traction",
+    "position": 11,
+    "filepath": "src/pages/slides/Slide11Traction.tsx",
+    "title": "Traction",
+    "description": "Two live platforms, 50K stations, 238 countries, 50 languages",
+    "speakerNotes": "We shipped. This is not a concept — it is in the Samsung Smart Hub and LG Content Store today."
+  },
+  {
+    "id": "slide-12-unit-economics",
+    "position": 12,
+    "filepath": "src/pages/slides/Slide12UnitEconomics.tsx",
+    "title": "Unit Economics",
+    "description": "$1.80 CAC, $38 LTV, 21x ratio — 72% 30-day retention",
+    "speakerNotes": "TV app stores have organic discovery. Our CAC is extremely low. LTV is driven by radio's habitual listening behavior."
+  },
+  {
+    "id": "slide-13-branding",
+    "position": 13,
+    "filepath": "src/pages/slides/Slide13Branding.tsx",
+    "title": "Brand Identity",
+    "description": "Premium media brand — logo, color palette, typography",
+    "speakerNotes": "Radio Mega is a brand, not a utility. That matters for both consumer premium pricing and OEM pre-install deals."
+  },
+  {
+    "id": "slide-14-team",
+    "position": 14,
+    "filepath": "src/pages/slides/Slide14Team.tsx",
+    "title": "Team",
+    "description": "Founders and advisors behind Radio Mega",
+    "speakerNotes": "We are hiring senior TV engineers and a Head of Partnerships. This raise funds those hires."
+  },
+  {
+    "id": "slide-15-roadmap",
+    "position": 15,
+    "filepath": "src/pages/slides/Slide15Roadmap.tsx",
+    "title": "Roadmap",
+    "description": "12-month plan: Apple TV, Android TV, premium, B2B, Series A",
+    "speakerNotes": "Q2 done. Q3 is Apple TV and first B2B pilot. Q4 monetization live. H1 2026 is Series A territory."
+  },
+  {
+    "id": "slide-16-use-of-funds",
+    "position": 16,
+    "filepath": "src/pages/slides/Slide16UseOfFunds.tsx",
+    "title": "Use of Funds",
+    "description": "$2.5M seed: engineering 40%, sales 25%, marketing 20%, ops 10%, reserve 5%",
+    "speakerNotes": "40% to ship remaining platforms. 25% to close OEM pre-install deals. 20% UA to hit subscriber targets."
+  },
+  {
+    "id": "slide-17-financials",
+    "position": 17,
+    "filepath": "src/pages/slides/Slide17Financials.tsx",
+    "title": "Financial Summary",
+    "description": "3-year P&L: $820K → $4.3M → $11.2M revenue",
+    "speakerNotes": "Break-even Q2 2028. Full model in data room. Happy to walk through assumptions."
+  },
+  {
+    "id": "slide-18-close",
+    "position": 18,
+    "filepath": "src/pages/slides/Slide18Close.tsx",
+    "title": "Join Us",
+    "description": "Closing call to action — $2.5M seed, invest@themegaradio.com",
+    "speakerNotes": "Radio for the television era. Two platforms live. $2.5M seed. Let's talk."
+  }
+]
