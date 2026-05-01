@@ -1,0 +1,31 @@
+kind = "slides"
+previewPath = "/radio-mega-pitch-deck/"
+title = "Radio Mega — Investor Pitch Deck"
+version = "1.0.0"
+id = "artifacts/radio-mega-pitch-deck"
+router = "path"
+
+[[integratedSkills]]
+name = "slides"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/radio-mega-pitch-deck/" ]
+localPort = 18118
+
+[services.development]
+run = "pnpm --filter @workspace/radio-mega-pitch-deck run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/radio-mega-pitch-deck", "run", "build" ]
+publicDir = "artifacts/radio-mega-pitch-deck/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18118"
+BASE_PATH = "/radio-mega-pitch-deck/"
