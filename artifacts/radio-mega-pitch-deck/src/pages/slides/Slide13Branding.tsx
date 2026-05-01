@@ -66,7 +66,7 @@ export default function Slide13Branding() {
                 <div style={{ width: "5vw", height: "3.5vh", background: "#0e0e0e", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "0.5vw" }} />
                 <div>
                   <div style={{ fontSize: "1.5vw", fontWeight: 600, color: "#ffffff" }}>Background Dark</div>
-                  <div style={{ fontSize: "1.2vw", color: "rgba(255,255,255,0.35)" }}>#0D0D12</div>
+                  <div style={{ fontSize: "1.2vw", color: "rgba(255,255,255,0.35)" }}>#0E0E0E</div>
                 </div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "1.5vw" }}>
