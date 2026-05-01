@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Radio Mega TV"
+version = "1.0.0"
+id = "artifacts/tv-app"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21274
+
+[services.development]
+run = "pnpm --filter @workspace/tv-app run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/tv-app", "run", "build" ]
+publicDir = "artifacts/tv-app/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21274"
+BASE_PATH = "/"

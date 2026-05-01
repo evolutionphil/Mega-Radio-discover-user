@@ -1,0 +1,611 @@
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761732305008.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 40, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761732305008.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761732305008.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 13, totalItems: 334, cols: 1, row: 13, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761732305008.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761732305008.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761732305008.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 14, totalItems: 334, cols: 1, row: 14, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761732305008.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761732305008.js:105 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761732305008.js:120 [DiscoverNoUser] ENTER key pressed - calling handleSelect()
+index-1761732305008.js:120 [useFocusManager] ✅ Select pressed: {focusIndex: 14, totalItems: 334, hasHandler: true}
+index-1761732305008.js:120 [DiscoverNoUser] Saving navigation state (Popular): {currentPage: '/discover-no-user', focusIndex: 14}
+index-1761732305008.js:105 [NavigationContext] Setting navigation state: {page: '/discover-no-user', focusIndex: 14}
+index-1761732305008.js:105 [GlobalPlayer] Playing station: Power POP URL: https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8
+tv-audio-player.js?v=1761229987899:35 [Samsung Player] Current state: NONE
+tv-audio-player.js?v=1761229987899:54 [Samsung Player] Opening URL: https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8
+ripple.js:1 webapis.avplay.open called,url= https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8
+ripple.js:1 ***support hls****************, url is https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8
+ripple.js:1 webapis.avplay.setListener called
+ripple.js:1 Note: if the callback you set hasn't been called ever, maybe html5 <vido> tag doesn't support relevant event.
+ripple.js:1 webapis.avplay.setListener Key:onbufferingstart
+ripple.js:1 webapis.avplay.setListener Key:onbufferingcomplete
+ripple.js:1 webapis.avplay.setListener Key:onstreamcompleted
+ripple.js:1 webapis.avplay.setListener Key:oncurrentplaytime
+ripple.js:1 webapis.avplay.setListener Key:onerror
+ripple.js:1 webapis.avplay.prepareAsync called
+index-1761732305008.js:105 [Analytics] Event: {action: 'play_station', category: 'engagement', label: 'Power POP (Türkiye)', value: 1}
+index-1761732305008.js:105 [Analytics] Event: {action: 'play_genre', category: 'engagement', label: '0', value: 1}
+index-1761732305008.js:105 [GlobalPlayer] Saved last played station to localStorage
+index-1761732305008.js:105 [RecentlyPlayed] Station added: Power POP
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: false, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🔍 Parsing station ID from URL
+index-1761732305008.js:120 [RadioPlaying] 📍 Wouter location: /radio-playing
+index-1761732305008.js:120 [RadioPlaying] 📍 window.location.search: ?station=68a8c485bd66579311ab34bd
+index-1761732305008.js:120 [RadioPlaying] 📍 window.location.hash: #/radio-playing
+index-1761732305008.js:120 [RadioPlaying] 📍 window.location.href: file:///C:/tizen-studio/tools/sec-tv-simulator/appLauncher/app/lJoKY533ah/index.html?station=68a8c485bd66579311ab34bd#/radio-playing
+index-1761732305008.js:120 [RadioPlaying] 📍 Full URL breakdown: {protocol: 'file:', host: '', pathname: '/C:/tizen-studio/tools/sec-tv-simulator/appLauncher/app/lJoKY533ah/index.html', search: '?station=68a8c485bd66579311ab34bd', hash: '#/radio-playing'}
+index-1761732305008.js:120 [RadioPlaying] 🔎 Trying window.location.search: ?station=68a8c485bd66579311ab34bd
+index-1761732305008.js:120 [RadioPlaying] ✅ Found station ID in pre-hash params: 68a8c485bd66579311ab34bd
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: true, hasStationData: false, hasStation: false, …}
+index-1761732305008.js:120 [RadioPlaying] 🔄 LOADING STATE - Showing loading screen
+index-1761732305008.js:120 [RadioPlaying] 🔄 isLoadingStation: true
+index-1761732305008.js:120 [RadioPlaying] 🔄 hasStation: false
+index-1761732305008.js:120 [RadioPlaying] 🔄 stationId: 68a8c485bd66579311ab34bd
+index-1761732305008.js:120 [RadioPlaying] 🔄 stationData: undefined
+index-1761732305008.js:120 [RadioPlaying] 🔄 Station is: NULL
+index-1761732305008.js:105 [FocusRouter] Unregistering handler for route: /discover-no-user
+index-1761732305008.js:120 [RadioPlaying] Station history updated: ['68a8c485bd66579311ab34bd']
+index-1761732305008.js:120 [RadioPlaying] 📡 Fetching station details for stationId: 68a8c485bd66579311ab34bd
+index-1761732305008.js:93 [API] getPopularStations URL: https://themegaradio.com/api/stations?search=&limit=100&sort=votes&tv=1
+index-1761732305008.js:105 [FocusRouter] Registering handler for route: /radio-playing
+index-1761732305008.js:120 [useFocusManager] 🎯 Initialized with: {totalItems: 10, cols: 1, rows: undefined, initialIndex: 8, enableWrapping: false}
+index-1761732305008.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 8, totalItems: 10, cols: 1, row: 8, col: 0}
+index-1761732305008.js:120 [RadioPlaying] 🎵 Auto-play effect triggered
+index-1761732305008.js:120 [RadioPlaying] 🎵 Has station: false
+index-1761732305008.js:120 [RadioPlaying] ⏳ Waiting for station data to auto-play
+tv-audio-player.js?v=1761229987899:60 Buffering started
+index-1761732305008.js:105 [GlobalPlayer] Audio buffering
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: false, isBuffering: true}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: true, hasStationData: false, hasStation: false, …}
+index-1761732305008.js:120 [RadioPlaying] 🔄 LOADING STATE - Showing loading screen
+index-1761732305008.js:120 [RadioPlaying] 🔄 isLoadingStation: true
+index-1761732305008.js:120 [RadioPlaying] 🔄 hasStation: false
+index-1761732305008.js:120 [RadioPlaying] 🔄 stationId: 68a8c485bd66579311ab34bd
+index-1761732305008.js:120 [RadioPlaying] 🔄 stationData: undefined
+index-1761732305008.js:120 [RadioPlaying] 🔄 Station is: NULL
+ripple.js:1 webapis.avplay.play called
+index-1761732305008.js:105 [GlobalPlayer] Audio playing
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: true, hasStationData: false, hasStation: false, …}
+index-1761732305008.js:120 [RadioPlaying] 🔄 LOADING STATE - Showing loading screen
+index-1761732305008.js:120 [RadioPlaying] 🔄 isLoadingStation: true
+index-1761732305008.js:120 [RadioPlaying] 🔄 hasStation: false
+index-1761732305008.js:120 [RadioPlaying] 🔄 stationId: 68a8c485bd66579311ab34bd
+index-1761732305008.js:120 [RadioPlaying] 🔄 stationData: undefined
+index-1761732305008.js:120 [RadioPlaying] 🔄 Station is: NULL
+index-1761732305008.js:105 [Screensaver] Failed to request screen lock: TypeError: Cannot read properties of undefined (reading 'request')
+    at index-1761732305008.js:105:7251
+    at Ji (index-1761732305008.js:40:24280)
+    at vr (index-1761732305008.js:40:42341)
+    at index-1761732305008.js:40:40684
+    at j (index-1761732305008.js:25:1578)
+    at MessagePort.H (index-1761732305008.js:25:1944)
+(anonymous) @ index-1761732305008.js:105
+Ji @ index-1761732305008.js:40
+vr @ index-1761732305008.js:40
+(anonymous) @ index-1761732305008.js:40
+j @ index-1761732305008.js:25
+H @ index-1761732305008.js:25
+index-1761732305008.js:105 [Analytics] Event: {action: 'error', category: 'technical', label: 'screensaverPrevention: Failed to request screen lock', value: 1}
+index-1761732305008.js:120 [RadioPlaying] ✅ Station details fetched successfully
+index-1761732305008.js:120 [RadioPlaying] 📻 Station name: Power POP
+index-1761732305008.js:120 [RadioPlaying] 📻 Station URL: https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8
+index-1761732305008.js:120 [RadioPlaying] 📻 Station data: {_id: '68a8c485bd66579311ab34bd', stationuuid: 'fb1fd397-78fd-11ea-8a3b-52543be04c81', name: 'Power POP', url: 'https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8', urlResolved: 'https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8', …}
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761732305008.js:93 [API] getWorkingStations: Converting Türkiye -> Türkiye
+index-1761732305008.js:93 [API] getWorkingStations URL: https://themegaradio.com/api/stations?search=&limit=100&country=T%C3%BCrkiye&tv=1
+index-1761732305008.js:120 [RadioPlaying] 🎵 Auto-play effect triggered
+index-1761732305008.js:120 [RadioPlaying] 🎵 Has station: true
+index-1761732305008.js:120 [RadioPlaying] 🎵 Station data available: {name: 'Power POP', id: '68a8c485bd66579311ab34bd', url: 'https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8', codec: 'UNKNOWN', bitrate: 0}
+index-1761732305008.js:120 [RadioPlaying] ▶️ Starting auto-play via global player
+index-1761732305008.js:105 [GlobalPlayer] Playing station: Power POP URL: https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8
+tv-audio-player.js?v=1761229987899:35 [Samsung Player] Current state: PLAYING
+tv-audio-player.js?v=1761229987899:39 [Samsung Player] Closing player to reset state
+ripple.js:1 webapis.avplay.stop called
+ripple.js:1 webapis.avplay.close called
+tv-audio-player.js?v=1761229987899:54 [Samsung Player] Opening URL: https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8
+ripple.js:1 webapis.avplay.open called,url= https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8
+ripple.js:1 ***support hls****************, url is https://listen.powerapp.com.tr/powerpop/128/chunks.m3u8
+ripple.js:1 webapis.avplay.setListener called
+ripple.js:1 Note: if the callback you set hasn't been called ever, maybe html5 <vido> tag doesn't support relevant event.
+ripple.js:1 webapis.avplay.setListener Key:onbufferingstart
+ripple.js:1 webapis.avplay.setListener Key:onbufferingcomplete
+ripple.js:1 webapis.avplay.setListener Key:onstreamcompleted
+ripple.js:1 webapis.avplay.setListener Key:oncurrentplaytime
+ripple.js:1 webapis.avplay.setListener Key:onerror
+ripple.js:1 webapis.avplay.prepareAsync called
+index-1761732305008.js:105 [Analytics] Event: {action: 'play_station', category: 'engagement', label: 'Power POP (Türkiye)', value: 1}
+index-1761732305008.js:105 [Analytics] Event: {action: 'play_genre', category: 'engagement', label: '0', value: 1}
+index-1761732305008.js:105 [GlobalPlayer] Saved last played station to localStorage
+index-1761732305008.js:105 [RecentlyPlayed] Station added: Power POP
+index-1761732305008.js:120 [RadioPlaying] ✅ Auto-play initiated
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+ripple.js:1 Uncaught (in promise) DOMException: The play() request was interrupted by a call to pause(). https://goo.gl/LdLk22
+close @ ripple.js:1
+setTimeout (async)
+r @ index-1761732305008.js:48
+i @ index-1761732305008.js:48
+batch @ index-1761732305008.js:48
+Rn @ index-1761732305008.js:48
+setData @ index-1761732305008.js:48
+onSuccess @ index-1761732305008.js:48
+p @ index-1761732305008.js:48
+Promise.then (async)
+w @ index-1761732305008.js:48
+start @ index-1761732305008.js:48
+fetch @ index-1761732305008.js:48
+ti @ index-1761732305008.js:48
+onSubscribe @ index-1761732305008.js:48
+subscribe @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+fp @ index-1761732305008.js:38
+Ji @ index-1761732305008.js:40
+vr @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+hashchange (async)
+Ey @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+onSelect @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:105
+r @ index-1761732305008.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+tv-audio-player.js?v=1761229987899:60 Buffering started
+index-1761732305008.js:105 [GlobalPlayer] Audio buffering
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: true}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+ripple.js:1 webapis.avplay.play called
+index-1761732305008.js:105 [GlobalPlayer] Audio playing
+ripple.js:1 webapis.avplay.play called
+index-1761732305008.js:105 [GlobalPlayer] Audio playing
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+tv-audio-player.js?v=1761229987899:64 Buffering complete
+index-1761732305008.js:105 [GlobalPlayer] Audio ready
+index-1761732305008.js:93 [API] getPopularStations fetched: 100 stations
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761732305008.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 8, totalItems: 31, cols: 1, row: 8, col: 0}
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761732305008.js:93 [API] Response status: 200
+index-1761732305008.js:93 [API] Working stations fetched: 100 (offset: 0)
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+index-1761732305008.js:120 [RadioPlaying] Similar stations updated: 100 stations
+index-1761732305008.js:120 [RadioPlaying] First 3 similar: (3) ['X Radio', 'Tarkan', 'Semerkand Radyo']
+index-1761732305008.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 8, totalItems: 51, cols: 1, row: 8, col: 0}
+index-1761732305008.js:120 [RadioPlaying] 🎬 Component mounting/rendering
+index-1761732305008.js:120 [RadioPlaying] 🎮 Global player state: {isPlaying: true, isBuffering: false}
+index-1761732305008.js:120 [RadioPlaying] 🎯 Query state: {stationId: '68a8c485bd66579311ab34bd', enabled: true, isLoadingStation: false, hasStationData: true, hasStation: true, …}
+radyo-nida.jpg:1 
+        
+        
+       GET https://radyonida.com.tr/dist/img/radyo-nida.jpg?2 404 (Not Found)
+Image (async)
+sh @ index-1761732305008.js:40
+rh @ index-1761732305008.js:40
+A0 @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+setTimeout (async)
+r @ index-1761732305008.js:48
+i @ index-1761732305008.js:48
+batch @ index-1761732305008.js:48
+Rn @ index-1761732305008.js:48
+setData @ index-1761732305008.js:48
+onSuccess @ index-1761732305008.js:48
+p @ index-1761732305008.js:48
+Promise.then (async)
+w @ index-1761732305008.js:48
+start @ index-1761732305008.js:48
+fetch @ index-1761732305008.js:48
+ti @ index-1761732305008.js:48
+setOptions @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+Ji @ index-1761732305008.js:40
+vr @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+setTimeout (async)
+r @ index-1761732305008.js:48
+i @ index-1761732305008.js:48
+batch @ index-1761732305008.js:48
+Rn @ index-1761732305008.js:48
+setData @ index-1761732305008.js:48
+onSuccess @ index-1761732305008.js:48
+p @ index-1761732305008.js:48
+Promise.then (async)
+w @ index-1761732305008.js:48
+start @ index-1761732305008.js:48
+fetch @ index-1761732305008.js:48
+ti @ index-1761732305008.js:48
+onSubscribe @ index-1761732305008.js:48
+subscribe @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+fp @ index-1761732305008.js:38
+Ji @ index-1761732305008.js:40
+vr @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+hashchange (async)
+Ey @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+onSelect @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:105
+r @ index-1761732305008.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+radyo-viva.png:1 
+        
+        
+       GET https://demo.radyoviva.com.tr/wp-content/uploads/2020/06/radyo-viva.png net::ERR_CERT_COMMON_NAME_INVALID
+Image (async)
+sh @ index-1761732305008.js:40
+rh @ index-1761732305008.js:40
+A0 @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+setTimeout (async)
+r @ index-1761732305008.js:48
+i @ index-1761732305008.js:48
+batch @ index-1761732305008.js:48
+Rn @ index-1761732305008.js:48
+setData @ index-1761732305008.js:48
+onSuccess @ index-1761732305008.js:48
+p @ index-1761732305008.js:48
+Promise.then (async)
+w @ index-1761732305008.js:48
+start @ index-1761732305008.js:48
+fetch @ index-1761732305008.js:48
+ti @ index-1761732305008.js:48
+setOptions @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+Ji @ index-1761732305008.js:40
+vr @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+setTimeout (async)
+r @ index-1761732305008.js:48
+i @ index-1761732305008.js:48
+batch @ index-1761732305008.js:48
+Rn @ index-1761732305008.js:48
+setData @ index-1761732305008.js:48
+onSuccess @ index-1761732305008.js:48
+p @ index-1761732305008.js:48
+Promise.then (async)
+w @ index-1761732305008.js:48
+start @ index-1761732305008.js:48
+fetch @ index-1761732305008.js:48
+ti @ index-1761732305008.js:48
+onSubscribe @ index-1761732305008.js:48
+subscribe @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+fp @ index-1761732305008.js:38
+Ji @ index-1761732305008.js:40
+vr @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+hashchange (async)
+Ey @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+onSelect @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:105
+r @ index-1761732305008.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+favicon:1 
+        
+        
+       GET https://www.sezenradyo.com/favicon 404 (Not Found)
+Image (async)
+sh @ index-1761732305008.js:40
+rh @ index-1761732305008.js:40
+A0 @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+setTimeout (async)
+r @ index-1761732305008.js:48
+i @ index-1761732305008.js:48
+batch @ index-1761732305008.js:48
+Rn @ index-1761732305008.js:48
+setData @ index-1761732305008.js:48
+onSuccess @ index-1761732305008.js:48
+p @ index-1761732305008.js:48
+Promise.then (async)
+w @ index-1761732305008.js:48
+start @ index-1761732305008.js:48
+fetch @ index-1761732305008.js:48
+ti @ index-1761732305008.js:48
+setOptions @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+Ji @ index-1761732305008.js:40
+vr @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+setTimeout (async)
+r @ index-1761732305008.js:48
+i @ index-1761732305008.js:48
+batch @ index-1761732305008.js:48
+Rn @ index-1761732305008.js:48
+setData @ index-1761732305008.js:48
+onSuccess @ index-1761732305008.js:48
+p @ index-1761732305008.js:48
+Promise.then (async)
+w @ index-1761732305008.js:48
+start @ index-1761732305008.js:48
+fetch @ index-1761732305008.js:48
+ti @ index-1761732305008.js:48
+onSubscribe @ index-1761732305008.js:48
+subscribe @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+fp @ index-1761732305008.js:38
+Ji @ index-1761732305008.js:40
+vr @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+hashchange (async)
+Ey @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+onSelect @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:105
+r @ index-1761732305008.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+ripple.js:1 webapis.avplay.close called
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 10009, keyName: 'RETURN', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761732305008.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 10009, hash: '#/radio-playing', currentRoute: '/radio-playing', routeWithoutQuery: '/radio-playing', matchedRoute: '/radio-playing', …}
+index-1761732305008.js:105 [FocusRouter] ✅ Dispatching to: /radio-playing
+index-1761732305008.js:120 [RadioPlaying] 🔙 RETURN key pressed - navigating to: /discover-no-user
+index-1761732305008.js:120 [CountrySelector] Mapping countries, API returned: 0
+index-1761732305008.js:120 [CountrySelector] Mapped countries: 0
+index-1761732305008.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1761732305008.js:120 [CountrySelector] Filtered count: 1
+index-1761732305008.js:105 [FocusRouter] Unregistering handler for route: /radio-playing
+index-1761732305008.js:120 [CountrySelector] Fetching countries...
+index-1761732305008.js:93 [API] getAllCountries: https://themegaradio.com/api/countries?tv=1
+index-1761732305008.js:120 [useFocusManager] 🎯 Initialized with: {totalItems: 234, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-1761732305008.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 234, cols: 1, row: 0, col: 0}
+index-1761732305008.js:105 [FocusRouter] Registering handler for route: /discover-no-user
+index-1761732305008.js:120 [DiscoverNoUser] Country changed: Türkiye, initial fetch: 100 stations
+index-1761732305008.js:120 [DiscoverNoUser] Initial load: 100 stations, hasMore=true, nextOffset=100
+index-1761732305008.js:105 [NavigationContext] Popping navigation state (returning and clearing): {previousPage: '/discover-no-user', returnFocusIndex: 14}
+index-1761732305008.js:120 [DiscoverNoUser] 🎯 Restoring focus to index: 14
+android-icon-192x192.png:1 
+        
+        
+       GET https://i.karnavalcdn.com/media/site_media/icons/android-icon-192x192.png 503 (Service Unavailable)
+Image (async)
+sh @ index-1761732305008.js:40
+rh @ index-1761732305008.js:40
+A0 @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ch @ index-1761732305008.js:40
+$n @ index-1761732305008.js:38
+(anonymous) @ index-1761732305008.js:40
+hashchange (async)
+Ey @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:48
+(anonymous) @ index-1761732305008.js:120
+(anonymous) @ index-1761732305008.js:105
+r @ index-1761732305008.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+l @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+radyo-nida.jpg:1 
+        
+        
+       GET https://radyonida.com.tr/dist/img/radyo-nida.jpg?2 404 (Not Found)
+Image (async)
+sh @ index-1761732305008.js:40
+rh @ index-1761732305008.js:40
+A0 @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ah @ index-1761732305008.js:40
+j @ index-1761732305008.js:25
+H @ index-1761732305008.js:25
+index-1761732305008.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 14, totalItems: 334, cols: 1, row: 14, col: 0}
+1190220421012000.png:1 
+        
+        
+       GET https://www.turkuradyo.info/public/default/images/upload/1190220421012000.png 404 (Not Found)
+Image (async)
+sh @ index-1761732305008.js:40
+rh @ index-1761732305008.js:40
+A0 @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ah @ index-1761732305008.js:40
+j @ index-1761732305008.js:25
+H @ index-1761732305008.js:25
+radyo-viva.png:1 
+        
+        
+       GET https://demo.radyoviva.com.tr/wp-content/uploads/2020/06/radyo-viva.png net::ERR_CERT_COMMON_NAME_INVALID
+Image (async)
+sh @ index-1761732305008.js:40
+rh @ index-1761732305008.js:40
+A0 @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ah @ index-1761732305008.js:40
+j @ index-1761732305008.js:25
+H @ index-1761732305008.js:25
+image:1 
+        
+        
+       GET https://www.slowturk.com.tr/_next/image?url=https%3A%2F%2Fassets.blupoint.io%2Fimg%2F85%2F330x175%2F6410d8c4310c17000763c62b&w=256&q=75 404 (Not Found)
+Image (async)
+sh @ index-1761732305008.js:40
+rh @ index-1761732305008.js:40
+A0 @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ah @ index-1761732305008.js:40
+j @ index-1761732305008.js:25
+H @ index-1761732305008.js:25
+index-1761732305008.js:93 [API] getAllCountries response: 200
+index-1761732305008.js:93 [API] getAllCountries raw data type: array
+index-1761732305008.js:93 [API] getAllCountries fetched: 238
+index-1761732305008.js:120 [CountrySelector] Countries received: 238
+index-1761732305008.js:120 [CountrySelector] Mapping countries, API returned: 238
+index-1761732305008.js:120 [CountrySelector] Mapped countries: 238
+index-1761732305008.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1761732305008.js:120 [CountrySelector] Filtered count: 239
+favicon:1 
+        
+        
+       GET https://www.sezenradyo.com/favicon 404 (Not Found)
+Image (async)
+sh @ index-1761732305008.js:40
+rh @ index-1761732305008.js:40
+A0 @ index-1761732305008.js:40
+D0 @ index-1761732305008.js:40
+ko @ index-1761732305008.js:40
+ah @ index-1761732305008.js:40
+j @ index-1761732305008.js:25
+H @ index-1761732305008.js:25
+index-1761732305008.js:120 [AutoPlay] Skipping auto-play (already played this session)

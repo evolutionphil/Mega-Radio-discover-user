@@ -1,0 +1,203 @@
+index-1770636997996.js:76 
+        
+        
+       GET https://themegaradio.com/api/countries 500 (Internal Server Error)
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+Eb @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+queryFn @ index-1770636997996.js:76
+fetchFn @ index-1770636997996.js:46
+d @ index-1770636997996.js:46
+start @ index-1770636997996.js:46
+fetch @ index-1770636997996.js:46
+se @ index-1770636997996.js:46
+onSubscribe @ index-1770636997996.js:46
+subscribe @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+Is @ index-1770636997996.js:37
+du @ index-1770636997996.js:37
+Ed @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+_d @ index-1770636997996.js:37
+pd @ index-1770636997996.js:37
+Zl @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+hashchange (async)
+ip @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+n @ index-1770636997996.js:76
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:1
+index-1770636997996.js:76 
+        
+        
+       GET https://themegaradio.com/api/stations?search=&limit=12&country=Germany&sort=votes 500 (Internal Server Error)
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+yb @ index-1770636997996.js:76
+queryFn @ index-1770636997996.js:76
+fetchFn @ index-1770636997996.js:46
+d @ index-1770636997996.js:46
+start @ index-1770636997996.js:46
+fetch @ index-1770636997996.js:46
+se @ index-1770636997996.js:46
+onSubscribe @ index-1770636997996.js:46
+subscribe @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+Is @ index-1770636997996.js:37
+du @ index-1770636997996.js:37
+Ed @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+_d @ index-1770636997996.js:37
+pd @ index-1770636997996.js:37
+Zl @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+hashchange (async)
+ip @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+n @ index-1770636997996.js:76
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:1
+index-1770636997996.js:76 
+        
+        
+       GET https://themegaradio.com/api/genres?filters=%7B%22countrycode%22%3A%22Germany%22%2C%22searchQuery%22%3A%22%22%7D&limit=500 500 (Internal Server Error)
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+jb @ index-1770636997996.js:76
+queryFn @ index-1770636997996.js:76
+fetchFn @ index-1770636997996.js:46
+d @ index-1770636997996.js:46
+start @ index-1770636997996.js:46
+fetch @ index-1770636997996.js:46
+se @ index-1770636997996.js:46
+onSubscribe @ index-1770636997996.js:46
+subscribe @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+Is @ index-1770636997996.js:37
+du @ index-1770636997996.js:37
+Ed @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+_d @ index-1770636997996.js:37
+pd @ index-1770636997996.js:37
+Zl @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+hashchange (async)
+ip @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+n @ index-1770636997996.js:76
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:1
+index-1770636997996.js:76 
+        
+        
+       GET https://themegaradio.com/api/stations?search=&limit=100&country=Germany 500 (Internal Server Error)
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+wb @ index-1770636997996.js:76
+queryFn @ index-1770636997996.js:76
+fetchFn @ index-1770636997996.js:46
+d @ index-1770636997996.js:46
+start @ index-1770636997996.js:46
+fetch @ index-1770636997996.js:46
+se @ index-1770636997996.js:46
+onSubscribe @ index-1770636997996.js:46
+subscribe @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+Is @ index-1770636997996.js:37
+du @ index-1770636997996.js:37
+Ed @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+_d @ index-1770636997996.js:37
+pd @ index-1770636997996.js:37
+Zl @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+hashchange (async)
+ip @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+n @ index-1770636997996.js:76
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:1
+index-1770636997996.js:76 
+        
+        
+       GET https://themegaradio.com/api/stations?search=&limit=12&country=Germany&sort=votes 500 (Internal Server Error)
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+yb @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+Vy.prefetchCountryData.wb.limit @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+prefetchCountryData @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+du @ index-1770636997996.js:37
+Ed @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+_d @ index-1770636997996.js:37
+pd @ index-1770636997996.js:37
+Zl @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+hashchange (async)
+ip @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+n @ index-1770636997996.js:76
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:1
+index-1770636997996.js:76 
+        
+        
+       GET https://themegaradio.com/api/stations?search=&limit=100&country=Germany 500 (Internal Server Error)
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+wb @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:1
+J @ index-1770636997996.js:1
+prefetchCountryData @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+du @ index-1770636997996.js:37
+Ed @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+_d @ index-1770636997996.js:37
+pd @ index-1770636997996.js:37
+Zl @ index-1770636997996.js:37
+(anonymous) @ index-1770636997996.js:37
+hashchange (async)
+ip @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:46
+(anonymous) @ index-1770636997996.js:76
+(anonymous) @ index-1770636997996.js:76
+n @ index-1770636997996.js:76
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:1
+index-1770636997996.js:76 
+        
+        
+       GET https://themegaradio.com/api/genres?filters=%7B%22countrycode%22%3A%22Germany%22%2C%22searchQuery%22%3A%22%22%7D&limit=500 500 (Internal Server Error)

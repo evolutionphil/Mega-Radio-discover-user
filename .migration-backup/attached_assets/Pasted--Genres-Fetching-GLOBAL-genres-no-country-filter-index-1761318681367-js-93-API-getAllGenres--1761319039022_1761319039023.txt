@@ -1,0 +1,142 @@
+[Genres] 🌍 Fetching GLOBAL genres (no country filter)
+index-1761318681367.js:93 [API] getAllGenres URL: https://themegaradio.com/api/genres?limit=500&tv=1
+index-1761318681367.js:120 [useFocusManager] 🎯 Initialized with: {totalItems: 7, cols: 1, rows: undefined, initialIndex: 7, enableWrapping: false}
+index-1761318681367.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 7, totalItems: 7, cols: 1, row: 7, col: 0}
+index-1761318681367.js:120 [useFocusManager] 🔄 Focus reset due to totalItems change: {oldTotal: 7, newTotal: 7, oldIndex: 7, newIndex: 6}
+index-1761318681367.js:105 [FocusRouter] Registering handler for route: /genres
+index-1761318681367.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 6, totalItems: 7, cols: 1, row: 6, col: 0}
+global.png:1 
+        
+        
+       GET https://flagcdn.com/w40/global.png 404 (Not Found)
+Image (async)
+Zp @ index-1761318681367.js:40
+Xp @ index-1761318681367.js:40
+E0 @ index-1761318681367.js:40
+R0 @ index-1761318681367.js:40
+Co @ index-1761318681367.js:40
+nh @ index-1761318681367.js:40
+zn @ index-1761318681367.js:38
+(anonymous) @ index-1761318681367.js:40
+hashchange (async)
+my @ index-1761318681367.js:48
+(anonymous) @ index-1761318681367.js:48
+(anonymous) @ index-1761318681367.js:48
+onSelect @ index-1761318681367.js:120
+(anonymous) @ index-1761318681367.js:120
+(anonymous) @ index-1761318681367.js:120
+(anonymous) @ index-1761318681367.js:105
+r @ index-1761318681367.js:105
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+index-1761318681367.js:93 [API] getAllGenres response: 200
+index-1761318681367.js:93 [API] getAllGenres fetched: 500 genres (total: 10858 )
+index-1761318681367.js:120 [Genres] ✅ Fetched 500 genres globally
+index-1761318681367.js:120 [Genres] Loaded genres from API: 500
+index-1761318681367.js:120 [Genres] First mount - jumping to first popular genre at index 7
+index-1761318681367.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 6, totalItems: 515, cols: 1, row: 6, col: 0}
+index-1761318681367.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 7, totalItems: 515, cols: 1, row: 7, col: 0}
+www.yaantv.com:17802/hd_f111/ccw/website/2024-06-30/417822323/3F3A31A575ED259AB5DBB9EB46098153.png:1 
+        
+        
+       GET https://www.yaantv.com:17802/hd_f111/ccw/website/2024-06-30/417822323/3F3A31A575ED259AB5DBB9EB46098153.png net::ERR_CONNECTION_TIMED_OUT
+Image (async)
+Zp @ index-1761318681367.js:40
+Xp @ index-1761318681367.js:40
+E0 @ index-1761318681367.js:40
+R0 @ index-1761318681367.js:40
+Co @ index-1761318681367.js:40
+th @ index-1761318681367.js:40
+C @ index-1761318681367.js:25
+G @ index-1761318681367.js:25
+www.qqhrnews.com/assets/img/favicon.ico:1 
+        
+        
+       GET https://www.qqhrnews.com/assets/img/favicon.ico net::ERR_CONNECTION_TIMED_OUT
+Image (async)
+Zp @ index-1761318681367.js:40
+Xp @ index-1761318681367.js:40
+E0 @ index-1761318681367.js:40
+R0 @ index-1761318681367.js:40
+Co @ index-1761318681367.js:40
+th @ index-1761318681367.js:40
+C @ index-1761318681367.js:25
+G @ index-1761318681367.js:25
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761318681367.js:105 [FocusRouter] ⌨️  Key event: {keyCode: 13, hash: '#/genres', currentRoute: '/genres', routeWithoutQuery: '/genres', matchedRoute: '/genres', …}
+index-1761318681367.js:105 [FocusRouter] ✅ Dispatching to: /genres
+index-1761318681367.js:120 [useFocusManager] ✅ Select pressed: {focusIndex: 7, totalItems: 515, hasHandler: true}
+index-1761318681367.js:120 🎯 [GENRE NAV DEBUG] Popular genre clicked: {index: 7, genreIndex: 0, genreName: 'Pop', genreSlug: 'pop', targetURL: '/genre-list/pop'}
+index-1761318681367.js:120 🎯 [GENRE NAV DEBUG] Setting location to: /genre-list/pop
+index-1761318681367.js:120 🎯 [GENRE NAV DEBUG] setLocation called successfully
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] ===== COMPONENT RENDER =====
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Raw location from wouter: /genre-list/pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Window hash: #/genre-list/pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Path parts: (3) ['', 'genre-list', 'pop']
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Extracted genre slug: pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Selected country: GLOBAL
+index-1761318681367.js:120 [GenreList] URL genre slug: pop | Display name: Pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Creating query with: {queryKey: Array(3), genreSlug: 'pop', selectedCountryCode: 'GLOBAL'}
+index-1761318681367.js:120 🎯 [GENRE LIST DEBUG] Focus setup: {totalItems: 5, displayedStations: 0, stationsStart: 5, willStartAt: 5}
+index-1761318681367.js:120 [CountrySelector] Mapping countries, API returned: 238
+index-1761318681367.js:120 [CountrySelector] Mapped countries: 238
+index-1761318681367.js:120 [CountrySelector] Filtering countries - searchQuery: 
+index-1761318681367.js:120 [CountrySelector] Total stations across all countries: 0
+index-1761318681367.js:120 [CountrySelector] Filtered count: 239
+index-1761318681367.js:105 [FocusRouter] Unregistering handler for route: /genres
+index-1761318681367.js:120 🎵 [GENRE LIST DEBUG] Query function executing...
+index-1761318681367.js:120 🎵 [GENRE LIST DEBUG] Fetching INITIAL 100 stations for genre: pop country: GLOBAL offset=0
+index-1761318681367.js:93 [API] getStationsByGenre: Converting GLOBAL -> GLOBAL
+index-1761318681367.js:93 [API] getStationsByGenre URL: https://themegaradio.com/api/genres/pop/stations?limit=100&country=GLOBAL&sort=votes&tv=1
+index-1761318681367.js:120 🔄 [GENRE LIST DEBUG] Genre effect triggered
+index-1761318681367.js:120 🔄 [GENRE LIST DEBUG] Current genre slug: pop
+index-1761318681367.js:120 🔄 [GENRE LIST DEBUG] Calling refetch...
+index-1761318681367.js:120 📊 [GENRE LIST DEBUG] Data effect triggered
+index-1761318681367.js:120 📊 [GENRE LIST DEBUG] Stations data: 0
+index-1761318681367.js:120 📊 [GENRE LIST DEBUG] Current genre: pop
+index-1761318681367.js:120 📊 [GENRE LIST DEBUG] Current country: GLOBAL
+index-1761318681367.js:120 [useFocusManager] 🎯 Initialized with: {totalItems: 5, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-1761318681367.js:120 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 5, cols: 1, row: 0, col: 0}
+index-1761318681367.js:105 [FocusRouter] Registering handler for route: /genre-list
+index-1761318681367.js:93 [API] getStationsByGenre fetched: 0 stations (offset: 0)
+index-1761318681367.js:120 ✅ [GENRE LIST DEBUG] Fetched 0 stations
+index-1761318681367.js:120 ✅ [GENRE LIST DEBUG] First 3 stations: []
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] ===== COMPONENT RENDER =====
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Raw location from wouter: /genre-list/pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Window hash: #/genre-list/pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Path parts: (3) ['', 'genre-list', 'pop']
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Extracted genre slug: pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Selected country: GLOBAL
+index-1761318681367.js:120 [GenreList] URL genre slug: pop | Display name: Pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Creating query with: {queryKey: Array(3), genreSlug: 'pop', selectedCountryCode: 'GLOBAL'}
+index-1761318681367.js:120 🎯 [GENRE LIST DEBUG] Focus setup: {totalItems: 5, displayedStations: 0, stationsStart: 5, willStartAt: 5}
+index-1761318681367.js:120 📊 [GENRE LIST DEBUG] Data effect triggered
+index-1761318681367.js:120 📊 [GENRE LIST DEBUG] Stations data: 0
+index-1761318681367.js:120 📊 [GENRE LIST DEBUG] Current genre: pop
+index-1761318681367.js:120 📊 [GENRE LIST DEBUG] Current country: GLOBAL
+index-1761318681367.js:120 ⚠️ [GENRE LIST DEBUG] No stations found for this genre/country
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] ===== COMPONENT RENDER =====
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Raw location from wouter: /genre-list/pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Window hash: #/genre-list/pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Path parts: (3) ['', 'genre-list', 'pop']
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Extracted genre slug: pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Selected country: GLOBAL
+index-1761318681367.js:120 [GenreList] URL genre slug: pop | Display name: Pop
+index-1761318681367.js:120 🔍 [GENRE LIST DEBUG] Creating query with: {queryKey: Array(3), genreSlug: 'pop', selectedCountryCode: 'GLOBAL'}genreSlug: "pop"queryKey: (3) ['genre-stations/initial', 'pop', 'GLOBAL']selectedCountryCode: "GLOBAL"[[Prototype]]: Object
+index-1761318681367.js:120 🎯 [GENRE LIST DEBUG] Focus setup: {totalItems: 5, displayedStations: 0, stationsStart: 5, willStartAt: 5}displayedStations: 0stationsStart: 5totalItems: 5willStartAt: 5[[Prototype]]: Object

@@ -1,0 +1,79 @@
+﻿
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1771322917452.js:90 
+ POST https://themegaradio.com/api/auth/tv/code 400
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1771322917452.js:90 
+ POST https://themegaradio.com/api/auth/tv/code 400
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1771322917452.js:33 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Farabesk-fm_11aadb0b%2Flogo-256.webp 400
+%2Fstation-logos%2Fv…b%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Fvirgin-radio-trkiye-1_11ab7b7b%2Flogo-256.webp 400
+%2Fstation-logos%2Fn…a%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Fntv-radyo-1_11ab2dfa%2Flogo-256.webp 400
+%2Fstation-logos%2Fb…6%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Fbest-fm-2_11aae076%2Flogo-256.webp 400
+%2Fstation-logos%2Fr…1%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Fradio-5-turkey_11ab3901%2Flogo-256.webp 400
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-audio-player.js?v=1761229987899:35 [Samsung Player] Current state: NONE
+tv-audio-player.js?v=1761229987899:54 [Samsung Player] Opening URL: http://46.20.7.126/;stream.mp3
+VM37:1 avplay_api.js adding listener for ID: [1]
+VM37:1 Entered AVPlayManager.prepareAsync()
+flagcdn.com/w40/xx.png:1 
+ GET https://flagcdn.com/w40/xx.png 404
+%2Fstation-logos%2Fb…6%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Fbest-fm-2_11aae076%2Flogo-256.webp 400
+%2Fstation-logos%2Fb…6%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Fbest-fm-2_11aae076%2Flogo-256.webp 400
+%2Fstation-logos%2Fn…a%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Fntv-radyo-1_11ab2dfa%2Flogo-256.webp 400
+%2Fstation-logos%2Fa…b%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Farabesk-fm_11aadb0b%2Flogo-256.webp 400
+%2Fstation-logos%2Fr…1%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Fradio-5-turkey_11ab3901%2Flogo-256.webp 400
+%2Fstation-logos%2Fv…b%2Flogo-256.webp:1 
+ GET https://themegaradio.com/api/image/%2Fstation-logos%2Fvirgin-radio-trkiye-1_11ab7b7b%2Flogo-256.webp 400
+www.franceinter.fr/favicon.ico:1 
+ GET https://www.franceinter.fr/favicon.ico 410
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 39, keyName: 'RIGHT', key: 'ArrowRight', code: 'ArrowRight', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: 
+{keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-audio-player.js?v=1761229987899:35 [Samsung Player] Current state: NONE
+tv-audio-player.js?v=1761229987899:54 [Samsung Player] Opening URL: http://37.247.98.8/listen.pls?sid=30
+VM37:1 avplay_api.js adding listener for ID: [2]
+VM37:1 Entered AVPlayManager.prepareAsync()

@@ -1,0 +1,61 @@
+lockdown-install.js:1 SES Removing unpermitted intrinsics
+polyfills.js:5 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js:290 [Polyfills] All polyfills loaded successfully
+platform-detect.js:18 Platform detected: Web Browser
+tv-spatial-navigation.js:5 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+(index):45 CSS CHECK: Starting verification...
+(index):48 CSS Links found: Object
+(index):59 TAILWIND CSS: Working correctly!
+chunk-HHM7JWV7.js?v=8cd24f35:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+tv-spatial-navigation.js:264 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js:216 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js:220 [TV Remote Keys] Key handler attached, waiting for React...
+CastContext.tsx:155 [Cast] === Effect === auth=false token=no
+CastContext.tsx:161 [Cast] Not starting poll - auth=false token=no
+tv-audio-player.js:262 [WebPlayer] Initializing HTML5 audio player
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>
+www.bigrradio.com/image/favicon/apple-touch-icon.png:1  Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameOrigin
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: Object
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+favicon.ico:1  Failed to load resource: net::ERR_CONNECTION_REFUSED
+/#/discover-no-user:1  Failed to load resource: the server responded with a status of 502 (Bad Gateway)

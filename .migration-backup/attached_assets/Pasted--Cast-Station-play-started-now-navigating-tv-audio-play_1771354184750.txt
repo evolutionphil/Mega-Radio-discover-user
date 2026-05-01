@@ -1,0 +1,105 @@
+[Cast] Station play started, now navigating...
+tv-audio-player.js:339 [WebPlayer] 🎵 play() called with: /api/stream-proxy?url=http%3A%2F%2Flive.antenne.at%2Farr
+tv-audio-player.js:281 [WebPlayer] ▶️ play event fired
+GlobalPlayerContext.tsx:85 [✅ EVENT] onPlay - Stream playing successfully
+tv-audio-player.js:321 [WebPlayer] ⏳ waiting/buffering...
+GlobalPlayerContext.tsx:103 [⏳ EVENT] onBuffering - Loading stream data...
+tv-audio-player.js:334 [WebPlayer] 📥 loadstart - beginning to load: /api/stream-proxy?url=http%3A%2F%2Flive.antenne.at%2Farr
+CastContext.tsx:30 [Cast] navigateToRadioPlaying stationId=68a8c462bd66579311aaddcb
+CastContext.tsx:31 [Cast] Current hash before nav: #/discover-no-user
+CastContext.tsx:52 [Cast] Hash set to: #/radio-playing
+:3001/#/radio-playing:1 Access to image at 'https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png' from origin 'https://0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev:3001' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+useImageColors.ts:168  GET https://austrianrockradio.at/wp-content/uploads/2023/02/liferadio-150x150.png net::ERR_FAILED 200 (OK)
+(anonymous) @ useImageColors.ts:168
+commitHookEffectListMount @ chunk-HHM7JWV7.js?v=8cd24f35:16915
+commitPassiveMountOnFiber @ chunk-HHM7JWV7.js?v=8cd24f35:18156
+commitPassiveMountEffects_complete @ chunk-HHM7JWV7.js?v=8cd24f35:18129
+commitPassiveMountEffects_begin @ chunk-HHM7JWV7.js?v=8cd24f35:18119
+commitPassiveMountEffects @ chunk-HHM7JWV7.js?v=8cd24f35:18109
+flushPassiveEffectsImpl @ chunk-HHM7JWV7.js?v=8cd24f35:19490
+flushPassiveEffects @ chunk-HHM7JWV7.js?v=8cd24f35:19447
+commitRootImpl @ chunk-HHM7JWV7.js?v=8cd24f35:19416
+commitRoot @ chunk-HHM7JWV7.js?v=8cd24f35:19277
+performSyncWorkOnRoot @ chunk-HHM7JWV7.js?v=8cd24f35:18895
+flushSyncCallbacks @ chunk-HHM7JWV7.js?v=8cd24f35:9119
+(anonymous) @ chunk-HHM7JWV7.js?v=8cd24f35:18627
+hashchange
+navigateToRadioPlaying @ CastContext.tsx:51
+(anonymous) @ CastContext.tsx:85
+setTimeout
+playStationFromCast @ CastContext.tsx:85
+handleMessage @ CastContext.tsx:118
+(anonymous) @ castService.ts:178
+Promise.then
+pollForCommands @ castService.ts:157
+(anonymous) @ castService.ts:227Understand this error
+castService.ts:250  POST https://themegaradio.com/api/cast/now-playing 500 (Internal Server Error)
+sendNowPlaying @ castService.ts:250
+(anonymous) @ CastContext.tsx:165
+commitHookEffectListMount @ chunk-HHM7JWV7.js?v=8cd24f35:16915
+commitPassiveMountOnFiber @ chunk-HHM7JWV7.js?v=8cd24f35:18156
+commitPassiveMountEffects_complete @ chunk-HHM7JWV7.js?v=8cd24f35:18129
+commitPassiveMountEffects_begin @ chunk-HHM7JWV7.js?v=8cd24f35:18119
+commitPassiveMountEffects @ chunk-HHM7JWV7.js?v=8cd24f35:18109
+flushPassiveEffectsImpl @ chunk-HHM7JWV7.js?v=8cd24f35:19490
+flushPassiveEffects @ chunk-HHM7JWV7.js?v=8cd24f35:19447
+(anonymous) @ chunk-HHM7JWV7.js?v=8cd24f35:19328
+workLoop @ chunk-HHM7JWV7.js?v=8cd24f35:197
+flushWork @ chunk-HHM7JWV7.js?v=8cd24f35:176
+performWorkUntilDeadline @ chunk-HHM7JWV7.js?v=8cd24f35:384Understand this error
+castService.ts:250  POST https://themegaradio.com/api/cast/now-playing 500 (Internal Server Error)
+sendNowPlaying @ castService.ts:250
+(anonymous) @ CastContext.tsx:165
+commitHookEffectListMount @ chunk-HHM7JWV7.js?v=8cd24f35:16915
+commitPassiveMountOnFiber @ chunk-HHM7JWV7.js?v=8cd24f35:18156
+commitPassiveMountEffects_complete @ chunk-HHM7JWV7.js?v=8cd24f35:18129
+commitPassiveMountEffects_begin @ chunk-HHM7JWV7.js?v=8cd24f35:18119
+commitPassiveMountEffects @ chunk-HHM7JWV7.js?v=8cd24f35:18109
+flushPassiveEffectsImpl @ chunk-HHM7JWV7.js?v=8cd24f35:19490
+flushPassiveEffects @ chunk-HHM7JWV7.js?v=8cd24f35:19447
+commitRootImpl @ chunk-HHM7JWV7.js?v=8cd24f35:19416
+commitRoot @ chunk-HHM7JWV7.js?v=8cd24f35:19277
+performSyncWorkOnRoot @ chunk-HHM7JWV7.js?v=8cd24f35:18895
+flushSyncCallbacks @ chunk-HHM7JWV7.js?v=8cd24f35:9119
+(anonymous) @ chunk-HHM7JWV7.js?v=8cd24f35:18627
+play
+play @ tv-audio-player.js:343
+(anonymous) @ GlobalPlayerContext.tsx:347
+setTimeout
+startPlayback @ GlobalPlayerContext.tsx:345
+playStation @ GlobalPlayerContext.tsx:376
+playStationFromCast @ CastContext.tsx:80
+handleMessage @ CastContext.tsx:118
+(anonymous) @ castService.ts:178
+Promise.then
+pollForCommands @ castService.ts:157
+(anonymous) @ castService.ts:227Understand this error
+tv-audio-player.js:276 [WebPlayer] ✅ canplay - ready to play
+GlobalPlayerContext.tsx:108 [✅ EVENT] onReady - Stream ready
+tv-audio-player.js:346 [WebPlayer] ✅ play() promise resolved
+CastContext.tsx:57 [Cast] Hash verification after 500ms: #/radio-playing
+favicon.ico:1  GET https://0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev:3001/favicon.ico 404 (Not Found)Understand this error
+castService.ts:250  POST https://themegaradio.com/api/cast/now-playing 500 (Internal Server Error)
+sendNowPlaying @ castService.ts:250
+(anonymous) @ CastContext.tsx:165
+commitHookEffectListMount @ chunk-HHM7JWV7.js?v=8cd24f35:16915
+commitPassiveMountOnFiber @ chunk-HHM7JWV7.js?v=8cd24f35:18156
+commitPassiveMountEffects_complete @ chunk-HHM7JWV7.js?v=8cd24f35:18129
+commitPassiveMountEffects_begin @ chunk-HHM7JWV7.js?v=8cd24f35:18119
+commitPassiveMountEffects @ chunk-HHM7JWV7.js?v=8cd24f35:18109
+flushPassiveEffectsImpl @ chunk-HHM7JWV7.js?v=8cd24f35:19490
+flushPassiveEffects @ chunk-HHM7JWV7.js?v=8cd24f35:19447
+(anonymous) @ chunk-HHM7JWV7.js?v=8cd24f35:19328
+workLoop @ chunk-HHM7JWV7.js?v=8cd24f35:197
+flushWork @ chunk-HHM7JWV7.js?v=8cd24f35:176
+performWorkUntilDeadline @ chunk-HHM7JWV7.js?v=8cd24f35:384Understand this error
+castService.ts:139 [Cast] Poll #10 fetching...
+castService.ts:149 [Cast] Poll #10 HTTP 200
+castService.ts:158 [Cast] Poll #10 response: {"pendingCommand":null}
+castService.ts:169 [Cast] Poll #10 extracted: station=null action=none
+castService.ts:198 [Cast] Poll #10 no station or action found in response
+castService.ts:139 [Cast] Poll #11 fetching...
+castService.ts:149 [Cast] Poll #11 HTTP 200
+castService.ts:158 [Cast] Poll #11 response: {"pendingCommand":null}
+castService.ts:169 [Cast] Poll #11 extracted: station=null action=none
+castService.ts:198 [Cast] Poll #11 no station or action found in response

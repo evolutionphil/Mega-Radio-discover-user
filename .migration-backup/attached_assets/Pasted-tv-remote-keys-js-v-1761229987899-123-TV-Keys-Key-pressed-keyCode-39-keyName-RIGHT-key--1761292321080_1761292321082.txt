@@ -1,0 +1,40 @@
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761254491910.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761254491910.js:93 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761254491910.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 21, totalItems: 620, cols: 1, row: 21, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761254491910.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761254491910.js:93 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761254491910.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 22, totalItems: 620, cols: 1, row: 22, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761254491910.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761254491910.js:93 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761254491910.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 23, totalItems: 620, cols: 1, row: 23, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761254491910.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761254491910.js:93 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761254491910.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 24, totalItems: 620, cols: 1, row: 24, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761254491910.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761254491910.js:93 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761254491910.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 25, totalItems: 620, cols: 1, row: 25, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761254491910.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761254491910.js:93 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761254491910.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 26, totalItems: 620, cols: 1, row: 26, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761254491910.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761254491910.js:93 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761254491910.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 27, totalItems: 620, cols: 1, row: 27, col: 0}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 39, keyName: 'RIGHT', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761254491910.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 39, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761254491910.js:93 [FocusRouter] ✅ Dispatching to: /discover-no-user
+index-1761254491910.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 28, totalItems: 620, cols: 1, row: 28, col: 0}

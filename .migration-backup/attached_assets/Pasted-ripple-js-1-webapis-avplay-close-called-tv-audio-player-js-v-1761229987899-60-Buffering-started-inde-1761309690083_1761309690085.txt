@@ -1,0 +1,99 @@
+ripple.js:1 webapis.avplay.close called
+tv-audio-player.js?v=1761229987899:60 Buffering started
+index-1761309508602.js:93 [GlobalPlayer] Audio buffering
+tv-audio-player.js?v=1761229987899:60 Buffering started
+index-1761309508602.js:93 [GlobalPlayer] Audio buffering
+tv-audio-player.js?v=1761229987899:75 AVPlay error: Event {isTrusted: true, type: 'error', target: video#samsung_tizen_web_videoplayer, currentTarget: video#samsung_tizen_web_videoplayer, eventPhase: 2, …}
+onerror @ tv-audio-player.js?v=1761229987899:75
+error (async)
+g @ ripple.js:1
+setListener @ ripple.js:1
+play @ tv-audio-player.js?v=1761229987899:80
+f @ index-1761309508602.js:93
+onSelect @ index-1761309508602.js:108
+(anonymous) @ index-1761309508602.js:108
+(anonymous) @ index-1761309508602.js:108
+(anonymous) @ index-1761309508602.js:93
+o @ index-1761309508602.js:93
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+index-1761309508602.js:93 [GlobalPlayer] Audio error (non-critical): Event {isTrusted: true, type: 'error', target: video#samsung_tizen_web_videoplayer, currentTarget: video#samsung_tizen_web_videoplayer, eventPhase: 2, …}
+tv-audio-player.js?v=1761229987899:75 AVPlay error: Event {isTrusted: true, type: 'error', target: video#samsung_tizen_web_videoplayer, currentTarget: video#samsung_tizen_web_videoplayer, eventPhase: 2, …}
+onerror @ tv-audio-player.js?v=1761229987899:75
+error (async)
+g @ ripple.js:1
+setListener @ ripple.js:1
+play @ tv-audio-player.js?v=1761229987899:80
+f @ index-1761309508602.js:93
+onSelect @ index-1761309508602.js:108
+(anonymous) @ index-1761309508602.js:108
+(anonymous) @ index-1761309508602.js:108
+(anonymous) @ index-1761309508602.js:93
+o @ index-1761309508602.js:93
+window.handleTVKey @ tv-remote-keys.js?v=1761229987899:204
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+setTimeout (async)
+(anonymous) @ ripple.js:1
+(anonymous) @ ripple.js:1
+setTimeout (async)
+o @ ripple.js:1
+(anonymous) @ ripple.js:1
+trigger @ ripple.js:1
+a @ ripple.js:1
+handleKeyDownEvent @ ripple.js:1
+a @ ripple.js:1
+(anonymous) @ ripple.js:1
+handle @ ripple.js:1
+u @ ripple.js:1
+index-1761309508602.js:93 [GlobalPlayer] Audio error (non-critical): Event {isTrusted: true, type: 'error', target: video#samsung_tizen_web_videoplayer, currentTarget: video#samsung_tizen_web_videoplayer, eventPhase: 2, …}
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 10009, keyName: 'RETURN', key: undefined, code: undefined, platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761309508602.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 10009, hash: '#/radio-playing', currentRoute: '/radio-playing', routeWithoutQuery: '/radio-playing', matchedRoute: '/radio-playing', …}
+index-1761309508602.js:93 [FocusRouter] ✅ Dispatching to: /radio-playing
+index-1761309508602.js:108 [RadioPlaying] 🔙 RETURN key pressed - navigating to Discover
+index-1761309508602.js:108 [CountrySelector] Mapping countries, API returned: 238
+index-1761309508602.js:108 [CountrySelector] Mapped countries: 238
+index-1761309508602.js:108 [CountrySelector] Filtering countries - searchQuery: 
+index-1761309508602.js:108 [CountrySelector] Filtered count: 238
+index-1761309508602.js:93 [FocusRouter] Unregistering handler for route: /radio-playing
+index-1761309508602.js:108 [useFocusManager] 🎯 Initialized with: {totalItems: 520, cols: 1, rows: undefined, initialIndex: 0, enableWrapping: false}
+index-1761309508602.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 520, cols: 1, row: 0, col: 0}
+index-1761309508602.js:93 [FocusRouter] Registering handler for route: /discover-no-user
+index-1761309508602.js:108 [DiscoverNoUser] Country changed: Germany, initial fetch: 100 stations
+index-1761309508602.js:108 [DiscoverNoUser] Initial load: 100 stations, hasMore=true, nextOffset=100
+index-1761309508602.js:108 [useFocusManager] 👁️  Focus changed: {focusIndex: 0, totalItems: 620, cols: 1, row: 0, col: 0}
+wdrvier_logo~_v-ARDAustauschformat.jpg:1 
+        
+        
+       GET https://www1.wdr.de/radio/wdr4/wdrvier_logo~_v-ARDAustauschformat.jpg 404 (Not Found)
+Image (async)
+Yp @ index-1761309508602.js:40
+qp @ index-1761309508602.js:40
+w0 @ index-1761309508602.js:40
+N0 @ index-1761309508602.js:40
+Sr @ index-1761309508602.js:40
+Jp @ index-1761309508602.js:40
+C @ index-1761309508602.js:25
+B @ index-1761309508602.js:25
+index-1761309508602.js:108 [AutoPlay] Skipping auto-play (already played this session)
+tv-remote-keys.js?v=1761229987899:123 [TV Keys] 🎮 Key pressed: {keyCode: 17, keyName: 'UNKNOWN', key: 'Control', code: 'ControlLeft', platform: 'samsung', …}
+tv-remote-keys.js?v=1761229987899:201 [TV Keys] 📤 Dispatching to FocusRouter
+index-1761309508602.js:93 [FocusRouter] ⌨️  Key event: {keyCode: 17, hash: '#/discover-no-user', currentRoute: '/discover-no-user', routeWithoutQuery: '/discover-no-user', matchedRoute: '/discover-no-user', …}
+index-1761309508602.js:93 [FocusRouter] ✅ Dispatching to: /discover-no-user

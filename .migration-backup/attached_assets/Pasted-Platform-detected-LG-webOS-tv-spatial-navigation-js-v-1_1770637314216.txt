@@ -1,0 +1,35 @@
+Platform detected: LG webOS
+tv-spatial-navigation.js?v=1761229987899:1 [TV Spatial Nav] Script loaded and executing... v2.0 - Sidebar isolation enabled
+polyfills.js?v=1770636997996:1 [Polyfills] Loading polyfills for Samsung Tizen TV...
+polyfills.js?v=1770636997996:1 [Polyfills] All polyfills loaded successfully
+tv-spatial-navigation.js?v=1761229987899:1 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js?v=1761229987899:1 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js?v=1761229987899:1 [TV Remote Keys] Key handler attached, waiting for React...
+index.html:20 🔍 CSS CHECK: Starting verification...
+index.html:25 📄 CSS Links found: Object
+index.html:41 🎨 Tailwind Test Results: Object
+index.html:49 ✅ TAILWIND CSS: Working correctly!
+index.html:63 🎯 #root element styles: Object
+3tv-spatial-navigation.js?v=1761229987899:1 [TV Nav] Found 0 focusable elements
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: 'UP', key: 'ArrowUp', code: 'ArrowUp', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: 'UP', key: 'ArrowUp', code: 'ArrowUp', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 🎮 Key pressed: {keyCode: 38, keyName: 'UP', key: 'ArrowUp', code: 'ArrowUp', platform: 'lg', …}
+tv-remote-keys.js?v=1761229987899:1 [TV Keys] 📤 Dispatching to FocusRouter

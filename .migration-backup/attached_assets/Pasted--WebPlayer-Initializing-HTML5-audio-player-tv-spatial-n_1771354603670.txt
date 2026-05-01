@@ -1,0 +1,107 @@
+[WebPlayer] Initializing HTML5 audio player
+tv-spatial-navigation.js:264 [TV Spatial Nav] DOM ready, waiting for React...
+tv-remote-keys.js:216 [TV Remote Keys] DOM ready, initializing...
+tv-remote-keys.js:220 [TV Remote Keys] Key handler attached, waiting for React...
+tv-audio-player.js:339 [WebPlayer] 🎵 play() called with: https://orf-live.ors-shoutcast.at/fm4-q2a
+tv-audio-player.js:281 [WebPlayer] ▶️ play event fired
+tv-audio-player.js:321 [WebPlayer] ⏳ waiting/buffering...
+tv-audio-player.js:334 [WebPlayer] 📥 loadstart - beginning to load: https://orf-live.ors-shoutcast.at/fm4-q2a
+/?station=68a8c470bd66579311ab01f0#/radio-playing:1 Access to image at 'https://orf.at/favicon.ico' from origin 'https://0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+index-dev-sMBPcSct.js:105  GET https://orf.at/favicon.ico net::ERR_FAILED 200 (OK)
+(anonymous) @ index-dev-sMBPcSct.js:105
+Kl @ index-dev-sMBPcSct.js:40
+Jo @ index-dev-sMBPcSct.js:40
+(anonymous) @ index-dev-sMBPcSct.js:40
+E @ index-dev-sMBPcSct.js:25
+F @ index-dev-sMBPcSct.js:25Understand this error
+/?station=68a8c470bd66579311ab01f0#/radio-playing:1 Access to image at 'https://tubestatic.orf.at/mojo/1_3/storyserver//tube/fm4/images/touch-icon-iphone-retina.png' from origin 'https://0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.Understand this error
+index-dev-sMBPcSct.js:105  GET https://tubestatic.orf.at/mojo/1_3/storyserver//tube/fm4/images/touch-icon-iphone-retina.png net::ERR_FAILED 200 (OK)
+(anonymous) @ index-dev-sMBPcSct.js:105
+Kl @ index-dev-sMBPcSct.js:40
+Jo @ index-dev-sMBPcSct.js:40
+(anonymous) @ index-dev-sMBPcSct.js:40
+E @ index-dev-sMBPcSct.js:25
+F @ index-dev-sMBPcSct.js:25Understand this error
+tv-audio-player.js:276 [WebPlayer] ✅ canplay - ready to play
+tv-audio-player.js:346 [WebPlayer] ✅ play() promise resolved
+/favicon.ico:1  GET https://0424c733-40db-4fa9-926d-96dfd9e18b6f-00-xcdgtag63t8p.pike.replit.dev/favicon.ico 404 (Not Found)Understand this error
+index-dev-sMBPcSct.js:90  POST https://themegaradio.com/api/cast/now-playing 500 (Internal Server Error)
+sendNowPlaying @ index-dev-sMBPcSct.js:90
+(anonymous) @ index-dev-sMBPcSct.js:90
+Kl @ index-dev-sMBPcSct.js:40
+Jo @ index-dev-sMBPcSct.js:40
+(anonymous) @ index-dev-sMBPcSct.js:40
+E @ index-dev-sMBPcSct.js:25
+F @ index-dev-sMBPcSct.js:25Understand this error
+index-dev-sMBPcSct.js:90  POST https://themegaradio.com/api/cast/now-playing 500 (Internal Server Error)
+sendNowPlaying @ index-dev-sMBPcSct.js:90
+(anonymous) @ index-dev-sMBPcSct.js:90
+Kl @ index-dev-sMBPcSct.js:40
+Jo @ index-dev-sMBPcSct.js:40
+i1 @ index-dev-sMBPcSct.js:40
+no @ index-dev-sMBPcSct.js:40
+vg @ index-dev-sMBPcSct.js:40
+vr @ index-dev-sMBPcSct.js:38
+(anonymous) @ index-dev-sMBPcSct.js:40
+play
+play @ tv-audio-player.js:343
+(anonymous) @ index-dev-sMBPcSct.js:90
+setTimeout
+ee @ index-dev-sMBPcSct.js:90
+b @ index-dev-sMBPcSct.js:90
+(anonymous) @ index-dev-sMBPcSct.js:105
+Kl @ index-dev-sMBPcSct.js:40
+Jo @ index-dev-sMBPcSct.js:40
+i1 @ index-dev-sMBPcSct.js:40
+no @ index-dev-sMBPcSct.js:40
+vg @ index-dev-sMBPcSct.js:40
+vr @ index-dev-sMBPcSct.js:38
+(anonymous) @ index-dev-sMBPcSct.js:40
+setTimeout
+o @ index-dev-sMBPcSct.js:48
+l @ index-dev-sMBPcSct.js:48
+batch @ index-dev-sMBPcSct.js:48
+sr @ index-dev-sMBPcSct.js:48
+setData @ index-dev-sMBPcSct.js:48
+onSuccess @ index-dev-sMBPcSct.js:48
+d @ index-dev-sMBPcSct.js:48
+Promise.then
+w @ index-dev-sMBPcSct.js:48
+start @ index-dev-sMBPcSct.js:48
+fetch @ index-dev-sMBPcSct.js:48
+Qi @ index-dev-sMBPcSct.js:48
+onSubscribe @ index-dev-sMBPcSct.js:48
+subscribe @ index-dev-sMBPcSct.js:48
+(anonymous) @ index-dev-sMBPcSct.js:48
+bh @ index-dev-sMBPcSct.js:38
+Kl @ index-dev-sMBPcSct.js:40
+Jo @ index-dev-sMBPcSct.js:40
+i1 @ index-dev-sMBPcSct.js:40
+no @ index-dev-sMBPcSct.js:40
+vg @ index-dev-sMBPcSct.js:40
+vr @ index-dev-sMBPcSct.js:38
+(anonymous) @ index-dev-sMBPcSct.js:40
+hashchange
+S @ index-dev-sMBPcSct.js:90
+m @ index-dev-sMBPcSct.js:90
+h @ index-dev-sMBPcSct.js:90
+(anonymous) @ index-dev-sMBPcSct.js:90
+Promise.then
+y0 @ index-dev-sMBPcSct.js:90
+(anonymous) @ index-dev-sMBPcSct.js:90
+setInterval
+startPolling @ index-dev-sMBPcSct.js:90
+(anonymous) @ index-dev-sMBPcSct.js:90
+Kl @ index-dev-sMBPcSct.js:40
+Jo @ index-dev-sMBPcSct.js:40
+(anonymous) @ index-dev-sMBPcSct.js:40
+E @ index-dev-sMBPcSct.js:25
+F @ index-dev-sMBPcSct.js:25Understand this error
+index-dev-sMBPcSct.js:90  POST https://themegaradio.com/api/cast/now-playing 500 (Internal Server Error)
+sendNowPlaying @ index-dev-sMBPcSct.js:90
+(anonymous) @ index-dev-sMBPcSct.js:90
+Kl @ index-dev-sMBPcSct.js:40
+Jo @ index-dev-sMBPcSct.js:40
+(anonymous) @ index-dev-sMBPcSct.js:40
+E @ index-dev-sMBPcSct.js:25
+F @ index-dev-sMBPcSct.js:25Understand this error

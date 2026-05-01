@@ -1,0 +1,22 @@
+[TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+www.echoesofbluemars.org/images/favicon.ico:1  GET https://www.echoesofbluemars.org/images/favicon.ico net::ERR_CONNECTION_REFUSEDUnderstand this error
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 40, keyName: 'DOWN', key: 'ArrowDown', code: 'ArrowDown', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
+tv-remote-keys.js:123 [TV Keys] 🎮 Key pressed: {keyCode: 13, keyName: 'ENTER', key: 'Enter', code: 'Enter', platform: 'web', …}
+tv-remote-keys.js:201 [TV Keys] 📤 Dispatching to FocusRouter
