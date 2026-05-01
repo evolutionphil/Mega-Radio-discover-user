@@ -67,9 +67,9 @@
     "id": "slide-09-platforms",
     "position": 9,
     "filepath": "src/pages/slides/Slide09Platforms.tsx",
-    "title": "Global Reach",
-    "description": "238 countries, 50 languages, 5 TV platforms",
-    "speakerNotes": "Samsung and LG are live now. Apple TV and Android TV are in active development. Fire TV by Q4."
+    "title": "Platform Strategy",
+    "description": "TV first, then mobile companion, then web and B2B — phased expansion plan",
+    "speakerNotes": "TV is the beachhead. Mobile follows as a companion and remote. Web and B2B white-label complete the ecosystem in 2026."
   },
   {
     "id": "slide-10-competition",

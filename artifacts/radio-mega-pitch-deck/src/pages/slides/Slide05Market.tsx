@@ -1,6 +1,6 @@
 export default function Slide05Market() {
   return (
-    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0d0d12", fontFamily: "'Ubuntu', sans-serif" }}>
+    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0e0e0e", fontFamily: "'Ubuntu', sans-serif" }}>
       <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)", backgroundSize: "4vw 4vw" }} />
       <div className="absolute" style={{ bottom: "-5vh", right: "10vw", width: "28vw", height: "28vw", borderRadius: "50%", background: "#01d7fb", opacity: 0.05, filter: "blur(7vw)" }} />
 

@@ -1,6 +1,6 @@
 export default function Slide13Branding() {
   return (
-    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0d0d12", fontFamily: "'Ubuntu', sans-serif" }}>
+    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0e0e0e", fontFamily: "'Ubuntu', sans-serif" }}>
       <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)", backgroundSize: "4vw 4vw" }} />
       <div className="absolute" style={{ top: "-5vh", right: "10vw", width: "30vw", height: "30vw", borderRadius: "50%", background: "#ff4199", opacity: 0.06, filter: "blur(8vw)" }} />
       <div className="absolute" style={{ bottom: "0", left: "0", width: "20vw", height: "20vw", borderRadius: "50%", background: "#01d7fb", opacity: 0.05, filter: "blur(6vw)" }} />
@@ -63,7 +63,7 @@ export default function Slide13Branding() {
                 </div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "1.5vw" }}>
-                <div style={{ width: "5vw", height: "3.5vh", background: "#0d0d12", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "0.5vw" }} />
+                <div style={{ width: "5vw", height: "3.5vh", background: "#0e0e0e", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "0.5vw" }} />
                 <div>
                   <div style={{ fontSize: "1.5vw", fontWeight: 600, color: "#ffffff" }}>Background Dark</div>
                   <div style={{ fontSize: "1.2vw", color: "rgba(255,255,255,0.35)" }}>#0D0D12</div>

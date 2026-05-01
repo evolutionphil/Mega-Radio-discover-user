@@ -2,7 +2,7 @@ const base = import.meta.env.BASE_URL;
 
 export default function Slide01Cover() {
   return (
-    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0d0d12", fontFamily: "'Ubuntu', sans-serif" }}>
+    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0e0e0e", fontFamily: "'Ubuntu', sans-serif" }}>
       {/* Hero background image */}
       <img
         src={`${base}hero-waves.png`}

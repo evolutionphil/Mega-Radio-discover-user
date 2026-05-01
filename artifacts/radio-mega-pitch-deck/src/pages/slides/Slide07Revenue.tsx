@@ -1,6 +1,6 @@
 export default function Slide07Revenue() {
   return (
-    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0d0d12", fontFamily: "'Ubuntu', sans-serif" }}>
+    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0e0e0e", fontFamily: "'Ubuntu', sans-serif" }}>
       <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)", backgroundSize: "4vw 4vw" }} />
       <div className="absolute" style={{ top: "5vh", right: "5vw", width: "25vw", height: "25vw", borderRadius: "50%", background: "#ff4199", opacity: 0.06, filter: "blur(7vw)" }} />
 

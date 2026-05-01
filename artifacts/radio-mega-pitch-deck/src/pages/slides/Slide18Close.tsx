@@ -1,6 +1,6 @@
 export default function Slide18Close() {
   return (
-    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0d0d12", fontFamily: "'Ubuntu', sans-serif" }}>
+    <div className="relative w-screen h-screen overflow-hidden" style={{ background: "#0e0e0e", fontFamily: "'Ubuntu', sans-serif" }}>
       {/* Animated gradient background */}
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 30% 50%, rgba(255,65,153,0.12) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(1,215,251,0.07) 0%, transparent 60%)" }} />
       <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)", backgroundSize: "4vw 4vw" }} />
