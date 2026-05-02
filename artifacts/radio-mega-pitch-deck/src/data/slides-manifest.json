@@ -3,144 +3,184 @@
     "id": "slide-01-cover",
     "position": 1,
     "filepath": "src/pages/slides/Slide01Cover.tsx",
-    "title": "Cover — Radio Mega TV",
+    "title": "Cover — Radio Mega",
     "description": "Hero cover slide with brand identity",
-    "speakerNotes": "Open with the big vision: radio, reimagined for the Smart TV era."
+    "speakerNotes": "Open with the big vision: world radio, premium, on every screen people own."
   },
   {
     "id": "slide-02-problem",
     "position": 2,
     "filepath": "src/pages/slides/Slide02Problem.tsx",
     "title": "The Problem",
-    "description": "Radio has no home on the world's most-used screen",
-    "speakerNotes": "TV is the dominant screen in 2.5B households. Radio has no native, high-quality presence there."
+    "description": "Radio is fragmented, low-quality, and absent from modern living rooms",
+    "speakerNotes": "Listeners want one place for the world's radio. Today it doesn't exist."
   },
   {
     "id": "slide-03-solution",
     "position": 3,
     "filepath": "src/pages/slides/Slide03Solution.tsx",
     "title": "The Solution",
-    "description": "Radio Mega brings world radio to every Smart TV",
-    "speakerNotes": "We built a premium radio streaming app purpose-built for the TV remote, not a phone port."
+    "description": "Radio Mega — one premium app on every screen, with social and AI",
+    "speakerNotes": "We built a premium radio platform across every form factor: TV, mobile, wear, auto, desktop, web."
   },
   {
     "id": "slide-04-product",
     "position": 4,
     "filepath": "src/pages/slides/Slide04Product.tsx",
-    "title": "The Product",
-    "description": "Feature walkthrough of the Radio Mega TV experience",
-    "speakerNotes": "Walk through the key UX pillars: remote navigation, ambient mode, device-code login, cross-device sync."
+    "title": "TV Product",
+    "description": "The Smart TV experience — remote-first, ambient, cross-device",
+    "speakerNotes": "Walk through the TV UX pillars with real screenshots from the live app."
   },
   {
-    "id": "slide-05-market",
+    "id": "slide-05-mobile",
     "position": 5,
+    "filepath": "src/pages/slides/Slide05Mobile.tsx",
+    "title": "Mobile App",
+    "description": "iOS and Android — same catalog, same favorites, native players",
+    "speakerNotes": "Mobile is shipped on App Store, Google Play, Galaxy Store and Huawei AppGallery — the design is the one in the Behance reference."
+  },
+  {
+    "id": "slide-06-wear-auto-desktop",
+    "position": 6,
+    "filepath": "src/pages/slides/Slide06WearAuto.tsx",
+    "title": "Wearables · Auto · Desktop",
+    "description": "watchOS, Wear OS, CarPlay, Android Auto, macOS, Windows, Linux",
+    "speakerNotes": "Seven additional form factors shipping native. No competitor matches this surface area."
+  },
+  {
+    "id": "slide-07-universal",
+    "position": 7,
+    "filepath": "src/pages/slides/Slide07Universal.tsx",
+    "title": "Universal Availability — 17 Platforms LIVE",
+    "description": "Every platform listed and shipping today",
+    "speakerNotes": "This is the headline of the deck: 17 native platforms, all live now, one synced account."
+  },
+  {
+    "id": "slide-08-social",
+    "position": 8,
+    "filepath": "src/pages/slides/Slide08Social.tsx",
+    "title": "Social Ecosystem",
+    "description": "Follow, DM, taste-matching — radio that connects strangers",
+    "speakerNotes": "Internal beta data: +3.1× session length and +47% D30 retention for socially active users."
+  },
+  {
+    "id": "slide-09-ai",
+    "position": 9,
+    "filepath": "src/pages/slides/Slide09AI.tsx",
+    "title": "AI Content Engine",
+    "description": "Per-station bios, embeddings, recommendations in 50 languages",
+    "speakerNotes": "Five-step AI pipeline: ingest → enrich → index → recommend → refresh. The catalog never stales."
+  },
+  {
+    "id": "slide-10-api",
+    "position": 10,
+    "filepath": "src/pages/slides/Slide10API.tsx",
+    "title": "Developer Platform — api.themegaradio.com",
+    "description": "Public API, OpenAPI spec, SDKs, free tier",
+    "speakerNotes": "We open the catalog to developers, IoT makers, broadcasters. Radio Mega becomes infrastructure for the industry."
+  },
+  {
+    "id": "slide-11-market",
+    "position": 11,
     "filepath": "src/pages/slides/Slide05Market.tsx",
     "title": "Market Opportunity",
-    "description": "$18B global online radio market with 2.5B Smart TVs",
-    "speakerNotes": "The TAM is enormous. Smart TV installs are forecast at 3.4B by 2028. Radio is the killer app nobody has shipped yet."
+    "description": "$18B global online radio market, 2.5B Smart TVs",
+    "speakerNotes": "TAM is enormous. We address every audio listening surface in the home and on the go."
   },
   {
-    "id": "slide-06-business-model",
-    "position": 6,
+    "id": "slide-12-competition",
+    "position": 12,
+    "filepath": "src/pages/slides/Slide10Competition.tsx",
+    "title": "Competitive Landscape — No Global Alternative",
+    "description": "No competitor matches our 17-platform reach + social + API",
+    "speakerNotes": "We searched. Closest peers (TuneIn, iHeart, Spotify, Radio Garden) are partial point solutions. We are a category of one."
+  },
+  {
+    "id": "slide-13-business-model",
+    "position": 13,
     "filepath": "src/pages/slides/Slide06BusinessModel.tsx",
     "title": "Business Model",
-    "description": "Four revenue streams: subscriptions, ads, B2B, station partners",
-    "speakerNotes": "Diversified model protects us. Premium subscription is the anchor; B2B is the growth multiplier."
+    "description": "Subscriptions, ads, B2B, station partners, API plans",
+    "speakerNotes": "Diversified model. Premium is the anchor; B2B + API are the multipliers."
   },
   {
-    "id": "slide-07-revenue",
-    "position": 7,
+    "id": "slide-14-revenue",
+    "position": 14,
     "filepath": "src/pages/slides/Slide07Revenue.tsx",
     "title": "Revenue Projections",
     "description": "Path to $10M ARR by Year 3",
-    "speakerNotes": "$820K Y1, $3.4M Y2, $10.1M Y3. 72% gross margin target. Conservative assumptions available in data room."
+    "speakerNotes": "Conservative model. $820K → $3.4M → $10.1M ARR. Full P&L in data room."
   },
   {
-    "id": "slide-08-tech-stack",
-    "position": 8,
+    "id": "slide-15-tech-stack",
+    "position": 15,
     "filepath": "src/pages/slides/Slide08TechStack.tsx",
     "title": "Technology Stack",
-    "description": "Purpose-built for every screen — React, Tizen, webOS, Node.js",
-    "speakerNotes": "We own the full stack. TV SDKs are notoriously difficult — our in-house expertise is a genuine moat."
+    "description": "React Native, Swift, Kotlin, Node, MongoDB, AWS, Cloudflare, Railway, GitHub",
+    "speakerNotes": "Polyglot stack, MongoDB catalog, AWS delivery, Cloudflare WAF + CDN, Railway deploys, GitHub CI/CD."
   },
   {
-    "id": "slide-09-platforms",
-    "position": 9,
-    "filepath": "src/pages/slides/Slide09Platforms.tsx",
-    "title": "Platform Strategy",
-    "description": "TV first, then mobile companion, then web and B2B — phased expansion plan",
-    "speakerNotes": "TV is the beachhead. Mobile follows as a companion and remote. Web and B2B white-label complete the ecosystem in 2026."
-  },
-  {
-    "id": "slide-10-competition",
-    "position": 10,
-    "filepath": "src/pages/slides/Slide10Competition.tsx",
-    "title": "Competitive Landscape",
-    "description": "No direct competitor owns the TV screen for radio",
-    "speakerNotes": "TuneIn has a TV presence but no proper remote navigation. iHeart and Spotify don't. We are the only premium offering."
-  },
-  {
-    "id": "slide-11-traction",
-    "position": 11,
+    "id": "slide-16-traction",
+    "position": 16,
     "filepath": "src/pages/slides/Slide11Traction.tsx",
     "title": "Traction",
-    "description": "Two live platforms, 50K stations, 238 countries, 50 languages",
-    "speakerNotes": "We shipped. This is not a concept — it is in the Samsung Smart Hub and LG Content Store today."
+    "description": "17 live platforms, 50K stations, 238 countries, 50 languages",
+    "speakerNotes": "Already in production everywhere. This is not a roadmap deck."
   },
   {
-    "id": "slide-12-unit-economics",
-    "position": 12,
+    "id": "slide-17-unit-economics",
+    "position": 17,
     "filepath": "src/pages/slides/Slide12UnitEconomics.tsx",
     "title": "Unit Economics",
-    "description": "$1.80 CAC, $38 LTV, 21x ratio — 72% 30-day retention",
-    "speakerNotes": "TV app stores have organic discovery. Our CAC is extremely low. LTV is driven by radio's habitual listening behavior."
+    "description": "$1.80 CAC, $38 LTV, 21x ratio, 72% D30 retention",
+    "speakerNotes": "Store organic discovery + radio's habitual listening makes the unit economics exceptional."
   },
   {
-    "id": "slide-13-branding",
-    "position": 13,
+    "id": "slide-18-branding",
+    "position": 18,
     "filepath": "src/pages/slides/Slide13Branding.tsx",
     "title": "Brand Identity",
-    "description": "Premium media brand — logo, color palette, typography",
-    "speakerNotes": "Radio Mega is a brand, not a utility. That matters for both consumer premium pricing and OEM pre-install deals."
+    "description": "Logo, color palette, typography",
+    "speakerNotes": "Radio Mega is a premium brand — relevant for both consumer pricing and OEM deals."
   },
   {
-    "id": "slide-14-team",
-    "position": 14,
+    "id": "slide-19-team",
+    "position": 19,
     "filepath": "src/pages/slides/Slide14Team.tsx",
     "title": "Team",
-    "description": "Founders and advisors behind Radio Mega",
-    "speakerNotes": "We are hiring senior TV engineers and a Head of Partnerships. This raise funds those hires."
+    "description": "Founders and advisors",
+    "speakerNotes": "We're hiring senior platform engineers and a Head of Partnerships with this raise."
   },
   {
-    "id": "slide-15-roadmap",
-    "position": 15,
+    "id": "slide-20-roadmap",
+    "position": 20,
     "filepath": "src/pages/slides/Slide15Roadmap.tsx",
     "title": "Roadmap",
-    "description": "12-month plan: Apple TV, Android TV, premium, B2B, Series A",
-    "speakerNotes": "Q2 done. Q3 is Apple TV and first B2B pilot. Q4 monetization live. H1 2026 is Series A territory."
+    "description": "12-month plan: monetization, social, B2B, Series A",
+    "speakerNotes": "Distribution is done. The next 12 months are about monetization, social rollout, and B2B."
   },
   {
-    "id": "slide-16-use-of-funds",
-    "position": 16,
+    "id": "slide-21-use-of-funds",
+    "position": 21,
     "filepath": "src/pages/slides/Slide16UseOfFunds.tsx",
     "title": "Use of Funds",
-    "description": "$2.5M seed: engineering 40%, sales 25%, marketing 20%, ops 10%, reserve 5%",
-    "speakerNotes": "40% to ship remaining platforms. 25% to close OEM pre-install deals. 20% UA to hit subscriber targets."
+    "description": "$2.5M seed allocation",
+    "speakerNotes": "40% engineering, 25% sales/BD, 20% marketing, 10% ops, 5% reserve."
   },
   {
-    "id": "slide-17-financials",
-    "position": 17,
+    "id": "slide-22-financials",
+    "position": 22,
     "filepath": "src/pages/slides/Slide17Financials.tsx",
     "title": "Financial Summary",
-    "description": "3-year P&L: $820K → $4.3M → $11.2M revenue",
-    "speakerNotes": "Break-even Q2 2028. Full model in data room. Happy to walk through assumptions."
+    "description": "3-year P&L summary",
+    "speakerNotes": "Break-even Q2 2028. Detailed model available in the data room."
   },
   {
-    "id": "slide-18-close",
-    "position": 18,
+    "id": "slide-23-close",
+    "position": 23,
     "filepath": "src/pages/slides/Slide18Close.tsx",
     "title": "Join Us",
-    "description": "Closing call to action — $2.5M seed, invest@themegaradio.com",
-    "speakerNotes": "Radio for the television era. Two platforms live. $2.5M seed. Let's talk."
+    "description": "Closing CTA — $2.5M seed, invest@themegaradio.com",
+    "speakerNotes": "Radio for the era of every screen. 17 platforms live. $2.5M seed. Let's talk."
   }
 ]

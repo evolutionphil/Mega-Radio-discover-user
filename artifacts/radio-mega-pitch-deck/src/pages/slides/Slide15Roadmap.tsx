@@ -71,7 +71,7 @@ export default function Slide15Roadmap() {
 
       <div className="absolute bottom-0 left-0 right-0" style={{ padding: "2vh 5vw", display: "flex", justifyContent: "space-between", borderTop: "1px solid rgba(255,255,255,0.06)", zIndex: 10 }}>
         <span style={{ fontSize: "1.1vw", color: "rgba(255,255,255,0.2)", fontWeight: 500, letterSpacing: "0.1em" }}>RADIO MEGA</span>
-        <span style={{ fontSize: "1.1vw", color: "rgba(255,255,255,0.2)" }}>15 / 18</span>
+        <span style={{ fontSize: "1.1vw", color: "rgba(255,255,255,0.2)" }}>20 / 23</span>
       </div>
     </div>
   );

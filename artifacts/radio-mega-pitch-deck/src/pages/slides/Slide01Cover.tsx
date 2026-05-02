@@ -60,7 +60,7 @@ export default function Slide01Cover() {
       {/* Bottom bar */}
       <div className="absolute bottom-0 left-0 right-0" style={{ padding: "2.5vh 5vw", display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.06)", zIndex: 10 }}>
         <span style={{ fontSize: "1.2vw", color: "rgba(255,255,255,0.35)", fontWeight: 400 }}>CONFIDENTIAL — INVESTOR PRESENTATION 2025</span>
-        <span style={{ fontSize: "1.2vw", color: "rgba(255,255,255,0.35)" }}>1 / 18</span>
+        <span style={{ fontSize: "1.2vw", color: "rgba(255,255,255,0.35)" }}>1 / 23</span>
       </div>
     </div>
   );
