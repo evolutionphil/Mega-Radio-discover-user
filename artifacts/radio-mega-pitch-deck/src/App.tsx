@@ -143,6 +143,12 @@ function SlideEditor() {
 // dimensions are part of the platform contract. See the file-level
 // banner above for context.
 function AllSlides() {
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("print") !== "1") return;
+    const timer = setTimeout(() => window.print(), 800);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="bg-black">
       {slides.map((slide) => (
@@ -167,6 +173,7 @@ function SlideViewer() {
     width: Math.min(window.innerWidth, window.innerHeight * (16 / 9)),
     height: Math.min(window.innerHeight, window.innerWidth * (9 / 16)),
   }));
+  const [showExport, setShowExport] = useState(false);
 
   useEffect(() => {
     const update = () => {
@@ -206,6 +213,118 @@ function SlideViewer() {
         onLoad={() => iframeRef.current?.focus()}
         title="Slide viewer"
       />
+
+      <div
+        className="export-toolbar"
+        style={{
+          position: "fixed",
+          top: "16px",
+          right: "16px",
+          zIndex: 100,
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {showExport ? (
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              alignItems: "center",
+              background: "rgba(14,14,14,0.92)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "10px",
+              padding: "8px 12px",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            <a
+              href={`${base}/exports/RadioMega_InvestorDeck_2025.pdf`}
+              download="RadioMega_InvestorDeck_2025.pdf"
+              style={{
+                background: "#ff4199",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                padding: "7px 16px",
+                fontFamily: "Ubuntu, system-ui, sans-serif",
+                fontSize: "13px",
+                fontWeight: 600,
+                cursor: "pointer",
+                letterSpacing: "0.02em",
+                whiteSpace: "nowrap",
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+            >
+              Download PDF
+            </a>
+            <a
+              href={`${base}/exports/RadioMega_InvestorDeck_2025.pptx`}
+              download="RadioMega_InvestorDeck_2025.pptx"
+              style={{
+                background: "rgba(1,215,251,0.15)",
+                color: "#01d7fb",
+                border: "1px solid rgba(1,215,251,0.35)",
+                borderRadius: "6px",
+                padding: "7px 16px",
+                fontFamily: "Ubuntu, system-ui, sans-serif",
+                fontSize: "13px",
+                fontWeight: 600,
+                cursor: "pointer",
+                letterSpacing: "0.02em",
+                whiteSpace: "nowrap",
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+            >
+              Download PPTX
+            </a>
+            <button
+              onClick={() => setShowExport(false)}
+              style={{
+                background: "transparent",
+                color: "rgba(255,255,255,0.5)",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "18px",
+                lineHeight: 1,
+                padding: "0 4px",
+              }}
+              aria-label="Close"
+            >
+              ×
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setShowExport(true)}
+            style={{
+              background: "rgba(14,14,14,0.85)",
+              color: "#fff",
+              border: "1px solid rgba(255,255,255,0.18)",
+              borderRadius: "8px",
+              padding: "8px 14px",
+              fontFamily: "Ubuntu, system-ui, sans-serif",
+              fontSize: "13px",
+              fontWeight: 600,
+              cursor: "pointer",
+              backdropFilter: "blur(8px)",
+              letterSpacing: "0.02em",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="#ff4199" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Export
+          </button>
+        )}
+      </div>
     </div>
   );
 }

@@ -48,3 +48,37 @@ body {
   user-select: none;
   -webkit-user-select: none;
 }
+
+@media print {
+  @page {
+    size: 1920px 1080px landscape;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 1920px;
+    height: auto;
+    background: #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .slide {
+    width: 1920px !important;
+    height: 1080px !important;
+    page-break-after: always;
+    break-after: page;
+    overflow: hidden !important;
+    position: relative;
+  }
+
+  .slide:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .export-toolbar {
+    display: none !important;
+  }
+}
