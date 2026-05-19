@@ -23,3 +23,9 @@ id = "sKI8gaw9jCBTUXv12NNqj"
 uri = "file://.local/outputs/RadioMega_InvestorDeck_2025.pptx"
 type = "slides"
 title = "Radio Mega — Investor Pitch Deck (PPTX)"
+
+[[outputs]]
+id = "LvZnOEY_IJTgzOSv1Mijy"
+uri = "file://exports/MegaRadio-TizenApp.zip"
+type = "unspecified"
+title = "MegaRadio Tizen App (import-ready)"
